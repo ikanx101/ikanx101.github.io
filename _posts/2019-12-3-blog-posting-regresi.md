@@ -1,6 +1,17 @@
 ---
 layout: post
 title: Price Elasticity
+categories:
+  - Iseng dengan R
+  - Statistika
+  - Matematika
+tags:
+  - R
+  - Machine Learning
+  - Artificial Intelligence
+  - Price Elasticity
+  - Regresi Linear
+  - Optimization
 author: mr.ikanx
 ---
 
