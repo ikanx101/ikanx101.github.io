@@ -60,7 +60,7 @@ plugins:
 
 author:
   name   : "Mr. Ikanx"
-  avatar : "/assets/images/bio-photo.jpg"
+  avatar : "/assets/images/bio.jpg"
   bio    : "Just a passing through researcher..."
   links:
     - label: "Website"
