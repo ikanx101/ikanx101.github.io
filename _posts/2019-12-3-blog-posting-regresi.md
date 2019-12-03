@@ -1,5 +1,6 @@
 ---
 title: "Price Elasticity"
+date: 2019-12-03T15:34:30-04:00
 categories:
   - Blog
 tags:
