@@ -1,6 +1,16 @@
 ---
 layout: post
 title: Marvel Cinematic Universe
+categories:
+  - Iseng dengan R
+  - Statistika
+tags:
+  - R
+  - Machine Learning
+  - Artificial Intelligence
+  - Marvel
+  - Marvel Cinematic Universe
+  - Regresi Linear
 author: mr.ikanx
 ---
 
