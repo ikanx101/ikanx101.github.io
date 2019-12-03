@@ -2,6 +2,7 @@
 layout: post
 title: Marvel Cinematic Universe
 categories:
+  - blog
   - Iseng dengan R
   - Statistika
 tags:
