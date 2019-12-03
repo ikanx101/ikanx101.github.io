@@ -92,7 +92,7 @@ head(data,10)
     ## 9  30  17.1  9.2708
     ## 10 32  21.1  6.3516
 
-Berapa sih nilai kodelasi antara `harga` dan `qty`?
+Berapa sih nilai korelasi antara `harga` dan `qty`?
 
 ``` r
 korel = cor(data$harga,data$qty)
