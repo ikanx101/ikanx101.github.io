@@ -1,8 +1,7 @@
 ---
-layout: post
-title: Price Elasticity
+title: "Price Elasticity"
 categories:
-  - blog
+  - Blog
 tags:
   - R
   - Machine Learning
