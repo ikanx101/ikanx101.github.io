@@ -3,6 +3,24 @@ permalink: /about/
 title: "About"
 ---
 
-Tempor velit sint sunt ipsum tempor enim ad qui ullamco. Est dolore anim ad velit duis dolore minim sunt aliquip amet commodo labore. Ut eu pariatur aute ea aute excepteur laborum. Esse ea esse excepteur minim mollit qui cillum excepteur ex dolore magna. Labore deserunt fugiat incididunt incididunt sint ea. Consequat dolore aute laboris quis proident quis non et est consectetur ex eiusmod sit culpa.
+_Bismillah_,
 
-Cupidatat ea do et in excepteur in. Ad nostrud ut est esse eu duis ea sunt eiusmod. Aliquip tempor veniam sint elit fugiat. Velit incididunt laboris amet incididunt labore dolore irure velit excepteur commodo deserunt laborum. Consectetur eu fugiat veniam veniam Lorem labore magna eiusmod. Ea occaecat reprehenderit pariatur consectetur minim labore ut aliquip.
+Tujuan saya menulis blog ini adalah sebagai wadah atas apa yang saya tahu dan kerjakan selama ini.
+
+Semoga saja bermanfaat yah guys.
+
+Rasulullah Shallallahu’alaihi Wasallam bersabda:
+خَيْرُ الناسِ أَنْفَعُهُمْ لِلناسِ
+
+> “Sebaik-baik manusia adalah yang paling bermanfaat bagi manusia” (HR. Ahmad, ath-Thabrani, ad-Daruqutni. Hadits ini dihasankan oleh al-Albani di dalam Shahihul Jami’ no:3289).
+
+Rasulullah Shallallahu’alaihi Wasallam bersabda:
+عَنْ عَائِشَةَ رَضِيَ اللهُ عَنْهَا قَالَتْ: قَالَ رَسُوْلُ اللهِ صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ: إِنّ اللَّهَ تَعَالى يُحِبّ إِذَا عَمِلَ أَحَدُكُمْ عَمَلاً أَنْ يُتْقِنَهُ
+
+(رواه الطبرني والبيهقي)
+
+> “Sesungguhnya Allah mencintai seseorang yang apabila bekerja, mengerjakannya secara profesional”. (HR. Thabrani, No: 891, Baihaqi, No: 334).
+
+ 
+
+__I am mathematician, market researcher, and data science enthusiast.__
