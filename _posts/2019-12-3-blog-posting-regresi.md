@@ -47,6 +47,8 @@ Selain itu, kita ingin menghitung suatu nilai *fixed* (kita sebut saja
 suatu *price elasticity index*). Dimana jika `harga` naik sebesar **a
 %** maka sales `qty` akan turun sebesar **index %**\_.
 
+Sebagai catatan, ada asumsi yang kita gunakan untuk membangun model ini, yakni: tidak ada pengaruh variabel lain dalam sales `qty`.
+
 Contoh yah, misalkan saya punya data jualan harian suatu barang beserta
 harganya di suatu minimarket sebagai berikut:
 
@@ -321,6 +323,6 @@ hasil %>%
     ##   harga_baru
     ## 1       17.5
 
-*So*, harga optimal sudah kita dapatkan.
+*So*, harga optimal sudah kita dapatkan. Agak lebih rendah dibandingkan rata-rata `harga` yah.
 
 *Any question?*
