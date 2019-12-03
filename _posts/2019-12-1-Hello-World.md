@@ -1,6 +1,8 @@
 ---
 date: 2019-12-02T15:34:30-04:00
 title: "Saya bermigrasi!"
+categories:
+  - blog
 ---
 
 ## Setelah menjalani 4 tahun yang berkesan dengan wordpress
