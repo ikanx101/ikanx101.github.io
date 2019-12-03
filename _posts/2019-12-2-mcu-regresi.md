@@ -1,8 +1,7 @@
 ---
-layout: post
-title: Marvel Cinematic Universe
+title: "Marvel Cinematic Universe"
 categories:
-  - blog
+  - Blog
 tags:
   - R
   - Machine Learning
