@@ -1,5 +1,17 @@
-Mencari Harga Daihatsu Terios Bekas
-================
+---
+title: "Mencari Harga Daihatsu Terios Bekas"
+date: 2019-12-03T16:50:30-04:00
+categories:
+  - Blog
+tags:
+  - R
+  - Machine Learning
+  - Artificial Intelligence
+  - Otomotif
+  - Web Scraping
+  - Semi Unstructured Data
+author: mr.ikanx
+---
 
 Ceritanya, dalam beberapa waktu ke depan saya berencana untuk menjual
 mobil Daihatsu Terios saya. Mobil saya itu keluaran tahun 2014.
@@ -179,6 +191,8 @@ head(terios.data,15)
     ## 14 "2017 Daihatsu Terios R adventure mt "   184  "\nMalang "             14
     ## 15 "2018 Daihatsu Terios All New R Deluxe…  220  "\nMalang "             15
 
+Masalah dari variabel `nama` adalah inkonsistensi letak `tahun`. Kadang muncul di awal, kadang muncul di akhir, kadang muncul di tengah. Bagaimana caranya agar kita bisa mengambil `tahun`?
+
 Nah, sekarang untuk mengekstrak `tahun` saya akan gunakan metode yang
 sama untuk membuat *word cloud* atau *word counting*. Pandang variabel
 `nama` sebagai satu kalimat utuh yang kemudian akan dipisah-pisah per
@@ -243,7 +257,7 @@ lebih mudah dipahami.
 
     ## Loading required package: magrittr
 
-![](blog-post-terios_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![alt text](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/Cari%20harga%20mobil%20Terios/blog-post-terios_files/figure-gfm/unnamed-chunk-6-1.png "chart")
 
 Sekarang saya jadi tahu, harus buka di harga berapa jika ingin menjual
 mobil saya.
