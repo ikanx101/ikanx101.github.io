@@ -3,9 +3,6 @@ layout: post
 title: Price Elasticity
 categories:
   - blog
-  - Iseng dengan R
-  - Statistika
-  - Matematika
 tags:
   - R
   - Machine Learning
