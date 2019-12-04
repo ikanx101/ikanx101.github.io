@@ -40,3 +40,10 @@ Setelah selesai menyampaikan materi, beberapa orang dari dosen datang berdiskusi
 
 ### What do you need to be prepared? 
 Sebagai penutup, saya menyampaikan empat poin penting yang harus dipersiapkan adik-adik mahasiswa ke depannya. Ini saya kutip dari __Prof. Terence Tse__ saat saya menghadiri __AI Summit__ beberapa bulan lalu di Nusa Dua Bali, yakni: _creativity_, _communication_, _coding_, dan _confidence_.
+
+Semoga bisa bermanfaat untuk semuanya.
+
+_Aamiin_
+
+![alt text](https://passingthroughresearcher.files.wordpress.com/2019/11/img_20191128_163844_hdr8899360622863763124.jpg "poto 4")
+![alt text](https://passingthroughresearcher.files.wordpress.com/2019/11/img_20191128_152501_hdr7021163749576272544.jpg "poto 4")
