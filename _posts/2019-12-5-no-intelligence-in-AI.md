@@ -20,6 +20,22 @@ _So_, sebelum Anda berkata macam-macam tentang AI, boleh saya bertanya:
 
 Kenapa pertanyaan nomor dua itu sangat penting, karena dengan kita _ngoding_ kita akan tau bahwa __tidak ada kecerdasan dalam kecerdasan buatan__. Itu lhoo poin saya! _maaf ngegas, hehe._
 
+Coba kita belajar membedakan mana yang __pintar__, mana yang __bekerja keras__. Gini deh contohnya:
+
+Misalkan, saya punya beberapa soal seperti ini:
+
+1. 3 + 7 - 82 * 32 + |40 - 321| = ...
+2. log(364) + ln(73) - 560/243 = ...
+3. sqrt(100232) - 783^(-32) = ...
+
+Coba kerjakan tanpa bantuan kalkulator atau _Ms. Excel_!
+
+Apakah orang yang berhasil mengerjakan soal-soal ini adalah orang yang pintar? Ya, mungkin saja tapi yang jelas ia adalah orang yang bekerja dengan keras. Pun sama dengan AI. Sejatinya AI hanya melakukan komoutasi kompleks dengan cepat! 
+
+> __Pihak yang pintar adalah pihak yang menemukan dan memberikan cara perhitungan, bukan pihak yang menghitung.__
+
+_Do you get what I mean?_
+
 Oh iya satu lagi tentang _prediction model using AI_. Ini yah saya kasih tau: 
 
 > __Your prediction model is just as good as your training dataset!__
