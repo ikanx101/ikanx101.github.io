@@ -7,7 +7,7 @@ categories:
 
 Sebenarnya bahasan ini sudah pernah saya tulis sebelumnya di [blog saya yang lama](https://wp.me/p6nlXw-iG). _kindly read it first_ yah untuk membuka wawasan tentang AI itu apa dan kayak gimana.
 
-Tapi kok makin lama makin _nyeleneh_ aja pembahasan tentang AI ini. Semakin banyak orang gak bisa membedakan mana ranah _science fiction_, mana ranah yang _real science_. 
+Tapi kok makin lama makin _nyeleneh_ dan liar aja pembahasan tentang AI ini. Semakin banyak orang gak bisa membedakan mana ranah _science fiction_, mana ranah yang _real science_. 
 
 Ada sebuah analogi yang menurut saya tepat terkait AI ini.
 
@@ -24,10 +24,12 @@ Oh iya satu lagi tentang _prediction model using AI_. Ini yah saya kasih tau:
 
 > __Your prediction model is just as good as your training dataset!__
 
-Jadi, kalau datasetnya bagus, maka model prediksi juga akan bagus. Tapi jika sebaliknya, siap-siap __makan bias__ ygpang dihasilkan model tersebut.
+Jadi, kalau datasetnya bagus, maka model prediksi juga akan bagus. Tapi jika sebaliknya, siap-siap __makan bias__ yang dihasilkan model tersebut.
 
 Nih saya kasih contoh bagaimana AI sekelas bikinan _Google_ aja bisa bias kayak gini:
 
 ![alt text](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Post_ngegas/images.jpeg "tes")
+
+Menurut saya, AI hanya sebuah _tools_ yang membuat manusia bisa bekerja selayaknya manusia. Apa itu? Banyak berpikir.
 
 _So_, masih mau punya pimpinan AI?
