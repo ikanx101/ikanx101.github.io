@@ -3,6 +3,9 @@ date: 2019-12-05T08:00:00-04:00
 title: "There is No INTELLIGENCE in ARTIFICIAL INTELLIGENCE"
 categories:
   - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
 ---
 
 Sebenarnya bahasan ini sudah pernah saya tulis sebelumnya di [blog saya yang lama](https://wp.me/p6nlXw-iG). _kindly read it first_ yah untuk membuka wawasan tentang AI itu apa dan kayak gimana.
