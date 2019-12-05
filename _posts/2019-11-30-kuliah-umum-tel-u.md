@@ -3,6 +3,13 @@ date: 2019-11-30T11:00:00-04:00
 title: "Kuliah Umum di Telkom University"
 categories:
   - Blog
+tags:
+  - Machine Learning
+  - Artificial Intelligence
+  - Data
+  - Education
+  - Kuliah
+  - Telkom
 ---
 
 Berawal dari obrolan lepas saat reuni kecil-kecilan antara saya dengan dua orang teman di __Matematika ITB__ angkatan 2004 (yang kini menjadi dosen di jurusan __Teknik Industri Telkom University__), pada 28 November 2019 lalu saya diundang sebagai pembicara di kuliah umum basis data bertajuk: __Data: the New Oil in Digital Era__.
