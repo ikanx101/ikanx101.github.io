@@ -27,13 +27,13 @@ Coba kita belajar membedakan mana yang __pintar__, mana yang __bekerja keras__. 
 
 Misalkan, saya punya beberapa soal seperti ini:
 
-1. 3 + 7 - 82 * 32 + | 40 - 321 | = ...
+1. 3 + 7 - 82 * 32 + 40 - 321 = ...
 2. log(364) + ln(73) - 560/243 = ...
-3. sqrt(100232) - 783^(-32) = ...
+3. sqrt(100232) - sin(783)^(-32) = ...
 
 Coba kerjakan tanpa bantuan kalkulator atau _Ms. Excel_!
 
-Apakah orang yang berhasil mengerjakan soal-soal ini adalah orang yang pintar? Ya, mungkin saja tapi yang jelas ia adalah orang yang bekerja dengan keras. Pun sama dengan AI. Sejatinya AI hanya melakukan komoutasi kompleks dengan cepat! 
+Apakah orang yang berhasil mengerjakan soal-soal ini adalah orang yang pintar? Ya, mungkin saja tapi yang jelas ia adalah orang yang bekerja (menghitung) dengan keras. Pun sama dengan AI. Sejatinya AI hanya melakukan komoutasi kompleks dengan cepat! 
 
 > __Pihak yang pintar adalah pihak yang menemukan dan memberikan cara perhitungan, bukan pihak yang menghitung.__
 
