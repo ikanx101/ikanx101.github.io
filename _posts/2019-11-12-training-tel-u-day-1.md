@@ -3,6 +3,10 @@ date: 2019-11-12T05:00:00-04:00
 title: "Oleh-oleh Pelatihan di Telkom University"
 categories:
   - Blog
+tags:
+  - Statistika
+  - Distribusi Normal
+  - SEM
 ---
 
 Ceritanya dalam seminggu ini, saya diberi tugas dari kantor untuk mengikuti pelatihan _Big Data_ yang diselenggarakan oleh Kementrian Perindustrian di Universitas Telkom Bandung. Alhamdulillah, saya sudah pernah melakukan semua hal yang ada di silabusnya. Trus kalau sudah pernah, kenapa masih ikutan? Sebenarnya penasaran aja sih.
