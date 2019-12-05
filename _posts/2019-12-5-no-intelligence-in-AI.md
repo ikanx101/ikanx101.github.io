@@ -11,7 +11,7 @@ Tapi kok makin lama makin _nyeleneh_ aja pembahasan tentang AI ini. Semakin bany
 
 Ada sebuah analogi yang menurut saya tepat terkait AI ini.
 
-> _Many people talks about AI, but how many of them doing it? It is like teenagers talking about sex._*
+> __Many people talks about AI, but how many of them doing it? It is like teenagers talking about sex.__
 
 _So_, sebelum Anda berkata macam-macam tentang AI, boleh saya bertanya: 
 
@@ -22,11 +22,11 @@ Kenapa pertanyaan nomor dua itu sangat penting, karena dengan kita _ngoding_ kit
 
 Oh iya satu lagi tentang _prediction model using AI_. Ini yah saya kasih tau: 
 
-> _Your prediction model is just as good as your training dataset!_*
+> __Your prediction model is just as good as your training dataset!__
 
 Jadi, kalau datasetnya bagus, maka model prediksi juga akan bagus. Tapi jika sebaliknya, siap-siap __makan bias__ ygpang dihasilkan model tersebut.
 
-Nih saya kasih contoh bagaimana AI sekelas _Google_ bisa bias kayak gini:
+Nih saya kasih contoh bagaimana AI sekelas bikinan _Google_ aja bisa bias kayak gini:
 
 ![alt text](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Post_ngegas/images.jpeg "tes")
 
