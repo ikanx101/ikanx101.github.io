@@ -13,7 +13,7 @@ tags:
 
 Sudah baca tulisan saya yang [ini](https://ikanx101.github.io/blog/no-intelligence-in-AI/)? Kalau belum dibaca dulu semuanya yah. _hehe_
 
-Sekarang saya mau bahas lebih detail tentang bias di Artificial Intelligence.
+Sekarang saya mau bahas lebih detail tentang bias di __Artificial Intelligence__.
 
 > Banyak orang awam berkata bahwa __AI__ tak akan bisa salah. __AI__ bisa menjadi _leader_ atau _decision maker_ yang lebih baik dibanding manusia karena murni mengedepankan logika dibandingkan faktor emosional.
 
@@ -31,6 +31,8 @@ Untuk membangun model prediksi atau klasifikasi di __AI__ (sekarang saya akan me
 
 Biasanya _Supervised Learning_ adalah jenis model yang paling sering digunakan karena __kita ingin AI bisa "berpikir" dan "bertindak" seperti layaknya manusia__. Tapi apakah kita tahu cara membangun model _Supervised Learning_?
 
-_Supervised Learning_ berarti membangun model prediksi atau klasifikasi berdasarkan data yang sudah kita berikan label untuk menjadi bahan latihan bagi mesin.
+_Supervised Learning_ berarti membangun model prediksi atau klasifikasi berdasarkan data yang sudah kita berikan label untuk menjadi bahan latihan bagi mesin. Jadi _training dataset_ akan menjadi basis bagi mesin untuk melakukan prediksi atau klasifikasi bagi _data real_ atau masalah _real_.
 
-Masalahnya adalah model yang kita bangun itu
+> Contoh: Jika kita ingin membuat prediksi orang
+
+#### _to be continued_
