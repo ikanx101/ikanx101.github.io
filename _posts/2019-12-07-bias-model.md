@@ -19,4 +19,18 @@ Sekarang saya mau bahas lebih detail tentang bias di Artificial Intelligence.
 
 _Benarkah seperti itu Ferguso?_ Oke, mari kita bedah bersama yah.
 
-Pada dasarnya __AI__
+> Saat kita berbicara mengenai __AI__, biasanya kita sedang membicarakan kemampuan __AI__ dalam membuat prediksi atau klasifikasi. 
+
+Pada dasarnya __AI__ itu dibangun atas kumpulan model matematika dan model statistika. Dengan bantuan komputer, proses kalkulasi menjadi cepat dan efisien. 
+
+Untuk membangun model prediksi atau klasifikasi di __AI__ (sekarang saya akan menggunakan istilah __Machine Learning__), kita mengetahui ada tiga jenis cara membangun modelnya. Yakni:
+
+1. Supervised Learning.
+2. Unsupervised Learning.
+3. Semi-supervised Learning.
+
+Biasanya _Supervised Learning_ adalah jenis model yang paling sering digunakan karena __kita ingin AI bisa "berpikir" dan "bertindak" seperti layaknya manusia__. Tapi apakah kita tahu cara membangun model _Supervised Learning_?
+
+_Supervised Learning_ berarti membangun model prediksi atau klasifikasi berdasarkan data yang sudah kita berikan label untuk menjadi bahan latihan bagi mesin.
+
+Masalahnya adalah model yang kita bangun itu
