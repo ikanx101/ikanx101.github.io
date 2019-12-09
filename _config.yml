@@ -17,10 +17,6 @@ title: just another ikanx's blog
 email: ikanx101@gmail.com
 description: "market research, machine learning, artificial intelligencei, and bunch of ideas. Continuation of https://passingthroughresearcher.wordpress.com/"
 
-# tambahan ikanx
-theme: minimal-mistakes-jekyll
-minimal_mistakes_skin: "neon" 
-
 twitter_username: ikanx101
 github_username: ikanx101
 search: true
