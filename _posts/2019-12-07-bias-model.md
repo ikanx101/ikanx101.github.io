@@ -62,6 +62,10 @@ ATAU,
 
 Jika pada _training dataset_ tersebut ternyata mayoritas orang yang diberikan pinjaman bertempat tinggal di suatu area tertentu, maka hampir bisa dipastikan jika ada seseorang dari area tempat tinggal tertentu akan sulit mendapatkan _approval_ pinjaman.
 
+ATAU
+
+Pada _training dataset_ tersebut memiliki sedikit keterwakilan dari suatu `etnis` tertentu, hampir bisa dipastikan model tersebut tidak akan mengakomodir _approval_ untuk `etnis` tersebut.
+
 Sekarang sudah kebayang potensi-potensi bias yang ada?
 
 Ada gak _sih_ cara untuk meminimalisir biasnya?
