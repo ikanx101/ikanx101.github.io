@@ -72,11 +72,12 @@ Cara paling mudah adalah melakukan pemilihan variabel pada _training dataset_ ya
 
 _Btw_, inget kejadian dimana seorang penumpang pesawat [United Express Flight 3411](https://en.wikipedia.org/wiki/United_Express_Flight_3411_incident) diusir paksa dari pesawat? Kejadian ini sempat viral di Amerika sana.
 
-Saat event __AI Summit__ di Nusa Dua tahun lalu, (__Prof. Terence Tse__)[https://en.wikipedia.org/wiki/Terence_Tse] pada _keynote speak_-nya sempat menyinggung bagaimana algoritma _United Express_ memegang peranan penting bagaimana penumpang tersebut dipaksa turun dari pesawat.
+Saat _event_ __Indonesia AI Summit__ di Nusa Dua tahun lalu, [__Prof. Terence Tse__](https://en.wikipedia.org/wiki/Terence_Tse) pada _keynote speak_-nya sempat menyinggung bagaimana algoritma _United Express_ memegang peranan penting bagaimana penumpang tersebut dipaksa turun dari pesawat.
 
 Saya mencoba mencari artikel terkait itu, tidak ada yang spesifik membenarkan pernyataan __Prof. Tse__, tapi ada yang setidaknya mirip dengan pernyataan [tersebut](https://www.nbcnews.com/storyline/airplane-mode/united-fiasco-how-do-airlines-select-who-remove-overbooked-flights-n746331).
 
 #### Kesimpulan:
 
 * _Rubbish in, rubbish out!_
-* _Yakin masih mau dipimpin oleh AI?_
+
+# _Yakin masih mau dipimpin oleh AI?_
