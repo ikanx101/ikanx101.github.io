@@ -15,9 +15,10 @@
 # in the templates via {{ site.myvariable }}.
 title: just another ikanx's blog
 email: ikanx101@gmail.com
-description: market research, machine learning, and bunch of ideas.
+description: "market research, machine learning, artificial intelligencei, and bunch of ideas. Continuation of https://passingthroughresearcher.wordpress.com/"
 
 # tambahan ikanx
+theme: minimal-mistakes-jekyll
 minimal_mistakes_skin: "neon" 
 
 twitter_username: ikanx101
@@ -61,6 +62,7 @@ author:
   name   : "Mr. Ikanx"
   avatar : "/assets/images/Bio New.jpg"
   bio    : "Just a passing through researcher..."
+  location : "Somewhere in Jakarta - Bekasi"
   links:
     - label: "Website"
       icon: "fas fa-fw fa-link"
