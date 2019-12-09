@@ -52,7 +52,7 @@ Misalkan, ita ingin membuat model yang bisa memprediksi apakah seseorang layak d
 9. `tagihan_kartu_kredit`
 10. `area_tempat_tinggal`
 11. dll.
-12. `layak_iatau_tidak` --> _Variabel target_ yang menyatakan seseorang layak atau tidak diberikan pinjaman oleh bank.
+12. `layak_atau_tidak` --> _Variabel target_ yang menyatakan seseorang layak atau tidak diberikan pinjaman oleh bank.
 
 Ada yang sadar _gak_ bahwa variabel-variabel di atas __bisa berpotensi menimbulkan bias__?
 
@@ -77,4 +77,6 @@ Saat event __AI Summit__ di Nusa Dua tahun lalu, (__Prof. Terence Tse__)[https:/
 Saya mencoba mencari artikel terkait itu, tidak ada yang spesifik membenarkan pernyataan __Prof. Tse__, tapi ada yang setidaknya mirip dengan pernyataan [tersebut](https://www.nbcnews.com/storyline/airplane-mode/united-fiasco-how-do-airlines-select-who-remove-overbooked-flights-n746331).
 
 #### Kesimpulan:
-_Masih mau dipimpin oleh AI?_
+
+* _Rubbish in, rubbish out!_
+* _Yakin masih mau dipimpin oleh AI?_
