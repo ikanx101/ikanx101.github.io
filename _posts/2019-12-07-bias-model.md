@@ -39,7 +39,7 @@ Jika dalam _training dataset_ ada bias yang tidak kita sadari, maka yakinlah mod
 
 #### Contoh sederhana:
 
-Misalkan, ita ingin membuat model yang bisa memprediksi apakah seseorang layak diberi pinjaman oleh bank atau tidak. Kita akan membuat model berdasarkan _training dataset_ yang berisi variabel-variabel sebagai berikut:
+Misalkan, kita ingin membuat model yang bisa memprediksi apakah seseorang layak diberi pinjaman oleh bank atau tidak. Kita akan membuat model berdasarkan _training dataset_ yang berisi variabel-variabel sebagai berikut:
 
 1. `gender`
 2. `etnis`
