@@ -1,5 +1,16 @@
-Sunyi Web Series by Tropicana Slim
-================
+---
+date: 2019-12-10T10:49:00-04:00
+title: "Sunyi Web Series by Tropicana Slim"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - R
+  - Text Analysis
+  - Web Series
+  - Marketing
+---
 
 > Data is the new oil
 
@@ -57,20 +68,22 @@ Kalau dilihat sekilas, *viewers*-nya menurun tiap episode. Bisa jadi
 karena memang *web series*-nya baru saja mulai. Jadi belum banyak yang
 menonton.
 
-![](2019-12-4-blog-posting-sunyi_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![alt text](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/Sunyi/2019-12-4-blog-posting-sunyi_files/figure-gfm/unnamed-chunk-3-1.png "chart")
 
 Walaupun begitu, tren yang berbeda ditunjukkan pada variabel `likeCount`
 dan `commentCount`. Sempat menurun pada episode kedua tapi naik di
 episode
 ketiga.
 
-![](2019-12-4-blog-posting-sunyi_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![alt text](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/Sunyi/2019-12-4-blog-posting-sunyi_files/figure-gfm/unnamed-chunk-4-1.png "chart")
 
 Coba yah kalau kita buat variabel `likeCount` dan `commentCount` dalam
 bentuk rasio terhadap `viewCount`. Bentuknya jadi sebagai
 berikut:
 
-![](2019-12-4-blog-posting-sunyi_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->![](2019-12-4-blog-posting-sunyi_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->
+![alt text](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/Sunyi/2019-12-4-blog-posting-sunyi_files/figure-gfm/unnamed-chunk-5-1.png "chart")
+
+![alt text](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/Sunyi/2019-12-4-blog-posting-sunyi_files/figure-gfm/unnamed-chunk-5-2.png "chart")
 
 Nah kalau dari rasio sudah terlihat mirip kan yah polanya.
 
@@ -421,7 +434,7 @@ Berikut adalah grafik dari *bigrams* yang memiliki frekuensi kemunculan
 lebih dari dua
 (`>2`):
 
-![](2019-12-4-blog-posting-sunyi_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+![alt text](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/Sunyi/2019-12-4-blog-posting-sunyi_files/figure-gfm/unnamed-chunk-18-1.png "chart")
 
 -----
 
@@ -433,8 +446,7 @@ kata lain. Bagaimana caranya? Kita gunakan *library* `NLP` dan `tm`.
 Simpelnya adalah menghitung frekuensi masing-masing kata. Lalu korelasi
 dihitung dengan seberapa sering dua kata muncul di *section* yang sama.
 
-![alt
-text](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/Sunyi/asosiasi.png
+![alt text](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/Sunyi/asosiasi.png
 "association")
 
 Versi asli dari gambar tersebut, bisa di-zoom-in di link [berikut ini
@@ -452,21 +464,21 @@ kata:
 Sekarang kita selidiki kata mana saja yang berkorelasi dengan kata
 **Tropicana**.
 
-![](2019-12-4-blog-posting-sunyi_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+![alt text](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/Sunyi/2019-12-4-blog-posting-sunyi_files/figure-gfm/unnamed-chunk-20-1.png "chart")
 
 ##### *Word Association*: Sunyi
 
 Sekarang kita selidiki kata mana saja yang berkorelasi dengan kata
 **Sunyi**.
 
-![](2019-12-4-blog-posting-sunyi_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
+![alt text](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/Sunyi/2019-12-4-blog-posting-sunyi_files/figure-gfm/unnamed-chunk-21-1.png "chart")
 
 ##### *Word Association*: Tuli
 
 Sekarang kita selidiki kata mana saja yang berkorelasi dengan kata
 **Tuli**.
 
-![](2019-12-4-blog-posting-sunyi_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
+![alt text](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/Sunyi/2019-12-4-blog-posting-sunyi_files/figure-gfm/unnamed-chunk-22-1.png "chart")
 
 -----
 
@@ -492,7 +504,7 @@ sebagai berikut:
 3.  Berbicara mengenai
 durasi.
 
-![](2019-12-4-blog-posting-sunyi_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
+![alt text](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/Sunyi/2019-12-4-blog-posting-sunyi_files/figure-gfm/unnamed-chunk-24-1.png "chart")
 
 *How?*
 
