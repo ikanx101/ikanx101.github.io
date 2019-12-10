@@ -353,7 +353,7 @@ yang sama atau beda-beda yah. Yuk kita cek datanya.
 
     ## Loading required package: magrittr
 
-![](2019-12-4-blog-posting-sunyi_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+![alt text](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/Sunyi/2019-12-4-blog-posting-sunyi_files/figure-gfm/unnamed-chunk-16-1.png "chart")
 
 > Ternyata ada juga lho viewers yang selalu komen di 3 video. Selain
 > **Sunyi Coffee**, ada yang bisa kasih tau siapa saja mereka? Dan apa
