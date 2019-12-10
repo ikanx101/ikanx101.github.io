@@ -1,5 +1,16 @@
-Industri Film di Dunia (baca: Amerika Serikat)
-================
+---
+date: 2019-12-10T14:20:00-04:00
+title: "Industri Film di Dunia (baca: Amerika Serikat)"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - R
+  - Web Scrap
+  - Movies
+  - United States
+---
 
 Dulu sewaktu kuliah, saya sempat ditanya oleh salah seorang *mentor*
 saya di Salman ITB:
@@ -68,7 +79,7 @@ Untuk mengkonfirmasi jawaban *mentor* saya tersebut, mari kita lihat
 grafik berikut
 ini:
 
-![](2019-12-10-blog-film-amerika_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![alt text](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/film%20companies/2019-12-10-blog-film-amerika_files/figure-gfm/unnamed-chunk-4-1.png "chart")
 
 Wah, ternyata memang benar yah. Amerika sejak dulu hingga sekarang sudah
 memproduksi banyak sekali film. Jauh mengungguli negara peringkat dua
@@ -79,7 +90,7 @@ jumlah banyaknya film semua negara selain Amerika, maka didapat *pie
 chart* sebagai
 berikut:
 
-![](2019-12-10-blog-film-amerika_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![alt text](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/film%20companies/2019-12-10-blog-film-amerika_files/figure-gfm/unnamed-chunk-5-1.png "chart")
 
 > Lebih dari 40% film yang diproduksi di dunia ini berasal dari Amerika.
 
@@ -90,7 +101,7 @@ berikut:
 Mari kita lihat grafik berikut
 ini:
 
-![](2019-12-10-blog-film-amerika_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![alt text](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/film%20companies/2019-12-10-blog-film-amerika_files/figure-gfm/unnamed-chunk-6-1.png "chart")
 
 Ternyata memang industri film menjadi salah satu *money maker*-nya
 Amerika yah. Sangat jauh mengungguli negara peringkat dua dan tiga.
@@ -100,7 +111,7 @@ diproduksi oleh Amerika dengan total pendapatan film semua negara selain
 Amerika, maka didapat *pie chart* sebagai
 berikut:
 
-![](2019-12-10-blog-film-amerika_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![alt text](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/film%20companies/2019-12-10-blog-film-amerika_files/figure-gfm/unnamed-chunk-7-1.png "chart")
 
 > Hampir 75% pendapatan film di seluruh dunia dimiliki oleh Amerika.
 
@@ -113,7 +124,7 @@ produksi rata-rata film di sana masih relatif lebih “murah” dibandingkan
 beberapa negara
 lain?
 
-![](2019-12-10-blog-film-amerika_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![alt text](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/film%20companies/2019-12-10-blog-film-amerika_files/figure-gfm/unnamed-chunk-8-1.png "chart")
 
 *Notes*:
 
