@@ -389,7 +389,7 @@ kata yang keluar dalam suatu data teks. Sebelum mulai, kita akan lakukan
 *lowercase* biar mudah dianalisa.
 
 Berhubung ini hanya untuk *fun* aja, saya akan *skip* bagian *word
-stemming* dan *remove stopwords*.
+stemming* pada _wordcloud_. Namun pada analisa selanjutnya saya tetap menghilangkan _stopwords_ bahasa Indonesia.
 
 > *Kindly Googling about those two terms yah in parts of text analytics*
 
