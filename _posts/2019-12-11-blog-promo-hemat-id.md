@@ -1,10 +1,22 @@
-Mencari Promo di Toko dari hemat.id
-================
+---
+date: 2019-12-11T09:30:00-04:00
+title: "Mencari Promo di Toko dari hemat.id"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - R
+  - Web Scrap
+  - Promo
+  - Supermarket
+  - Minimarket
+---
 
-WARNING: Tulisan ini berisi CURCOL\!\!\!
+### WARNING: Tulisan ini berisi CURCOL!
 
 Sebenarnya tulisan ini sudah pernah saya post di [blog saya yang
-lama](https://wp.me/p6nlXw-lp). Awalnya saya super happy karena
+lama](https://wp.me/p6nlXw-lp). Awalnya saya _super happy_ karena
 algoritma yang saya bikin bisa menghemat waktu tim sales di kantor dalam
 merekap data promosi yang sedang berlangsung di toko (minimarket,
 supermarket, hypermarket, dsb).
