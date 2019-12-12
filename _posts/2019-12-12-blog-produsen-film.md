@@ -1,5 +1,5 @@
 ---
-date: 2019-12-12T15:25:00-04:00
+date: 2019-12-12T14:25:00-04:00
 title: "Movie Production Companies: a Clustering Story"
 categories:
   - Blog
