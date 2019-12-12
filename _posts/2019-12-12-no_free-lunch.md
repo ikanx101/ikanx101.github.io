@@ -79,5 +79,9 @@ Kira-kira seperti itulah __No Free Lunch Theorem__. Kalau saya ungkapkan dengan 
 
 > _Setiap permasalahan itu unik dan butuh cara yang unik juga dalam menyelesaikannya_.
 
+Oh iya, ini juga mengajarkan bagi kita:
+
+> _There is no shortcut for everything_
+
 _Notes:_
 Terkait _goodness of fit_ model, saya sarankan untuk membaca tulisan di blog [saya yang lama ini](https://passingthroughresearcher.wordpress.com/2015/06/29/failure-formula-overfitting-the-earthquake/)?
