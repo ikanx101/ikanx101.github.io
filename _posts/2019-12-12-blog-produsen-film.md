@@ -20,6 +20,8 @@ yang dihimpun di situs
 > **“Sepertinya ada beberapa topik yang bisa dijadikan tulisan di
 > blog”**, Pikir saya.
 
+Melanjutkan _posting_ saya terkait [Hollywood kemarin](https://ikanx101.github.io/blog/blog-film-amerika/), ternyata dari sekian banyak film _production_companies_ di dunia, hanya segelintir saja yang mendominasi.
+
 # Data **Movie Production Companies**
 
 Dari *web* tersebut, kita mendapatkan data `12.891` *movie production
