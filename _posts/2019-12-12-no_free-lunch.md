@@ -45,7 +45,7 @@ Sebenarnya, dalam proses menyelesaikan kedua kasus itu, saya mencoba-coba bebera
 8. __XGboost__
 9. dst... (_lupa lagi apa. Yang jelas, banyak algoritma di library `caret` saya coba-coba_)
 
-Beberapa dari nama model tersebu masih sangat asing di telinga kita semua kan?
+Beberapa dari nama model tersebut masih sangat asing di telinga kita semua kan?
 
 > __Hasilnya: sempat masuk peringkat 5 besar, sampai turun ke 10 besar, lalu ke 15 besar._
 
