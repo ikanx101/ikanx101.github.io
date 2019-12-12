@@ -1,5 +1,17 @@
-Movie Production Companies: a Clustering Story
-================
+---
+date: 2019-12-12T15:25:00-04:00
+title: "Movie Production Companies: a Clustering Story"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - R
+  - Web Scrap
+  - Hollywood
+  - Movies
+  - Clustering Analysis
+---
 
 Dalam beberapa waktu ini, saya sedang sering melihat data terkait film
 yang dihimpun di situs
@@ -69,7 +81,7 @@ dari besarnya
 
 ## *Scatter plot* dari data
 
-![](2019-12-10-blog-produsen-film_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![alt text](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/2019-12-10-blog-produsen-film_files/figure-gfm/unnamed-chunk-4-1.png "chart")
 
 *Gimana?* sudah terlihat `production_companies` favorit kamu?
 
@@ -107,7 +119,7 @@ Dengan alasan kemudahan untuk melihat hasil, dari tiga metode tersebut
 saya akan gunakan *elbow method*
 yah.
 
-![](2019-12-10-blog-produsen-film_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![alt text](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/2019-12-10-blog-produsen-film_files/figure-gfm/unnamed-chunk-5-1.png "chart")
 
 Nah, salah satu *kelemahan elbow method* adalah penentuan banyaknya
 *clusters* bisa jadi subjektif tergantung *visual* masing-masing orang.
@@ -147,7 +159,7 @@ berikut:
 5.  Cluster 5: `production_companies` yang kecil di semua
 aspek.
 
-![](2019-12-10-blog-produsen-film_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![alt text](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/2019-12-10-blog-produsen-film_files/figure-gfm/unnamed-chunk-7-1.png "chart")
 
 ### Kita liat `production_companies` mana saja di masing-masing cluster yah
 
@@ -286,6 +298,6 @@ aspek.
 
 ### Yuk kita plot kembali ke dalam *scatter plot*
 
-![](2019-12-10-blog-produsen-film_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![alt text](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/2019-12-10-blog-produsen-film_files/figure-gfm/unnamed-chunk-13-1.png "chart")
 
 # *Any comments?*
