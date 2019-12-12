@@ -95,8 +95,8 @@ dari besarnya
 
 ## *Clustering Analysis* dari data
 
-Sekarang kita akan mencoba mengelompokkan `production_companies` dari
-data-data yang ada. Saya akan menggunakan algoritma **k-means
+Saya penasaran, apakah mungkin dibuat pengelompokan `production_companies` dari
+data-data yang ada? Untuk itu, saya akan menggunakan algoritma **k-means
 clustering**.
 
 > Contoh lain penggunaan k-means clustering sudah pernah saya tulis di
