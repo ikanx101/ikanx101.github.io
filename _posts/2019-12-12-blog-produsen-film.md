@@ -163,6 +163,10 @@ aspek.
 
 ![alt text](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/2019-12-10-blog-produsen-film_files/figure-gfm/unnamed-chunk-7-1.png "chart")
 
+Coba kalau kita perhatikan lagi dengan seksama. Variabel `total_domestic_box_office` dan `total_worldwide_box_office` memiliki nilai tengah yang hampir sama di semua _cluster_. Apa yang bisa kita simpulkan?
+
+> __Untuk membangun cluster ini, sebenarnya cukup memilih satu variabel saja di antara kedua variabel tersebut.__
+
 ### Kita liat `production_companies` mana saja di masing-masing cluster yah
 
 #### Cluster 1
