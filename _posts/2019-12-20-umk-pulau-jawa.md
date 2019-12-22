@@ -11,9 +11,6 @@ tags:
   - Tenaga Kerja
 ---
 
-Upah Minimum Kota di Pulau Jawa
-================
-
 Sebagai seorang orang yang berkecimpung di dunia *recruitment* dan *HR*,
 nyonya malam ini mengajak diskusi terkait dengan data hasil survey
 mengenai **Indonesia Salary Benchmark** yang dilakukan oleh lembaga
