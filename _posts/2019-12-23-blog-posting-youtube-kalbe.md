@@ -14,8 +14,8 @@ tags:
 
 > Sebelumnya mohon maaf bahwa tulisan ini baru saya selesaikan sekarang.
 > Lebih dari seminggu sejak data *Youtube channel* **KalbeFamily** ini
-> saya *scrap*. Berhubung saya terkena
-> [cacar](https://ikanx101.github.io/blog/cacar-air/) dan setelah itu
+> saya *scrap*. Berhubung saya terkena 
+> [cacar air](https://ikanx101.github.io/blog/cacar-air/) dan setelah itu
 > harus menyelesaikan tugas kantor dulu, maka tulisan ini terbengkalai.
 > *Hehe*
 
