@@ -1,5 +1,16 @@
-Stalking Youtube Channel KalbeFamily
-================
+---
+date: 2019-12-23T10:22:00-04:00
+title: "Stalking Youtube Channel KalbeFamily"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - R
+  - Youtube Data API
+  - Youtube
+  - Kalbe
+---
 
 > Sebelumnya mohon maaf bahwa tulisan ini baru saya selesaikan sekarang.
 > Lebih dari seminggu sejak data *Youtube channel* **KalbeFamily** ini
@@ -183,7 +194,7 @@ str(all_videos)
 tersebut di-
 *upload*.
 
-![](2019-12-12-blog-posting-youtube-kalbe_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![alt text](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/KalbeFamily/2019-12-12-blog-posting-youtube-kalbe_files/figure-gfm/unnamed-chunk-5-1.png "chart")
 
 Ternyata ada yang menarik nih. Entah kenapa di tahun 2015, tidak ada
 video yang diupload di *channel* ini. Setelah **rajin** *upload* di
@@ -192,7 +203,7 @@ jauh. Dari sini kita bisa duga bahwa bisa jadi video-video tersebut
 tidak diupload setiap bulannya. Mari kita
 buktikan:
 
-![](2019-12-12-blog-posting-youtube-kalbe_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![alt text](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/KalbeFamily/2019-12-12-blog-posting-youtube-kalbe_files/figure-gfm/unnamed-chunk-6-1.png "chart")
 
 -----
 
@@ -249,14 +260,14 @@ datanya.
 boxplot(eps$viewCount)
 ```
 
-![](2019-12-12-blog-posting-youtube-kalbe_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![alt text](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/KalbeFamily/2019-12-12-blog-posting-youtube-kalbe_files/figure-gfm/unnamed-chunk-11-1.png "chart")
 
 *Tuh kan*, ternyata benar ada pencilan *lhoo*.
 
 Oke, sekarang kita lihat `viewCount` per masing-masing
 video:
 
-![](2019-12-12-blog-posting-youtube-kalbe_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![alt text](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/KalbeFamily/2019-12-12-blog-posting-youtube-kalbe_files/figure-gfm/unnamed-chunk-12-1.png "chart")
 
 Mari kita lihat beberapa video yang memiliki `viewCount` tinggi. Apa
 saja sih?
@@ -433,6 +444,8 @@ Nih, baca sendiri deh komentar-komentarnya:
     ## 47                                                                                                                                                                                                                                Dear kalbe, saya telah melakukan pendaftaran melalui <a href="http://www.kalbestore.com/">www.kalbestore.com</a> dan telah melakukan pembelian produk kalbe nutritionals dengan minimal belanjan Rp. 200.000<br />Tapi kenapa sampai sekarang saya belum menerima kartu member kalbe family ?<br />Mohon informasi lebih lebih lanjut, terkait hal tersebut....
     ## 48                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    Berdasarkan APA y pemilihan Pelanggan setia
     ## 49                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Waw tidak boleh menyusui saat hamil tua
+
+_____
 
 > Udah dulu ah, kalau ada yang mau datanya, tinggal lihat aja skrip
 > coding di atas yah. Sudah ada kok cara ngambilnya.
