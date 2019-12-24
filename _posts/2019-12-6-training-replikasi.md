@@ -17,7 +17,7 @@ Nah, oleh karena satu dan lain hal, akhirnya kami memutuskan untuk mengajarkan _
 
 > Saking antusiasnya, saat diberikan waktu untuk _break_, para _trainees_ masih sibuk _ngoding_ dan menginterpretasikan hasil analisa regresi linearnya. _Good job! hehe_
 
-Materi _training_-nya bisa dinikmati di [link ini](https://github.com/ikanx101/belajaR/tree/master/Materi%20Training/GIZ).
+Materi _training_-nya bisa dinikmati di [link ini](https://github.com/ikanx101/belajaR/tree/master/Materi%20Training/Replikasi%20GIZ).
 
 Tersedia juga latihan soal beserta _kunci jawabannya_ di folder _vignettes_. _Let me know_ kalau ada pertanyaan yah.
 
