@@ -211,3 +211,7 @@ Divisi asal penonton sesi __FINDX__ harus juga diperhatikan. Maksudnya apa?
 > Divisi yang paling banyak hadir akan memiliki peluang lebih besar.
 
 Jadi, simulasi __Monte Carlo__ ini harus diulang berdasarkan informasi asal divisi pengunjung. Karena bisa jadi simulasi __Monte Carlo__ berdasarkan nama menjadi kurang relevan hasilnya.
+
+__ATAU__
+
+Jangan-jangan memang gak perlu dibuktikan keacakannya? _Toh_ dari informasi yang ada sebenarnya tidak kuat argumentasi untuk mencurigai kejadian tersebut tidak acak? _Bingung gak?_
