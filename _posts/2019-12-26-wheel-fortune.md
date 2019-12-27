@@ -197,3 +197,17 @@ masing-masing nama orang muncul menjadi pemenang akan konvergen ke
 *Nah*, sekarang utk membuktikan bahwa *wheel of fortune* yang digunakan
 pas sesi **FINDX** itu acak atau tidak, ada yang mau jadi *volunteer*
 untuk melakukan simulasi ini?
+
+-----
+
+# _Remarks_
+
+Nah, ada yang menarik sebenarnya. Di awal tulisan ini, saya memberi info bahwa dua nama yang keluar pertama kali ebrasal dari divisi HR. 
+
+> _So_, sebenarnya ada informasi lain yang seharusnya kita perhatikan.
+
+Divisi asal penonton sesi __FINDX__ harus juga diperhatikan. Maksudnya apa?
+
+> Divisi yang paling banyak hadir akan memiliki peluang lebih besar.
+
+Jadi, simulasi __Monte Carlo__ ini harus diulang berdasarkan informasi asal divisi pengunjung. Karena bisa jadi simulasi __Monte Carlo__ berdasarkan nama menjadi kurang relevan hasilnya.
