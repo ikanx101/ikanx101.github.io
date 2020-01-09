@@ -13,9 +13,6 @@ tags:
   - Data Carpentry
 ---
 
-Data Carpentry: Bebersih Data Carmudi
-================
-
 # Pendahuluan
 
 Salah satu keunggulan **R** dibandingkan dengan *analytics tools*
@@ -115,10 +112,10 @@ for(i in 2:length(url)){
 str(sedan.data)
 ```
 
-    ## Classes 'tbl_df', 'tbl' and 'data.frame':    2114 obs. of  3 variables:
-    ##  $ nama  : chr  "\n2012 Toyota Camry 2.4 V " "\n2000 Toyota Corolla SE.G " "\n2013 Mercedes-Benz E300 AMG " "\n2016 Honda City Ivtec " ...
-    ##  $ harga : chr  "175 Juta" "60 Juta" "430 Juta" "195 Juta" ...
-    ##  $ lokasi: chr  "\nIndonesia " "\nKabupaten Sidoarjo " "\nJakarta Utara " "\nKota Jakarta Selatan " ...
+    ## Classes 'tbl_df', 'tbl' and 'data.frame':    2081 obs. of  3 variables:
+    ##  $ nama  : chr  "\n2015 Toyota Corolla Altis V 1.8 AT " "\n2000 Toyota Corolla SE.G " "\n2013 Mercedes-Benz E300 AMG " "\n2016 Honda City Ivtec " ...
+    ##  $ harga : chr  "208 Juta" "60 Juta" "430 Juta" "195 Juta" ...
+    ##  $ lokasi: chr  "\nTangerang " "\nKabupaten Sidoarjo " "\nJakarta Utara " "\nKota Jakarta Selatan " ...
 
 ``` r
 head(sedan.data,15)
@@ -127,7 +124,7 @@ head(sedan.data,15)
     ## # A tibble: 15 x 3
     ##    nama                                      harga    lokasi               
     ##    <chr>                                     <chr>    <chr>                
-    ##  1 "\n2012 Toyota Camry 2.4 V "              175 Juta "\nIndonesia "       
+    ##  1 "\n2015 Toyota Corolla Altis V 1.8 AT "   208 Juta "\nTangerang "       
     ##  2 "\n2000 Toyota Corolla SE.G "             60 Juta  "\nKabupaten Sidoarj…
     ##  3 "\n2013 Mercedes-Benz E300 AMG "          430 Juta "\nJakarta Utara "   
     ##  4 "\n2016 Honda City Ivtec "                195 Juta "\nKota Jakarta Sela…
@@ -147,7 +144,7 @@ head(sedan.data,15)
 
 # Hasil scrap data
 
-Didapatkan ada `2104` baris data mobil sedan bekas yang di- *listing* di
+Didapatkan ada `2081` baris data mobil sedan bekas yang di- *listing* di
 **carmudi**.
 
 Kalau kita lihat sekilas, data tersebut seolah-olah *structured*. Namun
@@ -192,7 +189,7 @@ head(sedan.data,15)
     ## # A tibble: 15 x 3
     ##    nama                                      lokasi                   harga
     ##    <chr>                                     <chr>                    <dbl>
-    ##  1 "\n2012 Toyota Camry 2.4 V "              "\nIndonesia "          1.75e8
+    ##  1 "\n2015 Toyota Corolla Altis V 1.8 AT "   "\nTangerang "          2.08e8
     ##  2 "\n2000 Toyota Corolla SE.G "             "\nKabupaten Sidoarj…   6.00e7
     ##  3 "\n2013 Mercedes-Benz E300 AMG "          "\nJakarta Utara "      4.30e8
     ##  4 "\n2016 Honda City Ivtec "                "\nKota Jakarta Sela…   1.95e8
@@ -227,7 +224,7 @@ head(sedan.data,15)
     ## # A tibble: 15 x 4
     ##    nama                                 lokasi                  harga    id
     ##    <chr>                                <chr>                   <dbl> <int>
-    ##  1 "2012 Toyota Camry 2.4 V "           "\nIndonesia "         1.75e8     1
+    ##  1 "2015 Toyota Corolla Altis V 1.8 AT… "\nTangerang "         2.08e8     1
     ##  2 "2000 Toyota Corolla SE.G "          "\nKabupaten Sidoar…   6.00e7     2
     ##  3 "2013 Mercedes-Benz E300 AMG "       "\nJakarta Utara "     4.30e8     3
     ##  4 "2016 Honda City Ivtec "             "\nKota Jakarta Sel…   1.95e8     4
@@ -265,7 +262,7 @@ head(new,15)
     ## # A tibble: 15 x 2
     ##       id words
     ##    <int> <dbl>
-    ##  1     1  2012
+    ##  1     1  2015
     ##  2     2  2000
     ##  3     3  2013
     ##  4     4  2016
@@ -305,7 +302,7 @@ masalah
     ## 10   111     2
     ## 11   112     2
     ## 12   113     2
-    ## 13  1789     2
+    ## 13  1795     2
 
 Ternyata didapatkan ada 13 baris data yang menghasilkan dua `tahun`.
 Coba kita lihat datanya:
@@ -329,28 +326,18 @@ sedan.data %>% filter(id %in% masalah$id)
     ## 10 "2016 BMW 330i M-Sport Reg.2017 Miami … "\nJakarta Selat…   7.45e8   111
     ## 11 "2016 BMW 330i M-Sport Reg.2017 White … "\nJakarta Selat…   7.45e8   112
     ## 12 "2015 Mercedes-Benz C250 AMG Reg. 2016… "\nJakarta Selat…   7.25e8   113
-    ## 13 "2017 BMW 320i Sport LCi Reg.2018 Digi… "\nJakarta Utara…   5.35e8  1789
+    ## 13 "2017 BMW 320i Sport LCi Reg.2018 Digi… "\nJakarta Utara…   5.35e8  1795
 
-> Untuk kasus data bermasalah seperti ini, kita akan buat simpel yah.
-> Kita akan ambil 4 karakter paling kiri ATAU mengambil `tahun` termuda
-> dari dataset `new`.
+> Untuk kasus seperti ini, kita akan buat simpel yah. Kita akan ambil
+> `tahun` terlama dari dataset `new`.
 
-Saya akan pilih cara mengambil tahun termuda dari datasetnya.
-
-Diawali dengan memisahkan data bermasalah dengan data yang aman. Lalu
-setelah itu digabungkan kembali.
+*Gimana* caranya?
 
 ``` r
-new_aman = new %>% filter(!id %in% masalah$id)
-
-masalah = new %>% filter(id %in% masalah$id)
-
-new_masalah = masalah %>% group_by(id) %>% filter(words == min(words)) %>% ungroup()
-
-new = rbind(new_aman,new_masalah)
+new = new %>% group_by(id) %>% filter(words == min(words)) %>% ungroup()
 ```
 
-Sekarang kita akan `merge` data `tahun` ke dataset `sedan.data`.
+Sekarang kita akan `merge` dataset `new` ke dataset `sedan.data`.
 
 ``` r
 sedan.data = merge(sedan.data,new)
@@ -359,7 +346,7 @@ head(sedan.data,15)
 ```
 
     ##    id                                         nama                  lokasi
-    ## 1   1                     2012 Toyota Camry 2.4 V             \nIndonesia 
+    ## 1   1          2015 Toyota Corolla Altis V 1.8 AT             \nTangerang 
     ## 2   2                    2000 Toyota Corolla SE.G    \nKabupaten Sidoarjo 
     ## 3   3                 2013 Mercedes-Benz E300 AMG         \nJakarta Utara 
     ## 4   4                       2016 Honda City Ivtec  \nKota Jakarta Selatan 
@@ -375,7 +362,7 @@ head(sedan.data,15)
     ## 14 14 2018 BMW 520i Luxury Reg.2019 Black On B...       \nJakarta Selatan 
     ## 15 15                            2007 Honda Civic         \nJakarta Utara 
     ##       harga tahun
-    ## 1  1.75e+08  2012
+    ## 1  2.08e+08  2015
     ## 2  6.00e+07  2000
     ## 3  4.30e+08  2013
     ## 4  1.95e+08  2016
@@ -392,7 +379,7 @@ head(sedan.data,15)
     ## 15 1.10e+08  2007
 
 Mungkin ada yang sadar, bahwa sekarang banyaknya baris data tinggal
-`2103`. Kenapa? Ada yang bisa jawab? *Heeeee*.
+`2080`. Kenapa? Ada yang bisa jawab? *Heeeee*.
 
 ### Mengekstrak *Brand* Mobil
 
@@ -401,11 +388,44 @@ Nah, pekerjaan yang paling menantang adalah mengambil dan mengekstrak
 
 Ada yang punya ide bagaimana caranya?
 
-Hasil yang diinginkan seperti
-    ini:
+Hasil yang diinginkan seperti ini:
+
+``` r
+new = 
+  sedan.data %>% select(id,nama) %>%
+  unnest_tokens('words',nama) %>% 
+  count(words,sort=T)
+
+brand = c('toyota','honda','mercedes','bmw','suzuki',
+          'mitsubishi','hyundai','mazda','nissan',
+          'audi','chevrolet','hyundai','peugeot',
+          'lexus','ford','jaguar','proton',
+          'daihatsu','volkswagen','bentley',
+          'chrysler','timor','maserati','subaru','kia',
+          'opel','volvo','porsche','geely','fiat')
+
+marker = 
+  sedan.data %>% select(id,nama) %>%
+  unnest_tokens('words',nama) %>% 
+  filter(words %in% brand)
+
+sedan.data = merge(sedan.data,marker,all=T)
+
+sedan.data = distinct(sedan.data)
+
+# cek yang belum ada brand nya
+sedan.data %>% filter(is.na(words))
+```
+
+    ## [1] id     nama   lokasi harga  tahun  words 
+    ## <0 rows> (or 0-length row.names)
+
+``` r
+openxlsx::write.xlsx(sedan.data,'Hasil Data Carpentry Sedan Bekas.xlsx')
+```
 
     ##    id                                         nama                  lokasi
-    ## 1   1                     2012 Toyota Camry 2.4 V             \nIndonesia 
+    ## 1   1          2015 Toyota Corolla Altis V 1.8 AT             \nTangerang 
     ## 2   2                    2000 Toyota Corolla SE.G    \nKabupaten Sidoarjo 
     ## 3   3                 2013 Mercedes-Benz E300 AMG         \nJakarta Utara 
     ## 4   4                       2016 Honda City Ivtec  \nKota Jakarta Selatan 
@@ -421,7 +441,7 @@ Hasil yang diinginkan seperti
     ## 14 14 2018 BMW 520i Luxury Reg.2019 Black On B...       \nJakarta Selatan 
     ## 15 15                            2007 Honda Civic         \nJakarta Utara 
     ##       harga tahun    words
-    ## 1  1.75e+08  2012   toyota
+    ## 1  2.08e+08  2015   toyota
     ## 2  6.00e+07  2000   toyota
     ## 3  4.30e+08  2013 mercedes
     ## 4  1.95e+08  2016    honda
@@ -444,7 +464,7 @@ Hasil yang diinginkan seperti
 *Nah*, saya sudah mendapatkan data yang saya butuhkan. Sekarang saya
 akan membuat analisa harga per brand menggunakan *error bar*.
 
-![chart](https://raw.githubusercontent.com/ikanx101/belajaR/master/Materi%20Training/Kamis%20Data%20Nutrifood/Data%20Carpentry/readme_files/figure-gfm/unnamed-chunk-14-1.png)
+![alt](https://raw.githubusercontent.com/ikanx101/belajaR/master/Materi%20Training/Kamis%20Data%20Nutrifood/Data%20Carpentry/readme_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 -----
 
