@@ -13,19 +13,24 @@ tags:
   - Data Carpentry
 ---
 
+Data Carpentry: Bebersih Data Carmudi
+================
+
 # Pendahuluan
 
 Salah satu keunggulan **R** dibandingkan dengan *analytics tools*
 lainnya adalah kemampuannya untuk memanipulasi data. **Manipulasi**
-dalam artian positif, yakni *preprocessing data* atau *data carpentry*.
+dalam artian positif, yakni *preprocessing data* atau *data carpentry*
+atau *bebersih* data.
 
 Di dunia ini, tanpa kita sadari data tersebar sangat banyak. Namun tidak
 semuanya berbentuk *structured data*. Sebagian besar sebenarnya masuk ke
 dalam *unstructured data* atau *semi structured data*.
 
 Seringkali kita enggan berhadapan dengan *unstructured data* atau *semi
-structured data*. Nah, kali ini kita akan mencoba untuk mengolah
-*unstructured data* menjadi informasi atau *insight(s)*.
+structured data*. Jujur, sayapun dulu *males banget* kalau nemu data
+yang bentuknya *kayak* gini. Nah, kali ini kita akan mencoba untuk
+mengolah *unstructured data* menjadi informasi atau *insight(s)*.
 
 # *Libraries* yang Digunakan
 
@@ -50,21 +55,26 @@ library(ggplot2)
 
 # Data yang Digunakan
 
-Kita akan *scrap* data situs
+Kita akan mengambil data dari situs
 [carmudi](https://www.carmudi.co.id/cars/saloon/condition:all/) tentang
-*listing* mobil sedan bekas.
+*listing* mobil sedan bekas. Mengambil data dari *websites* disebut
+dengan *web scraping*.
 
-Kalau kita lihat situsnya, ada 71 *pages*. Kita akan *scrap* semua
-informasinya.
+Kalau kita lihat situsnya, sampai saat ini ada 71 buah *pages*. Kita
+akan *scrap* semua informasinya.
+
+-----
+
+# *Web Scrap* Situs Carmudi
+
+Oh iya, detail tentang *web scraping* akan saya bahas di *training* atau
+tulisan terpisah yah. Kali ini rekan-rekan terima jadi aja fungsinya
+seperti ini.
 
 ## Langkah pertama
 
 Kita akan *define* semua *urls* dari carmudi lalu kita buat fungsi *web
 scrap*-nya.
-
-> Oh iya, tentang *web scraping* akan saya bahas di *training* atau
-> tulisan terpisah yah. Kali ini rekan-rekan terima jadi aja fungsinya
-> seperti ini.
 
 ``` r
 #link dari carmudi
@@ -105,10 +115,10 @@ for(i in 2:length(url)){
 str(sedan.data)
 ```
 
-    ## Classes 'tbl_df', 'tbl' and 'data.frame':    2111 obs. of  3 variables:
-    ##  $ nama  : chr  "\n2000 Toyota Corolla SE.G " "\n2013 Mercedes-Benz E300 AMG " "\n2016 Honda City Ivtec " "\n2014 Honda Civic 1.8 Ivtec " ...
-    ##  $ harga : chr  "60 Juta" "430 Juta" "195 Juta" "185 Juta" ...
-    ##  $ lokasi: chr  "\nKabupaten Sidoarjo " "\nJakarta Utara " "\nKota Jakarta Selatan " "\nKota Jakarta Selatan " ...
+    ## Classes 'tbl_df', 'tbl' and 'data.frame':    2114 obs. of  3 variables:
+    ##  $ nama  : chr  "\n2012 Toyota Camry 2.4 V " "\n2000 Toyota Corolla SE.G " "\n2013 Mercedes-Benz E300 AMG " "\n2016 Honda City Ivtec " ...
+    ##  $ harga : chr  "175 Juta" "60 Juta" "430 Juta" "195 Juta" ...
+    ##  $ lokasi: chr  "\nIndonesia " "\nKabupaten Sidoarjo " "\nJakarta Utara " "\nKota Jakarta Selatan " ...
 
 ``` r
 head(sedan.data,15)
@@ -117,23 +127,25 @@ head(sedan.data,15)
     ## # A tibble: 15 x 3
     ##    nama                                      harga    lokasi               
     ##    <chr>                                     <chr>    <chr>                
-    ##  1 "\n2000 Toyota Corolla SE.G "             60 Juta  "\nKabupaten Sidoarj…
-    ##  2 "\n2013 Mercedes-Benz E300 AMG "          430 Juta "\nJakarta Utara "   
-    ##  3 "\n2016 Honda City Ivtec "                195 Juta "\nKota Jakarta Sela…
-    ##  4 "\n2014 Honda Civic 1.8 Ivtec "           185 Juta "\nKota Jakarta Sela…
-    ##  5 "\n2008 Suzuki Baleno Matic "             100 Juta "\nMalang "          
-    ##  6 "\n2008 Toyota Corolla Altis 1.8 VVTI Al… 92.5 Ju… "\nDKI Jakarta "     
-    ##  7 "\n2010 Honda Accord 2.4 VTIL "           129 Juta "\nJakarta Barat "   
-    ##  8 "\n2014 Toyota Camry 2.5 V AT "           189 Juta "\nJakarta Barat "   
-    ##  9 "\n2014 Toyota Vios G Allnew A/T "        129 Juta "\nDKI Jakarta "     
-    ## 10 "\n2016 BMW 320i Sport LCi Black On Blac… 565 Juta "\nJakarta Selatan " 
-    ## 11 "\n2017 Mercedes-Benz E250 Avantgarde Re… 975 Juta "\nJakarta Selatan " 
-    ## 12 "\n2018 Mercedes-Benz E200 Avantgarde Ni… 975 Juta "\nJakarta Selatan " 
-    ## 13 "\n2018 BMW 520i Luxury Reg.2019 Black O… 895 Juta "\nJakarta Selatan " 
-    ## 14 "\n2007 Honda Civic "                     110 Juta "\nJakarta Utara "   
-    ## 15 "\n2010 Audi A4 TFSI 1.8L AT "            149 Juta "\nJakarta Barat "
+    ##  1 "\n2012 Toyota Camry 2.4 V "              175 Juta "\nIndonesia "       
+    ##  2 "\n2000 Toyota Corolla SE.G "             60 Juta  "\nKabupaten Sidoarj…
+    ##  3 "\n2013 Mercedes-Benz E300 AMG "          430 Juta "\nJakarta Utara "   
+    ##  4 "\n2016 Honda City Ivtec "                195 Juta "\nKota Jakarta Sela…
+    ##  5 "\n2014 Honda Civic 1.8 Ivtec "           185 Juta "\nKota Jakarta Sela…
+    ##  6 "\n2008 Suzuki Baleno Matic "             100 Juta "\nMalang "          
+    ##  7 "\n2008 Toyota Corolla Altis 1.8 VVTI Al… 92.5 Ju… "\nDKI Jakarta "     
+    ##  8 "\n2010 Honda Accord 2.4 VTIL "           129 Juta "\nJakarta Barat "   
+    ##  9 "\n2014 Toyota Camry 2.5 V AT "           189 Juta "\nJakarta Barat "   
+    ## 10 "\n2014 Toyota Vios G Allnew A/T "        129 Juta "\nDKI Jakarta "     
+    ## 11 "\n2016 BMW 320i Sport LCi Black On Blac… 565 Juta "\nJakarta Selatan " 
+    ## 12 "\n2017 Mercedes-Benz E250 Avantgarde Re… 975 Juta "\nJakarta Selatan " 
+    ## 13 "\n2018 Mercedes-Benz E200 Avantgarde Ni… 975 Juta "\nJakarta Selatan " 
+    ## 14 "\n2018 BMW 520i Luxury Reg.2019 Black O… 895 Juta "\nJakarta Selatan " 
+    ## 15 "\n2007 Honda Civic "                     110 Juta "\nJakarta Utara "
 
-## Hasil scrap data
+-----
+
+# Hasil scrap data
 
 Didapatkan ada `2104` baris data mobil sedan bekas yang di- *listing* di
 **carmudi**.
@@ -180,21 +192,21 @@ head(sedan.data,15)
     ## # A tibble: 15 x 3
     ##    nama                                      lokasi                   harga
     ##    <chr>                                     <chr>                    <dbl>
-    ##  1 "\n2000 Toyota Corolla SE.G "             "\nKabupaten Sidoarj…   6.00e7
-    ##  2 "\n2013 Mercedes-Benz E300 AMG "          "\nJakarta Utara "      4.30e8
-    ##  3 "\n2016 Honda City Ivtec "                "\nKota Jakarta Sela…   1.95e8
-    ##  4 "\n2014 Honda Civic 1.8 Ivtec "           "\nKota Jakarta Sela…   1.85e8
-    ##  5 "\n2008 Suzuki Baleno Matic "             "\nMalang "             1.00e8
-    ##  6 "\n2008 Toyota Corolla Altis 1.8 VVTI Al… "\nDKI Jakarta "        9.25e7
-    ##  7 "\n2010 Honda Accord 2.4 VTIL "           "\nJakarta Barat "      1.29e8
-    ##  8 "\n2014 Toyota Camry 2.5 V AT "           "\nJakarta Barat "      1.89e8
-    ##  9 "\n2014 Toyota Vios G Allnew A/T "        "\nDKI Jakarta "        1.29e8
-    ## 10 "\n2016 BMW 320i Sport LCi Black On Blac… "\nJakarta Selatan "    5.65e8
-    ## 11 "\n2017 Mercedes-Benz E250 Avantgarde Re… "\nJakarta Selatan "    9.75e8
-    ## 12 "\n2018 Mercedes-Benz E200 Avantgarde Ni… "\nJakarta Selatan "    9.75e8
-    ## 13 "\n2018 BMW 520i Luxury Reg.2019 Black O… "\nJakarta Selatan "    8.95e8
-    ## 14 "\n2007 Honda Civic "                     "\nJakarta Utara "      1.10e8
-    ## 15 "\n2010 Audi A4 TFSI 1.8L AT "            "\nJakarta Barat "      1.49e8
+    ##  1 "\n2012 Toyota Camry 2.4 V "              "\nIndonesia "          1.75e8
+    ##  2 "\n2000 Toyota Corolla SE.G "             "\nKabupaten Sidoarj…   6.00e7
+    ##  3 "\n2013 Mercedes-Benz E300 AMG "          "\nJakarta Utara "      4.30e8
+    ##  4 "\n2016 Honda City Ivtec "                "\nKota Jakarta Sela…   1.95e8
+    ##  5 "\n2014 Honda Civic 1.8 Ivtec "           "\nKota Jakarta Sela…   1.85e8
+    ##  6 "\n2008 Suzuki Baleno Matic "             "\nMalang "             1.00e8
+    ##  7 "\n2008 Toyota Corolla Altis 1.8 VVTI Al… "\nDKI Jakarta "        9.25e7
+    ##  8 "\n2010 Honda Accord 2.4 VTIL "           "\nJakarta Barat "      1.29e8
+    ##  9 "\n2014 Toyota Camry 2.5 V AT "           "\nJakarta Barat "      1.89e8
+    ## 10 "\n2014 Toyota Vios G Allnew A/T "        "\nDKI Jakarta "        1.29e8
+    ## 11 "\n2016 BMW 320i Sport LCi Black On Blac… "\nJakarta Selatan "    5.65e8
+    ## 12 "\n2017 Mercedes-Benz E250 Avantgarde Re… "\nJakarta Selatan "    9.75e8
+    ## 13 "\n2018 Mercedes-Benz E200 Avantgarde Ni… "\nJakarta Selatan "    9.75e8
+    ## 14 "\n2018 BMW 520i Luxury Reg.2019 Black O… "\nJakarta Selatan "    8.95e8
+    ## 15 "\n2007 Honda Civic "                     "\nJakarta Utara "      1.10e8
 
 *Done\!\!\!* Selesai.
 
@@ -215,21 +227,21 @@ head(sedan.data,15)
     ## # A tibble: 15 x 4
     ##    nama                                 lokasi                  harga    id
     ##    <chr>                                <chr>                   <dbl> <int>
-    ##  1 "2000 Toyota Corolla SE.G "          "\nKabupaten Sidoar…   6.00e7     1
-    ##  2 "2013 Mercedes-Benz E300 AMG "       "\nJakarta Utara "     4.30e8     2
-    ##  3 "2016 Honda City Ivtec "             "\nKota Jakarta Sel…   1.95e8     3
-    ##  4 "2014 Honda Civic 1.8 Ivtec "        "\nKota Jakarta Sel…   1.85e8     4
-    ##  5 "2008 Suzuki Baleno Matic "          "\nMalang "            1.00e8     5
-    ##  6 "2008 Toyota Corolla Altis 1.8 VVTI… "\nDKI Jakarta "       9.25e7     6
-    ##  7 "2010 Honda Accord 2.4 VTIL "        "\nJakarta Barat "     1.29e8     7
-    ##  8 "2014 Toyota Camry 2.5 V AT "        "\nJakarta Barat "     1.89e8     8
-    ##  9 "2014 Toyota Vios G Allnew A/T "     "\nDKI Jakarta "       1.29e8     9
-    ## 10 "2016 BMW 320i Sport LCi Black On B… "\nJakarta Selatan "   5.65e8    10
-    ## 11 "2017 Mercedes-Benz E250 Avantgarde… "\nJakarta Selatan "   9.75e8    11
-    ## 12 "2018 Mercedes-Benz E200 Avantgarde… "\nJakarta Selatan "   9.75e8    12
-    ## 13 "2018 BMW 520i Luxury Reg.2019 Blac… "\nJakarta Selatan "   8.95e8    13
-    ## 14 "2007 Honda Civic "                  "\nJakarta Utara "     1.10e8    14
-    ## 15 "2010 Audi A4 TFSI 1.8L AT "         "\nJakarta Barat "     1.49e8    15
+    ##  1 "2012 Toyota Camry 2.4 V "           "\nIndonesia "         1.75e8     1
+    ##  2 "2000 Toyota Corolla SE.G "          "\nKabupaten Sidoar…   6.00e7     2
+    ##  3 "2013 Mercedes-Benz E300 AMG "       "\nJakarta Utara "     4.30e8     3
+    ##  4 "2016 Honda City Ivtec "             "\nKota Jakarta Sel…   1.95e8     4
+    ##  5 "2014 Honda Civic 1.8 Ivtec "        "\nKota Jakarta Sel…   1.85e8     5
+    ##  6 "2008 Suzuki Baleno Matic "          "\nMalang "            1.00e8     6
+    ##  7 "2008 Toyota Corolla Altis 1.8 VVTI… "\nDKI Jakarta "       9.25e7     7
+    ##  8 "2010 Honda Accord 2.4 VTIL "        "\nJakarta Barat "     1.29e8     8
+    ##  9 "2014 Toyota Camry 2.5 V AT "        "\nJakarta Barat "     1.89e8     9
+    ## 10 "2014 Toyota Vios G Allnew A/T "     "\nDKI Jakarta "       1.29e8    10
+    ## 11 "2016 BMW 320i Sport LCi Black On B… "\nJakarta Selatan "   5.65e8    11
+    ## 12 "2017 Mercedes-Benz E250 Avantgarde… "\nJakarta Selatan "   9.75e8    12
+    ## 13 "2018 Mercedes-Benz E200 Avantgarde… "\nJakarta Selatan "   9.75e8    13
+    ## 14 "2018 BMW 520i Luxury Reg.2019 Blac… "\nJakarta Selatan "   8.95e8    14
+    ## 15 "2007 Honda Civic "                  "\nJakarta Utara "     1.10e8    15
 
 Nah, sekarang untuk mengekstrak `tahun` saya akan gunakan metode yang
 sama untuk membuat *word cloud* atau *word counting*. Pandang variabel
@@ -247,45 +259,140 @@ new =
     ## Warning: NAs introduced by coercion
 
 ``` r
+head(new,15)
+```
+
+    ## # A tibble: 15 x 2
+    ##       id words
+    ##    <int> <dbl>
+    ##  1     1  2012
+    ##  2     2  2000
+    ##  3     3  2013
+    ##  4     4  2016
+    ##  5     5  2014
+    ##  6     6  2008
+    ##  7     7  2008
+    ##  8     8  2010
+    ##  9     9  2014
+    ## 10    10  2014
+    ## 11    11  2016
+    ## 12    12  2017
+    ## 13    13  2018
+    ## 14    14  2018
+    ## 15    14  2019
+
+Sekarang kita akan cek terlebih dahulu, apakah benar satu `id`
+menghasilkan satu `tahun`.
+
+``` r
+# kita akan cek apakah ada dua `tahun` per id
+masalah = new %>% group_by(id) %>% summarise(freq=n()) %>% filter(freq>1)
+masalah
+```
+
+    ## # A tibble: 13 x 2
+    ##       id  freq
+    ##    <int> <int>
+    ##  1    14     2
+    ##  2    58     2
+    ##  3    62     2
+    ##  4    66     2
+    ##  5    67     2
+    ##  6    91     2
+    ##  7    97     2
+    ##  8   103     2
+    ##  9   108     2
+    ## 10   111     2
+    ## 11   112     2
+    ## 12   113     2
+    ## 13  1789     2
+
+Ternyata didapatkan ada 13 baris data yang menghasilkan dua `tahun`.
+Coba kita lihat datanya:
+
+``` r
+sedan.data %>% filter(id %in% masalah$id)
+```
+
+    ## # A tibble: 13 x 4
+    ##    nama                                    lokasi               harga    id
+    ##    <chr>                                   <chr>                <dbl> <int>
+    ##  1 "2018 BMW 520i Luxury Reg.2019 Black O… "\nJakarta Selat…   8.95e8    14
+    ##  2 "2015 BMW 328i M-Sport Reg.2016 KM 20R… "\nJakarta Selat…   5.95e8    58
+    ##  3 "2017 Mercedes-Benz C200 AMG Reg.2018 … "\nJakarta Selat…   7.50e8    62
+    ##  4 "2017 BMW 520d Luxury Reg.2018 Black O… "\nJakarta Selat…   8.95e8    66
+    ##  5 "2012 BMW 730Li Luxury Reg.2013 KM 40R… "\nJakarta Selat…   7.25e8    67
+    ##  6 "2014 BMW 320i Sport F30 Reg.2015 Whit… "\nJakarta Selat…   4.85e8    91
+    ##  7 "2016 BMW 320i Sport LCi Reg.2017 Whit… "\nJakarta Selat…   5.85e8    97
+    ##  8 "2016 BMW 528i Luxury Reg.2017 White K… "\nJakarta Selat…   7.95e8   103
+    ##  9 "2016 BMW 520i Luxury Reg.2017 Black K… "\nJakarta Selat…   7.45e8   108
+    ## 10 "2016 BMW 330i M-Sport Reg.2017 Miami … "\nJakarta Selat…   7.45e8   111
+    ## 11 "2016 BMW 330i M-Sport Reg.2017 White … "\nJakarta Selat…   7.45e8   112
+    ## 12 "2015 Mercedes-Benz C250 AMG Reg. 2016… "\nJakarta Selat…   7.25e8   113
+    ## 13 "2017 BMW 320i Sport LCi Reg.2018 Digi… "\nJakarta Utara…   5.35e8  1789
+
+> Untuk kasus data bermasalah seperti ini, kita akan buat simpel yah.
+> Kita akan ambil 4 karakter paling kiri ATAU mengambil `tahun` termuda
+> dari dataset `new`.
+
+Saya akan pilih cara mengambil tahun termuda dari datasetnya.
+
+Diawali dengan memisahkan data bermasalah dengan data yang aman. Lalu
+setelah itu digabungkan kembali.
+
+``` r
+new_aman = new %>% filter(!id %in% masalah$id)
+
+masalah = new %>% filter(id %in% masalah$id)
+
+new_masalah = masalah %>% group_by(id) %>% filter(words == min(words)) %>% ungroup()
+
+new = rbind(new_aman,new_masalah)
+```
+
+Sekarang kita akan `merge` data `tahun` ke dataset `sedan.data`.
+
+``` r
 sedan.data = merge(sedan.data,new)
 colnames(sedan.data)[5] = 'tahun'
 head(sedan.data,15)
 ```
 
     ##    id                                         nama                  lokasi
-    ## 1   1                    2000 Toyota Corolla SE.G    \nKabupaten Sidoarjo 
-    ## 2   2                 2013 Mercedes-Benz E300 AMG         \nJakarta Utara 
-    ## 3   3                       2016 Honda City Ivtec  \nKota Jakarta Selatan 
-    ## 4   4                  2014 Honda Civic 1.8 Ivtec  \nKota Jakarta Selatan 
-    ## 5   5                    2008 Suzuki Baleno Matic                \nMalang 
-    ## 6   6  2008 Toyota Corolla Altis 1.8 VVTI Alln...           \nDKI Jakarta 
-    ## 7   7                  2010 Honda Accord 2.4 VTIL         \nJakarta Barat 
-    ## 8   8                  2014 Toyota Camry 2.5 V AT         \nJakarta Barat 
-    ## 9   9               2014 Toyota Vios G Allnew A/T           \nDKI Jakarta 
-    ## 10 10 2016 BMW 320i Sport LCi Black On Black A...       \nJakarta Selatan 
-    ## 11 11 2017 Mercedes-Benz E250 Avantgarde Reg.2...       \nJakarta Selatan 
-    ## 12 12 2018 Mercedes-Benz E200 Avantgarde Nik20...       \nJakarta Selatan 
-    ## 13 13 2018 BMW 520i Luxury Reg.2019 Black On B...       \nJakarta Selatan 
-    ## 14 13 2018 BMW 520i Luxury Reg.2019 Black On B...       \nJakarta Selatan 
-    ## 15 14                            2007 Honda Civic         \nJakarta Utara 
+    ## 1   1                     2012 Toyota Camry 2.4 V             \nIndonesia 
+    ## 2   2                    2000 Toyota Corolla SE.G    \nKabupaten Sidoarjo 
+    ## 3   3                 2013 Mercedes-Benz E300 AMG         \nJakarta Utara 
+    ## 4   4                       2016 Honda City Ivtec  \nKota Jakarta Selatan 
+    ## 5   5                  2014 Honda Civic 1.8 Ivtec  \nKota Jakarta Selatan 
+    ## 6   6                    2008 Suzuki Baleno Matic                \nMalang 
+    ## 7   7  2008 Toyota Corolla Altis 1.8 VVTI Alln...           \nDKI Jakarta 
+    ## 8   8                  2010 Honda Accord 2.4 VTIL         \nJakarta Barat 
+    ## 9   9                  2014 Toyota Camry 2.5 V AT         \nJakarta Barat 
+    ## 10 10               2014 Toyota Vios G Allnew A/T           \nDKI Jakarta 
+    ## 11 11 2016 BMW 320i Sport LCi Black On Black A...       \nJakarta Selatan 
+    ## 12 12 2017 Mercedes-Benz E250 Avantgarde Reg.2...       \nJakarta Selatan 
+    ## 13 13 2018 Mercedes-Benz E200 Avantgarde Nik20...       \nJakarta Selatan 
+    ## 14 14 2018 BMW 520i Luxury Reg.2019 Black On B...       \nJakarta Selatan 
+    ## 15 15                            2007 Honda Civic         \nJakarta Utara 
     ##       harga tahun
-    ## 1  6.00e+07  2000
-    ## 2  4.30e+08  2013
-    ## 3  1.95e+08  2016
-    ## 4  1.85e+08  2014
-    ## 5  1.00e+08  2008
-    ## 6  9.25e+07  2008
-    ## 7  1.29e+08  2010
-    ## 8  1.89e+08  2014
-    ## 9  1.29e+08  2014
-    ## 10 5.65e+08  2016
-    ## 11 9.75e+08  2017
-    ## 12 9.75e+08  2018
-    ## 13 8.95e+08  2018
-    ## 14 8.95e+08  2019
+    ## 1  1.75e+08  2012
+    ## 2  6.00e+07  2000
+    ## 3  4.30e+08  2013
+    ## 4  1.95e+08  2016
+    ## 5  1.85e+08  2014
+    ## 6  1.00e+08  2008
+    ## 7  9.25e+07  2008
+    ## 8  1.29e+08  2010
+    ## 9  1.89e+08  2014
+    ## 10 1.29e+08  2014
+    ## 11 5.65e+08  2016
+    ## 12 9.75e+08  2017
+    ## 13 9.75e+08  2018
+    ## 14 8.95e+08  2018
     ## 15 1.10e+08  2007
 
-*Done\!\!\!* Selesai.
+Mungkin ada yang sadar, bahwa sekarang banyaknya baris data tinggal
+`2103`. Kenapa? Ada yang bisa jawab? *Heeeee*.
 
 ### Mengekstrak *Brand* Mobil
 
@@ -298,37 +405,37 @@ Hasil yang diinginkan seperti
     ini:
 
     ##    id                                         nama                  lokasi
-    ## 1   1                    2000 Toyota Corolla SE.G    \nKabupaten Sidoarjo 
-    ## 2   2                 2013 Mercedes-Benz E300 AMG         \nJakarta Utara 
-    ## 3   3                       2016 Honda City Ivtec  \nKota Jakarta Selatan 
-    ## 4   4                  2014 Honda Civic 1.8 Ivtec  \nKota Jakarta Selatan 
-    ## 5   5                    2008 Suzuki Baleno Matic                \nMalang 
-    ## 6   6  2008 Toyota Corolla Altis 1.8 VVTI Alln...           \nDKI Jakarta 
-    ## 7   7                  2010 Honda Accord 2.4 VTIL         \nJakarta Barat 
-    ## 8   8                  2014 Toyota Camry 2.5 V AT         \nJakarta Barat 
-    ## 9   9               2014 Toyota Vios G Allnew A/T           \nDKI Jakarta 
-    ## 10 10 2016 BMW 320i Sport LCi Black On Black A...       \nJakarta Selatan 
-    ## 11 11 2017 Mercedes-Benz E250 Avantgarde Reg.2...       \nJakarta Selatan 
-    ## 12 12 2018 Mercedes-Benz E200 Avantgarde Nik20...       \nJakarta Selatan 
-    ## 13 13 2018 BMW 520i Luxury Reg.2019 Black On B...       \nJakarta Selatan 
-    ## 14 13 2018 BMW 520i Luxury Reg.2019 Black On B...       \nJakarta Selatan 
-    ## 15 13 2018 BMW 520i Luxury Reg.2019 Black On B...       \nJakarta Selatan 
+    ## 1   1                     2012 Toyota Camry 2.4 V             \nIndonesia 
+    ## 2   2                    2000 Toyota Corolla SE.G    \nKabupaten Sidoarjo 
+    ## 3   3                 2013 Mercedes-Benz E300 AMG         \nJakarta Utara 
+    ## 4   4                       2016 Honda City Ivtec  \nKota Jakarta Selatan 
+    ## 5   5                  2014 Honda Civic 1.8 Ivtec  \nKota Jakarta Selatan 
+    ## 6   6                    2008 Suzuki Baleno Matic                \nMalang 
+    ## 7   7  2008 Toyota Corolla Altis 1.8 VVTI Alln...           \nDKI Jakarta 
+    ## 8   8                  2010 Honda Accord 2.4 VTIL         \nJakarta Barat 
+    ## 9   9                  2014 Toyota Camry 2.5 V AT         \nJakarta Barat 
+    ## 10 10               2014 Toyota Vios G Allnew A/T           \nDKI Jakarta 
+    ## 11 11 2016 BMW 320i Sport LCi Black On Black A...       \nJakarta Selatan 
+    ## 12 12 2017 Mercedes-Benz E250 Avantgarde Reg.2...       \nJakarta Selatan 
+    ## 13 13 2018 Mercedes-Benz E200 Avantgarde Nik20...       \nJakarta Selatan 
+    ## 14 14 2018 BMW 520i Luxury Reg.2019 Black On B...       \nJakarta Selatan 
+    ## 15 15                            2007 Honda Civic         \nJakarta Utara 
     ##       harga tahun    words
-    ## 1  6.00e+07  2000   toyota
-    ## 2  4.30e+08  2013 mercedes
-    ## 3  1.95e+08  2016    honda
-    ## 4  1.85e+08  2014    honda
-    ## 5  1.00e+08  2008   suzuki
-    ## 6  9.25e+07  2008   toyota
-    ## 7  1.29e+08  2010    honda
-    ## 8  1.89e+08  2014   toyota
-    ## 9  1.29e+08  2014   toyota
-    ## 10 5.65e+08  2016      bmw
-    ## 11 9.75e+08  2017 mercedes
-    ## 12 9.75e+08  2018 mercedes
-    ## 13 8.95e+08  2018      bmw
+    ## 1  1.75e+08  2012   toyota
+    ## 2  6.00e+07  2000   toyota
+    ## 3  4.30e+08  2013 mercedes
+    ## 4  1.95e+08  2016    honda
+    ## 5  1.85e+08  2014    honda
+    ## 6  1.00e+08  2008   suzuki
+    ## 7  9.25e+07  2008   toyota
+    ## 8  1.29e+08  2010    honda
+    ## 9  1.89e+08  2014   toyota
+    ## 10 1.29e+08  2014   toyota
+    ## 11 5.65e+08  2016      bmw
+    ## 12 9.75e+08  2017 mercedes
+    ## 13 9.75e+08  2018 mercedes
     ## 14 8.95e+08  2018      bmw
-    ## 15 8.95e+08  2019      bmw
+    ## 15 1.10e+08  2007    honda
 
 -----
 
@@ -337,7 +444,7 @@ Hasil yang diinginkan seperti
 *Nah*, saya sudah mendapatkan data yang saya butuhkan. Sekarang saya
 akan membuat analisa harga per brand menggunakan *error bar*.
 
-![](https://raw.githubusercontent.com/ikanx101/belajaR/master/Materi%20Training/Kamis%20Data%20Nutrifood/Data%20Carpentry/readme_files/figure-gfm/unnamed-chunk-10-1.png)
+![chart](https://raw.githubusercontent.com/ikanx101/belajaR/master/Materi%20Training/Kamis%20Data%20Nutrifood/Data%20Carpentry/readme_files/figure-gfm/unnamed-chunk-14-1.png)
 
 -----
 
@@ -355,4 +462,5 @@ akan membuat analisa harga per brand menggunakan *error bar*.
     mobil 88.](https://passingthroughresearcher.wordpress.com/2019/10/23/webscrap-mobil-bekas-di-mobil88/)
 2.  [Mencari harga Terios
     bekas.](https://ikanx101.github.io/blog/blog-post-terios/)
-3. [Data mentah sebelum dan setelah _data carpentry_.](https://github.com/ikanx101/belajaR/tree/master/Materi%20Training/Kamis%20Data%20Nutrifood/Data%20Carpentry)
+3.  [Data mentah dan setelah *data
+    carpentry*.](https://github.com/ikanx101/belajaR/tree/master/Materi%20Training/Kamis%20Data%20Nutrifood/Data%20Carpentry)
