@@ -388,7 +388,7 @@ Nah, pekerjaan yang paling menantang adalah mengambil dan mengekstrak
 
 Ada yang punya ide bagaimana caranya?
 
-Hasil yang diinginkan seperti ini:
+Prinsip yang sama dengan pengerjaan `tahun`.
 
 ``` r
 new = 
@@ -423,6 +423,9 @@ sedan.data %>% filter(is.na(words))
 ``` r
 openxlsx::write.xlsx(sedan.data,'Hasil Data Carpentry Sedan Bekas.xlsx')
 ```
+
+Hasil yang didapatkan:
+
 
     ##    id                                         nama                  lokasi
     ## 1   1          2015 Toyota Corolla Altis V 1.8 AT             \nTangerang 
