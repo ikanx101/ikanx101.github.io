@@ -74,3 +74,13 @@ Lalu tinggal di- *run* saja *function*-nya:
 
 Bisa juga untuk *multiple links*, tinggal dibikin *vector* saja ya. Lalu
 bisa dibuat *looping* atau `apply()`.
+
+____
+
+# Cara Lain
+
+Ada acara lain untuk melakukannya, menggunakan aplikasi [Python yang dibuat oleh seseorang di luar sana](https://github.com/ytdl-org/youtube-dl).
+
+Setelah `.exe` _file_-nya sudah dimasukkan ke dalam _working directory_, kita tinggal _execute_ kode di __R__-nya sebagai berikut:
+
+`system('youtube-dl https://www.youtube.com/watch?v=eEhrkjDPqhU')`
