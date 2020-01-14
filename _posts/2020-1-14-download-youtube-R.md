@@ -11,9 +11,6 @@ tags:
   - Download
 ---
 
-Download Youtube Videos using R
-================
-
 Alhamdulillah si *Magma Grey* sudah datang. Sesuatu yang sangat seru
 adalah *head unit* **JVC** bawaannya bisa dipakai untuk menonton
 *Youtube*. Jadi sangat menguntungkan kalau lagi bawa bocah-bocah.
