@@ -11,12 +11,10 @@ tags:
   - Download
 ---
 
-Alhamdulillah si *Magma Grey* sudah datang. Sesuatu yang sangat seru
-adalah *head unit* **JVC** bawaannya bisa dipakai untuk menonton
+Alhamdulillah si *Magma Grey* sudah datang. Sesuatu yang sangat seru adalah *head unit* **JVC** bawaannya bisa dipakai untuk menonton
 *Youtube*. Jadi sangat menguntungkan kalau lagi bawa bocah-bocah.
 
-Biar gak *cranky* di jalan, saya bisa menyetelkan acara *Youtube*
-favorit para bocah itu.
+> Biar gak *cranky* di jalan, saya bisa menyetelkan acara *Youtube* favorit para bocah itu.
 
 Tapi ternyata koneksi **XL** saya lemot kalau dipakai untuk menonton
 *Youtube* di jalan. Jadi, salah satu solusi terbaik yang bisa saya
