@@ -1,6 +1,6 @@
 ---
 date: 2020-1-17T10:49:00-04:00
-title: "Badan Sertifikasi Halal di Dunia"
+title: "Training R-Series: Day 1"
 categories:
   - Blog
 tags:
@@ -9,9 +9,6 @@ tags:
   - R
   - Training
 ---
-
-Training R-Series: Day 1
-================
 
 ![alt
 text](https://bookdown.org/moh_rosidi2610/Metode_Numerik/images/r-icon.png
