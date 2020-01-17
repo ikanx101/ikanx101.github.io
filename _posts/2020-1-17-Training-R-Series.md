@@ -7,9 +7,7 @@ tags:
   - Machine Learning
   - Artificial Intelligence
   - R
-  - Web Scrap
-  - Halal
-  - MUI
+  - Training
 ---
 
 Training R-Series: Day 1
