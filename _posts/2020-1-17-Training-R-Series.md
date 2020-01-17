@@ -923,6 +923,43 @@ Percayalah, suatu saat nanti deret bisa digunakan untuk membantu
 perhitungan atau analisa kita. Seolah-olah berperan sebagai **katalis**
 pada reaksi kimia.
 
+#### 3.2.2.6 *Random sampling* dari suatu *vector*
+
+Ada suatu masa saat kita membutuhkan untuk mengambil sampel (mengambil
+subset) dari suatu *vector* secara acak. Kita bisa menggunakan fungsi
+`sample()`.
+
+Contoh:
+
+Kita memiliki data variabel `nama_orang` berisi 20 nama orang. Kita
+hanya ingin memilih 3 nama orang saja secara acak. Bagaimana caranya?
+
+``` r
+nama_orang = randomNames::randomNames(20)
+nama_orang
+```
+
+    ##  [1] "Gaitonde, Monica"              "Bauer, Matthew"               
+    ##  [3] "Eickmann, Audrey"              "al-Othman, Nabeel"            
+    ##  [5] "Saravanan, Makanaalohaonalani" "Nguyen, Joshua"               
+    ##  [7] "Coley, Brendon"                "Lucero, Sonnia"               
+    ##  [9] "Tso, Sabrina"                  "al-Farran, Nazeema"           
+    ## [11] "Mort, Jessica"                 "Carter, Infinity"             
+    ## [13] "Fair, Hannah"                  "Williams, Quayshawn"          
+    ## [15] "Matt, Matiyassa"               "Dixon, Cyenna"                
+    ## [17] "Stewart, Osue"                 "al-Ghazi, Saleel"             
+    ## [19] "Sisneros, Gloria"              "Anderson, Jaelyn"
+
+``` r
+sample(nama_orang,3,replace = F)
+```
+
+    ## [1] "Gaitonde, Monica" "Fair, Hannah"     "Anderson, Jaelyn"
+
+`replace = F` digunakan saat kita tidak ingin ada pemilihan yang
+berulang. Sedangkan `replace = T` digunakan saat diperbolehkan hasil
+pemilihan berulang. Coba *run* sendiri *yah*.
+
 # _to be continued_
 -----
 
