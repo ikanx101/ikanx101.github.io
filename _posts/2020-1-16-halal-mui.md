@@ -74,3 +74,14 @@ Bagaimana bentuknya?
 *Cekidot yah*:
 
 ![text](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/Halal%20MUI/2020-1-15-halal-mui_files/figure-gfm/unnamed-chunk-3-1.png)
+
+### Bagaimana cara membacanya?
+
+Jadi, ada dua elemen dasar dalam **Upset Diagram**, yakni:
+
+1. Barplot di sisi kiri bawah. Yakni berisi barplot yang sama persis dengan barplot yang sebelumnya saya buat di atas.
+2. Barplot di kanan atas. Berupa barplot yang isinya frekuensi dari masing - masing label di sumbu X-nya. Nah, sumbu X ini adalah deskripsi dari masing-masing himpunan yang ada. Kita bisa melihat ada berapa banyak irisan yang ada dan berapa frekuensinya.
+
+Contoh:
+
+> Ternyata ada 19 badan sertifikasi halal yang mampu melakukan sertifikasi terhadap **Cattle slaughtering**, **Raw material**, dan **Flavor**.
