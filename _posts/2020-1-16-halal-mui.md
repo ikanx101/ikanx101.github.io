@@ -56,15 +56,18 @@ perasa.
 ## Apakah ada badan sertifikasi halal yang mampu melakukan sertifikasi atas ketiga kategori di atas?
 
 Salah satu cara termudah untuk menjawab pertanyaan di atas adalah
-menggunakan prinsip *set analysis*: **Analisa Himpunan**.
+menggunakan prinsip *set analysis* atau yang biasa dikenal dengan sebutan **Analisa Himpunan**.
 
-Visualisasi paling sederhana adalah menggunakan **diagram venn**.
+Jadi kita akan bentuk himpunan - himpunan, lalu menentukan siapa saja anggota dari suatu himpunan yang juga merupakan anggota dari himpunan lainnya. Kita biasa sebut dengan istilah **irisan**.
+
+Visualisasi paling sederhana adalah menggunakan **diagram venn**. Masih ingat?
 
 > Alih-alih membuat **diagram venn**, saya akan membuat **upset
 > diagram** untuk menjawab pertanyaan ini.
 
-Apa itu **upset diagram**? Diagram ini untuk beberapa kasus lebih mudah
-dipahami dan lebih *powerful* dibandingkan *diagram venn*.
+
+
+Apa itu **upset diagram**? **Upset diagram** relatif masih lebih baru di analisa himpunan. Untuk beberapa kasus yang memiliki himpunan yang banyak dan irisan yang banyak, diagram ini lebih mudah dipahami dan dimengerti dibandingkan *diagram venn*.
 
 Bagaimana bentuknya?
 
