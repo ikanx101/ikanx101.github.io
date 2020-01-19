@@ -62,6 +62,8 @@ diperkirakan menembus angka `180.26` Milyar Rupiah\!
 Sebuah angka yang fantastis menurut
 saya.
 
+![ax](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/Kebakaran/2020-1-18-kebakaran-jakarta_files/figure-gfm/unnamed-chunk-3-1.png)
+
 ![a2](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/Kebakaran/2020-1-18-kebakaran-jakarta_files/figure-gfm/unnamed-chunk-3-2.png)
 
 Sebenarnya dari mana sih sumber api kebakaran terbanyak? Berdasarkan
