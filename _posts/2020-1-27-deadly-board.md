@@ -148,3 +148,5 @@ itu.
 ![peluang](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/puzzles/Puzzle%20Deadly%20Blocks/2020-1-25-deadly-puzzle_files/figure-gfm/unnamed-chunk-3-1.png)
 
 Sudah ada bayangan, mau taruh koin di kotak mana saja?
+
+Tapi ingat yah, ini hanya peluang saja. Kita hanya bisa menaruh koin di kotak-kotak yang memaksimalkan peluang dilewati.
