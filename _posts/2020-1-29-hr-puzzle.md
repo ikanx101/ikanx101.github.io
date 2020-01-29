@@ -1,5 +1,5 @@
 ---
-date: 2020-1-27T13:08:00-04:00
+date: 2020-1-29T11:08:00-04:00
 title: "Interview Overbudget Problem"
 categories:
   - Blog
@@ -42,8 +42,7 @@ Kondisi yang dihadapi:
     100.000 per orang dan menambah Rp 30.000 per orang untuk katering.
 
 > Berapa banyaknya kandidat yang harus dipanggil oleh tim HR sehingga
-> ruang aula penuh tanpa harus menyewa peralatan dari pihak biro dan
-> tanpa ada *overbudget* katering?
+> biaya yang timbul akibat _under achieve_ atau _over achieve_ seminimal mungkin?
 
 -----
 
