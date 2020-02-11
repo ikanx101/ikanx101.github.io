@@ -23,7 +23,12 @@ search: true
 
 # Build settings
 markdown: kramdown
-remote_theme: mmistakes/minimal-mistakes
+#remote_theme: mmistakes/minimal-mistakes
+
+#baru nih
+theme: minimal-mistakes-jekyll
+minimal_mistakes_skin: "dark"
+
 # Outputting
 permalink: /:categories/:title/
 paginate: 15 # amount of posts to show
