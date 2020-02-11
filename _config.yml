@@ -53,6 +53,9 @@ plugins:
   - jekyll-feed
   - jemoji
   - jekyll-include-cache
+  - jekyll-remote-theme
+  
+remote_theme: benbalter/retlab  
 
 author:
   name   : "Mr. Ikanx"
