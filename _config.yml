@@ -72,10 +72,8 @@ author:
     - label: "Instagram"
       icon: "fab fa-fw fa-instagram"
       url: "https://instagram.com/mr.ikanx"
-    - label: "Telegram"
-      icon: "fab fa-fw fa-link"
-      url: "https://t.me/Ikanx"
-
+    
+    
 footer:
   links:
     - label: "Twitter"
@@ -87,10 +85,8 @@ footer:
     - label: "Instagram"
       icon: "fab fa-fw fa-instagram"
       url: "https://instagram.com/mr.ikanx"
-    - label: "Telegram"
-      icon: "fab fa-fw fa-link"
-      url: "https://t.me/Ikanx"
-
+    
+    
 defaults:
   # _posts
   - scope:
