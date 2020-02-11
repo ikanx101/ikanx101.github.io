@@ -23,7 +23,7 @@ search: true
 
 # Build settings
 markdown: kramdown
-#remote_theme: mmistakes/minimal-mistakes
+remote_theme: mmistakes/minimal-mistakes
 # Outputting
 permalink: /:categories/:title/
 paginate: 15 # amount of posts to show
@@ -53,9 +53,7 @@ plugins:
   - jekyll-feed
   - jemoji
   - jekyll-include-cache
-  - jekyll-remote-theme
   
-remote_theme: benbalter/retlab  
 
 author:
   name   : "Mr. Ikanx"
