@@ -62,7 +62,7 @@ ujian = function(n){
   return(100*x/50)
 }
 
-# iterasi 900 kali
+# iterasi 8.000 kali
 data = data.frame(iterasi = c(1:8000))
 data$nilai_simulasi = sapply(data$iterasi,ujian)
 ```
