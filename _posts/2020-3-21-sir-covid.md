@@ -1,5 +1,5 @@
 ---
-date: 2020-3-21T5:30:00-04:00
+date: 2020-3-21T10:30:00-04:00
 title: "Updated: SIR Compartment Model"
 categories:
   - Blog
@@ -11,6 +11,7 @@ tags:
   - Corona Virus
   - Covid-19
   - Modelling
+  - Differential Equations
 ---
 
 # Pendahuluan
