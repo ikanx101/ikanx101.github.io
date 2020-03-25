@@ -15,12 +15,16 @@ tags:
 ---
 
 Kemarin teman saya bercerita bahwa ketika orang tuanya pulang dari
-Inggris beberapa minggu yang lalu, mereka tiba-tiba batuk-batuk dan
+Eropa beberapa minggu yang lalu, mereka tiba-tiba batuk-batuk dan
 demam. Dalam waktu yang relatif singkat, seisi rumah menjadi tertular
 dan memiliki gejala yang sama.
 
 Namun sekarang kondisi mereka sudah lebih baik dan beberapa sudah sembuh
 seperti sediakala.
+
+Pernah kah kalian berpikir bahwa apa yang dialami oleh teman saya tersebut mungkin saja juga dialami oleh banyak orang lain di Indonesia yang baru saja pulang dari luar negeri?
+
+Karena disadari atau tidak, kasus 01 dan 02 sejatinya bukan kasus pertama COVID-19 di Indonesia.
 
 Pertanyaannya:
 
