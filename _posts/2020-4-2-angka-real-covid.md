@@ -326,7 +326,7 @@ pengulangan
 <img src="https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/covid%20angka%20real/covid-real_files/figure-gfm/unnamed-chunk-13-1.png" width="672" />
 
 Dari grafik di atas, saya memperkirakan bahwa *real infected person* di
-Indonesia berada di rentang antara 7202 sampai 12159 orang.
+Indonesia berada di rentang antara 4.673 sampai 7.202 orang.
 
 Jadi ada selisih ribuan orang yang belum dilaporkan ke pemerintah. Bisa
 jadi tidak dilaporkan karena gejala yang dialami sangat ringan sehingga
