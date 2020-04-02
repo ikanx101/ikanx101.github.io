@@ -286,11 +286,14 @@ Sedangkan data *real*-nya banyak negara yang memiliki *mortality rate* =
 
 Pembuktiannya bisa dilakukan dengan menggunakan [**Cullen Frey
 Diagram**](https://passingthroughresearcher.wordpress.com/2019/08/09/mencari-peluang-kegagalan-dari-data-yang-tak-pernah-gagal/),
-contohnya:
+berikut adalah hasilnya:
 
 <img src="https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/covid%20angka%20real/covid-real_files/figure-gfm/unnamed-chunk-11-1.png" width="672" />
 
 <img src="https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/covid%20angka%20real/covid-real_files/figure-gfm/unnamed-chunk-11-2.png" width="672" />
+
+
+Data tersebut bisa didekati dengan distribusi lognormal.
 
 -----
 
