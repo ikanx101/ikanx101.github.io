@@ -320,7 +320,7 @@ Jadi *expected infected person* COVID-19 ada sekitar `4.617` orang.
 Sekarang kita coba lakukan simulasi menggunakan rentang *rate* disebelah
 kiri garis merah (Indonesia) pada *density plot*.
 
-Saya gunakan prinsip simullasi MonteCarlo dengan `9.000` kali
+Saya gunakan prinsip simulasi MonteCarlo dengan `9.000` kali
 pengulangan
 
 <img src="https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/covid%20angka%20real/covid-real_files/figure-gfm/unnamed-chunk-13-1.png" width="672" />
@@ -333,6 +333,10 @@ jadi tidak dilaporkan karena gejala yang dialami sangat ringan sehingga
 bisa sembuh sendiri atau tidak perlu ke faskes atau tidak terdeteksi di
 faskes tingkat pertama.
 
+Hal ini bisa menjadi kabar baik sekaligus buruk. Kenapa? Karena tanpa sadar justru _non reported cases_ ini bisa membahayakan bagi orang sehat yang rentan terhadap COVID-19 ini.
+
 Wallahu a’lam.
 
 Jika ada yang mau didiskusikan, silakan *drop me a message* yah.
+
+_Stay healthy_
