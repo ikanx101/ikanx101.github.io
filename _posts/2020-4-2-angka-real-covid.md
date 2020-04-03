@@ -335,6 +335,25 @@ faskes tingkat pertama.
 
 Hal ini bisa menjadi kabar baik sekaligus buruk. Kenapa? Karena tanpa sadar justru _non reported cases_ ini bisa membahayakan bagi orang sehat yang rentan terhadap COVID-19 ini.
 
+## UPDATE!
+
+Setelah saya post tulisan ini, ternyata semalam saya mendengar berita mengenai berapa banya spesimen yang telah dites oleh tim Kemenkes. Saya kira per hari kita sanggup melakukan 1.700 tes sehari, ternyata tidak sampai angka segitu.
+
+Coba lihat beritanya di [sini](https://news.detik.com/berita/d-4962732/data-harian-tes-corona-ri-vs-negara-lain?fbclid=IwAR3AWdP9vLzDKqK0NXKcgV4bOJoEPhX0UX1oiPkgVeTQmi2pgk4RFX7op6A).
+
+Saya kutip dari detik:
+
+25 Maret 3.822 spesimen
+26 Maret 4.336 spesimen (+514)
+27 Maret 5.775 spesimen (+1439)
+28 Maret 6.266 spesimen (+491)
+29 Maret 6.534 spesimen (+268)
+30 Maret 6.663 spesimen (+129)
+31 Maret 6.777 spesimen (+114)
+1 April 7.193 spesimen (+416)
+
+Ternyata benar dugaan saya. Angka _reported cases_ segitu-gitu saja karena yang dites memang segitu saja.
+
 Wallahu a’lam.
 
 Jika ada yang mau didiskusikan, silakan *drop me a message* yah.
