@@ -1,5 +1,16 @@
-kReativitas saat PSBB: soal latihan berhitung
-================
+---
+date: 2020-4-23T15:08:00-04:00
+title: "kReativitas saat PSBB: soal latihan berhitung"
+categories:
+  - Blog
+tags:
+  - Machine Learning
+  - Artificial Intelligence
+  - R
+  - Simulation
+  - Monte Carlo
+  - Berhitung
+---
 
 Pada saat **PSBB** ini, tidak hanya saya yang *work from home* tapi si sulung juga harus *school from home*.
 
