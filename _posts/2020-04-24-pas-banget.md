@@ -1,5 +1,12 @@
-kReativitas saat PSBB: PAS Banget
-================
+---
+date: 2020-4-24T15:08:00-04:00
+title: "kReativitas saat PSBB: PAS Banget"
+categories:
+  - Blog
+tags:
+  - R
+  - Socialpreneur
+---
 
 Tak bisa dipungkiri, penerapan PSBB di Jabodebek membuat roda perekonomian masyarakat melambat bahkan berhenti. Contohnya seperti di salah satu perumahan di Bekasi Timur. Perumahan tempat saya dibesarkan oleh kedua orang tua saya.
 
