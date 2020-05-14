@@ -120,7 +120,7 @@ tersendiri:
 ### Apakah konsumen di bulan `Maret 2020` tidak berbelanja lagi di bulan `April 2020`?
 
 Jika ini yang terjadi, maka mungkin perlu dicari tahu alasannya sehingga
-212 Mart bisa membuat mereka kembali berbelanja di bulan berikutnya.
+teman saya bisa membuat mereka kembali berbelanja di bulan berikutnya.
 
 Sayangnya, saya belum bisa membuktikan dugaan ini dengan data yang
 ada.
@@ -143,8 +143,7 @@ bulannya:
 <img src="https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/212%20Mart/Gara-gara-covid_files/figure-gfm/unnamed-chunk-6-1.png" width="864" />
 
 Benar dugaan saya. Ada kenaikan *basket size* di bulan `April 2020`. Hal
-ini mengindikasikan ada perubahan *habit* belanja pelanggan di **212
-Mart**.
+ini mengindikasikan ada perubahan *habit* belanja pelanggan di minimarket milik teman saya ini.
 
 Sedangkan pada `Januari 2020` - `Februari 2020` *basket size* pelanggan
 tetap sama. Ada apa di `Februari 2020` ya?
