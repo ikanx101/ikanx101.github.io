@@ -1,5 +1,5 @@
 ---
-date: 2020-4-3T15:10:00-04:00
+date: 2020-5-10T15:10:00-04:00
 title: "Perubahan Habit Belanja Ketika PSBB pada Suatu Wilayah di Bekasi"
 categories:
   - Blog
