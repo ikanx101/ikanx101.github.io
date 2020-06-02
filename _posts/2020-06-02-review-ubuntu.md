@@ -1,6 +1,6 @@
 ---
 date: 2020-06-02T11:20:00-04:00
-title: "NO FREE LUNCH Theorem for Machine Learning"
+title: "Review: UBUNTU 20.04 LTS after 2 weeks as daily driver"
 categories:
   - Blog
 tags:
@@ -9,9 +9,6 @@ tags:
   - R
   - RStudio
 ---
-
-Review: UBUNTU 20.04 LTS after 2 weeks as daily driver
-================
 
 <img src="https://computerscience.id/wp-content/uploads/2015/08/ubuntu-logo.png" width="50%" />
 
