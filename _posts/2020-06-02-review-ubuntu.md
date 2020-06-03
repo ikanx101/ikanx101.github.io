@@ -97,6 +97,8 @@ menit, proses instalasinya sudah selesai.
 
 # Instalasi Pernak - Pernik
 
+<img src="https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/Ubuntu/ikanx.png" width="80%" />
+
 *Nah*, sekarang agar Ubuntu bisa dijadikan *daily driver* saya yang
 mumpuni, maka saya harus meng-*install* beberapa aplikasi pendukung
 pekerjaan saya.
