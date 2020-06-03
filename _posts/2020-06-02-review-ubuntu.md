@@ -10,7 +10,7 @@ tags:
   - RStudio
 ---
 
-<img src="https://computerscience.id/wp-content/uploads/2015/08/ubuntu-logo.png" width="50%" />
+<img src="https://computerscience.id/wp-content/uploads/2015/08/ubuntu-logo.png" width="70%" />
 
 Pada masa WFH ini, saya sangat bergantung pada kekuatan dan kehandalan
 laptop yang diberikan oleh kantor saya. Sebenarnya laptop tersebut
@@ -97,7 +97,7 @@ menit, proses instalasinya sudah selesai.
 
 # Instalasi Pernak - Pernik
 
-<img src="https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/Ubuntu/ikanx.png" width="80%" />
+<img src="https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/Ubuntu/ubuntu.png" width="80%" />
 
 *Nah*, sekarang agar Ubuntu bisa dijadikan *daily driver* saya yang
 mumpuni, maka saya harus meng-*install* beberapa aplikasi pendukung
