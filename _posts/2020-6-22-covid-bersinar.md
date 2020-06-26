@@ -9,6 +9,9 @@ tags:
   - R
   - Shiny
   - Web Apps
+  - Covid 19
+  - Corona
+  - Corona Virus
 ---
 
 Mencoba SHINYAPPS: Visualisasi COVID19
