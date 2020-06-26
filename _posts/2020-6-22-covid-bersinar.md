@@ -14,9 +14,6 @@ tags:
   - Corona Virus
 ---
 
-Mencoba SHINYAPPS: Visualisasi COVID19
-================
-
 # Shiny Web App
 
 Banyak orang bilang bahwa R tidak *powerful enough* untuk dijadikan
