@@ -1,5 +1,5 @@
 ---
-date: 2020-06-02T15:20:00-04:00
+date: 2020-06-26T15:20:00-04:00
 title: "Beli Laptop Murah Untuk Data Science"
 categories:
   - Blog
