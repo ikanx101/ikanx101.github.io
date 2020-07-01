@@ -75,7 +75,7 @@ author:
       icon: "fab fa-fw fa-instagram"
       url: "https://instagram.com/mr.ikanx"
     - label: "Telegram"
-      icon: "fas fa-fw fa-telegram"
+      icon: "fab fa-telegram-plane"
       url: "https://t.me/Ikanx"
     
     
@@ -91,7 +91,7 @@ footer:
       icon: "fab fa-fw fa-instagram"
       url: "https://instagram.com/mr.ikanx"
     - label: "Telegram"
-      icon: "fas fa-fw fa-telegram"
+      icon: "fab fa-telegram-plane"
       url: "https://t.me/Ikanx"    
     
 defaults:
