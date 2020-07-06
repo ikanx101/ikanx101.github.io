@@ -1,6 +1,6 @@
 ---
 date: 2020-7-6T10:08:00-04:00
-title: "Berapa Banyak Repid Tes yang Dibutuhkan?"
+title: "Berapa Banyak Rapid Tes yang Dibutuhkan?"
 categories:
   - Blog
 tags:
