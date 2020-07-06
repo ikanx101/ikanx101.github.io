@@ -27,7 +27,7 @@ mana-mana.
 Beberapa hari yang lalu, HP saya berdering. Teman saya di ujung telepon
 bertanya:
 
-> Di pabrik saya ada sekitar 2.000 orang, kira-kira saya butuh ngetes
+> Di pabrik saya ada sekitar 200 orang, kira-kira saya butuh ngetes
 > berapa banyak orang karyawan agar bisa mendapatkan gambaran kondisi di
 > perusahaan saya aman atau tidak?
 
