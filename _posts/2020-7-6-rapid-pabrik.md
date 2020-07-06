@@ -92,7 +92,7 @@ Monte Carlo. Jadi utk melakukan simulasinya, saya cuma butuh 2 hal:
 Jadi misalkan, saya menduga bahwa ada 10 orang betawi di komplek saya,
 maka:
 
-<img src="https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/Shiny%20Test%20Covid%20Pabrik/gambar%202.png" width="1108" />
+<img src="https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/Shiny%20Test%20Covid%20Pabrik/gambar%202.png" width="1008" />
 
 Jadi saat saya mewawancarai 106 orang secara acak, saya berpeluang besar
 sudah mendapatkan setidaknya satu orang betawi.
