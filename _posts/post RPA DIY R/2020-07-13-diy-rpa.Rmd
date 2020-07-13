@@ -6,6 +6,7 @@ output: github_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(nomnoml)
+library(webshot)
 ```
 
 Catatan: _posting_ ini mengandung konten _ngegas_.
@@ -24,8 +25,23 @@ ____
 
 ## Kenapa pakai _UIPath_?
 
-Sempat saya bertanya hal tersebut kepada para peserta training, mereka juga tahunya itu yang diajarkan. Konon katanya software tersebut bisa berinteraksi dengan berbagai macam software lain di komputer.
+Sempat saya bertanya hal tersebut kepada para peserta training, mereka juga tahunya itu yang diajarkan. Konon katanya _software_ tersebut bisa berinteraksi dengan berbagai macam _software_ lain di komputer.
 
 > Wah keren nih pikir saya.
 
-Tapi setelah berpikir kembali, kayaknya 95% kerjaan orang kantor banyak di Excel deh. _So_
+Tapi setelah berpikir kembali, kayaknya 95% kerjaan orang kantor banyak di __Excel__ _deh_. _So_ sepertinya __R__ juga cukup deh untuk membuat __RPA__ macem gini.
+
+_Nah_ karena menunggu contoh _real_ dari __RPA__ ala _UIPath_ yang _gak_ selesai-selesai, _better_ saya kasih karya nyata __RPA__ menggunakan __R__.
+
+Berikut adalah karya nyata yang saya himpun selama ini:
+
+_____
+
+### RPA: _Report_ Absensi Karyawan Pabrik
+
+__RPA__ kali ini sangat menarik. Jadi ada seorang tim _member_ personalia di pabrik ahli macro Excel yang hendak belajar __R__. Ia ingin membuat satu _flow_ pekerjaan otomatis dari mulai ambil data absensi bulanan karyawan, mengolahnya hingga mengirimkan via email hasil olahan tersebut kepada orang-orang terkait. Semua yang dilakukan adalah otomatis menggunakan __R__. Secara garis besar, _flow_-nya seperti ini:
+
+```{r,echo=FALSE}
+knitr::include_graphics('hris.png')
+```
+
