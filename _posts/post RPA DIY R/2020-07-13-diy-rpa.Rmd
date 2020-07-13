@@ -19,3 +19,9 @@ Setelah kepo tanya sana-sini, ternyata _tools_ yang digunakan adalah _software_ 
 Sampai beberapa saat lalu, saya kembali berbincang dengan beberapa rekan terkait _follow up_ dari _training_ tersebut, ternyata belum ada satu _project_-pun terkait __RPA__ yang sudah jalan.
 
 > Mmh, kenapa yah? Jangan-jangan kasusnya sama dengan yang saya [alami dulu](https://ikanx101.github.io/blog/blog-promo-hemat-id/). Hahaha.
+
+____
+
+## Kenapa pakai _UIPath_?
+
+Sempat saya bertanya hal tersebut kepada para peserta training
