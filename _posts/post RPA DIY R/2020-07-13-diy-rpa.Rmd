@@ -8,3 +8,14 @@ knitr::opts_chunk$set(echo = TRUE)
 library(nomnoml)
 ```
 
+Catatan: _posting_ ini mengandung konten _ngegas_.
+
+Beberapa bulan lalu, tiba-tiba istilah _Robotic Process Automation_ (disingkat __RPA__) menjadi buah bibir di kantor saya. Usut punya usut ternyata baru saja ada _training_ dari suatu _vendor_ terkait pembuatan dan penerapan __RPA__ di kantor.
+
+Tujuannya sangat mulia, yakni agar pekerjaan repetitif menjadi otomatis dan digantikan dengan robot (algoritma).
+
+Setelah kepo tanya sana-sini, ternyata _tools_ yang digunakan adalah _software_ bernama __UIPath__. Bukan _software_ gratisan tapi bisa aja digunakan tanpa membayar. Tentu dengan keterbatasan tertentu _yah_.
+
+Sampai beberapa saat lalu, saya kembali berbincang dengan beberapa rekan terkait _follow up_ dari _training_ tersebut, ternyata belum ada satu _project_-pun terkait __RPA__ yang sudah jalan.
+
+> Mmh, kenapa yah? Jangan-jangan kasusnya sama dengan yang saya [alami dulu](https://ikanx101.github.io/blog/blog-promo-hemat-id/). Hahaha.
