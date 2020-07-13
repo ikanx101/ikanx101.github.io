@@ -24,4 +24,8 @@ ____
 
 ## Kenapa pakai _UIPath_?
 
-Sempat saya bertanya hal tersebut kepada para peserta training
+Sempat saya bertanya hal tersebut kepada para peserta training, mereka juga tahunya itu yang diajarkan. Konon katanya software tersebut bisa berinteraksi dengan berbagai macam software lain di komputer.
+
+> Wah keren nih pikir saya.
+
+Tapi setelah berpikir kembali, kayaknya 95% kerjaan orang kantor banyak di Excel deh. _So_
