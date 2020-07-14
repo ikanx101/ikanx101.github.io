@@ -57,3 +57,20 @@ Proses pembuatan algoritma hingga selesai memakan waktu satu bulan karena mereka
 ____
 
 ### RPA: _Report_ Evaluasi _Supplier_
+
+__RPA__ kali ini adalah hasil kolaborasi algoritma _backbone_ yang saya kerjakan dengan peserta _training_ __R__ di kantor. Ceritanya dalam pembuatan _report_ supplier, ada banyak sekali tahapan pengambilan dan pengolahan data yang harus dilewati secara manual. _Report_ yang dihasilkan juga ada banyak jenisnya tergantung dari jenis dan kinerja dari _supplier_.
+
+_Nah_, apa bisa pembuatan _reports_ ini dilakukan secara __RPA__?
+
+> Jawabannya tentu bisa dengan R!
+
+Maka dibuatlah algoritma dengan _flow_ seperti berikut:
+
+```{r,echo=FALSE}
+knitr::include_graphics('supplier.png')
+```
+
+
+
+
+
