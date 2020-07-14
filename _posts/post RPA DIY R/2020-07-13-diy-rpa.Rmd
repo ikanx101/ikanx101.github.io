@@ -30,7 +30,8 @@ Sempat saya bertanya hal tersebut kepada para peserta training, mereka juga tahu
 
 Tapi setelah berpikir kembali, kayaknya 95% kerjaan orang kantor banyak di __Excel__ _deh_. _So_ sepertinya __R__ juga cukup deh untuk membuat __RPA__ macem gini.
 
-_Nah_ karena menunggu contoh _real_ dari __RPA__ ala _UIPath_ yang _gak_ selesai-selesai, _better_ saya kasih karya nyata __RPA__ menggunakan __R__.
+
+_Nah_ karena menunggu contoh _real_ dari __RPA__ ala _UIPath_ yang _gak_ selesai-selesai, _better_ saya kasih karya nyata __RPA__ menggunakan __R__. Oh iya, ini bukan untuk menjelekkan __UIPath__ _yah_, saya cuma mau menginformasikan bahwa dengan _tools_ yang ada dan sudah dikuasai, kita sebenarnya bisa membuat sendiri __RPA__.
 
 _Wise man said:_
 
@@ -70,7 +71,35 @@ Maka dibuatlah algoritma dengan _flow_ seperti berikut:
 knitr::include_graphics('supplier.png')
 ```
 
+Setelah dieksekusi, 90-an _reports_ bisa selesai dalam waktu beberapa detik saja! Sangat amat menghemat waktu _yah_!
 
+____
 
+### RPA: Audit Transaksi _Warehouse_
 
+Ini adalah salah satu _epic project_ yang saya lakukan di awal tahun ini. Sebagai perusahaan FMCG, tentunya ada banyak _banget_ tipe-tipe gudang yang harus diaudiit oleh tim terkait. Audit bisa dilakukan dengan dua cara:
 
+- Audit fisik,
+- Audit data transaksi.
+
+_Nah_, __RPA__ yang saya buat adalah pada audit data transaksi.
+
+Berbeda tipe gudang tentunya mengakibatkan perbedaan pada sistem pencatatan data, struktur data dan cara melakukan audit. Sebenarnya apa sih yang dilakukan?
+
+> Simpelnya __hanya__ melakukan matchmaking antara transaksi inbound dengan transaksi outbound.
+
+Simpel untuk dikatakan tapi rumit untuk dibuat. Makanya saya bilang ini _epic project_ _hahaha_.
+
+Saya bisa katakan bahwa kemampuan modifikasi-manipulasi data menjadi hal yang krusial pada _project_ ini.
+
+Berikut adalah _flow_-nya:
+
+```{r,echo=FALSE}
+knitr::include_graphics('warehouse.png')
+```
+
+____
+
+## Prolog
+
+Percaya atau tidak, saat seseorang hendak _enroll_ kursus _online data science_, mereka hanya akan diajarkan mengenai prediksi dan klasifikasi. Hampir tidak ada kursus yang menyentuh bidang otomasi kecuali kita sendiri yang mau mengeksplor hal ini.
