@@ -32,15 +32,28 @@ Tapi setelah berpikir kembali, kayaknya 95% kerjaan orang kantor banyak di __Exc
 
 _Nah_ karena menunggu contoh _real_ dari __RPA__ ala _UIPath_ yang _gak_ selesai-selesai, _better_ saya kasih karya nyata __RPA__ menggunakan __R__.
 
-Berikut adalah karya nyata yang saya himpun selama ini:
+_Wise man said:_
+
+> Don't be a NATO guy! (No Action Talk Only)
+
+Berikut adalah karya nyata yang saya himpun selama ini. Oh iya, ada _project_ saya tidak terlibat langsung dan beberapa _projects_ saya terlibat:
 
 _____
 
 ### RPA: _Report_ Absensi Karyawan Pabrik
 
-__RPA__ kali ini sangat menarik. Jadi ada seorang tim _member_ personalia di pabrik ahli macro Excel yang hendak belajar __R__. Ia ingin membuat satu _flow_ pekerjaan otomatis dari mulai ambil data absensi bulanan karyawan, mengolahnya hingga mengirimkan via email hasil olahan tersebut kepada orang-orang terkait. Semua yang dilakukan adalah otomatis menggunakan __R__. Secara garis besar, _flow_-nya seperti ini:
+__RPA__ kali ini sangat menarik. Jadi ada beberapa tim _member_ personalia di pabrik ahli _macro Excel_ yang hendak belajar __R__. Mereka adalah _ashobikunal awwalun_ _training_ __R__ yang saya lakukan di kantor. 
+
+Ceritanya mereka ingin membuat satu _flow_ pekerjaan otomatis dari mulai ambil data absensi bulanan karyawan, mengolahnya hingga mengirimkan _via email_ hasil olahan tersebut kepada orang-orang terkait. Semua yang dilakukan adalah otomatis menggunakan __R__. 
+
+Proses ini kemudian dilakukan otomatis di tanggal dan jam tertentu dengan menggunakan _scheduler_. Secara garis besar, _flow_-nya seperti ini:
 
 ```{r,echo=FALSE}
 knitr::include_graphics('hris.png')
 ```
 
+Proses pembuatan algoritma hingga selesai memakan waktu satu bulan karena mereka memulainya dari nol tanpa supervisi apapun dari siapapun. Setelahnya mereka tinggal menikmati __RPA__ tersebut. _Keren banget lah!_
+
+____
+
+### RPA: _Report_ Evaluasi _Supplier_
