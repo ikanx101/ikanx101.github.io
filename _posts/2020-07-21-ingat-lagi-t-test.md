@@ -1,5 +1,18 @@
-Mengingat Kembali Uji Hipotesis
-================
+---
+date: 2020-07-21T09:10:00-04:00
+title: "Mengingat Kembali Uji Hipotesis"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - R
+  - Hipotesis
+  - Uji Hipotesis
+  - Uji T
+  - Wilcox Test
+  - Normality
+---
 
 Di suatu sore yang cerah, tiba-tiba salah satu aplikasi *messaging* saya
 berbunyi. Notifikasi tersebut mengantarkan saya pada seorang teman yang
@@ -245,7 +258,7 @@ Mari kita lihat terlebih dahulu statistika deskripsi dari data di atas:
     ##  3rd Qu.: 8.000   3rd Qu.: 8.00   3rd Qu.:11.000  
     ##  Max.   :10.000   Max.   :10.00   Max.   :12.000
 
-![](2020-07-21-ingat-lagi-t-test_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->![](2020-07-21-ingat-lagi-t-test_files/figure-gfm/unnamed-chunk-2-2.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/2020-07-21-ingat-lagi-t-test_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/2020-07-21-ingat-lagi-t-test_files/figure-gfm/unnamed-chunk-2-2.png)<!-- -->
 
 Jika dilihat secara visual, sudah bisa dipastikan bahwa vendor A
 memiliki nilai rata-rata *service level* yang paling rendah. Namun perlu
