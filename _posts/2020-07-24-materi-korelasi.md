@@ -1,5 +1,14 @@
-Materi Training: Korelasi
-================
+---
+date: 2020-07-24T09:10:00-04:00
+title: "Materi Training: Korelasi"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - R
+  - Korelasi
+---
 
 # Apa itu Korelasi?
 
@@ -30,7 +39,7 @@ analisa korelasi. Apa itu?
 
 Masih ingat dengan tipe-tipe data?
 
-![](2020-07-24-materi-korelasi_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/2020-07-24-materi-korelasi_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
 Jadi, hanya data kuantitatif saja yang bisa dihitung korelasinya.
 
@@ -93,7 +102,7 @@ Kalau kita lihat kembali, nilai korelasi bisa bernilai **positif** atau
 
 Sebagaimana kita ketahui, perhitungan statistik itu ada dua macam.
 
-![](2020-07-24-materi-korelasi_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/2020-07-24-materi-korelasi_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
 Hal ini juga mempengaruhi cara kita menghitung korelasi.
 
