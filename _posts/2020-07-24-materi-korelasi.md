@@ -86,7 +86,7 @@ Pengelompokan kekuatan korelasi:
 2.  Medium : `0.3` - `0.5`
 3.  High : `0.5` - `1.0`
 
-### *Direction *
+### *Direction*
 
 Kalau kita lihat kembali, nilai korelasi bisa bernilai **positif** atau
 **negatif**. `+/-` itu menunjukan arah hubungan kedua variabel tersebut.
