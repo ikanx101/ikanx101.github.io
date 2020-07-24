@@ -1,5 +1,22 @@
-Data Science di Bidang Kesehatan
-================
+---
+date: 2020-07-23T09:10:00-04:00
+title: "Data Science di Bidang Kesehatan"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - R
+  - Data Science
+  - Kesehatan
+  - Penyakit
+  - Health
+  - ROC
+  - AUC
+  - Prediction
+  - Prediksi
+  - Confusion Matrix
+---
 
 # 12 July 2020
 
@@ -136,7 +153,7 @@ menuju `1`, maka akan semakin bagus hasil prediksinya.
     ##  Number of negative(s): 454
     ##  Area under curve: 0.7735
 
-![](2020-07-23-kesehatan-ro_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/kesehatan%20ROC/2020-07-23-kesehatan-ro_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ### `Biomarker2`
 
@@ -146,7 +163,7 @@ menuju `1`, maka akan semakin bagus hasil prediksinya.
     ##  Number of negative(s): 454
     ##  Area under curve: 0.8375
 
-![](2020-07-23-kesehatan-ro_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/kesehatan%20ROC/2020-07-23-kesehatan-ro_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 #### Kesimpulan dari nilai AUC
 
