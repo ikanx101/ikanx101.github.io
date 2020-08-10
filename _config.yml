@@ -15,7 +15,7 @@
 # in the templates via {{ site.myvariable }}.
 title: Math, Market Research & Computational Science
 email: ikanx101@gmail.com
-description: "mathematics, market research, machine learning, artificial intelligence, and bunch of ideas. Continuation of https://passingthroughresearcher.wordpress.com/"
+description: "mathematics data science algorithm maths statistics scientist artificial intelligence machine learning"
 
 twitter_username: ikanx101
 github_username: ikanx101
@@ -59,7 +59,7 @@ plugins:
 author:
   name   : "Mr. Ikanx"
   avatar : "/assets/images/MUKE.png"
-  bio    : "Just a passing through researcher..."
+  bio    : "Welcome to my mind"
   location : "Somewhere in Jakarta - Bekasi"
   links:
     - label: "Website"
