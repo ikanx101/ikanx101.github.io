@@ -120,3 +120,9 @@ category_archive:
 tag_archive:
   type: liquid
   path: /tags/
+
+analytics:
+  provider: "google-universal"
+  google:
+    tracking_id: "UA-78560217-2"
+    anonymize_ip: # true, false (default)
