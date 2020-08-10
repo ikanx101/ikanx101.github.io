@@ -86,7 +86,7 @@ Menggunakan ROC ini, ada dua informasi yang bisa saya dapatkan:
     ##  Number of negative(s): 454
     ##  Area under curve: 0.7735
 
-![](2020-07-23-kesehatan-ro_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/2020-06-20-kesehatan-ro_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
 ### `biomarker2`
 
@@ -96,7 +96,7 @@ Menggunakan ROC ini, ada dua informasi yang bisa saya dapatkan:
     ##  Number of negative(s): 454
     ##  Area under curve: 0.8375
 
-![](2020-07-23-kesehatan-ro_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/2020-06-20-kesehatan-ro_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 ### Kesimpulan dari nilai AUC
 
