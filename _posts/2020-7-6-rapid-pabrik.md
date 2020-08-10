@@ -89,8 +89,7 @@ orang yang positif, maka dibutuhkan:
 Jadi saat saya mewawancarai 106 orang secara acak, saya berpeluang besar
 sudah mendapatkan setidaknya satu orang betawi.
 
-Bahkan saat saya mewawancari 50 orang saja, saya mendapatkan peluang 60%
-- 75% saya sudah mendapatkan orang betawi.
+Bahkan saat saya mewawancarai 50 orang saja, saya mendapatkan peluang 60% - 75% saya sudah mendapatkan orang betawi.
 
 -----
 

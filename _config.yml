@@ -13,9 +13,9 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: just another ikanx's blog
+title: Math, Market Research & Computational Science
 email: ikanx101@gmail.com
-description: "market research, machine learning, artificial intelligence, and bunch of ideas. Continuation of https://passingthroughresearcher.wordpress.com/"
+description: "mathematics data science algorithm maths statistics scientist artificial intelligence machine learning"
 
 twitter_username: ikanx101
 github_username: ikanx101
@@ -27,7 +27,7 @@ remote_theme: mmistakes/minimal-mistakes
 
 # Outputting
 permalink: /:categories/:title/
-paginate: 15 # amount of posts to show
+paginate: 5 # amount of posts to show
 paginate_path: /page:num/
 timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
@@ -59,7 +59,7 @@ plugins:
 author:
   name   : "Mr. Ikanx"
   avatar : "/assets/images/MUKE.png"
-  bio    : "Just a passing through researcher..."
+  bio    : "Welcome to my mind"
   location : "Somewhere in Jakarta - Bekasi"
   links:
     - label: "Website"
@@ -120,3 +120,9 @@ category_archive:
 tag_archive:
   type: liquid
   path: /tags/
+
+analytics:
+  provider: "google-universal"
+  google:
+    tracking_id: "UA-78560217-2"
+    anonymize_ip: # true, false (default)
