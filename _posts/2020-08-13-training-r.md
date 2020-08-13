@@ -23,7 +23,7 @@ Ada beberapa hal yang menarik terkait dengan pelaksanaan *training* ini:
     mengarungi *training* hingga selesai dan mengerjakan *project*,
     ternyata tidak ada dominasi dari generasi muda. Justru beberapa
     *trainee* yang *standout* berasal dari generasi yang relatif tidak
-    muda lagi \(>30\) tahun.
+    muda lagi (>30) tahun.
 2.  Level jabatan tidak berpengaruh\! Awalnya ada anggapan bahwa
     *managerial up* tidak perlu mempelajari dan menguasai hal teknis
     seperti *coding* ini. Mereka sudah disibukkan dengan pekerjaan
