@@ -12,7 +12,7 @@ tags:
 
 Tidak terasa *training* **R** yang telah saya inisiasi di kantor telah
 berjalan sebanyak dua *batches*. Sebenarnya bisa dihitung tiga *batches*
-(*training* pertama dilakukan diluar format baru yang disepakati bersama
+(*training* pertama dilakukan di luar format baru yang disepakati bersama
 dengan tim Training HR).
 
 Ada beberapa hal yang menarik terkait dengan pelaksanaan *training* ini:
@@ -46,10 +46,10 @@ Ada beberapa hal yang menarik terkait dengan pelaksanaan *training* ini:
 Sebenarnya tidak ada perubahan signifikan terkait *training* di
 *batches* selanjutnya. Hanya ada dua perubahan:
 
-1.  [*Updated*
+-  [*Updated*
     materi](https://github.com/ikanx101/belajaR/blob/master/Materi%20Training/Day%201%20-%20R%20Series/Intro%20to%20R%20Volume%203.pdf)
     yang lebih lengkap.
 
-<img src="r train.jpg" width="50%" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/blog%20training/r%20train.jpg" width="50%" />
 
-2.  Seleksi peserta tentang komitmen mereka dalam training ini.
+-  Seleksi peserta tentang komitmen mereka dalam training ini.
