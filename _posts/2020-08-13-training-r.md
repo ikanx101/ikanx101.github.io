@@ -12,7 +12,7 @@ tags:
 
 Tidak terasa *training* **R** yang telah saya inisiasi di kantor telah
 berjalan sebanyak dua *batches*. Sebenarnya bisa dihitung tiga *batches*
-(*training* pertama dilakukan diluar format baru yang disepakati bersama
+(*training* pertama dilakukan di luar format baru yang disepakati bersama
 dengan tim Training HR).
 
 Ada beberapa hal yang menarik terkait dengan pelaksanaan *training* ini:
