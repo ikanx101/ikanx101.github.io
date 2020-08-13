@@ -1,0 +1,145 @@
+---
+title: "Menyelesaikan Sengkarut Selling In dan Selling Out"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/ikanx101.github.io/_posts")
+
+library(dplyr)
+library(ggplot2)
+```
+
+Suatu ketika, tim _sales_ suatu perusahaan hendak melakukan analisa:
+
+> Apakah bisa kita memprediksi _selling out_ berdasarkan data _selling in_ untuk semua produk yang kita jual?
+
+Apa itu _Selling In_ dan _Selling Out_?
+
+_Selling in_ adalah angka jualan perusahaan ke distributor. Data ini secara _real time_ bisa didapatkan oleh perusahaan. Sedangkan _Selling out_ adalah angka jualan toko ke konsumen. Data ini baru bisa didapatkan setelah _delay_ 3-5 bulan karena alasan teknis pengumpulan.
+
+```{r,echo=FALSE}
+nomnoml::nomnoml("[Selling In] -> [Selling Out]
+                 [Selling In|
+                    [Perusahaan] -> [Distributor]]
+                 [Selling Out|
+                    [Distributor] -> [Toko]
+                    [Toko] -> [End Consumer]]
+                 ","definisi.png")
+```
+
+
+Oleh karena itu penting bagi tim _sales_ untuk bisa memperkirakan angka jualan langsung ke konsumen dari data jualan ke distributor.
+
+Apakah hal tersebut memungkinkan?
+
+## Membuat Model Prediksi 
+
+Salah satu model prediksi yang memungkinkan bisa dibuat adalah dengan mengandalkan model regresi linear:
+
+$$SO = a*SI + C$$
+
+Namun muncul permasalahan: $SI$ yang terjadi pada bulan ini tidak serta merta terkonversi langsung menjadi $SO$ karena distributor bisa saja melakukan _stock_ atau _flush out_ di bulan-bulan tertentu.
+
+Oleh karena itu, pertanyaan yang penting adalah pada jeda berapa bulan kita bisa membuat model regresi yang terbaik?
+
+$$SO_{i+n} = a*SI_i+C$$
+
+## Bagaimana Menentukan Nilai $n$?
+
+Perhatikan bahwa salah satu parameter _goodness of fit_ dari model regresi linear adalah $R^2$ (_R Squared_). Jika kita ingat kembali, jika kita akar kuadratkan nilai _R Squared_:
+
+$$\sqrt(R^2) = R$$
+
+Nilai $R$ adalah nilai korelasi.
+
+> Oleh karena itu, kita akan mencari jeda $n$ yang mengakibatkan $SI$ dan $SO$ memiliki korelasi tinggi.
+
+Semakin tinggi korelasi antara $SO$ dan $SI$ maka jika kita buat model regresinya akan menghasilkan model yang baik.
+
+
+## Lalu Bagaimana Caranya? 
+
+Misalkan, kita punya data $SI$ dan $SO$ dari suatu produk sebagai berikut:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+rm(list=ls())
+data = read.csv('~/belajaR/Materi Training/Day 1 - R Series/Data Utk Buku/data sales.csv')
+data =
+  data %>% 
+  rename(no = X) %>% 
+  mutate(so = so/1.1) %>% 
+  mutate(date = factor(date,levels = date))
+knitr::kable(data,caption = 'Data dari SI dan SO dari Produk XYZ')
+
+data %>% 
+  select(date,si,so) %>% 
+  reshape2::melt(id.vars = 'date') %>% 
+  ggplot(aes(x = date,
+             y = value)) +
+  geom_line(aes(group = variable,color = variable)) +
+  labs(title = 'Tren Selling In dan Selling Out',
+       subtitle = "All Available Dates",
+       caption = "ikanx101.com",
+       y = "Sales value (in million IDR)",
+       x = "Dates",
+       color = "Sales type")+
+  theme_bw() +
+  theme(axis.text.x = element_text(angle=45,hjust=1))
+```
+
+
+Untuk mengatasinya, kita akan melakukan iterasi beberapa kali untuk mendapatkan nilai `jeda` yang menghasilkan korelasi terbaik antara $SI$ dan $SO$. Tidak mungkin kalkulasi ini kita lakukan secara manual karena datanya cukup banyak, apalagi jika dilakukan untuk banyak produk.
+
+```{r,echo=FALSE}
+nomnoml::nomnoml('[Iterasi|
+                    [n|Jeda = 1..12] -> [SI]
+                    [n] -> [SO]
+                    [SI] -> [korelasi]
+                    [SO] -> [korelasi]
+                    ]
+                 [Iterasi] -> [hitung R squared|Menentukan goodness\nof fit model]',
+                 "alur.png")
+```
+
+Untuk memudahkan, saya akan menggunakan perhitungan korelasi _Spearman_ agar tidak perlu repot menghitung kenormalan data. Berikut adalah algoritmanya:
+
+```{r}
+seling.in=data$si
+seling.ou=data$so
+
+r=c()
+rsquare=c()
+jeda=c()
+a=c()
+x=1
+
+for (i in 1:12){
+  jeda[x]=i 
+  a[x]=length(seling.in)-jeda[x]
+  sel.out=seling.ou[-c(a[x]+1:length(seling.ou))]
+  sel.in=seling.in[c((jeda[x]+1):length(seling.in))]
+  r[x]=cor(sel.in,sel.out,method = 'spearman')
+  rsquare[x]=r[x]^2
+  x=x+1
+  }
+hasil=data.frame(jeda,r,rsquare)
+```
+
+
+```{r,echo=FALSE}
+knitr::kable(hasil,caption = 'Hasil Perhitungan Jeda dan Korelasi')
+```
+
+$R^2$ tertinggi akan didapatkan pada saat `r max(hasil$rsquare)` di jeda $n=10$.
+
+## Kesimpulan
+
+Proses perhitungan secara otomatis yang saya sampaikan di atas bisa di- _reproducible_ untuk semua produk yang dimiliki oleh perusahaan tersebut. Namun perlu diperhatikan bahwa model regresi yang baik baru bisa terwujud jika nilai $R^2$ berada di kisaran $0.7 > R^2 \geq 1$.
+
+> Oleh karena itu, khusus produk __XYZ__, kita tidak bisa membuat model prediksi $SO =a* SI +C$. Akibatnya $SO$ tidak bisa diprediksi dari $SI$.
+
+Sayang sekali yah.
