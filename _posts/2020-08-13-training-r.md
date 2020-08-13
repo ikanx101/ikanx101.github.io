@@ -46,10 +46,10 @@ Ada beberapa hal yang menarik terkait dengan pelaksanaan *training* ini:
 Sebenarnya tidak ada perubahan signifikan terkait *training* di
 *batches* selanjutnya. Hanya ada dua perubahan:
 
-1.  [*Updated*
+-  [*Updated*
     materi](https://github.com/ikanx101/belajaR/blob/master/Materi%20Training/Day%201%20-%20R%20Series/Intro%20to%20R%20Volume%203.pdf)
     yang lebih lengkap.
 
 <img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/blog%20training/r%20train.jpg" width="50%" />
 
-2.  Seleksi peserta tentang komitmen mereka dalam training ini.
+-  Seleksi peserta tentang komitmen mereka dalam training ini.
