@@ -382,7 +382,7 @@ kecamatan
 
 <th style="text-align:left;">
 
-kota\_kabupaten
+kota_kabupaten
 
 </th>
 
@@ -740,7 +740,7 @@ provinsi
 
 <th style="text-align:left;">
 
-alamat\_google
+alamat_google
 
 </th>
 
