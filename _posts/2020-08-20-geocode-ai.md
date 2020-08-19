@@ -53,7 +53,7 @@ kecamatan
 
 <th style="text-align:left;">
 
-kota\_kabupaten
+kota_kabupaten
 
 </th>
 
@@ -790,7 +790,7 @@ Pancoran Mas, Depok City, West Java, Indonesia
 
 <td style="text-align:left;">
 
-\-6.3971623
+-6.3971623
 
 </td>
 
@@ -830,7 +830,7 @@ Karawaci Sub-District, Tangerang City, Banten, Indonesia
 
 <td style="text-align:left;">
 
-\-6.1805852
+-6.1805852
 
 </td>
 
@@ -870,7 +870,7 @@ North Semarang, Semarang City, Central Java, Indonesia
 
 <td style="text-align:left;">
 
-\-6.9607692
+-6.9607692
 
 </td>
 
@@ -910,7 +910,7 @@ Sidorejo, Salatiga City, Central Java, Indonesia
 
 <td style="text-align:left;">
 
-\-7.3055182
+-7.3055182
 
 </td>
 
@@ -950,7 +950,7 @@ Salaman, Magelang, Central Java, Indonesia
 
 <td style="text-align:left;">
 
-\-7.571206
+-7.571206
 
 </td>
 
@@ -990,7 +990,7 @@ Ngadirojo, Wonogiri Regency, Central Java, Indonesia
 
 <td style="text-align:left;">
 
-\-7.8351953
+-7.8351953
 
 </td>
 
@@ -1030,7 +1030,7 @@ Bontoramba, Jeneponto Regency, South Sulawesi, Indonesia
 
 <td style="text-align:left;">
 
-\-5.5632196
+-5.5632196
 
 </td>
 
