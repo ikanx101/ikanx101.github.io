@@ -25,6 +25,8 @@ search: true
 markdown: kramdown
 remote_theme: mmistakes/minimal-mistakes
 
+words_per_minute: 80
+
 # Outputting
 permalink: /:categories/:title/
 paginate: 7 # amount of posts to show
