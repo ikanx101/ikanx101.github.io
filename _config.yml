@@ -27,7 +27,7 @@ remote_theme: mmistakes/minimal-mistakes
 
 # Outputting
 permalink: /:categories/:title/
-paginate: 5 # amount of posts to show
+paginate: 7 # amount of posts to show
 paginate_path: /page:num/
 timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
@@ -57,9 +57,9 @@ plugins:
   
 
 author:
-  name   : "Mr. Ikanx"
+  name   : "Ikanx Fadhli"
   avatar : "/assets/images/MUKE.png"
-  bio    : "Welcome to my mind"
+  bio    : "Doing Magic with Mathematics"
   location : "Somewhere in Jakarta - Bekasi"
   links:
     - label: "Website"
@@ -103,7 +103,7 @@ defaults:
       layout: single
       author_profile: true
       read_time: true
-      comments: true
+      comments: false
       share: true
       related: true
   # _pages
