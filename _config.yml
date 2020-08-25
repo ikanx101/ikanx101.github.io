@@ -13,7 +13,7 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: Math, Market Research & Computational Science
+title: Mathematics, Market Research & Data Science
 email: ikanx101@gmail.com
 description: "mathematics data science algorithm maths statistics scientist artificial intelligence machine learning"
 
@@ -25,9 +25,11 @@ search: true
 markdown: kramdown
 remote_theme: mmistakes/minimal-mistakes
 
+words_per_minute: 80
+
 # Outputting
 permalink: /:categories/:title/
-paginate: 5 # amount of posts to show
+paginate: 7 # amount of posts to show
 paginate_path: /page:num/
 timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
@@ -57,9 +59,9 @@ plugins:
   
 
 author:
-  name   : "Mr. Ikanx"
+  name   : "Ikanx Fadhli"
   avatar : "/assets/images/MUKE.png"
-  bio    : "Welcome to my mind"
+  bio    : "TUV Rheinland-Certified Data Scientist. Doing magic using mathematics. Just a passingthrough market researcher."
   location : "Somewhere in Jakarta - Bekasi"
   links:
     - label: "Website"
@@ -103,7 +105,7 @@ defaults:
       layout: single
       author_profile: true
       read_time: true
-      comments: true
+      comments: false
       share: true
       related: true
   # _pages
