@@ -27,7 +27,7 @@ sesuai dengan cara kita berinteraksi dengan data.
 
 Secara statistika, kita bisa mengelompokan data berdasarkan tipenya:
 
-<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/2020-08-27-mengenal-data_files/figure-gfm/unnamed-chunk-1-1.png" width="60%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/2020-08-27-mengenal-data_files/figure-gfm/unnamed-chunk-1-1.png" width="80%" style="display: block; margin: auto;" />
 
 1.  Data kualitatif: adalah data yang tidak bisa dilakukan operasi
     aritmatika (penjumlahan, pengurangan, pembagian, dan perkalian).
@@ -113,7 +113,7 @@ dari data tersebut.
 
 Berikutnya adalah pengelompokan data berdasarkan sumbernya.
 
-<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/2020-08-27-mengenal-data_files/figure-gfm/unnamed-chunk-2-1.png" width="60%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/2020-08-27-mengenal-data_files/figure-gfm/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" />
 
 Data primer adalah data yang berasal dari sumber pertama. Sebagai contoh
 adalah data yang kita himpun sendiri dari hasil interview menggunakan
@@ -166,6 +166,7 @@ bisa diurutkan sebagai berikut:
 ![character \> numeric \> integer \>
 logical](https://latex.codecogs.com/png.latex?character%20%3E%20numeric%20%3E%20integer%20%3E%20logical
 "character \> numeric \> integer \> logical")  
+
 Saya coba jelaskan satu persatu *yah*:
 
 1.  `character`: merupakan tipe data berupa karakter atau `string`.
@@ -197,7 +198,7 @@ data itu berwujud, yakni:
     *multiple data* dengan struktur bermacam-macam. Biasanya data dengan
     format `.json` memiliki struktur berupa *list*.
 
-<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/2020-08-27-mengenal-data_files/figure-gfm/unnamed-chunk-3-1.png" width="60%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/2020-08-27-mengenal-data_files/figure-gfm/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" />
 
 ### Apa gunanya kita mengetahui jenis dan struktur data di **R**?
 
