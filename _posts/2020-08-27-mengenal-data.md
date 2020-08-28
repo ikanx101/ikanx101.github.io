@@ -33,7 +33,6 @@ Secara statistika, kita bisa mengelompokan data berdasarkan tipenya:
     aritmatika (penjumlahan, pengurangan, pembagian, dan perkalian).
     Data seperti ini bisa juga disebut sebagai **data kategorik**.
 
-<!-- end list -->
 
   - **Nominal**; Representasi dari sesuatu. Contoh: data seperti
     `gender`. Misalkan angka `1` saya tulis sebagai representasi dari
