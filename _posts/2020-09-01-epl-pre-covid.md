@@ -1,6 +1,6 @@
 ---
 date: 2020-09-01T05:00:00-04:00
-title: "Sport Science: English Premier League: Sebelum dan Saat Pandemi"
+title: "English Premier League: Sebelum dan Saat Pandemi"
 categories:
   - Blog
 tags:
