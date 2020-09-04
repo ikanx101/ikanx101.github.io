@@ -9,7 +9,6 @@ tags:
   - Innovation
   - R
   - Covid-19
-  - Covid 19
   - Corona Virus
 ---
 
