@@ -1,0 +1,108 @@
+---
+title: "Membuat Model Prediksi English Premier League"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+setwd("~/Documents/ikanx101.com/_posts/EPL/poisson")
+
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+```
+
+
+intinya hitung strength dan weakness
+
+
+```{r}
+data = 
+  read.csv("/home/ikanx101githubio/Documents/belajaR/Bukan Infografis/EPL/EPL.csv") %>% 
+  janitor::clean_names()
+data
+
+avg_home_gol = sum(data$fthg)/length(data$home_team)
+avg_away_gol = sum(data$ftag)/length(data$away_team)
+
+# pertama adalah home
+home = 
+  data %>% 
+  select(home_team,fthg,ftag) %>% 
+  group_by(home_team) %>% 
+  summarise(home_goal = sum(fthg),
+            away_goal = sum(ftag),
+            play = n(),
+            ratio_goal_at_home = home_goal/play,
+            ratio_goal_against_away_at_home = away_goal/play) %>% 
+  ungroup() %>% 
+  mutate(all_home_goals = sum(home_goal)/sum(play),
+         all_away_goals = sum(away_goal)/sum(play),
+         home_attack = ratio_goal_at_home/all_home_goals,
+         home_defense = ratio_goal_against_away_at_home/all_away_goals,
+         overall_home = home_attack - home_defense) %>% 
+  select(home_team,home_attack,home_defense,overall_home)
+
+
+# kedua adalah away
+away = 
+  data %>% 
+  select(away_team,fthg,ftag) %>% 
+  group_by(away_team) %>% 
+  summarise(home_goal = sum(fthg),
+            away_goal = sum(ftag),
+            play = n(),
+            ratio_goal_at_away = home_goal/play,
+            ratio_goal_against_home_at_away = away_goal/play) %>% 
+  ungroup() %>% 
+  mutate(all_home_goals = sum(home_goal)/sum(play),
+         all_away_goals = sum(away_goal)/sum(play),
+         away_attack = ratio_goal_against_home_at_away/all_away_goals,
+         away_defense = ratio_goal_at_away/all_home_goals,
+         overall_away = away_attack - away_defense) %>% 
+  select(away_team,away_attack,away_defense,overall_away)
+
+away
+```
+
+
+Misalkan pertandingan: Arsenal vs Liverpool
+
+expected goal
+
+```{r}
+xgoal = function(tim_kandang,tim_tamu){
+  home = 
+    home %>% 
+    filter(home_team == tim_kandang)
+
+  away = 
+    away %>% 
+    filter(away_team == tim_tamu)
+
+  xgoal_home = home$home_attack * away$away_defense * avg_home_gol
+  xgoal_away = away$away_attack * home$home_defense * avg_away_gol
+  return(c(xgoal_home,xgoal_away))
+}
+
+xgoal_data = xgoal("Arsenal","Liverpool")
+
+
+prediksi_poisson = function(gol_home,xgoal_home_,gol_away,xgoal_away_){
+  dpois(x = gol_home, lambda = xgoal_home_) * dpois(x = gol_away, lambda = xgoal_away_) *100
+}
+
+# bikin data frame
+pred = data.frame(skor_home = c(rep(1,10),rep(2,10),rep(3,10),rep(4,10),rep(5,10),
+                                rep(6,10),rep(7,10),rep(8,10),rep(9,10),rep(10,10)),
+                  skor_away = rep(c(1:10),10))
+
+pred$prob = prediksi_poisson(pred$skor_home,xgoal_data[1],pred$skor_away,xgoal_data[2])
+
+library(ggplot2)
+pred %>% 
+  ggplot(aes(x = skor_home,y = skor_away,fill = skor)) +
+  geom_tile() +
+  scale_fill_gradient2(low = "lightblue",high = "darkred",midpoint = 5)
+```
