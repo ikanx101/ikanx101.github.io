@@ -64,9 +64,9 @@ Uji hipotesis:
     proporsi\_{away}](https://latex.codecogs.com/png.latex?proporsi_%7Bhome%7D%20%3D%20proporsi_%7Baway%7D
     "proporsi_{home} = proporsi_{away}").
 2.  ![H\_1](https://latex.codecogs.com/png.latex?H_1 "H_1"):
-    ![proporsi\_{home} =
-    proporsi\_{away}](https://latex.codecogs.com/png.latex?proporsi_%7Bhome%7D%20%3D%20proporsi_%7Baway%7D
-    "proporsi_{home} = proporsi_{away}").
+    ![proporsi\_{home} \\neq
+    proporsi\_{away}](https://latex.codecogs.com/png.latex?proporsi_%7Bhome%7D%20%5Cneq%20proporsi_%7Baway%7D
+    "proporsi_{home} \\neq proporsi_{away}").
 3.  Jika
     ![p\_{-value}\< 0.05](https://latex.codecogs.com/png.latex?p_%7B-value%7D%3C%200.05
     "p_{-value}\< 0.05"), tolak
