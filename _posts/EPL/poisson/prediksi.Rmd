@@ -1,6 +1,8 @@
 ---
-title: "Membuat Model Prediksi English Premier League"
-output: github_document
+title: "Membuat Prediksi Pertandingan English Premier League"
+output: 
+  github_document:
+    pandoc_args: --webtex
 ---
 
 ```{r setup, include=FALSE}
@@ -13,16 +15,136 @@ library(ggplot2)
 library(tidyr)
 ```
 
+__English Premier League__ musim 2020/2021 akan segera dimulai dalam beberapa hari lagi. Menarik jika kita melihat beberapa geliat di bursa transfer. Walaupun pertandingan nanti tidak akan disaksikan oleh penonton dalam waktu dekat, tapi tensi pertandingannya saya rasa masih tetap sama.
 
-intinya hitung strength dan weakness
+Sejak kuliah di Matematika dulu, ada satu pertanyaan yang muncul: 
 
+> Apakah bisa saya membuat prediksi hasil akhir pertandingan di _Premier League_? Kalau bisa, bagaimana caranya?
 
-```{r}
-data = 
-  read.csv("/home/ikanx101githubio/Documents/belajaR/Bukan Infografis/EPL/EPL.csv") %>% 
-  janitor::clean_names()
-data
+Sampai akhirnya saya mendarat di suatu _website_ yang membahas tentang statistika di dunia judi. Berbekal `ilmu` yang saya dapatkan ini, saya akan coba membuat prediksi dari pertandingan _English Premier League_ musim 2020/2021.
 
+----
+
+## Bagaimana cara kerjanya?
+
+Sebenarnya membuat prediksinya relatif cukup mudah. Pendekatan yang dilakukan adalah dengan memanfaatkan distribusi [__Poisson__](https://en.wikipedia.org/wiki/Poisson_distribution). Walaupun masih ada pro dan kontra, tapi kebanyakan _scientist_ setuju bahwa __banyaknya gol dalam suatu pertandingan pertandingan sepakbola__ itu memenuhi asumsi distribusi Poisson.
+
+----
+
+Apa saja asumsinya?
+
+- $k$ is the number of times an event occurs in an interval and $k$ can take values 0, 1, 2, ....
+- The occurrence of one event does not affect the probability that a second event will occur. That is, events occur independently.
+- The average rate at which events occur is independent of any occurrences. For simplicity, this is usually assumed to be constant, but may in practice vary with time.
+- Two events cannot occur at exactly the same instant; instead, at each very small sub-interval exactly one event either occurs or does not occur.
+
+----
+
+Jadi saya akan memprediksi banyak gol yang tercipta oleh __tim home__ dan __tim away__ dalam suatu pertandingan menggunakan distribusi Poisson!
+
+Dalam distribusi Poisson, parameter yang perlu diketahui adalah $\lambda$.
+
+Apakah arti dari $\lambda$? 
+
+Pada distribusi Poisson, salah satu sifatnya adalah $\lambda = \overline{x} = \sigma^2$. 
+
+- $\overline{x}$ berarti _mean_ atau _expected value_.
+- $\sigma^2$ berarti _variansi_.
+
+Jadi pada distribusi Poisson, nilai _mean_ dan variansinya adalah sama, yakni sebesar $\lambda$.
+
+Kalau teman-teman membaca tulisan saya sebelumnya terkait [__mitos home vs away__](https://ikanx101.com/blog/EPL-home-away/), sebenarnya ada _easter eggs_ di salah satu tabel bahwa nilai $\overline{x}$ hampir mirip dengan nilai $\sigma^2$.
+
+> Dengan mengetahui nilai _expected value_ (dalam hal ini adalah __expected goals__) setiap tim pada saat laga home dan away, saya bisa menghitung peluang gol yang tercipta dalam suatu pertandingan!
+
+Berikut adalah alur pengerjaannya:
+
+```{r,echo=FALSE}
+nomnoml::nomnoml("#direction: down,
+                 [Data Mentah] -> [Data Bersih]
+                 [Data Bersih] -> [Dist Poisson]
+                 [Dist Poisson] -> [Visualisasi]
+                 
+                 [Data Mentah|
+                  [EPL 2018/2019] -> [Gabung]
+                  [EPL 2019/2020] -> [Gabung]
+                 ]
+                 
+                 [Data Bersih|
+                  [Gabung] -> [Data Tim Home]
+                  [Gabung] -> [Data Tim Away]
+                  [Data Tim Home] -> [Hitung Attack dan Defense]
+                  [Data Tim Away] -> [Hitung Attack dan Defense]
+                  [Hitung Attack dan Defense] -> [Data Attack dan Defense Tim Home]
+                  [Hitung Attack dan Defense] -> [Data Attack dan Defense Tim Away]
+                  ]
+                  
+                  [Dist Poisson|
+                    [Data Attack dan Defense Tim Home] -> [Selected Tim Home]
+                    [Data Attack dan Defense Tim Away] -> [Selected Tim Away]
+                    [Selected Tim Home] -> [Hitung Expected Goal]
+                    [Selected Tim Away] -> [Hitung Expected Goal]
+                    [Hitung Expected Goal] -> [Hitung Peluang]
+                    [Hitung Peluang] -> [Matrix Peluang]
+                    ]
+                  
+                  [Visualisasi|
+                    [Matrix Peluang] -> [geom_tile()]
+                    [Matrix Peluang] -> [geom_col()]
+                    ]
+                 ")
+```
+
+---
+
+## Data Mentah
+
+Data yang digunakan adalah statistik pertandingan EPL pada dua musim terakhir. Variabel yang akan masuk kedalam perhitungan adalah:
+
+1. Nama `tim_home`
+1. Nama `tim_away`
+1. Goal yang dicetak `tim_home`
+1. Goal yang dicetak `tim_away`
+
+Berikut adalah sampel data dari dua musim terakhir yang telah digabung:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+data_2 = 
+  read.csv("/home/ikanx101githubio/Documents/belajaR/Bukan Infografis/EPL/EPL 2019.csv") %>% 
+  janitor::clean_names() %>% 
+  select(date,home_team,away_team,fthg,ftag)
+data_1 = 
+  read.csv("/home/ikanx101githubio/Documents/belajaR/Bukan Infografis/EPL/EPL 2018.csv") %>% 
+  janitor::clean_names()%>% 
+  select(date,home_team,away_team,fthg,ftag)
+
+data = rbind(data_1,data_2)
+
+data %>% 
+  rename(home_goals = fthg,
+         away_goals = ftag) %>% 
+  head(10) %>% 
+  knitr::kable()
+```
+
+## Pecah Menjadi Data `home` dan `away`
+
+Sebagaimana yang telah saya sampaikan, bahwa ada perbedaan antara tim `home` dan tim `away` dalam hal ketajaman mencetak goal. Oleh karena itu, saya akan bagi dua datanya menjadi data tim `home` dan data tim `away`.
+
+Apa sih gunanya? Kelak saya akan menghitung skor `attack` dan `defense` masing-masing tim pada laga `home` dan `away`.
+
+Begini caranya:
+
+Misalkan tim `Man United` selama berlaga di `home` pada dua musim berturut-turut (misalkan ada `40` laga) berhasil mencetak gol sebanyak `100` kali dan kebobolan `50` kali.
+
+Apabila rata-rata gol yang dicetak semua tim pada laga `home` adalah `1.7` dan rata-rata kebobolan semua tim pada laga `home` adalah `0.8`, maka:
+
+- `Attack` tim `Man United` pada laga `home` adalah: $\frac{\frac{100}{40}}{1.7} =$ `r (100/40)/1.7`
+- `Defense` tim `Man United` pada laga `away` adalah: $\frac{\frac{50}{40}}{0.8} =$ `r (50/40)/0.8`
+
+Perhitungan ini diulang kembali saat `Man United` berlaga di `away` dengan nilai `attack` dan `defense` yang terbalik dengan laga `home`.
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
 avg_home_gol = sum(data$fthg)/length(data$home_team)
 avg_away_gol = sum(data$ftag)/length(data$away_team)
 
@@ -63,15 +185,28 @@ away =
          overall_away = away_attack - away_defense) %>% 
   select(away_team,away_attack,away_defense,overall_away)
 
-away
+knitr::kable(head(home),"html",caption = "Contoh Data Home")
+knitr::kable(head(away),"html",caption = "Contoh Data Away")
 ```
 
+## Menghitung `expected goals`
 
-Misalkan pertandingan: Arsenal vs Liverpool
+Sekarang saatnya saya menghitung _expected goals_ masing-masing tim yang berlaga. Bagaimana caranya?
 
-expected goal
+Misalkan saya ambil contoh pertandingan Community Shield yang digelar pekan lalu: `Arsenal` vs `Liverpool`. Meskipun pertandingan ini bukan pertandingan `home` vs `away`, tapi akan saya asumsikan demikian untuk mempermudah penjelasan.
 
-```{r}
+Dari sini, saya definisikan:
+
+- `tim_home` = `Arsenal`
+- `tim_away` = `Liverpool`
+
+Maka expected goals masing-masing tim adalah:
+
+$$Xgoal_{Arsenal} = Attack_{Arsenal}*Defense_{Liverpool}*\overline{goal}_{home}$$
+$$Xgoal_{Liverpool} = Attack_{Liverpool}*Defense_{Arsenal}*\overline{goal}_{away}$$
+
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
 xgoal = function(tim_kandang,tim_tamu){
   home = 
     home %>% 
@@ -86,7 +221,11 @@ xgoal = function(tim_kandang,tim_tamu){
   return(c(xgoal_home,xgoal_away))
 }
 
-xgoal_data = xgoal("Arsenal","Liverpool")
+# set tim yang bertanding
+tim_home = "Arsenal"
+tim_away = "Liverpool"
+
+xgoal_data = xgoal(tim_home,tim_away)
 
 
 prediksi_poisson = function(gol_home,xgoal_home_,gol_away,xgoal_away_){
@@ -94,15 +233,42 @@ prediksi_poisson = function(gol_home,xgoal_home_,gol_away,xgoal_away_){
 }
 
 # bikin data frame
-pred = data.frame(skor_home = c(rep(1,10),rep(2,10),rep(3,10),rep(4,10),rep(5,10),
-                                rep(6,10),rep(7,10),rep(8,10),rep(9,10),rep(10,10)),
-                  skor_away = rep(c(1:10),10))
+pred = data.frame(skor_home = c(rep(0,6),rep(1,6),rep(2,6),rep(3,6),rep(4,6),rep(5,6)),
+                  skor_away = rep(c(0:5),6))
 
 pred$prob = prediksi_poisson(pred$skor_home,xgoal_data[1],pred$skor_away,xgoal_data[2])
 
 library(ggplot2)
 pred %>% 
-  ggplot(aes(x = skor_home,y = skor_away,fill = skor)) +
+  mutate(label = paste0(skor_home,"-",skor_away,"\nProb: ",round(prob,1),"%"),
+         skor_home = factor(skor_home,levels = c(0:10)),
+         skor_away = factor(skor_away,levels = c(0:10))) %>% 
+  ggplot(aes(x = skor_home,y = skor_away,fill = prob)) +
   geom_tile() +
-  scale_fill_gradient2(low = "lightblue",high = "darkred",midpoint = 5)
+  geom_label(aes(label = label),size = 3) +
+  scale_fill_gradient2(low = "lightblue",high = "darkred",midpoint = 4) +
+  labs(x = tim_home,
+       y = tim_away)
+
+pred %>% 
+  mutate(hasil = case_when(skor_home > skor_away ~ tim_home,
+                           skor_home < skor_away ~ tim_away,
+                           skor_home == skor_away ~"Seri"),
+         hasil = factor(hasil,levels = c(tim_home,"Seri",tim_away))
+         ) %>% 
+  group_by(hasil) %>% 
+  summarise(prob = sum(prob)) %>% 
+  ungroup() %>% 
+  mutate(label = round(prob,2),
+         label = paste0(label,"%")) %>% 
+  ggplot(aes(x = hasil,
+             y = prob)) +
+  geom_col(color = "black") +
+  geom_label(aes(label=label)) +
+  ggthemes::theme_wsj() +
+  labs(title = "Who wins?",
+       subtitle = "Based on Poisson Model",
+       caption = "Simulasi menggunakan R\nikanx101.com") +
+  theme(axis.text.y = element_blank(),
+        plot.caption = element_text(size=10,face = "bold"))
 ```
