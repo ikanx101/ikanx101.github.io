@@ -193,18 +193,17 @@ knitr::kable(head(away),"html",caption = "Contoh Data Away")
 
 Sekarang saatnya saya menghitung _expected goals_ masing-masing tim yang berlaga. Bagaimana caranya?
 
-Misalkan saya ambil contoh pertandingan Community Shield yang digelar pekan lalu: `Arsenal` vs `Liverpool`. Meskipun pertandingan ini bukan pertandingan `home` vs `away`, tapi akan saya asumsikan demikian untuk mempermudah penjelasan.
+Misalkan saya ambil contoh pertandingan _Community Shield_ yang digelar pekan lalu: `Arsenal` vs `Liverpool`. Meskipun pertandingan ini bukan pertandingan `home` vs `away`, tapi akan saya asumsikan demikian untuk mempermudah penjelasan.
 
 Dari sini, saya definisikan:
 
 - `tim_home` = `Arsenal`
 - `tim_away` = `Liverpool`
 
-Maka expected goals masing-masing tim adalah:
+Maka _expected goals_ masing-masing tim adalah:
 
 $$Xgoal_{Arsenal} = Attack_{Arsenal}*Defense_{Liverpool}*\overline{goal}_{home}$$
 $$Xgoal_{Liverpool} = Attack_{Liverpool}*Defense_{Arsenal}*\overline{goal}_{away}$$
-
 
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
 xgoal = function(tim_kandang,tim_tamu){
@@ -226,8 +225,19 @@ tim_home = "Arsenal"
 tim_away = "Liverpool"
 
 xgoal_data = xgoal(tim_home,tim_away)
+```
+
+Yakni `r xgoal_data[1]` untuk `Arsenal` dan `r xgoal_data[2]` untuk `Liverpool`.
+
+## Menghitung Peluang Terjadinya Gol
+
+Berbekal informasi di atas, kita akan menghitung peluang gol yang tercipta pada pertandingan.
+
+Misalkan, saya ingin menghitung peluang pertandingan berakhir dengan skor `0 - 2`, maka caranya adalah:
 
 
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
 prediksi_poisson = function(gol_home,xgoal_home_,gol_away,xgoal_away_){
   dpois(x = gol_home, lambda = xgoal_home_) * dpois(x = gol_away, lambda = xgoal_away_) *100
 }
