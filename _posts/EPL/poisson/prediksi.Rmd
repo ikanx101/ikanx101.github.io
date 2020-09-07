@@ -139,8 +139,9 @@ Misalkan tim `Man United` selama berlaga di `home` pada dua musim berturut-turut
 
 Apabila rata-rata gol yang dicetak semua tim pada laga `home` adalah `1.7` dan rata-rata kebobolan semua tim pada laga `home` adalah `0.8`, maka:
 
-- `Attack` tim `Man United` pada laga `home` adalah: $\frac{\frac{100}{40}}{1.7} =$ `r (100/40)/1.7`
-- `Defense` tim `Man United` pada laga `away` adalah: $\frac{\frac{50}{40}}{0.8} =$ `r (50/40)/0.8`
+- `Attack` tim `Man United` pada laga `home` adalah: $\frac{\frac{100}{40}}{1.7} =$ `r (100/40)/1.7`.
+- `Defense` tim `Man United` pada laga `home` adalah: $\frac{\frac{50}{40}}{0.8} =$ `r (50/40)/0.8`.
+- `Overall` tim `Man United` pada laga `home` adalah selisih antara `Attack` dan `Defense` = `r ((100/40)/1.7) - ((50/40)/0.8)`
 
 Perhitungan ini diulang kembali saat `Man United` berlaga di `away` dengan nilai `attack` dan `defense` yang terbalik dengan laga `home`.
 
@@ -272,11 +273,11 @@ pred %>%
        title = "Peluang Hasil Akhir Pertandingan",
        subtitle = "Dihitung dengan Distribusi Poisson",
        caption = "Simulasi menggunakan R\nikanx101.com") +
-  theme(minimal) +
+  theme_minimal() +
   theme(legend.position = "none")
 ```
 
-Menarik yah, ternyata peluang terbesar itu terjadi pada saat skor: `1-1`.
+Menarik yah, ternyata peluang terbesar itu terjadi pada saat skor: `1-1` lalu `0-1`.
 
 Jika saya _summary_-kan hasil akhir dari berbagai kemungkinan skor tersebut:
 
@@ -290,7 +291,7 @@ pred %>%
   group_by(hasil) %>% 
   summarise(prob = sum(prob)) %>% 
   ungroup() %>% 
-  mutate(label = round(prob,2),
+  mutate(label = round(prob,1),
          label = paste0(label,"%")) %>% 
   ggplot(aes(x = hasil,
              y = prob)) +
@@ -301,7 +302,9 @@ pred %>%
        subtitle = "Dihitung dengan Distribusi Poisson",
        caption = "Simulasi menggunakan R\nikanx101.com") +
   theme(axis.text.y = element_blank(),
-        plot.caption = element_text(size=10,face = "bold"))
+        plot.caption = element_text(size=10,face = "bold"),
+        plot.title = element_text(size=20),
+        plot.subtitle = element_text(size=15))
 ```
 
 `Liverpool` masih dijagokan untuk menang.
@@ -313,3 +316,171 @@ Hasil pertandingan berakhir seri `1-1`, namun ada saat _penalty shootout_ `Arsen
 ## What's next?
 
 Wajar saja jika perhitungan di atas _miss_ pada pertandingan semacam _community shield_, tapi nanti pada saat laga resmi bergulir akan saya coba pantau kinerja dari model perhitungan ini secara berkala dengan menambahkan data pertandingan terbaru.
+
+## Laga Pembuka EPL 2020/2021
+
+Sebagai penutup, saya akan coba memprediksi laga pembuka Premier League 2020/2021 untuk tim papan atas seperti `Man United`, `Arsenal`, dan `Chelsea`. Untuk `Man City` mohon maaf, kalian hitung sendiri saja ya. _haha_
+
+Sedagkan `Liverpool` melawan `Leeds` belum bisa dihitung karena `Leeds` baru saja promosi musim ini.
+
+### Fulham vs Arsenal
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina = 10}
+# set tim yang bertanding
+tim_home = "Fulham"
+tim_away = "Arsenal"
+
+xgoal_data = xgoal(tim_home,tim_away)
+# bikin data frame
+pred = data.frame(skor_home = c(rep(0,6),rep(1,6),rep(2,6),rep(3,6),rep(4,6),rep(5,6)),
+                  skor_away = rep(c(0:5),6))
+
+pred$prob = prediksi_poisson(pred$skor_home,xgoal_data[1],pred$skor_away,xgoal_data[2])
+
+pred %>% 
+  mutate(label = paste0(skor_home,"-",skor_away,"\nProb: ",round(prob,1),"%"),
+         skor_home = factor(skor_home,levels = c(0:10)),
+         skor_away = factor(skor_away,levels = c(0:10))) %>% 
+  ggplot(aes(x = skor_home,y = skor_away,fill = prob)) +
+  geom_tile() +
+  geom_label(aes(label = label),size = 3) +
+  scale_fill_gradient2(low = "lightblue",high = "darkred",midpoint = 4) +
+  labs(x = tim_home,
+       y = tim_away,
+       title = "Peluang Hasil Akhir Pertandingan",
+       subtitle = "Match Day 1",
+       caption = "Simulasi menggunakan R\nikanx101.com") +
+  theme_minimal() +
+  theme(legend.position = "none")
+pred %>% 
+  mutate(hasil = case_when(skor_home > skor_away ~ tim_home,
+                           skor_home < skor_away ~ tim_away,
+                           skor_home == skor_away ~"Seri"),
+         hasil = factor(hasil,levels = c(tim_home,"Seri",tim_away))
+         ) %>% 
+  group_by(hasil) %>% 
+  summarise(prob = sum(prob)) %>% 
+  ungroup() %>% 
+  mutate(label = round(prob,1),
+         label = paste0(label,"%")) %>% 
+  ggplot(aes(x = hasil,
+             y = prob)) +
+  geom_col(color = "black") +
+  geom_label(aes(label=label)) +
+  ggthemes::theme_wsj() +
+  labs(title = "Peluang Hasil Akhir Pertandingan",
+       subtitle = "Match Day 1",
+       caption = "Simulasi menggunakan R\nikanx101.com") +
+  theme(axis.text.y = element_blank(),
+        plot.caption = element_text(size=10,face = "bold"),
+        plot.title = element_text(size=20),
+        plot.subtitle = element_text(size=15))
+```
+
+### Man United vs Crystal Palace
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina = 10}
+# set tim yang bertanding
+tim_home = "Man United"
+tim_away = "Crystal Palace"
+
+xgoal_data = xgoal(tim_home,tim_away)
+# bikin data frame
+pred = data.frame(skor_home = c(rep(0,6),rep(1,6),rep(2,6),rep(3,6),rep(4,6),rep(5,6)),
+                  skor_away = rep(c(0:5),6))
+
+pred$prob = prediksi_poisson(pred$skor_home,xgoal_data[1],pred$skor_away,xgoal_data[2])
+
+pred %>% 
+  mutate(label = paste0(skor_home,"-",skor_away,"\nProb: ",round(prob,1),"%"),
+         skor_home = factor(skor_home,levels = c(0:10)),
+         skor_away = factor(skor_away,levels = c(0:10))) %>% 
+  ggplot(aes(x = skor_home,y = skor_away,fill = prob)) +
+  geom_tile() +
+  geom_label(aes(label = label),size = 3) +
+  scale_fill_gradient2(low = "lightblue",high = "darkred",midpoint = 4) +
+  labs(x = tim_home,
+       y = tim_away,
+       title = "Peluang Hasil Akhir Pertandingan",
+       subtitle = "Match Day 1",
+       caption = "Simulasi menggunakan R\nikanx101.com") +
+  theme_minimal() +
+  theme(legend.position = "none")
+pred %>% 
+  mutate(hasil = case_when(skor_home > skor_away ~ tim_home,
+                           skor_home < skor_away ~ tim_away,
+                           skor_home == skor_away ~"Seri"),
+         hasil = factor(hasil,levels = c(tim_home,"Seri",tim_away))
+         ) %>% 
+  group_by(hasil) %>% 
+  summarise(prob = sum(prob)) %>% 
+  ungroup() %>% 
+  mutate(label = round(prob,1),
+         label = paste0(label,"%")) %>% 
+  ggplot(aes(x = hasil,
+             y = prob)) +
+  geom_col(color = "black") +
+  geom_label(aes(label=label)) +
+  ggthemes::theme_wsj() +
+  labs(title = "Peluang Hasil Akhir Pertandingan",
+       subtitle = "Match Day 1",
+       caption = "Simulasi menggunakan R\nikanx101.com") +
+  theme(axis.text.y = element_blank(),
+        plot.caption = element_text(size=10,face = "bold"),
+        plot.title = element_text(size=20),
+        plot.subtitle = element_text(size=15))
+```
+
+### Brighton vs Chelsea
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina = 10}
+# set tim yang bertanding
+tim_home = "Brighton"
+tim_away = "Chelsea"
+
+xgoal_data = xgoal(tim_home,tim_away)
+# bikin data frame
+pred = data.frame(skor_home = c(rep(0,6),rep(1,6),rep(2,6),rep(3,6),rep(4,6),rep(5,6)),
+                  skor_away = rep(c(0:5),6))
+
+pred$prob = prediksi_poisson(pred$skor_home,xgoal_data[1],pred$skor_away,xgoal_data[2])
+
+pred %>% 
+  mutate(label = paste0(skor_home,"-",skor_away,"\nProb: ",round(prob,1),"%"),
+         skor_home = factor(skor_home,levels = c(0:10)),
+         skor_away = factor(skor_away,levels = c(0:10))) %>% 
+  ggplot(aes(x = skor_home,y = skor_away,fill = prob)) +
+  geom_tile() +
+  geom_label(aes(label = label),size = 3) +
+  scale_fill_gradient2(low = "lightblue",high = "darkred",midpoint = 4) +
+  labs(x = tim_home,
+       y = tim_away,
+       title = "Peluang Hasil Akhir Pertandingan",
+       subtitle = "Match Day 1",
+       caption = "Simulasi menggunakan R\nikanx101.com") +
+  theme_minimal() +
+  theme(legend.position = "none")
+pred %>% 
+  mutate(hasil = case_when(skor_home > skor_away ~ tim_home,
+                           skor_home < skor_away ~ tim_away,
+                           skor_home == skor_away ~"Seri"),
+         hasil = factor(hasil,levels = c(tim_home,"Seri",tim_away))
+         ) %>% 
+  group_by(hasil) %>% 
+  summarise(prob = sum(prob)) %>% 
+  ungroup() %>% 
+  mutate(label = round(prob,1),
+         label = paste0(label,"%")) %>% 
+  ggplot(aes(x = hasil,
+             y = prob)) +
+  geom_col(color = "black") +
+  geom_label(aes(label=label)) +
+  ggthemes::theme_wsj() +
+  labs(title = "Peluang Hasil Akhir Pertandingan",
+       subtitle = "Match Day 1",
+       caption = "Simulasi menggunakan R\nikanx101.com") +
+  theme(axis.text.y = element_blank(),
+        plot.caption = element_text(size=10,face = "bold"),
+        plot.title = element_text(size=20),
+        plot.subtitle = element_text(size=15))
+```
