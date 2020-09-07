@@ -235,9 +235,19 @@ Berbekal informasi di atas, kita akan menghitung peluang gol yang tercipta pada 
 
 Misalkan, saya ingin menghitung peluang pertandingan berakhir dengan skor `0 - 2`, maka caranya adalah:
 
+$P(skor = 0 - 2) = P(home=0)*P(away=2)$
 
+Maka untuk menghitung semua kombinasi skor yang mungkin, saya akan membuat matrix peluang sebagai berikut:
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE}
+```{r,echo=FALSE}
+matrix(ncol=5,nrow = 5)
+```
+
+Nantinya sumbu x menandakan tim `home` dan sumbu y menandakan tim `away`.
+
+Jadi, hasil perhitungan untuk laga `Arsenal`kontra `Liverpool` adalah sebagai berikut:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina = 10}
 prediksi_poisson = function(gol_home,xgoal_home_,gol_away,xgoal_away_){
   dpois(x = gol_home, lambda = xgoal_home_) * dpois(x = gol_away, lambda = xgoal_away_) *100
 }
@@ -258,8 +268,19 @@ pred %>%
   geom_label(aes(label = label),size = 3) +
   scale_fill_gradient2(low = "lightblue",high = "darkred",midpoint = 4) +
   labs(x = tim_home,
-       y = tim_away)
+       y = tim_away,
+       title = "Peluang Hasil Akhir Pertandingan",
+       subtitle = "Dihitung dengan Distribusi Poisson",
+       caption = "Simulasi menggunakan R\nikanx101.com") +
+  theme(minimal) +
+  theme(legend.position = "none")
+```
 
+Menarik yah, ternyata peluang terbesar itu terjadi pada saat skor: `1-1`.
+
+Jika saya _summary_-kan hasil akhir dari berbagai kemungkinan skor tersebut:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina = 10}
 pred %>% 
   mutate(hasil = case_when(skor_home > skor_away ~ tim_home,
                            skor_home < skor_away ~ tim_away,
@@ -276,9 +297,19 @@ pred %>%
   geom_col(color = "black") +
   geom_label(aes(label=label)) +
   ggthemes::theme_wsj() +
-  labs(title = "Who wins?",
-       subtitle = "Based on Poisson Model",
+  labs(title = "Peluang Hasil Akhir Pertandingan",
+       subtitle = "Dihitung dengan Distribusi Poisson",
        caption = "Simulasi menggunakan R\nikanx101.com") +
   theme(axis.text.y = element_blank(),
         plot.caption = element_text(size=10,face = "bold"))
 ```
+
+`Liverpool` masih dijagokan untuk menang.
+
+## Faktanya:
+
+Hasil pertandingan berakhir seri `1-1`, namun ada saat _penalty shootout_ `Arsenal` berhasil menang.
+
+## What's next?
+
+Wajar saja jika perhitungan di atas _miss_ pada pertandingan semacam _community shield_, tapi nanti pada saat laga resmi bergulir akan saya coba pantau kinerja dari model perhitungan ini secara berkala dengan menambahkan data pertandingan terbaru.
