@@ -649,7 +649,7 @@ sebagai berikut:
 <img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/EPL/poisson/prediksi_files/figure-gfm/unnamed-chunk-6-1.png" width="672" />
 
 Menarik yah, ternyata peluang terbesar itu terjadi pada saat skor: `1-1`
-lalu `0-1`.
+lalu `1-2`.
 
 Jika saya *summary*-kan hasil akhir dari berbagai kemungkinan skor
 tersebut:
