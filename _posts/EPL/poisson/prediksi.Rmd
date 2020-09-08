@@ -66,13 +66,12 @@ nomnoml::nomnoml("#direction: down,
                  [Dist Poisson] -> [Visualisasi]
                  
                  [Data Mentah|
-                  [EPL 2018/2019] -> [Gabung]
-                  [EPL 2019/2020] -> [Gabung]
+                  [EPL 2019/2020] -> [Rapi dan bersih]
                  ]
                  
                  [Data Bersih|
-                  [Gabung] -> [Data Tim Home]
-                  [Gabung] -> [Data Tim Away]
+                  [Rapi dan bersih] -> [Data Tim Home]
+                  [Rapi dan bersih] -> [Data Tim Away]
                   [Data Tim Home] -> [Hitung Attack dan Defense]
                   [Data Tim Away] -> [Hitung Attack dan Defense]
                   [Hitung Attack dan Defense] -> [Data Attack dan Defense Tim Home]
@@ -101,26 +100,20 @@ nomnoml::nomnoml("#direction: down,
 
 ## Data Mentah
 
-Data yang digunakan adalah statistik pertandingan EPL pada dua musim terakhir. Variabel yang akan masuk kedalam perhitungan adalah:
+Data yang digunakan adalah statistik pertandingan EPL pada musim lalu. Variabel yang akan masuk kedalam perhitungan adalah:
 
 1. Nama `tim_home`
 1. Nama `tim_away`
 1. Goal yang dicetak `tim_home`
 1. Goal yang dicetak `tim_away`
 
-Berikut adalah sampel data dari dua musim terakhir yang telah digabung:
+Berikut adalah sampel data dari musim lalu:
 
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
-data_2 = 
+data = 
   read.csv("/home/ikanx101githubio/Documents/belajaR/Bukan Infografis/EPL/EPL 2019.csv") %>% 
   janitor::clean_names() %>% 
   select(date,home_team,away_team,fthg,ftag)
-data_1 = 
-  read.csv("/home/ikanx101githubio/Documents/belajaR/Bukan Infografis/EPL/EPL 2018.csv") %>% 
-  janitor::clean_names()%>% 
-  select(date,home_team,away_team,fthg,ftag)
-
-data = rbind(data_1,data_2)
 
 data %>% 
   rename(home_goals = fthg,
@@ -137,7 +130,7 @@ Apa sih gunanya? Kelak saya akan menghitung skor `attack` dan `defense` masing-m
 
 Begini caranya:
 
-Misalkan tim `Man United` selama berlaga di `home` pada dua musim berturut-turut (misalkan ada `40` laga) berhasil mencetak gol sebanyak `100` kali dan kebobolan `50` kali.
+Misalkan tim `Man United` selama berlaga di `home` pada musim lalu (misalkan ada `40` laga) berhasil mencetak gol sebanyak `100` kali dan kebobolan `50` kali.
 
 Apabila rata-rata gol yang dicetak semua tim pada laga `home` adalah `1.7` dan rata-rata kebobolan semua tim pada laga `home` adalah `0.8`, maka:
 
@@ -321,63 +314,10 @@ Wajar saja jika perhitungan di atas _miss_ pada pertandingan semacam _community 
 
 ## Laga Pembuka EPL 2020/2021
 
-Sebagai penutup, saya akan coba memprediksi laga pembuka Premier League 2020/2021 untuk tim papan atas seperti `Man United`, `Arsenal`, dan `Chelsea`. Untuk `Man City` mohon maaf, kalian hitung sendiri saja ya. _haha_
+Sebagai penutup, saya akan coba memprediksi laga pembuka Premier League 2020/2021 untuk 2 tim: `Man United` dan `Chelsea`. Untuk `Man City` mohon maaf, kalian hitung sendiri saja ya. _haha_
 
-Sedagkan `Liverpool` melawan `Leeds` belum bisa dihitung karena `Leeds` baru saja promosi musim ini.
+Sedangkan `Liverpool` melawan `Leeds` belum bisa dihitung karena `Leeds` baru saja promosi musim ini. Sama juga dengan `Fulham` kontra `Arsenal` belum bisa dihitung karena `Fulham` baru promosi musim ini.
 
-### Fulham vs Arsenal
-
-```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina = 10}
-# set tim yang bertanding
-tim_home = "Fulham"
-tim_away = "Arsenal"
-
-xgoal_data = xgoal(tim_home,tim_away)
-# bikin data frame
-pred = data.frame(skor_home = c(rep(0,6),rep(1,6),rep(2,6),rep(3,6),rep(4,6),rep(5,6)),
-                  skor_away = rep(c(0:5),6))
-
-pred$prob = prediksi_poisson(pred$skor_home,xgoal_data[1],pred$skor_away,xgoal_data[2])
-
-pred %>% 
-  mutate(label = paste0(skor_home,"-",skor_away,"\nProb: ",round(prob,1),"%"),
-         skor_home = factor(skor_home,levels = c(0:10)),
-         skor_away = factor(skor_away,levels = c(0:10))) %>% 
-  ggplot(aes(x = skor_home,y = skor_away,fill = prob)) +
-  geom_tile() +
-  geom_label(aes(label = label),size = 3) +
-  scale_fill_gradient2(low = "lightblue",high = "darkred",midpoint = 4) +
-  labs(x = tim_home,
-       y = tim_away,
-       title = "Peluang Hasil Akhir Pertandingan",
-       subtitle = "Match Day 1",
-       caption = "Simulasi menggunakan R\nikanx101.com") +
-  theme_minimal() +
-  theme(legend.position = "none")
-pred %>% 
-  mutate(hasil = case_when(skor_home > skor_away ~ tim_home,
-                           skor_home < skor_away ~ tim_away,
-                           skor_home == skor_away ~"Seri"),
-         hasil = factor(hasil,levels = c(tim_home,"Seri",tim_away))
-         ) %>% 
-  group_by(hasil) %>% 
-  summarise(prob = sum(prob)) %>% 
-  ungroup() %>% 
-  mutate(label = round(prob,1),
-         label = paste0(label,"%")) %>% 
-  ggplot(aes(x = hasil,
-             y = prob)) +
-  geom_col(color = "black") +
-  geom_label(aes(label=label)) +
-  ggthemes::theme_wsj() +
-  labs(title = "Peluang Hasil Akhir Pertandingan",
-       subtitle = "Match Day 1",
-       caption = "Simulasi menggunakan R\nikanx101.com") +
-  theme(axis.text.y = element_blank(),
-        plot.caption = element_text(size=10,face = "bold"),
-        plot.title = element_text(size=20),
-        plot.subtitle = element_text(size=15))
-```
 
 ### Man United vs Crystal Palace
 
