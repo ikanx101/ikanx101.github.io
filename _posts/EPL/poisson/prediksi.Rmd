@@ -89,8 +89,10 @@ nomnoml::nomnoml("#direction: down,
                     ]
                   
                   [Visualisasi|
-                    [Matrix Peluang] -> [geom_tile()]
-                    [Matrix Peluang] -> [geom_col()]
+                    [Matrix Peluang] -> [Peluang Skor]
+                    [Peluang Skor] -> [geom_tile()]
+                    [Matrix Peluang] -> [Peluang Hasil Akhir]
+                    [Peluang Hasil Akhir] -> [geom_col()]
                     ]
                  ")
 ```
