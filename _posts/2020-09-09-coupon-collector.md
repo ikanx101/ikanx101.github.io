@@ -21,7 +21,7 @@ pengumpulan kupon hadiah.
 Sebenarnya bentuknya tidak perlu kupon. Bisa jadi tutup botol, stiker,
 kemasan, sampai stik es krim. Percaya atau tidak, dengan perhitungan
 yang matang dan iming-iming hadiah yang besar, perusahaan bisa “memaksa”
-konsumen untuk membeli produk agar dapat mengumpulkan kupon hadiah
+konsumen untuk membeli produk lebih banyak agar dapat mengumpulkan kupon hadiah
 tersebut.
 
 -----
