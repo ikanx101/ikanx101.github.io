@@ -343,14 +343,14 @@ Coba lihat beritanya di [sini](https://news.detik.com/berita/d-4962732/data-hari
 
 Saya kutip dari detik:
 
-25 Maret 3.822 spesimen
-26 Maret 4.336 spesimen (+514)
-27 Maret 5.775 spesimen (+1439)
-28 Maret 6.266 spesimen (+491)
-29 Maret 6.534 spesimen (+268)
-30 Maret 6.663 spesimen (+129)
-31 Maret 6.777 spesimen (+114)
-1 April 7.193 spesimen (+416)
+- 25 Maret 3.822 spesimen
+- 26 Maret 4.336 spesimen (+514)
+- 27 Maret 5.775 spesimen (+1439)
+- 28 Maret 6.266 spesimen (+491)
+- 29 Maret 6.534 spesimen (+268)
+- 30 Maret 6.663 spesimen (+129)
+- 31 Maret 6.777 spesimen (+114)
+- 1 April 7.193 spesimen (+416)
 
 Ternyata benar dugaan saya. Angka _reported cases_ segitu-gitu saja karena yang dites memang segitu saja.
 
