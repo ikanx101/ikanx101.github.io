@@ -1,0 +1,51 @@
+---
+title: "Membuat Konsumen Membeli Barang Lebih Banyak dengan Sayembara Pengumpulan Kupon"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/ikanx101com/_posts")
+```
+
+Pernahkah kalian mengumpulkan stik es krim bergambar seperti di bawah ini?
+
+```{r,echo=FALSE}
+knitr::include_graphics("~/ikanx101com/_posts/coupon-collector-new_files/urban mama.png")
+```
+
+Jika kita berhasil mengumpulkan `3` jenis gambar seperti di atas, kita berhak mendapatkan hadiah yang menarik.
+
+
+## Pertanyaannya:
+
+> Berapa banyak es krim yang harus kita beli agar bisa mendapatkan `3` jenis gambar tersebut?
+
+Untuk menjawabnya, saya akan membuat beberapa kondisi sebagai berikut:
+
+### Asumsi 1:
+
+```{r,fig.retina=10,message=FALSE,warning=FALSE,echo=FALSE}
+tutup_botol = function(){
+  sample(c(1:3),1,replace = T)
+}
+
+beli_botol = function(){
+  punya = c()
+  while(length(unique(punya))<3){
+    punya = c(punya,tutup_botol())
+  }
+  length(punya)
+}
+
+iter = 100 #mau berapa x iterasi?
+berapa_x_transaksi = replicate(iter,beli_botol())
+```
+
+Jika kita asumsikan hanya ada `3` jenis stik es krim dan ketiganya terdistribusi merata (bisa ditulis: $prob=\frac{1}{3}$), maka kita harus membeli setidaknya `r round(mean(berapa_x_transaksi),0)` es krim agar bisa mendapatkan ketiga jenis stik es krim secara utuh.
+
+
+
+Cara perhitungan simulasi ini bisa dilihat di [tulisan saya yang ini](https://ikanx101.com/blog/kolektor-kupon/).
