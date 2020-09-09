@@ -64,7 +64,7 @@ author:
   bio    : "TUV Rheinland-Certified Data Scientist. Doing magic using mathematics. Just a passingthrough market researcher."
   location : "Kota Bekasi"
   links:
-    - label: "Website"
+    - label: "Blog Lama Saya"
       icon: "fas fa-fw fa-link"
       url: "https://passingthroughresearcher.wordpress.com/"
     - label: "Twitter"
