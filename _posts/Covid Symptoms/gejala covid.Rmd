@@ -1,0 +1,17 @@
+---
+title: "Untitled"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+setwd("~/Documents/ikanx101.com/_posts/Covid Symptoms")
+
+library(readxl)
+
+data = read_excel("symptoms.xlsx")
+
+library(dplyr)
+library(tidytext)
+```
