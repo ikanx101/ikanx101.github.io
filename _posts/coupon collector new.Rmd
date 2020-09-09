@@ -14,6 +14,14 @@ library(ggplot2)
 library(ggthemes)
 ```
 
+Banyak cara yang dilakukan perusahaan-perusahaan di luar sana untuk bisa meningkatkan _sales omzet_. Salah satunya dengan membuat `sayembara` pengumpulan kupon hadiah.
+
+Sebenarnya bentuknya tidak perlu kupon. Bisa jadi tutup botol, stiker, kemasan, sampai stik es krim. Percaya atau tidak, dengan perhitungan yang matang dan iming-iming hadiah yang besar, perusahaan bisa "memaksa" konsumen untuk membeli produk agar dapat mengumpulkan kupon hadiah tersebut.
+
+---
+
+# Contoh Kasus:
+
 Pernahkah kalian mengumpulkan stik es krim bergambar seperti di bawah ini?
 
 ```{r,echo=FALSE}
@@ -31,7 +39,7 @@ Untuk menjawabnya, saya akan membuat beberapa kondisi sebagai berikut:
 
 ### Asumsi 1:
 
-```{r,fig.retina=10,message=FALSE,warning=FALSE,echo=FALSE}
+```{r,fig.retina=10,fig.width=8,message=FALSE,warning=FALSE,echo=FALSE}
 tutup_botol = function(){
   sample(c(1:3),1,replace = T)
 }
@@ -50,7 +58,7 @@ berapa_x_transaksi = replicate(iter,beli_botol())
 
 Jika saya asumsikan hanya ada `3` jenis stik es krim dan ketiganya terdistribusi merata (bisa ditulis: $prob=\frac{1}{3}$), maka hasil simulasinya sebagai berikut:
 
-```{r,fig.retina=10,message=FALSE,warning=FALSE,echo=FALSE}
+```{r,fig.retina=10,fig.width=8,message=FALSE,warning=FALSE,echo=FALSE}
 data = data.frame(id = 1,es=berapa_x_transaksi) %>% 
   group_by(es) %>% 
   summarise(freq = n()) %>% 
@@ -85,7 +93,7 @@ data %>%
 
 ### Asumsi 2:
 
-```{r,fig.retina=10,message=FALSE,warning=FALSE,echo=FALSE}
+```{r,fig.retina=10,fig.width=8,message=FALSE,warning=FALSE,echo=FALSE}
 tutup_botol = function(){
   sample(c(1:3),1,replace = T, prob = c(5/7,1/7,1/7))
 }
@@ -108,7 +116,7 @@ Misalkan:
 
 Stik `A` lebih banyak dibandingkan stik `B` dan `C`. $prob_A=\frac{5}{7}$ dan $prob_B = prob_C = \frac{1}{7}$ maka hasil simulasinya sebagai berikut:
 
-```{r,fig.retina=10,message=FALSE,warning=FALSE,echo=FALSE}
+```{r,fig.retina=10,fig.width=8,message=FALSE,warning=FALSE,echo=FALSE}
 data = data.frame(id = 1,es=berapa_x_transaksi) %>% 
   group_by(es) %>% 
   summarise(freq = n()) %>% 
@@ -143,7 +151,7 @@ data %>%
 
 ### Asumsi 3:
 
-```{r,fig.retina=10,message=FALSE,warning=FALSE,echo=FALSE}
+```{r,fig.retina=10,fig.width=8,message=FALSE,warning=FALSE,echo=FALSE}
 tutup_botol = function(){
   sample(c(1:4),1,replace = T)
 }
@@ -167,7 +175,7 @@ berapa_x_transaksi = replicate(iter,beli_botol())
 
 Jika saya asumsikan hanya ada `3` jenis stik es krim __berhadiah__ dan `1` jenis stik es krim __tak bercorak__. Lalu keempatnya terdistribusi merata (bisa ditulis: $prob=\frac{1}{4}$), maka hasil simulasinya sebagai berikut:
 
-```{r,fig.retina=10,message=FALSE,warning=FALSE,echo=FALSE}
+```{r,fig.retina=10,fig.width=8,message=FALSE,warning=FALSE,echo=FALSE}
 data = data.frame(id = 1,es=berapa_x_transaksi) %>% 
   group_by(es) %>% 
   summarise(freq = n()) %>% 
@@ -202,7 +210,7 @@ data %>%
 
 ### Asumsi 4:
 
-```{r,fig.retina=10,message=FALSE,warning=FALSE,echo=FALSE}
+```{r,fig.retina=10,fig.width=8,message=FALSE,warning=FALSE,echo=FALSE}
 tutup_botol = function(){
   sample(c(1:4),1,replace = T,prob = c(6/10,2/10,1/10,1/10))
 }
@@ -230,11 +238,11 @@ Misalkan:
 
 Stik tak bercorak memiliki proporsi lebih banyak dibandingkan `3` jenis stik berhadiah.
 
-$prob_{takbercorak}=\frac{6}{10}$), $prob_A=\frac{2}{10}$ dan $prob_B = prob_C = \frac{1}{10}$
+$prob_{takbercorak}=\frac{6}{10}$, $prob_A=\frac{2}{10}$ dan $prob_B = prob_C = \frac{1}{10}$
 
 Maka hasil simulasinya sebagai berikut:
 
-```{r,fig.retina=10,message=FALSE,warning=FALSE,echo=FALSE}
+```{r,fig.retina=10,fig.width=8,message=FALSE,warning=FALSE,echo=FALSE}
 data = data.frame(id = 1,es=berapa_x_transaksi) %>% 
   group_by(es) %>% 
   summarise(freq = n()) %>% 
@@ -269,5 +277,9 @@ data %>%
 
 # Kesimpulan
 
-Dalam dunia _real_, proporsi stik berhadiah sepertinya dibuat lebih kecil dengan tujuan
-Cara perhitungan simulasi ini bisa dilihat di [tulisan saya yang ini](https://ikanx101.com/blog/kolektor-kupon/).
+Dalam dunia _real_, proporsi stik berhadiah mungkin dibuat lebih kecil agar konsumen bisa lebih seru lagi mencarinya.
+
+# _Remarks_
+
+- Penggunaan poster merek es krim di atas hanya sebagai ilustrasi saja ya. Semua perhitungan dan asumsi yang digunakan adalah murni contoh saja.
+- Cara perhitungan simulasi ini bisa dilihat di [tulisan saya yang ini](https://ikanx101.com/blog/kolektor-kupon/).
