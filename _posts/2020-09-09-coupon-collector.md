@@ -1,5 +1,5 @@
 ---
-date: 2020-09-10T05:08:00-04:00
+date: 2020-09-09T05:08:00-04:00
 title: "Membuat Konsumen Membeli Barang Lebih Banyak dengan Sayembara Pengumpulan Kupon"
 categories:
   - Blog
