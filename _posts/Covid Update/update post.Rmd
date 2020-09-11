@@ -138,10 +138,10 @@ data %>%
              y = positive_rate,)) +
   ggrepel::geom_label_repel(aes(label = label,color = location),hjust = 1,vjust = 1) +
   geom_line(aes(group = location,color = location)) +
-  labs(title = "Cumulative Total Deaths for Selected Country",
-       subtitle = "Saatnya bertindak agar angka ini tidak terus bertambah lagi!",
+  labs(title = "Positive Rate for Selected Country",
+       subtitle = "Saatnya bertindak agar angka ini tidak terus naik lagi!",
        x = "Tanggal",
-       y = "Banyak Kasus Meninggal Kumulatif",
+       y = "Banyak Orang yang Positif dari Total Orang yang di Test",
        caption = "Scraped and Visualized\nUsing R\nikanx101.com") +
   theme_pubclean() +
   theme(legend.position = 'none',
