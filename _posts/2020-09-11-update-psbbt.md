@@ -12,7 +12,6 @@ tags:
   - PSBB
 ---
 
-
 Sebagaimana yang kita tahu, semenjak diberlakukannya relaksasi PSBB di
 beberapa wilayah di Indonesia, terutama di DKI Jakarta. Penambahan kasus
 positif di negara kita tercinta ini naik tak terkendali. Akibatnya
@@ -27,9 +26,10 @@ istilahnya. Coba ditulis **lockdown** aja gitu\!?) harus segera
 dilakukan di Indonesia yah\!
 
 Berbekal data yang dihimpun di situs [*Our World in
-Data*](https://ourworldindata.org/coronavirus) per pagi ini (11 September 2020 pukul 09.00), saya akan coba
-membandingkan data negara kita dengan data negara lainnya seperti:
-`Italy`, `Singapura`, `Malaysia`, dan `China`.
+Data*](https://ourworldindata.org/coronavirus) per pagi ini (11
+September 2020 pukul 09.00), saya akan coba membandingkan data negara
+kita dengan data negara lainnya seperti: `Italy`, `Singapura`,
+`Malaysia`, dan `China`.
 
 ## *Cumulative Confirmed Cases*
 
@@ -74,3 +74,11 @@ Artinya apa?
 <img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Covid%20Update/update-post_files/figure-gfm/unnamed-chunk-4-1.png" width="768" />
 
 # Gimana? Apakah sudah cukup meyakinkan agar PSBBT harus dilakukan segera?
+
+## Updates
+
+Saya coba kasih unjuk bagaimana kondisi di `India` dan `Amerika` yah:
+
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Covid%20Update/update-post_files/figure-gfm/unnamed-chunk-5-1.png" width="768" />
+
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Covid%20Update/update-post_files/figure-gfm/unnamed-chunk-6-1.png" width="768" />
