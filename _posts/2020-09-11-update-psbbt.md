@@ -1,5 +1,5 @@
 ---
-date: 2020-09-11T01:30:00-04:00
+date: 2020-09-11T00:30:00-04:00
 title: "PSBB Level II: PSBBT (PEMBATASAN SOSIAL BERSKALA BESAR TOTAL)"
 categories:
   - Blog
@@ -27,7 +27,7 @@ istilahnya. Coba ditulis **lockdown** aja gitu\!?) harus segera
 dilakukan di Indonesia yah\!
 
 Berbekal data yang dihimpun di situs [*Our World in
-Data*](https://ourworldindata.org/coronavirus), saya akan coba
+Data*](https://ourworldindata.org/coronavirus) per pagi ini (11 September 2020 pukul 09.00), saya akan coba
 membandingkan data negara kita dengan data negara lainnya seperti:
 `Italy`, `Singapura`, `Malaysia`, dan `China`.
 
