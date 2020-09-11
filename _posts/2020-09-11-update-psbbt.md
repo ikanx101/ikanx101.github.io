@@ -1,5 +1,17 @@
-PSBB Level II: PSBBT (PEMBATASAN SOSIAL BERSKALA BESAR TOTAL)
-================
+---
+date: 2020-09-11T5:30:00-04:00
+title: "PSBB Level II: PSBBT (PEMBATASAN SOSIAL BERSKALA BESAR TOTAL)"
+categories:
+  - Blog
+tags:
+  - Machine Learning
+  - Artificial Intelligence
+  - R
+  - Corona Virus
+  - Covid-19
+  - PSBB
+---
+
 
 Sebagaimana yang kita tahu, semenjak diberlakukannya relaksasi PSBB di
 beberapa wilayah di Indonesia, terutama di DKI Jakarta. Penambahan kasus
@@ -27,7 +39,7 @@ kewalahan sampai harus menentukan siapa yang berhak `hidup` dan siapa
 yang harus direlakan
 `meninggal`](https://www.bbc.com/indonesia/dunia-51905114).
 
-<img src="update-post_files/figure-gfm/unnamed-chunk-1-1.png" width="768" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Covid%20Update/update-post_files/figure-gfm/unnamed-chunk-1-1.png" width="768" />
 
 -----
 
@@ -37,7 +49,7 @@ Di saat negara-negara pilihan ini sudah berkurang penambahan kasus
 hariannya, Indonesia masih terus naik dan hampir setiap hari memecahkan
 rekor.
 
-<img src="update-post_files/figure-gfm/unnamed-chunk-2-1.png" width="768" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Covid%20Update/update-post_files/figure-gfm/unnamed-chunk-2-1.png" width="768" />
 
 -----
 
@@ -45,7 +57,7 @@ rekor.
 
 Data ini menyedihkan. Semoga saja tidak terus bertambah ya.
 
-<img src="update-post_files/figure-gfm/unnamed-chunk-3-1.png" width="768" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Covid%20Update/update-post_files/figure-gfm/unnamed-chunk-3-1.png" width="768" />
 
 -----
 
@@ -59,6 +71,6 @@ Artinya apa?
 > Simpelnya: dari `100` orang yang dites swab, `23` di antaranya
 > positif.
 
-<img src="update-post_files/figure-gfm/unnamed-chunk-4-1.png" width="768" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Covid%20Update/update-post_files/figure-gfm/unnamed-chunk-4-1.png" width="768" />
 
 # Gimana? Apakah sudah cukup meyakinkan agar PSBBT harus dilakukan segera?
