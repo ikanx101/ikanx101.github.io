@@ -8,15 +8,15 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 rm(list=ls())
-setwd("~/Documents/ikanx101.com/_posts/Covid Update")
+setwd("~/ikanx101com/_posts/Covid Update")
 options(scipen = 99)
 library(dplyr)
 library(ggplot2)
 library(ggpubr)
 
-data = read.csv("/home/ikanx101githubio/Documents/belajaR/Bukan Infografis/Covid Data/owid-covid-data.csv")
+data = read.csv("~/belajaR/Bukan Infografis/Covid Data/owid-covid-data.csv")
 
-target = c("Indonesia","Italy","Malaysia","Singapore","China")
+target = c("Indonesia","Italy","Malaysia","Singapore","New Zealand","China")
 
 data = 
   data %>% 
@@ -28,9 +28,13 @@ Sebagaimana yang kita tahu, semenjak diberlakukannya relaksasi PSBB di beberapa 
 
 > Sepertinya _sih_ cara Indonesia disegani dan ditakuti oleh negara lain ini bukan seperti yang dicita-citakan oleh para pendiri bangsa!
 
-Sekarang saya coba membujuk Anda, kenapa sih __PSBBT__ (panjang amat sih istilahnya. Coba ditulis __lockdown__ aja gitu!?) harus segera dilakukan di Indonesia yah!
+Sekarang saya coba membujuk Anda, kenapa sih __PSBBT__ (panjang amat sih istilahnya. Coba ditulis __lockdown__ aja gitu!?) harus segera dilakukan di Indonesia yah! (minimal di DKI Jakarta dan sekitarnya).
 
-Berbekal data yang dihimpun di situs [_Our World in Data_](https://ourworldindata.org/coronavirus) per pagi ini (11 September 2020 pukul 09.00), saya akan coba membandingkan data negara kita dengan data negara lainnya seperti: `Italy`, `Singapura`, `Malaysia`, dan `China`.
+Berbekal data yang dihimpun di situs [_Our World in Data_](https://ourworldindata.org/coronavirus) per pagi ini (14 September 2020 pukul 07.00 WBI), saya akan coba membandingkan data negara kita dengan data negara lainnya seperti: `Italy`, `Singapura`, `Malaysia`, `New Zealand`, dan `China`.
+
+> Kenapa sih dibandingkan dengan `5` negara tersebut?
+
+Mereka adalah negara yang menerapkan _lockdown_ pada saat awal-awal pandemi. Mari kita bandingkan dengan `Indonesia` yang tidak menerapkan _lockdown_!
 
 ## _Cumulative Confirmed Cases_
 
@@ -44,9 +48,9 @@ data %>%
   ggplot(aes(x = date,
              y = total_cases,)) +
   geom_line(aes(group = location,color = location)) +
-  geom_label(aes(label = label,color = location),hjust = 1,vjust = 1) +
+  ggrepel::geom_label_repel(aes(label = label,color = location),hjust = 1,vjust = 1) +
   labs(title = "Cumulative Confirmed Cases for Selected Country",
-       subtitle = "Cieeee... Banyak Penggemar Liga Italy yah di Indonesia?\nPengen banget samaan",
+       subtitle = "Akankah Indonesia melampaui Italia?",
        x = "Tanggal",
        y = "Banyak Kasus Kumulatif",
        caption = "Scraped and Visualized\nUsing R\nikanx101.com") +
@@ -61,7 +65,7 @@ data %>%
 
 ## _New Confirmed Cases per Day_
 
-Di saat negara-negara pilihan ini sudah berkurang penambahan kasus hariannya, Indonesia masih terus naik dan hampir setiap hari memecahkan rekor.
+Di saat negara-negara pilihan ini sudah berkurang penambahan kasus hariannya, Indonesia masih terus naik dan hampir setiap hari memecahkan rekor. Kemarin, Indonesia baru saja memecahkan rekor penambahan kasus tertinggi lagi!
 
 ```{r,echo=FALSE,fig.width=8,fig.retina=10,message=FALSE,warning=FALSE}
 data %>% 
@@ -103,8 +107,8 @@ data %>%
          label = ifelse(date == max(date),paste(location,tot,sep = "~"),NA)) %>% 
   ggplot(aes(x = date,
              y = total_deaths,)) +
-  ggrepel::geom_label_repel(aes(label = label,color = location),hjust = 1,vjust = 1) +
   geom_line(aes(group = location,color = location)) +
+  ggrepel::geom_label_repel(aes(label = label,color = location),hjust = 1,vjust = 1) +
   labs(title = "Cumulative Total Deaths for Selected Country",
        subtitle = "Saatnya bertindak agar angka ini tidak terus bertambah lagi!",
        x = "Tanggal",
@@ -154,15 +158,21 @@ data %>%
         plot.subtitle = element_text(face = "italic",size = 10))
 ```
 
-# Gimana? Apakah sudah cukup meyakinkan agar PSBBT harus dilakukan segera?
+Tadi pagi saya mendengar berita bahwa ada pejabat yang mewaspadai gelombang kedua dari COVID-19 di Indonesia.
 
-## Updates
+Kalau menurut saya pribadi:
+
+> Kita belum selesai gelombang I _lho_!
+
+----
+
+## Perbandingan dengan India dan Amerika
 
 Saya coba kasih unjuk bagaimana kondisi di India dan Amerika yah:
 
 ```{r,echo=FALSE,fig.width=8,fig.retina=10,message=FALSE,warning=FALSE}
 rm(list=ls())
-data = read.csv("/home/ikanx101githubio/Documents/belajaR/Bukan Infografis/Covid Data/owid-covid-data.csv")
+data = read.csv("~/belajaR/Bukan Infografis/Covid Data/owid-covid-data.csv")
 
 target = c("Indonesia","India","United States")
 data = 
