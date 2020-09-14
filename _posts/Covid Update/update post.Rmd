@@ -1,0 +1,221 @@
+---
+title: "PSBB Level II: PSBBT (PEMBATASAN SOSIAL BERSKALA BESAR TOTAL) ~ Tambah India dan Amerika"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+setwd("~/Documents/ikanx101.com/_posts/Covid Update")
+options(scipen = 99)
+library(dplyr)
+library(ggplot2)
+library(ggpubr)
+
+data = read.csv("/home/ikanx101githubio/Documents/belajaR/Bukan Infografis/Covid Data/owid-covid-data.csv")
+
+target = c("Indonesia","Italy","Malaysia","Singapore","China")
+
+data = 
+  data %>% 
+  filter(location %in% target) %>% 
+  mutate(date = as.Date(date))
+```
+
+Sebagaimana yang kita tahu, semenjak diberlakukannya relaksasi PSBB di beberapa wilayah di Indonesia, terutama di DKI Jakarta. Penambahan kasus positif di negara kita tercinta ini naik tak terkendali. Akibatnya Indonesia menjadi negara yang disegani dan ditakuti oleh negara-negara lainnya.
+
+> Sepertinya _sih_ cara Indonesia disegani dan ditakuti oleh negara lain ini bukan seperti yang dicita-citakan oleh para pendiri bangsa!
+
+Sekarang saya coba membujuk Anda, kenapa sih __PSBBT__ (panjang amat sih istilahnya. Coba ditulis __lockdown__ aja gitu!?) harus segera dilakukan di Indonesia yah!
+
+Berbekal data yang dihimpun di situs [_Our World in Data_](https://ourworldindata.org/coronavirus) per pagi ini (11 September 2020 pukul 09.00), saya akan coba membandingkan data negara kita dengan data negara lainnya seperti: `Italy`, `Singapura`, `Malaysia`, dan `China`.
+
+## _Cumulative Confirmed Cases_
+
+Menurut saya, salah satu negara dengan kasus terburuk pada saat pandemi ini adalah `Italy`. Sebagaimana yang kita ketahui, di sana para [dokter kewalahan sampai harus menentukan siapa yang berhak `hidup` dan siapa yang harus direlakan `meninggal`](https://www.bbc.com/indonesia/dunia-51905114).
+
+```{r,echo=FALSE,fig.width=8,fig.retina=10,message=FALSE,warning=FALSE}
+data %>% 
+  mutate(tot = total_cases/1000,
+         tot = paste0(round(tot,1),"ribu"),
+         label = ifelse(date == max(date),paste(location,tot,sep = "~"),NA)) %>% 
+  ggplot(aes(x = date,
+             y = total_cases,)) +
+  geom_line(aes(group = location,color = location)) +
+  geom_label(aes(label = label,color = location),hjust = 1,vjust = 1) +
+  labs(title = "Cumulative Confirmed Cases for Selected Country",
+       subtitle = "Cieeee... Banyak Penggemar Liga Italy yah di Indonesia?\nPengen banget samaan",
+       x = "Tanggal",
+       y = "Banyak Kasus Kumulatif",
+       caption = "Scraped and Visualized\nUsing R\nikanx101.com") +
+  theme_pubclean() +
+  theme(legend.position = 'none',
+        axis.text.y = element_blank(),
+        plot.title = element_text(face = "bold"),
+        plot.subtitle = element_text(face = "italic",size = 10))
+```
+
+----
+
+## _New Confirmed Cases per Day_
+
+Di saat negara-negara pilihan ini sudah berkurang penambahan kasus hariannya, Indonesia masih terus naik dan hampir setiap hari memecahkan rekor.
+
+```{r,echo=FALSE,fig.width=8,fig.retina=10,message=FALSE,warning=FALSE}
+data %>% 
+  mutate(new_cases = ifelse(is.na(new_cases),0,new_cases),
+         tot = new_cases/1000,
+         tot = paste0(round(tot,1),"ribu")) %>%
+  group_by(location) %>% 
+  mutate(label = ifelse(new_cases == max(new_cases),
+                        paste(location,tot,sep = "~"),
+                        NA)) %>% 
+  ungroup() %>% 
+  ggplot(aes(x = date,
+             y = new_cases,)) +
+  geom_line(aes(group = location,color = location)) +
+  geom_label(aes(label = label,color = location),hjust = 1,vjust = 1) +
+  labs(title = "New Confirmed Cases per Day",
+       subtitle = "Berapa rekor terbanyak penambahan confirmed cases per day dari setiap negara ini?",
+       x = "Tanggal",
+       y = "Banyak Kasus Baru harian",
+       caption = "Scraped and Visualized\nUsing R\nikanx101.com") +
+  theme_pubclean() +
+  theme(legend.position = 'none',
+        axis.text.y = element_blank(),
+        plot.title = element_text(face = "bold"),
+        plot.subtitle = element_text(face = "italic",size = 10))
+```
+
+
+----
+
+## _Cumulative Total Deaths_
+
+Data ini menyedihkan. Semoga saja tidak terus bertambah ya.
+
+```{r,echo=FALSE,fig.width=8,fig.retina=10,message=FALSE,warning=FALSE}
+data %>% 
+  mutate(tot = total_deaths/1000,
+         tot = paste0(round(tot,1),"ribu"),
+         label = ifelse(date == max(date),paste(location,tot,sep = "~"),NA)) %>% 
+  ggplot(aes(x = date,
+             y = total_deaths,)) +
+  ggrepel::geom_label_repel(aes(label = label,color = location),hjust = 1,vjust = 1) +
+  geom_line(aes(group = location,color = location)) +
+  labs(title = "Cumulative Total Deaths for Selected Country",
+       subtitle = "Saatnya bertindak agar angka ini tidak terus bertambah lagi!",
+       x = "Tanggal",
+       y = "Banyak Kasus Meninggal Kumulatif",
+       caption = "Scraped and Visualized\nUsing R\nikanx101.com") +
+  theme_pubclean() +
+  theme(legend.position = 'none',
+        axis.text.y = element_blank(),
+        plot.title = element_text(face = "bold"),
+        plot.subtitle = element_text(face = "italic",size = 10))
+```
+
+
+----
+
+## _Positive Rate_
+
+Perhari ini, `positive rate` Indonesia masih terus naik. Data terakhir menunjukkan `positive rate` Indonesia ada di angka `23%`.
+
+Artinya apa?
+
+> Simpelnya: dari `100` orang yang dites swab, `23` di antaranya positif.
+
+```{r,echo=FALSE,fig.width=8,fig.retina=10,message=FALSE,warning=FALSE}
+library(tidyr)
+data %>% 
+  group_by(location) %>% 
+  fill(positive_rate,
+       .direction = 'down') %>% 
+  ungroup() %>% 
+  mutate(tot = positive_rate*100,
+         tot = paste0(round(tot,1),"%"),
+         label = ifelse(date == max(date),paste(location,tot,sep = "~"),NA)) %>% 
+  ggplot(aes(x = date,
+             y = positive_rate,)) +
+  ggrepel::geom_label_repel(aes(label = label,color = location),hjust = 1,vjust = 1) +
+  geom_line(aes(group = location,color = location)) +
+  labs(title = "Positive Rate for Selected Country",
+       subtitle = "Saatnya bertindak agar angka ini tidak terus naik lagi!",
+       x = "Tanggal",
+       y = "Banyak Orang yang Positif\ndari Total Orang yang di Test",
+       caption = "Scraped and Visualized\nUsing R\nikanx101.com") +
+  theme_pubclean() +
+  theme(legend.position = 'none',
+        axis.text.y = element_blank(),
+        plot.title = element_text(face = "bold"),
+        plot.subtitle = element_text(face = "italic",size = 10))
+```
+
+# Gimana? Apakah sudah cukup meyakinkan agar PSBBT harus dilakukan segera?
+
+## Updates
+
+Saya coba kasih unjuk bagaimana kondisi di India dan Amerika yah:
+
+```{r,echo=FALSE,fig.width=8,fig.retina=10,message=FALSE,warning=FALSE}
+rm(list=ls())
+data = read.csv("/home/ikanx101githubio/Documents/belajaR/Bukan Infografis/Covid Data/owid-covid-data.csv")
+
+target = c("Indonesia","India","United States")
+data = 
+  data %>% 
+  filter(location %in% target) %>% 
+  mutate(date = as.Date(date))
+
+data %>% 
+  mutate(new_cases = ifelse(is.na(new_cases),0,new_cases),
+         tot = new_cases/1000,
+         tot = paste0(round(tot,1),"ribu")) %>%
+  group_by(location) %>% 
+  mutate(label = ifelse(new_cases == max(new_cases),
+                        paste(location,tot,sep = "~"),
+                        NA)) %>% 
+  ungroup() %>% 
+  ggplot(aes(x = date,
+             y = new_cases,)) +
+  geom_line(aes(group = location,color = location)) +
+  geom_label(aes(label = label,color = location),hjust = 1,vjust = 1) +
+  labs(title = "New Confirmed Cases per Day",
+       subtitle = "Berapa rekor terbanyak penambahan confirmed cases per day dari setiap negara ini?",
+       x = "Tanggal",
+       y = "Banyak Kasus Baru harian",
+       caption = "Scraped and Visualized\nUsing R\nikanx101.com") +
+  theme_pubclean() +
+  theme(legend.position = 'none',
+        axis.text.y = element_blank(),
+        plot.title = element_text(face = "bold"),
+        plot.subtitle = element_text(face = "italic",size = 10))
+```
+
+```{r,echo=FALSE,fig.width=8,fig.retina=10,message=FALSE,warning=FALSE}
+data %>% 
+  group_by(location) %>% 
+  fill(positive_rate,
+       .direction = 'down') %>% 
+  ungroup() %>% 
+  mutate(tot = positive_rate*100,
+         tot = paste0(round(tot,1),"%"),
+         label = ifelse(date == max(date),paste(location,tot,sep = "~"),NA)) %>% 
+  ggplot(aes(x = date,
+             y = positive_rate,)) +
+  ggrepel::geom_label_repel(aes(label = label,color = location),hjust = 1,vjust = 1) +
+  geom_line(aes(group = location,color = location)) +
+  labs(title = "Positive Rate for Selected Country",
+       subtitle = "Jangan bangga kita bisa di atas kedua negara ini",
+       x = "Tanggal",
+       y = "Banyak Orang yang Positif\ndari Total Orang yang di Test",
+       caption = "Scraped and Visualized\nUsing R\nikanx101.com") +
+  theme_pubclean() +
+  theme(legend.position = 'none',
+        axis.text.y = element_blank(),
+        plot.title = element_text(face = "bold"),
+        plot.subtitle = element_text(face = "italic",size = 10))
+```
