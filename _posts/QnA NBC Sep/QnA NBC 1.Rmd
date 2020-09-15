@@ -7,6 +7,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+setwd("~/Documents/ikanx101.com/_posts/QnA NBC Sep")
 ```
 
 ## Pertanyaan 1
@@ -128,6 +129,15 @@ Berbeda dengan riset kualitatif yang `tidak ada` (atau tidak mengharuskan kebera
 
 Bagi saya, hal terpenting adalah _report_ kualitatif harus bisa menjawab tujuan riset dan memberikan nilai tambah atau _insights_ terhadap bisnis.
 
+Data sebagai mana kita tahu juga terbagi menjadi dua:
+
+1. Kualitatif, tidak bisa dilakukan operasi aritmatika.
+1. Kuantitatif, bisa dilakukan operasi aritmatika.
+
+Jangan sampai kita salah paham. Walaupun tidak bisa dijumlah, dikurang, dibagi dan dikali, TAPI data kualitatif bisa dihitung (_counting_).
+
+Salah satu analisa yang paling sering dilakukan pada data kualitatif adalah frekuensi tabulasi atau cross tabulasi. Contohnya seperti [ini](https://ikanx101.com/blog/halal-mui/).
+
 ----
 
 ## Pertanyaan 5
@@ -158,7 +168,6 @@ Kondisi _real_ dari masalah saya adalah sebagai berikut:
 1. Orang yang telah sembuh akan menjadi kebal (tidak terjangkit flu kembali).
 
 Maka, secara matematika bisa dituliskan:
-
 
 $$\frac{d}{dt}I = x + \alpha*I(t)*S(t)-\beta*I(t)$$
 
@@ -229,5 +238,77 @@ PERHATIKAN kembali yah, data kualitatif itu bukan berarti tidak bisa dihitung! D
 
 Silakan baca juga [ini](https://ikanx101.com/blog/tahun-baru/) dan [ini](https://passingthroughresearcher.wordpress.com/2019/08/15/menelusuri-pencarian-keyword-diabetes-mellitus-di-detikhealth/).
 
+---
 
-> 1. Dalam menentukan variabel independen yang ingin diteliti pengaruhnya terhadap variabel dependen berapa banyak batasan variabel independen yang perlu kita masukkan agar mendapatkan output yang valid & Trusted. agar variabel independennya tidak terlalu banyak dan luas2. Apa warning" yang bisa kita perhatikan dalam menghindari bias dalam pengambilan keputusan dari data yang kita miliki, atau bahkan untuk menghindari dari melihat/mengkorelasikan data yang kita lihat
+## Pertanyaan 10
+
+> Apa perbedaan terbesar dari distribusi normal dan pareto?
+
+Distribusi normal memiliki kurva density berbentuk _bell curved_ sementara pareto tidak.
+
+Contoh _density plot_ distribusi normal:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10}
+normal = rnorm(n = 500, mean = 0, sd = 1)
+hist(normal)
+```
+
+Contoh _density plot_ distribusi pareto:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10}
+k <- 5      # parameter k of the Pareto distribution
+x.min <- 2  # cutoff point of Pareto distribution
+N <- 500    # number of random points
+pareto <- x.min*(1-runif(N))^(-1/k)
+h <- hist(pareto, freq=FALSE, plot=TRUE)
+x <- seq(x.min, h$breaks[length(h$breaks)], by=0.01)
+lines(x, k*x.min^k/x^(k+1), col="red")
+```
+
+Salah satu data yang saya duga memiliki distribusi pareto adalah sebaran [_mortality rate_ COVID-19 per negara](https://ikanx101.com/blog/angka-real-covid/).
+
+
+----
+
+## Pertanyaan 11
+
+> Kapan data boleh ditransformasi?
+
+Transformasi data boleh dilakukan jika analisa yang digunakan mengharuskan kita untuk memiliki data yang _compact_ (agar sebarannya tidak terlalu besar).
+
+Bagaimana cara melakukan transformasinya? Kita bisa berpegang pada _Tukey's Transformation Ladder_ sebagai berikut:
+
+```{r,echo=FALSE}
+knitr::include_graphics("tukey_ladder.jpg")
+```
+
+Cara membacanya:
+
+- Jika data terlalu condong ke kiri, maka gunakan fungsi $f(x)$ di sebelah kiri agar data bisa ke tengah.
+- Jika data terlalu condong ke kanan, maka gunakan fungsi $f(x)$ di sebelah kanan agar data bisa ke tengah.
+
+_Hal kayak gini pernah dipakai di Nutrifood gak sih?_ Pernah! Silakan baca [ini](https://passingthroughresearcher.wordpress.com/2019/08/09/mencari-peluang-kegagalan-dari-data-yang-tak-pernah-gagal/).
+
+---
+
+## Pertanyaan 12
+
+> Dalam perhitungan probabilitas dengan perhitungan monte carlo, apakah ada asumsi yang digunakan adalah bahwa semua orang punya hasrat dan tanggung jawab yang sama untuk mencapai tujuan yang kita maksud dalam contoh (memenangkan hadiah dari tutup botol coca cola)
+
+Pertanyaan ini terkait tulisan saya di [sini](https://ikanx101.com/blog/coupon-collector/).
+
+Kalau membaca dengan detail proses perhitungan simulasi Monte Carlo pada kasus [_coupon collector's problem_](https://ikanx101.com/blog/kolektor-kupon/), untuk menghitung ada berapa banyak tutup botol yang harus dikumpulkan HANYA berdasarkan asumsi sebaran jenis tutup botol yang ada di pasaran.
+
+Kita tidak memerlukan asumsi hasrat atau keninginan setiap konsumen sama.
+
+---
+
+## Pertanyaan 13
+
+> Dari perkembangan teknologi menyebabkan terciptanya Big Data hingga Triliunan Giga per hari. Apakah hal itu bisa disebut "tidak apa apa" dan apakah kapasitas penyimpanan bisa menampung Big Data tersebut hingga puluhan tahun ke depan?
+
+Teknologi penyimpanan data secara _cloud_ selalu berkembang. Pernah dengar [_project github artic_](https://www.engadget.com/github-arctic-vault-success-020240808.html?guccounter=1&guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&guce_referrer_sig=AQAAAJg_16oZ8NxHkGuOS5Y3dQbxH2FveTc_ozgXJWSp8jA9LK7AhZx4lDdlDg0XB9GDOd8EhBESY2jfmxkH-9wyvsYEk60XXoUZd2j6GxoN_ahJ1sR7tnC6NMlD9kygbxGjo0LWboF6rreLG2ZijqAgspaOYDU-xuxB2LjNgxVhLZwg_)?
+
+Pernahkah kita bertanya:
+
+> Apakah Instagram akan "kepenuhan" suatu hari nanti?

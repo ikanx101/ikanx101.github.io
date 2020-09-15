@@ -1,0 +1,16 @@
+---
+title: "Pertanyaan Seputar Data yang Sering Saya Temui (Bagian I)"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+setwd("~/Documents/ikanx101.com/_posts/QnA NBC Sep")
+rm(list=ls())
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+> 1. Dalam menentukan variabel independen yang ingin diteliti pengaruhnya terhadap variabel dependen berapa banyak batasan variabel independen yang perlu kita masukkan agar mendapatkan output yang valid & Trusted. agar variabel independennya tidak terlalu banyak dan luas2. Apa warning" yang bisa kita perhatikan dalam menghindari bias dalam pengambilan keputusan dari data yang kita miliki, atau bahkan untuk menghindari dari melihat/mengkorelasikan data yang kita lihat
