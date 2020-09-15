@@ -138,7 +138,7 @@ Jangan sampai kita salah paham. Walaupun tidak bisa dijumlah, dikurang, dibagi d
 
 Salah satu analisa yang paling sering dilakukan pada data kualitatif adalah frekuensi tabulasi atau cross tabulasi. Contohnya seperti [ini](https://ikanx101.com/blog/halal-mui/).
 
-----
+---
 
 ## Pertanyaan 5
 
@@ -169,7 +169,7 @@ Kondisi _real_ dari masalah saya adalah sebagai berikut:
 
 Maka, secara matematika bisa dituliskan:
 
-$$\frac{d}{dt}I = x + \alpha*I(t)*S(t)-\beta*I(t)$$
+$\frac{d}{dt}I = x + \alpha*I(t)*S(t)-\beta*I(t)$
 
 Sekarang PR kita tinggal menghitung nilai $\alpha$ dan $\beta$ serta data pendukung seperti $x$ dan banyaknya karyawan di kantor yang sehat pada hari ke 0.
 
