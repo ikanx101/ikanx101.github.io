@@ -1,5 +1,5 @@
 ---
-title: "Pertanyaan Seputar Data yang Sering Saya Temui (Bagian I)"
+title: "Kompilasi Pertanyaan Seputar Data yang Sering Saya Temui (Bagian II)"
 output: 
   github_document:
     pandoc_args: --webtex
@@ -11,6 +11,97 @@ rm(list=ls())
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## Pertanyaan 14
+
+> Dalam menentukan variabel independen yang ingin diteliti pengaruhnya terhadap variabel dependen, berapa banyak batasan variabel independen yang perlu kita masukkan agar mendapatkan _output_ yang valid dan _trusted_? 
+
+Sebenarnya tidak ada batasan berapa variabel yang harus dimasukkan. Tapi ada aturan bahwa banyaknya baris data yang bisa dianalisa menggunakan multivariat harus berjumlah `7` - `10` kali dari banyaknya variabel.
+
+Justru dengan adanya algoritma sekarang ini, variabel yang dimasukkan ke dalam model bisa sangat banyak! Contoh bagaimana perusahaan farmasi di Korea Selatan bisa membuat alat [rapid test COVID-19 dengan cepat menggunakan AI](https://edition.cnn.com/2020/03/12/asia/coronavirus-south-korea-testing-intl-hnk/index.html).
+
+----
+
+## Pertanyaan 15
+
+> Apa _warnings_ yang bisa kita perhatikan dalam menghindari bias dalam pengambilan keputusan dari data yang kita miliki?
+
+Untuk menghindari bias, secara simpel kita harus memperhatikan asumsi dan kondisi saat data tersebut kita ambil atau kita peroleh. _Best practice_ yang bisa saya sampaikan adalah lebih ke memahami bagaimana data bisa dikumpulkan.
+
+Salah satu contoh: Saya melakukan survey makanan favorit orang Indonesia. Survey tersebut dilakukan dengan cara melakukan interview kepada orang-orang yang sedang makan di rumah makan Padang.
+
+----
+
+## Pertanyaan 16
+
+> Seperti yang kita ketahui bahwa dalam beberapa bulan ini, NFI mengeluarkan beberapa produk baru. Sebelum proses _launching_ tersebut, analisis bisnis apa saja yang harus dilakukan dan _analytic tools_  apa saja yang dapat digunakan untuk memperkirakan kesuksesan suatu item baru Nutrifood di masa pandemi?
+
+Biasanya sebelum kita _launching_ suatu produk, ada tiga komponen yang harus diperiksa:
+
+```{r,echo=FALSE}
+nomnoml::nomnoml("[Regulator] <-> [Konsumen]
+                 [Konsumen] <-> [Pasar|Kompetitor]
+                 [Pasar] <-> [Regulator]")
+```
+
+Kita harus pastikan bahwa produk baru tersebut tidak memiliki __masalah__ dari tiga komponen di atas.
+
+Lalu bagaimana bisa memprediksi apakah produk tersebut bisa sukses atau tidak di masa pandemi? Sayangnya analisa seperti ini belum bisa dilakukan karena keterbatasan data yang dimiliki.
+
+Hal yang masih bisa dilakukan adalah melakukan _monitoring_ secara berkala dari produk tersebut.
+
+----
+
+## Pertanyaan 17
+
+> Apa interpretasi median dari data di bawah ini?
+
+```{r,echo=FALSE}
+knitr::include_graphics("https://passingthroughresearcher.files.wordpress.com/2019/01/central-tendency.png?w=582&h=264")
+```
+
+Median dihitung dengan cara mengurutkan data dari yang terkecil sampai terbesar, lalu diambil nilai tengahnya.
+
+Jika ada yang menanyakan: __"Kenapa harus diurutkan?__
+
+Maka jawabannya: __Karena didefinisikan seperti itu!__
+
+Median mengukur nilai tengah (_central tendency_) dari suatu data. Bagaimana kita bisa melihat nilai tengah jika datanya tidak diurutkan? Bagaimana?
+
+Jika kita hitung, maka median untuk Messi adalah `12` sedangkan median untuk Ronaldo adalah `10`. Apa artinya?
+
+Perhatikan baik-baik ilustrasi di bawah ini:
+
+```{r,echo=FALSE}
+knitr::include_graphics("animated.gif")
+```
+
+---
+
+## Pertanyaan 18
+
+> Kapan _advanced tools_ digunakan?
+
+Silakan baca di [sini](https://ikanx101.com/blog/find-nfi/).
+
+Semua digunakan tergantung dari kebutuhan analisa dan data yang di-_handle_.
+
+---
+
+## Pertanyaan 19
+
+> Apakah data yang saling berkorelasi pasti signifikan?
+
+Signifikan dalam hal apa? Jika suatu data berkorelasi, maka sudah bisa dipastikan dia [signifikan berkorelasi](https://ikanx101.com/blog/materi-korelasi/).
+
+Berbeda dengan bahasan __beda signifikan__ _yah_.
 
 
-> 1. Dalam menentukan variabel independen yang ingin diteliti pengaruhnya terhadap variabel dependen berapa banyak batasan variabel independen yang perlu kita masukkan agar mendapatkan output yang valid & Trusted. agar variabel independennya tidak terlalu banyak dan luas2. Apa warning" yang bisa kita perhatikan dalam menghindari bias dalam pengambilan keputusan dari data yang kita miliki, atau bahkan untuk menghindari dari melihat/mengkorelasikan data yang kita lihat
+---
+
+## Pertanyaan 20
+
+> Bagaimana menghitung kepastian menggunakan metode regresi linear dengan $R^2$?
+
+Apa arti dari kepastian pada pertanyaan di atas?
+
+Sebagaimana kita ketahui bersama $R^2$ merupakan salah satu _goodness of fit parameter_ dalam model regresi. $R^2$ juga menandakan seberapa baik variabel _predictor_ menjelaskan variabel target.
