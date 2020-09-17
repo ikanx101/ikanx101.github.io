@@ -1,0 +1,191 @@
+---
+title: "Tutorial Data Carpentry: Cara Membersihkan Data dengan Prinsip Tidy di R"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/Documents/ikanx101.com/_posts/data carpentry/bpom")
+rm(list=ls())
+```
+
+Dalam setiap [webinar terkait _data science_](https://ikanx101.com/blog/webinar/), saya sering mengungkapkan bahwa _tools_ pengolah data `tradisional` seperti __Ms. Excel__ kadang tidak mampu menganalisa data yang kita miliki. Apalagi kalau data tersebut merupakan _unstructured data_. 
+
+_Tools_ seperti __R__ sangat berguna untuk menghadapi data-data yang _unstructured_ atau _semi-unstructured_. Tentunya ada tahapan yang harus dilakukan sebelum kita bisa menganalisanya, yakni dengan melakukan _data carpentry_ atau _data manipulation_.
+
+Sekarang, saya akan mencoba melakukan _data carpentry_ menggunakan prinsip `tidy` dari data yang ada di situs [BPOM](https://cekbpom.pom.go.id/) untuk kategori __produk pangan__ berikut ini:
+
+```{r,echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/ikanx101/Live-Session-Nutrifood-R/master/bpom.png")
+```
+
+Data dari website di atas sudah saya _scrape_ pada tanggal `15 September 2020` sore. Scrape dilakukan menggunakan __R__ dengan memanfaatkan `library(rvest)`. Jika teman-teman mau belajar _web scrape_, berikut _function_ yang saya buat untuk _scrape_ data dari situs tersebut:
+
+```{r}
+# url = 'nama url di sini'
+# data = read_html(url) %>% {
+#   tibble(
+#     ket = html_nodes(.,'td:nth-child(2)') %>% html_text(),
+#     md = html_nodes(.,'td:nth-child(1)') %>% html_text(),
+#     pt = html_nodes(.,'td~ td+ td') %>% html_text()
+#   )
+# }
+```
+
+Data mentah hasil _scrape_ bisa diunduh di [sini](https://raw.githubusercontent.com/ikanx101/Live-Session-Nutrifood-R/master/hasil%20scrape%20BPOM.csv). Jika teman-teman ingin mencobanya juga, silakan diketik kembali _codes_ atau _scripts_ yang saya buat di bawah _ya_.
+
+> Kenapa gak di-copy-paste saja?
+
+Menurut saya, dengan mengetik langsung, secara tidak sadar kita akan lebih mudah paham dan ingat setiap _function_ yang digunakan.
+
+_Mari kita mulai!_
+
+## _Importing data_
+
+Langkah pertama adalah meng-_import_ data ke dalam __R__ _global environment_. Berhubung data yang akan di-_import_ adalah data `.csv`, maka tidak diperlukan _library_ khusus.
+
+Oh iya, pastikan bahwa _path file_ tertulis dengan baik pada saat kita memanggil data. Teman-teman bisa mempermudah langkah ini dengan menaruh _file_ tersebut di _working directory_ agar tidak perlu lagi menuliskan _full path_.
+
+```{r,warning=FALSE,message=FALSE}
+data = read.csv("/home/ikanx101githubio/Documents/Live-Session-Nutrifood-R/hasil scrape BPOM.csv")
+```
+
+Mari kita lihat isi dari data tersebut dengan menggunakan perintah `head(data)`:
+
+```{r,echo=FALSE}
+knitr::kable(head(data))
+```
+
+Coba teman-teman perhatikan dengan baik. Data di atas, walaupun berbentuk tabel, tapi isi dari masing-masing variabel di dalamnya adalah teks. 
+
+
+## _Check_ Struktur Data
+
+Langkah berikutnya setelah kita meng-_import_ data adalah dengan mengecek struktur dari data tersebut.
+
+```{r,warning=FALSE,message=FALSE}
+str(data)
+```
+
+Data tersebut memiliki struktur `data.frame` dengan `4` variabel yang berisi:
+
+- `X` berupa integer; ini merupakan nomor baris data.
+- `ket` berupa `character`; ini merupakan deskripsi dari produk.
+- `md` berupa `character`; berisi kode merek dagang.
+- `pt` berupa `character`; berisi informasi perusahaan yang mendaftarkan produknya.
+
+Dari variabel `ket`, saya bisa mengambil informasi deskripsi produk, merek, dan jenis kemasan. Dari variabel `pt`, saya bisa mengambil nama perusahaan, kota atau kabupaten domisili, dan provinsi domisili.
+
+## Panggil _libraries_
+
+Untuk bisa mengekstrak informasi-informasi tersebut, saya memanggil beberapa _libraries_, yakni:
+
+```{r,message=FALSE,warning=FALSE}
+library(dplyr)
+library(tidyr)
+```
+
+## Mengekstrak informasi
+
+Berikut adalah langkah kerja yang akan saya lakukan:
+
+```{r,echo=FALSE}
+nomnoml::nomnoml("#direction: down,
+
+                 [raw data] -> [ket]
+                 [raw data] -> [pt]
+                 
+                 [ket] -> [separate I]
+                 [separate I] -> [deskripsi]
+                 [separate I] -> [ket lainnya]
+                 [ket lainnya] -> [separate II]
+                 [separate II] -> [merek]
+                 [separate II] -> [kemasan]
+                 
+                 [pt] -> [separate III]
+                 [separate III] -> [nama perusahaan]
+                 [separate III] -> [pt lainnya]
+                 [pt lainnya] -> [separate IV]
+                 [separate IV] -> [kota / kabupaten]
+                 [separate IV] -> [provinsi]
+                 
+                 [deskripsi] -> [cleaned data]
+                 [merek] -> [cleaned data]
+                 [kemasan] -> [cleaned data]
+                 [nama perusahaan] -> [cleaned data]
+                 [kota / kabupaten] -> [cleaned data]
+                 [provinsi] -> [cleaned data]
+                 
+                 ")
+```
+
+
+### `separate()` I dan `separate()` II
+
+Saya akan memecah variabel `ket` menjadi `3` variabel, yakni:
+
+- `deskripsi`
+- `merek`
+- `kemasan`
+
+Caranya adalah dengan memanfaatkan _function_ `separate()` dari `library(tidyr)`. Kita hanya perlu melihat apakah ada pola tertentu dari data tersebut.
+
+Jika kita perhatikan dengan baik, pemisah antara ketiga variabel tersebut adalah kata-kata __Merk:__ dan __Kemasan:__. Maka:
+
+```{r,message=FALSE,warning=FALSE}
+data =
+  data %>% 
+  separate(ket,into=c('deskripsi','lainnya'),sep='Merk:') %>% 
+  separate(lainnya,into=c('merek','kemasan'),sep='Kemasan:') 
+```
+
+Mari kita lihat hasilnya:
+
+```{r,echo=FALSE}
+knitr::kable(head(data))
+```
+
+### `separate()` III dan `separate()` IV
+
+Hal yang sama akan saya lakukan untuk variabel `pt`. Saya akan memecah variabel tersebut menjadi `3` variabel: 
+
+- `nama_perusahaan`
+- `provinsi`
+- `kota_kab`
+- `provinsi`
+
+Jika kita perhatikan dengan baik, pemisah antara variabel-variabel tersebut adalah kata-kata __Kota__, __Kab.__, dan __tanda koma__ (__,__).
+
+```{r,message=FALSE,warning=FALSE}
+data =
+  data %>% 
+  separate(pt,into=c("pt_lainnya","provinsi"),sep="\\,") %>% 
+  separate(pt_lainnya,into=c('pt_lainnya','kota'),sep="Kota") %>% 
+  separate(pt_lainnya,into=c('nama_perusahaan','kabupaten'),sep="Kab.")
+```
+
+Mari kita lihat hasilnya:
+
+```{r,echo=FALSE}
+knitr::kable(head(data))
+```
+
+---
+
+## Apakah pekerjaan kita sudah selesai?
+
+Saya masih kurang puas dengan data tersebut, maka saya akan coba dengan mengekstrak jenis kemasan dan menggabungkan variabel `kota` dan `kabupaten`.
+
+```{r,message=FALSE,warning=FALSE}
+data = 
+  data %>% 
+  mutate(kota_kab = ifelse(is.na(kota),paste0("Kab. ",kabupaten),kota),
+         jenis_kemasan = janitor::make_clean_names(kemasan),
+         jenis_kemasan = gsub("\\_"," ",jenis_kemasan)
+         ) 
+```
+
+
+
