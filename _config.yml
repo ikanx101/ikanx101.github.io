@@ -14,7 +14,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 title: Mathematics, Market Research & Data Science
-email: ikanx101@gmail.com
+email: fake.ikanx@gmail.com
 description: "mathematics data science algorithm maths statistics scientist artificial intelligence machine learning"
 
 twitter_username: ikanx101
@@ -59,9 +59,9 @@ plugins:
   
 
 author:
-  name   : "Ikanx Fadhli"
+  name   : "Bunch of Mathematician's Ideas"
   avatar : "/assets/images/MUKE.png"
-  bio    : "TUV Rheinland-Certified Data Scientist. Doing magic using mathematics. Just a passingthrough market researcher."
+  bio    : "I am TUV Rheinland-Certified Data Scientist, market researcher, and mathematician"
   location : "Kota Bekasi"
   links:
     - label: "Home"
@@ -70,15 +70,6 @@ author:
     - label: "Blog Lama Saya"
       icon: "fas fa-fw fa-link"
       url: "https://passingthroughresearcher.wordpress.com/"
-    - label: "Twitter"
-      icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/ikanx101"
-    - label: "GitHub"
-      icon: "fab fa-fw fa-github"
-      url: "https://github.com/ikanx101"
-    - label: "Instagram"
-      icon: "fab fa-fw fa-instagram"
-      url: "https://instagram.com/mr.ikanx"
     - label: "Telegram"
       icon: "fab fa-telegram-plane"
       url: "https://t.me/Ikanx"
@@ -92,9 +83,6 @@ footer:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/ikanx101"
-    - label: "Instagram"
-      icon: "fab fa-fw fa-instagram"
-      url: "https://instagram.com/mr.ikanx"
     - label: "Telegram"
       icon: "fab fa-telegram-plane"
       url: "https://t.me/Ikanx"    
