@@ -152,7 +152,6 @@ knitr::kable(head(data))
 Hal yang sama akan saya lakukan untuk variabel `pt`. Saya akan memecah variabel tersebut menjadi `3` variabel: 
 
 - `nama_perusahaan`
-- `provinsi`
 - `kota_kab`
 - `provinsi`
 
@@ -205,7 +204,7 @@ data =
 Mari kita lihat hasilnya:
 
 ```{r,echo=FALSE}
-knitr::kable(head(data,10),caption = "Data Final Clean")
+knitr::kable(head(data,7),caption = "Data Final Clean")
 ```
 
 
