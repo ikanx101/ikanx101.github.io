@@ -137,8 +137,8 @@ Jika kita perhatikan dengan baik, pemisah antara ketiga variabel tersebut adalah
 ```{r,message=FALSE,warning=FALSE}
 data =
   data %>% 
-  separate(ket,into=c('deskripsi','lainnya'),sep='Merk:') %>% 
-  separate(lainnya,into=c('merek','kemasan'),sep='Kemasan:') 
+  separate(ket,into=c('deskripsi','lainnya'),sep='Merk: ') %>% 
+  separate(lainnya,into=c('merek','kemasan'),sep='Kemasan: ') 
 ```
 
 Mari kita lihat hasilnya:
@@ -161,9 +161,9 @@ Jika kita perhatikan dengan baik, pemisah antara variabel-variabel tersebut adal
 ```{r,message=FALSE,warning=FALSE}
 data =
   data %>% 
-  separate(pt,into=c("pt_lainnya","provinsi"),sep="\\,") %>% 
-  separate(pt_lainnya,into=c('pt_lainnya','kota'),sep="Kota") %>% 
-  separate(pt_lainnya,into=c('nama_perusahaan','kabupaten'),sep="Kab.")
+  separate(pt,into=c("pt_lainnya","provinsi"),sep="\\, ") %>% 
+  separate(pt_lainnya,into=c('pt_lainnya','kota'),sep="Kota ") %>% 
+  separate(pt_lainnya,into=c('nama_perusahaan','kabupaten'),sep="Kab. ")
 ```
 
 Mari kita lihat hasilnya:
@@ -176,16 +176,80 @@ knitr::kable(head(data))
 
 ## Apakah pekerjaan kita sudah selesai?
 
-Saya masih kurang puas dengan data tersebut, maka saya akan coba dengan mengekstrak jenis kemasan dan menggabungkan variabel `kota` dan `kabupaten`.
+Saya masih kurang puas dengan data tersebut, maka saya akan coba merapikan tata penulisan masing-masing isi variabel lalu mengekstrak jenis kemasan dan menggabungkan variabel `kota` dan `kabupaten`.
 
 ```{r,message=FALSE,warning=FALSE}
 data = 
   data %>% 
-  mutate(kota_kab = ifelse(is.na(kota),paste0("Kab. ",kabupaten),kota),
-         jenis_kemasan = janitor::make_clean_names(kemasan),
-         jenis_kemasan = gsub("\\_"," ",jenis_kemasan)
-         ) 
+  mutate(deskripsi = trimws(deskripsi),
+         merek = trimws(merek),
+         kemasan = trimws(kemasan),
+         nama_perusahaan = trimws(nama_perusahaan),
+         kabupaten = trimws(kabupaten),
+         kota = trimws(kota),
+         provinsi = trimws(provinsi),
+         kota_kab = ifelse(is.na(kota),paste0("Kab. ",kabupaten),kota)
+         ) %>% 
+  mutate(nama_perusahaan = toupper(nama_perusahaan),
+         nama_perusahaan = gsub("[^[:alnum:] ]"," ",nama_perusahaan),
+         nama_perusahaan = stringr::str_squish(nama_perusahaan),
+         kemasan = tolower(kemasan),
+         kemasan = gsub("[^[:alnum:] ]"," ",kemasan),
+         kemasan = stringr::str_squish(kemasan),
+         jenis_kemasan = stringr::word(kemasan,1)
+        ) %>% 
+  select(merek,deskripsi,kemasan,jenis_kemasan,nama_perusahaan,kota_kab,provinsi) %>% 
+  distinct() 
+```
+
+Mari kita lihat hasilnya:
+
+```{r,echo=FALSE}
+knitr::kable(head(data,10),caption = "Data Final Clean")
 ```
 
 
+_Gimana?_ Sudah lebih bersih kan?
 
+----
+
+## Data tersebut sudah bisa kita analisa _lho!_
+
+Contohnya:
+
+> Provinsi mana yang paling banyak menyumbang _listing_ produk terbanyak?
+
+```{r,warning=FALSE,message=FALSE}
+data %>% 
+  group_by(provinsi) %>% 
+  summarise(freq = n()) %>% 
+  ungroup() %>% 
+  arrange(desc(freq)) %>% 
+  head(5) %>% 
+  knitr::kable()
+```
+
+> Jenis kemasan apa yang paling banyak digunakan?
+
+```{r,warning=FALSE,message=FALSE}
+data %>% 
+  group_by(jenis_kemasan) %>% 
+  summarise(freq = n()) %>% 
+  ungroup() %>% 
+  arrange(desc(freq)) %>% 
+  head(7) %>% 
+  knitr::kable()
+```
+
+> Di Jawa Barat, kota mana yang paling sering muncul?
+
+```{r,warning=FALSE,message=FALSE}
+data %>% 
+  filter(grepl("jawa barat",provinsi,ignore.case = T)) %>% 
+  group_by(kota_kab) %>% 
+  summarise(freq = n()) %>% 
+  ungroup() %>% 
+  arrange(desc(freq)) %>% 
+  head(10) %>% 
+  knitr::kable()
+```
