@@ -1,5 +1,5 @@
 ---
-title: "Mencari Harga Daihatsu Terios Bekas"
+title: "Tutorial Data Carpentry: Membersihkan Data Lalu Mencari Harga Mobil Daihatsu Terios Bekas"
 date: 2019-12-03T16:50:30-04:00
 categories:
   - Blog
@@ -10,7 +10,7 @@ tags:
   - Otomotif
   - Web Scraping
   - Semi Unstructured Data
-author: mr.ikanx
+  - Tutorial
 ---
 
 Ceritanya, dalam beberapa waktu ke depan saya berencana untuk menjual

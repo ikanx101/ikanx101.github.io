@@ -1,6 +1,6 @@
 ---
 date: 2020-3-12T5:30:00-04:00
-title: "Data Carpentry: Filling in NA’s data"
+title: "Tutorial Data Carpentry: Filling in NA’s data"
 categories:
   - Blog
 tags:
@@ -10,6 +10,7 @@ tags:
   - R
   - Data Bolong
   - Data Carpentry
+  - Tutorial
 ---
 
 Salah satu kegunaan **R** yang paling saya rasakan adalah kita bisa

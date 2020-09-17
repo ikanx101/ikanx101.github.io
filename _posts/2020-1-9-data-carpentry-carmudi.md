@@ -1,6 +1,6 @@
 ---
 date: 2020-1-9T5:30:00-04:00
-title: "Data Carpentry: Harga Sedan Bekas di Carmudi"
+title: "Tutorial Data Carpentry: Harga Sedan Bekas di Carmudi"
 categories:
   - Blog
 tags:
@@ -11,6 +11,7 @@ tags:
   - Unstructured Data
   - Semi structured data
   - Data Carpentry
+  - Tutorial
 ---
 
 # Pendahuluan
