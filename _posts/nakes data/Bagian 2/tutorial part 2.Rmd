@@ -140,4 +140,4 @@ knitr::kable(data)
 data %>% openxlsx::write.xlsx("Data Dokter.xlsx")
 ```
 
-Data juga bisa diunduh di sini.
+Data juga bisa diunduh di [sini](https://github.com/ikanx101/ikanx101.github.io/blob/master/_posts/nakes%20data/Bagian%202/Data%20Dokter.xlsx?raw=true).
