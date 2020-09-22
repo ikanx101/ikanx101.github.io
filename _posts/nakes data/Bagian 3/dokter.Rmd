@@ -1,0 +1,168 @@
+---
+title: "Seberapa Merata Keberadaan Dokter di Indonesia?"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/ikanx101.github.io/_posts/nakes data/Bagian 3")
+rm(list=ls())
+
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+
+data = 
+  read_excel("~/ikanx101.github.io/_posts/nakes data/Bagian 2/Data Dokter.xlsx") %>% 
+  janitor::clean_names()
+```
+
+Pada tulisan yang [lalu](https://ikanx101.com/blog/nakes-part-2/), saya telah menjelaskan bagaimana cara mengambil data jumlah tenaga kesehatan (dokter) dari situs [Kemenkes](http://bppsdmk.kemkes.go.id/info_sdmk/info/index?rumpun=101). Sudah menjadi rahasia umum bahwa fasilitas kesehatan dan dokter terbaik hanya berada di kota-kota besar Indonesia. Timpang? Iya, memang benar seperti itu. 
+
+> Tapi pertanyaannya seberapa timpang sebaran dokter di Indonesia?
+
+Mari kita eksplorasi datanya!
+
+---
+
+# Eksplorasi Data
+
+## Dokter Umum
+
+```{r,fig.retina=10,fig.align='center',echo = FALSE}
+mean_umum = mean(data$dokter_umum)
+median_umum = median(data$dokter_umum)
+
+data %>% 
+  arrange(desc(dokter_umum)) %>% 
+  head(30) %>% 
+  ggplot(aes(x = reorder(nama_kab_kota,dokter_umum),
+             y = dokter_umum)) +
+  geom_col(aes(fill = dokter_umum)) +
+  geom_hline(yintercept = mean_umum, color = "darkred",size = 2) +
+  geom_hline(yintercept = median_umum, color = "darkgreen",size = 2) +
+  coord_flip() +
+  labs(title = "Banyaknya Dokter Umum per Kabupaten dan Kota",
+       subtitle = "Top 30 Kabupaten dan Kota",
+       caption = "Garis merah: mean dan garis hijau: median\nVisualized using R\nikanx101.com") +
+  theme_minimal() +
+  theme(axis.title = element_blank(),
+        axis.text.y = element_text(size = 8),
+        legend.position = "none")
+```
+
+
+```{r,fig.retina=10,fig.align='center',echo = FALSE}
+data %>% 
+  arrange(desc(dokter_umum)) %>% 
+  tail(30) %>% 
+  ggplot(aes(x = reorder(nama_kab_kota,dokter_umum),
+             y = dokter_umum)) +
+  geom_col(aes(fill = dokter_umum)) +
+  geom_hline(yintercept = mean_umum, color = "darkred",size = 2) +
+  geom_hline(yintercept = median_umum, color = "darkgreen",size = 2) +
+  coord_flip() +
+  labs(title = "Banyaknya Dokter Umum per Kabupaten dan Kota",
+       subtitle = "Bottom 30 Kabupaten dan Kota",
+       caption = "Garis merah: mean dan garis hijau: median\nVisualized using R\nikanx101.com") +
+  theme_minimal() +
+  theme(axis.title = element_blank(),
+        axis.text.y = element_text(size = 8),
+        legend.position = "none")
+```
+
+---
+
+## Dokter Gigi
+
+```{r,fig.retina=10,fig.align='center',echo = FALSE}
+mean_umum = mean(data$dokter_gigi)
+median_umum = median(data$dokter_gigi)
+
+data %>% 
+  arrange(desc(dokter_gigi)) %>% 
+  head(30) %>% 
+  ggplot(aes(x = reorder(nama_kab_kota,dokter_gigi),
+             y = dokter_gigi)) +
+  geom_col(aes(fill = dokter_gigi)) +
+  geom_hline(yintercept = mean_umum, color = "darkred",size = 2) +
+  geom_hline(yintercept = median_umum, color = "darkgreen",size = 2) +
+  coord_flip() +
+  labs(title = "Banyaknya Dokter Gigi per Kabupaten dan Kota",
+       subtitle = "Top 30 Kabupaten dan Kota",
+       caption = "Garis merah: mean dan garis hijau: median\nVisualized using R\nikanx101.com") +
+  theme_minimal() +
+  theme(axis.title = element_blank(),
+        axis.text.y = element_text(size = 8),
+        legend.position = "none")
+```
+
+
+```{r,fig.retina=10,fig.align='center',echo = FALSE}
+data %>% 
+  arrange(desc(dokter_gigi)) %>% 
+  tail(30) %>% 
+  ggplot(aes(x = reorder(nama_kab_kota,dokter_gigi),
+             y = dokter_gigi)) +
+  geom_col(aes(fill = dokter_gigi)) +
+  geom_hline(yintercept = mean_umum, color = "darkred",size = 2) +
+  geom_hline(yintercept = median_umum, color = "darkgreen",size = 2) +
+  coord_flip() +
+  labs(title = "Banyaknya Dokter Gigi per Kabupaten dan Kota",
+       subtitle = "Bottom 30 Kabupaten dan Kota",
+       caption = "Garis merah: mean dan garis hijau: median\nVisualized using R\nikanx101.com") +
+  theme_minimal() +
+  theme(axis.title = element_blank(),
+        axis.text.y = element_text(size = 8),
+        legend.position = "none")
+```
+
+---
+
+## Dokter Spesialis
+
+```{r,fig.retina=10,fig.align='center',echo = FALSE}
+mean_umum = mean(data$dokter_spesialis)
+median_umum = median(data$dokter_spesialis)
+
+data %>% 
+  arrange(desc(dokter_spesialis)) %>% 
+  head(30) %>% 
+  ggplot(aes(x = reorder(nama_kab_kota,dokter_spesialis),
+             y = dokter_spesialis)) +
+  geom_col(aes(fill = dokter_spesialis)) +
+  geom_hline(yintercept = mean_umum, color = "darkred",size = 2) +
+  geom_hline(yintercept = median_umum, color = "darkgreen",size = 2) +
+  coord_flip() +
+  labs(title = "Banyaknya Dokter Spesialis per Kabupaten dan Kota",
+       subtitle = "Top 30 Kabupaten dan Kota",
+       caption = "Garis merah: mean dan garis hijau: median\nVisualized using R\nikanx101.com") +
+  theme_minimal() +
+  theme(axis.title = element_blank(),
+        axis.text.y = element_text(size = 8),
+        legend.position = "none")
+```
+
+
+```{r,fig.retina=10,fig.align='center',echo = FALSE}
+data %>% 
+  arrange(desc(dokter_spesialis)) %>% 
+  tail(30) %>% 
+  ggplot(aes(x = reorder(nama_kab_kota,dokter_spesialis),
+             y = dokter_spesialis)) +
+  geom_col(aes(fill = dokter_spesialis)) +
+  geom_hline(yintercept = mean_umum, color = "darkred",size = 2) +
+  geom_hline(yintercept = median_umum, color = "darkgreen",size = 2) +
+  coord_flip() +
+  labs(title = "Banyaknya Dokter Spesialis per Kabupaten dan Kota",
+       subtitle = "Bottom 30 Kabupaten dan Kota",
+       caption = "Garis merah: mean dan garis hijau: median\nVisualized using R\nikanx101.com") +
+  theme_minimal() +
+  theme(axis.title = element_blank(),
+        axis.text.y = element_text(size = 8),
+        legend.position = "none")
+```
+
