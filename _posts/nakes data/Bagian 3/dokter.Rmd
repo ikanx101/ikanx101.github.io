@@ -7,7 +7,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-setwd("~/ikanx101.github.io/_posts/nakes data/Bagian 3")
+setwd("~/Documents/ikanx101.com/_posts/nakes data/Bagian 3")
 rm(list=ls())
 
 library(readxl)
@@ -16,7 +16,7 @@ library(ggplot2)
 library(ggthemes)
 
 data = 
-  read_excel("~/ikanx101.github.io/_posts/nakes data/Bagian 2/Data Dokter.xlsx") %>% 
+  read_excel("~/Documents/ikanx101.com/_posts/nakes data/Bagian 2/Data Dokter.xlsx") %>% 
   janitor::clean_names()
 ```
 
@@ -30,15 +30,29 @@ Mari kita eksplorasi datanya!
 
 # Eksplorasi Data
 
+Dari data yang ada, kita memiliki data jumlah dokter per kabupaten kota. Detailnya adalah:
+
+```{r,echo=FALSE}
+colnames(data)[4:8]
+```
+
 ## Dokter Umum
 
 ```{r,fig.retina=10,fig.align='center',echo = FALSE}
 mean_umum = mean(data$dokter_umum)
 median_umum = median(data$dokter_umum)
 
-data %>% 
+head = 
+  data %>% 
   arrange(desc(dokter_umum)) %>% 
-  head(30) %>% 
+  head(30)
+
+tail = 
+  data %>% 
+  arrange(desc(dokter_umum)) %>% 
+  tail(30)
+
+rbind(head,tail) %>% 
   ggplot(aes(x = reorder(nama_kab_kota,dokter_umum),
              y = dokter_umum)) +
   geom_col(aes(fill = dokter_umum)) +
@@ -55,24 +69,6 @@ data %>%
 ```
 
 
-```{r,fig.retina=10,fig.align='center',echo = FALSE}
-data %>% 
-  arrange(desc(dokter_umum)) %>% 
-  tail(30) %>% 
-  ggplot(aes(x = reorder(nama_kab_kota,dokter_umum),
-             y = dokter_umum)) +
-  geom_col(aes(fill = dokter_umum)) +
-  geom_hline(yintercept = mean_umum, color = "darkred",size = 2) +
-  geom_hline(yintercept = median_umum, color = "darkgreen",size = 2) +
-  coord_flip() +
-  labs(title = "Banyaknya Dokter Umum per Kabupaten dan Kota",
-       subtitle = "Bottom 30 Kabupaten dan Kota",
-       caption = "Garis merah: mean dan garis hijau: median\nVisualized using R\nikanx101.com") +
-  theme_minimal() +
-  theme(axis.title = element_blank(),
-        axis.text.y = element_text(size = 8),
-        legend.position = "none")
-```
 
 ---
 

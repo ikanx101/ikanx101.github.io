@@ -17,7 +17,7 @@ library(gganimate)
 
 data = read.csv("/home/ikanx101githubio/Documents/belajaR/Bukan Infografis/Covid Data/owid-covid-data.csv")
 
-target = c("Indonesia","Italy")
+target = c("Indonesia","Italy","Iran")
 
 banding = 
   data %>% 
@@ -25,11 +25,11 @@ banding =
   mutate(date = as.Date(date))
 ```
 
-Sudah hampir seminggu DKI Jakarta melaksanakan [PSBB tahap II](https://ikanx101.com/blog/psbbt/). Tapi masih sering kita mendengar berita penambahan kasus COVID-19 masih tinggi. Terutama di wilayah DKI Jakarta.
+Sudah hampir `2` minggu DKI Jakarta melaksanakan [PSBB tahap II](https://ikanx101.com/blog/psbbt/). Tapi masih sering kita mendengar berita penambahan kasus COVID-19 masih tinggi. Terutama di wilayah DKI Jakarta.
 
 Kalau boleh saya beropini, kondisi penyebaran virus saat ini mungkin sudah masuk ke dalam tahap tidak terkontrol. Kenapa? Makin hari rekor penambahan kasus terus terpecahkan.
 
-Berbekal data yang dihimpun di situs [_Our World in Data_](https://ourworldindata.org/coronavirus) per malam ini (24 September 2020 pukul 20.00 WIB), saya akan coba membuat visualisasinya kembali.
+Berbekal data yang dihimpun di situs [_Our World in Data_](https://ourworldindata.org/coronavirus) per pagi ini (25 September 2020 pukul 05.37 WIB), saya akan coba membuat visualisasinya kembali.
 
 ## _Cumulative Confirmed Cases_
 
