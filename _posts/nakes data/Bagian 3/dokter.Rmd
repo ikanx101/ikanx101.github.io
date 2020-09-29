@@ -14,32 +14,114 @@ library(readxl)
 library(dplyr)
 library(ggplot2)
 library(ggthemes)
+library(ggridges)
 
 data = 
   read_excel("~/Documents/ikanx101.com/_posts/nakes data/Bagian 2/Data Dokter.xlsx") %>% 
   janitor::clean_names()
 ```
 
-Pada tulisan yang [lalu](https://ikanx101.com/blog/nakes-part-2/), saya telah menjelaskan bagaimana cara mengambil data jumlah tenaga kesehatan (dokter) dari situs [Kemenkes](http://bppsdmk.kemkes.go.id/info_sdmk/info/index?rumpun=101). Sekarang saatnya saya melakukan analisa deskriptif dari data tersebut.
+Banyak orang bilang bahwa keberadaan dokter di kota dan kabupaten di Indonesia tidak merata. Bahkan sebagian orang menyebutkan bahwa ada ketimpangan jumlah dokter di kota-kota besar dengan kabupaten atau kota lainnya. Padahal di saat pandemi seperti ini, hal yang berbahaya adalah saat pandemi sudah mencapai wilayah dengan keberadaan dokter yang minim.
 
-Sudah menjadi rahasia umum bahwa fasilitas kesehatan dan dokter terbaik hanya berada di kota-kota besar Indonesia. Timpang? Iya, memang benar seperti itu. 
+Saya justru memiliki dugaan lain:
 
-> Tapi pertanyaannya seberapa timpang sebaran dokter di Indonesia?
+> Jangan-jangan sebenarnya keberadaan dokter sudah merata. Hanya sebagian kecil dari kabupaten kota yang memiliki dokter yang menumpuk. 
 
-_Yuk_ mari kita eksplorasi!
+Analoginya seperti ini:
+
+> Bayangkan ada `100` orang berkumpul di suatu aula. `90` orang bertubuh kurus sedangkan `10` orang lainnya bertubuh gemuk.
+
+Apakah kita bisa menyatakan bahwa ada ketimpangan? Apakah kita akan menyebut kondisi di atas adalah ketidakmerataan?
+
+Menurut saya tidak!
+
+Berbekal data yang saya [ambil](https://ikanx101.com/blog/nakes-part-2/) dari situs [Kemenkes](http://bppsdmk.kemkes.go.id/info_sdmk/info/index?rumpun=101), saya akan lihat bagaimana sebaran datanya.
 
 ---
 
 # Data Jumlah Dokter per Kabupaten dan Kota
 
-Dari data di Kemenkes, ada `514` kabupaten dan kota yang dicantumkan secara detail jumlah dokter berdasarkan jenisnya, yakni:
+Dari data di situs Kemenkes, ada `514` kabupaten dan kota yang dicantumkan secara detail jumlah dokter berdasarkan jenisnya, yakni:
 
 ```{r,echo=FALSE}
 nama = gsub("\\_"," ",colnames(data)[4:8])
 stringr::str_to_title(nama)
 ```
 
-Mari kita lihat persebaran untuk masing-masing jenis dokter tersebut.
+Saya hanya akan menganalisa data `Dokter Umum` dan `Dokter Gigi` saja _yah_. Untuk melihat persebaran dari data tersebut, saya akan membuat [_density plot_ ](https://en.wikipedia.org/wiki/Probability_density_function) sebagai berikut:
+
+```{r,echo=FALSE,fig.align='center',fig.retina=10,fig.width=9,warning=FALSE,message=FALSE}
+data %>% 
+  select(nama_kab_kota,
+         dokter_umum,
+         dokter_gigi) %>% 
+  reshape2::melt(id.vars = "nama_kab_kota") %>% 
+  mutate(jenis = gsub("\\_"," ",variable),
+         jenis = stringr::str_to_title(jenis)) %>% 
+  ggplot(aes(x = value,
+             y = jenis,
+             fill = variable)) +
+  geom_density_ridges() +
+  theme_ridges() +
+  theme(legend.position = "none",
+        axis.title.y = element_blank(),
+        axis.text = element_text(size = 8),
+        axis.title.x = element_text(size = 10)) +
+  labs(title = "Sebaran Dokter di 514 Kabupaten Kota di Indonesia",
+       subtitle = "Data Kemenkes per 31 Desember 2019",
+       caption = "Visualized using R\nikang101.com",
+       x = "Banyaknya dokter")
+
+```
+
+
+---
+
+Jika dilihat sekilas, banyak data berkumpul di kiri. Hanya sedikit yang menjadi pencilan di sebelah kanan grafik. Dugaan awal saya sepertinya ada benarnya.
+
+> Mayoritas kabupaten dan kota di Indonesia berada di _range_ jumlah dokter yang relatif sama.
+
+Yuk kita lihat visualisasi berikut ini:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center',fig.retina=10}
+data %>% 
+  mutate(label = ifelse(dokter_umum > 700,nama_kab_kota,NA)) %>% 
+  ggplot(aes(x = dokter_umum,
+             y = dokter_gigi)) +
+  geom_point(aes(color = dokter_umum),
+             size = .5) +
+  geom_text(aes(label = label,
+                alpha = dokter_umum+dokter_gigi),
+            size = 3,
+            check_overlap = T,
+            position = "jitter") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  labs(title = "Banyaknya Dokter Umum dan Gigi di Kabupaten dan Kota Indonesia",
+       subtitle = "Data Kemenkes per 31 Desember 2019",
+       caption = "Visualized using R\nikang101.com",
+       x = "Banyaknya dokter umum",
+       y = "Banyaknya dokter gigi") +
+  annotate("rect",
+           xmin = 0,
+           ymin = 0,
+           xmax = 400,
+           ymax = 200,
+           fill = "magenta",
+           alpha = .2) +
+  annotate("text",x = 230,y = 210, label = "Mayoritas Kab/Kota\nberada di sini")
+
+```
+
+---
+
+Jika digambarkan dengan grafik di atas, terlihat sebenarnya mayoritas kabupaten dan kota di Indonesia berkumpul di kiri bawah. Hanya segelintir kabupaten dan kota saja yang memiliki dokter yang banyak.
+
+Jadi menurut saya, ini bukan ketidakmerataan _yah_.
+
+---
+
+# Lampiran
 
 ## Dokter Umum
 
@@ -88,93 +170,6 @@ rbind(head,tail) %>%
         legend.position = "none")
 ```
 
----
-
-## Dokter Spesialis
-
-Secara logika, keberadaan dokter spesialis memang sudah sewajarnya lebih jarang dibandingkan dokter umum. Oleh karena itu, saya hanya tampilkan `30` kabupaten dan kota yang memiliki jumlah dokter spesialis terbanyak.
-
-```{r,fig.retina=10,fig.align='center',echo = FALSE}
-mean_umum = mean(data$dokter_spesialis)
-median_umum = median(data$dokter_spesialis)
-
-head = 
-  data %>% 
-  arrange(desc(dokter_spesialis)) %>% 
-  head(30) %>% 
-  mutate(detail = "TOP")
-
-head  %>% 
-  ggplot(aes(x = reorder(nama_kab_kota,dokter_spesialis),
-             y = dokter_spesialis)) +
-  geom_col(fill = "steelblue") +
-  geom_hline(yintercept = mean_umum, color = "darkred",size = 1.2) +
-  geom_hline(yintercept = median_umum, color = "darkgreen",size = 1.2) +
-  coord_flip() +
-  annotate(geom='label',
-           label=paste0('Mean = ',round(mean_umum,0)),
-           x = 9,
-           y = mean_umum + 50,
-           color='darkred') +
-  annotate(geom='label',
-           label=paste0('Median = ',round(median_umum,0)),
-           x = 13,
-           y = median_umum + 30,
-           color='darkgreen') +
-  labs(title = "Top 30 Kabupaten Kota",
-       subtitle = "Banyaknya Dokter Spesialis per Kabupaten dan Kota",
-       caption = "Sumber: Kemenkes\nVisualized using R\nikanx101.com") +
-  theme_minimal() +
-  theme(axis.title = element_blank(),
-        axis.text.y = element_text(size = 8),
-        legend.position = "none")
-```
-
----
-
-## Dokter Sub Spesialis
-
-Begitu pula dengan keberadaan dokter sub spesialis. Keberadaannya lebih jarang dibandingkan dengan dokter spesialis. Oleh karena itu, saya hanya tampilkan `30` kabupaten dan kota yang memiliki jumlah dokter spesialis terbanyak.
-
-```{r,fig.retina=10,fig.align='center',echo = FALSE}
-mean_umum = mean(data$dokter_sub_spesialis)
-median_umum = median(data$dokter_sub_spesialis)
-
-head = 
-  data %>% 
-  arrange(desc(dokter_sub_spesialis)) %>% 
-  head(30) %>% 
-  mutate(detail = "TOP")
-
-head %>% 
-  ggplot(aes(x = reorder(nama_kab_kota,dokter_sub_spesialis),
-             y = dokter_sub_spesialis)) +
-  geom_col(fill = "steelblue") +
-  scale_fill_manual(values = c("black","steelblue")) +
-  geom_hline(yintercept = mean_umum, color = "darkred",size = 1.2) +
-  geom_hline(yintercept = median_umum, color = "darkgreen",size = 1.2) +
-  coord_flip() +
-  annotate(geom='label',
-           label=paste0('Mean = ',round(mean_umum,0)),
-           x = 9,
-           y = mean_umum + 10,
-           color='darkred') +
-  annotate(geom='label',
-           label=paste0('Median = ',round(median_umum,0)),
-           x = 13,
-           y = median_umum + 5,
-           color='darkgreen') +
-  labs(title = "Top 30 Kabupaten Kota",
-       subtitle = "Banyaknya Dokter Sub Spesialis per Kabupaten dan Kota",
-       caption = "Sumber: Kemenkes\nVisualized using R\nikanx101.com") +
-  theme_minimal() +
-  theme(axis.title = element_blank(),
-        axis.text.y = element_text(size = 8),
-        legend.position = "none")
-```
-
----
-
 ## Dokter Gigi
 
 Sama halnya dengan dokter umum, seharusnya keberadaan dokter gigi bisa lebih merata. Mari kita lihat _top_ `30` dan _bottom_ `30` kabupaten dan kota berdasarkan jumlah dokter gigi sebagai berikut:
@@ -220,134 +215,5 @@ rbind(head,tail) %>%
   theme(axis.title = element_blank(),
         axis.text.y = element_text(size = 8),
         legend.position = "none")
-```
-
----
-
-## Dokter Spesialis dan Sub Spesialis Gigi
-
-Dokter spesialis gigi dan dokter sub spesialis gigi mungkin yang paling jarang di antara jenis dokter lainnya. Oleh karena itu, saya hanya tampilkan `30` kabupaten dan kota yang memiliki jumlah dokter spesialis dan sub spesialis gigi terbanyak.
-
-```{r,fig.retina=10,fig.align='center',echo = FALSE}
-mean_umum = mean(data$dokter_gigi_spesialis_dan_sub_spesialis)
-median_umum = median(data$dokter_gigi_spesialis_dan_sub_spesialis)
-
-head = 
-  data %>% 
-  arrange(desc(dokter_gigi_spesialis_dan_sub_spesialis)) %>% 
-  head(30) %>% 
-  mutate(detail = "TOP")
-
-head %>% 
-  ggplot(aes(x = reorder(nama_kab_kota,dokter_gigi_spesialis_dan_sub_spesialis),
-             y = dokter_gigi_spesialis_dan_sub_spesialis)) +
-  geom_col(fill = "steelblue") +
-  scale_fill_manual(values = c("black","steelblue")) +
-  geom_hline(yintercept = mean_umum, color = "darkred",size = 1.2) +
-  geom_hline(yintercept = median_umum, color = "darkgreen",size = 1.2) +
-  coord_flip() +
-  annotate(geom='label',
-           label=paste0('Mean = ',round(mean_umum,0)),
-           x = 9,
-           y = mean_umum + 10,
-           color='darkred') +
-  annotate(geom='label',
-           label=paste0('Median = ',round(median_umum,0)),
-           x = 13,
-           y = median_umum + 5,
-           color='darkgreen') +
-  labs(title = "Top 30 Kabupaten Kota",
-       subtitle = "Banyaknya Dokter Spesialis dan Sub Spesialis Gigi per Kabupaten dan Kota",
-       caption = "Sumber: Kemenkes\nVisualized using R\nikanx101.com") +
-  theme_minimal() +
-  theme(axis.title = element_blank(),
-        axis.text.y = element_text(size = 8),
-        legend.position = "none")
-```
-
-
----
-
-## _Further Analysis_
-
-Dari _charts_ di atas, kita bisa melihat beberapa kabupaten dan kota selalu muncul berulang di _top_ `30` atau di _bottom_ `30`. Sekilas kita bisa melihat bahwa kota-kota yang terletak di Provinsi `DKI Jakarta` selalu berada di urutan teratas.
-
-> Apakah bisa kita melakukan pengelompokkan kabupaten dan kota berdasarkan kesamaan karakteristik jumlah jenis dokternya?
-
-Untuk melakukannya, saya akan gunakan __K-Means cluster analysis__ dengan catatan saya tidak mengikutsertakan kota-kota di DKI Jakarta. Bagaimana caranya?
-
-1. Untuk memudahkan, saya transformasi masing-masing jumlah jenis dokter ke skala `1-7`.
-1. Saya gunakan metode _elbow_ untuk menentukan ada berapa banyak _cluster_ yang mungkin ada. Hasilnya, didapat ada `5` kemungkinan _clusters_.
-1. Saya akan buat `5`_-Means Cluster_.
-
-Berikut adalah hasilnya:
-
-```{r,include=FALSE,warning=FALSE,message=FALSE}
-rm(list=ls())
-load("hasil kmeans.rda")
-```
-
-```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center',fig.retina=10,fig.width=8}
-data %>% 
-  group_by(cluster) %>% 
-  summarise(n = n()) %>% 
-  ungroup() %>% 
-  mutate(cluster = paste0("Cluster ",cluster)) %>% 
-  ggplot(aes(x = cluster,
-             y = n)) +
-  geom_col(fill = "brown",color = "black") +
-  geom_label(aes(label = n)) +
-  theme_wsj() +
-  labs(title = "Berapa banyak kabupaten kota yang termasuk ke dalam\nmasing-masing cluster?",
-       subtitle = "Base: 514 Kabupaten dan Kota",
-       caption = "Visualized using R\nikanx101.com") +
-  theme(axis.text.y = element_blank(),
-        plot.title = element_text(size = 13),
-        plot.subtitle = element_text(size=12),
-        plot.caption = element_text(size=10))
-```
-
-- __Cluster 1__ merupakan cluster dengan anggota terbanyak, yakni berisi `419` kabupaten kota.
-- __Cluster 2__ berisi `18` kabupaten kota yang memiliki kesamaan karakteristik.
-- __Cluster 3__ hanya berisi `2` kabupaten kota yang memiliki kesamaan karakteristik.
-- __Cluster 4__ hanya berisi `5` kabupaten kota yang memiliki kesamaan karakteristik.
-- __Cluster 5__ berisi `65` kabupaten kota yang memiliki kesamaan karakteristik.
-
-Bagaimana karakteristik dari masing-masing cluster?
-
-```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center',fig.retina=10,fig.width=8}
-new = data.frame(hasil$centers)
-new$cluster = paste0("Cluster ",c(1:5))
-
-new %>% 
-  reshape2::melt(id.vars = "cluster") %>% 
-  mutate(variable = gsub("\\_"," ",variable),
-         variable = stringr::str_to_title(variable),
-         label = case_when(value <= 2 ~ "Very Low",
-                           value > 2 & value < 3 ~ "So So",
-                           value >= 3 & value < 5 ~ "Good",
-                           value >= 5 & value < 6 ~ "High",
-                           value >= 6 ~ "Gold")
-         ) %>% 
-  ggplot(aes(x = cluster,
-             y = variable,
-             fill = value)) +
-  geom_tile() +
-  scale_fill_gradient2(low = "darkred",high = "gold",midpoint = 4) +
-  geom_text(aes(label = label),color = "black",face = "bold") +
-  labs(title = "Karakteristik Masing-Masing Cluster",
-       subtitle = "Base: 514 Kabupaten dan Kota",
-       caption = "Visualized using R\nikanx101.com") +
-  theme_minimal() +
-  theme(legend.position = "none",
-        axis.title = element_blank())
-```
-
-
-
-```{r}
-data %>% 
-  arrange(cluster) %>% 
-  select(nama_kab_kota,cluster)
 ```
 
