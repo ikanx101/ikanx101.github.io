@@ -1,5 +1,5 @@
 ---
-date: 2020-09-29T5:30:00-04:00
+date: 2020-09-29T0:30:00-04:00
 title: "Seberapa Merata Keberadaan Dokter di Indonesia?"
 categories:
   - Blog
