@@ -1,5 +1,18 @@
-Seberapa Merata Keberadaan Dokter di Indonesia?
-================
+---
+date: 2020-09-29T5:30:00-04:00
+title: "Seberapa Merata Keberadaan Dokter di Indonesia?"
+categories:
+  - Blog
+tags:
+  - Machine Learning
+  - Artificial Intelligence
+  - Web Scrap
+  - R
+  - Dokter
+  - Kemenkes
+  - Kesehatan
+---
+
 
 Banyak orang bilang bahwa keberadaan dokter di kota dan kabupaten di
 Indonesia tidak merata. Bahkan sebagian orang menyebutkan bahwa ada
@@ -46,7 +59,7 @@ Saya hanya akan menganalisa data `Dokter Umum` dan `Dokter Gigi` saja
 plot*](https://en.wikipedia.org/wiki/Probability_density_function)
 sebagai berikut:
 
-<img src="dokter_files/figure-gfm/unnamed-chunk-2-1.png" width="864" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/nakes%20data/Bagian%203/dokter_files/figure-gfm/unnamed-chunk-2-1.png" width="864" style="display: block; margin: auto;" />
 
 -----
 
@@ -59,7 +72,7 @@ ada benarnya.
 
 Yuk kita lihat visualisasi berikut ini:
 
-<img src="dokter_files/figure-gfm/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/nakes%20data/Bagian%203/dokter_files/figure-gfm/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" />
 
 -----
 
@@ -80,7 +93,7 @@ cukup di masing-masing kabupaten dan kota. Mari kita lihat *top* `30`
 dan *bottom* `30` kabupaten dan kota berdasarkan jumlah dokter umum
 sebagai berikut:
 
-<img src="dokter_files/figure-gfm/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/nakes%20data/Bagian%203/dokter_files/figure-gfm/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" />
 
 ## Dokter Gigi
 
@@ -88,4 +101,4 @@ Sama halnya dengan dokter umum, seharusnya keberadaan dokter gigi bisa
 lebih merata. Mari kita lihat *top* `30` dan *bottom* `30` kabupaten dan
 kota berdasarkan jumlah dokter gigi sebagai berikut:
 
-<img src="dokter_files/figure-gfm/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/nakes%20data/Bagian%203/dokter_files/figure-gfm/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" />
