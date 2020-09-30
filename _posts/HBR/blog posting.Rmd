@@ -1,0 +1,31 @@
+---
+title: "Text Analysis: Membandingkan Dua Topik Artikel dari Harvard Business Review"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/Documents/ikanx101.com/_posts/HBR")
+rm(list=ls())
+```
+
+Pernah rekan saya bertanya seperti ini:
+
+> [Data berupa teks bisa dianalisa apa saja ya?](https://ikanx101.com/blog/QnA-1/#pertanyaan-9)
+
+Setidaknya ada tiga tulisan terkait _text analysis_ yang pernah saya buat, yakni:
+
+1. Komentar netizen pada webseries [Sunyi](https://ikanx101.com/blog/blog-posting-sunyi/).
+1. _Keywords_ di [tahun baru](https://ikanx101.com/blog/tahun-baru/).
+1. Membaca artikel diabetes di [detik.com](https://passingthroughresearcher.wordpress.com/2019/08/15/menelusuri-pencarian-keyword-diabetes-mellitus-di-detikhealth/).
+
+Sekarang saya akan membuat sesuatu yang berbeda. Ada `2` analisa yang mau saya perkenalkan, yakni:
+
+1. _Crosswords analysis_ dan
+1. _Log odds ratio_.
+
+---
+
+Sebagai contoh, saya akan menggunakan [data](https://github.com/ikanx101/belajaR/blob/master/Bukan%20Infografis/HBR/clean.rda) berupa `14` artikel dari situs [HBR](https://hbr.org/) yang saya _scrape_ pagi ini (30 September 2020 pukul 10.30 WIB).
