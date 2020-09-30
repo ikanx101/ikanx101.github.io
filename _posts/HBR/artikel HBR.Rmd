@@ -1,0 +1,116 @@
+---
+title: "Text Analysis: Membandingkan Dua Topik Artikel dari Harvard Business Review"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/Documents/ikanx101.com/_posts/HBR")
+rm(list=ls())
+library(dplyr)
+library(tidytext)
+library(ggplot2)
+library(ggthemes)
+library(wordcloud2)
+load("/home/ikanx101githubio/Documents/belajaR/Bukan Infografis/HBR/clean.rda")
+```
+
+Pernah rekan saya bertanya seperti ini:
+
+> [Data berupa teks bisa dianalisa apa saja ya?](https://ikanx101.com/blog/QnA-1/#pertanyaan-9)
+
+Setidaknya ada tiga tulisan terkait _text analysis_ yang pernah saya buat, yakni:
+
+1. Komentar netizen pada webseries [Sunyi](https://ikanx101.com/blog/blog-posting-sunyi/).
+1. _Keywords_ di [tahun baru](https://ikanx101.com/blog/tahun-baru/).
+1. Membaca artikel diabetes di [detik.com](https://passingthroughresearcher.wordpress.com/2019/08/15/menelusuri-pencarian-keyword-diabetes-mellitus-di-detikhealth/).
+
+Sekarang saya akan membuat sesuatu yang berbeda. Apa itu? Ada `2` analisa yang mau saya coba kali ini, yakni:
+
+1. _Crosswords analysis_ dan
+1. _Log odds ratio_.
+
+Tujuan dari `2` analisa itu adalah membandingkan dan menemukan kata-kata yang menjadi pembeda antara `2` topik atau kategori data teks.
+
+---
+
+Sebagai contoh, saya akan menggunakan [data teks](https://github.com/ikanx101/belajaR/blob/master/Bukan%20Infografis/HBR/clean.rda) berupa `14` artikel terbaru dari situs [HBR](https://hbr.org/) yang saya _scrape_ pagi ini (30 September 2020 pukul 10.30 WIB). `14` artikel tersebut terdiri dari `7` artikel dari kategori `leadership` dan `7` artikel dari kategori `technology`.
+
+```{r out.width="60%",echo=FALSE,fig.align='center',fig.retina=10}
+nomnoml::nomnoml("[14 Artikel HBR] -> [7 Artikel Leadership]
+                 [14 Artikel HBR] -> [7 Artikel Technology]
+                 [7 Artikel Leadership] -- [Apakah ada perbedaan?]
+                 [7 Artikel Technology] -- [Apakah ada perbedaan?]
+                 ")
+```
+
+## _Crosswords Analysis_
+
+Cara kerja analisa ini cenderung sangat mudah. Begini caranya:
+
+1. Buat tabulasi frekuensi dari kata-kata yang muncul dari `2` kategori. Misal kategori __A__ dan __B__.
+1. Pilih semua kata yang beririsan dari kategori __A__ dan __B__.
+1. Buat _scatterplot_ dari data tersebut $(A \sim B)$.
+
+Jika ternyata kedua kategori ini __sama__, maka akan terlihat bahwa mayoritas kata-kata yang digunakan berkumpul di membentuk garis lurus.
+
+> Masih bingung? Ini saya berikan contohnya ya.
+
+Saya mulai dengan menghitung frekuensi dari kata-kata yang muncul pada kategori `leadership`, lalu saya buat _wordcloud_ sebagai berikut:
+
+```{r,echo=FALSE,fig.retina=10,fig.align='center',message=FALSE}
+leader_wc = 
+  new %>% 
+  filter(kategori == "leadership") %>% 
+  unnest_tokens("words",baca) %>% 
+  group_by(words) %>% 
+  summarise(n = n()) %>% 
+  arrange(desc(n))
+
+wc = wordcloud2::wordcloud2(leader_wc,color = "random-dark")
+
+library(htmlwidgets)
+saveWidget(wc,"1.html",selfcontained = F)
+webshot::webshot("1.html","wordcloud1.png",vwidth = 1200, vheight = 1000, delay = 40)
+```
+Berikutnya adalah frekuensi dari kata-kata yang muncul pada kategori `technology` :
+
+```{r,echo=FALSE,fig.retina=10,fig.align='center',message=FALSE}
+tech_wc = 
+  new %>% 
+  filter(kategori == "technology") %>% 
+  unnest_tokens("words",baca) %>% 
+  group_by(words) %>% 
+  summarise(n = n()) %>% 
+  arrange(desc(n))
+
+wc = wordcloud2::wordcloud2(tech_wc,color = "random-dark")
+
+library(htmlwidgets)
+saveWidget(wc,"1.html",selfcontained = F)
+webshot::webshot("1.html","wordcloud2.png",vwidth = 1200, vheight = 1000, delay = 40)
+```
+
+_Crosswords analysis_ sebenarnya membandingkan dua _wordclouds_ di atas menjadi plot berikut:
+
+```{r,echo=FALSE,fig.retina=10,fig.align='center',message=FALSE}
+leader_wc = leader_wc %>% rename(leader = n)
+tech_wc = tech_wc %>% rename(tech = n)
+
+data = merge(leader_wc,tech_wc)
+
+data %>% 
+  ggplot(aes(x = leader,
+             y = tech)) +
+  geom_point(alpha = 0.1, size = 2.5, width = 0.25, height = 0.25) +
+  geom_text(aes(label = words,
+                size = leader+tech), check_overlap = TRUE) +
+  geom_abline(color = "red") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+```
+
+## _Log Odds Ratio_
