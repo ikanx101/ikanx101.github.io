@@ -114,7 +114,7 @@ data = merge(leader_wc,tech_wc)
 data %>% 
   arrange(desc(leader)) %>% 
   head(20) %>% 
-  knitr::kable(caption = "TOP 20 Kata-Kata yang Beririsan dari 2 Kategori")
+  knitr::kable("html",caption = "TOP 20 Kata-Kata yang Beririsan dari 2 Kategori")
 ```
 
 Tabel di atas saya akan buat plot berikut:

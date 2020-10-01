@@ -75,9 +75,60 @@ Berikutnya adalah frekuensi dari kata-kata yang muncul pada kategori
 
 <img src="artikel-HBR_files/figure-gfm/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" />
 
-*Crosswords analysis* sebenarnya membandingkan dua *wordclouds* di atas
-menjadi plot berikut:
+Jika saya gabung kedua *wordclouds* tersebut, maka hasilnya seperti ini:
 
-<img src="artikel-HBR_files/figure-gfm/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" />
+| words        | leader | tech |
+| :----------- | -----: | ---: |
+| employee     |     60 |   20 |
+| lead         |     44 |   15 |
+| people       |     41 |   32 |
+| time         |     37 |   19 |
+| manage       |     36 |   21 |
+| company      |     33 |   43 |
+| covid        |     33 |   11 |
+| team         |     33 |   11 |
+| support      |     29 |    5 |
+| pandemic     |     27 |   14 |
+| response     |     27 |    3 |
+| remote       |     26 |    7 |
+| 19           |     24 |   10 |
+| meet         |     23 |    4 |
+| heal         |     22 |    2 |
+| organization |     22 |   10 |
+| value        |     22 |    3 |
+| feel         |     21 |    1 |
+| office       |     21 |    2 |
+| busy         |     20 |   28 |
+
+TOP 20 Kata-Kata yang Beririsan dari 2 Kategori
+
+Tabel di atas saya akan buat plot berikut:
+
+<img src="artikel-HBR_files/figure-gfm/unnamed-chunk-5-1.png" width="768" style="display: block; margin: auto;" />
+
+Dari *scatterplot* di atas, kita bisa menghitung korelasi antara
+kata-kata tersebut:
+
+    ## 
+    ##  Pearson's product-moment correlation
+    ## 
+    ## data:  data$leader and data$tech
+    ## t = 9.5837, df = 662, p-value < 2.2e-16
+    ## alternative hypothesis: true correlation is not equal to 0
+    ## 95 percent confidence interval:
+    ##  0.2804146 0.4141413
+    ## sample estimates:
+    ##       cor 
+    ## 0.3490537
+
+Ternyata didapatkan korelasinya signifikan (tidak bisa diabaikan)
+walaupun nilainya relatif lemah ![(r
+= 0.349)](https://latex.codecogs.com/png.latex?%28r%20%3D%200.349%29
+"(r = 0.349)").
+
+-----
 
 ## *Log Odds Ratio*
+
+[*Log Odds
+Ratio*](https://en.wikipedia.org/wiki/Odds_ratio#:~:text=The%20logarithm%20of%20the%20odds,%2F27%20maps%20to%20%E2%88%923.296.)
