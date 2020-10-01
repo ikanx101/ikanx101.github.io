@@ -150,4 +150,35 @@ Ternyata didapatkan korelasinya signifikan (tidak bisa diabaikan) walaupun nilai
 
 ## _Log Odds Ratio_
 
-[_Log Odds Ratio_](https://en.wikipedia.org/wiki/Odds_ratio#:~:text=The%20logarithm%20of%20the%20odds,%2F27%20maps%20to%20%E2%88%923.296.)
+[_Log Odds Ratio_](https://en.wikipedia.org/wiki/Odds_ratio#:~:text=The%20logarithm%20of%20the%20odds,%2F27%20maps%20to%20%E2%88%923.296.) adalah kelanjutan dari _crosswords analysis_. Frekuensi kata dari `2` kelompok akan dihitung nilai `logratio`-nya dengan rumus: 
+
+$$logratio = ln(\frac{freq_{kel1}}{freq_{kel2}})$$
+
+Angka tersebut akan menunjukkan kata mana yang _less or most likely come from each group_.
+
+```{r out.width="75%",echo=FALSE}
+knitr::include_graphics("odds ratio.png")
+```
+
+
+```{r,echo=FALSE,fig.retina=10,fig.align='center',message=FALSE}
+data %>% 
+  mutate(log_ratio = log(leader / tech)) %>% 
+  filter(abs(log_ratio) > 2) %>% 
+  mutate(penanda = ifelse(log_ratio<0,"a","b")) %>% 
+  group_by(penanda) %>% 
+  ggplot(aes(x = reorder(words,log_ratio),
+             y = log_ratio)) +
+  geom_col(aes(fill = log_ratio<0)) +
+  scale_fill_manual(values = c("steelblue", "darkred"),name = "", labels = c("Leader", "Tech")) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90,hjust = 1,size=7)) +
+  theme(legend.position = "bottom") +
+  labs(x = "Kata-Kata yang Digunakan",
+       y = "Log Odds Ratio",
+       title = "Log Odds Ratio antara Artikel Kategori Leadership dan Technology",
+       subtitle = "Source: 14 Artikel HBR") +
+  coord_flip()
+```
+
+Sekarang kelihatan _deh_ kata-kata mana saja yang sering keluar di `leadership` dan `technology`. 
