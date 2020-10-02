@@ -60,7 +60,7 @@ Sebelum jauh melakukan analisa, ada beberapa langkah _pre processing_ yang saya 
 
 Cara kerja analisa ini cenderung sangat mudah. Begini caranya:
 
-1. Buat tabulasi frekuensi dari kata-kata yang muncul dari `2` kategori. Misal kategori __A__ dan __B__.
+1. Buat tabulasi frekuensi dari kata-kata yang muncul dari `2` kategori tersebut.
 1. Pilih semua kata yang beririsan dari kategori __A__ dan __B__.
 1. Buat _scatterplot_ dari data tersebut $(A \sim B)$.
 
@@ -107,17 +107,22 @@ webshot::webshot("1.html","wordcloud2.png",vwidth = 1200, vheight = 1000, delay 
 Jika saya gabung kedua _wordclouds_ tersebut, maka hasilnya seperti ini:
 
 ```{r,echo=FALSE}
-leader_wc = leader_wc %>% rename(leader = n)
-tech_wc = tech_wc %>% rename(tech = n)
+leader_wc = leader_wc %>% rename(leader = n) %>% mutate(leader = leader / 1559)
+tech_wc = tech_wc %>% rename(tech = n) %>% mutate(tech = tech / 1657)
 
 data = merge(leader_wc,tech_wc)
 data %>% 
-  arrange(desc(leader)) %>% 
+  arrange(desc(leader,tech)) %>% 
   head(20) %>% 
-  knitr::kable("html",caption = "TOP 20 Kata-Kata yang Beririsan dari 2 Kategori")
+  mutate(leader = round(leader*100,2),
+         tech = round(tech*100,2)) %>% 
+  rename(Words = words,
+         "% Leadership" = leader,
+         "% Technology" = tech) %>% 
+  knitr::kable("html",caption = "Contoh: 10 Kata-Kata yang Beririsan dari 2 Kategori")
 ```
 
-Tabel di atas saya akan buat plot berikut:
+Dari tabel di atas saya buat _plot_ sebagai berikut:
 
 ```{r,echo=FALSE,fig.retina=10,fig.align='center',message=FALSE,fig.width=8}
 data %>% 
@@ -137,14 +142,16 @@ data %>%
 
 ```
 
-Dari _scatterplot_ di atas, kita bisa menghitung korelasi antara kata-kata tersebut:
+Dari _scatterplot_ di atas, kita bisa menghitung korelasi antara `2` kategori tersebut:
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 tes = cor.test(data$leader,data$tech)
 tes
 ```
 
-Ternyata didapatkan korelasinya signifikan (tidak bisa diabaikan) walaupun nilainya relatif lemah $(r = 0.349)$.
+Ternyata didapatkan korelasinya signifikan (tidak bisa diabaikan) walaupun nilainya relatif lemah $(r = 0.349)$. Artinya kecenderungan kata yang sama dipakai di kedua kategori artikel relatif kecil.
+
+> Kedua artikel ini menggunakan kata-kata yang berbeda. Akibatnya topik bahasan juga benar-benar berbeda.
 
 ---
 
@@ -154,17 +161,20 @@ Ternyata didapatkan korelasinya signifikan (tidak bisa diabaikan) walaupun nilai
 
 $$logratio = ln(\frac{freq_{kel1}}{freq_{kel2}})$$
 
-Angka tersebut akan menunjukkan kata mana yang _less or most likely come from each group_.
+Angka tersebut akan menunjukkan kata mana yang _less or most likely come from each group_. Berikut adalah bentuk _plot_ yang dijadikan standar perhitungan pada _log odds ratio_:
 
 ```{r out.width="75%",echo=FALSE}
 knitr::include_graphics("odds ratio.png")
 ```
 
+Dari _plot_ di atas terlihat bahwa jika ada kata yang memiliki nilai $logratio=0$ artinya kata tersebut dipakai oleh kedua kategori artikel dengan frekuensi yang sama. Selain itu, maka kata-kata lebih sering dipakai di salah satu kategori artikel saja.
 
-```{r,echo=FALSE,fig.retina=10,fig.align='center',message=FALSE}
+Berikut adalah bentuk finalnya:
+
+```{r,echo=FALSE,fig.retina=10,fig.align='center',fig.height=14,message=FALSE}
 data %>% 
   mutate(log_ratio = log(leader / tech)) %>% 
-  filter(abs(log_ratio) > 2) %>% 
+  filter(abs(log_ratio) > 1.5) %>% 
   mutate(penanda = ifelse(log_ratio<0,"a","b")) %>% 
   group_by(penanda) %>% 
   ggplot(aes(x = reorder(words,log_ratio),
@@ -176,9 +186,12 @@ data %>%
   theme(legend.position = "bottom") +
   labs(x = "Kata-Kata yang Digunakan",
        y = "Log Odds Ratio",
-       title = "Log Odds Ratio antara Artikel Kategori Leadership dan Technology",
-       subtitle = "Source: 14 Artikel HBR") +
+       title = "Log Odds Ratio antara Artikel Kategori Leadership dan Technology\nKata-kata Apa Saja yang Most Likely Berasal dari Masing-masing Kategori?",
+       subtitle = "Source: 14 Artikel HBR",
+       caption = "Visualized using R\nikanx101.com") +
   coord_flip()
 ```
 
 Sekarang kelihatan _deh_ kata-kata mana saja yang sering keluar di `leadership` dan `technology`. 
+
+## Mau menyimpulkan apa yang bisa diambil dari analisa ini?
