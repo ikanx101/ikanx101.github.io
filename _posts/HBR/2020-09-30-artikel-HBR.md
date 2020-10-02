@@ -630,4 +630,4 @@ Berikut adalah bentuk finalnya:
 Sekarang kelihatan *deh* kata-kata mana saja yang sering keluar di
 `leadership` dan `technology`.
 
-## Mau menyimpulkan apa yang bisa diambil dari analisa ini?
+## Ada yang bisa disimpulkan dari analisa ini?
