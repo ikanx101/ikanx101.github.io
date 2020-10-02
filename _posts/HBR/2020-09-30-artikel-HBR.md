@@ -571,7 +571,7 @@ busy
 
 Dari tabel di atas saya buat *plot* sebagai berikut:
 
-<img src="artikel-HBR_files/figure-gfm/unnamed-chunk-5-1.png" width="768" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/HBR/artikel-HBR_files/figure-gfm/unnamed-chunk-5-1.png" width="768" style="display: block; margin: auto;" />
 
 Dari *scatterplot* di atas, kita bisa menghitung korelasi antara `2`
 kategori tersebut:
