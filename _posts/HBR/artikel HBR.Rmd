@@ -186,8 +186,8 @@ data %>%
   theme(legend.position = "bottom") +
   labs(x = "Kata-Kata yang Digunakan",
        y = "Log Odds Ratio",
-       title = "Log Odds Ratio antara Artikel Kategori Leadership dan Technology\nKata-kata Apa Saja yang Most Likely Berasal dari Masing-masing Kategori?",
-       subtitle = "Source: 14 Artikel HBR",
+       title = "Log Odds Ratio antara Artikel Kategori Leadership dan Technology",
+       subtitle = "Kata-kata Apa Saja yang Most Likely Berasal dari Masing-masing Kategori?\nSource: 14 Artikel HBR",
        caption = "Visualized using R\nikanx101.com") +
   coord_flip()
 ```
