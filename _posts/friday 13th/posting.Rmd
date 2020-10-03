@@ -1,0 +1,81 @@
+---
+title: "Friday 13th: Akan Selalu Ada Minimal Satu Hari Jumat Tanggal 13 dalam Setahun"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/ikanx101com/_posts/friday 13th")
+rm(list=ls())
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+```
+
+Ini bukan cerita horor atau hal lain yang tidak _scientific_ _yah_. Jika kita perhatikan dengan seksama, dalam setiap tahun ada minimal satu hari Jumat bertanggal `13`. Kalau gak percaya, lihat saja kalendar. Pada tahun `2020` ini, Jumat tanggal `13` muncul `2` kali pada Maret dan November nanti.
+
+Bahkan dulu waktu kuliah di Matematika, ada satu soal ujian Matematika Diskrit dengan soal seperti ini:
+
+> Buktikan bahwa ada minimal satu Jumat bertanggal `13` setiap tahunnya!
+
+Pembuktian secara matematika mungkin agak sulit dipahami _yah_. Intinya saat kita bisa membuat kondisi secara iteratif, Jumat tanggal `13` akan terjadi saat awal bulan (tanggal `1`) jatuh pada hari `Minggu`. Menariknya, selalu ada tanggal `1` yang jatuh di hari `Minggu`.
+
+Sekarang saya akan memberikan bukti dengan cara _brute force_, yakni dengan menghitung sampai `30` tahun ke depan, ada berapa banyak Jumat tanggal `13` muncul setiap tahunnya.
+
+Untuk melakukannya saya akan membuat algoritma sehingga mesin yang akan menghitungnya secara otomatis.
+
+Pertama-tama, saya akan membuat _database_ tanggal dari `1 Januari 2020` hingga `31 Desember 2050`.
+
+```{r}
+tanggal = seq(as.Date("2020-01-01"),as.Date("2050-12-31"),by = 1)
+data = data.frame(
+  tanggal = tanggal,
+  hari = lubridate::wday(tanggal, label = T),
+  angka = lubridate::day(tanggal),
+  bulan = lubridate::month(tanggal,label = T),
+  tahun = lubridate::year(tanggal)
+)
+```
+
+Kemudian saya akan hitung kemunculan Jumat tanggal `13` setiap tahunnya:
+
+```{r,warning=FALSE,message=FALSE}
+hasil = 
+  data %>% 
+  filter(hari == "Fri" & angka == 13) %>% 
+  group_by(tahun) %>% 
+  summarise(freq = n(),
+            terjadi_saat = stringr::str_c(bulan,collapse = ",")) %>% 
+  ungroup()
+```
+
+```{r,echo=FALSE}
+hasil %>% 
+  head(10) %>% 
+  knitr::kable("html",caption = "10 Data Teratas")
+```
+
+Kalau saya buat visualisasinya, maka:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10,fig.height=10}
+hasil %>% 
+  mutate(tahun = factor(tahun)) %>% 
+  ggplot(aes(x = tahun,
+             y = freq)) +
+  geom_col(aes(fill = freq),
+           color = "black") +
+  geom_label(aes(label = terjadi_saat),size = 3,hjust=1) +
+  theme_economist() +
+  coord_flip() +
+  theme(legend.position = "none",
+        axis.title.y = element_blank()) +
+  labs(title = "Ada berapa kali Jumat tanggal 13 muncul setiap tahunnya?",
+       subtitle = "Tahun 2020 hingga 2050",
+       x = "Berapa kali terjadi per tahun?",
+       caption = "Visualized using R\nikanx101.com")
+```
+
+
+# Gimana? Sudah percaya akan selalu ada Jumat tanggal `13` setiap tahunnya?
