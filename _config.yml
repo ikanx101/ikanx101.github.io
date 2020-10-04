@@ -29,7 +29,7 @@ words_per_minute: 80
 
 # Outputting
 permalink: /:categories/:title/
-paginate: 7 # amount of posts to show
+paginate: 8 # amount of posts to show
 paginate_path: /page:num/
 timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
@@ -61,7 +61,7 @@ plugins:
 author:
   name   : "Bunch of Mathematician's Ideas"
   avatar : "/assets/images/MUKE.png"
-  bio    : "I am TUV Rheinland-Certified Data Scientist, market researcher, and mathematician"
+  bio    : "I am mathematician doing market research and data science"
   location : "Earth 243"
   links:
     - label: "Home"
