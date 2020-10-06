@@ -40,7 +40,7 @@ membandingkan total kasus (kumulatif) Indonesia dengan Italy.
 Saya sudah pernah menjelaskannya di [tulisan saya
 sebelumnya](https://ikanx101.com/blog/psbbt/#cumulative-confirmed-cases).
 
-<img src="https://github.com/ikanx101/ikanx101.github.io/blob/master/_posts/Covid%20Update/update-6-Okt_files/figure-gfm/unnamed-chunk-1-1.png" width="768" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Covid%20Update/update-6-Okt_files/figure-gfm/unnamed-chunk-1-1.png" width="768" />
 
 Pada bulan lalu saya sempat menduga bahwa Indonesia akan menyalip angka
 Italy dalam rentang waktu yang relatif tidak lama. Tapi sepertinya di
@@ -59,7 +59,7 @@ hari ini adalah tingkat kesembuhan pasien COVID 19 yang semakin naik.
 Setiap harinya, banyaknya orang yang sembuh sudah semakin tinggi
 dibandingkan orang yang meninggal dan angka penambahan kasus baru.
 
-<img src="https://github.com/ikanx101/ikanx101.github.io/blob/master/_posts/Covid%20Update/update-6-Okt_files/figure-gfm/unnamed-chunk-2-1.png" width="768" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Covid%20Update/update-6-Okt_files/figure-gfm/unnamed-chunk-2-1.png" width="768" />
 
 Jika kita ingat kembali saat di awal-awal pandemi terjadi di Indonesia,
 angka kematian melebihi angka kesembuhan. Namun sekarang kita bisa
@@ -80,7 +80,7 @@ Saya mengambil data dari situs
 pukul 04.45 WIB. Mari kita lihat dulu sebaran data *recovery rate* dari
 seluruh negara di dunia.
 
-<img src="https://github.com/ikanx101/ikanx101.github.io/blob/master/_posts/Covid%20Update/update-6-Okt_files/figure-gfm/unnamed-chunk-3-1.png" width="768" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Covid%20Update/update-6-Okt_files/figure-gfm/unnamed-chunk-3-1.png" width="768" />
 
 Ternyata, walaupun Indonesia memiliki *recovery rate* yang relatif
 `tinggi` tapi masih banyak negara lain yang memiliki *recovery rate*
@@ -88,7 +88,7 @@ yang lebih tinggi (berada di *range* \> `90%`).
 
 Negara mana saja? Berikut visualisasinya:
 
-<img src="https://github.com/ikanx101/ikanx101.github.io/blob/master/_posts/Covid%20Update/update-6-Okt_files/figure-gfm/unnamed-chunk-4-1.png" width="768" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Covid%20Update/update-6-Okt_files/figure-gfm/unnamed-chunk-4-1.png" width="768" />
 
 Besar harapan kita agar angka ini selalu bergerak naik mengikuti
 negara-negara lain.
@@ -100,7 +100,7 @@ negara-negara lain.
 Data terakhir yang ingin saya tunjukkan adalah angka kasus aktif harian.
 Mari kita lihat visualisasi berikut:
 
-<img src="https://github.com/ikanx101/ikanx101.github.io/blob/master/_posts/Covid%20Update/update-6-Okt_files/figure-gfm/unnamed-chunk-5-1.png" width="768" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Covid%20Update/update-6-Okt_files/figure-gfm/unnamed-chunk-5-1.png" width="768" />
 
 Ternyata setelah sempat melandai di masa-masa Idul Adha hingga Agustus,
 kasus aktif harian di Indonesia meningkat kembali sejak September hingga
