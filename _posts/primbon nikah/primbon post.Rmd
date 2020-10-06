@@ -1,0 +1,90 @@
+---
+title: "Primbon ala Data Science: Tanggal Pernikahan Terbaik di 2021"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/ikanx101com/_posts/primbon nikah")
+
+library(dplyr)
+library(lubridate)
+library(ggplot2)
+```
+
+```{r,echo=FALSE}
+knitr::include_graphics("primbon.jpeg")
+```
+
+Bagi sebagian suku di Indonesia, penentuan tanggal nikahan bisa menjadi hal yang rumit. Banyak teman saya bercerita betapa _syulitnya_ proses `perhitungan` yang dilakukan keluarga mereka untuk mendapatkan tanggal nikahan yang __bagus__.
+
+Percaya atau tidak, kalau hanya menghitung tanggal nikahan yang __bagus__, saya juga bisa kok!
+
+> Gak pakai primbon, saya akan pakai _data science_ untuk menemukan tanggal nikahan terbaik di 2021!
+
+Lho kok bisa? _Bisa donk!_
+
+---
+
+Pertama-tama, saya akan definisikan dulu masalahnya:
+
+1. Biasanya orang memilih tanggal pernikahan yang jatuh di hari `Sabtu` atau `Minggu`. Kadang sebagian orang memilih hari lain yang bertepatan dengan hari libur tapi karena sangat jarang, jadi saya hanya akan _narrow down_ pemilihan tanggal di tahun 2021 yang jatuh di hari `Sabtu` atau `Minggu` saja.
+1. Tanggal nikahan __terbaik__ adalah tanggal yang memiliki frekuensi jatuh di hari `Jumat`, `Sabtu` atau `Minggu` di tahun-tahun berikutnya. Alasannya apa? Kalian pasti ingin ulang tahun pernikahan jatuh di _weekend_ atau `Jumat` kan? Biar bisa merencanakan liburan _anniversary_ bersama pasangan. Kalau tanggal yang dipilih lebih sering jatuh di _weekdays_ mungkin rumit untuk mengajukan cuti dan sebagainya.
+
+Jadi, saya akan memilih tanggal terbaik yang bisa memenuhi kedua persyaratan di atas.
+
+---
+
+## Langkah I
+
+Saya akan kumpukan terlebih dahulu semua tanggal di 2021 yang jatuh di hari `Sabtu` atau `Minggu`. Ternyata ada `104` hari di tahun 2021 yang memenuhi kriteria tersebut. Berikut adalah `5` contohnya:
+
+
+```{r,echo=FALSE}
+tanggal = seq(as.Date("2020-01-01"),
+              as.Date("2020-12-31"),
+              by = 1)
+data = data.frame(
+  tanggal = tanggal,
+  hari = lubridate::wday(tanggal,label = T)
+) %>% 
+  filter(hari == "Sat" | hari == "Sun")
+
+data %>% head(5) %>% knitr::kable("html",caption = "5 Tanggal Awal yang Jatuh\ndi Sabtu atau Minggu")
+
+```
+
+## Langkah II
+
+Selanjutnya saya akan membuat proyeksi ke `50` tahun mendatang, lalu menghitung dari `104` tanggal tersebut, tanggal mana saja yang paling sering jatuh di hari `Jumat`, `Sabtu`, atau `Minggu`.
+
+> Kenapa `50` tahun? _Simply_, karena angka tersebut adalah _golden year of marriage_.
+
+```{r,echo=FALSE}
+tahun_proyeksi = c(2021:2071)
+
+data = 
+  data %>% 
+  mutate(id = c(1:104),
+         tanggal_real = substr(tanggal,9,10),
+         bulan_real = substr(tanggal,6,7)) 
+
+simulasi = data %>% select(id,tanggal_real,bulan_real)
+simulasi$hasil = 0
+
+for(i in 1:104){
+  wiken = 0
+  for(tahun_sim in tahun_proyeksi){
+    cek_tanggal = paste(tahun_sim,simulasi$bulan_real[i],simulasi$tanggal_real[i],sep = "-")
+    cek_tanggal = as.Date(cek_tanggal)
+    hari = lubridate::wday(cek_tanggal,label=T)
+    wiken = ifelse(hari %in% c("Fri","Sat","Sun"),
+                   wiken + 1,
+                   wiken)
+    simulasi$hasil[i] = wiken
+  }
+}
+
+```
