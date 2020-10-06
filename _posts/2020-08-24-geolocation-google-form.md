@@ -1,6 +1,6 @@
 ---
 date: 2020-08-24T09:10:00-04:00
-title: "Mengambil Data Geolocation Pada Survey di Google Form"
+title: "Tutorial: Google Form Geolocation - Mengambil Data Geolocation Pada Survey di Google Form"
 categories:
   - Blog
 tags:
