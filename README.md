@@ -2,5 +2,8 @@
 
 Selamat menikmati ikanx101.com
 
-https://www.r-bloggers.com/2020/09/covid19-correlation-between-confirmed-cases-and-deaths/
-https://www.r-bloggers.com/2020/09/whats-the-best-day-to-get-married/
+to do list:
+
+1. https://www.r-bloggers.com/2020/09/covid19-correlation-between-confirmed-cases-and-deaths/
+1. primbon nikah
+1. mahkamah konstitusi
