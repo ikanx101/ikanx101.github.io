@@ -1,5 +1,5 @@
 ---
-date: 2020-10-07T07:00:00-04:00
+date: 2020-10-07T13:38:00-04:00
 title: "Primbon ala Data Science: Tanggal Pernikahan Terbaik di 2021"
 categories:
   - Blog
@@ -11,9 +11,7 @@ tags:
   - Primbon
   - Pernikahan
   - 2021
-
 ---
-
 
 <img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/primbon%20nikah/primbon.jpeg" width="300" />
 
