@@ -1,6 +1,6 @@
 ---
 date: 2020-6-22T10:08:00-04:00
-title: "Mencoba SHINYAPPS: Visualisasi COVID19"
+title: "Mencoba SHINYAPPS: Visualisasi Shiny COVID 19"
 categories:
   - Blog
 tags:
