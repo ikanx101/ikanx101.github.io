@@ -1,5 +1,5 @@
 ---
-date: 2020-10-06T09:00:00-04:00
+date: 2020-10-6T10:08:00-04:00
 title: "Primbon ala Data Science: Tanggal Pernikahan Terbaik di 2021"
 categories:
   - Blog
