@@ -7,7 +7,6 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-setwd("~/Documents/ikanx101.com/_posts/primbon nikah")
 library(dplyr)
 library(lubridate)
 library(ggplot2)
@@ -122,7 +121,7 @@ final %>%
   rename("Tanggal Pilihan di 2021" = new,
          "Freq Jatuh di Hari yang Sama dengan Hari Pernikahan" = freq,
          "Tahun saat Terjadi" = anniversary) %>% 
-  knitr::kable("html")
+  knitr::kable()
 
 ```
 
