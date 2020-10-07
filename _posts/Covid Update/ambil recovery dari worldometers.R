@@ -19,3 +19,6 @@ data =
          total_recovered = as.numeric(total_recovered)) %>% 
   mutate(recovery_rate = total_recovered / total_cases) %>% 
   filter(!is.na(recovery_rate))
+
+dunia = data
+save(dunia,file = "world.rda")

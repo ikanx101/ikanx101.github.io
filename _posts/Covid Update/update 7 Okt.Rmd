@@ -1,5 +1,5 @@
 ---
-title: "Update COVID-19: Recovery Rate di Indonesia Bagus, Tapi..."
+title: "Update COVID-19: Recovery Rate di Indonesia Bagus Tapi yang Lebih Bagus Banyak..."
 output: 
   github_document:
     pandoc_args: --webtex
@@ -72,7 +72,7 @@ gabung %>%
   ggrepel::geom_label_repel(aes(label = label)) +
   theme_pubclean() +
   labs(title = "Perbandingan Total Kasus COVID-19: Italy vs Indonesia",
-       subtitle = "Sumber data: Ourworldindata dan Kawal Covid\n6 Oktober 2020 04.45 WIB",
+       subtitle = "Sumber data: Ourworldindata dan Kawal Covid\n7 Oktober 2020 07.35 WIB",
        x = "Tanggal",
        y = "Total Kasus",
        caption = "Visualized using R\nikanx101.com") +
@@ -108,7 +108,7 @@ indo %>%
   scale_color_brewer(palette = "Dark2") +
   theme_pubclean() +
   labs(title = "Perbandingan Penambahan Kasus Baru vs Sembuh Baru vs Meninggal Baru Harian\ndi Indonesia",
-       subtitle = "Sumber data: Kawal Covid\n6 Oktober 2020 04.45 WIB",
+       subtitle = "Sumber data: Kawal Covid\n7 Oktober 2020 07.35 WIB",
        x = "Tanggal",
        caption = "Visualized using R\nikanx101.com",
        fill = "Keterangan") +
@@ -118,13 +118,13 @@ indo %>%
 
 Jika kita ingat kembali saat di awal-awal pandemi terjadi di Indonesia, angka kematian melebihi angka kesembuhan. Namun sekarang kita bisa melihat dari grafik di atas bahwa memang angka kesembuhan sudah relatif meningkat. Penambahan orang sembuh setiap harinya hampir sama dengan penambahan kasus positif COVID 19 baru.
 
-_Recovery rate_ di Indonesia per hari ini sudah mencapai angka `75.7%`. Namun demikian, apakah angka ini sudah bagus? Mari kita bandingkan dengan negara lainnya!
+_Recovery rate_ di Indonesia per hari ini sudah mencapai angka `75.98%`. Namun demikian, apakah angka ini sudah bagus? Mari kita bandingkan dengan negara lainnya!
 
 ---
 
 # Perbandingan _Recovery Rate_ dari Seluruh Negara
 
-Saya mengambil data dari situs [Worldometers](https://www.worldometers.info/coronavirus/) pagi ini pukul 04.45 WIB. Mari kita lihat dulu sebaran data _recovery rate_ dari seluruh negara di dunia.
+Saya mengambil data dari situs [Worldometers](https://www.worldometers.info/coronavirus/) pagi ini pukul 07.35 WIB. Mari kita lihat dulu sebaran data _recovery rate_ dari seluruh negara di dunia.
 
 ```{r,echo=FALSE,fig.width=8,fig.retina=10,message=FALSE,warning=FALSE}
 load("world.rda")
@@ -145,16 +145,16 @@ dunia %>%
   geom_density(color = "steelblue",fill = "red",alpha = .6,size = 1.25) +
   theme_pubclean() +
   labs(title = "Sebaran Recovery Rate dari Seluruh Negara di Dunia",
-       subtitle = "Sumber data: Worldometers\n6 Oktober 2020 04.45 WIB",
+       subtitle = "Sumber data: Worldometers\n7 Oktober 2020 07.35 WIB",
        x = "Recovery Rate",
        caption = "Visualized using R\nikanx101.com") +
   theme(axis.title.y = element_blank(),
         axis.text.y = element_blank()) +
   geom_vline(xintercept = .757) +
-  annotate("label",x = .74,y = 2.5, label = "Indonesia\n75.7%")
+  annotate("label",x = .7598,y = 2.5, label = "Indonesia\n75.98%")
 ```
 
-Ternyata, walaupun Indonesia memiliki _recovery rate_ yang relatif `tinggi` tapi masih banyak negara lain yang memiliki _recovery rate_ yang lebih tinggi (berada di _range_ > `90%`).
+Ternyata, walaupun Indonesia memiliki _recovery rate_ yang relatif `tinggi` tapi masih banyak negara lain yang memiliki _recovery rate_ yang lebih tinggi (berada di _range_ > `80%`).
 
 Negara mana saja? Berikut visualisasinya:
 
@@ -173,7 +173,7 @@ dunia %>%
   coord_flip() +
   theme_pubclean() +
   labs(title = "Recovery Rate per Negara",
-       subtitle = "Sumber data: Worldometers\n6 Oktober 2020 04.45 WIB",
+       subtitle = "Sumber data: Worldometers\n7 Oktober 2020 07.35 WIB",
        x = "Negara",
        caption = "Visualized using R\nikanx101.com") +
   theme(axis.title.x = element_blank(),
@@ -201,7 +201,7 @@ indo %>%
   geom_vline(xintercept = as.Date("2020-08-17")) +
   theme_pubclean() +
   labs(title = "Kasus Aktif Harian di Indonesia",
-       subtitle = "Sumber data: Kawal Covid\n6 Oktober 2020 04.45 WIB",
+       subtitle = "Sumber data: Kawal Covid\n7 Oktober 2020 07.35 WIB",
        x = "Tanggal",
        y = "Kasus Aktif",
        caption = "Visualized using R\nikanx101.com") +
