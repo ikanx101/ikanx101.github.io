@@ -35,7 +35,7 @@ itali_gab = itali %>% select(date,total_cases)
 indo_gab = indo %>% select(date,total_kasus)
 ```
 
-Kali ini masih tentang COVID 19 dan ada dua hal yang ingin saya lakukan:
+Tulisan ini masih tentang COVID 19 dan ada dua hal yang ingin saya lakukan:
 
 1. Bagaimana status __pertandingan__ `Indonesia` vs `Italy`?
 1. Berapa hari _sih_ orang bisa sembuh dari COVID 19 di Indonesia?
@@ -44,7 +44,7 @@ Kali ini masih tentang COVID 19 dan ada dua hal yang ingin saya lakukan:
 
 # _Cumulative Cases_ `Indonesia` vs `Italy`
 
-Melanjuti tulisan saya [sebelumnya](https://ikanx101.com/blog/recovery-indo/), kali ini kita lihat posisi terkini dari balapan _cumulative cases_ antara `Italy` dan `Indonesia`. 
+Melanjuti tulisan saya [sebelumnya](https://ikanx101.com/blog/recovery-indo/), kali ini kita lihat posisi terkini dari __balapan__ _cumulative cases_ antara `Italy` dan `Indonesia`. 
 
 ```{r,echo=FALSE,fig.width=8,fig.retina=10,message=FALSE,warning=FALSE}
 gabung = merge(itali_gab,indo_gab)
@@ -67,7 +67,7 @@ gabung %>%
   ggrepel::geom_label_repel(aes(label = label)) +
   theme_pubclean() +
   labs(title = "Perbandingan Total Kasus COVID-19: Italy vs Indonesia",
-       subtitle = "Sumber data: Ourworldindata dan Kawal Covid\n9 Oktober 2020 13.29 WIB",
+       subtitle = "Sumber data: Ourworldindata dan Kawal Covid\n10 Oktober 2020 04.47 WIB",
        x = "Tanggal",
        y = "Total Kasus",
        caption = "Visualized using R\nikanx101.com") +
@@ -79,7 +79,7 @@ gabung %>%
 
 Dengan penambahan kasus baru di angka `4` ribuan per hari, sepertinya dalam beberapa hari ini `Indonesia` bisa menyalip `Italy`. Apalagi demo yang dilakukan kemarin bisa jadi potensi _cluster_ penyebaran terbaru.
 
-> Tulisan ini mengandung sarkasme yah. No one should be proud of this number! This is life, not just a number!
+> Once again, it is not a race everyone should be proud of... It is not just a number! A real life is at stake...
 
 ---
 
@@ -109,7 +109,7 @@ indo %>%
   scale_color_brewer(palette = "Set1") +
   theme_pubclean() +
   labs(title = "Perbandingan Penambahan Kasus Baru vs Sembuh Baru di Indonesia",
-       subtitle = "Sumber data: Kawal Covid\n9 Oktober 2020 13.29 WIB",
+       subtitle = "Sumber data: Kawal Covid\n10 Oktober 2020 04.47 WIB",
        x = "Tanggal",
        caption = "Visualized using R\nikanx101.com",
        color = "Keterangan") +
@@ -119,17 +119,29 @@ indo %>%
 
 Berbekal data tersebut, bisakah kita menghitung durasi hari kesembuhan?
 
-> Salah satu pendekatan yang bisa saya lakukan adalah dengan menggunakan analisa korelasi!
+> Salah satu pendekatan yang bisa saya lakukan adalah dengan menggunakan analisa [korelasi](https://ikanx101.com/blog/materi-korelasi/)!
 
 Bagaimana maksudnya?
 
-Secara logika, penambahan orang sembuh berasal dari pasien yang sakit. Oleh karena itu kedua variabel tersebut pasti berkorelasi. Semakin banyak orang yang sakit akan mengakibatkan semakin banyak pula orang yang sembuh (bisa juga terjadi kebalikannya ~ dan ini adalah hal yang tidak kita inginkan sama sekali).
+Secara logika, penambahan orang sembuh berasal dari pasien yang sakit. Oleh karena itu kedua variabel tersebut pasti berkorelasi dan seharusnya memiliki hubungan kausal (sebab akibat). Semakin banyak orang yang sakit akan mengakibatkan semakin banyak pula orang yang sembuh (bisa juga terjadi kebalikannya walaupun tentu kita tidak menginginkannya sama sekali).
 
-Penambahan orang yang sakit di hari ke _n_ tidak serta merta mengakibatkan penambahan orang yang sembuh di hari tersebut. 
+> Penambahan orang yang sakit di tanggal tertentu tidak serta merta mengakibatkan penambahan orang yang sembuh di tanggal yang sama. 
 
-> Pasti ada jeda!
+__Pasti ada jeda!__
 
-__Jeda hari yang memberikan korelasi tertinggi akan saya duga sebagai durasi rata-rata hari kesembuhan.__
+__Maka jeda hari yang memberikan korelasi tertinggi akan saya duga sebagai durasi rata-rata hari kesembuhan.__
+
+---
+
+Sebagai pengingat, korelasi hanya memperlihatkan kecenderungan linear yang terjadi antara dua variabel. Sedangkan untuk melihat hubungan kausal, analisa yang digunakan adalah regresi. Secara simpel, salah satu parameter _goodness of fit_ model regresi adalah $R^2$ yang merupakan kuadrat dari korelasi ($r$). Nilai $R^2$ dinilai baik jika mendekati `1`. 
+
+Maka, korelasi yang kuat akan membuat model regresi yang dihasilkan juga bagus.
+
+Oleh karena itu, saya hanya akan melihat angka korelasi saja untuk kasus ini.
+
+---
+
+Berikut adalah hasil perhitungan korelasi yang saya lakukan:
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10}
 tes = 
@@ -148,12 +160,20 @@ for(i in 1:30){
 final = data.frame(jeda,kor)
 
 final %>% 
+  mutate(label = ifelse(kor == max(kor),
+                        paste0("Korelasi: ",round(kor,2)),
+                        NA)
+         ) %>% 
   ggplot(aes(x = jeda,
              y = kor)) +
-  geom_smooth(alpha = .1,
+  geom_smooth(alpha = .3,
               color = "darkred",
-              fill = "red") +
+              fill = "yellow",
+              size = .5) +
   geom_line(group = 1,
             color = "steelblue",
-            size = 1.25)
+            size = 1.25) +
+  geom_label(aes(label=label),
+             alpha = .2) +
+  theme_minimal()
 ```

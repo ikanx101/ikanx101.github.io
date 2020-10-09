@@ -65,3 +65,5 @@ mengakibatkan penambahan orang yang sembuh di hari tersebut.
 
 **Jeda hari yang memberikan korelasi tertinggi akan saya duga sebagai
 durasi rata-rata hari kesembuhan.**
+
+<img src="update-9-Okt_files/figure-gfm/unnamed-chunk-3-1.png" width="672" />
