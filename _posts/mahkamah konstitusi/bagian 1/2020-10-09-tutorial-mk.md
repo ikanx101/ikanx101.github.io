@@ -17,7 +17,7 @@ tags:
 
 Konon katanya riuh-ricuh pengesahan **Undang-Undang Cipta Kerja** akan
 bermuara di **Mahkamah Konstitusi**. Nah, sebelum saya akan membahas
-mengenai analisa data tersebut **Mahkamah Konstitusi**, saya akan
+mengenai analisa data **Mahkamah Konstitusi** tersebut, saya akan
 berikan dulu tutorial *web scrape* dan *data carpentry* dari situs
 tersebut.
 
