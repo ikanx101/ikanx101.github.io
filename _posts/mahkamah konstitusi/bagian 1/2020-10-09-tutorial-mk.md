@@ -1,6 +1,6 @@
 ---
 date: 2020-10-09T5:30:00-04:00
-title: "Tutorial Webscrap dan Data Carpentry di R: Data Rekap Gugatan Undang-Undang di Mahkamah Konstitusi"
+title: "Tutorial Webscrape dan Data Carpentry di R: Data Rekap Gugatan Undang-Undang di Mahkamah Konstitusi"
 categories:
   - Blog
 tags:
