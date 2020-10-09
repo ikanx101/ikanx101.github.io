@@ -1,0 +1,159 @@
+---
+title: "Update COVID-19: Indonesia Sudah Setara Italy dan Korelasi Antara Kasus Baru dan Sembuh Baru"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+setwd("~/Documents/ikanx101.com/_posts/Covid Update")
+options(scipen = 99)
+library(dplyr)
+library(ggplot2)
+library(ggpubr)
+library(gganimate)
+library(readxl)
+
+# italy
+data = read.csv("/home/ikanx101githubio/Documents/belajaR/Bukan Infografis/Covid Data/owid-covid-data.csv")
+target = "Italy"
+itali = 
+  data %>% 
+  filter(location %in% target) %>% 
+  mutate(date = as.Date(date))
+
+# indonesia
+indo = read_excel("/home/ikanx101githubio/Documents/belajaR/Bukan Infografis/Covid Data/COVID-19 di Indonesia @kawalcovid19.xlsx") %>% janitor::clean_names()
+indo = 
+  indo %>% 
+  mutate(date = as.Date(x1)
+         )
+
+itali_gab = itali %>% select(date,total_cases)
+indo_gab = indo %>% select(date,total_kasus)
+```
+
+Kali ini masih tentang COVID 19 dan ada dua hal yang ingin saya lakukan:
+
+1. Bagaimana status __pertandingan__ `Indonesia` vs `Italy`?
+1. Berapa hari _sih_ orang bisa sembuh dari COVID 19 di Indonesia?
+
+---
+
+# _Cumulative Cases_ `Indonesia` vs `Italy`
+
+Melanjuti tulisan saya [sebelumnya](https://ikanx101.com/blog/recovery-indo/), kali ini kita lihat posisi terkini dari balapan _cumulative cases_ antara `Italy` dan `Indonesia`. 
+
+```{r,echo=FALSE,fig.width=8,fig.retina=10,message=FALSE,warning=FALSE}
+gabung = merge(itali_gab,indo_gab)
+
+gabung %>% 
+  reshape2::melt(id.vars = "date") %>% 
+  mutate(variable = ifelse(variable == "total_cases","Italy","Indonesia")) %>% 
+  rename(negara = variable,
+         kasus = value) %>% 
+  mutate(label = kasus/1000,
+         label = round(label,1),
+         label = paste0(negara,"\n",label," ribu")) %>% 
+  group_by(negara) %>% 
+  mutate(label = ifelse(date == max(date),label,NA)) %>% 
+  ggplot(aes(x = date,
+             y = kasus,
+             color = negara)) +
+  geom_line(size = 2) +
+  scale_color_brewer(palette = "Dark2") +
+  ggrepel::geom_label_repel(aes(label = label)) +
+  theme_pubclean() +
+  labs(title = "Perbandingan Total Kasus COVID-19: Italy vs Indonesia",
+       subtitle = "Sumber data: Ourworldindata dan Kawal Covid\n9 Oktober 2020 13.29 WIB",
+       x = "Tanggal",
+       y = "Total Kasus",
+       caption = "Visualized using R\nikanx101.com") +
+  theme(axis.text.y = element_blank(),
+        legend.position = "none")
+
+
+```
+
+Dengan penambahan kasus baru di angka `4` ribuan per hari, sepertinya dalam beberapa hari ini `Indonesia` bisa menyalip `Italy`. Apalagi demo yang dilakukan kemarin bisa jadi potensi _cluster_ penyebaran terbaru.
+
+> Tulisan ini mengandung sarkasme yah. No one should be proud of this number! This is life, not just a number!
+
+---
+
+# Berapa Hari Pasien COVID 19 Bisa Sembuh?
+
+Sebagaimana yang kita ketahui bersama, COVID 19 sejatinya adalah _self limiting desease_ (bisa sembuh dengan sendirinya) bagi sebagian orang. Sebagian orang lainnya memerlukan perawatan medis secara intensif. Dari beberapa kasus yang saya temui, durasi lamanya seorang pasien bisa sembuh cukup beragam. 
+
+> Ada yang membutuhkan waktu hingga 2 minggu. Ada yang singkat tak lebih dari seminggu.
+
+Sayang sekali saya tidak memiliki data yang lengkap untuk bisa menghitung waktu rata-rata yang dibutuhkan pasien agar bisa sembuh.
+
+Satu-satunya data yang saya miliki adalah sebagai berikut:
+
+```{r,echo=FALSE,fig.width=8,fig.retina=10,message=FALSE,warning=FALSE}
+indo %>% 
+  select(date,kasus_baru,sembuh_baru) %>% 
+  reshape2::melt(id.vars = "date") %>% 
+  mutate(variable = gsub("\\_"," ",variable),
+         variable = stringr::str_to_title(variable)
+         ) %>% 
+  rename(jenis = variable,
+         n = value) %>% 
+  ggplot(aes(x = date,
+             y = n,
+             color = jenis)) +
+  geom_line(size = .6) +
+  scale_color_brewer(palette = "Set1") +
+  theme_pubclean() +
+  labs(title = "Perbandingan Penambahan Kasus Baru vs Sembuh Baru di Indonesia",
+       subtitle = "Sumber data: Kawal Covid\n9 Oktober 2020 13.29 WIB",
+       x = "Tanggal",
+       caption = "Visualized using R\nikanx101.com",
+       color = "Keterangan") +
+  theme(axis.title.y = element_blank(),
+        legend.position = "bottom")
+```
+
+Berbekal data tersebut, bisakah kita menghitung durasi hari kesembuhan?
+
+> Salah satu pendekatan yang bisa saya lakukan adalah dengan menggunakan analisa korelasi!
+
+Bagaimana maksudnya?
+
+Secara logika, penambahan orang sembuh berasal dari pasien yang sakit. Oleh karena itu kedua variabel tersebut pasti berkorelasi. Semakin banyak orang yang sakit akan mengakibatkan semakin banyak pula orang yang sembuh (bisa juga terjadi kebalikannya ~ dan ini adalah hal yang tidak kita inginkan sama sekali).
+
+Penambahan orang yang sakit di hari ke _n_ tidak serta merta mengakibatkan penambahan orang yang sembuh di hari tersebut. 
+
+> Pasti ada jeda!
+
+__Jeda hari yang memberikan korelasi tertinggi akan saya duga sebagai durasi rata-rata hari kesembuhan.__
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10}
+tes = 
+  indo %>% 
+  select(kasus_baru,sembuh_baru)
+
+max = length(tes$kasus_baru)
+jeda = c(1:30)
+kor = jeda
+
+for(i in 1:30){
+  kor[i] = cor(tes$kasus_baru[1:(max-i)],
+               tes$sembuh_baru[(1+i):max])
+  }
+
+final = data.frame(jeda,kor)
+
+final %>% 
+  ggplot(aes(x = jeda,
+             y = kor)) +
+  geom_smooth(alpha = .1,
+              color = "darkred",
+              fill = "red") +
+  geom_line(group = 1,
+            color = "steelblue",
+            size = 1.25)
+```
