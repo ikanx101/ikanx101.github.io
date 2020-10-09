@@ -7,7 +7,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-setwd("~/Documents/ikanx101.com/_posts/mahkamah konstitusi/bagian 1")
+setwd("~/ikanx101.com/_posts/mahkamah konstitusi/bagian 1")
 ```
 
 Konon katanya riuh-ricuh pengesahan __Undang-Undang Cipta Kerja__ akan bermuara di __Mahkamah Konstitusi__. Nah, sebelum saya akan membahas mengenai analisa data tersebut __Mahkamah Konstitusi__, saya akan berikan dulu tutorial _web scrape_ dan _data carpentry_ dari situs tersebut.
@@ -164,6 +164,24 @@ data =
 Sekarang kita lihat data yang sudah bersihnya:
 
 ```{r,echo=FALSE}
+save(data,file = "clean.rda")
+```
+
+```{r,message=FALSE,warning=FALSE}
+colnames(data) = c("Tahun",
+                   "Dalam proses yg lalu",
+                   "Diregistrasi",
+                   "Jumlah",
+                   "Dikabulkan",
+                   "Ditolak",
+                   "TIdak diterima",
+                   "Tarik kembali",
+                   "Gugur",
+                   "Tidak berwenang",
+                   "Jumlah putusan",
+                   "Dalam proses tahun ini",
+                   "Jumlah UU yg diuji")
 knitr::kable(data)
 ```
 
+_Gimana_? Mudah kan?
