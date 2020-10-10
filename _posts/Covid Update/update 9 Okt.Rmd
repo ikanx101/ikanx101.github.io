@@ -35,9 +35,9 @@ itali_gab = itali %>% select(date,total_cases)
 indo_gab = indo %>% select(date,total_kasus)
 ```
 
-Tulisan ini masih tentang COVID 19 dan ada dua hal yang ingin saya lakukan:
+Tulisan ini masih tentang __COVID 19__ dan ada dua hal yang ingin saya lakukan:
 
-1. Bagaimana status __pertandingan__ `Indonesia` vs `Italy`?
+1. Bagaimana perbandingan terbaru angka _cumulative cases_ `Indonesia` vs `Italy`?
 1. Berapa hari _sih_ orang bisa sembuh dari COVID 19 di Indonesia?
 
 ---
@@ -79,7 +79,7 @@ gabung %>%
 
 Dengan penambahan kasus baru di angka `4` ribuan per hari, sepertinya dalam beberapa hari ini `Indonesia` bisa menyalip `Italy`. Apalagi demo yang dilakukan kemarin bisa jadi potensi _cluster_ penyebaran terbaru.
 
-> Once again, it is not a race everyone should be proud of... It is not just a number! A real life is at stake...
+> Once again, it is not a race everyone should be proud of... and it is not just a number! A real life is at stake...
 
 ---
 
@@ -129,7 +129,10 @@ Secara logika, penambahan orang sembuh berasal dari pasien yang sakit. Oleh kare
 
 __Pasti ada jeda!__
 
-__Maka jeda hari yang memberikan korelasi tertinggi akan saya duga sebagai durasi rata-rata hari kesembuhan.__
+__Maka jeda hari yang memberikan korelasi tertinggi akan saya duga sebagai durasi rata-rata hari kesembuhan__. Tentunya dengan asumsi:
+
+1. Data tersebut benar adanya (_reliable_ atau bisa dipercaya).
+1. Pengumuman orang yang sembuh di hari tersebut sesuai dengan realita yang ada (orang sembuh diumumkan pada hari yang sama).
 
 ---
 
@@ -143,7 +146,7 @@ Oleh karena itu, saya hanya akan melihat angka korelasi saja untuk kasus ini.
 
 Berikut adalah hasil perhitungan korelasi yang saya lakukan:
 
-```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10}
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10,fig.width=8}
 tes = 
   indo %>% 
   select(kasus_baru,sembuh_baru)
@@ -161,7 +164,7 @@ final = data.frame(jeda,kor)
 
 final %>% 
   mutate(label = ifelse(kor == max(kor),
-                        paste0("Korelasi: ",round(kor,2)),
+                        paste0("Korelasi: ",round(kor,2),"\npada jeda hari: ",jeda),
                         NA)
          ) %>% 
   ggplot(aes(x = jeda,
@@ -173,7 +176,76 @@ final %>%
   geom_line(group = 1,
             color = "steelblue",
             size = 1.25) +
+  scale_x_continuous(breaks = 1:30) +
   geom_label(aes(label=label),
-             alpha = .2) +
-  theme_minimal()
+             alpha = .2,
+             vjust = 1) +
+  theme_minimal() +
+  labs(title = "Korelasi Antara Penambahan Kasus Baru dan Orang Sembuh Harian",
+       subtitle = "Berapa hari yang dibutuhkan agar orang bisa sembuh dari COVID 19 di Indonesia?\nDihitung dari jeda hari yang menimbulkan nilai korelasi tertinggi antara dua variabel tersebut.",
+       x = "Jeda Hari",
+       y = "Korelasi",
+       caption = "Automatic calculated and Visualized\nusing R\nikanx101.com") +
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank())
 ```
+
+Dari data yang ada, korelasi tertinggi didapatkan saat jeda hari = `20` hari. Namun dari _smooth trendline_ didapatkan korelasi tertinggi pada jeda hari antara `16`-`19` hari.
+
+Jadi sementara ini bisa saya duga dari data di Indonesia, pasien COVID baru akan sembuh dalam rentang waktu `16`-`20` hari.
+
+---
+
+## Apa sih gunanya mengetahui rentang hari kesembuhan?
+
+Pada tulisan yang [lalu](https://ikanx101.com/blog/recovery-indo/), saya sempat membahas tentang _recovery rate_ Indonesia yang masih relatif rendah dibandingkan negara-negara lain di dunia.
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10,fig.width=8}
+rm(list=ls())
+load("world.rda")
+dunia = dunia[-218:-226,]
+dunia = dunia[-1:-8,]
+
+dunia %>% 
+  ggplot(aes(x = recovery_rate)) +
+  geom_density(fill = "yellow",
+               alpha = .4,
+               size = 1.25) +
+  geom_vline(xintercept = .7628,
+             color = "darkred") +
+  annotate("label",
+           x = .7628,
+           y = 2,
+           label = "Indonesia: 76.28%",
+           fill = "gray",
+           color = "darkred") +
+  theme_minimal() +
+  labs(title = "Sebaran Recovery Rate Negara-Negara di Dunia",
+       subtitle = "sumber: Worldometers 10 Oktober 2020 11.46 WIB",
+       x = "Recovery Rate",
+       caption = "Scraped and Visualized\nusing R\nikanx101.com") +
+  theme(axis.text.y = element_blank(),
+        axis.title.y = element_blank())
+```
+
+```{r,include=FALSE}
+dunia %>% 
+  mutate(penanda = ifelse(recovery_rate > 0.7628,"atas","bawah")) %>% 
+  group_by(penanda) %>% 
+  summarise(n = n()) %>% 
+  ungroup()
+```
+
+Tercatat ada `137` negara dari `209` negara (`r round(137/209*100,2)`%) yang memiliki _recovery rate_ lebih tinggi dibanding Indonesia.
+
+Secara kasar bisa saya bilang:
+
+> Dari semua kasus baru yang ada, peluang kesembuhan seorang pasien adalah sebesar `~76%` dan memakan waktu `16`-`20` hari.
+
+---
+
+# Kesimpulan:
+
+Jika kita masih abai dengan hal ini dan membiarkan penambahan kasus baru semakin melonjak, bukan tidak mungkin Indonesia bisa melewati ambang batas perawatan pasien di rumah sakit. Akibatnya tenaga kesehatan bisa kewalahan.
+
+_Stay safe, stay healthy ya._
