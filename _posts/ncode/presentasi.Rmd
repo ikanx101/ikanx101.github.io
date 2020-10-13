@@ -94,6 +94,17 @@ Setiap bulannya tim _procurement_ membuat _report_ kinerja _supplier_ berdasarka
 
 Kini dengan algoritma yang dibuat, proses _report generating_ menjadi otomatis dan cepat.
 
+## Automation
+### Contoh
+#### Matchmaking Algorithm: Audit Gudang Non Fisik dan Gudang Area
+
+Tim audit biasa melakukan rekon transaksi masuk dan keluar di semua gudang @nutrifood. Sebagai contoh, ada gudang non fisik dan gudang area. Masing-masing gudang memiliki berbagai macam struktur data sehingga berpengaruh terhadap metode dan cara mereka melakukan rekon transaksi.
+
+Proses saat ini masih manual sehingga memakan waktu satu hari kerja untuk satu tipe data gudang. Sedangkan gudangnya sendiri ada banyak.
+
+Oleh karena itu dibuat algoritma yang bisa melakukan rekon (_matchmaking_) antara transaksi masuk dan keluar secara cepat agar proses _follow up_ stelahnya bisa lebih banyak dilakukan.
+
+
 # Detail|Dynamic Visualization
 
 ## Dynamic Visualization
