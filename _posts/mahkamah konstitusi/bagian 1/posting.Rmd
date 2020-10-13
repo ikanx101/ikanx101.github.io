@@ -7,7 +7,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-setwd("~/ikanx101.com/_posts/mahkamah konstitusi/bagian 1")
+setwd("~/Documents/ikanx101.com/_posts/mahkamah konstitusi/bagian 1")
 ```
 
 Konon katanya riuh-ricuh pengesahan __Undang-Undang Cipta Kerja__ akan bermuara di __Mahkamah Konstitusi__. Nah, sebelum saya akan membahas mengenai analisa data tersebut __Mahkamah Konstitusi__, saya akan berikan dulu tutorial _web scrape_ dan _data carpentry_ dari situs tersebut.
