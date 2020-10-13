@@ -1,0 +1,31 @@
+---
+title: "Catatan Akhir Tahun: R Projects I've Done in 2020"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/ikanx101.github.io/_posts/ncode")
+```
+
+Tahun 2020 masih menyisakan `2.5` bulan lagi, tapi di kesempatan ini saya diminta untuk menuliskan rekap _project_ apa saja yang sudah saya lakukan menggunakan __R__ di tahun ini.
+
+---
+
+> __R__ itu bukan hanya prediksi!
+
+Itu adalah kalimat yang sering saya ulang-ulang saat memberikan _training_ atau menjelaskan faedah __R__ kepada orang `awam`. Buktinya hampir semua __R__ _projects_ yang saya lakukan tidak ada hubungannya dengan prediksi.
+
+Lalu apa saja?
+
+```{r,echo=FALSE}
+nomnoml::nomnoml("
+                 [Projects] -> [Automation]
+                 [Projects] -> [Data acquisition]
+                 [Projects] -> [Analytics]
+                 [Automation] -> [Online converter]
+                 [Online converter] -> 
+                 ")
+```
