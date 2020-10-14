@@ -1,0 +1,56 @@
+---
+title: "Rekap Judicial Review Undang-Undang di MK"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/ikanx101.github.io/_posts/mahkamah konstitusi/bagian 2")
+
+rm(list=ls())
+
+library(dplyr)
+library(ggplot2)
+
+load("pimp.rda")
+```
+
+Demo buruh, mahasiswa, dan beberapa elemen masyarakat lain yang berlangsung beberapa hari belakangan dalam rangka menolak pengesahan __UU Cipta Kerja__ tampaknya akan berakhir di __Mahkamah Konstitusi__. Dari beberapa berita yang saya [baca](https://news.detik.com/berita/d-5211575/pekerja-dan-organisasi-buruh-ini-resmi-gugat-uu-cipta-kerja-ke-mk), ada individual dan organisasi buruh yang sudah mendaftarkan _judicial review_ ke MK.
+
+---
+
+Mahkamah Konstitusi berdiri pada 18 Agustus 2003 dan bertugas sebagai pemegang kekuasaan kehakiman bersama-sama dengan Mahkamah Agung. Lalu apa pembeda MA dengan MK?
+
+Kewenangan Mahkamah Konstitusi adalah:
+
+1. Menguji undang-undang terhadap UUD 1945.
+1. Memutus sengketa kewenangan lembaga negara yang kewenangannya diberikan oleh UUD 1945.
+1. Memutus pembubaran partai politik.
+1. Memutus perselisihan tentang hasil pemilihan umum.
+1. Memberikan keputusan atas pendapat DPR bahwa Presiden dan/atau Wakil Presiden telah melakukan pelanggaran hukum, atau perbuatan tercela, atau tidak memenuhi syarat sebagai Presiden dan/atau Wakil Presiden sebagaimana dimaksud dalam UUD 1945.
+
+```{r, echo=FALSE,fig.retina=10}
+pimpinan %>% 
+  select(nama,tahun_dari,tahun_sampai,prd) %>% 
+  ggplot(aes(x = tahun_dari,
+             xend = tahun_sampai,
+             y = reorder(nama,prd),
+             yend = nama,
+             color = factor(prd))) +
+  geom_segment(size = 9) +
+  geom_label(aes(label = paste0("Periode:",prd)),size = 2) +
+  theme_minimal() +
+  labs(title = "Pimpinan Mahkamah Konstitusi",
+       subtitle = "sumber: wikipedia",
+       x = "Tahun",
+       y = "Nama",
+       caption = "Scraped and Visualized\nusing R\nikanx101.com") +
+  theme(legend.position = "none")
+```
+
+
+---
+
+```{r}
+load("~/ikanx101.github.io/_posts/mahkamah konstitusi/bagian 1/clean.rda")
+```
