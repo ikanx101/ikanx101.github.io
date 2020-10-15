@@ -5,8 +5,7 @@ output: github_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-setwd("~/ikanx101.github.io/_posts/mahkamah konstitusi/bagian 2")
-
+setwd("~/Documents/ikanx101/_posts/mahkamah konstitusi/bagian 2")
 rm(list=ls())
 
 library(dplyr)
@@ -40,7 +39,10 @@ pimpinan %>%
              yend = nama,
              color = factor(prd))) +
   geom_segment(size = 9) +
-  geom_label(aes(label = paste0("Periode:",prd)),size = 2) +
+  geom_label(aes(label = paste0("Periode:",prd)),
+             size = 2.5,
+             hjust = 0) +
+  scale_color_brewer(palette = "Dark2") +
   theme_minimal() +
   labs(title = "Pimpinan Mahkamah Konstitusi",
        subtitle = "sumber: wikipedia",
@@ -61,7 +63,7 @@ dengan masa kerja selama `5` tahun.
 ---
 
 ```{r,echo=FALSE}
-load("~/ikanx101.github.io/_posts/mahkamah konstitusi/bagian 1/clean.rda")
+load("~/Documents/ikanx101/_posts/mahkamah konstitusi/bagian 1/clean.rda")
 ```
 
 Dari paparan di atas, jadi sudah jelas bahwa _Judicial Review_ Undang-Undang hanya sebagian tugas MK selain tugas-tugas yang lain.
@@ -84,11 +86,13 @@ data %>%
   ) + 
   geom_line(group = 1,
             color = "steelblue") +
-  geom_text(
-    aes(label = jumlah_u_uyang_diuji)
+  geom_label(
+    aes(label = jumlah_u_uyang_diuji),
+    size = 3,
+    color = "steelblue"
   ) +
   theme_minimal() +
-  labs(title = "Banyaknya UU yang Diuji Setiap Tahunnya",
+  labs(title = "Banyaknya UU yang Diuji per Tahun",
        subtitle = "sumber: Mahkamah Konstitusi",
        caption = "Scraped and Visualized\nusing R\nikanx101.com",
        x = "Tahun") +
@@ -110,3 +114,139 @@ Seharusnya bapak dan ibu anggota dewan bisa _aware_ dengan data ini. Lagian seca
 1. [Kompas](https://nasional.kompas.com/read/2019/09/26/14022561/hasilkan-84-uu-kinerja-dpr-dinilai-kalah-jauh-dari-periode-sebelumnya).
 
 ## Putusan Perkara
+
+Sekarang mari kita lihat bersama, bagaimana tren putusan perkara terkait _judicial review_ UU setiap tahunnya sebagai berikut:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10}
+data %>% 
+  ggplot(
+    aes(x = tahun,
+        y = jumlah_putusan)
+  ) + 
+  geom_line(group = 1,
+            color = "darkred") +
+  geom_label(
+    aes(label = jumlah_putusan),
+    size = 3,
+    color = "darkred"
+  ) +
+  theme_minimal() +
+  labs(title = "Banyaknya Amar Putusan Perkara Terkait UU per Tahun",
+       subtitle = "sumber: Mahkamah Konstitusi",
+       caption = "Scraped and Visualized\nusing R\nikanx101.com",
+       x = "Tahun") +
+  theme(axis.text.y = element_blank(),
+        axis.title.y = element_blank())
+```
+
+Kalau Anda berpikir kenapa putusan perkara bisa lebih banyak dibandingkan banyaknya UU yang diuji, hal ini bisa terjadi karena dalam UU itu kan ada banyak pasal di dalamnya.
+
+> Seketika saya jadi berpikir, kinerja `9` hakim ini luar biasa beratnya...
+
+Dari putusan perkara itu, ada beberapa pengelompokkan yakni:
+
+1. __Kabul__: permohonan penggugat dikabulkan oleh MK.
+1. __Tolak__: permohonan penggugat ditolak oleh MK.
+1. __Tidak diterima__: MK tidak menerima permohonan pemohon.
+1. __Ditarik kembali__: pemohon menarik gugatan.
+1. __Gugur__.
+1. __Tidak berwenang__: MK tidak berwenang mengadili permohonan penggugat.
+
+Berikut visualisasi dari datanya:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10}
+data %>% 
+  select(tahun,kabul,tolak,jumlah_putusan) %>% 
+  mutate(kabul = kabul/jumlah_putusan,
+         tolak = tolak/jumlah_putusan,
+         lainnya = 1 - (kabul+tolak)) %>% 
+  select(-jumlah_putusan) %>% 
+  reshape2::melt(id.vars = "tahun") %>% 
+  rename(ket = variable) %>% 
+  mutate(ket = case_when(ket == "kabul" ~ "Dikabulkan",
+                         ket == "tolak" ~ "Ditolak",
+                         ket == "lainnya" ~ "Lainnya"),
+         ket = factor(ket,
+                      levels = c("Lainnya","Ditolak","Dikabulkan")),
+         tahun = factor(tahun,
+                        levels = c(2003:2020))
+         ) %>% 
+  group_by(tahun) %>% 
+  mutate(ypos = cumsum(value)*.9) %>% 
+  ungroup() %>% 
+  arrange(tahun,ket) %>% 
+  mutate(persen = round(value*100,1),
+         persen = paste0(persen,"%")) %>% 
+  ggplot(aes(x = tahun,
+             y = value,
+             fill = ket)
+         ) +
+  geom_col(color = "black") +
+  geom_label(aes(label = persen,
+                 y = ypos),
+             size = 2.5
+             ) +
+  scale_fill_brewer(palette = "Dark2") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  labs(title = "Jenis Amar Putusan MK terkait Judicial Review UU per Tahun",
+       subtitle = "sumber: Mahkamah Konstitusi",
+       caption = "Scraped and Visualized\nusing R\nikanx101.com",
+       x = "Tahun",
+       y = "Persentase",
+       fill = "Keterangan") +
+  theme(axis.text.y = element_blank())
+
+```
+
+Secara persentase, dalam `10` tahun terakhir amar putusan `dikabulkan` masih lebih rendah dibandingkan putusan `ditolak`. Tapi kalau dari _real number_ berikut visualisasinya:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10}
+data %>% 
+  select(tahun,kabul,tolak,jumlah_putusan) %>% 
+  mutate(lainnya = jumlah_putusan - (kabul+tolak)) %>% 
+  select(-jumlah_putusan) %>% 
+  reshape2::melt(id.vars = "tahun") %>% 
+  rename(ket = variable) %>% 
+  mutate(ket = case_when(ket == "kabul" ~ "Dikabulkan",
+                         ket == "tolak" ~ "Ditolak",
+                         ket == "lainnya" ~ "Lainnya"),
+         ket = factor(ket,
+                      levels = c("Lainnya","Ditolak","Dikabulkan")),
+         tahun = factor(tahun,
+                        levels = c(2003:2020))
+         ) %>% 
+  group_by(tahun) %>% 
+  mutate(ypos = cumsum(value)*.9) %>% 
+  ungroup() %>% 
+  arrange(tahun,ket) %>% 
+  mutate(persen = value) %>% 
+  ggplot(aes(x = tahun,
+             y = value,
+             fill = ket)
+         ) +
+  geom_col(color = "black") +
+  geom_label(aes(label = persen,
+                 y = ypos),
+             size = 2.5
+             ) +
+  scale_fill_brewer(palette = "Dark2") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  labs(title = "Jenis Amar Putusan MK terkait Judicial Review UU per Tahun",
+       subtitle = "sumber: Mahkamah Konstitusi",
+       caption = "Scraped and Visualized\nusing R\nikanx101.com",
+       x = "Tahun",
+       y = "Real Number",
+       fill = "Keterangan") +
+  theme(axis.text.y = element_blank())
+
+```
+
+Pada rentang `2010` hingga `2018`, tren amar putusan `dikabulkan` cenderung stabil di angka rata-rata `22.3` putusan pertahunnya. Menarik melihat `2` tahun ke belakang di mana putusan `dikabulkan` relatif sangat sedikit.
+
+Apakah kualitas permohonan yang kurang baik atau memang UU yang digugat sudah lebih baik?
+
+## Bagaimana dengan _judicial review_ UU Cipta Kerja?
+
+Mari kita saksikan bersama kisahnya dalam beberapa bulan ke depan.
