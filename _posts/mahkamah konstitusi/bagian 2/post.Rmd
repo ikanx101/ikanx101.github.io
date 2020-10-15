@@ -29,6 +29,8 @@ Kewenangan Mahkamah Konstitusi adalah:
 1. Memutus perselisihan tentang hasil pemilihan umum.
 1. Memberikan keputusan atas pendapat DPR bahwa Presiden dan/atau Wakil Presiden telah melakukan pelanggaran hukum, atau perbuatan tercela, atau tidak memenuhi syarat sebagai Presiden dan/atau Wakil Presiden sebagaimana dimaksud dalam UUD 1945.
 
+Sejak mulai berdiri hingga saat ini, tercatat ada `6` orang yang menjadi ketua MK.
+
 ```{r, echo=FALSE,fig.retina=10}
 pimpinan %>% 
   select(nama,tahun_dari,tahun_sampai,prd) %>% 
@@ -48,9 +50,63 @@ pimpinan %>%
   theme(legend.position = "none")
 ```
 
+Secara organisasi, hakim konstitusi hanya berisikan `9` orang (termasuk ketua MK), yang sistem seleksinya:
+
+- `3`orang diajukan oleh DPR.
+- `3` orang diajukan oleh Presiden.
+- `3` orang diajukan oleh MA dengan penetapan presiden.
+
+dengan masa kerja selama `5` tahun.
 
 ---
 
-```{r}
+```{r,echo=FALSE}
 load("~/ikanx101.github.io/_posts/mahkamah konstitusi/bagian 1/clean.rda")
 ```
+
+Dari paparan di atas, jadi sudah jelas bahwa _Judicial Review_ Undang-Undang hanya sebagian tugas MK selain tugas-tugas yang lain.
+
+Sekarang, berbekal data yang telah saya [_scrape_](https://ikanx101.com/blog/tutorial-mk/), mari kita lihat beberapa temuan berikut.
+
+## Banyaknya Undang-Undang yang Diuji
+
+Berdasarkan data yang saya _scrape_ per 14 Oktober 2020 pukul 20.05, sejak berdiri hingga saat ini, MK sudah melakukan pengujian terhadap `r sum(data$jumlah_u_uyang_diuji)` UU.
+
+Artinya, rata-rata ada `r round(sum(data$jumlah_u_uyang_diuji)/17,1)` buah UU yang diuji per tahunnya.
+
+> Sebuah angka yang lumayan menurut saya. Jika begitu, saya malah jadi mempertanyakan bagaimana kinerja si pembuat UU sampai-sampai digugat terus hasilnya di MK.
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10}
+data %>% 
+  ggplot(
+    aes(x = tahun,
+        y = jumlah_u_uyang_diuji)
+  ) + 
+  geom_line(group = 1,
+            color = "steelblue") +
+  geom_text(
+    aes(label = jumlah_u_uyang_diuji)
+  ) +
+  theme_minimal() +
+  labs(title = "Banyaknya UU yang Diuji Setiap Tahunnya",
+       subtitle = "sumber: Mahkamah Konstitusi",
+       caption = "Scraped and Visualized\nusing R\nikanx101.com",
+       x = "Tahun") +
+  theme(axis.text.y = element_blank(),
+        axis.title.y = element_blank())
+```
+
+Pada tahun `2012` dari data yang ada, tertulis tidak ada UU yang diuji. Ada beberapa kemungkinan:
+
+1. Memang demikian adanya (tidak ada sama sekali).
+1. MK sedang sibuk mengerjakan tugas kewajibannya yang lain.
+1. MK masih menguji UU yang diregistrasi pada tahun lalu yang belum diselesaikan (semacam PR tahun lalu).
+
+Saya melihat tren positif dari grafik di atas. Semakin meleknya masyarakat akan hukum dan keberadaan MK, sekarang mereka bisa menguji kembali UU yang dihasilkan pemerintah dan DPR. 
+
+Seharusnya bapak dan ibu anggota dewan bisa _aware_ dengan data ini. Lagian secara kinerja, DPR masih sedikit menghasilkan UU. Sumber:
+
+1. [Katadata.co.id](https://katadata.co.id/safrezifitra/indepth/5e9a4e618a956/mengukur-kinerja-dpr-lama-dan-harapan-untuk-dpr-baru).
+1. [Kompas](https://nasional.kompas.com/read/2019/09/26/14022561/hasilkan-84-uu-kinerja-dpr-dinilai-kalah-jauh-dari-periode-sebelumnya).
+
+## Putusan Perkara
