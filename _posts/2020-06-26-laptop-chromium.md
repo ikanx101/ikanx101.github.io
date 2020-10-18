@@ -31,7 +31,7 @@ Kebetulan juga, sedang ada [*flash sale* di
 **jd.id**](https://www.jd.id/product/axioo-mybook-11-lite-4gb-online-deal-silver_603033132/603034079.html).
 Tanpa pikir panjang, maka saya beli saja langsung laptop tersebut.
 
-<img src="https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/Chromium%20OS/axioo.png" width="1192" />
+<img src="https://raw.githubusercontent.com/ikanx101/belajaR/master/Arsip%20Blog/Chromium%20OS/axioo.png" width="1192" />
 
 -----
 
