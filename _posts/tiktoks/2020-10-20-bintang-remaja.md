@@ -8,7 +8,7 @@ tags:
   - Artificial Intelligence
   - R
   - Exploratory Data Analysis
-  - TikTok
+  - Social Media
   - Web Scrape
 ---
 
