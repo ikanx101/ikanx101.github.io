@@ -6,7 +6,7 @@ categories:
 tags:
   - Machine Learning
   - Artificial Intelligence
-  - Web Scrap
+  - Web Scrape
   - R
   - Dokter
   - Kemenkes
