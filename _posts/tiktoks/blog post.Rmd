@@ -1,5 +1,5 @@
 ---
-title: "Ngoprek #SetinggiBintang di TikTok"
+title: "Ngoprek #SetinggiBintang di T*kT*k"
 output: 
   github_document:
     pandoc_args: --webtex
@@ -22,7 +22,7 @@ Dulu, saya pernah menjelaskan bagaimana kita bisa mengambil data dari [_twitter_
 
 Sekarang saya akan mencoba mengambil data dari _platform_ _social media_ yang lagi _trending_.
 
-> __TIKTOK!!!__
+> __T*kT*k!!!__
 
 Ternyata _social media_ ini masih memiliki banyak celah untuk bisa dieksploitasi datanya. Suatu hal yang menguntungkan bagi para __OSINT__ _lovers_ _kayak_ saya ini. Saya berdoa agar celah-celah ini dibiarkan apa adanya. _haha_.
 
@@ -34,7 +34,7 @@ Oh iya, bagi yang belum tahu, __OSINT__ adalah _Open Source Intelligent_. Semaca
 
 ---
 
-Oke, kembali ke topik. Saya akan menggunakan kombinasi antara __R__ dan _TikTok page source_ untuk mengambil data yang saya mau. Nah, kali ini saya akan mengambil data terkait _hashtag_ __#SetinggiBintang__ di _TikTok_. Semua data ini saya _scrape_ per tanggal `20 Oktober 2020` pukul `10:50` WIB _yah_. 
+Oke, kembali ke topik. Saya akan menggunakan kombinasi antara __R__ dan _T*kT*k page source_ untuk mengambil data yang saya mau. Nah, kali ini saya akan mengambil data terkait _hashtag_ __#SetinggiBintang__ di _T*kT*k_. Semua data ini saya _scrape_ per tanggal `20 Oktober 2020` pukul `10:50` WIB _yah_. 
 
 
 ```{r,echo=FALSE}
@@ -54,7 +54,7 @@ Data apa saja yang bisa diambil? Karena saya mengambil semua posting terkait _ha
 - `Video meta`: ukuran video, ratio, dan durasi.
 - `user-post related`: Siapa yang _posting_, kapan, deskripsi video, musik yang digunakan, _like count_, _share count_, _play count_, _comment count_,
 
-Tapi kalau isi komen dan siapa yang komen, saya harus mengambilnya dari _page source_ si __TikTok__-nya.
+Tapi kalau isi komen dan siapa yang komen, saya harus mengambilnya dari _page source_ si __T*kT*k__-nya.
 
 Sayangnya datanya memiliki struktur _list_ jadi tidak bisa diubah dengan mudah ke dalam _Excel format files_. Bentuk data yang paling memungkinkan adalah dengan forma `.json`.
 
@@ -70,7 +70,7 @@ Oke, kalau bingung melihat strukturnya, saya langsung masuk ke visualisasi dari 
 
 ### Durasi Video
 
-__TikTok__ memang membatasi video yang di-_post_ oleh _user_-nya. Untuk _hashtag_ __#SetinggiBintang__ ada dua kelompok video berdasarkan durasinya. Sebagian besar berada di kisaran `15` detik, selainnya ada di `19` detik.
+__T*kT*k__ memang membatasi video yang di-_post_ oleh _user_-nya. Untuk _hashtag_ __#SetinggiBintang__ ada dua kelompok video berdasarkan durasinya. Sebagian besar berada di kisaran `15` detik, selainnya ada di `19` detik.
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10}
 hestek_setinggi_bintang %>% 
@@ -78,7 +78,7 @@ hestek_setinggi_bintang %>%
   geom_density(fill = "gray") +
   theme_minimal() +
   labs(title = "Sebaran Durasi Video",
-       subtitle = "303 Video TikTok #SetinggiBintang",
+       subtitle = "303 Video T*kT*k #SetinggiBintang",
        caption = "Scraped and Visualized\nusing R\nikanx101.com",
        x = "Durasi (dalam detik)",
        y = "Density") +
@@ -102,8 +102,8 @@ hestek_setinggi_bintang %>%
                  color = n)) +
   scale_color_gradient(low="steelblue",high="darkred")+
   theme_minimal() +
-  labs(title = "Ratio Video TikTok",
-       subtitle = "303 Video TikTok #SetinggiBintang",
+  labs(title = "Ratio Video T*kT*k",
+       subtitle = "303 Video T*kT*k #SetinggiBintang",
        caption = "Scraped and Visualized\nusing R\nikanx101.com",
        x = "Dimension: width",
        y = "Dimension: height") +
@@ -135,7 +135,7 @@ hestek_setinggi_bintang %>%
   geom_label(aes(label = n),size = 2) +
   theme_minimal() +
   labs(title = "Kapan Video Dipost?",
-       subtitle = "303 Video TikTok #SetinggiBintang",
+       subtitle = "303 Video T*kT*k #SetinggiBintang",
        caption = "Scraped and Visualized\nusing R\nikanx101.com",
        x = "Tanggal",
        y = "Banyak Video") +
@@ -153,7 +153,7 @@ hestek_setinggi_bintang %>%
              size = 2) +
   theme_minimal() +
   labs(title = "Hari Apa Video Paling Banyak Dipost?",
-       subtitle = "303 Video TikTok #SetinggiBintang",
+       subtitle = "303 Video T*kT*k #SetinggiBintang",
        caption = "Scraped and Visualized\nusing R\nikanx101.com",
        x = "Hari",
        y = "Banyak Video") +
@@ -173,7 +173,7 @@ hestek_setinggi_bintang %>%
              size = 2) +
   theme_minimal() +
   labs(title = "Pada Jam Berapa Video Dipost?",
-       subtitle = "303 Video TikTok #SetinggiBintang",
+       subtitle = "303 Video T*kT*k #SetinggiBintang",
        caption = "Scraped and Visualized\nusing R\nikanx101.com",
        x = "Jam",
        y = "Banyak Video") +
@@ -191,7 +191,7 @@ hestek_setinggi_bintang %>%
   scale_fill_gradient(low="steelblue",high="darkred") +
   theme_minimal() +
   labs(title = "Pada Jam Berapa Video Dipost per Hari?",
-       subtitle = "303 Video TikTok #SetinggiBintang",
+       subtitle = "303 Video T*kT*k #SetinggiBintang",
        caption = "Scraped and Visualized\nusing R\nikanx101.com",
        x = "Hari",
        y = "Jam",
@@ -218,7 +218,7 @@ pilter %>%
              size = 2) +
   theme_minimal() +
   labs(title = "User Mana Saja yang Paling Banyak di-Likes?",
-       subtitle = "303 Video TikTok #SetinggiBintang",
+       subtitle = "303 Video T*kT*k #SetinggiBintang",
        caption = "Scraped and Visualized\nusing R\nikanx101.com") +
   theme(legend.position = "none",
         axis.text.x = element_blank(),
@@ -241,7 +241,7 @@ pilter %>%
              size = 2) +
   theme_minimal() +
   labs(title = "User Mana Saja yang Paling Banyak di-Comment?",
-       subtitle = "303 Video TikTok #SetinggiBintang",
+       subtitle = "303 Video T*kT*k #SetinggiBintang",
        caption = "Scraped and Visualized\nusing R\nikanx101.com") +
   theme(legend.position = "none",
         axis.text.x = element_blank(),
@@ -264,7 +264,7 @@ pilter %>%
              size = 2) +
   theme_minimal() +
   labs(title = "User Mana Saja yang Paling Banyak di-Share?",
-       subtitle = "303 Video TikTok #SetinggiBintang",
+       subtitle = "303 Video T*kT*k #SetinggiBintang",
        caption = "Scraped and Visualized\nusing R\nikanx101.com") +
   theme(legend.position = "none",
         axis.text.x = element_blank(),
@@ -288,7 +288,7 @@ pilter %>%
              size = 2) +
   theme_minimal() +
   labs(title = "User Mana Saja yang Paling Banyak di-Play?",
-       subtitle = "303 Video TikTok #SetinggiBintang",
+       subtitle = "303 Video T*kT*k #SetinggiBintang",
        caption = "Scraped and Visualized\nusing R\nikanx101.com") +
   theme(legend.position = "none",
         axis.text.x = element_blank(),
@@ -308,8 +308,8 @@ pilter %>%
   geom_text(aes(label=label),
             position = "jitter") +
   theme_minimal() +
-  labs(title = "Likes vs Comments Video TikTok",
-       subtitle = "303 Video TikTok #SetinggiBintang",
+  labs(title = "Likes vs Comments Video T*kT*k",
+       subtitle = "303 Video T*kT*k #SetinggiBintang",
        caption = "Scraped and Visualized\nusing R\nikanx101.com",
        x = "Banyak likes",
        y = "Banyak comments")
@@ -317,7 +317,7 @@ pilter %>%
 
 ### User Mana yang Punya Follower dan Video Terbanyak
 
-Dari sekian banyak _user_ __TikTok__ yang posting __#SetinggiBintang__, saya penasaran... Siapa yang memiliki _follower_ terbanyak? Siapa yang paling __produktif__? (memiliki video terbanyak di __TikTok__).
+Dari sekian banyak _user_ __T*kT*k__ yang posting __#SetinggiBintang__, saya penasaran... Siapa yang memiliki _follower_ terbanyak? Siapa yang paling __produktif__? (memiliki video terbanyak di __T*kT*k__).
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10}
 hestek_setinggi_bintang %>% 
@@ -334,8 +334,8 @@ hestek_setinggi_bintang %>%
   geom_point(alpha = .4) +
   ggrepel::geom_text_repel(aes(label = label)) +
   theme_minimal() +
-  labs(title = "Siapa yang Memiliki Follower dan Video Terbanyak di TikTok?",
-       subtitle = "303 Video TikTok #SetinggiBintang",
+  labs(title = "Siapa yang Memiliki Follower dan Video Terbanyak di T*kT*k?",
+       subtitle = "303 Video T*kT*k #SetinggiBintang",
        caption = "Scraped and Visualized\nusing R\nikanx101.com",
        x = "Banyak follower",
        y = "Banyak Video")
