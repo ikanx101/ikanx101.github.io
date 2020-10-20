@@ -1,6 +1,6 @@
 ---
-date: 2020-10-19T08:30:00-04:00
-title: "Kabar Gembira Untuk Kita Semua: TikTok Kini Ada Ekstraknya!"
+date: 2020-10-20T10:00:00-04:00
+title: "EDA: #SetinggiBintang"
 categories:
   - Blog
 tags:
