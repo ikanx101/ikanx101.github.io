@@ -602,7 +602,7 @@ Mari kita lihat visualisasi berikut:
 <img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/tiktoks/Bagian%202/OSINT-Toktok_files/figure-gfm/unnamed-chunk-4-1.png" width="672" />
 
 Kita bisa lihat kurva yang awalnya landai pada dua hari pertama,
-tiba-tiba melejit di hari kedua.
+tiba-tiba melejit di hari ketiga.
 
 Sayangnya saya tidak memiliki data jumlah *view* per posting per hari
 yang dilakukan oleh para *user* tersebut. Satu-satunya hal yang bisa
