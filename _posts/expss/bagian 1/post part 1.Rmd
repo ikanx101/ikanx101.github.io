@@ -1,0 +1,34 @@
+---
+title: "Pengganti SPSS di R"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/Documents/ikanx101/_posts/expss/bagian 1")
+rm(list=ls())
+```
+
+> Siapa sih yang gak kenal dengan __SPSS__? Software yang paling banyak digunakan untuk menyelesaikan masalah statistik. 
+
+Mulai dari membuat analisa deskriptif yang sederhana sampai membuat model _machine learning_ yang kompleks bisa dilakukan di __SPSS__. Dulu ketika masih menjadi mahasiswa tingkat akhir, saya pernah menjadi asisten lab `bio statistik` yang memberikan tutor __SPSS__. Menariknya adalah bagi mahasiswa Matematika sendiri, kami tidak diberikan materi lab __SPSS__.
+
+> __SPSS__ membuat kamu malas.
+
+Begitu selentingan yang saya dengar.
+
+Lalu software apa yang dipelajari oleh mahasiswa Matematika untuk menyelesaikan masalah statistik terkait data?
+
+__Microsoft Excel__
+
+Oh iya, dulu kami menggunakan __SPSS__ versi `13` _student edition_ resmi di lab Matematika.
+
+---
+
+Kisah SPSS saya bermula saat saya mulai bekerja di bidang _market research_ pada tahun 2008. Hampir semua orang tim _data processing_ di _market research agency_ tempat saya bekerja menggunakan __SPSS__. Waktu itu mereka menggunakan versi `17`. Usut punya usut ternyata versi yang digunakan itu bukan berasal dari jalur resmi.
+
+Istilahnya versi _crack_-an yang didapatkan dari forum `berbagi-file` populer pada zamannya.
+
+Kisah terus berlanjut sampai saya berlabuh di perusahaan tempat saya bekerja saat ini. Ternyata __@nutrifood__ memiliki license resmi SPSS versi `15` yang digunakan oleh semua _member_ tim _market research_.
