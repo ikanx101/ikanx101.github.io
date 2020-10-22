@@ -145,7 +145,7 @@ analisa %>%
   geom_line(color = "steelblue",size = 1.25) +
   annotate("text",x = 4000,y = 6000000, label = "Area 23\nPost Pertama",size = 2.25) +
   theme_minimal() +
-  labs(title = "Timeline Penambahan Cumulative Followers dari Para User yang Post #Setinggi Bintang",
+  labs(title = "Timeline Penambahan Cumulative Followers dari Para User\nyang Post #Setinggi Bintang",
        subtitle = "303 post di TikTok dengan hashtag #Setinggi Bintang",
        x = "Timeline sejak post pertama (dalam menit)",
        y = "Jumlah Cumulative Followers",
