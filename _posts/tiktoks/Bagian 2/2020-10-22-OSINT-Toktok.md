@@ -26,7 +26,7 @@ di **TikTok**.
 
 Saya akan mulai penelusuran ini dengan melihat *post timeline* berikut:
 
-<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/tiktoks/blog-post_files/figure-gfm/unnamed-chunk-5-1.png" width="70%" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/tiktoks/blog-post_files/figure-gfm/unnamed-chunk-5-1.png" width="100%" />
 
 Pertama kali video dengan *hashtag* **\#SetinggiBintang** muncul pada
 tanggal `18 September 2020` pukul `15:45:32 WIB` oleh
@@ -47,7 +47,7 @@ Berikut adalah data kapan *post*, siapa, dan jeda (dalam menit) antar
 
 <caption>
 
-23 Post Pertama \#SetinggiBintang
+23 Post Pertama #SetinggiBintang
 
 </caption>
 
@@ -57,7 +57,7 @@ Berikut adalah data kapan *post*, siapa, dan jeda (dalam menit) antar
 
 <th style="text-align:left;">
 
-tanggal\_post
+tanggal_post
 
 </th>
 
@@ -69,7 +69,7 @@ user
 
 <th style="text-align:right;">
 
-jeda\_menit
+jeda_menit
 
 </th>
 
