@@ -14,7 +14,7 @@ tags:
 
 Pada tulisan yang [lalu](https://ikanx101.com/blog/tiki-taka/), saya
 telah menelaah secara umum, data terkait *hashtag* **\#SetinggiBintang**
-yang viral di *Youtube*.
+yang viral di *TikTOk*.
 
 Pertanggal saya *scrape* data, setidaknya semua video dengan *hashtag*
 demikian sudah ditonton sebanyak *2.4 billion views*.
