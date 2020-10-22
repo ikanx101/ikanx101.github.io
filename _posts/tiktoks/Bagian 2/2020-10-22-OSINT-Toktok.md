@@ -618,7 +618,7 @@ Tentunya dengan asumsi:
 
 > Tuh bener kan dugaan saya\!
 
-Kuncinya berada di post awal ini.
+Kuncinya berada di post awal ini. Penentuan `siapa` yang memulai menjadi poin utama kenapa _hashtag_ ini bisa menjadi viral. Tentunya di luar konten video _yah_.
 
 -----
 
