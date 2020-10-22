@@ -97,8 +97,8 @@ analisa %>%
   geom_line(color = "steelblue",size = 1.1) +
   annotate("text",x = 3800,y = 13, label = "Area 23\nPost Pertama",size = 2.25) +
   theme_minimal() +
-  labs(title = "Timeline Penambahan Post #SetinggiLangit",
-       subtitle = "303 post di TikTok dengan hashtag #SetinggiLangit",
+  labs(title = "Timeline Penambahan Post #Setinggi Bintang",
+       subtitle = "303 post di TikTok dengan hashtag #Setinggi Bintang",
        x = "Timeline sejak post pertama (dalam menit)",
        y = "Jumlah Post",
        caption = "Scraped and Visualized\nusing R\nikanx101.com")
@@ -145,8 +145,8 @@ analisa %>%
   geom_line(color = "steelblue",size = 1.25) +
   annotate("text",x = 4000,y = 6000000, label = "Area 23\nPost Pertama",size = 2.25) +
   theme_minimal() +
-  labs(title = "Timeline Penambahan Cumulative Followers dari Para User yang Post #SetinggiLangit",
-       subtitle = "303 post di TikTok dengan hashtag #SetinggiLangit",
+  labs(title = "Timeline Penambahan Cumulative Followers dari Para User yang Post #Setinggi Bintang",
+       subtitle = "303 post di TikTok dengan hashtag #Setinggi Bintang",
        x = "Timeline sejak post pertama (dalam menit)",
        y = "Jumlah Cumulative Followers",
        caption = "Scraped and Visualized\nusing R\nikanx101.com")
