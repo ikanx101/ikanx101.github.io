@@ -1,5 +1,5 @@
 ---
-title: "Pengganti SPSS di R"
+title: "TUTORIAL: Alternatif Pengganti SPSS Menggunakan R"
 output: 
   github_document:
     pandoc_args: --webtex
@@ -53,7 +53,7 @@ Apa sih perbedaan antara data survey dengan data lain? (Misalkan data transaksi 
 
 Disadari atau tidak, dalam survey, responden bisa ditanyakan suatu pertanyaan yang bisa lebih dari satu jawaban. _Market researcher_ menyebutnya dengan istilah _multiple answer question_. Jawaban responden akan disimpan menjadi _multiple column_. 
 
-> Prinsipnya adalah satu responden disimpan dalam satu baris data. To
+> Prinsipnya adalah satu responden disimpan dalam satu baris data. 
 
 Berbeda dengan data transaksi atau data _social media_ yang memungkinkan dibentuk menjadi __tabular__ (satu _response_ bisa disimpan _as multiple columns_).
 
@@ -72,3 +72,25 @@ Setau saya memang ada konsekuensi hukum bagi yang melakukan hal ini.
 ## Alternatif __SPSS__
 
 Kita sebenarnya bisa memakai _software_ olah data selain __SPSS__ yang bersifat _open source_ alias gratis. Salah satunya dengan __R__ melalui `library(expss)`. 
+
+Bagaimana caranya? Saya mulai tutorialnya _yah_.
+
+---
+
+## Bahan-Bahan yang Dibutuhkan
+
+Oke, untuk melakukannya kita memerlukan __R__ dan atau __R Studio__. Kemudian kita harus menginstall beberapa _libraries_ seperti:
+
+1. `dplyr`
+1. `expss`
+
+Cara installnya adalah:
+
+```{r}
+# install.packages("dplyr")
+# install.packages("expss")
+```
+
+Selepas instalasi selesai, mari kita panggil kedua _libraries_ tersebut:
+
+```{r,warning=FALSE,message=FALSE}
