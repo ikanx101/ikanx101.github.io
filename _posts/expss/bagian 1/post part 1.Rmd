@@ -27,8 +27,10 @@ Oh iya, dulu kami menggunakan __SPSS__ versi `13` _student edition_ resmi di lab
 
 ---
 
-Kisah SPSS saya bermula saat saya mulai bekerja di bidang _market research_ pada tahun 2008. Hampir semua orang tim _data processing_ di _market research agency_ tempat saya bekerja menggunakan __SPSS__. Waktu itu mereka menggunakan versi `17`. Usut punya usut ternyata versi yang digunakan itu bukan berasal dari jalur resmi.
+Kisah __SPSS__ saya berlanjut saat saya mulai bekerja di bidang _market research_ pada tahun 2008. Hampir semua orang tim _data processing_ di _market research agency_ tempat saya bekerja menggunakan __SPSS__. Waktu itu mereka menggunakan versi `17`. Usut punya usut ternyata versi yang digunakan itu bukan berasal dari jalur resmi.
 
 Istilahnya versi _crack_-an yang didapatkan dari forum `berbagi-file` populer pada zamannya.
 
-Kisah terus berlanjut sampai saya berlabuh di perusahaan tempat saya bekerja saat ini. Ternyata __@nutrifood__ memiliki license resmi SPSS versi `15` yang digunakan oleh semua _member_ tim _market research_.
+Kisah terus berlanjut sampai saya berlabuh di perusahaan tempat saya bekerja saat ini. Ternyata __@nutrifood__ memiliki _license_ resmi SPSS versi `13` yang digunakan oleh semua _member_ tim _market research_. Namun versi tersebut sudah cukup _usang_ untuk melakukan beberapa analisa dan mengolah data survey yang semakin banyak. Apalagi semenjak IBM membeli kepemilikan __SPSS__, memakai versi bajakan dari _software_ ini bukanlah pilihan yang bijak. 
+
+Setelah mencari informasi terkait harga resminya, ternyata harganya lumayan juga yah. 
