@@ -11,6 +11,10 @@ setwd("~/Documents/ikanx101/_posts/expss/bagian 1")
 rm(list=ls())
 ```
 
+```{r}
+kable::include_graphics("SPSS.jpg")
+```
+
 > Siapa sih yang gak kenal dengan __SPSS__? Software yang paling banyak digunakan untuk menyelesaikan masalah statistik. 
 
 Mulai dari membuat analisa deskriptif yang sederhana sampai membuat model _machine learning_ yang kompleks bisa dilakukan di __SPSS__. Dulu ketika masih menjadi mahasiswa tingkat akhir, saya pernah menjadi asisten lab `bio statistik` yang memberikan tutor __SPSS__. Menariknya adalah bagi mahasiswa Matematika sendiri, kami tidak diberikan materi lab __SPSS__.
@@ -36,7 +40,7 @@ Kisah terus berlanjut sampai saya berlabuh di perusahaan tempat saya bekerja saa
 Setelah mencari informasi terkait harga resminya, ternyata harganya lumayan juga _yah_. 
 
 ```{r}
-knitr::kable("https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/expss/bagian%201/Screenshot_20201023-101029.png")
+knitr::include_graphics("https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/expss/bagian%201/Screenshot_20201023-101029.png")
 ```
 
 Tipe __SPSS__ yang dibutuhkan untuk mengolah data market riset adalah yang `standar` karena sudah bisa mengakomodir _multiple response answer_.
@@ -65,3 +69,6 @@ Setau saya memang ada konsekuensi hukum bagi yang melakukan hal ini.
 
 > Selain itu, memakai _software_ bajakan bisa jadi menghilangkan __keberkahan__ pekerjaan kita lho.
 
+## Alternatif __SPSS__
+
+Kita sebenarnya bisa memakai _software_ olah data selain __SPSS__ yang bersifat _open source_ alias gratis. Salah satunya dengan __R__ melalui `library(expss)`. 
