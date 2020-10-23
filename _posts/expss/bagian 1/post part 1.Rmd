@@ -98,4 +98,12 @@ library(dplyr)
 library(expss)
 ```
 
-Sekarang saya akan menggunakan data contoh hasil survey mengenai kebiasaan belanja berikut ini:
+Sekarang saya akan menggunakan contoh data hasil survey mengenai kebiasaan belanja. Survey dilakukan kepada `1.000` orang responden di 5 kota (Jakarta, Bandung, Tasikmalaya, Garut, dan Sukabumi). Berikut adalah datanya:
+
+```{r}
+read.csv("")
+```
+
+Oh iya, salah satu kelebihan menganalisa data survey menggunakan __R__ adalah kita tidak perlu repot-repot mengubah tipe data menjadi _numeric with labels_. Pada __SPSS__, kita tahu ada dua _tab_, yakni _variabel view_ dan _data view_. Biasanya salah satu _preparation_ yang harus dilakukan di __SPSS__ adalah mengubah data _text_ hasil _entry_ kuesioner menjadi _numeric_ lalu diberikan _value label_.
+
+Menggunakan __R__, kita tidak perlu melakukan hal itu. Hasil _entry_ kuesioner yang sudah berupa _text_ bisa langsung kita pakai. Biasanya ini terjadi saat kita menggunakan _platform online survey_ yang memberikan data _as it is_.
