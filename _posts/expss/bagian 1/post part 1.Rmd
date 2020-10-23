@@ -94,3 +94,8 @@ Cara installnya adalah:
 Selepas instalasi selesai, mari kita panggil kedua _libraries_ tersebut:
 
 ```{r,warning=FALSE,message=FALSE}
+library(dplyr)
+library(expss)
+```
+
+Sekarang saya akan menggunakan data contoh hasil survey mengenai kebiasaan belanja berikut ini:
