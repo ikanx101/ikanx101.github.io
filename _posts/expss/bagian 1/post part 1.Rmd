@@ -33,4 +33,35 @@ Istilahnya versi _crack_-an yang didapatkan dari forum `berbagi-file` populer pa
 
 Kisah terus berlanjut sampai saya berlabuh di perusahaan tempat saya bekerja saat ini. Ternyata __@nutrifood__ memiliki _license_ resmi SPSS versi `13` yang digunakan oleh semua _member_ tim _market research_. Namun versi tersebut sudah cukup _usang_ untuk melakukan beberapa analisa dan mengolah data survey yang semakin banyak. Apalagi semenjak IBM membeli kepemilikan __SPSS__, memakai versi bajakan dari _software_ ini bukanlah pilihan yang bijak. 
 
-Setelah mencari informasi terkait harga resminya, ternyata harganya lumayan juga yah. 
+Setelah mencari informasi terkait harga resminya, ternyata harganya lumayan juga _yah_. 
+
+```{r}
+knitr::kable("https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/expss/bagian%201/Screenshot_20201023-101029.png")
+```
+
+Tipe __SPSS__ yang dibutuhkan untuk mengolah data market riset adalah yang `standar` karena sudah bisa mengakomodir _multiple response answer_.
+
+---
+
+## Perbedaan Data Survey dengan Data Lainnya
+
+Apa sih perbedaan antara data survey dengan data lain? (Misalkan data transaksi atau data _scrape_ dari _social media_).
+
+Disadari atau tidak, dalam survey, responden bisa ditanyakan suatu pertanyaan yang bisa lebih dari satu jawaban. _Market researcher_ menyebutnya dengan istilah _multiple answer question_. Jawaban responden akan disimpan menjadi _multiple column_. 
+
+> Prinsipnya adalah satu responden disimpan dalam satu baris data. To
+
+Berbeda dengan data transaksi atau data _social media_ yang memungkinkan dibentuk menjadi __tabular__ (satu _response_ bisa disimpan _as multiple columns_).
+
+Maka dari itu, _tools_ pengolahan data market riset harus bisa mengakomodir hal ini.
+
+---
+
+## Masalah dengan __SPSS__
+
+Seperti yang telah saya sampaikan sebelumnya, faktor harga menjadi salah satu kendala terbesar bagi (hampir semua) perusahaan untuk bisa menggunakan __SPSS__ secara legal. Banyak di antara perusahaan malah tetap memilih untuk menggunakan _software_ bajakan. Menurut beberapa sumber, IBM sedang galak-galaknya melakukan sidak ke perusahaan-perusahaan untuk menangkap perusahaan yang _nakal_. 
+
+Setau saya memang ada konsekuensi hukum bagi yang melakukan hal ini. 
+
+> Selain itu, memakai _software_ bajakan bisa jadi menghilangkan __keberkahan__ pekerjaan kita lho.
+
