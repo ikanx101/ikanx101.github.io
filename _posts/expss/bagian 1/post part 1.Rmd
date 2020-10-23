@@ -7,12 +7,12 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-setwd("~/Documents/ikanx101/_posts/expss/bagian 1")
+setwd("~/ikanx101 com/_posts/expss/bagian 1")
 rm(list=ls())
 ```
 
 ```{r}
-kable::include_graphics("SPSS.jpg")
+knitr::include_graphics("SPSS.jpg")
 ```
 
 > Siapa sih yang gak kenal dengan __SPSS__? Software yang paling banyak digunakan untuk menyelesaikan masalah statistik. 
@@ -98,10 +98,12 @@ library(dplyr)
 library(expss)
 ```
 
-Sekarang saya akan menggunakan contoh data hasil survey mengenai kebiasaan belanja. Survey dilakukan kepada `1.000` orang responden di 5 kota (Jakarta, Bandung, Tasikmalaya, Garut, dan Sukabumi). Berikut adalah datanya:
+Sekarang saya akan menggunakan contoh data hasil survey mengenai kebiasaan belanja. Survey dilakukan kepada `1.000` orang responden di 5 kota (Jakarta, Bandung, Tasikmalaya, Garut, dan Sukabumi). Sebagai latihan bersama, data bisa diunduh di sini.
+
+Berikut adalah datanya:
 
 ```{r}
-read.csv("")
+data = read.csv("data survey.csv")
 ```
 
 Oh iya, salah satu kelebihan menganalisa data survey menggunakan __R__ adalah kita tidak perlu repot-repot mengubah tipe data menjadi _numeric with labels_. Pada __SPSS__, kita tahu ada dua _tab_, yakni _variabel view_ dan _data view_. Biasanya salah satu _preparation_ yang harus dilakukan di __SPSS__ adalah mengubah data _text_ hasil _entry_ kuesioner menjadi _numeric_ lalu diberikan _value label_.

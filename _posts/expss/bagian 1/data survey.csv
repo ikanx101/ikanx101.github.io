@@ -1,0 +1,1001 @@
+"","id","kota","gender","usia","pernah","rating","tempat_1","tempat_2","tempat_3","tempat_4","tempat_5"
+"1",1,"Garut","wanita",40,"ya","suka","supermarket","pasar",NA,NA,NA
+"2",2,"Sukabumi","pria",27,"ya","suka","minimarket","online","supermarket","pasar",NA
+"3",3,"Sukabumi","wanita",30,"ya","sangat tidak suka","minimarket","supermarket","warung","pasar",NA
+"4",4,"Garut","wanita",26,"ya","tidak suka","warung","pasar","supermarket","minimarket","online"
+"5",5,"Jakarta","pria",32,"ya","tidak suka","warung","pasar","online",NA,NA
+"6",6,"Bandung","wanita",36,"ya","sangat tidak suka","minimarket",NA,NA,NA,NA
+"7",7,"Tasikmalaya","wanita",31,"ya","suka","online",NA,NA,NA,NA
+"8",8,"Sukabumi","pria",37,"ya","sangat tidak suka","pasar","warung",NA,NA,NA
+"9",9,"Garut","wanita",30,"tidak","sangat suka",NA,NA,NA,NA,NA
+"10",10,"Garut","wanita",31,"ya","tidak suka","supermarket","pasar","online",NA,NA
+"11",11,"Tasikmalaya","wanita",25,"tidak","tidak suka",NA,NA,NA,NA,NA
+"12",12,"Garut","wanita",35,"ya","suka","supermarket",NA,NA,NA,NA
+"13",13,"Garut","wanita",33,"ya","sangat suka","supermarket","online","warung",NA,NA
+"14",14,"Garut","wanita",33,"ya","tidak suka","warung","pasar","online",NA,NA
+"15",15,"Garut","pria",28,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"16",16,"Tasikmalaya","wanita",40,"ya","suka","supermarket","minimarket",NA,NA,NA
+"17",17,"Bandung","wanita",40,"ya","sangat suka","minimarket","online","warung",NA,NA
+"18",18,"Tasikmalaya","wanita",38,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"19",19,"Jakarta","wanita",35,"ya","sangat suka","minimarket","pasar",NA,NA,NA
+"20",20,"Jakarta","wanita",39,"tidak","tidak suka",NA,NA,NA,NA,NA
+"21",21,"Jakarta","wanita",38,"ya","tidak suka","pasar","online",NA,NA,NA
+"22",22,"Tasikmalaya","wanita",32,"tidak","suka",NA,NA,NA,NA,NA
+"23",23,"Garut","wanita",34,"tidak","sangat suka",NA,NA,NA,NA,NA
+"24",24,"Garut","wanita",32,"ya","sangat tidak suka","minimarket","warung",NA,NA,NA
+"25",25,"Tasikmalaya","wanita",32,"tidak","tidak suka",NA,NA,NA,NA,NA
+"26",26,"Tasikmalaya","wanita",25,"ya","sangat tidak suka","minimarket","pasar",NA,NA,NA
+"27",27,"Sukabumi","pria",31,"tidak","tidak suka",NA,NA,NA,NA,NA
+"28",28,"Bandung","wanita",40,"ya","suka","online",NA,NA,NA,NA
+"29",29,"Bandung","wanita",38,"tidak","suka",NA,NA,NA,NA,NA
+"30",30,"Garut","wanita",31,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"31",31,"Sukabumi","wanita",40,"tidak","tidak suka",NA,NA,NA,NA,NA
+"32",32,"Garut","wanita",39,"ya","tidak suka","minimarket","supermarket","online","warung","pasar"
+"33",33,"Tasikmalaya","pria",33,"ya","tidak suka","supermarket","online","minimarket",NA,NA
+"34",34,"Sukabumi","wanita",30,"tidak","tidak suka",NA,NA,NA,NA,NA
+"35",35,"Bandung","wanita",25,"ya","suka","minimarket",NA,NA,NA,NA
+"36",36,"Bandung","wanita",39,"ya","sangat suka","online",NA,NA,NA,NA
+"37",37,"Sukabumi","wanita",35,"ya","sangat tidak suka","pasar",NA,NA,NA,NA
+"38",38,"Tasikmalaya","wanita",31,"ya","sangat tidak suka","online","pasar","supermarket",NA,NA
+"39",39,"Bandung","pria",29,"ya","sangat tidak suka","supermarket","online","minimarket",NA,NA
+"40",40,"Bandung","wanita",39,"ya","sangat tidak suka","pasar","minimarket","online",NA,NA
+"41",41,"Garut","wanita",29,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"42",42,"Sukabumi","wanita",37,"ya","tidak suka","supermarket","online",NA,NA,NA
+"43",43,"Garut","pria",27,"ya","sangat tidak suka","online",NA,NA,NA,NA
+"44",44,"Sukabumi","wanita",40,"ya","tidak suka","minimarket","supermarket",NA,NA,NA
+"45",45,"Tasikmalaya","pria",40,"tidak","sangat suka",NA,NA,NA,NA,NA
+"46",46,"Tasikmalaya","pria",30,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"47",47,"Bandung","wanita",31,"tidak","tidak suka",NA,NA,NA,NA,NA
+"48",48,"Garut","wanita",29,"tidak","sangat suka",NA,NA,NA,NA,NA
+"49",49,"Sukabumi","wanita",34,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"50",50,"Tasikmalaya","pria",28,"ya","suka","minimarket","pasar","warung",NA,NA
+"51",51,"Garut","wanita",38,"tidak","sangat suka",NA,NA,NA,NA,NA
+"52",52,"Jakarta","wanita",27,"ya","tidak suka","supermarket",NA,NA,NA,NA
+"53",53,"Jakarta","wanita",37,"tidak","tidak suka",NA,NA,NA,NA,NA
+"54",54,"Jakarta","pria",25,"tidak","tidak suka",NA,NA,NA,NA,NA
+"55",55,"Bandung","pria",37,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"56",56,"Garut","wanita",37,"ya","sangat tidak suka",NA,NA,NA,NA,NA
+"57",57,"Tasikmalaya","pria",29,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"58",58,"Jakarta","pria",31,"ya","sangat tidak suka",NA,NA,NA,NA,NA
+"59",59,"Tasikmalaya","wanita",29,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"60",60,"Jakarta","wanita",26,"tidak","suka",NA,NA,NA,NA,NA
+"61",61,"Garut","wanita",38,"ya","sangat suka","supermarket","minimarket","pasar","warung",NA
+"62",62,"Sukabumi","pria",38,"ya","tidak suka","pasar","warung","online",NA,NA
+"63",63,"Sukabumi","wanita",37,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"64",64,"Jakarta","wanita",27,"ya","tidak suka","online","supermarket","pasar","minimarket",NA
+"65",65,"Garut","pria",38,"ya","tidak suka","warung","supermarket","online",NA,NA
+"66",66,"Sukabumi","pria",27,"ya","suka","pasar","online","supermarket",NA,NA
+"67",67,"Jakarta","wanita",33,"ya","sangat suka","warung",NA,NA,NA,NA
+"68",68,"Bandung","pria",31,"ya","tidak suka","online","minimarket","pasar","warung",NA
+"69",69,"Jakarta","pria",33,"tidak","tidak suka",NA,NA,NA,NA,NA
+"70",70,"Bandung","wanita",33,"ya","sangat suka",NA,NA,NA,NA,NA
+"71",71,"Tasikmalaya","wanita",28,"ya","suka","supermarket","pasar",NA,NA,NA
+"72",72,"Bandung","wanita",30,"ya","sangat tidak suka","supermarket","minimarket",NA,NA,NA
+"73",73,"Garut","pria",35,"ya","sangat tidak suka","supermarket","minimarket",NA,NA,NA
+"74",74,"Jakarta","wanita",31,"tidak","tidak suka",NA,NA,NA,NA,NA
+"75",75,"Garut","wanita",25,"ya","sangat tidak suka","supermarket",NA,NA,NA,NA
+"76",76,"Bandung","wanita",38,"tidak","sangat suka",NA,NA,NA,NA,NA
+"77",77,"Sukabumi","wanita",39,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"78",78,"Sukabumi","wanita",35,"tidak","suka",NA,NA,NA,NA,NA
+"79",79,"Garut","pria",31,"ya","suka","pasar","supermarket","online",NA,NA
+"80",80,"Tasikmalaya","pria",26,"ya","sangat suka","minimarket",NA,NA,NA,NA
+"81",81,"Jakarta","pria",30,"tidak","tidak suka",NA,NA,NA,NA,NA
+"82",82,"Jakarta","wanita",25,"tidak","tidak suka",NA,NA,NA,NA,NA
+"83",83,"Tasikmalaya","wanita",35,"ya","sangat suka","minimarket",NA,NA,NA,NA
+"84",84,"Tasikmalaya","pria",27,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"85",85,"Tasikmalaya","wanita",29,"ya","sangat suka","pasar","warung",NA,NA,NA
+"86",86,"Sukabumi","pria",39,"tidak","suka",NA,NA,NA,NA,NA
+"87",87,"Tasikmalaya","wanita",37,"ya","sangat tidak suka","warung","minimarket",NA,NA,NA
+"88",88,"Garut","wanita",30,"ya","tidak suka","online","pasar","minimarket",NA,NA
+"89",89,"Sukabumi","wanita",28,"tidak","sangat suka",NA,NA,NA,NA,NA
+"90",90,"Tasikmalaya","pria",35,"ya","suka","pasar","supermarket",NA,NA,NA
+"91",91,"Bandung","wanita",26,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"92",92,"Jakarta","wanita",27,"tidak","sangat suka",NA,NA,NA,NA,NA
+"93",93,"Jakarta","wanita",33,"ya","sangat suka","supermarket","minimarket",NA,NA,NA
+"94",94,"Tasikmalaya","wanita",28,"ya","suka","minimarket","pasar",NA,NA,NA
+"95",95,"Jakarta","wanita",27,"ya","sangat tidak suka","supermarket","warung","online",NA,NA
+"96",96,"Bandung","pria",29,"tidak","tidak suka",NA,NA,NA,NA,NA
+"97",97,"Jakarta","pria",35,"ya","suka","pasar","minimarket",NA,NA,NA
+"98",98,"Sukabumi","wanita",26,"tidak","suka",NA,NA,NA,NA,NA
+"99",99,"Bandung","pria",35,"ya","suka","warung","minimarket","online",NA,NA
+"100",100,"Jakarta","pria",29,"tidak","suka",NA,NA,NA,NA,NA
+"101",101,"Tasikmalaya","wanita",28,"ya","sangat tidak suka","online","supermarket",NA,NA,NA
+"102",102,"Tasikmalaya","pria",34,"ya","suka","minimarket","supermarket","pasar",NA,NA
+"103",103,"Jakarta","pria",27,"tidak","suka",NA,NA,NA,NA,NA
+"104",104,"Tasikmalaya","wanita",38,"ya","tidak suka","pasar","online","minimarket",NA,NA
+"105",105,"Sukabumi","wanita",28,"ya","tidak suka",NA,NA,NA,NA,NA
+"106",106,"Bandung","wanita",35,"ya","sangat tidak suka","pasar","online",NA,NA,NA
+"107",107,"Tasikmalaya","pria",29,"ya","sangat suka","supermarket","pasar",NA,NA,NA
+"108",108,"Bandung","pria",26,"ya","sangat suka","pasar","supermarket","warung",NA,NA
+"109",109,"Sukabumi","wanita",27,"ya","tidak suka","supermarket","minimarket",NA,NA,NA
+"110",110,"Jakarta","wanita",28,"tidak","sangat suka",NA,NA,NA,NA,NA
+"111",111,"Jakarta","wanita",34,"ya","suka","online",NA,NA,NA,NA
+"112",112,"Jakarta","pria",34,"ya","sangat tidak suka","minimarket","pasar","supermarket",NA,NA
+"113",113,"Tasikmalaya","wanita",39,"ya","sangat suka","minimarket",NA,NA,NA,NA
+"114",114,"Garut","wanita",33,"tidak","sangat suka",NA,NA,NA,NA,NA
+"115",115,"Bandung","wanita",40,"ya","tidak suka","pasar",NA,NA,NA,NA
+"116",116,"Tasikmalaya","wanita",35,"ya","sangat tidak suka","pasar","minimarket",NA,NA,NA
+"117",117,"Jakarta","wanita",40,"ya","tidak suka","warung","minimarket",NA,NA,NA
+"118",118,"Bandung","wanita",38,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"119",119,"Sukabumi","wanita",26,"ya","suka","supermarket",NA,NA,NA,NA
+"120",120,"Garut","wanita",31,"tidak","tidak suka",NA,NA,NA,NA,NA
+"121",121,"Jakarta","wanita",26,"ya","tidak suka","warung","pasar",NA,NA,NA
+"122",122,"Bandung","pria",39,"ya","tidak suka","supermarket",NA,NA,NA,NA
+"123",123,"Sukabumi","pria",29,"ya","suka","supermarket","warung",NA,NA,NA
+"124",124,"Bandung","pria",27,"ya","sangat suka","minimarket","pasar","supermarket",NA,NA
+"125",125,"Jakarta","wanita",36,"ya","suka","online","minimarket",NA,NA,NA
+"126",126,"Tasikmalaya","wanita",26,"ya","tidak suka","warung","pasar",NA,NA,NA
+"127",127,"Garut","wanita",38,"ya","sangat tidak suka","supermarket","minimarket",NA,NA,NA
+"128",128,"Sukabumi","wanita",31,"ya","sangat suka","minimarket","supermarket","pasar",NA,NA
+"129",129,"Bandung","pria",39,"ya","suka","minimarket",NA,NA,NA,NA
+"130",130,"Bandung","wanita",25,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"131",131,"Jakarta","wanita",34,"tidak","tidak suka",NA,NA,NA,NA,NA
+"132",132,"Garut","pria",33,"tidak","tidak suka",NA,NA,NA,NA,NA
+"133",133,"Tasikmalaya","pria",35,"ya","suka","online","supermarket",NA,NA,NA
+"134",134,"Garut","wanita",32,"ya","sangat tidak suka","minimarket","online",NA,NA,NA
+"135",135,"Tasikmalaya","wanita",29,"tidak","sangat suka",NA,NA,NA,NA,NA
+"136",136,"Bandung","pria",30,"ya","sangat suka","minimarket","pasar",NA,NA,NA
+"137",137,"Tasikmalaya","pria",40,"ya","tidak suka","minimarket",NA,NA,NA,NA
+"138",138,"Bandung","wanita",39,"ya","sangat tidak suka","minimarket","online",NA,NA,NA
+"139",139,"Jakarta","wanita",25,"tidak","suka",NA,NA,NA,NA,NA
+"140",140,"Bandung","pria",38,"tidak","tidak suka",NA,NA,NA,NA,NA
+"141",141,"Tasikmalaya","wanita",33,"ya","suka","pasar","supermarket","minimarket",NA,NA
+"142",142,"Tasikmalaya","wanita",27,"ya","suka","pasar","warung","supermarket",NA,NA
+"143",143,"Jakarta","wanita",25,"tidak","sangat suka",NA,NA,NA,NA,NA
+"144",144,"Bandung","pria",39,"ya","sangat suka","warung","minimarket","pasar",NA,NA
+"145",145,"Jakarta","wanita",38,"ya","sangat suka","warung",NA,NA,NA,NA
+"146",146,"Tasikmalaya","wanita",38,"ya","tidak suka","minimarket","supermarket","online","pasar",NA
+"147",147,"Sukabumi","pria",34,"ya","sangat tidak suka","warung","pasar","online","minimarket",NA
+"148",148,"Tasikmalaya","pria",40,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"149",149,"Garut","wanita",33,"tidak","tidak suka",NA,NA,NA,NA,NA
+"150",150,"Sukabumi","wanita",36,"ya","suka","minimarket",NA,NA,NA,NA
+"151",151,"Sukabumi","pria",25,"ya","sangat suka","supermarket","warung",NA,NA,NA
+"152",152,"Jakarta","wanita",37,"tidak","sangat suka",NA,NA,NA,NA,NA
+"153",153,"Jakarta","wanita",28,"ya","suka","minimarket","online",NA,NA,NA
+"154",154,"Tasikmalaya","wanita",38,"ya","sangat suka","online","supermarket",NA,NA,NA
+"155",155,"Sukabumi","wanita",25,"tidak","tidak suka",NA,NA,NA,NA,NA
+"156",156,"Bandung","wanita",29,"ya","tidak suka","online",NA,NA,NA,NA
+"157",157,"Tasikmalaya","wanita",26,"tidak","tidak suka",NA,NA,NA,NA,NA
+"158",158,"Jakarta","wanita",35,"tidak","tidak suka",NA,NA,NA,NA,NA
+"159",159,"Jakarta","wanita",34,"ya","tidak suka","minimarket","supermarket",NA,NA,NA
+"160",160,"Tasikmalaya","pria",37,"ya","sangat tidak suka","online",NA,NA,NA,NA
+"161",161,"Garut","wanita",34,"ya","tidak suka","minimarket",NA,NA,NA,NA
+"162",162,"Bandung","pria",36,"tidak","tidak suka",NA,NA,NA,NA,NA
+"163",163,"Tasikmalaya","pria",38,"tidak","suka",NA,NA,NA,NA,NA
+"164",164,"Jakarta","wanita",31,"ya","tidak suka","warung","minimarket",NA,NA,NA
+"165",165,"Sukabumi","wanita",28,"ya","tidak suka","pasar",NA,NA,NA,NA
+"166",166,"Jakarta","wanita",35,"ya","suka","online","minimarket",NA,NA,NA
+"167",167,"Tasikmalaya","wanita",30,"ya","sangat suka","online","minimarket",NA,NA,NA
+"168",168,"Garut","pria",32,"tidak","tidak suka",NA,NA,NA,NA,NA
+"169",169,"Tasikmalaya","wanita",25,"ya","sangat suka","supermarket","online",NA,NA,NA
+"170",170,"Bandung","wanita",29,"ya","sangat suka","online",NA,NA,NA,NA
+"171",171,"Garut","pria",36,"ya","suka","minimarket","online","pasar","warung",NA
+"172",172,"Sukabumi","wanita",37,"ya","sangat suka","pasar",NA,NA,NA,NA
+"173",173,"Tasikmalaya","wanita",26,"ya","sangat suka","supermarket","minimarket",NA,NA,NA
+"174",174,"Jakarta","wanita",31,"ya","sangat suka","minimarket","supermarket","warung",NA,NA
+"175",175,"Tasikmalaya","pria",34,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"176",176,"Bandung","pria",34,"ya","tidak suka","warung","minimarket","online",NA,NA
+"177",177,"Tasikmalaya","wanita",35,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"178",178,"Tasikmalaya","pria",27,"tidak","sangat suka",NA,NA,NA,NA,NA
+"179",179,"Sukabumi","wanita",31,"ya","sangat suka","online","warung","pasar","supermarket",NA
+"180",180,"Sukabumi","wanita",30,"ya","sangat suka","supermarket","online","pasar",NA,NA
+"181",181,"Sukabumi","wanita",36,"tidak","suka",NA,NA,NA,NA,NA
+"182",182,"Tasikmalaya","wanita",37,"tidak","tidak suka",NA,NA,NA,NA,NA
+"183",183,"Jakarta","pria",25,"ya","tidak suka","supermarket",NA,NA,NA,NA
+"184",184,"Jakarta","pria",31,"ya","sangat suka","supermarket","minimarket",NA,NA,NA
+"185",185,"Bandung","wanita",37,"ya","sangat suka","supermarket","warung",NA,NA,NA
+"186",186,"Garut","wanita",38,"tidak","suka",NA,NA,NA,NA,NA
+"187",187,"Bandung","wanita",26,"tidak","tidak suka",NA,NA,NA,NA,NA
+"188",188,"Jakarta","pria",30,"ya","sangat tidak suka","minimarket","online","pasar","warung",NA
+"189",189,"Sukabumi","pria",26,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"190",190,"Jakarta","wanita",39,"ya","suka","online",NA,NA,NA,NA
+"191",191,"Garut","wanita",29,"tidak","sangat suka",NA,NA,NA,NA,NA
+"192",192,"Tasikmalaya","wanita",39,"ya","sangat tidak suka","minimarket",NA,NA,NA,NA
+"193",193,"Garut","wanita",39,"ya","tidak suka","online","pasar",NA,NA,NA
+"194",194,"Garut","wanita",32,"ya","suka","pasar","warung","supermarket","online",NA
+"195",195,"Garut","pria",25,"tidak","suka",NA,NA,NA,NA,NA
+"196",196,"Tasikmalaya","wanita",36,"tidak","tidak suka",NA,NA,NA,NA,NA
+"197",197,"Bandung","wanita",26,"ya","suka","online","warung",NA,NA,NA
+"198",198,"Sukabumi","wanita",27,"tidak","sangat suka",NA,NA,NA,NA,NA
+"199",199,"Garut","wanita",34,"ya","sangat tidak suka","online",NA,NA,NA,NA
+"200",200,"Bandung","pria",30,"tidak","sangat suka",NA,NA,NA,NA,NA
+"201",201,"Bandung","wanita",26,"ya","sangat suka","pasar","warung",NA,NA,NA
+"202",202,"Sukabumi","wanita",36,"ya","suka","warung",NA,NA,NA,NA
+"203",203,"Sukabumi","pria",33,"ya","sangat tidak suka","pasar","online",NA,NA,NA
+"204",204,"Sukabumi","wanita",31,"ya","tidak suka","warung",NA,NA,NA,NA
+"205",205,"Garut","wanita",30,"tidak","sangat suka",NA,NA,NA,NA,NA
+"206",206,"Tasikmalaya","wanita",32,"ya","suka","minimarket","supermarket","warung",NA,NA
+"207",207,"Garut","wanita",36,"ya","sangat suka","pasar","warung",NA,NA,NA
+"208",208,"Tasikmalaya","wanita",27,"ya","suka","online",NA,NA,NA,NA
+"209",209,"Sukabumi","pria",35,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"210",210,"Garut","wanita",34,"ya","sangat suka","online","warung","pasar",NA,NA
+"211",211,"Bandung","wanita",27,"ya","tidak suka","minimarket","pasar",NA,NA,NA
+"212",212,"Sukabumi","wanita",33,"ya","tidak suka","minimarket","online","pasar",NA,NA
+"213",213,"Bandung","wanita",29,"ya","sangat suka","supermarket","warung","pasar",NA,NA
+"214",214,"Sukabumi","wanita",39,"ya","tidak suka","warung",NA,NA,NA,NA
+"215",215,"Bandung","wanita",31,"tidak","suka",NA,NA,NA,NA,NA
+"216",216,"Sukabumi","wanita",29,"ya","sangat tidak suka","minimarket","warung","supermarket",NA,NA
+"217",217,"Garut","wanita",25,"ya","tidak suka","supermarket","pasar",NA,NA,NA
+"218",218,"Bandung","pria",26,"ya","sangat suka","warung","supermarket",NA,NA,NA
+"219",219,"Tasikmalaya","wanita",32,"tidak","suka",NA,NA,NA,NA,NA
+"220",220,"Bandung","wanita",39,"ya","sangat tidak suka","warung","supermarket","pasar","online","minimarket"
+"221",221,"Sukabumi","pria",34,"tidak","suka",NA,NA,NA,NA,NA
+"222",222,"Sukabumi","wanita",27,"ya","tidak suka","warung",NA,NA,NA,NA
+"223",223,"Sukabumi","wanita",40,"tidak","sangat suka",NA,NA,NA,NA,NA
+"224",224,"Jakarta","wanita",36,"tidak","sangat suka",NA,NA,NA,NA,NA
+"225",225,"Jakarta","wanita",32,"tidak","sangat suka",NA,NA,NA,NA,NA
+"226",226,"Garut","wanita",39,"ya","suka","online","pasar",NA,NA,NA
+"227",227,"Jakarta","pria",30,"ya","sangat suka",NA,NA,NA,NA,NA
+"228",228,"Bandung","pria",34,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"229",229,"Bandung","wanita",35,"ya","sangat tidak suka","online",NA,NA,NA,NA
+"230",230,"Tasikmalaya","pria",36,"ya","suka","minimarket","pasar","warung",NA,NA
+"231",231,"Tasikmalaya","wanita",31,"ya","sangat tidak suka","pasar","supermarket","online",NA,NA
+"232",232,"Tasikmalaya","pria",31,"ya","suka","minimarket",NA,NA,NA,NA
+"233",233,"Sukabumi","wanita",34,"ya","sangat suka","online","minimarket",NA,NA,NA
+"234",234,"Jakarta","wanita",25,"ya","tidak suka",NA,NA,NA,NA,NA
+"235",235,"Tasikmalaya","wanita",30,"ya","sangat suka","warung","pasar","supermarket","minimarket",NA
+"236",236,"Sukabumi","pria",25,"ya","tidak suka","online","supermarket",NA,NA,NA
+"237",237,"Sukabumi","wanita",29,"tidak","suka",NA,NA,NA,NA,NA
+"238",238,"Tasikmalaya","wanita",27,"ya","sangat tidak suka","warung","minimarket",NA,NA,NA
+"239",239,"Garut","wanita",27,"ya","suka","supermarket","online","warung",NA,NA
+"240",240,"Tasikmalaya","wanita",27,"ya","tidak suka","warung","pasar",NA,NA,NA
+"241",241,"Sukabumi","wanita",28,"ya","tidak suka","pasar","minimarket","online","warung","supermarket"
+"242",242,"Tasikmalaya","pria",30,"ya","suka","warung","minimarket",NA,NA,NA
+"243",243,"Sukabumi","pria",39,"ya","sangat suka","minimarket","pasar","online",NA,NA
+"244",244,"Garut","wanita",26,"ya","tidak suka","warung","minimarket",NA,NA,NA
+"245",245,"Garut","pria",38,"ya","sangat tidak suka","supermarket","minimarket","warung",NA,NA
+"246",246,"Bandung","wanita",32,"tidak","suka",NA,NA,NA,NA,NA
+"247",247,"Jakarta","wanita",32,"tidak","tidak suka",NA,NA,NA,NA,NA
+"248",248,"Sukabumi","wanita",34,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"249",249,"Sukabumi","wanita",38,"ya","tidak suka","minimarket","warung","online",NA,NA
+"250",250,"Bandung","pria",39,"ya","suka","pasar","supermarket",NA,NA,NA
+"251",251,"Bandung","wanita",38,"tidak","sangat suka",NA,NA,NA,NA,NA
+"252",252,"Jakarta","wanita",32,"ya","suka","online","supermarket",NA,NA,NA
+"253",253,"Bandung","wanita",37,"ya","suka","supermarket","warung",NA,NA,NA
+"254",254,"Garut","wanita",40,"tidak","suka",NA,NA,NA,NA,NA
+"255",255,"Bandung","wanita",37,"ya","suka","online","warung",NA,NA,NA
+"256",256,"Jakarta","wanita",35,"tidak","tidak suka",NA,NA,NA,NA,NA
+"257",257,"Sukabumi","pria",28,"tidak","suka",NA,NA,NA,NA,NA
+"258",258,"Garut","wanita",28,"ya","tidak suka","pasar",NA,NA,NA,NA
+"259",259,"Jakarta","wanita",26,"tidak","suka",NA,NA,NA,NA,NA
+"260",260,"Tasikmalaya","pria",35,"ya","tidak suka","warung","supermarket","minimarket",NA,NA
+"261",261,"Tasikmalaya","wanita",32,"ya","suka","pasar","supermarket","minimarket","warung",NA
+"262",262,"Bandung","wanita",35,"tidak","suka",NA,NA,NA,NA,NA
+"263",263,"Sukabumi","wanita",33,"ya","sangat suka","minimarket","pasar","supermarket",NA,NA
+"264",264,"Jakarta","wanita",32,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"265",265,"Tasikmalaya","wanita",26,"ya","suka","pasar","warung","minimarket",NA,NA
+"266",266,"Garut","wanita",28,"ya","sangat suka","pasar","supermarket",NA,NA,NA
+"267",267,"Garut","wanita",26,"ya","suka","pasar",NA,NA,NA,NA
+"268",268,"Tasikmalaya","wanita",38,"ya","sangat tidak suka","warung","supermarket","pasar",NA,NA
+"269",269,"Tasikmalaya","wanita",37,"ya","sangat suka","warung",NA,NA,NA,NA
+"270",270,"Bandung","wanita",38,"ya","sangat suka","minimarket",NA,NA,NA,NA
+"271",271,"Bandung","wanita",35,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"272",272,"Bandung","pria",39,"tidak","sangat suka",NA,NA,NA,NA,NA
+"273",273,"Sukabumi","pria",29,"ya","sangat tidak suka","online",NA,NA,NA,NA
+"274",274,"Tasikmalaya","wanita",26,"ya","sangat tidak suka","warung",NA,NA,NA,NA
+"275",275,"Bandung","wanita",31,"ya","sangat tidak suka","pasar","supermarket","warung",NA,NA
+"276",276,"Jakarta","wanita",32,"tidak","sangat suka",NA,NA,NA,NA,NA
+"277",277,"Tasikmalaya","pria",30,"ya","sangat suka","online","pasar","warung","supermarket",NA
+"278",278,"Tasikmalaya","wanita",32,"ya","sangat suka","online","supermarket",NA,NA,NA
+"279",279,"Bandung","wanita",31,"tidak","suka",NA,NA,NA,NA,NA
+"280",280,"Sukabumi","wanita",30,"ya","sangat tidak suka","warung","minimarket","online",NA,NA
+"281",281,"Tasikmalaya","wanita",26,"ya","tidak suka","pasar","online","minimarket",NA,NA
+"282",282,"Sukabumi","wanita",32,"ya","suka","pasar","supermarket",NA,NA,NA
+"283",283,"Sukabumi","wanita",37,"ya","sangat tidak suka","supermarket",NA,NA,NA,NA
+"284",284,"Sukabumi","wanita",34,"ya","suka","online","warung","supermarket",NA,NA
+"285",285,"Garut","pria",35,"ya","sangat tidak suka","minimarket","supermarket",NA,NA,NA
+"286",286,"Jakarta","pria",39,"ya","tidak suka","warung","online","supermarket","minimarket","pasar"
+"287",287,"Tasikmalaya","wanita",27,"ya","sangat suka",NA,NA,NA,NA,NA
+"288",288,"Sukabumi","wanita",31,"tidak","tidak suka",NA,NA,NA,NA,NA
+"289",289,"Tasikmalaya","wanita",27,"ya","sangat suka","pasar","online","supermarket",NA,NA
+"290",290,"Jakarta","pria",35,"tidak","suka",NA,NA,NA,NA,NA
+"291",291,"Jakarta","pria",32,"ya","sangat suka","pasar","online","minimarket",NA,NA
+"292",292,"Garut","wanita",40,"ya","sangat tidak suka","supermarket","online","minimarket",NA,NA
+"293",293,"Jakarta","pria",28,"tidak","tidak suka",NA,NA,NA,NA,NA
+"294",294,"Garut","wanita",38,"tidak","tidak suka",NA,NA,NA,NA,NA
+"295",295,"Sukabumi","wanita",38,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"296",296,"Jakarta","wanita",28,"ya","tidak suka","online","minimarket","pasar",NA,NA
+"297",297,"Tasikmalaya","wanita",38,"tidak","suka",NA,NA,NA,NA,NA
+"298",298,"Garut","wanita",27,"tidak","tidak suka",NA,NA,NA,NA,NA
+"299",299,"Bandung","wanita",39,"ya","sangat tidak suka","online","pasar","minimarket",NA,NA
+"300",300,"Sukabumi","wanita",40,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"301",301,"Jakarta","pria",25,"ya","sangat tidak suka","warung","supermarket","minimarket",NA,NA
+"302",302,"Garut","wanita",26,"ya","sangat suka","warung","minimarket",NA,NA,NA
+"303",303,"Tasikmalaya","pria",32,"ya","tidak suka","online","warung","supermarket",NA,NA
+"304",304,"Jakarta","wanita",31,"ya","sangat suka","online","warung","minimarket","pasar",NA
+"305",305,"Sukabumi","pria",26,"ya","suka","minimarket","supermarket","pasar",NA,NA
+"306",306,"Sukabumi","pria",38,"ya","suka","minimarket","warung","online",NA,NA
+"307",307,"Jakarta","wanita",29,"ya","suka","online","warung",NA,NA,NA
+"308",308,"Bandung","wanita",37,"ya","suka","warung","supermarket","online",NA,NA
+"309",309,"Garut","wanita",33,"ya","sangat tidak suka","online","minimarket","warung","pasar",NA
+"310",310,"Garut","wanita",27,"tidak","sangat suka",NA,NA,NA,NA,NA
+"311",311,"Sukabumi","pria",27,"tidak","tidak suka",NA,NA,NA,NA,NA
+"312",312,"Garut","wanita",36,"tidak","sangat suka",NA,NA,NA,NA,NA
+"313",313,"Jakarta","wanita",29,"ya","suka","online","warung","minimarket",NA,NA
+"314",314,"Tasikmalaya","pria",33,"ya","tidak suka","supermarket","minimarket",NA,NA,NA
+"315",315,"Tasikmalaya","wanita",28,"tidak","suka",NA,NA,NA,NA,NA
+"316",316,"Sukabumi","wanita",36,"ya","sangat suka","pasar",NA,NA,NA,NA
+"317",317,"Sukabumi","wanita",29,"tidak","suka",NA,NA,NA,NA,NA
+"318",318,"Garut","wanita",29,"ya","suka","pasar","online",NA,NA,NA
+"319",319,"Sukabumi","wanita",26,"tidak","sangat suka",NA,NA,NA,NA,NA
+"320",320,"Tasikmalaya","wanita",36,"ya","sangat tidak suka","minimarket","online",NA,NA,NA
+"321",321,"Bandung","wanita",39,"ya","sangat suka","minimarket","pasar",NA,NA,NA
+"322",322,"Bandung","pria",31,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"323",323,"Tasikmalaya","wanita",28,"ya","sangat tidak suka","supermarket","warung","pasar","minimarket",NA
+"324",324,"Bandung","wanita",37,"tidak","tidak suka",NA,NA,NA,NA,NA
+"325",325,"Sukabumi","wanita",37,"tidak","tidak suka",NA,NA,NA,NA,NA
+"326",326,"Garut","wanita",33,"ya","suka","supermarket",NA,NA,NA,NA
+"327",327,"Garut","wanita",40,"ya","suka","warung","minimarket",NA,NA,NA
+"328",328,"Sukabumi","wanita",31,"ya","sangat tidak suka","warung",NA,NA,NA,NA
+"329",329,"Bandung","pria",32,"ya","suka","minimarket",NA,NA,NA,NA
+"330",330,"Garut","pria",27,"tidak","sangat suka",NA,NA,NA,NA,NA
+"331",331,"Jakarta","pria",35,"ya","tidak suka","online","pasar","minimarket",NA,NA
+"332",332,"Sukabumi","wanita",35,"ya","sangat tidak suka","minimarket","warung","online",NA,NA
+"333",333,"Jakarta","wanita",40,"ya","sangat suka","warung",NA,NA,NA,NA
+"334",334,"Tasikmalaya","wanita",33,"ya","tidak suka","pasar",NA,NA,NA,NA
+"335",335,"Sukabumi","wanita",32,"ya","suka","online","pasar","minimarket",NA,NA
+"336",336,"Tasikmalaya","wanita",25,"ya","sangat suka","warung","minimarket","online",NA,NA
+"337",337,"Bandung","wanita",36,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"338",338,"Tasikmalaya","wanita",34,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"339",339,"Tasikmalaya","pria",39,"ya","tidak suka","minimarket","online",NA,NA,NA
+"340",340,"Jakarta","wanita",26,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"341",341,"Garut","pria",30,"ya","tidak suka","online",NA,NA,NA,NA
+"342",342,"Garut","wanita",35,"ya","tidak suka","warung","minimarket","online","pasar",NA
+"343",343,"Tasikmalaya","wanita",29,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"344",344,"Garut","wanita",29,"ya","sangat tidak suka","minimarket","pasar","warung","supermarket",NA
+"345",345,"Bandung","wanita",25,"ya","tidak suka","minimarket","warung","online",NA,NA
+"346",346,"Jakarta","wanita",29,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"347",347,"Jakarta","pria",32,"ya","sangat suka","supermarket","minimarket",NA,NA,NA
+"348",348,"Garut","pria",39,"ya","suka","supermarket",NA,NA,NA,NA
+"349",349,"Tasikmalaya","wanita",34,"ya","sangat suka","supermarket","online","warung",NA,NA
+"350",350,"Sukabumi","wanita",32,"tidak","suka",NA,NA,NA,NA,NA
+"351",351,"Tasikmalaya","wanita",33,"tidak","tidak suka",NA,NA,NA,NA,NA
+"352",352,"Bandung","wanita",36,"tidak","sangat suka",NA,NA,NA,NA,NA
+"353",353,"Tasikmalaya","wanita",37,"tidak","suka",NA,NA,NA,NA,NA
+"354",354,"Sukabumi","pria",32,"ya","tidak suka","supermarket","minimarket",NA,NA,NA
+"355",355,"Garut","wanita",34,"ya","sangat suka","pasar",NA,NA,NA,NA
+"356",356,"Garut","wanita",27,"ya","sangat tidak suka","pasar",NA,NA,NA,NA
+"357",357,"Garut","wanita",40,"ya","tidak suka","minimarket","online",NA,NA,NA
+"358",358,"Garut","wanita",26,"tidak","sangat suka",NA,NA,NA,NA,NA
+"359",359,"Tasikmalaya","pria",39,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"360",360,"Tasikmalaya","wanita",36,"ya","sangat suka","warung","minimarket","pasar","supermarket",NA
+"361",361,"Bandung","wanita",32,"tidak","suka",NA,NA,NA,NA,NA
+"362",362,"Garut","wanita",36,"ya","tidak suka","pasar","minimarket",NA,NA,NA
+"363",363,"Bandung","wanita",25,"ya","sangat tidak suka","pasar",NA,NA,NA,NA
+"364",364,"Bandung","wanita",34,"ya","tidak suka","online","pasar","supermarket",NA,NA
+"365",365,"Garut","wanita",29,"ya","tidak suka","pasar","online","minimarket","warung",NA
+"366",366,"Garut","pria",32,"tidak","sangat suka",NA,NA,NA,NA,NA
+"367",367,"Jakarta","wanita",39,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"368",368,"Jakarta","pria",33,"ya","sangat suka","supermarket","minimarket",NA,NA,NA
+"369",369,"Sukabumi","pria",26,"ya","suka","minimarket",NA,NA,NA,NA
+"370",370,"Bandung","wanita",39,"ya","sangat tidak suka","pasar","warung","online",NA,NA
+"371",371,"Jakarta","wanita",26,"ya","sangat tidak suka","minimarket","pasar","supermarket","online","warung"
+"372",372,"Garut","wanita",29,"ya","sangat tidak suka","minimarket","supermarket","pasar",NA,NA
+"373",373,"Garut","wanita",40,"ya","suka",NA,NA,NA,NA,NA
+"374",374,"Tasikmalaya","wanita",27,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"375",375,"Sukabumi","wanita",29,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"376",376,"Sukabumi","wanita",27,"ya","sangat suka","online","pasar",NA,NA,NA
+"377",377,"Bandung","wanita",40,"ya","suka","warung","pasar","minimarket",NA,NA
+"378",378,"Jakarta","pria",31,"ya","sangat suka","minimarket","online","warung","supermarket",NA
+"379",379,"Bandung","wanita",28,"ya","suka","supermarket","pasar","online","warung",NA
+"380",380,"Sukabumi","pria",33,"ya","sangat tidak suka","supermarket","pasar",NA,NA,NA
+"381",381,"Garut","pria",37,"tidak","tidak suka",NA,NA,NA,NA,NA
+"382",382,"Tasikmalaya","wanita",32,"tidak","suka",NA,NA,NA,NA,NA
+"383",383,"Bandung","wanita",37,"tidak","sangat suka",NA,NA,NA,NA,NA
+"384",384,"Tasikmalaya","pria",33,"ya","sangat suka","supermarket","pasar","online","minimarket",NA
+"385",385,"Bandung","wanita",32,"tidak","tidak suka",NA,NA,NA,NA,NA
+"386",386,"Jakarta","wanita",34,"ya","sangat suka","warung","minimarket","pasar",NA,NA
+"387",387,"Bandung","pria",25,"ya","sangat tidak suka","supermarket","pasar","minimarket","online",NA
+"388",388,"Jakarta","pria",38,"ya","suka","online","warung","minimarket",NA,NA
+"389",389,"Bandung","wanita",35,"ya","tidak suka",NA,NA,NA,NA,NA
+"390",390,"Garut","wanita",40,"ya","suka","warung","pasar","minimarket",NA,NA
+"391",391,"Jakarta","wanita",34,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"392",392,"Garut","pria",31,"ya","suka","minimarket","online","warung",NA,NA
+"393",393,"Garut","pria",36,"tidak","tidak suka",NA,NA,NA,NA,NA
+"394",394,"Jakarta","wanita",35,"tidak","sangat suka",NA,NA,NA,NA,NA
+"395",395,"Jakarta","pria",29,"ya","suka","online","minimarket",NA,NA,NA
+"396",396,"Sukabumi","wanita",28,"ya","tidak suka","warung",NA,NA,NA,NA
+"397",397,"Tasikmalaya","wanita",39,"ya","sangat tidak suka","pasar",NA,NA,NA,NA
+"398",398,"Garut","wanita",26,"ya","tidak suka",NA,NA,NA,NA,NA
+"399",399,"Sukabumi","wanita",38,"tidak","suka",NA,NA,NA,NA,NA
+"400",400,"Tasikmalaya","wanita",34,"ya","sangat suka","supermarket","online",NA,NA,NA
+"401",401,"Sukabumi","wanita",35,"ya","tidak suka","online","warung","minimarket",NA,NA
+"402",402,"Tasikmalaya","pria",31,"ya","tidak suka","supermarket",NA,NA,NA,NA
+"403",403,"Bandung","pria",30,"ya","sangat suka","pasar",NA,NA,NA,NA
+"404",404,"Jakarta","wanita",36,"ya","sangat tidak suka","pasar","supermarket","minimarket","warung","online"
+"405",405,"Garut","wanita",26,"ya","tidak suka",NA,NA,NA,NA,NA
+"406",406,"Bandung","pria",26,"ya","suka","pasar","warung",NA,NA,NA
+"407",407,"Jakarta","pria",38,"tidak","suka",NA,NA,NA,NA,NA
+"408",408,"Garut","wanita",31,"ya","tidak suka","online",NA,NA,NA,NA
+"409",409,"Sukabumi","wanita",38,"ya","suka","warung","supermarket",NA,NA,NA
+"410",410,"Sukabumi","pria",39,"ya","tidak suka","warung",NA,NA,NA,NA
+"411",411,"Bandung","wanita",35,"ya","sangat tidak suka","warung","online","pasar","minimarket",NA
+"412",412,"Sukabumi","wanita",25,"ya","sangat suka","warung","pasar",NA,NA,NA
+"413",413,"Jakarta","pria",25,"ya","sangat suka","online","minimarket",NA,NA,NA
+"414",414,"Tasikmalaya","pria",30,"ya","sangat tidak suka","online","minimarket","warung",NA,NA
+"415",415,"Garut","wanita",38,"ya","suka","warung","online","minimarket",NA,NA
+"416",416,"Tasikmalaya","wanita",39,"tidak","suka",NA,NA,NA,NA,NA
+"417",417,"Garut","wanita",40,"ya","tidak suka","warung","pasar",NA,NA,NA
+"418",418,"Tasikmalaya","wanita",32,"ya","sangat suka","online","pasar",NA,NA,NA
+"419",419,"Bandung","pria",30,"ya","suka","warung",NA,NA,NA,NA
+"420",420,"Bandung","wanita",28,"ya","sangat tidak suka","warung","online",NA,NA,NA
+"421",421,"Bandung","pria",30,"ya","sangat suka","online",NA,NA,NA,NA
+"422",422,"Jakarta","pria",34,"ya","sangat suka","online",NA,NA,NA,NA
+"423",423,"Tasikmalaya","wanita",28,"ya","suka","minimarket",NA,NA,NA,NA
+"424",424,"Sukabumi","pria",33,"ya","suka","online","pasar",NA,NA,NA
+"425",425,"Garut","pria",31,"ya","suka","pasar","minimarket",NA,NA,NA
+"426",426,"Garut","wanita",27,"tidak","sangat suka",NA,NA,NA,NA,NA
+"427",427,"Garut","pria",40,"ya","sangat tidak suka","pasar","minimarket",NA,NA,NA
+"428",428,"Bandung","pria",25,"ya","sangat tidak suka","online",NA,NA,NA,NA
+"429",429,"Jakarta","pria",38,"tidak","tidak suka",NA,NA,NA,NA,NA
+"430",430,"Garut","wanita",40,"ya","suka","supermarket","online","pasar",NA,NA
+"431",431,"Tasikmalaya","pria",38,"tidak","tidak suka",NA,NA,NA,NA,NA
+"432",432,"Tasikmalaya","wanita",36,"ya","sangat tidak suka","pasar","minimarket",NA,NA,NA
+"433",433,"Tasikmalaya","wanita",29,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"434",434,"Tasikmalaya","wanita",31,"ya","suka","pasar",NA,NA,NA,NA
+"435",435,"Tasikmalaya","wanita",40,"ya","sangat suka","online","minimarket",NA,NA,NA
+"436",436,"Jakarta","wanita",31,"ya","sangat tidak suka","pasar","online",NA,NA,NA
+"437",437,"Bandung","pria",39,"ya","sangat tidak suka","pasar","online",NA,NA,NA
+"438",438,"Garut","wanita",30,"tidak","suka",NA,NA,NA,NA,NA
+"439",439,"Sukabumi","wanita",25,"ya","tidak suka","online","pasar","minimarket","warung",NA
+"440",440,"Bandung","wanita",39,"ya","suka","warung","supermarket","minimarket",NA,NA
+"441",441,"Jakarta","wanita",34,"tidak","suka",NA,NA,NA,NA,NA
+"442",442,"Bandung","wanita",38,"ya","tidak suka","minimarket","supermarket","online","pasar",NA
+"443",443,"Tasikmalaya","pria",30,"ya","sangat tidak suka","pasar","supermarket","warung",NA,NA
+"444",444,"Jakarta","wanita",29,"ya","sangat tidak suka","pasar",NA,NA,NA,NA
+"445",445,"Jakarta","pria",27,"ya","tidak suka","warung",NA,NA,NA,NA
+"446",446,"Garut","wanita",25,"tidak","suka",NA,NA,NA,NA,NA
+"447",447,"Tasikmalaya","pria",27,"ya","suka",NA,NA,NA,NA,NA
+"448",448,"Garut","wanita",27,"ya","sangat tidak suka","online",NA,NA,NA,NA
+"449",449,"Jakarta","pria",29,"ya","suka","pasar",NA,NA,NA,NA
+"450",450,"Bandung","pria",31,"ya","suka","pasar",NA,NA,NA,NA
+"451",451,"Sukabumi","pria",38,"ya","sangat tidak suka","supermarket",NA,NA,NA,NA
+"452",452,"Jakarta","wanita",36,"ya","tidak suka","minimarket","online",NA,NA,NA
+"453",453,"Garut","pria",31,"ya","sangat suka","supermarket","minimarket","pasar",NA,NA
+"454",454,"Sukabumi","pria",35,"tidak","sangat suka",NA,NA,NA,NA,NA
+"455",455,"Bandung","pria",33,"tidak","suka",NA,NA,NA,NA,NA
+"456",456,"Jakarta","wanita",27,"ya","suka","online","warung","pasar",NA,NA
+"457",457,"Garut","wanita",36,"ya","tidak suka","pasar","online",NA,NA,NA
+"458",458,"Jakarta","wanita",35,"ya","suka","supermarket","pasar",NA,NA,NA
+"459",459,"Garut","wanita",32,"tidak","sangat suka",NA,NA,NA,NA,NA
+"460",460,"Garut","pria",26,"ya","tidak suka","warung","minimarket",NA,NA,NA
+"461",461,"Sukabumi","wanita",32,"ya","sangat tidak suka","minimarket","supermarket","warung","pasar",NA
+"462",462,"Garut","wanita",38,"ya","tidak suka","minimarket","pasar",NA,NA,NA
+"463",463,"Tasikmalaya","pria",26,"ya","sangat tidak suka","minimarket","warung","supermarket",NA,NA
+"464",464,"Garut","wanita",40,"ya","suka","minimarket","supermarket",NA,NA,NA
+"465",465,"Bandung","wanita",26,"ya","suka","online","warung","pasar","supermarket",NA
+"466",466,"Bandung","pria",33,"ya","sangat tidak suka","warung","online","minimarket",NA,NA
+"467",467,"Garut","wanita",40,"ya","tidak suka","minimarket","supermarket",NA,NA,NA
+"468",468,"Bandung","wanita",36,"ya","sangat suka","warung","supermarket",NA,NA,NA
+"469",469,"Sukabumi","wanita",40,"tidak","suka",NA,NA,NA,NA,NA
+"470",470,"Garut","pria",29,"ya","tidak suka","minimarket","pasar","supermarket",NA,NA
+"471",471,"Jakarta","pria",40,"ya","sangat tidak suka","minimarket","warung",NA,NA,NA
+"472",472,"Sukabumi","wanita",37,"ya","sangat tidak suka","supermarket","online","pasar","warung",NA
+"473",473,"Garut","pria",31,"ya","tidak suka","minimarket","warung",NA,NA,NA
+"474",474,"Jakarta","wanita",35,"ya","sangat suka","minimarket","online",NA,NA,NA
+"475",475,"Jakarta","pria",35,"ya","suka","pasar","supermarket","warung","minimarket","online"
+"476",476,"Bandung","wanita",32,"tidak","tidak suka",NA,NA,NA,NA,NA
+"477",477,"Garut","wanita",36,"ya","tidak suka","minimarket",NA,NA,NA,NA
+"478",478,"Bandung","wanita",36,"ya","tidak suka","supermarket","online",NA,NA,NA
+"479",479,"Tasikmalaya","wanita",36,"ya","sangat tidak suka","warung",NA,NA,NA,NA
+"480",480,"Garut","wanita",28,"ya","tidak suka","supermarket","pasar","online",NA,NA
+"481",481,"Jakarta","pria",26,"tidak","sangat suka",NA,NA,NA,NA,NA
+"482",482,"Garut","wanita",36,"ya","sangat suka","supermarket","online","minimarket",NA,NA
+"483",483,"Jakarta","pria",39,"tidak","sangat suka",NA,NA,NA,NA,NA
+"484",484,"Tasikmalaya","wanita",29,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"485",485,"Tasikmalaya","pria",26,"ya","tidak suka","supermarket",NA,NA,NA,NA
+"486",486,"Jakarta","wanita",34,"ya","tidak suka","supermarket","warung","pasar",NA,NA
+"487",487,"Tasikmalaya","wanita",31,"tidak","tidak suka",NA,NA,NA,NA,NA
+"488",488,"Sukabumi","wanita",27,"ya","tidak suka","warung",NA,NA,NA,NA
+"489",489,"Bandung","wanita",35,"tidak","suka",NA,NA,NA,NA,NA
+"490",490,"Tasikmalaya","wanita",32,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"491",491,"Garut","wanita",39,"ya","sangat tidak suka","pasar",NA,NA,NA,NA
+"492",492,"Tasikmalaya","wanita",27,"ya","sangat suka","pasar","minimarket",NA,NA,NA
+"493",493,"Garut","wanita",35,"tidak","sangat suka",NA,NA,NA,NA,NA
+"494",494,"Bandung","wanita",34,"tidak","tidak suka",NA,NA,NA,NA,NA
+"495",495,"Bandung","pria",35,"tidak","suka",NA,NA,NA,NA,NA
+"496",496,"Garut","wanita",37,"ya","sangat suka","minimarket",NA,NA,NA,NA
+"497",497,"Bandung","wanita",34,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"498",498,"Tasikmalaya","wanita",36,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"499",499,"Bandung","pria",27,"ya","sangat suka","warung","minimarket",NA,NA,NA
+"500",500,"Tasikmalaya","wanita",37,"ya","sangat tidak suka",NA,NA,NA,NA,NA
+"501",501,"Jakarta","pria",26,"tidak","sangat suka",NA,NA,NA,NA,NA
+"502",502,"Sukabumi","pria",29,"tidak","tidak suka",NA,NA,NA,NA,NA
+"503",503,"Bandung","pria",28,"ya","suka","pasar","online","supermarket",NA,NA
+"504",504,"Bandung","pria",37,"ya","tidak suka","pasar",NA,NA,NA,NA
+"505",505,"Tasikmalaya","wanita",35,"ya","tidak suka","online",NA,NA,NA,NA
+"506",506,"Garut","wanita",37,"ya","sangat suka","online","pasar","supermarket",NA,NA
+"507",507,"Jakarta","wanita",31,"ya","suka","warung","minimarket",NA,NA,NA
+"508",508,"Jakarta","wanita",39,"ya","tidak suka","supermarket","pasar","online","warung",NA
+"509",509,"Garut","pria",30,"tidak","tidak suka",NA,NA,NA,NA,NA
+"510",510,"Tasikmalaya","pria",28,"ya","suka","pasar","online",NA,NA,NA
+"511",511,"Bandung","pria",31,"tidak","sangat suka",NA,NA,NA,NA,NA
+"512",512,"Jakarta","wanita",35,"ya","tidak suka","minimarket",NA,NA,NA,NA
+"513",513,"Sukabumi","wanita",27,"tidak","sangat suka",NA,NA,NA,NA,NA
+"514",514,"Bandung","wanita",36,"tidak","suka",NA,NA,NA,NA,NA
+"515",515,"Sukabumi","pria",39,"ya","suka","warung","pasar",NA,NA,NA
+"516",516,"Tasikmalaya","wanita",34,"ya","suka","minimarket",NA,NA,NA,NA
+"517",517,"Bandung","pria",40,"ya","tidak suka","minimarket","online",NA,NA,NA
+"518",518,"Garut","wanita",33,"tidak","sangat suka",NA,NA,NA,NA,NA
+"519",519,"Garut","pria",26,"ya","sangat tidak suka","pasar","warung",NA,NA,NA
+"520",520,"Bandung","pria",32,"ya","tidak suka","online","supermarket",NA,NA,NA
+"521",521,"Jakarta","wanita",27,"ya","sangat suka","supermarket",NA,NA,NA,NA
+"522",522,"Jakarta","pria",32,"ya","sangat tidak suka","pasar","online",NA,NA,NA
+"523",523,"Bandung","pria",34,"ya","suka","supermarket","minimarket","warung",NA,NA
+"524",524,"Sukabumi","wanita",38,"tidak","sangat suka",NA,NA,NA,NA,NA
+"525",525,"Bandung","wanita",32,"ya","tidak suka","pasar","warung","online",NA,NA
+"526",526,"Jakarta","wanita",36,"ya","tidak suka","minimarket",NA,NA,NA,NA
+"527",527,"Jakarta","wanita",33,"ya","sangat tidak suka","online","minimarket","supermarket","pasar",NA
+"528",528,"Garut","wanita",33,"ya","sangat tidak suka","online","supermarket",NA,NA,NA
+"529",529,"Bandung","pria",38,"ya","sangat tidak suka","online","pasar","warung",NA,NA
+"530",530,"Garut","wanita",31,"tidak","suka",NA,NA,NA,NA,NA
+"531",531,"Jakarta","wanita",29,"ya","suka","supermarket","minimarket","online",NA,NA
+"532",532,"Bandung","wanita",35,"ya","sangat tidak suka","minimarket","supermarket","warung","online",NA
+"533",533,"Garut","wanita",31,"tidak","tidak suka",NA,NA,NA,NA,NA
+"534",534,"Jakarta","wanita",28,"ya","sangat suka","pasar","warung",NA,NA,NA
+"535",535,"Sukabumi","pria",35,"ya","suka","online","supermarket","warung",NA,NA
+"536",536,"Sukabumi","wanita",40,"ya","suka","pasar",NA,NA,NA,NA
+"537",537,"Bandung","wanita",37,"ya","tidak suka","minimarket","online",NA,NA,NA
+"538",538,"Tasikmalaya","wanita",25,"ya","suka",NA,NA,NA,NA,NA
+"539",539,"Garut","wanita",26,"ya","sangat suka","online",NA,NA,NA,NA
+"540",540,"Tasikmalaya","wanita",28,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"541",541,"Sukabumi","wanita",28,"ya","tidak suka","online","minimarket","supermarket","warung","pasar"
+"542",542,"Jakarta","wanita",30,"ya","sangat tidak suka","pasar","supermarket","online",NA,NA
+"543",543,"Jakarta","wanita",30,"ya","suka","supermarket","minimarket","pasar",NA,NA
+"544",544,"Tasikmalaya","wanita",25,"tidak","tidak suka",NA,NA,NA,NA,NA
+"545",545,"Jakarta","pria",31,"ya","sangat tidak suka","warung","online",NA,NA,NA
+"546",546,"Tasikmalaya","pria",32,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"547",547,"Garut","pria",37,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"548",548,"Jakarta","wanita",38,"ya","suka","online","supermarket",NA,NA,NA
+"549",549,"Sukabumi","wanita",37,"ya","tidak suka","pasar","online",NA,NA,NA
+"550",550,"Tasikmalaya","pria",34,"tidak","sangat suka",NA,NA,NA,NA,NA
+"551",551,"Jakarta","pria",35,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"552",552,"Tasikmalaya","wanita",35,"ya","tidak suka","supermarket","warung","online","minimarket",NA
+"553",553,"Garut","pria",26,"ya","sangat tidak suka","online","minimarket","pasar","warung",NA
+"554",554,"Garut","pria",25,"ya","suka","online",NA,NA,NA,NA
+"555",555,"Tasikmalaya","pria",26,"tidak","sangat suka",NA,NA,NA,NA,NA
+"556",556,"Bandung","wanita",25,"tidak","suka",NA,NA,NA,NA,NA
+"557",557,"Jakarta","wanita",25,"tidak","sangat suka",NA,NA,NA,NA,NA
+"558",558,"Tasikmalaya","wanita",35,"ya","suka","online","supermarket",NA,NA,NA
+"559",559,"Bandung","wanita",29,"ya","sangat suka","pasar","warung",NA,NA,NA
+"560",560,"Sukabumi","wanita",27,"ya","sangat tidak suka","supermarket","warung","online",NA,NA
+"561",561,"Jakarta","wanita",28,"ya","tidak suka","minimarket","online","warung","supermarket",NA
+"562",562,"Garut","wanita",26,"ya","sangat tidak suka","pasar",NA,NA,NA,NA
+"563",563,"Bandung","wanita",39,"ya","sangat suka","pasar","supermarket","minimarket",NA,NA
+"564",564,"Tasikmalaya","wanita",32,"ya","suka","supermarket",NA,NA,NA,NA
+"565",565,"Tasikmalaya","pria",26,"tidak","tidak suka",NA,NA,NA,NA,NA
+"566",566,"Jakarta","wanita",28,"ya","tidak suka","online","supermarket","pasar","warung",NA
+"567",567,"Bandung","wanita",38,"ya","tidak suka","minimarket","pasar","supermarket",NA,NA
+"568",568,"Garut","wanita",31,"tidak","suka",NA,NA,NA,NA,NA
+"569",569,"Jakarta","wanita",33,"ya","tidak suka","warung","pasar","online",NA,NA
+"570",570,"Bandung","wanita",26,"ya","suka","minimarket","online",NA,NA,NA
+"571",571,"Jakarta","wanita",36,"ya","sangat tidak suka","warung","pasar","minimarket","supermarket",NA
+"572",572,"Garut","wanita",32,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"573",573,"Tasikmalaya","pria",26,"tidak","tidak suka",NA,NA,NA,NA,NA
+"574",574,"Bandung","wanita",35,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"575",575,"Sukabumi","pria",35,"ya","sangat suka","pasar","minimarket",NA,NA,NA
+"576",576,"Jakarta","pria",28,"tidak","sangat suka",NA,NA,NA,NA,NA
+"577",577,"Bandung","wanita",37,"ya","tidak suka","pasar","supermarket","online",NA,NA
+"578",578,"Bandung","wanita",35,"ya","tidak suka","minimarket","warung","pasar","supermarket",NA
+"579",579,"Sukabumi","wanita",35,"ya","sangat suka",NA,NA,NA,NA,NA
+"580",580,"Jakarta","pria",33,"tidak","sangat suka",NA,NA,NA,NA,NA
+"581",581,"Sukabumi","wanita",28,"ya","sangat suka","supermarket","warung","minimarket",NA,NA
+"582",582,"Bandung","wanita",36,"ya","sangat tidak suka","minimarket","warung",NA,NA,NA
+"583",583,"Bandung","pria",30,"ya","tidak suka","minimarket","warung","supermarket","pasar",NA
+"584",584,"Jakarta","pria",37,"ya","sangat suka",NA,NA,NA,NA,NA
+"585",585,"Garut","wanita",26,"tidak","sangat suka",NA,NA,NA,NA,NA
+"586",586,"Sukabumi","wanita",40,"ya","tidak suka","minimarket","warung","online",NA,NA
+"587",587,"Sukabumi","wanita",35,"ya","tidak suka","minimarket","online","pasar",NA,NA
+"588",588,"Tasikmalaya","wanita",27,"ya","suka","pasar",NA,NA,NA,NA
+"589",589,"Tasikmalaya","wanita",32,"ya","sangat tidak suka","pasar","supermarket","online","warung",NA
+"590",590,"Bandung","pria",30,"ya","tidak suka","online",NA,NA,NA,NA
+"591",591,"Jakarta","wanita",25,"tidak","sangat suka",NA,NA,NA,NA,NA
+"592",592,"Tasikmalaya","wanita",32,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"593",593,"Sukabumi","wanita",27,"ya","suka","supermarket","warung",NA,NA,NA
+"594",594,"Tasikmalaya","wanita",28,"ya","sangat tidak suka","minimarket","warung",NA,NA,NA
+"595",595,"Bandung","wanita",35,"ya","sangat tidak suka","minimarket","warung","pasar","supermarket",NA
+"596",596,"Sukabumi","pria",27,"ya","tidak suka","supermarket","minimarket",NA,NA,NA
+"597",597,"Bandung","wanita",38,"ya","tidak suka","supermarket","pasar",NA,NA,NA
+"598",598,"Tasikmalaya","wanita",38,"tidak","tidak suka",NA,NA,NA,NA,NA
+"599",599,"Sukabumi","wanita",38,"ya","sangat tidak suka","supermarket",NA,NA,NA,NA
+"600",600,"Sukabumi","wanita",38,"ya","sangat suka","supermarket","online",NA,NA,NA
+"601",601,"Tasikmalaya","wanita",30,"tidak","sangat suka",NA,NA,NA,NA,NA
+"602",602,"Sukabumi","wanita",27,"ya","tidak suka","pasar","warung","minimarket",NA,NA
+"603",603,"Tasikmalaya","pria",31,"tidak","tidak suka",NA,NA,NA,NA,NA
+"604",604,"Tasikmalaya","wanita",38,"ya","tidak suka","minimarket","online","warung",NA,NA
+"605",605,"Bandung","wanita",31,"ya","sangat suka","warung","minimarket","pasar",NA,NA
+"606",606,"Garut","wanita",26,"ya","sangat tidak suka","supermarket","online",NA,NA,NA
+"607",607,"Jakarta","wanita",34,"ya","suka","minimarket",NA,NA,NA,NA
+"608",608,"Jakarta","wanita",38,"tidak","sangat suka",NA,NA,NA,NA,NA
+"609",609,"Sukabumi","wanita",34,"tidak","sangat suka",NA,NA,NA,NA,NA
+"610",610,"Tasikmalaya","pria",39,"tidak","sangat suka",NA,NA,NA,NA,NA
+"611",611,"Sukabumi","pria",35,"tidak","sangat suka",NA,NA,NA,NA,NA
+"612",612,"Sukabumi","wanita",39,"ya","suka","supermarket",NA,NA,NA,NA
+"613",613,"Sukabumi","wanita",28,"ya","sangat tidak suka","pasar","minimarket",NA,NA,NA
+"614",614,"Tasikmalaya","wanita",32,"ya","suka","minimarket","warung","supermarket","pasar",NA
+"615",615,"Garut","pria",40,"ya","sangat tidak suka","warung","supermarket","online",NA,NA
+"616",616,"Bandung","wanita",38,"ya","tidak suka","pasar",NA,NA,NA,NA
+"617",617,"Jakarta","wanita",36,"ya","sangat suka","minimarket","online",NA,NA,NA
+"618",618,"Sukabumi","wanita",39,"ya","sangat tidak suka","pasar","online","warung",NA,NA
+"619",619,"Garut","pria",32,"tidak","tidak suka",NA,NA,NA,NA,NA
+"620",620,"Bandung","wanita",27,"ya","sangat suka","pasar","minimarket","warung","supermarket",NA
+"621",621,"Garut","pria",37,"tidak","suka",NA,NA,NA,NA,NA
+"622",622,"Sukabumi","wanita",36,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"623",623,"Tasikmalaya","wanita",28,"tidak","sangat suka",NA,NA,NA,NA,NA
+"624",624,"Tasikmalaya","wanita",33,"ya","tidak suka","online","pasar",NA,NA,NA
+"625",625,"Jakarta","wanita",39,"ya","sangat suka","warung","pasar",NA,NA,NA
+"626",626,"Tasikmalaya","wanita",31,"ya","suka","warung","supermarket",NA,NA,NA
+"627",627,"Jakarta","wanita",26,"ya","tidak suka","online",NA,NA,NA,NA
+"628",628,"Garut","pria",35,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"629",629,"Bandung","wanita",32,"ya","tidak suka","minimarket","online","supermarket",NA,NA
+"630",630,"Tasikmalaya","wanita",38,"ya","tidak suka","minimarket","online",NA,NA,NA
+"631",631,"Tasikmalaya","pria",30,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"632",632,"Garut","wanita",27,"ya","suka","online",NA,NA,NA,NA
+"633",633,"Tasikmalaya","wanita",25,"ya","sangat tidak suka","warung",NA,NA,NA,NA
+"634",634,"Garut","wanita",32,"ya","suka","supermarket","warung","minimarket",NA,NA
+"635",635,"Bandung","pria",27,"ya","sangat suka","minimarket","supermarket","online",NA,NA
+"636",636,"Sukabumi","wanita",38,"ya","sangat suka","warung","supermarket","online",NA,NA
+"637",637,"Jakarta","wanita",32,"ya","tidak suka","minimarket","online","warung","pasar","supermarket"
+"638",638,"Bandung","pria",36,"ya","sangat tidak suka","minimarket","warung",NA,NA,NA
+"639",639,"Jakarta","wanita",30,"ya","sangat tidak suka","online","supermarket","warung",NA,NA
+"640",640,"Jakarta","pria",40,"tidak","suka",NA,NA,NA,NA,NA
+"641",641,"Tasikmalaya","wanita",40,"ya","suka","online",NA,NA,NA,NA
+"642",642,"Jakarta","wanita",38,"ya","suka","supermarket",NA,NA,NA,NA
+"643",643,"Jakarta","wanita",27,"ya","suka","warung","supermarket","pasar",NA,NA
+"644",644,"Jakarta","pria",38,"tidak","tidak suka",NA,NA,NA,NA,NA
+"645",645,"Sukabumi","wanita",40,"ya","sangat tidak suka","warung",NA,NA,NA,NA
+"646",646,"Bandung","wanita",29,"ya","suka","minimarket",NA,NA,NA,NA
+"647",647,"Tasikmalaya","wanita",35,"tidak","tidak suka",NA,NA,NA,NA,NA
+"648",648,"Sukabumi","wanita",25,"ya","tidak suka","minimarket","online","warung",NA,NA
+"649",649,"Sukabumi","wanita",38,"ya","sangat tidak suka","online","supermarket","warung",NA,NA
+"650",650,"Tasikmalaya","pria",39,"ya","tidak suka","minimarket","supermarket",NA,NA,NA
+"651",651,"Bandung","wanita",38,"ya","suka","minimarket",NA,NA,NA,NA
+"652",652,"Bandung","pria",26,"ya","tidak suka","warung","minimarket","supermarket",NA,NA
+"653",653,"Garut","wanita",32,"ya","tidak suka","pasar","online","warung",NA,NA
+"654",654,"Bandung","pria",25,"ya","tidak suka","online","minimarket",NA,NA,NA
+"655",655,"Garut","pria",27,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"656",656,"Bandung","pria",25,"ya","sangat suka","warung","minimarket","supermarket","pasar","online"
+"657",657,"Garut","wanita",26,"ya","suka","warung","online","minimarket",NA,NA
+"658",658,"Garut","wanita",29,"ya","tidak suka","minimarket","supermarket","warung",NA,NA
+"659",659,"Bandung","wanita",36,"ya","sangat suka","supermarket","pasar","minimarket",NA,NA
+"660",660,"Sukabumi","wanita",33,"ya","suka","minimarket",NA,NA,NA,NA
+"661",661,"Tasikmalaya","wanita",26,"ya","tidak suka","minimarket","online","supermarket",NA,NA
+"662",662,"Tasikmalaya","wanita",35,"ya","tidak suka","supermarket","online",NA,NA,NA
+"663",663,"Sukabumi","wanita",37,"tidak","suka",NA,NA,NA,NA,NA
+"664",664,"Bandung","wanita",37,"ya","sangat tidak suka","pasar",NA,NA,NA,NA
+"665",665,"Bandung","pria",31,"tidak","suka",NA,NA,NA,NA,NA
+"666",666,"Jakarta","wanita",36,"ya","sangat suka","minimarket",NA,NA,NA,NA
+"667",667,"Tasikmalaya","wanita",29,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"668",668,"Jakarta","pria",32,"ya","suka","online","minimarket",NA,NA,NA
+"669",669,"Tasikmalaya","wanita",32,"tidak","suka",NA,NA,NA,NA,NA
+"670",670,"Jakarta","wanita",30,"ya","sangat tidak suka","warung","minimarket","pasar","online",NA
+"671",671,"Jakarta","wanita",28,"ya","suka","supermarket","pasar",NA,NA,NA
+"672",672,"Jakarta","wanita",26,"ya","tidak suka","supermarket",NA,NA,NA,NA
+"673",673,"Sukabumi","pria",38,"ya","sangat tidak suka","warung","online",NA,NA,NA
+"674",674,"Jakarta","wanita",31,"ya","sangat suka","supermarket","online",NA,NA,NA
+"675",675,"Bandung","wanita",27,"ya","tidak suka","warung",NA,NA,NA,NA
+"676",676,"Garut","pria",34,"tidak","sangat suka",NA,NA,NA,NA,NA
+"677",677,"Sukabumi","wanita",36,"ya","tidak suka","minimarket","warung",NA,NA,NA
+"678",678,"Sukabumi","pria",36,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"679",679,"Tasikmalaya","wanita",39,"ya","suka","pasar","supermarket","minimarket","online",NA
+"680",680,"Tasikmalaya","wanita",29,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"681",681,"Tasikmalaya","wanita",29,"ya","sangat suka","warung","pasar","supermarket",NA,NA
+"682",682,"Bandung","wanita",32,"ya","suka","pasar","warung",NA,NA,NA
+"683",683,"Bandung","wanita",27,"ya","sangat suka","warung",NA,NA,NA,NA
+"684",684,"Sukabumi","wanita",30,"ya","tidak suka","minimarket","warung",NA,NA,NA
+"685",685,"Tasikmalaya","wanita",35,"tidak","sangat suka",NA,NA,NA,NA,NA
+"686",686,"Garut","wanita",32,"ya","tidak suka","pasar","warung","online",NA,NA
+"687",687,"Garut","pria",30,"ya","tidak suka","warung","minimarket","pasar",NA,NA
+"688",688,"Bandung","wanita",32,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"689",689,"Tasikmalaya","wanita",26,"ya","sangat tidak suka","pasar","supermarket",NA,NA,NA
+"690",690,"Tasikmalaya","wanita",34,"tidak","suka",NA,NA,NA,NA,NA
+"691",691,"Jakarta","wanita",31,"ya","suka","warung","pasar","supermarket","minimarket",NA
+"692",692,"Tasikmalaya","pria",31,"ya","tidak suka","minimarket",NA,NA,NA,NA
+"693",693,"Tasikmalaya","wanita",35,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"694",694,"Bandung","pria",38,"ya","suka","minimarket",NA,NA,NA,NA
+"695",695,"Garut","wanita",37,"ya","sangat suka","supermarket","online",NA,NA,NA
+"696",696,"Garut","pria",33,"ya","sangat tidak suka","pasar","supermarket","warung",NA,NA
+"697",697,"Garut","wanita",31,"tidak","sangat suka",NA,NA,NA,NA,NA
+"698",698,"Bandung","wanita",29,"tidak","sangat suka",NA,NA,NA,NA,NA
+"699",699,"Garut","pria",39,"ya","suka","supermarket","minimarket",NA,NA,NA
+"700",700,"Tasikmalaya","wanita",36,"tidak","tidak suka",NA,NA,NA,NA,NA
+"701",701,"Bandung","pria",33,"tidak","suka",NA,NA,NA,NA,NA
+"702",702,"Sukabumi","wanita",35,"ya","sangat tidak suka","supermarket","minimarket",NA,NA,NA
+"703",703,"Bandung","wanita",26,"ya","tidak suka","supermarket","warung","pasar","online",NA
+"704",704,"Bandung","wanita",25,"ya","sangat suka","warung",NA,NA,NA,NA
+"705",705,"Garut","pria",35,"ya","tidak suka","pasar","warung","minimarket",NA,NA
+"706",706,"Garut","wanita",31,"ya","tidak suka","minimarket","supermarket",NA,NA,NA
+"707",707,"Garut","wanita",28,"ya","suka","pasar",NA,NA,NA,NA
+"708",708,"Jakarta","wanita",32,"ya","tidak suka","pasar",NA,NA,NA,NA
+"709",709,"Garut","wanita",36,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"710",710,"Tasikmalaya","wanita",32,"ya","sangat suka",NA,NA,NA,NA,NA
+"711",711,"Sukabumi","wanita",29,"ya","tidak suka","pasar",NA,NA,NA,NA
+"712",712,"Bandung","wanita",36,"ya","sangat tidak suka","pasar","minimarket","warung",NA,NA
+"713",713,"Jakarta","wanita",33,"tidak","tidak suka",NA,NA,NA,NA,NA
+"714",714,"Garut","wanita",39,"ya","tidak suka","minimarket","pasar",NA,NA,NA
+"715",715,"Tasikmalaya","pria",39,"ya","sangat tidak suka","minimarket","warung","supermarket",NA,NA
+"716",716,"Sukabumi","wanita",26,"ya","suka","minimarket",NA,NA,NA,NA
+"717",717,"Sukabumi","pria",27,"ya","tidak suka","supermarket",NA,NA,NA,NA
+"718",718,"Tasikmalaya","wanita",25,"ya","tidak suka","warung","minimarket",NA,NA,NA
+"719",719,"Sukabumi","wanita",27,"ya","tidak suka","supermarket",NA,NA,NA,NA
+"720",720,"Sukabumi","wanita",34,"ya","sangat tidak suka","warung","supermarket",NA,NA,NA
+"721",721,"Bandung","pria",25,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"722",722,"Jakarta","pria",29,"ya","sangat tidak suka","warung","pasar",NA,NA,NA
+"723",723,"Jakarta","wanita",40,"ya","tidak suka","minimarket",NA,NA,NA,NA
+"724",724,"Sukabumi","wanita",26,"ya","tidak suka","pasar","supermarket",NA,NA,NA
+"725",725,"Bandung","wanita",34,"tidak","suka",NA,NA,NA,NA,NA
+"726",726,"Bandung","pria",40,"ya","sangat suka","minimarket","pasar",NA,NA,NA
+"727",727,"Tasikmalaya","wanita",33,"tidak","suka",NA,NA,NA,NA,NA
+"728",728,"Sukabumi","pria",37,"ya","suka","warung","online",NA,NA,NA
+"729",729,"Garut","wanita",38,"ya","suka","online",NA,NA,NA,NA
+"730",730,"Garut","wanita",29,"ya","sangat tidak suka","warung",NA,NA,NA,NA
+"731",731,"Bandung","pria",34,"tidak","sangat suka",NA,NA,NA,NA,NA
+"732",732,"Sukabumi","pria",29,"ya","suka","supermarket",NA,NA,NA,NA
+"733",733,"Jakarta","wanita",38,"ya","sangat tidak suka","online","supermarket",NA,NA,NA
+"734",734,"Bandung","wanita",26,"tidak","tidak suka",NA,NA,NA,NA,NA
+"735",735,"Jakarta","pria",30,"ya","tidak suka","pasar","minimarket",NA,NA,NA
+"736",736,"Tasikmalaya","pria",29,"tidak","suka",NA,NA,NA,NA,NA
+"737",737,"Tasikmalaya","wanita",34,"ya","sangat tidak suka","warung","supermarket","pasar",NA,NA
+"738",738,"Tasikmalaya","pria",29,"tidak","sangat suka",NA,NA,NA,NA,NA
+"739",739,"Sukabumi","wanita",34,"ya","sangat suka","supermarket","warung","minimarket","pasar",NA
+"740",740,"Bandung","pria",28,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"741",741,"Jakarta","pria",37,"ya","sangat suka","supermarket","online",NA,NA,NA
+"742",742,"Jakarta","wanita",36,"tidak","suka",NA,NA,NA,NA,NA
+"743",743,"Jakarta","wanita",27,"tidak","suka",NA,NA,NA,NA,NA
+"744",744,"Sukabumi","wanita",30,"ya","tidak suka","online","supermarket",NA,NA,NA
+"745",745,"Bandung","wanita",31,"ya","tidak suka","minimarket","pasar","warung","online",NA
+"746",746,"Garut","wanita",25,"ya","suka","pasar","supermarket","online",NA,NA
+"747",747,"Garut","wanita",39,"ya","sangat tidak suka","pasar","minimarket",NA,NA,NA
+"748",748,"Sukabumi","pria",35,"ya","sangat suka",NA,NA,NA,NA,NA
+"749",749,"Jakarta","wanita",36,"ya","suka","pasar","minimarket","online",NA,NA
+"750",750,"Jakarta","pria",35,"ya","tidak suka","supermarket","online","warung",NA,NA
+"751",751,"Jakarta","pria",38,"ya","sangat suka","warung","online","supermarket",NA,NA
+"752",752,"Bandung","wanita",40,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"753",753,"Jakarta","wanita",40,"ya","tidak suka","minimarket",NA,NA,NA,NA
+"754",754,"Bandung","pria",32,"ya","tidak suka","minimarket",NA,NA,NA,NA
+"755",755,"Sukabumi","pria",31,"ya","suka","pasar","warung","supermarket",NA,NA
+"756",756,"Sukabumi","wanita",34,"ya","sangat tidak suka","minimarket","online","supermarket",NA,NA
+"757",757,"Jakarta","pria",31,"ya","tidak suka","online","supermarket",NA,NA,NA
+"758",758,"Garut","pria",30,"ya","tidak suka","online","minimarket","warung",NA,NA
+"759",759,"Garut","wanita",36,"ya","suka","minimarket","pasar","supermarket","warung",NA
+"760",760,"Bandung","wanita",27,"tidak","sangat suka",NA,NA,NA,NA,NA
+"761",761,"Bandung","wanita",27,"ya","suka","online",NA,NA,NA,NA
+"762",762,"Bandung","wanita",32,"ya","tidak suka","supermarket","pasar","minimarket",NA,NA
+"763",763,"Garut","pria",35,"ya","suka","minimarket",NA,NA,NA,NA
+"764",764,"Garut","wanita",33,"ya","sangat suka","minimarket","supermarket",NA,NA,NA
+"765",765,"Garut","wanita",28,"ya","sangat tidak suka","online","pasar","warung","supermarket",NA
+"766",766,"Tasikmalaya","wanita",38,"ya","suka","pasar","minimarket",NA,NA,NA
+"767",767,"Tasikmalaya","pria",40,"ya","sangat suka","supermarket","warung","minimarket",NA,NA
+"768",768,"Sukabumi","pria",26,"ya","sangat suka","minimarket","supermarket","pasar","warung","online"
+"769",769,"Jakarta","wanita",38,"ya","sangat suka","minimarket",NA,NA,NA,NA
+"770",770,"Jakarta","wanita",25,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"771",771,"Garut","pria",35,"tidak","tidak suka",NA,NA,NA,NA,NA
+"772",772,"Sukabumi","wanita",26,"tidak","sangat suka",NA,NA,NA,NA,NA
+"773",773,"Tasikmalaya","pria",37,"ya","sangat tidak suka","supermarket","pasar",NA,NA,NA
+"774",774,"Sukabumi","wanita",36,"ya","sangat suka","warung",NA,NA,NA,NA
+"775",775,"Tasikmalaya","wanita",31,"ya","sangat tidak suka","warung","online","minimarket",NA,NA
+"776",776,"Bandung","pria",34,"tidak","suka",NA,NA,NA,NA,NA
+"777",777,"Sukabumi","wanita",36,"tidak","suka",NA,NA,NA,NA,NA
+"778",778,"Tasikmalaya","wanita",39,"ya","sangat tidak suka","warung","minimarket","supermarket","online",NA
+"779",779,"Garut","wanita",27,"ya","sangat suka","online","warung",NA,NA,NA
+"780",780,"Garut","wanita",36,"tidak","sangat suka",NA,NA,NA,NA,NA
+"781",781,"Bandung","wanita",35,"ya","tidak suka","minimarket",NA,NA,NA,NA
+"782",782,"Garut","pria",28,"ya","tidak suka","warung","online","supermarket",NA,NA
+"783",783,"Garut","pria",38,"ya","tidak suka","supermarket","warung","online",NA,NA
+"784",784,"Jakarta","wanita",30,"tidak","tidak suka",NA,NA,NA,NA,NA
+"785",785,"Tasikmalaya","wanita",34,"ya","sangat suka","pasar","supermarket","online",NA,NA
+"786",786,"Bandung","wanita",32,"ya","sangat suka","warung","minimarket","pasar","supermarket","online"
+"787",787,"Jakarta","wanita",34,"ya","sangat suka","pasar","warung","supermarket","online",NA
+"788",788,"Garut","pria",32,"ya","sangat tidak suka","supermarket",NA,NA,NA,NA
+"789",789,"Jakarta","wanita",25,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"790",790,"Jakarta","wanita",38,"tidak","tidak suka",NA,NA,NA,NA,NA
+"791",791,"Sukabumi","wanita",33,"ya","sangat tidak suka","pasar",NA,NA,NA,NA
+"792",792,"Sukabumi","pria",39,"ya","suka","supermarket","pasar","online",NA,NA
+"793",793,"Jakarta","wanita",40,"ya","suka","online",NA,NA,NA,NA
+"794",794,"Garut","pria",35,"ya","tidak suka","pasar",NA,NA,NA,NA
+"795",795,"Garut","wanita",29,"ya","suka","supermarket","warung","pasar",NA,NA
+"796",796,"Bandung","wanita",33,"tidak","sangat suka",NA,NA,NA,NA,NA
+"797",797,"Bandung","wanita",25,"tidak","tidak suka",NA,NA,NA,NA,NA
+"798",798,"Garut","wanita",26,"ya","sangat suka","supermarket","warung","pasar",NA,NA
+"799",799,"Sukabumi","wanita",35,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"800",800,"Sukabumi","wanita",28,"ya","sangat tidak suka","supermarket","pasar",NA,NA,NA
+"801",801,"Jakarta","pria",28,"ya","sangat tidak suka","online","warung","pasar","minimarket",NA
+"802",802,"Sukabumi","wanita",26,"ya","sangat suka","supermarket","warung",NA,NA,NA
+"803",803,"Sukabumi","pria",33,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"804",804,"Tasikmalaya","wanita",35,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"805",805,"Sukabumi","wanita",35,"tidak","sangat suka",NA,NA,NA,NA,NA
+"806",806,"Garut","wanita",26,"ya","sangat suka","warung","online",NA,NA,NA
+"807",807,"Garut","pria",35,"ya","tidak suka","minimarket","online",NA,NA,NA
+"808",808,"Tasikmalaya","pria",30,"ya","suka","supermarket",NA,NA,NA,NA
+"809",809,"Tasikmalaya","wanita",38,"ya","sangat suka","online","supermarket","warung",NA,NA
+"810",810,"Jakarta","wanita",37,"tidak","sangat suka",NA,NA,NA,NA,NA
+"811",811,"Tasikmalaya","pria",38,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"812",812,"Jakarta","wanita",33,"ya","sangat tidak suka",NA,NA,NA,NA,NA
+"813",813,"Tasikmalaya","wanita",38,"ya","suka","online","warung","minimarket",NA,NA
+"814",814,"Tasikmalaya","wanita",39,"ya","tidak suka",NA,NA,NA,NA,NA
+"815",815,"Sukabumi","wanita",27,"ya","sangat tidak suka","minimarket","supermarket","pasar",NA,NA
+"816",816,"Sukabumi","pria",33,"ya","sangat suka","pasar","minimarket",NA,NA,NA
+"817",817,"Bandung","wanita",38,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"818",818,"Bandung","pria",32,"tidak","tidak suka",NA,NA,NA,NA,NA
+"819",819,"Tasikmalaya","pria",33,"tidak","suka",NA,NA,NA,NA,NA
+"820",820,"Jakarta","wanita",32,"ya","sangat suka","minimarket","supermarket","online",NA,NA
+"821",821,"Sukabumi","wanita",40,"ya","tidak suka","minimarket","warung","pasar","online",NA
+"822",822,"Garut","wanita",39,"ya","sangat suka","supermarket","online","pasar","warung",NA
+"823",823,"Garut","wanita",28,"ya","tidak suka",NA,NA,NA,NA,NA
+"824",824,"Tasikmalaya","wanita",38,"ya","sangat tidak suka","pasar",NA,NA,NA,NA
+"825",825,"Sukabumi","wanita",33,"tidak","sangat suka",NA,NA,NA,NA,NA
+"826",826,"Sukabumi","pria",34,"ya","suka",NA,NA,NA,NA,NA
+"827",827,"Garut","wanita",33,"ya","suka","online","pasar","minimarket","supermarket",NA
+"828",828,"Bandung","pria",31,"ya","tidak suka","minimarket","warung","supermarket",NA,NA
+"829",829,"Jakarta","pria",34,"tidak","suka",NA,NA,NA,NA,NA
+"830",830,"Sukabumi","wanita",37,"ya","sangat tidak suka","supermarket",NA,NA,NA,NA
+"831",831,"Garut","pria",28,"ya","suka","minimarket","supermarket","warung",NA,NA
+"832",832,"Garut","wanita",29,"ya","sangat tidak suka","pasar","online","supermarket",NA,NA
+"833",833,"Garut","wanita",34,"ya","sangat tidak suka","online",NA,NA,NA,NA
+"834",834,"Jakarta","wanita",25,"ya","sangat suka","minimarket","warung","online","supermarket",NA
+"835",835,"Sukabumi","wanita",36,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"836",836,"Garut","wanita",30,"tidak","suka",NA,NA,NA,NA,NA
+"837",837,"Jakarta","pria",28,"tidak","suka",NA,NA,NA,NA,NA
+"838",838,"Tasikmalaya","pria",36,"tidak","tidak suka",NA,NA,NA,NA,NA
+"839",839,"Sukabumi","wanita",36,"ya","tidak suka",NA,NA,NA,NA,NA
+"840",840,"Tasikmalaya","pria",28,"ya","tidak suka","minimarket","warung",NA,NA,NA
+"841",841,"Jakarta","wanita",29,"ya","suka","supermarket","minimarket",NA,NA,NA
+"842",842,"Sukabumi","wanita",27,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"843",843,"Jakarta","wanita",27,"ya","tidak suka","warung","minimarket","supermarket",NA,NA
+"844",844,"Tasikmalaya","wanita",25,"ya","suka","online","pasar",NA,NA,NA
+"845",845,"Sukabumi","pria",32,"ya","sangat tidak suka","supermarket","minimarket",NA,NA,NA
+"846",846,"Tasikmalaya","wanita",29,"ya","tidak suka","pasar","minimarket","warung","online","supermarket"
+"847",847,"Sukabumi","wanita",29,"ya","tidak suka","warung",NA,NA,NA,NA
+"848",848,"Jakarta","wanita",31,"ya","sangat tidak suka","supermarket","pasar",NA,NA,NA
+"849",849,"Jakarta","wanita",25,"ya","sangat suka","supermarket","pasar",NA,NA,NA
+"850",850,"Tasikmalaya","pria",39,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"851",851,"Sukabumi","wanita",27,"tidak","sangat suka",NA,NA,NA,NA,NA
+"852",852,"Garut","wanita",39,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"853",853,"Jakarta","wanita",40,"tidak","tidak suka",NA,NA,NA,NA,NA
+"854",854,"Garut","wanita",36,"ya","sangat tidak suka","online","pasar",NA,NA,NA
+"855",855,"Jakarta","pria",28,"ya","sangat tidak suka","warung","minimarket","online",NA,NA
+"856",856,"Bandung","wanita",32,"ya","sangat tidak suka","supermarket","minimarket","pasar",NA,NA
+"857",857,"Garut","pria",25,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"858",858,"Garut","pria",37,"ya","suka","pasar","supermarket","minimarket",NA,NA
+"859",859,"Garut","wanita",25,"ya","sangat suka","warung","supermarket","pasar",NA,NA
+"860",860,"Tasikmalaya","wanita",34,"tidak","tidak suka",NA,NA,NA,NA,NA
+"861",861,"Jakarta","wanita",37,"tidak","sangat suka",NA,NA,NA,NA,NA
+"862",862,"Tasikmalaya","wanita",33,"tidak","sangat suka",NA,NA,NA,NA,NA
+"863",863,"Garut","pria",37,"tidak","sangat suka",NA,NA,NA,NA,NA
+"864",864,"Jakarta","pria",29,"ya","suka","minimarket","supermarket","online",NA,NA
+"865",865,"Garut","wanita",32,"ya","suka","pasar","minimarket","online",NA,NA
+"866",866,"Bandung","wanita",35,"ya","sangat suka","supermarket","warung","minimarket",NA,NA
+"867",867,"Jakarta","wanita",33,"ya","suka","warung","minimarket","pasar",NA,NA
+"868",868,"Sukabumi","wanita",38,"ya","sangat suka","supermarket","online",NA,NA,NA
+"869",869,"Sukabumi","wanita",35,"ya","sangat suka","warung","minimarket","pasar",NA,NA
+"870",870,"Sukabumi","wanita",37,"tidak","suka",NA,NA,NA,NA,NA
+"871",871,"Tasikmalaya","wanita",27,"ya","tidak suka","minimarket","pasar","supermarket",NA,NA
+"872",872,"Sukabumi","pria",31,"ya","suka","minimarket","pasar",NA,NA,NA
+"873",873,"Jakarta","wanita",27,"tidak","tidak suka",NA,NA,NA,NA,NA
+"874",874,"Jakarta","pria",31,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"875",875,"Bandung","wanita",30,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"876",876,"Garut","wanita",32,"ya","tidak suka","online",NA,NA,NA,NA
+"877",877,"Tasikmalaya","pria",33,"tidak","suka",NA,NA,NA,NA,NA
+"878",878,"Bandung","wanita",27,"ya","sangat tidak suka","warung","pasar",NA,NA,NA
+"879",879,"Garut","pria",27,"ya","tidak suka","pasar","minimarket","supermarket",NA,NA
+"880",880,"Sukabumi","wanita",33,"tidak","sangat suka",NA,NA,NA,NA,NA
+"881",881,"Tasikmalaya","wanita",29,"ya","sangat tidak suka","minimarket","pasar","online",NA,NA
+"882",882,"Jakarta","wanita",29,"tidak","sangat suka",NA,NA,NA,NA,NA
+"883",883,"Garut","wanita",25,"ya","sangat suka","warung","minimarket",NA,NA,NA
+"884",884,"Tasikmalaya","wanita",25,"ya","sangat suka","minimarket",NA,NA,NA,NA
+"885",885,"Bandung","wanita",32,"ya","sangat suka","online","supermarket","warung","pasar",NA
+"886",886,"Bandung","wanita",28,"ya","suka","supermarket",NA,NA,NA,NA
+"887",887,"Sukabumi","wanita",35,"tidak","sangat suka",NA,NA,NA,NA,NA
+"888",888,"Garut","wanita",36,"ya","sangat tidak suka","online","supermarket",NA,NA,NA
+"889",889,"Tasikmalaya","wanita",26,"ya","suka","online",NA,NA,NA,NA
+"890",890,"Jakarta","wanita",38,"ya","suka","online","warung",NA,NA,NA
+"891",891,"Jakarta","wanita",32,"ya","tidak suka","pasar","online",NA,NA,NA
+"892",892,"Jakarta","wanita",33,"tidak","suka",NA,NA,NA,NA,NA
+"893",893,"Bandung","wanita",33,"ya","tidak suka","minimarket","supermarket",NA,NA,NA
+"894",894,"Bandung","wanita",25,"tidak","tidak suka",NA,NA,NA,NA,NA
+"895",895,"Garut","wanita",26,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"896",896,"Sukabumi","wanita",34,"ya","tidak suka","supermarket","pasar","warung","minimarket",NA
+"897",897,"Sukabumi","pria",32,"tidak","sangat suka",NA,NA,NA,NA,NA
+"898",898,"Bandung","wanita",27,"tidak","suka",NA,NA,NA,NA,NA
+"899",899,"Sukabumi","pria",26,"ya","sangat suka","online","minimarket",NA,NA,NA
+"900",900,"Tasikmalaya","pria",40,"ya","tidak suka","supermarket","pasar","minimarket",NA,NA
+"901",901,"Garut","wanita",35,"ya","suka","warung",NA,NA,NA,NA
+"902",902,"Jakarta","wanita",38,"ya","sangat tidak suka","online","warung","supermarket",NA,NA
+"903",903,"Sukabumi","wanita",35,"ya","tidak suka","online","supermarket",NA,NA,NA
+"904",904,"Bandung","wanita",35,"tidak","tidak suka",NA,NA,NA,NA,NA
+"905",905,"Jakarta","wanita",30,"tidak","tidak suka",NA,NA,NA,NA,NA
+"906",906,"Garut","pria",30,"ya","sangat suka","minimarket","supermarket",NA,NA,NA
+"907",907,"Bandung","wanita",27,"tidak","tidak suka",NA,NA,NA,NA,NA
+"908",908,"Bandung","wanita",40,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"909",909,"Bandung","wanita",34,"tidak","tidak suka",NA,NA,NA,NA,NA
+"910",910,"Sukabumi","wanita",28,"tidak","sangat suka",NA,NA,NA,NA,NA
+"911",911,"Sukabumi","pria",40,"ya","sangat tidak suka","warung","pasar",NA,NA,NA
+"912",912,"Tasikmalaya","pria",29,"ya","tidak suka","online","warung",NA,NA,NA
+"913",913,"Jakarta","pria",33,"ya","tidak suka","online","supermarket",NA,NA,NA
+"914",914,"Bandung","wanita",31,"ya","sangat suka","pasar","supermarket",NA,NA,NA
+"915",915,"Tasikmalaya","wanita",36,"ya","sangat tidak suka","pasar",NA,NA,NA,NA
+"916",916,"Garut","wanita",26,"ya","tidak suka","supermarket",NA,NA,NA,NA
+"917",917,"Garut","wanita",35,"ya","sangat suka","minimarket","warung",NA,NA,NA
+"918",918,"Sukabumi","wanita",32,"tidak","sangat suka",NA,NA,NA,NA,NA
+"919",919,"Jakarta","pria",25,"tidak","sangat suka",NA,NA,NA,NA,NA
+"920",920,"Sukabumi","pria",33,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"921",921,"Tasikmalaya","wanita",26,"tidak","tidak suka",NA,NA,NA,NA,NA
+"922",922,"Bandung","wanita",30,"ya","suka","warung","minimarket",NA,NA,NA
+"923",923,"Garut","wanita",35,"ya","sangat suka","pasar","warung",NA,NA,NA
+"924",924,"Tasikmalaya","pria",33,"ya","sangat suka","warung","minimarket","supermarket","online",NA
+"925",925,"Tasikmalaya","wanita",29,"ya","tidak suka","minimarket","supermarket","pasar",NA,NA
+"926",926,"Garut","wanita",38,"ya","suka","minimarket","online",NA,NA,NA
+"927",927,"Bandung","wanita",33,"ya","suka","warung","online","supermarket",NA,NA
+"928",928,"Jakarta","pria",33,"ya","tidak suka","supermarket","warung",NA,NA,NA
+"929",929,"Sukabumi","pria",40,"tidak","tidak suka",NA,NA,NA,NA,NA
+"930",930,"Bandung","wanita",35,"ya","sangat tidak suka","pasar","minimarket",NA,NA,NA
+"931",931,"Garut","wanita",40,"tidak","tidak suka",NA,NA,NA,NA,NA
+"932",932,"Tasikmalaya","wanita",34,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"933",933,"Jakarta","wanita",26,"tidak","sangat suka",NA,NA,NA,NA,NA
+"934",934,"Jakarta","wanita",27,"ya","sangat suka","warung","supermarket",NA,NA,NA
+"935",935,"Garut","wanita",40,"ya","sangat suka","online",NA,NA,NA,NA
+"936",936,"Sukabumi","pria",25,"ya","tidak suka","warung","pasar",NA,NA,NA
+"937",937,"Bandung","wanita",26,"ya","tidak suka","minimarket","pasar","warung",NA,NA
+"938",938,"Jakarta","pria",40,"ya","sangat tidak suka","minimarket","warung","online",NA,NA
+"939",939,"Tasikmalaya","wanita",26,"ya","sangat tidak suka","minimarket",NA,NA,NA,NA
+"940",940,"Bandung","wanita",38,"ya","sangat tidak suka","warung","pasar","online",NA,NA
+"941",941,"Garut","wanita",35,"ya","tidak suka","pasar","online","supermarket",NA,NA
+"942",942,"Tasikmalaya","wanita",32,"ya","tidak suka","minimarket","online","pasar","warung",NA
+"943",943,"Bandung","wanita",26,"ya","sangat tidak suka","pasar","minimarket",NA,NA,NA
+"944",944,"Garut","wanita",31,"ya","sangat tidak suka","warung","pasar","online",NA,NA
+"945",945,"Bandung","wanita",27,"tidak","sangat suka",NA,NA,NA,NA,NA
+"946",946,"Jakarta","pria",29,"ya","sangat tidak suka","pasar","warung",NA,NA,NA
+"947",947,"Garut","wanita",38,"ya","suka","minimarket","warung","supermarket","pasar",NA
+"948",948,"Bandung","wanita",36,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"949",949,"Jakarta","pria",31,"ya","suka","warung","minimarket",NA,NA,NA
+"950",950,"Tasikmalaya","pria",39,"tidak","suka",NA,NA,NA,NA,NA
+"951",951,"Tasikmalaya","pria",38,"tidak","tidak suka",NA,NA,NA,NA,NA
+"952",952,"Jakarta","wanita",27,"ya","tidak suka","pasar","supermarket","minimarket",NA,NA
+"953",953,"Garut","wanita",32,"ya","tidak suka","warung","minimarket",NA,NA,NA
+"954",954,"Jakarta","wanita",28,"tidak","sangat suka",NA,NA,NA,NA,NA
+"955",955,"Tasikmalaya","pria",34,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"956",956,"Tasikmalaya","pria",33,"ya","tidak suka","minimarket",NA,NA,NA,NA
+"957",957,"Jakarta","pria",34,"ya","sangat suka",NA,NA,NA,NA,NA
+"958",958,"Tasikmalaya","wanita",28,"ya","sangat suka","minimarket","pasar",NA,NA,NA
+"959",959,"Sukabumi","wanita",40,"ya","suka","warung",NA,NA,NA,NA
+"960",960,"Garut","wanita",32,"ya","sangat tidak suka","warung",NA,NA,NA,NA
+"961",961,"Sukabumi","wanita",28,"ya","sangat tidak suka","supermarket",NA,NA,NA,NA
+"962",962,"Sukabumi","pria",26,"tidak","sangat suka",NA,NA,NA,NA,NA
+"963",963,"Sukabumi","pria",27,"ya","suka","online","supermarket","pasar","warung",NA
+"964",964,"Sukabumi","wanita",39,"ya","sangat suka","online","minimarket","warung","pasar",NA
+"965",965,"Bandung","wanita",25,"ya","suka","supermarket","minimarket","warung",NA,NA
+"966",966,"Tasikmalaya","wanita",35,"ya","sangat suka","online","supermarket","warung","minimarket",NA
+"967",967,"Tasikmalaya","wanita",34,"ya","suka","minimarket",NA,NA,NA,NA
+"968",968,"Garut","pria",25,"ya","suka","warung","pasar","minimarket","supermarket",NA
+"969",969,"Tasikmalaya","pria",29,"ya","sangat suka","supermarket","warung",NA,NA,NA
+"970",970,"Jakarta","wanita",29,"ya","tidak suka","pasar","minimarket",NA,NA,NA
+"971",971,"Bandung","wanita",31,"ya","suka","online",NA,NA,NA,NA
+"972",972,"Garut","wanita",40,"ya","sangat suka","online",NA,NA,NA,NA
+"973",973,"Tasikmalaya","wanita",26,"tidak","suka",NA,NA,NA,NA,NA
+"974",974,"Sukabumi","wanita",40,"ya","suka","online","supermarket",NA,NA,NA
+"975",975,"Sukabumi","wanita",38,"ya","suka","minimarket","warung",NA,NA,NA
+"976",976,"Tasikmalaya","wanita",34,"ya","sangat suka","online","minimarket",NA,NA,NA
+"977",977,"Jakarta","wanita",31,"tidak","suka",NA,NA,NA,NA,NA
+"978",978,"Garut","wanita",30,"ya","tidak suka","minimarket","pasar","warung","supermarket",NA
+"979",979,"Jakarta","pria",28,"ya","sangat tidak suka","minimarket","online",NA,NA,NA
+"980",980,"Sukabumi","wanita",31,"ya","suka","supermarket","warung","pasar","online",NA
+"981",981,"Garut","pria",34,"ya","sangat suka","pasar","online","minimarket",NA,NA
+"982",982,"Sukabumi","pria",40,"tidak","sangat tidak suka",NA,NA,NA,NA,NA
+"983",983,"Bandung","wanita",36,"ya","suka","online",NA,NA,NA,NA
+"984",984,"Tasikmalaya","wanita",36,"tidak","sangat suka",NA,NA,NA,NA,NA
+"985",985,"Tasikmalaya","wanita",30,"ya","sangat suka","warung","online",NA,NA,NA
+"986",986,"Tasikmalaya","wanita",29,"tidak","tidak suka",NA,NA,NA,NA,NA
+"987",987,"Garut","pria",35,"ya","tidak suka","minimarket","online",NA,NA,NA
+"988",988,"Tasikmalaya","pria",30,"tidak","suka",NA,NA,NA,NA,NA
+"989",989,"Tasikmalaya","pria",37,"tidak","sangat suka",NA,NA,NA,NA,NA
+"990",990,"Tasikmalaya","wanita",28,"ya","tidak suka","online","pasar","minimarket",NA,NA
+"991",991,"Sukabumi","wanita",35,"ya","tidak suka","warung","supermarket",NA,NA,NA
+"992",992,"Sukabumi","pria",35,"ya","sangat tidak suka",NA,NA,NA,NA,NA
+"993",993,"Tasikmalaya","pria",37,"ya","sangat suka","warung","pasar",NA,NA,NA
+"994",994,"Jakarta","wanita",27,"ya","tidak suka","online","warung","supermarket",NA,NA
+"995",995,"Garut","wanita",26,"ya","sangat tidak suka","minimarket","pasar",NA,NA,NA
+"996",996,"Sukabumi","wanita",28,"ya","sangat tidak suka","online",NA,NA,NA,NA
+"997",997,"Sukabumi","wanita",30,"tidak","tidak suka",NA,NA,NA,NA,NA
+"998",998,"Jakarta","wanita",26,"ya","suka","minimarket","pasar",NA,NA,NA
+"999",999,"Jakarta","wanita",39,"ya","sangat suka","minimarket","warung",NA,NA,NA
+"1000",1000,"Sukabumi","wanita",32,"ya","sangat suka","warung","pasar","supermarket",NA,NA
