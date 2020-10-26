@@ -337,3 +337,5 @@ for(i in 1:7){
 saveWorkbook(wb, "tabulasi.xlsx", overwrite = TRUE)
 
 ```
+
+File hasilnya bisa di-_download_ di [sini](https://github.com/ikanx101/ikanx101.github.io/blob/master/_posts/expss/bagian%201/tabulasi.xlsx).
