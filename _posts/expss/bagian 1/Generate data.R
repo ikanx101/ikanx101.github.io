@@ -6,8 +6,17 @@ n = 1000
 kota = sample(c("Jakarta","Bandung","Tasikmalaya","Garut","Sukabumi"),n,replace = T)
 gender = sample(c("pria","wanita"),n,replace = T, prob = c(.3,.7))
 usia = sample(c(25:40),n,replace = T)
-pernah = sample(c("ya","tidak"),n,replace = T, prob = c(.7,.3))
-rating = sample(c("sangat tidak suka","tidak suka","suka","sangat suka"),n,replace = T)
+pernah = rep(sample(c("ya","tidak"),n/5,replace = T, prob = c(abs(rnorm(2)))),5)
+rating = sample(c("sangat tidak suka",
+                  "tidak suka",
+                  "suka",
+                  "sangat suka"),
+                n,
+                replace = T,
+                prob = c(.2,
+                         .1,
+                         .4,
+                         .1))
 
 tempat = sample(c("pasar","warung","minimarket","supermarket","online"),n*2,replace = T)
 

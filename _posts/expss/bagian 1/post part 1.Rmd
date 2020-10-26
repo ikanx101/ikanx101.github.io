@@ -11,23 +11,26 @@ setwd("~/ikanx101 com/_posts/expss/bagian 1")
 rm(list=ls())
 ```
 
-```{r}
+```{r,echo=FALSE}
 knitr::include_graphics("SPSS.jpg")
 ```
 
+---
+
+
 > Siapa sih yang gak kenal dengan __SPSS__? Software yang paling banyak digunakan untuk menyelesaikan masalah statistik. 
 
-Mulai dari membuat analisa deskriptif yang sederhana sampai membuat model _machine learning_ yang kompleks bisa dilakukan di __SPSS__. Dulu ketika masih menjadi mahasiswa tingkat akhir, saya pernah menjadi asisten lab `bio statistik` yang memberikan tutor __SPSS__. Menariknya adalah bagi mahasiswa Matematika sendiri, kami tidak diberikan materi lab __SPSS__.
+Mulai dari membuat analisa deskriptif yang sederhana sampai membuat model _machine learning_ yang kompleks bisa dilakukan di __SPSS__. Dulu ketika masih menjadi mahasiswa tingkat akhir, saya pernah menjadi asisten lab `bio statistik` yang memberikan tutor __SPSS__. Namun demikian, bagi mahasiswa Matematika sendiri, kami tidak pernah diberikan materi lab __SPSS__ sana sekali.
 
 > __SPSS__ membuat kamu malas.
 
 Begitu selentingan yang saya dengar.
 
-Lalu software apa yang dipelajari oleh mahasiswa Matematika untuk menyelesaikan masalah statistik terkait data?
+Kalau begitu _software_ apa yang dipelajari oleh mahasiswa Matematika untuk menyelesaikan masalah statistik terkait data?
 
-__Microsoft Excel__
+__Microsoft Excel!__
 
-Oh iya, dulu kami menggunakan __SPSS__ versi `13` _student edition_ resmi di lab Matematika.
+Saat itu __SPSS__ yang digunakan adalah versi `13` _student edition_ resmi.
 
 ---
 
@@ -39,11 +42,11 @@ Kisah terus berlanjut sampai saya berlabuh di perusahaan tempat saya bekerja saa
 
 Setelah mencari informasi terkait harga resminya, ternyata harganya lumayan juga _yah_. 
 
-```{r}
+```{r out.height="60%",echo=FALSE}
 knitr::include_graphics("https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/expss/bagian%201/Screenshot_20201023-101029.png")
 ```
 
-Tipe __SPSS__ yang dibutuhkan untuk mengolah data market riset adalah yang `standar` karena sudah bisa mengakomodir _multiple response answer_.
+Tipe _license_ __SPSS__ yang dibutuhkan untuk mengolah data market riset adalah yang `standard` karena sudah bisa mengakomodir _multiple response answer_.
 
 ---
 
@@ -73,6 +76,13 @@ Setau saya memang ada konsekuensi hukum bagi yang melakukan hal ini.
 
 Kita sebenarnya bisa memakai _software_ olah data selain __SPSS__ yang bersifat _open source_ alias gratis. Salah satunya dengan __R__ melalui `library(expss)`. 
 
+Berikut ini adalah beberapa kelebihan mengolah data survey dengan `library(expss)`:
+
+1. Kita tidak perlu repot-repot mengubah tipe data menjadi _numeric with labels_. Pada __SPSS__, kita tahu ada dua _tab_, yakni _variabel view_ dan _data view_. Biasanya salah satu _preparation_ yang harus dilakukan di __SPSS__ adalah mengubah data _text_ hasil _entry_ kuesioner menjadi _numeric_ lalu diberikan _value label_. Hasil _entry_ kuesioner yang sudah berupa _text_ bisa langsung kita pakai. Biasanya ini terjadi saat kita menggunakan _platform online survey_ yang memberikan data _as it is_.
+1. Kita bisa melakukan `uji beda dua proporsi` langsung di __R__.
+1. Kita bisa langsung membuat grafik dari hasil tabulasi dengan `library(ggplot2)` dan membuat _report_-nya dengan __R Markdown__.
+1. __R__ bisa membaca banyak format data. Baik `.sav` __SPSS__ dan `.csv`, `.xls`, `.xlsx` dari __MS. Excel__.
+
 Bagaimana caranya? Saya mulai tutorialnya _yah_.
 
 ---
@@ -81,14 +91,16 @@ Bagaimana caranya? Saya mulai tutorialnya _yah_.
 
 Oke, untuk melakukannya kita memerlukan __R__ dan atau __R Studio__. Kemudian kita harus menginstall beberapa _libraries_ seperti:
 
-1. `dplyr`
-1. `expss`
+1. `dplyr` untuk melakukan _data carpentry_ di __R__.
+1. `expss` sebagai pengganti __SPSS__ di __R__.
+1. `openxlsx` untuk _export_ tabulasi ke format `.xlsx`.
 
 Cara installnya adalah:
 
 ```{r}
 # install.packages("dplyr")
 # install.packages("expss")
+# install.packages("openxlsx")
 ```
 
 Selepas instalasi selesai, mari kita panggil kedua _libraries_ tersebut:
@@ -96,16 +108,232 @@ Selepas instalasi selesai, mari kita panggil kedua _libraries_ tersebut:
 ```{r,warning=FALSE,message=FALSE}
 library(dplyr)
 library(expss)
+library(openxlsx)
 ```
 
-Sekarang saya akan menggunakan contoh data hasil survey mengenai kebiasaan belanja. Survey dilakukan kepada `1.000` orang responden di 5 kota (Jakarta, Bandung, Tasikmalaya, Garut, dan Sukabumi). Sebagai latihan bersama, data bisa diunduh di sini.
+Sekarang saya akan menggunakan contoh data hasil survey mengenai persepsi dan habit responden. Pertanyaan dalam survey tersebut antara lain:
+
+1. `kota` asal responden.
+1. `gender`.
+1. `usia`.
+1. `pernah`-kah responden membeli sayur dan daging dalam sebulan terakhir?
+1. `tempat` responden pernah membeli sayur dan daging dalam sebulan terakhir. 
+1. `rating` kesukaan terhadap minuman soda.
+
+
+Survey dilakukan kepada `1.000` orang responden di 5 kota (Jakarta, Bandung, Tasikmalaya, Garut, dan Sukabumi). Sebagai latihan bersama, data bisa diunduh di [sini](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/expss/bagian%201/data%20survey.csv).
 
 Berikut adalah datanya:
 
 ```{r}
-data = read.csv("data survey.csv")
+data = read.csv("data survey.csv") 
 ```
 
-Oh iya, salah satu kelebihan menganalisa data survey menggunakan __R__ adalah kita tidak perlu repot-repot mengubah tipe data menjadi _numeric with labels_. Pada __SPSS__, kita tahu ada dua _tab_, yakni _variabel view_ dan _data view_. Biasanya salah satu _preparation_ yang harus dilakukan di __SPSS__ adalah mengubah data _text_ hasil _entry_ kuesioner menjadi _numeric_ lalu diberikan _value label_.
+```{r,echo=FALSE}
+data = read.csv("data survey.csv") %>% 
+  select(id,kota,gender,usia,pernah,tempat_1,tempat_2,tempat_3,tempat_4,tempat_5,rating) %>% 
+  mutate(rating = factor(rating, 
+                         levels = c("sangat tidak suka","tidak suka","suka","sangat suka")))
+```
 
-Menggunakan __R__, kita tidak perlu melakukan hal itu. Hasil _entry_ kuesioner yang sudah berupa _text_ bisa langsung kita pakai. Biasanya ini terjadi saat kita menggunakan _platform online survey_ yang memberikan data _as it is_.
+```{r,echo=FALSE}
+data %>% 
+  head(20) %>% 
+  knitr::kable("html",caption = "20 Data Teratas")
+```
+
+---
+
+## Prinsip dasar `library(expss)`
+
+Skrip pada `library(expss)` selalu menggunakan _pipe_ pada `tidyverse` (` %>% `).
+
+Berikut adalah alur pengerjaannya:
+
+1. Tabulasi dimulai dengan memanggil dataset.
+1. Memanggil variabel yang hendak dihitung dengan `tab_cells(nama_variabel)`.
+1. Jika hendak melakukan _cross tabulasi_, tambahkan perintah `tab_cols(nama_variabel)` sesuai dengan variabel yang hendak disilangkan.
+1. Jika hendak melakukan _drill down_ pada baris, tambahkan perintah `tab_rows(nama_variabel)` sesuai dengan variabel yang hendak disilangkan.
+1. Panggil perintah untuk menghitung persentase atau _real number_. Untuk persentase, bisa menggunakan perintah `tab_stat_cpct()`. Untuk _real number_, bisa menggunakan perintah `tab_stat_cases()`.
+1. Jika hendak melakukan uji beda dua proporsi pada _cross tabulasi_, `tambahkan tab_last_sig_cpct()` atau `tab_last_sig_cases()`.
+1. Akhiri dengan `tab_pivot()`.
+
+_Yuk_, kita praktek langsung!
+
+## Frekuensi Tabulasi
+
+```{r,echo = FALSE}
+expss_output_rnotebook()
+```
+
+Mari kita mulai dengan menghitung proporsi `kota` dan `gender` dari survey ini:
+
+```{r}
+data %>% 
+  tab_cells(kota) %>% 
+  tab_stat_cpct() %>% 
+  tab_pivot() %>% 
+  set_caption("Tabel 1: Kota Asal Responden")
+
+data %>% 
+  tab_cells(gender) %>% 
+  tab_stat_cpct() %>% 
+  tab_pivot() %>% 
+  set_caption("Tabel 2: Gender Responden")
+```
+
+Sekarang saya akan menghitung proporsi dari rating dengan menggunakan _real number_:
+
+```{r}
+data %>% 
+  tab_cells(rating) %>% 
+  tab_stat_cases() %>% 
+  tab_pivot() %>% 
+  set_caption("Tabel 3: Rating Kesukaan Responden (real number)")
+```
+
+## _Cross_ Tabulasi
+
+Berikutnya saya akan membuat tabel _cross_ tabulasi `rating` vs `kota` sekaligus menghitung signifikansinya:
+
+```{r}
+data %>% 
+  tab_cells(rating) %>% 
+  tab_cols(total(),kota) %>% 
+  tab_stat_cpct() %>% 
+  tab_last_sig_cpct() %>% 
+  tab_pivot() %>% 
+  set_caption("Table 4. Cross tabulasi Pernah dan Kota")
+```
+
+Kita bisa melihat bahwa `suka` di Jakarta __signifikan__ lebih tinggi dibandingkan Bandung dan Sukabumi.
+
+Sekarang saya akan membuat _cross_ tabulasi rata-rata usia per kota:
+
+```{r}
+data %>% 
+  tab_cells(usia) %>% 
+  tab_cols(total(),kota) %>% 
+  tab_stat_mean_sd_n() %>% 
+  tab_last_sig_means() %>% 
+  tab_pivot() %>% 
+  set_caption("Table 5. Rata-rata Usia per Kota")
+```
+
+
+Ternyata rata-rata usia responden di Tasikmalaya __signifikan__ lebih tua dibandingkan Bandung dan Jakarta. Sedangkan usia responden di Sukabumi __signifikan__ lebih tua dibandingkan Bandung.
+
+## _Multiple Response_
+
+Sekarang kita akan menghitung frekuensi tabulasi untuk pertanyaan _multiple response_. Pada kasus ini adalah variabel `tempat_1` sampai `tempat_5`.
+
+```{r}
+data %>% 
+  tab_cells(mrset(tempat_1 %to% tempat_2)) %>% 
+  tab_stat_cpct() %>% 
+  tab_pivot()%>% 
+  set_caption("Table 6. Tempat Berbelanja")
+```
+
+Kita juga bisa membuat _cross_ tabulasi untuk pertanyaan _multiple response_ berikut:
+
+
+```{r}
+data %>% 
+  tab_cells(mrset(tempat_1 %to% tempat_2)) %>% 
+  tab_cols(total(),kota) %>% 
+  tab_rows(gender) %>% 
+  tab_stat_cpct() %>% 
+  tab_last_sig_cpct() %>% 
+  tab_pivot()%>% 
+  set_caption("Table 7. Detail Tempat Berbelanja")
+```
+
+Tentunya masih banyak lagi fitur dan _function_ yang bisa dilakukan. Tapi segitu saja harusnya sudah cukup ya.
+
+---
+
+## _Exporting to Excel_
+
+Sekarang saya akan tunjukkan cara agar tabel-tabel di atas dimasukkan ke satu file Excel `.xlsx`.
+
+### Buat dulu _object_ tabelnya
+
+```{r}
+tab1 = 
+  data %>% 
+  tab_cells(kota) %>% 
+  tab_stat_cpct() %>% 
+  tab_pivot() %>% 
+  set_caption("Tabel 1: Kota Asal Responden")
+
+tab2 = 
+  data %>% 
+  tab_cells(gender) %>% 
+  tab_stat_cpct() %>% 
+  tab_pivot() %>% 
+  set_caption("Tabel 2: Gender Responden")
+
+tab3 = 
+  data %>% 
+  tab_cells(rating) %>% 
+  tab_stat_cases() %>% 
+  tab_pivot() %>% 
+  set_caption("Tabel 3: Rating Kesukaan Responden (real number)")
+
+tab4 = 
+  data %>% 
+  tab_cells(rating) %>% 
+  tab_cols(total(),kota) %>% 
+  tab_stat_cpct() %>% 
+  tab_last_sig_cpct() %>% 
+  tab_pivot() %>% 
+  set_caption("Table 4. Cross tabulasi Pernah dan Kota")
+
+tab5 = 
+  data %>% 
+  tab_cells(usia) %>% 
+  tab_cols(total(),kota) %>% 
+  tab_stat_mean_sd_n() %>% 
+  tab_last_sig_means() %>% 
+  tab_pivot() %>% 
+  set_caption("Table 5. Rata-rata Usia per Kota")
+
+tab6 = 
+  data %>% 
+  tab_cells(mrset(tempat_1 %to% tempat_2)) %>% 
+  tab_stat_cpct() %>% 
+  tab_pivot()%>% 
+  set_caption("Table 6. Tempat Berbelanja")
+
+tab7 = 
+  data %>% 
+  tab_cells(mrset(tempat_1 %to% tempat_2)) %>% 
+  tab_cols(total(),kota) %>% 
+  tab_rows(gender) %>% 
+  tab_stat_cpct() %>% 
+  tab_last_sig_cpct() %>% 
+  tab_pivot()%>% 
+  set_caption("Table 7. Detail Tempat Berbelanja")
+```
+
+### Buat _workbook_ 
+
+```{r}
+wb = createWorkbook()
+```
+
+### Buat _worksheets_ lalu _save_ ke _Excel_
+
+```{r}
+tabel = list(tab1,tab2,tab3,tab4,tab5,tab6,tab7)
+
+for(i in 1:7){
+  nama_sheet = paste0("tabel",i)
+  sh = addWorksheet(wb, nama_sheet)
+  xl_write(tabel[[i]], wb, sh)
+}
+
+saveWorkbook(wb, "tabulasi.xlsx", overwrite = TRUE)
+
+```
