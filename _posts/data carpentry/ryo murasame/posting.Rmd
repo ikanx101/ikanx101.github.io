@@ -1,0 +1,31 @@
+---
+title: "Tutorial Data Carpentry: Mencari Ketua Kelas dengan R"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/Documents/ikanx101/_posts/data carpentry/ryo murasame")
+rm(list=ls())
+load("data.rda")
+```
+
+Suatu sore HP saya berdering. Salah seorang teman saya nun jauh di sana bertanya:
+
+> Kamu bisa bantu aku gak? Aku punya data anak-anak. Aku mau nentuin siapa yang jadi ketua kelasnya!
+
+_Begitu katanya._
+
+Kenapa ke saya yah? Pikir saya kemudian. _hehe_
+
+---
+
+Ceritanya, teman saya bertugas sebagai panitia jambore anak-anak. Sampai saat ini, terdaftar `r 40*20` orang anak yang akan dibagi menjadi `20` kelas.
+
+Teman saya berujar, penunjukan ketua kelasnya dilakukan dengan _rules_ berikut ini:
+
+1. Dari `20` kelas yang ada, akan ditunjuk anak yang memiliki `berat badan` terbesar.
+1. Jika ada lebih dari satu anak yang memiliki `berat badan` terbesar yang sama, maka akan dipilih berdasarkan `tinggi badan` yang tertinggi.
+1. Jika masih ada yang sama, maka akan dipilih berdasarkan tanggal lahir yang tertua.
