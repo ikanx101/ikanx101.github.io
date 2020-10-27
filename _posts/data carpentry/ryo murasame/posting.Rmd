@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 setwd("~/Documents/ikanx101/_posts/data carpentry/ryo murasame")
 rm(list=ls())
 load("data.rda")
+library(dplyr)
 ```
 
 Suatu sore HP saya berdering. Salah seorang teman saya nun jauh di sana bertanya:
@@ -29,3 +30,41 @@ Teman saya berujar, penunjukan ketua kelasnya dilakukan dengan _rules_ berikut i
 1. Dari `20` kelas yang ada, akan ditunjuk anak yang memiliki `berat badan` terbesar.
 1. Jika ada lebih dari satu anak yang memiliki `berat badan` terbesar yang sama, maka akan dipilih berdasarkan `tinggi badan` yang tertinggi.
 1. Jika masih ada yang sama, maka akan dipilih berdasarkan tanggal lahir yang tertua.
+
+---
+
+Sekarang saya akan menyelesaikan masalah teman saya tersebut dengan menggunakan prinsip _tidy_ di __R__.
+
+Oh iya, datanya saya simpan di [sini](https://github.com/ikanx101/ikanx101.github.io/blob/master/_posts/data%20carpentry/ryo%20murasame/kelas%20anak.csv). Silakan jika teman-teman ingin ikut praktek _yah_.
+
+---
+
+Pertama-tama, saya akan _load_ datanya ke dalam _environment_ di __R__ lalu saya akan lihat dulu struktur datanya. Oh iya, jangan lupa untuk memanggil `library(dplyr)` _yah_.
+
+```{r}
+str(data)
+```
+
+Berikut 10 data teratas:
+
+```{r,echo=FALSE}
+data %>% 
+  head(10) %>% 
+  knitr::kable()
+```
+
+Karena struktur datanya sudah _pas_ dan tidak ada masalah (data sudah bersih), maka saya langsung saja membuat algoritma yang disesuaikan dengan _rules_ teman saya tersebut:
+
+```{r,warning=FALSE,message=FALSE}
+data %>% 
+  group_by(kelas) %>% 
+  filter(berat_badan == max(berat_badan)) %>% 
+  filter(tinggi_badan == max(tinggi_badan)) %>% 
+  filter(tanggal_lahir == min(tanggal_lahir)) %>% 
+  arrange(kelas)
+
+```
+
+---
+
+__Gampang kan?__
