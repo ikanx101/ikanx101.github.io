@@ -1,5 +1,5 @@
 ---
-date: 2020-10-28T5:30:00-04:00
+date: 2020-10-28T9:30:00-04:00
 title: "Text Analysis: Membuktikan Kebenaran Urban Legend Lagu The Beatles"
 categories:
   - Blog
@@ -7,7 +7,6 @@ tags:
   - Machine Learning
   - Artificial Intelligence
   - R
-  - Data Carpentry
   - Text Analysis
   - Bigrams
   - Network Analysis
