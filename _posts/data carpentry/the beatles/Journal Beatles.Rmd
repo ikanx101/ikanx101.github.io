@@ -37,7 +37,7 @@ Walaupun buku tersebut berisi banyak hal mengenai _John Lennon_ dan _Paul McCart
 
 > __Konon katanya, semua lirik lagu the Beatles ditulis dari sudut pandang orang pertama.__
 
-Maksudnya, lirik lagunya selalu menggunakan kata `saya` (dalam bahasa inggris jadi _me_, _I_, _my_ atau _mine_). Jadi bukan bercerita dari sudut pandang orang ketiga.
+Maksudnya, lirik lagunya selalu menggunakan kata `saya` atau `kami` (dalam bahasa inggris jadi _me_, _I_, _my_, _mine_, _we_, _us_ atau _our_ dan _ours_). Jadi bukan bercerita dari sudut pandang orang ketiga.
 
 Sekian tahun berlalu hingga kini saya punya cara untuk membuktikan kebenaran dari _urban legend_ tersebut. Apakah benar semua lagu _The Beatles_ ditulis dari _1st person POV_?
 
@@ -57,13 +57,16 @@ data %>% head(10)
 
 ## Apakah semua lagu ditulis dengan _1st POV_?
 
-Ternyata, dari `200` lagu yang ada tersebut, ada `22` lagu yang secara eksplisit tidak menggunakan kata `saya`.
+Ternyata, dari `200` lagu yang ada tersebut, ada `17` lagu yang secara eksplisit tidak menggunakan kata `saya` atau `kami`.
 
 ```{r,echo=FALSE,fig.retina=10,warning=FALSE,message=FALSE}
 lagu_bukan_1pov = 
   data %>% 
   unnest_tokens(words,lirik) %>% 
-  mutate(penanda = ifelse(words %in% c("i","me","my","mine"),1,0)) %>% 
+  mutate(penanda = ifelse(words %in% c("i","me","my","mine","we","us","our","ours"),
+                          1,
+                          0)
+         ) %>% 
   group_by(id,judul) %>% 
   summarise(penanda = sum(penanda),
             lirik = stringr::str_c(words,collapse = " ")) %>% 
@@ -72,8 +75,8 @@ lagu_bukan_1pov =
   select(-penanda)
 
 data.frame(
-  ket = c("Yes it is POV","No it is not POV"),
-  n = c(178,22)
+  ket = c("Explicit 1st POV","Not Explicit 1st POV"),
+  n = c(183,17)
 ) %>% 
   mutate(persen = n/sum(n),
          persen = persen*100,
@@ -96,7 +99,7 @@ data.frame(
         axis.title.x = element_blank())
 ```
 
-Ternyata _urban legend_ tersebut tidak sepenuhnya benar. Mayoritas lagu memang ditulis dari _1st POV_, tapi ada sebagian kecil lagu yang tidak ditulis demikian.
+Ternyata mayoritas lagu memang ditulis dari _1st POV_, walau ada sebagian kecil lagu yang tidak ditulis demikian.
 
 Apa saja lagunya?
 
@@ -105,7 +108,9 @@ lagu_bukan_1pov %>%
   knitr::kable('pipe',booktabs = T,row.names = NA,caption = 'Lagu bukan 1st POV') 
 ```
 
-Beberapa lagu yang familiar di telinga saya seperti `All You Need is Love`, `Lady Madonna`, dan `Lucy in The Sky with Diamonds` ternyata memang tidak mengandung kata eksplisit _1st POV_.
+Beberapa lagu yang familiar di telinga saya seperti `All You Need is Love`, `Lady Madonna`, dan `Lucy in The Sky with Diamonds` ternyata memang tidak mengandung kata eksplisit _1st POV_. 
+
+Tapi lagu ke `157` adalah versi bahasa Jerman dari lagu `I Wanna Hold Your Hand`. Berarti bertambah lagi satu lagu yang ditulis dari _1st POV_.
 
 ## Kata Terpenting dalam Lagu _The Beatles_
 
@@ -161,7 +166,14 @@ data.frame(tbl_graph) %>%
   knitr::kable('pipe',booktabs = T,row.names = NA,caption = '15 Kata yang menjadi pusat')
 ```
 
-Ternyata `you` menjadi kata pusat di semua lirik _The Beatles_ TAPI jika kita lihat dengan seksama, kata-kata _1st POV_ seperti `I`, `me`, dan `my` memiliki index _degree_ dan _betweenness_ yang tinggi.
+Ternyata `you` menjadi kata pusat di semua lirik _The Beatles_. Hal ini menarik bagi saya.
+
+> Karena kalau diperhatikan, lagu seperti `All You Need is Love`. Walau tidak ada eksplisit kata `saya` dan `kita`, seolah-olah si penyanyi sedang berbicara langsung kepada orang kedua. 
+
+Maka dari itu, `you` jangan-jangan bisa dimasukkan ke dalam _1st POV_ secara implisit.
+
+
+Selain itu, kata-kata _1st POV_ seperti `I`, `me`, dan `my` memiliki index _degree_ dan _betweenness_ yang tinggi.
 
 ## _Degree_
 
@@ -191,4 +203,4 @@ ggraph(tbl_graph,layout = "fr") +
 
 # _Summary_
 
-Jadi _urban legend_ ini tidak sepenuhnya benar. Ada sebagian lagu yang tidak ditulis dari _1st POV_ TAPI kita tidak bisa memungkiri bahwa kata-kata _1st POV_ mendominasi _central gravity_ dari lirik-lirik yang dinyanyikan _The Beatles_.
+Jadi _urban legend_ mungkin benar adanya. Walau ada sebagian lagu yang tidak secara eksplisit menggunakan kata `saya` dan `kami` TAPI kita tidak bisa memungkiri bahwa kata-kata _1st POV_ mendominasi _central gravity_ dari lirik-lirik yang dinyanyikan _The Beatles_.
