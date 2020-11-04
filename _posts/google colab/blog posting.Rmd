@@ -7,6 +7,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+setwd("/cloud/project/_posts/google colab")
 ```
 
 Kondisi _work from home_ yang saat ini sedang saya jalani sejak bulan `Maret 2020` bukanlah suatu hal yang selalu menyenangkan. Dalam beberapa kesempatan, _work hours_ saya menjadi kacau balau.
@@ -64,7 +65,7 @@ Ternyata lumayan juga sih kalau merogoh kantong sendiri. Jadi harus ada cara lai
 _Google Colab_ adalah salah satu layanan di _Google_ yang memungkinkan penggunanya untuk membuat _coding_ menggunakan __Jupyter Notebook__ dalam bahasa _Python_. Saya sudah pernah mencobanya sejak tahun lalu. Namun beberapa hari yang lalu saya baru mengetahui bahwa kini _Google_ sudah memberikan dukungan untuk bahasa __R__ bisa digunakan di _Google Colab_ dengan tampilan ala __Jupyter Notebook__.
 
 ```{r,echo=FALSE}
-knitr::inlude_graphics("Screenshot_20201104-175901_Chrome.jpg")
+knitr::include_graphics("Screenshot_20201104-175901_Chrome.jpg")
 ```
 
 Kita bisa menambahkan _libraries_ dan meng-_upload_ _dataset_ kita ke sana dengan mudah layaknya bekerja di __R__ menggunakan _command line interface_.
