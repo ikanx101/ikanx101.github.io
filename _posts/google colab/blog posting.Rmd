@@ -1,5 +1,5 @@
 ---
-title: "Google Colab"
+title: "Menjadi Data Scientist yang Produktif Sambil Mobile dengan Google Colab"
 output: 
   github_document:
     pandoc_args: --webtex
@@ -7,5 +7,31 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+```
+
+Kondisi _work from home_ yang saat ini sedang saya jalani sejak bulan `Maret 2020` bukanlah suatu hal yang selalu menyenangkan. Dalam beberapa kesempatan, _work hours_ saya menjadi kacau balau.
+
+Saking kacaunya, saya bisa berkoordinasi (balas-balas _email_) pada dini hari.
+
+Selain itu, walau cuma di rumah saja, mobilitas saya tergolong tinggi. Mulai dari _workspace_ yang saya set di lantai 2, kamar tidur utama, ruang tamu, garasi, hingga dapur. _hehe_.
+
+> _Gak_ mungkin saya bawa-bawa [laptop kantor](https://ikanx101.com/blog/review-ubuntu/) ke mana-mana. 
+
+Karena bobotnya yang berat dan ternyata sekarang bermasalah di _hardware wifi_-nya sehingga koneksi internet membutuhkan _fixed USB tethering_. Bukan berarti saya tidak puas dengan performa __Ubuntu__ _yah_. Justru sangat puas sekali tapi aspek lainnya membuat mobilitas saya kurang fleksibel.
+
+Bagaimana dengan laptop mini yang saya _install_ [Chromium OS](https://ikanx101.com/blog/laptop-chromium/)?
+
+Laptop tersebut malah sudah saya jadikan _daily driver_ selama `2` minggu ke belakang. Lumayan _powerful_ untuk harga segitu. Ukurannya yang kecil dan ringan membuat mobilitasnya cukup oke.
+
+__TAPI__
+
+Beberapa hari ini, saya ternyata membutuhkan _gadget_ yang lebih _mobile_ lagi tapi harus tetap _reliable_. Pilihan saya kembalikan ke __Tablet Samsung Galaxy Tab A 10 inch__ yang sempat saya bebas tugaskan. 
+
+> Sayang nih nganggur. Harus kembali dioptimalkan.
+
+Bermodalkan [__Github__](https://ikanx101.com/blog/github-rstudio/) dan koneksi internet, sebenarnya saya bisa (dan sudah biasa) menggunakan [__R Studio Cloud__](https://ikanx101.com/blog/r-cloud/) untuk tetap bekerja.
+
+```{r,echo=FALSE}
+knitr::include_graphics()
 ```
 
