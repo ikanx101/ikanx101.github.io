@@ -1,6 +1,6 @@
 ---
 date: 2020-11-04T08:00:00-04:00
-title: "Menjadi Data Scientist yang Produktif Sambil Mobile dengan Google Colab"
+title: "Tetap Produktif dengan R via Cloud Menggunakan Google Colab"
 categories:
   - Blog
 tags:
@@ -112,3 +112,5 @@ Saya kemudian jadi berpikir:
 > Jika saya selamat hanya dengan mengandalkan laptop 2 juta bernafaskan
 > Chromium OS, barangkali saya bisa selamat juga dengan bermodalkan
 > tablet android ini\!
+
+Oh iya, untuk mencobanya silakan menuju [colab.to/r](https://colab.to/r)
