@@ -53,4 +53,11 @@ Dengan menggunakan _instagram scraper_ yang berjalan di Python, saya mengambil `
 
 ## Langkah II: melempar poto-poto tersebut ke _Google Vision_
 
-Setelah itu, dari semua poto yang ada
+```{r,echo=FALSE}
+knitr::include_graphics("jokowi.png")
+```
+
+Setelah itu, dari semua poto yang ada, saya akan lempar ke _Google Vision_ untuk dianalisa. 
+
+> Label apa saja yang ada di dalam poto tersebut?
+
