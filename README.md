@@ -1,11 +1,10 @@
 # Welcome to My Blog Backbone Github
 
-Selamat menikmati ikanx101.com
+Selamat menikmati [ikanx101.com](https://ikanx101.com/)
 
-to do list:
+_to do list_:
 
-1. Ryo Murasame
-1. Asian food network
 1. Pembajakan buku
 1. Gendre la baby
 1. Home tester
+1. Cookpad
