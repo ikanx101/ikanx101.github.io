@@ -24,7 +24,33 @@ _Google Vision_ memiliki satu fitur yang disebut dengan `label detection` yang m
 
 > Percaya saja bahwa secara berkala Google terus memperbaiki modelnya.
 
-```{r langkah kerja,echo=FALSE}
+---
 
+Gimana langkah kerjanya?
+
+```{r langkah kerja,echo=FALSE}
+nomnoml::nomnoml("#direction: down,
+                 [Download Photo] -> [Google Vision]
+                 [Google Vision] -> [Tidy]
+                 
+                 [Download Photo|
+                    [Akun IG Target] -> [Instagram Scraper]
+                    [Instagram Scraper] -> [Target Photos]]
+                 
+                 [Google Vision|
+                    Label Detection]
+                 
+                 [Tidy|
+                    Data carpentry]
+                 ")
 ```
 
+Semuanya saya lakukan menggunakan __R__ _yah_. _hehe_
+
+## Langkah I: _download photos_
+
+Dengan menggunakan _instagram scraper_ yang berjalan di Python, saya mengambil `10` _posts_ terakhir dari akun IG official Presiden Jokowi.
+
+## Langkah II: melempar poto-poto tersebut ke _Google Vision_
+
+Setelah itu, dari semua poto yang ada
