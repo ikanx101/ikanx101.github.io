@@ -45,7 +45,7 @@ model*-nya.
 
 Gimana langkah kerjanya?
 
-<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Google%20Image/blog-post_files/figure-gfm/unnamed-chunk-1-1.png" width="20%" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Google%20Image/blog-post_files/figure-gfm/unnamed-chunk-1-1.png" width="35%" />
 
 Semuanya saya lakukan menggunakan **R** *yah*. *hehe*
 
