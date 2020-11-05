@@ -1,0 +1,206 @@
+---
+title: "Text Analysis: Membuktikan Kebenaran Urban Legend Lagu The Beatles"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(rvest)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(tidytext)
+library(igraph)
+library(ggraph)
+library(tidygraph)
+
+setwd("~/ikanx101 com/_posts/data carpentry/the beatles")
+
+rm(list=ls())
+load('~/belajaR/Bukan Infografis/The Beatles/lirik.rda')
+
+data = 
+  data %>% 
+  mutate(judul = gsub("the beatles ","",judul,fixed = T),
+         lirik = gsub("x ","",lirik,fixed = T)) %>% 
+  select(id,judul,lirik)
+```
+
+Siapa sih yang tidak mengenal _band_ legendaris Inggris _The Beatles_? Mungkin cuma anak-anak _millenials_ yang gak pernah mendengarnya _yah_. _hehe._
+
+Ceritanya, saat SMA saya dan beberapa teman memiliki kesukaan terhadap lagu-lagu _The Beatles_. Hingga suatu momen kami nge-_band_ dan nge-_jam_ lagu-lagu tersebut. Tidak disangka ternyata ayah dari salah satu teman saya memiliki _official books_ dari _The Beatles_.
+
+Walaupun buku tersebut berisi banyak hal mengenai _John Lennon_ dan _Paul McCartney_ _cs_, saya hanya tertarik pada bagian partitur dan _chord_ lagu-lagunya. Ada satu _urban legend_ yang ditulis di buku tersebut:
+
+> __Konon katanya, semua lirik lagu the Beatles ditulis dari sudut pandang orang pertama.__
+
+Maksudnya, lirik lagunya selalu menggunakan kata `saya` atau `kami` (dalam bahasa inggris jadi _me_, _I_, _my_, _mine_, _we_, _us_ atau _our_ dan _ours_). Jadi bukan bercerita dari sudut pandang orang ketiga.
+
+Sekian tahun berlalu hingga kini saya punya cara untuk membuktikan kebenaran dari _urban legend_ tersebut. Apakah benar semua lagu _The Beatles_ ditulis dari _1st person POV_?
+
+---
+
+Berdasarkan informasi dari _Google_ dan _Wikipedia_, setidaknya _The Beatles_ telah membuat setidaknya `117` buah lagu. Tapi, kalau saya cek di beberapa situs lain seperti: [www.lyricsfreak.com](https://www.lyricsfreak.com/), jumlahnya mencapai `200` buah lagu.
+
+Saya kemudian _scrape_ semua judul dan lirik lagu dari _The Beatles_ dari situs tersebut. Berikut adalah _sample_ datanya:
+
+```{r,echo=FALSE}
+data %>% head(10)
+```
+
+---
+
+# Hasil Penelusuran
+
+## Apakah semua lagu ditulis dengan _1st POV_?
+
+Ternyata, dari `200` lagu yang ada tersebut, ada `17` lagu yang secara eksplisit tidak menggunakan kata `saya` atau `kami`.
+
+```{r,echo=FALSE,fig.retina=10,warning=FALSE,message=FALSE}
+lagu_bukan_1pov = 
+  data %>% 
+  unnest_tokens(words,lirik) %>% 
+  mutate(penanda = ifelse(words %in% c("i","me","my","mine","we","us","our","ours"),
+                          1,
+                          0)
+         ) %>% 
+  group_by(id,judul) %>% 
+  summarise(penanda = sum(penanda),
+            lirik = stringr::str_c(words,collapse = " ")) %>% 
+  ungroup() %>% 
+  filter(penanda == 0) %>% 
+  select(-penanda)
+
+data.frame(
+  ket = c("Explicit 1st POV","Not Explicit 1st POV"),
+  n = c(183,17)
+) %>% 
+  mutate(persen = n/sum(n),
+         persen = persen*100,
+         persen = round(persen,1),
+         persen = paste0(persen,"%")) %>% 
+  ggplot(aes(x = reorder(ket,-n),
+             y = n)) +
+  geom_col(color = "steelblue",
+           fill = "gray",
+           size = 1.25) +
+  geom_label(aes(label = persen),
+             color = "steelblue",
+             fill = "gray") +
+  theme_minimal() +
+  labs(y = "Banyak lagu",
+       title = "Apakah semua lagu The Beatles ditulis dari 1st POV?",
+       subtitle = "Hasil text analysis dari 200 lagu The Beatles",
+       caption = "Scraped, Analyze, and Visualized\nusing R\nikanx101.com") +
+  theme(axis.text.y = element_blank(),
+        axis.title.x = element_blank())
+```
+
+Ternyata mayoritas lagu memang ditulis dari _1st POV_, walau ada sebagian kecil lagu yang tidak ditulis demikian.
+
+Apa saja lagunya?
+
+```{r,echo=FALSE}
+lagu_bukan_1pov %>% 
+  knitr::kable('pipe',booktabs = T,row.names = NA,caption = 'Lagu bukan 1st POV') 
+```
+
+Beberapa lagu yang familiar di telinga saya seperti `All You Need is Love`, `Lady Madonna`, dan `Lucy in The Sky with Diamonds` ternyata memang tidak mengandung kata eksplisit _1st POV_. 
+
+Tapi lagu ke `157` adalah versi bahasa Jerman dari lagu `I Wanna Hold Your Hand`. Berarti bertambah lagi satu lagu yang ditulis dari _1st POV_.
+
+## Kata Terpenting dalam Lagu _The Beatles_
+
+Sekarang saya akan melihat dari semua lagu _The Beatles_ kata apa yang terpenting. Kata apa yang menjadi pusat perhatian dari rangkaian lirik _The Beatles_?
+
+Untuk menjawabnya, saya akan gunakan _bigram analysis_, yakni melihat pasangan kata yang muncul bersamaan.
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10}
+graf = 
+  data %>% 
+  unnest_tokens(bigram,lirik,token='ngrams',n=2) %>% 
+  count(bigram,sort=T) %>%
+  filter(n>5) %>% 
+  separate(bigram,into=c('word1','word2'),sep=' ') %>% 
+  graph_from_data_frame()
+
+tbl_graph = as_tbl_graph(graf)
+hub_id = degree(tbl_graph)
+between_index = betweenness(graf)
+
+tbl_graph =
+  tbl_graph %>%
+  activate(nodes) %>%
+  mutate(degree = degree(tbl_graph),
+         between = betweenness(tbl_graph),
+         cluster = as.factor(group_infomap()))
+
+ggraph(tbl_graph,layout = "fr") +
+  geom_edge_link(aes(edge_alpha=n)) +
+  geom_node_point() +
+  geom_node_text(aes(label = name),size = 2) +
+  theme_void() +
+  theme(legend.position = "none")
+```
+
+
+Agak rumit yah graf di atas. 
+
+Ada beberapa cara menentukan pusat dari graf.
+
+1. _Degree_: _For finding very connected words, popular words, words which can quickly connect with the wider network._
+1. _Betweenness_: _For finding the words which influence the flow around a system._
+
+Berikut adalah hasil perhitungan dari graf di atas:
+
+
+```{r,echo=FALSE}
+data.frame(tbl_graph) %>% 
+  select(name,degree,between) %>% 
+  rename(words = name) %>% 
+  arrange(desc(degree,between)) %>% 
+  head(15) %>% 
+  knitr::kable('pipe',booktabs = T,row.names = NA,caption = '15 Kata yang menjadi pusat')
+```
+
+Ternyata `you` menjadi kata pusat di semua lirik _The Beatles_. Hal ini menarik bagi saya.
+
+> Karena kalau diperhatikan, lagu seperti `All You Need is Love`. Walau tidak ada eksplisit kata `saya` dan `kita`, seolah-olah si penyanyi sedang berbicara langsung kepada orang kedua. 
+
+Maka dari itu, `you` jangan-jangan bisa dimasukkan ke dalam _1st POV_ secara implisit.
+
+
+Selain itu, kata-kata _1st POV_ seperti `I`, `me`, dan `my` memiliki index _degree_ dan _betweenness_ yang tinggi.
+
+## _Degree_
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10}
+ggraph(tbl_graph,layout = "fr") +
+  geom_edge_link(aes(edge_alpha=n)) +
+  geom_node_point(aes(size = degree,color = degree)) +
+  scale_color_gradient(low = "darkred", high = "steelblue") +
+  geom_node_text(aes(label = ifelse(degree > 30, name, NA),size = degree)) +
+  theme_void() +
+  theme(legend.position = "none")
+```
+
+## _Between_
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10}
+ggraph(tbl_graph,layout = "fr") +
+  geom_edge_link(aes(edge_alpha=n)) +
+  geom_node_point(aes(size = between,color = between)) +
+  scale_color_gradient(low = "darkred", high = "steelblue") +
+  geom_node_text(aes(label = ifelse(between > 2000, name, NA),size = between)) +
+  theme_void() +
+  theme(legend.position = "none")
+```
+
+---
+
+# _Summary_
+
+Jadi _urban legend_ mungkin benar adanya. Walau ada sebagian lagu yang tidak secara eksplisit menggunakan kata `saya` dan `kami` TAPI kita tidak bisa memungkiri bahwa kata-kata _1st POV_ mendominasi _central gravity_ dari lirik-lirik yang dinyanyikan _The Beatles_.
