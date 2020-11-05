@@ -41,7 +41,7 @@ _Google Vision_ memiliki satu fitur yang disebut dengan `label detection` yang m
 
 Gimana langkah kerjanya?
 
-```{r langkah kerja,echo=FALSE}
+```{r out.width="20%",echo=FALSE,fig.retina=10}
 nomnoml::nomnoml("#direction: down,
                  [Download Photo] -> [Google Vision]
                  [Google Vision] -> [Tidy]
@@ -78,7 +78,7 @@ Setelah itu, dari semua poto yang ada, saya akan lempar ke _Google Vision_ untuk
 
 Dari data yang sudah terkumpul, saya akan membuat visualisasinya sebagai berikut:
 
-```{r,fig.retina = 10,fig.height = 7,echo=FALSE}
+```{r,fig.retina = 10,fig.height = 8,echo=FALSE}
 data %>%
   ggplot(aes(y = reorder(description,score),
              x = score)) +
@@ -93,3 +93,4 @@ data %>%
 
 ```
 
+## _Kira-kira, hal ini bisa kita manfaatkan lebih lanjut gak yah?_
