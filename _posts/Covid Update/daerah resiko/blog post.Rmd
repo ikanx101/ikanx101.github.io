@@ -1,0 +1,181 @@
+---
+title: "Summary Zona Risiko COVID 19 Kabupaten Kota di Indonesia"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/Documents/ikanx101/_posts/Covid Update/daerah resiko")
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+data = readLines("data.txt")
+
+data = data.frame(
+  id = c(1:514),
+  raw = data
+) %>% 
+  separate(raw,into = c("prov","kab_kota","ket"),sep = "\t") %>% 
+  mutate(ket = factor(ket,levels = c("TIDAK TERDAMPAK",
+                                     "TIDAK ADA KASUS",
+                                     "RISIKO RENDAH",
+                                     "RISIKO SEDANG",
+                                     "RISIKO TINGGI")
+                      )
+         )
+```
+
+Pandemi yang belum juga usai di Indonesia ini lama-lama membuat jenuh juga _yah_. Walau data terbaru menunjukkan tren menurun, tapi entah kenapa saya punya _feeling_ penurunan ini erat kaitannya dengan pelaksanaan PILKADA yang akan diselenggarakan di kemudian hari.
+
+Tapi ini hanya _feeling_ dan opini saja _yah_. Saya masih malas untuk mengumpulkan data lalu melakukan analisanya.
+
+---
+
+Kali ini saya mau berbicara mengenai data zonasi risiko di kabupaten dan kota seluruh Indonesia. Data ini saya _scrape_ dari [situs resmi pemerintah](https://covid19.go.id/peta-risiko) per `5 November 2020` pukul `19.54` WIB.
+
+Setidaknya ada `514` kabupaten dan kota dari semua provinsi di Indonesia yang ada di data ini.
+
+```{r,echo=FALSE}
+data %>% 
+  head(10) %>% 
+  rename(Provinsi = prov,
+         `Kabupaten dan Kota` = kab_kota,
+         Keterangan = ket) %>% 
+  knitr::kable("html",caption = "Contoh 10 Data Pertama")
+```
+
+---
+
+Zonasi Risiko daerah dihitung berdasarkan indikator-indikator kesehatan masyarakat dengan menggunakan skoring dan pembobotan.
+
+Indikator-indikator yang digunakan adalah sbb:
+
+INDIKATOR EPIDEMIOLOGI:
+
+1. Penurunan jumlah kasus positif dan _probable_ pada minggu terakhir sebesar `≥50%` dari puncak.
+2. Penurunan jumlah kasus suspek pada minggu terakhir sebesar `≥50%` dari puncak.
+3. Penurunan jumlah meninggal kasus positif dan _probable_ pada minggu terakhir sebesar `≥50%` dari puncak.
+4. Penurunan jumlah meninggal kasus suspek pada minggu terakhir sebesar `≥50%` dari puncak.
+5. Penurunan jumlah kasus positif dan _probable_ yang dirawat di RS pada minggu terakhir sebesar `≥50%` dari puncak.
+6. Penurunan jumlah kasus suspek yang dirawat di RS pada minggu terakhir sebesar `≥50%` dari puncak.
+7. Persentase kumulatif kasus sembuh dari seluruh kasus positif dan _probable_.
+8. Laju insidensi kasus positif per `100.000` penduduk.
+9. _Mortality rate_ kasus positif per `100.000` penduduk.
+10. Kecepatan laju insidensi per `100.000` penduduk.
+
+INDIKATOR SURVEILANS KESEHATAN MASYARAKAT
+
+1. Jumlah pemeriksaan sampel diagnosis meningkat selama 2 minggu terakhir.
+2. _Positivity rate_ rendah (target `≤5%` sampel positif dari seluruh orang yang diperiksa).
+
+INDIKATOR PELAYANAN KESEHATAN
+
+1. Jumlah tempat tidur di ruang isolasi RS Rujukan mampu menampung hingga `>20%` jumlah pasien positif COVID-19 yang dirawat di RS.
+2. Jumlah tempat tidur di RS Rujukan mampu menampung hingga `>20%` jumlah ODP, PDP, dan pasien positif COVID-19 yang dirawat di RS.
+
+---
+
+Sekarang mari kita lihat kondisi resiko kabupaten dan kota per provinsi di Indonesia:
+
+Kita mulai dari _summary_ berikut ini:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10,fig.width=9,fig.height=8}
+library(ggalluvial)
+data %>% 
+  group_by(prov,ket) %>% 
+  summarise(n = n()) %>% 
+  ungroup() %>% 
+  ggplot(
+    aes(y = n,
+        axis1 = prov,
+        axis2 = ket)
+  ) +
+  geom_alluvium(aes(fill = ket)) +
+  geom_stratum(width = 1/12, aes(fill = prov), color = "grey") +
+  geom_label(stat = "stratum", aes(label = after_stat(stratum)),size = 1.7) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.text = element_blank(),
+        axis.title = element_blank()) +
+  labs(title = "Sebaran Status Risiko Kabputan dan Kota di Semua Provinsi",
+       subtitle = "Sumber: covid19.go.id",
+       caption = "Scraped and Visualized\nusing R\nikanx101.com")
+  
+
+```
+
+Kita lihat versi _real number_-nya:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10,fig.width=9,fig.height=8}
+data %>% 
+  group_by(prov,ket) %>% 
+  summarise(n = n()) %>% 
+  ungroup() %>% 
+  ggplot(
+    aes(
+      x = prov,
+      y = n
+    )
+  ) +
+  geom_col(
+    aes(
+      fill = ket
+    )
+  ) +
+  scale_fill_manual(values=c("#3da30d","#454a52","#ad820a","#cf320e","#451308")) +
+  theme_minimal() +
+  labs(title = "Status Risiko Kabupaten dan Kota per Provinsi",
+       subtitle = "Sumber: covid19.go.id",
+       caption = "Scraped and Visualized\nusing R\nikanx101.com",
+       fill = "Status",
+       y = "banyaknya kab/kota") +
+  theme(legend.position = "bottom",
+        axis.title.x = element_blank(),
+        axis.text.x = element_text(angle = 90,hjust = 1))
+```
+
+Oke, saya akan buat grafik di atas dalam bentuk proporsi. Berikut hasilnya:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10,fig.width=9,fig.height=8}
+data %>% 
+  group_by(prov,ket) %>% 
+  summarise(n = n()) %>% 
+  ungroup() %>% 
+  group_by(prov) %>% 
+  mutate(persen = n/sum(n)*100) %>% 
+  ggplot(
+    aes(
+      x = prov,
+      y = persen
+    )
+  ) +
+  geom_col(
+    aes(
+      fill = ket
+    )
+  ) +
+  scale_fill_manual(values=c("#3da30d","#454a52","#ad820a","#cf320e","#451308")) +
+  theme_minimal() +
+  labs(title = "PROPORSI Status Risiko Kabupaten dan Kota per Provinsi",
+       subtitle = "Sumber: covid19.go.id",
+       caption = "Scraped and Visualized\nusing R\nikanx101.com",
+       fill = "Status",
+       y = "dalam %") +
+  theme(legend.position = "bottom",
+        axis.title.x = element_blank(),
+        axis.text.x = element_text(angle = 90,hjust = 1))
+```
+
+Ternyata ada beberapa temuan yang menarik menurut saya:
+
+1. `DKI Jakarta` tidak semenyeramkan yang ada di media. Awalnya saya menduga bahwa mayoritas kota di `DKI Jakarta` berisiko tinggi. Tapi kenyataannya tidak ada sama sekali.
+1. Justru `Aceh` yang memiliki kabupaten kota yang berisiko tinggi. Padahal kita tahu bahwa pada pemberitaan media-media, `Aceh` diposisikan sebagai provinsi yang aman dari COVID 19.
+1. `Riau`, `Kalimantan Timur`, dan `Jawa Tengah` pada saat ini memiliki proporsi risiko tinggi yang tertinggi.
+1. Sedangkan `Jawa Timur` yang sempat memiliki zona hitam beberapa bulan lalu, justru kondisinya membaik.
+
+---
+
+## Semoga saja pandemi ini segera berakhir _yah_.
