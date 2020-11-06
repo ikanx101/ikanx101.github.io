@@ -2,7 +2,7 @@ Menghitung Probabilitas Kesamaan Packaging Dua Produk Minuman
 Menggunakan Algoritma Deep Learning di R
 ================
 
-# *Prolog*
+# *Prolog*: 2013
 
 Pada tahun `2013` lalu, saya dan beberapa rekan kerja berdiskusi seru
 mengenai adanya satu produk *low calorie sweetener* yang memiliki
@@ -24,9 +24,7 @@ saya yakin akan berulang di masa mendatang.
 
 -----
 
-# Menghitung Probabilitas Kesamaan *Packaging* Dua Produk Minuman Menggunakan Algoritma *Deep Learning* di **R**
-
-## Latar Belakang
+# 2020
 
 Sudah menjadi hal lumrah bagi setiap *brand* untuk mengikuti *brand*
 yang menjadi *market leader* dalam kategorinya. Mereka bisa menjadi
@@ -42,15 +40,20 @@ Berikut gambar yang saya dapatkan di internet:
 
 <img src="blog-post_files/figure-gfm/unnamed-chunk-1-1.png" width="50%" />
 
-## Tujuan
+Bagaimana menurut kalian? Mirip *gak sih*?
 
-Saya dan beberapa teman merasa *packaging* tersebut mirip dengan
-*packaging* `NutriSari`. Tapi seberapa mirip? Apakah ada cara
-mengkuantifikasi kemiripan tersebut?
+Tapi yang menjadi pertanyaan adalah:
 
-Kali ini saya akan mencoba menghitung peluang kesamaannya dengan membuat
-algoritma *deep learning* menggunakan **TensorFlow** dan **Keras** di
-**R**.
+1.  Seberapa mirip?
+2.  Apakah ada cara mengkuantifikasi kemiripan tersebut?
+
+Kalau mengandalkan jawaban manusia, saya kira hasilnya bisa *debatable*.
+Oleh karena itu saya akan mencoba menghitung peluang kesamaannya dengan
+membuat algoritma *deep learning* menggunakan **TensorFlow** dan
+**Keras** di **R**.
+
+> Seharusnya dengan algoritma, hasilnya bisa *less debatable* jika saya
+> melakukannya dengan benar.
 
 ## Metode
 
@@ -58,22 +61,33 @@ Saya akan membuat algoritma *supervised learning* dengan metode *deep
 learning* untuk mengklasifikasi gambar `NutriSari` dan `non NutriSari`.
 Kemudian algoritma akan disuruh membaca gambar `Herbalice` tersebut.
 
-> Saya akan melihat berapa angka probabilitas hasil klasifikasinya\!
-> Apakah *packaging* tersebut lebih diklasifikasikan ke `NutriSari`?
-> Atau diklasifikasikan ke `non NutriSari`?
+Masih bingung? Saya jelaskan di bagan di bawah ini:
+
+![](blog-post_files/figure-gfm/bagan-1.png)<!-- -->
+
+> Saya mengumpulkan `16` poto *packaging* NutriSari dan `15` poto
+> *packaging* minuman buah selain NutriSari. Kemudian saya membuat
+> algoritma yang `belajar` untuk mengidentifikasi poto mana yang masuk
+> ke NutriSari, poto mana yang bukan termasuk NutriSari. Setelah
+> performa algoritmanya sudah baik, saya akan masukkan poto Herbalice
+> dan melihat hasil pembacaan dari algoritmanya.
+
+Saya akan melihat berapa angka probabilitas hasil klasifikasinya\!
+Apakah *packaging* tersebut lebih diklasifikasikan ke `NutriSari`? Atau
+diklasifikasikan ke `non NutriSari`?
+
+![](blog-post_files/figure-gfm/potoset-1.png)<!-- -->
 
 -----
-
-# Dasar Teori
 
 ## *Deep Learning*
 
 Apa sih yang dimaksud *deep learning*? Apa bedanya dengan *machine
 learning*? Lalu apa bedanya dengan *artificial intelligence*?
 
-<img src="blog-post_files/figure-gfm/unnamed-chunk-2-1.png" width="50%" />
+    ## [1] "Sumber gambar: smartcityindo.com"
 
-    ## [1] "Sumber: smartcityindo.com"
+<img src="blog-post_files/figure-gfm/unnamed-chunk-2-1.png" width="50%" />
 
 Secara simpel, saya bisa katakan bahwa:
 

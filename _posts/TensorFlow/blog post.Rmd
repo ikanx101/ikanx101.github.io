@@ -12,7 +12,7 @@ library(dplyr)
 library(EBImage)
 ```
 
-# _Prolog_
+# _Prolog_: 2013
 
 Pada tahun `2013` lalu, saya dan beberapa rekan kerja berdiskusi seru mengenai adanya satu produk _low calorie sweetener_ yang memiliki _packaging_ yang `mirip` dengan _brand_ yang diproduksi perusahaan saya. Jika dilihat sekilas, tidak tampak ada perbedaan berarti. Apalagi pemilihan warna dan _layout_ gambarnya hampir mirip.
 
@@ -26,9 +26,7 @@ Walau akhirnya studi tersebut tidak dilaksanakan tapi kasus seperti ini saya yak
 
 ---
 
-# Menghitung Probabilitas Kesamaan _Packaging_ Dua Produk Minuman Menggunakan Algoritma _Deep Learning_ di __R__
-
-## Latar Belakang
+# 2020
 
 Sudah menjadi hal lumrah bagi setiap _brand_ untuk mengikuti _brand_ yang menjadi _market leader_ dalam kategorinya. Mereka bisa menjadi _follower_ dalam hal _marketing_, _campaign_ iklan, profil rasa, sampai tema _packaging_ produk.
 
@@ -41,21 +39,50 @@ img = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/Im
 plot(img)
 ```
 
-## Tujuan
+Bagaimana menurut kalian? Mirip _gak sih_?
 
-Saya dan beberapa teman merasa _packaging_ tersebut mirip dengan _packaging_ `NutriSari`. Tapi seberapa mirip? Apakah ada cara mengkuantifikasi kemiripan tersebut?
+Tapi yang menjadi pertanyaan adalah:
 
-Kali ini saya akan mencoba menghitung peluang kesamaannya dengan membuat algoritma _deep learning_ menggunakan __TensorFlow__ dan __Keras__ di __R__.
+1. Seberapa mirip? 
+1. Apakah ada cara mengkuantifikasi kemiripan tersebut?
+
+Kalau mengandalkan jawaban manusia, saya kira hasilnya bisa _debatable_. Oleh karena itu saya akan mencoba menghitung peluang kesamaannya dengan membuat algoritma _deep learning_ menggunakan __TensorFlow__ dan __Keras__ di __R__. 
+
+> Seharusnya dengan algoritma, hasilnya bisa _less debatable_ jika saya melakukannya dengan benar.
 
 ## Metode
 
 Saya akan membuat algoritma _supervised learning_ dengan metode _deep learning_ untuk mengklasifikasi gambar `NutriSari` dan `non NutriSari`. Kemudian algoritma akan disuruh membaca gambar `Herbalice` tersebut. 
 
-> Saya akan melihat berapa angka probabilitas hasil klasifikasinya! Apakah _packaging_ tersebut lebih diklasifikasikan ke `NutriSari`? Atau diklasifikasikan ke `non NutriSari`?
+Masih bingung? Saya jelaskan di bagan di bawah ini:
+
+```{r bagan,echo=FALSE}
+nomnoml::nomnoml("
+                 [Database Poto Produk NutriSari] -> [Algoritma]
+                 [Database Poto Produk Non NutriSari] -> [Algoritma]
+                 
+                 [Algoritma|
+                    [Belajar] -> [Validasi]
+                    [Validasi] -> [Model OK]]
+                 
+                 [Algoritma] <- [Poto Packaging Herbalice]
+                 [Algoritma] -> [Hasil]
+                 
+                 [Hasil|
+                    Apakah Herbalice mirip NutriSari\natau tidak?]
+                 ")
+```
+ 
+> Saya mengumpulkan `16` poto _packaging_ NutriSari dan `15` poto _packaging_ minuman buah selain NutriSari. Kemudian saya membuat algoritma yang `belajar` untuk mengidentifikasi poto mana yang masuk ke NutriSari, poto mana yang bukan termasuk NutriSari. Setelah performa algoritmanya sudah baik, saya akan masukkan poto Herbalice dan melihat hasil pembacaan dari algoritmanya.
+
+Saya akan melihat berapa angka probabilitas hasil klasifikasinya! Apakah _packaging_ tersebut lebih diklasifikasikan ke `NutriSari`? Atau diklasifikasikan ke `non NutriSari`?
+
+```{r potoset,echo=FALSE}
+img = readImage("Dbase Poto.png")
+plot(img)
+```
 
 ---
-
-# Dasar Teori
 
 ## _Deep Learning_
 
@@ -63,8 +90,8 @@ Apa sih yang dimaksud _deep learning_? Apa bedanya dengan _machine learning_? La
 
 ```{r out.width="50%",echo=FALSE}
 img = readImage("gambar.png")
-plot(img)
 print("Sumber gambar: smartcityindo.com")
+plot(img)
 ```
 
 Secara simpel, saya bisa katakan bahwa:
@@ -80,6 +107,8 @@ Lalu apa lagi itu _Neural Network_?
 par(mfrow=c(2,4))
 for(i in 1:8) plot(train[[i]])
 
-```{r,echo=FALSE}
-setwd("~/Documents/ikanx101/_posts/TensorFlow")
-```
+---
+
+### _Notes_
+
+Tulisan ini dibuat untuk _educational purposes_ dan tidak dijadikan acuan untuk kepentingan hukum apapun.
