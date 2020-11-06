@@ -1,0 +1,85 @@
+---
+title: "Menghitung Probabilitas Kesamaan Packaging Dua Produk Minuman Menggunakan Algoritma Deep Learning di R"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/Documents/ikanx101/_posts/TensorFlow")
+library(dplyr)
+library(EBImage)
+```
+
+# _Prolog_
+
+Pada tahun `2013` lalu, saya dan beberapa rekan kerja berdiskusi seru mengenai adanya satu produk _low calorie sweetener_ yang memiliki _packaging_ yang `mirip` dengan _brand_ yang diproduksi perusahaan saya. Jika dilihat sekilas, tidak tampak ada perbedaan berarti. Apalagi pemilihan warna dan _layout_ gambarnya hampir mirip.
+
+> Jika kita bisa membuktikan bahwa kejadian ini membuat konsumen bingung, kita bisa membawanya ke ranah hukum.
+
+Begitu celetuk salah seorang rekan saya.
+
+Sempat kami berpikir untuk melakukan suatu studi dan survey yang bisa membuktikan bahwa konsumen menjadi bingung tapi survey ini harus benar-benar _robust_ sehingga tidak bisa dipatahkan di meja hijau.
+
+Walau akhirnya studi tersebut tidak dilaksanakan tapi kasus seperti ini saya yakin akan berulang di masa mendatang.
+
+---
+
+# Menghitung Probabilitas Kesamaan _Packaging_ Dua Produk Minuman Menggunakan Algoritma _Deep Learning_ di __R__
+
+## Latar Belakang
+
+Sudah menjadi hal lumrah bagi setiap _brand_ untuk mengikuti _brand_ yang menjadi _market leader_ dalam kategorinya. Mereka bisa menjadi _follower_ dalam hal _marketing_, _campaign_ iklan, profil rasa, sampai tema _packaging_ produk.
+
+Beberapa hari belakangan ini, saya melihat sebuah iklan dari produk minuman bermerek `Herbalice` di televisi. Jika saya lihat sekilas _packaging_ yang ditampilkan di dalam iklan tersebut, rupa _packaging_-nya mirip dengan _brand_ minuman terkenal `NutriSari`.
+
+Berikut gambar yang saya dapatkan di internet:
+
+```{r out.width="50%",echo=FALSE}
+img = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/Image Classifier/herba.jpg")
+plot(img)
+```
+
+## Tujuan
+
+Saya dan beberapa teman merasa _packaging_ tersebut mirip dengan _packaging_ `NutriSari`. Tapi seberapa mirip? Apakah ada cara mengkuantifikasi kemiripan tersebut?
+
+Kali ini saya akan mencoba menghitung peluang kesamaannya dengan membuat algoritma _deep learning_ menggunakan __TensorFlow__ dan __Keras__ di __R__.
+
+## Metode
+
+Saya akan membuat algoritma _supervised learning_ dengan metode _deep learning_ untuk mengklasifikasi gambar `NutriSari` dan `non NutriSari`. Kemudian algoritma akan disuruh membaca gambar `Herbalice` tersebut. 
+
+> Saya akan melihat berapa angka probabilitas hasil klasifikasinya! Apakah _packaging_ tersebut lebih diklasifikasikan ke `NutriSari`? Atau diklasifikasikan ke `non NutriSari`?
+
+---
+
+# Dasar Teori
+
+## _Deep Learning_
+
+Apa sih yang dimaksud _deep learning_? Apa bedanya dengan _machine learning_? Lalu apa bedanya dengan _artificial intelligence_?
+
+```{r out.width="50%",echo=FALSE}
+img = readImage("gambar.png")
+plot(img)
+print("Sumber gambar: smartcityindo.com")
+```
+
+Secara simpel, saya bisa katakan bahwa:
+
+- _Artificial intelligence_ merupakan _umbrella terms_ dari disiplin ilmu seperti _applied science_, _engineering_, dan _computer science_.
+- _Machine learning_ merupakan kumpulan metode atau algoritma untuk melakukan baik analisa _supervised learning_ dan _unsupervised learning_.
+- _Deep Learning_ merupakan algoritma _machine learning_ yang dibuat dengan metode _Neural Network_.
+
+Lalu apa lagi itu _Neural Network_?
+
+
+
+par(mfrow=c(2,4))
+for(i in 1:8) plot(train[[i]])
+
+```{r,echo=FALSE}
+setwd("~/Documents/ikanx101/_posts/TensorFlow")
+```
