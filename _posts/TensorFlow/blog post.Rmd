@@ -92,7 +92,7 @@ plot(img)
 
 Apa sih yang dimaksud _deep learning_? Apa bedanya dengan _machine learning_? Lalu apa bedanya dengan _artificial intelligence_?
 
-```{r out.width="50%",echo=FALSE}
+```{r out.width="70%",echo=FALSE}
 img = readImage("gambar.png")
 print("Sumber gambar: smartcityindo.com")
 plot(img)
@@ -106,13 +106,64 @@ Secara simpel, saya bisa katakan bahwa:
 
 ### _Neural Network_
 
-_Neural Network_ adalah suatu algoritma yang proses komputasinya meniru sistem jaringan syaraf
+_Neural Network_ adalah suatu algoritma yang proses komputasinya meniru sistem jaringan syaraf yang ada di tubuh manusia.
 
+```{r out.width="50%",echo=FALSE}
+img = readImage("NN.png")
+print("Sumber gambar: wikipedia")
+plot(img)
+```
 
+Walau bentuknya mirip dengan graf [Social Network Analysis](https://ikanx101.com/blog/sna-feedback/) tapi ini adalah dua hal yang berbeda _yah_!
 
+Pada algoritma _machine learning_, kita masih bisa melihat proses perhitungan dan menginterpretasikan modelnya secara langsung. Sedangkan pada _deep learning_, prosesnya bisa dibilang _ghaib_. Kita hanya mengatur ada berapa banyak _layer_, berapa banyak _nodes per layer_, dan _activation function_ apa saja yang dipakai. 
 
+> Mungkin karena itu dinamakan `deep` _yah_. Saking "dalam"nya sampai-sampai tidak bisa dilihat.
+
+Hal ini menjadi salah satu keunggulan _neural network_ dibandingkan algoritma tipe lain untuk mengolah data berupa gambar.
+
+### Data Gambar
+
+Jika kita memiliki suatu _file_ gambar. Sejatinya gambar tersebut bisa dibaca sebagai _matriks_ data __RGB__ (_Red_, _Green_, dan _Blue_) dengan _pixel size_ sebagai ukuran matriksnya.
+
+Sebagai contoh, poto kemasan `Herbalice` jika diekstrak datanya, kita dapatkan bentuk seperti ini:
+
+```{r,echo=FALSE}
+img = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/Image Classifier/herba.jpg")
+img
+```
+
+Matriks dari data _image_ bisa dibilang relatif "besar". Oleh karena itu kita membutuhkan suatu algoritma komputasi yang efektif untuk mereduksi parameter tanpa mengurangi kualitas. Oleh karena itu _neural network_ menjadi andalan saat berhubungan dengan _image classifying_.
+
+### __TensorFlow__ dan __KERAS__
+
+Apa itu __TensorFlow__?
+
+> TensorFlow is a free and open-source software library for machine learning. It can be used across a range of tasks but has a particular focus on training and inference of deep neural networks. Tensorflow is a symbolic math library based on dataflow and differentiable programming.
+
+```{r out.width="80%",echo=FALSE}
+img = readImage("tensor.png")
+print("Contoh cara kerja Neural Network di TensorFlow")
+plot(img)
+```
+
+__TensorFlow__ di-_develop_ oleh _Google Brain Team_.
+
+Apa itu __KERAS__?
+
+> Keras is an open-source library that provides a Python interface for artificial neural networks. Keras acts as an interface for the TensorFlow library. 
+
+Walaupun keduanya ditulis dalam _Python_, tapi kini kita bisa menggunakannya di __R__.
 
 ---
+
+## Cara Kerja
+
+Sekarang saya akan mencoba menjelaskan cara kerja saya dalam membuat algoritma _supervised learning_ ini.
+
+### _Train Dataset_ dan _Test Dataset_
+
+
 
 ### _Notes_
 
