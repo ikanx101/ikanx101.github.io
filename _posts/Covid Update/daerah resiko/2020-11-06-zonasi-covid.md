@@ -1,5 +1,5 @@
 ---
-date: 2020-11-6T03:38:00-04:00
+date: 2020-11-06T03:38:00-04:00
 title: "Summary Zona Risiko COVID 19 Kabupaten Kota di Indonesia"
 categories:
   - Blog
