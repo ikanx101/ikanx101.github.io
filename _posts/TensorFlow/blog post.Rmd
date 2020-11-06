@@ -77,6 +77,8 @@ nomnoml::nomnoml("
 
 Saya akan melihat berapa angka probabilitas hasil klasifikasinya! Apakah _packaging_ tersebut lebih diklasifikasikan ke `NutriSari`? Atau diklasifikasikan ke `non NutriSari`?
 
+Berikut ini adalah _database_ poto _packaging_ yang saya gunakan:
+
 ```{r potoset,echo=FALSE}
 img = readImage("Dbase Poto.png")
 plot(img)
@@ -84,7 +86,9 @@ plot(img)
 
 ---
 
-## _Deep Learning_
+## Dasar Teori
+
+### _Deep Learning_
 
 Apa sih yang dimaksud _deep learning_? Apa bedanya dengan _machine learning_? Lalu apa bedanya dengan _artificial intelligence_?
 
@@ -100,12 +104,13 @@ Secara simpel, saya bisa katakan bahwa:
 - _Machine learning_ merupakan kumpulan metode atau algoritma untuk melakukan baik analisa _supervised learning_ dan _unsupervised learning_.
 - _Deep Learning_ merupakan algoritma _machine learning_ yang dibuat dengan metode _Neural Network_.
 
-Lalu apa lagi itu _Neural Network_?
+### _Neural Network_
+
+_Neural Network_ adalah suatu algoritma yang proses komputasinya meniru sistem jaringan syaraf
 
 
 
-par(mfrow=c(2,4))
-for(i in 1:8) plot(train[[i]])
+
 
 ---
 
