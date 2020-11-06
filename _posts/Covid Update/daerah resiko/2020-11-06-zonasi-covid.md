@@ -423,9 +423,9 @@ Ternyata ada beberapa temuan yang menarik menurut saya:
 
 1.  `DKI Jakarta` tidak semenyeramkan yang ada di media. Awalnya saya
     menduga bahwa mayoritas kota di `DKI Jakarta` berisiko tinggi. Tapi
-    kenyataannya tidak ada sama sekali.
+    kenyataannya mayoritas berada di status `sedang`.
 2.  Justru `Aceh` yang memiliki kabupaten kota yang berisiko tinggi.
-    Padahal kita tahu bahwa pada pemberitaan media-media, `Aceh`
+    Padahal kita tahu bahwa pada pemberitaan media-media di awal pandemi, `Aceh`
     diposisikan sebagai provinsi yang aman dari COVID 19.
 3.  `Riau`, `Kalimantan Timur`, dan `Jawa Tengah` pada saat ini memiliki
     proporsi risiko tinggi yang tertinggi.

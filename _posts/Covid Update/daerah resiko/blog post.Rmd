@@ -100,7 +100,7 @@ data %>%
   theme(legend.position = "none",
         axis.text = element_blank(),
         axis.title = element_blank()) +
-  labs(title = "Sebaran Status Risiko Kabputan dan Kota di Semua Provinsi",
+  labs(title = "Sebaran Status Risiko Kabupaten dan Kota di Semua Provinsi",
        subtitle = "Sumber: covid19.go.id",
        caption = "Scraped and Visualized\nusing R\nikanx101.com")
   
