@@ -9,3 +9,27 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Suatu ketika di salah satu sekolah dasar di kota Bekasi. Jam menunjukkan pukul 11.50, sekitar 10 menit menuju jam pulang siswa. Sang guru memberikan kuis matematika kepada murid-muridnya.
+
+> Jika ada yang bisa menyelesaikan soal ini, boleh pulang duluan!
+
+Begitu ujarnya.
+
+Lantas beliau menggambar sebuah lingkaran yang diberi keterangan memiliki radius 7 cm di papan tulis. Soalnya: Hitung luas lingkaran tersebut!
+
+Semua murid sudah hapal bahwa rumus luas lingkaran adalah:
+
+$$$L = \pi * r^2$$$
+
+Sebagian murid menggunakan $\pi = \frac{22}{7}$ sedangkan sebagian yang lain menggunakan $\pi = 3.14$.
+
+Jadi timbullah dua jawaban:
+
+1. `r (22/7)*7^2` cm
+1. `r 3.14*7^2` cm
+
+Kedua nilai tersebut dibenarkan oleh sang guru. Murid-murid yang menjawab salah satu dari kedua jawaban tersebut diperbolehkan pulang.
+
+---
+
+# Pertanyaan Mendasar: Sebenarnya berapa nilai $\pi$?
