@@ -4,9 +4,8 @@ Selamat menikmati [ikanx101.com](https://ikanx101.com/)
 
 _to do list_:
 
-1. Asian food network
+1. hitung pi
 1. Pembajakan buku
 1. Gendre la baby
 1. Home tester
 1. Cookpad
-1. daerah resiko
