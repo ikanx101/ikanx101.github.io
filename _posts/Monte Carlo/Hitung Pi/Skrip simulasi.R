@@ -17,6 +17,7 @@ ggplot() + annotate("path",
 # sekarang kita hitung dengan simulasi montecarlo
 # kita tentukan terlebih dahulu berapa banyak simulasinya
 # ini fungsi utk menghitungnya
+# kita pakai metode jatuh yah
 set.seed(10104074)
 hitung_pi = function(n){
   x = runif(n)
@@ -53,7 +54,7 @@ simulasi %>%
         y = "Nilai aproksimasi") +
         annotate("text",
                  x = 500000, 
-                 y = 3.19, 
+                 y = 3.22, 
                  label = paste0("Pi ~ ",simulasi$pi[18],
                                 "\nselisih dengan Pi aslinya = ",round(simulasi$beda[18],7))
                  )
