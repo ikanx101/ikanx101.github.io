@@ -20,9 +20,13 @@ Pada tahun `2013` lalu, saya dan beberapa rekan kerja berdiskusi seru mengenai a
 
 Begitu celetuk salah seorang rekan saya.
 
-Sempat kami berpikir untuk melakukan suatu studi dan survey yang bisa membuktikan bahwa konsumen menjadi bingung tapi survey ini harus benar-benar _robust_ sehingga tidak bisa dipatahkan di meja hijau.
+Bagaimana caranya kita bisa membuktikan konsumen bingung? Hal pertama yang terlintas di benak saya adalah dengan melakukan survey kepada konsumen. Tapi tampaknya hal itu bukanlah solusi terbaik karena survey yang dilakukan harus benar-benar _robust_ dan dihitung dengan statistik yang tepat. 
 
-Walau akhirnya studi tersebut tidak dilaksanakan tapi kasus seperti ini saya yakin akan berulang di masa mendatang.
+Kenapa harus ribet begitu?
+
+> Agar hasilnya tidak bisa dipatahkan dengan mudah oleh siapapun.
+
+Akhirnya ini hanya menjadi bahan diskusi seru tanpa ada _follow up_ apapun di tim kami. Saya pribadi yakin kejadian ini akan berulang di masa mendatang.
 
 ---
 
@@ -162,6 +166,39 @@ Walaupun keduanya ditulis dalam _Python_, tapi kini kita bisa menggunakannya di 
 Sekarang saya akan mencoba menjelaskan cara kerja saya dalam membuat algoritma _supervised learning_ ini.
 
 ### _Train Dataset_ dan _Test Dataset_
+
+Dari `31` buah poto yang saya kumpulkan tersebut, saya akan gunakan `25` poto sebagai _train dataset_ dan `6` sisanya menjadi _test dataset_. Penentuan poto mana saja yang masuk ke dalam _train_ dan _test_ dipilih secara acak dengan menggunakan prinsip _random number generator_ di __R__. Oleh karena proporsi poto `NutriSari` dan `bukan NutriSari` hampir 50-50, maka saya rasa pengacakan adalah hal yang bisa dilakukan. Berbeda hal jika data yang kita miliki tidak _balance_ (hal ini bisa jadi pembahasan di kemudian hari _yah_).
+
+_Train dataset_ yang saya gunakan adalah poto-poto berikut ini:
+
+```{r out.width="80%",echo=FALSE}
+img = readImage("train dataset.png")
+plot(img)
+```
+
+Diharapkan algoritma _neural network_ yang saya buat bisa mengenali poto mana yang `NutriSari` dan poto mana yang `bukan NutriSari`. 
+
+Sedangkan _test dataset_ akan saya jadikan sebagai alat validasi dari performa algoritma yang saya buat.
+
+Berikut poto-poto yang termasuk ke dalam _test dataset_:
+
+```{r out.width="80%",echo=FALSE}
+img = readImage("test dataset.png")
+plot(img)
+```
+
+### Pre Processing: Data Preparation
+
+Sama halnya seperti data lainnya, data berbentuk gambar atau poto juga harus disiapkan dulu (_data preparation_). 
+
+> Jadi perlakuan data gambar dengan data lain seperti numerik atau teks sama saja yah!
+
+Apa saja yang harus disiapkan? Hal paling umum dilakukan adalah dengan _resizing_ poto ke ukuran yang sama. 
+
+
+### Pembuatan Model
+
+
 
 
 
