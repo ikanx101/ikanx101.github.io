@@ -61,7 +61,7 @@ minuman bermerek `Herbalice` di televisi. Jika saya lihat sekilas
 
 Berikut gambar yang saya dapatkan di internet:
 
-<img src="https://github.com/ikanx101/ikanx101.github.io/blob/master/_posts/TensorFlow/blog-post_files/figure-gfm/unnamed-chunk-1-1.png" width="50%" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/TensorFlow/blog-post_files/figure-gfm/unnamed-chunk-1-1.png" width="50%" />
 
 Bagaimana menurut kalian? Mirip *gak sih*?
 
@@ -86,7 +86,7 @@ Kemudian algoritma akan disuruh membaca gambar `Herbalice` tersebut.
 
 Masih bingung? Saya jelaskan di bagan di bawah ini:
 
-![](https://github.com/ikanx101/ikanx101.github.io/blob/master/_posts/TensorFlow/blog-post_files/figure-gfm/bagan-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/TensorFlow/blog-post_files/figure-gfm/bagan-1.png)<!-- -->
 
 > Saya mengumpulkan `16` poto *packaging* NutriSari dan `15` poto
 > *packaging* minuman buah selain NutriSari. Kemudian saya membuat
@@ -101,7 +101,7 @@ diklasifikasikan ke `non NutriSari`?
 
 Berikut ini adalah *database* poto *packaging* yang saya gunakan:
 
-![](https://github.com/ikanx101/ikanx101.github.io/blob/master/_posts/TensorFlow/blog-post_files/figure-gfm/potoset-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/TensorFlow/blog-post_files/figure-gfm/potoset-1.png)<!-- -->
 
 -----
 
@@ -114,7 +114,7 @@ learning*? Lalu apa bedanya dengan *artificial intelligence*?
 
     ## [1] "Sumber gambar: smartcityindo.com"
 
-<img src="https://github.com/ikanx101/ikanx101.github.io/blob/master/_posts/TensorFlow/blog-post_files/figure-gfm/unnamed-chunk-2-1.png" width="70%" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/TensorFlow/blog-post_files/figure-gfm/unnamed-chunk-2-1.png" width="70%" />
 
 Secara simpel, saya bisa katakan bahwa:
 
@@ -134,7 +134,7 @@ sistem jaringan syaraf yang ada di tubuh manusia.
 
     ## [1] "Sumber gambar: wikipedia"
 
-<img src="https://github.com/ikanx101/ikanx101.github.io/blob/master/_posts/TensorFlow/blog-post_files/figure-gfm/unnamed-chunk-3-1.png" width="50%" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/TensorFlow/blog-post_files/figure-gfm/unnamed-chunk-3-1.png" width="50%" />
 
 Walau bentuknya mirip dengan graf [Social Network
 Analysis](https://ikanx101.com/blog/sna-feedback/) tapi ini adalah dua
@@ -193,7 +193,7 @@ Apa itu **TensorFlow**?
 
     ## [1] "Contoh cara kerja Neural Network di TensorFlow"
 
-<img src="https://github.com/ikanx101/ikanx101.github.io/blob/master/_posts/TensorFlow/blog-post_files/figure-gfm/unnamed-chunk-5-1.png" width="80%" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/TensorFlow/blog-post_files/figure-gfm/unnamed-chunk-5-1.png" width="80%" />
 
 **TensorFlow** di-*develop* oleh *Google Brain Team*.
 
@@ -226,7 +226,7 @@ jadi pembahasan di kemudian hari *yah*).
 
 *Train dataset* yang saya gunakan adalah poto-poto berikut ini:
 
-<img src="https://github.com/ikanx101/ikanx101.github.io/blob/master/_posts/TensorFlow/blog-post_files/figure-gfm/unnamed-chunk-6-1.png" width="80%" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/TensorFlow/blog-post_files/figure-gfm/unnamed-chunk-6-1.png" width="80%" />
 
 Diharapkan algoritma *neural network* yang saya buat bisa mengenali poto
 mana yang `NutriSari` dan poto mana yang `bukan NutriSari`.
@@ -236,7 +236,7 @@ performa algoritma yang saya buat.
 
 Berikut poto-poto yang termasuk ke dalam *test dataset*:
 
-<img src="https://github.com/ikanx101/ikanx101.github.io/blob/master/_posts/TensorFlow/blog-post_files/figure-gfm/unnamed-chunk-7-1.png" width="80%" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/TensorFlow/blog-post_files/figure-gfm/unnamed-chunk-7-1.png" width="80%" />
 
 ### Pre Processing: Data Preparation
 
@@ -289,7 +289,7 @@ yang sebaiknya digunakan?
 Sekarang kita lihat performa algoritma yang saya buat menggunakan *train
 dataset* di atas:
 
-<img src="https://github.com/ikanx101/ikanx101.github.io/blob/master/_posts/TensorFlow/blog-post_files/figure-gfm/unnamed-chunk-9-1.png" width="50%" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/TensorFlow/blog-post_files/figure-gfm/unnamed-chunk-9-1.png" width="50%" />
 
 Jika dilihat akurasinya nyaris sempurna. *Loss* yang dihasilkan juga
 sangat kecil.
@@ -306,7 +306,7 @@ Dari model di atas, sekarang gilirannya *moment of truth*. Saya akan
 mengetes *packaging* `Herbalice` ke dalam model tersebut. Bagaimana
 hasilnya?
 
-<img src="https://github.com/ikanx101/ikanx101.github.io/blob/master/_posts/TensorFlow/blog-post_files/figure-gfm/unnamed-chunk-10-1.png" width="672" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/TensorFlow/blog-post_files/figure-gfm/unnamed-chunk-10-1.png" width="672" />
 
 Ternyata algoritma saya membaca *packaging* `Herbalice` sebagai
 `NutriSari` dengan peluang sebesar `80.6%`.
