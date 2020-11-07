@@ -7,6 +7,9 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+library(dplyr)
+library(ggplot2)
 ```
 
 Suatu ketika di salah satu sekolah dasar di kota Bekasi. Jam menunjukkan pukul 11.50, sekitar 10 menit menuju jam pulang siswa. Sang guru memberikan kuis matematika kepada murid-muridnya.
@@ -33,3 +36,59 @@ Kedua nilai tersebut dibenarkan oleh sang guru. Murid-murid yang menjawab salah 
 ---
 
 # Pertanyaan Mendasar: Sebenarnya berapa nilai $\pi$?
+
+Ada satu pertanyaan yang menggelayuti pikiran saya selama ini. 
+
+> Berapa sih nilai $\pi$ yang sebenarnya?
+
+Sebagai orang yang pernah kuliah di jurusan matematika, saya mengetahui fakta menarik bahwa $\pi$ sejatinya bukanlah $\frac{22}{7}$.
+
+Baik angka $\frac{22}{7}$ dan $3.14$ hanyalah aproksimasi dari nilai $\pi$ yang sebenarnya. _Gak_ percaya? Dengan menggunakan nilai $\pi$ yang ada di _base_ __R__, saya akan hitung selisihnya ke dua nilai aproksimasi tersebut:
+
+1. $\pi - \frac{22}{7} =$ `pi - (22/7)`
+1. $\pi - 3.14 =$ `pi - 3.14`
+
+Setelah kita tahu bahwa sejatinya nilai $\pi$ yang sebenarnya berbeda dengan apa yang kita ketahui selama ini, lalu berapa nilai sesungguhnya?
+
+Apa ada cara menghitung nilai $\pi$?
+
+## Cara Menghitung $\pi$
+
+Bagi matematikawan, ada banyak cara menghitung nilai pi. Ada yang cara deterministik dan ada cara probabilistik.
+
+Kali ini saya akan mencoba menghitung nilai $\pi$ dengan cara kedua yakni dengan pendekatan simulasi MonteCarlo. Bagaimana cara kerjanya? _Yuk_ perhatikan dengan seksama.
+
+### Lingkaran dengan $r = 1$
+
+Saya mulai dari lingkaran dengan $r = 1$ berikut ini:
+
+```{r, echo=FALSE,fig.retina=10}
+# gambar lingkaran
+xc = 1
+yc = 1
+r = 1
+ggplot() + annotate("path",
+   x=xc+r*cos(seq(0,2*pi,length.out=100)),
+   y=yc+r*sin(seq(0,2*pi,length.out=100))) +
+   labs(title = "Lingkaran r=1",
+        caption = "digambar dengan R\nikanx101.com") +
+   annotate("text",
+            x = .5,
+            y = .5,
+            label = "Luas Area Ini\n(L1)")
+```
+
+Dari gambar di atas, luas area pada $x$ di range $[0,1]$ saya tuliskan sebagai berikut:
+
+$$$L1 = \frac{1}{4} * L_{lingkaran} = \frac{1}{4} * \pi * r^2$$$
+
+$$$L1 = \frac{1}{4} * \pi * (1^2) = \frac{1}{4} * \pi$$$
+
+### Mencari Nilai $L1$
+
+Kunci untuk mencari nilai $\pi$ adalah dengan menghitung $L1$.
+
+> Bagaimana menghitung $L1$?
+
+Luas didefinisikan sebagai sigma (jika diskrit) atau integral (jika kontinu) dari area di bawah kurva. Oke kalau pernyataan di atas membingungkan, saya akan buat simplifikasi berikut:
+
