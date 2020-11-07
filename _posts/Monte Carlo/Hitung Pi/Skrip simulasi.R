@@ -20,8 +20,13 @@ ggplot() + annotate("path",
 set.seed(10104074)
 hitung_pi = function(n){
   x = runif(n)
-  y = 4 * sqrt(1 - (x*x))
-  return(mean(y))
+  y = runif(n)
+  data = data.frame(x,y)
+  data =
+    data %>%
+    mutate(jatuh = x^2 + y^2,
+           ket = ifelse(jatuh <= 1, 1,0))
+  return(4 * sum(data$ket)/n)
 }
 
 # saatnya simulasi
@@ -48,7 +53,7 @@ simulasi %>%
         y = "Nilai aproksimasi") +
         annotate("text",
                  x = 500000, 
-                 y = 3.17, 
+                 y = 3.19, 
                  label = paste0("Pi ~ ",simulasi$pi[18],
                                 "\nselisih dengan Pi aslinya = ",round(simulasi$beda[18],7))
                  )
