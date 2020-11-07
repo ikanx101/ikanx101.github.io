@@ -193,7 +193,11 @@ Sama halnya seperti data lainnya, data berbentuk gambar atau poto juga harus dis
 
 > Jadi perlakuan data gambar dengan data lain seperti numerik atau teks sama saja yah!
 
-Apa saja yang harus disiapkan? Hal paling umum dilakukan adalah dengan _resizing_ poto ke ukuran yang sama. 
+Apa saja yang harus disiapkan? Hal paling umum dilakukan adalah dengan _resizing_ poto ke ukuran yang sama. Jadi jika kalian menyadari, poto yang saya jadikan _dataset_ ini memiliki ukuran _pixel size_ yang berbeda-beda. Oleh karena itu, saya akan mengubah semua poto tersebut ke ukuran yang sama, yakni: `28 x 28` _pixels_.
+
+Proses _resizing_ saya lakukan tetap di __R__ dengan memanfaatkan _function_ `resize()` di `library(EBImage)`. Praktis kan? _Gak_ perlu _software_ lain lagi. _hehe_
+
+Selanjutnya poto tersebut dibaca ke dalam bentuk matriks seperti yang telah saya tunjukkan sebelumnya. Matriks tersebut diperkaya dengan label `0` untuk `bukan NutriSari` dan `1` untuk `NutriSari`.
 
 
 ### Pembuatan Model
