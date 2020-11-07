@@ -1,0 +1,11 @@
+---
+title: "SIMULASI MONTECARLO: Menghitung Nilai Pi"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
