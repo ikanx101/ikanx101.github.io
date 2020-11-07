@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 setwd("~/Documents/ikanx101/_posts/TensorFlow")
 library(dplyr)
 library(EBImage)
+library(ggplot2)
 ```
 
 # _Prolog_: 2013
@@ -203,6 +204,16 @@ Selanjutnya poto tersebut dibaca ke dalam bentuk matriks seperti yang telah saya
 
 Pada algoritma ini, saya akan membuat `3` buah _layers_. _Layer_ pertama berisi `256` _nodes_, _layer_ kedua berisi `128` _nodes_, dan _layer_ terakhir berisi `2` _nodes_. _Activation functions_ yang saya gunakan adalah `ReLU` pada 2 _layers_ pertama dan `softmax` pada _layer_ terakhir.
 
+```{r}
+# model = keras_model_sequential()
+# model %>%
+#   layer_dense(units = 256, activation = 'relu', input_shape = c(2352)) %>%
+#   layer_dense(units = 128, activation = 'relu') %>%
+#   layer_dense(units = 2, activation = 'softmax')
+```
+
+_Optimizer_-nya jadi rahasia dapur _yah_. _hehe_
+
 Bagaimana menentukan banyaknya _nodes_ dan jenis _activation function_ yang sebaiknya digunakan?
 
 > Sepengetahuan saya memang harus dicoba-coba terlebih dahulu. Mana yang memberikan performa terbaik. _cmiiw_
@@ -212,14 +223,49 @@ Bagaimana menentukan banyaknya _nodes_ dan jenis _activation function_ yang seba
 Sekarang kita lihat performa algoritma yang saya buat menggunakan _train dataset_ di atas:
 
 ```{r out.width="50%",echo=FALSE}
-img = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/Image Classifier/herba.jpg")
+img = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/Image Classifier/plot 2.png")
 plot(img)
 ```
 
+Jika dilihat akurasinya nyaris sempurna. _Loss_ yang dihasilkan juga sangat kecil.
 
+Saat saya cross dengan _test dataset_, performa algoritmanya juga konsisten. Ia berhasil menebak mana yang `NutriSari` mana yang `bukan NutriSari`.
 
+---
 
+# _Momen Of Truth_
+
+Dari model di atas, sekarang gilirannya _moment of truth_. Saya akan mengetes _packaging_ `Herbalice` ke dalam model tersebut. Bagaimana hasilnya?
+
+```{r,echo=FALSE,fig.retina=10}
+load("bahan blog.rda")
+data.frame(
+  ket = c("bukan NutriSari","NutriSari"),
+  value = c(pred_2[1],pred_2[2])
+) %>% 
+  mutate(persen = value*100,
+         persen = round(persen,1),
+         persen = paste0(persen,"%")) %>% 
+  ggplot(aes(x = ket,
+             y = value)) +
+  geom_col(aes(fill = ket),
+           color = "black") +
+  scale_fill_manual(values=c("#594e41","#eb8305")) +
+  geom_label(aes(label = persen)) +
+  coord_flip() +
+  labs(title = "Probabilitas Hasil Pembacaan Packaging Herbalice",
+       subtitle = "Berdasarkan algoritma deep learning",
+       caption = "Dibuat menggunakan TensorFlow dan R\nikanx101.com") +
+  theme_minimal() +
+  theme(axis.text.x = element_blank(),
+        axis.title = element_blank(),
+        legend.position = "none")
+```
+
+Ternyata algoritma saya membaca _packaging_ `Herbalice` sebagai `NutriSari` dengan peluang sebesar `80.6%`.
+
+> Dugaan awal saya terbukti.
 
 ### _Notes_
 
-Tulisan ini dibuat untuk _educational purposes_ dan tidak dijadikan acuan untuk kepentingan hukum apapun.
+Tulisan ini dibuat untuk _educational purposes only_.
