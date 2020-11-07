@@ -199,8 +199,22 @@ Proses _resizing_ saya lakukan tetap di __R__ dengan memanfaatkan _function_ `re
 
 Selanjutnya poto tersebut dibaca ke dalam bentuk matriks seperti yang telah saya tunjukkan sebelumnya. Matriks tersebut diperkaya dengan label `0` untuk `bukan NutriSari` dan `1` untuk `NutriSari`.
 
+### Pembuatan Algoritma
 
-### Pembuatan Model
+Pada algoritma ini, saya akan membuat `3` buah _layers_. _Layer_ pertama berisi `256` _nodes_, _layer_ kedua berisi `128` _nodes_, dan _layer_ terakhir berisi `2` _nodes_. _Activation functions_ yang saya gunakan adalah `ReLU` pada 2 _layers_ pertama dan `softmax` pada _layer_ terakhir.
+
+Bagaimana menentukan banyaknya _nodes_ dan jenis _activation function_ yang sebaiknya digunakan?
+
+> Sepengetahuan saya memang harus dicoba-coba terlebih dahulu. Mana yang memberikan performa terbaik. _cmiiw_
+
+### Performa Algoritma
+
+Sekarang kita lihat performa algoritma yang saya buat menggunakan _train dataset_ di atas:
+
+```{r out.width="50%",echo=FALSE}
+img = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/Image Classifier/herba.jpg")
+plot(img)
+```
 
 
 
