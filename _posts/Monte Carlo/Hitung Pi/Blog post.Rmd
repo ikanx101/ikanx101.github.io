@@ -141,7 +141,7 @@ data_sim %>%
 
 Jika dilihat dari grafik di atas, semakin banyak _dots_ yang saya buat, semakin banyak area $L1$ yang ter-_cover_. Luas $L1$ dapat saya tuliskan sebagai:
 
-$$L1 = \frac{count(dots_{inner})}{count(all.dots)}$$
+$$L1 \approx \frac{count(dots_{inner})}{count(all.dots)}$$
 
 Lalu: $\pi = 4 * L1$
 

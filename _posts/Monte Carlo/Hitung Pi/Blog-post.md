@@ -136,9 +136,9 @@ yang ter-*cover*. Luas ![L1](https://latex.codecogs.com/png.latex?L1
 "L1") dapat saya tuliskan sebagai:
 
   
-![L1 =
-\\frac{count(dots\_{inner})}{count(all.dots)}](https://latex.codecogs.com/png.latex?L1%20%3D%20%5Cfrac%7Bcount%28dots_%7Binner%7D%29%7D%7Bcount%28all.dots%29%7D
-"L1 = \\frac{count(dots_{inner})}{count(all.dots)}")  
+![L1 \\approx
+\\frac{count(dots\_{inner})}{count(all.dots)}](https://latex.codecogs.com/png.latex?L1%20%5Capprox%20%5Cfrac%7Bcount%28dots_%7Binner%7D%29%7D%7Bcount%28all.dots%29%7D
+"L1 \\approx \\frac{count(dots_{inner})}{count(all.dots)}")  
 
 Lalu: ![\\pi = 4 \*
 L1](https://latex.codecogs.com/png.latex?%5Cpi%20%3D%204%20%2A%20L1
