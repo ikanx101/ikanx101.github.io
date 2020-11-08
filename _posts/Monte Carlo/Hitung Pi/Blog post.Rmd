@@ -7,8 +7,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-setwd("/cloud/project/_posts/Monte Carlo/Hitung Pi")
-
+setwd("~/Documents/ikanx101/_posts/Monte Carlo/Hitung Pi")
 library(dplyr)
 library(ggplot2)
 
