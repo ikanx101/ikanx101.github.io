@@ -99,7 +99,7 @@ Untuk menghitungnya saya akan gunakan metode yang tidak biasa, yakni dengan mela
 
 Perhatikan grafik di bawah ini:
 
-```{r,echo=FALSE,fig.retina=10,fig.width=10,fig.height=10}
+```{r,echo=FALSE,fig.retina=10,fig.width=5,fig.height=5}
 rm(list=ls())
 # bikin fungsi utk generate data
   # lalu kita rbind
