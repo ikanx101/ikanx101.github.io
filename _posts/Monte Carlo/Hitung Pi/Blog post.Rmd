@@ -10,6 +10,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(dplyr)
 library(ggplot2)
+
+rm(list=ls())
 ```
 
 Suatu ketika di salah satu sekolah dasar di kota Bekasi. Jam menunjukkan pukul 11.50, sekitar 10 menit menuju jam pulang siswa. Sang guru memberikan kuis matematika kepada murid-muridnya.
@@ -90,5 +92,11 @@ Kunci untuk mencari nilai $\pi$ adalah dengan menghitung $L1$.
 
 > Bagaimana menghitung $L1$?
 
-Luas didefinisikan sebagai sigma (jika diskrit) atau integral (jika kontinu) dari area di bawah kurva. Oke kalau pernyataan di atas membingungkan, saya akan buat simplifikasi berikut:
+Untuk menghitungnya saya akan gunakan metode yang tidak biasa, yakni dengan melakukan _generating random dots_ di area $x \in [0,1]$ dan $y \in [0,1]$. Setiap titik yang memenuhi persyaratan $x^2 + y^2 \leq 1$ akan saya tandai sebagai `inner` dan diluar itu akan saya tandai sebagai `outer`.
+
+Perhatikan grafik di bawah ini:
+
+```{r,echo=FALSE,fig.retina=10}
+
+```
 
