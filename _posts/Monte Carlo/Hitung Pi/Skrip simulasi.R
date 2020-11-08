@@ -79,7 +79,7 @@ generate_sim = function(n){
   y = runif(n),
   iterasi = n
   ) %>%
-  mutate(penanda = ifelse(x^2 + y^2 <= 1, 1, 0)) %>% distinct(data)
+  mutate(penanda = ifelse(x^2 + y^2 <= 1, 1, 0)) %>% distinct()
   return(data)
 }
 
