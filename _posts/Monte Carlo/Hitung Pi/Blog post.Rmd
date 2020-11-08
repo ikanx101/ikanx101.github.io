@@ -167,8 +167,7 @@ hitung_pi = function(n){
 ```{r,echo=FALSE,fig.retina=10}
 # saatnya simulasi
 simulasi = data.frame(
-  n = c(10,20,50,75,100,400,600,999,1100,2000,
-        3000,5000,7500,10000,20000,30000,500000,
+  n = c(10,20,50,75,100,400,600,20000,30000,500000,
         1000000,2000000,4000000),
   pi = 0
 )
@@ -194,4 +193,4 @@ simulasi %>%
 
 ```
 
-Ternyata hasil perhitungan saya lebih akurat dibandingkan pendekatan $\frac{22}{7}$.
+Ternyata hasil perhitungan saya dengan membuat 4 juta _dots_ lebih akurat dibandingkan pendekatan $\frac{22}{7}$.
