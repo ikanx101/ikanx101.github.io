@@ -12,6 +12,7 @@ library(dplyr)
 library(ggplot2)
 
 rm(list=ls())
+set.seed(10104074)
 ```
 
 Suatu ketika di salah satu sekolah dasar di kota Bekasi. Jam menunjukkan pukul 11.50, sekitar 10 menit menuju jam pulang siswa. Sang guru memberikan kuis matematika kepada murid-muridnya.
@@ -97,6 +98,94 @@ Untuk menghitungnya saya akan gunakan metode yang tidak biasa, yakni dengan mela
 Perhatikan grafik di bawah ini:
 
 ```{r,echo=FALSE,fig.retina=10}
+rm(list=ls())
+# bikin fungsi utk generate data
+  # lalu kita rbind
+generate_sim = function(n){
+  data = data.frame(
+  x = runif(n),
+  y = runif(n),
+  iterasi = n
+  ) %>%
+  mutate(penanda = ifelse(x^2 + y^2 <= 1, 1, 0)) %>% distinct()
+  return(data)
+}
+
+# sekarang kita bikin datasetnya
+n_sim = c(10,20,50,100,400,1000,5000)
+
+# kita mulai iterasinya
+i = 1
+data_sim = generate_sim(n_sim[i])
+
+for(i in 2:length(n_sim)){
+  temp = generate_sim(n_sim[i])
+  data_sim = rbind(data_sim,temp)
+}
+
+# yuk kita bikin dulu titiknya
+data_sim %>%
+    ggplot(aes(x = x, y = y)) +
+    geom_point(aes(color = penanda)) +
+    facet_wrap(~iterasi) +
+    theme_minimal() +
+    labs(x = "x",
+         y = "y",
+         title = "Proses Menghitung L1\nDengan cara generating random dots",
+         subtitle = "Berapa banyak random dots yang dibuat:") +
+         theme(legend.position = "none")
+```
+
+Jika dilihat dari grafik di atas, semakin banyak _dots_ yang saya buat, semakin banyak area $L1$ yang ter-_cover_. Luas $L1$ dapat saya tuliskan sebagai:
+
+$$$L1 = \frac{count(titik_{inner})}{count(all.dots)}$$$
+
+Lalu: $\pi = 4 * L1$
+
+Berikut algoritma dan hasil perhitungan saya:
+
+```{r,fig.retina=10}
+hitung_pi = function(n){
+  x = runif(n)
+  y = runif(n)
+  data = data.frame(x,y)
+  data =
+    data %>%
+    mutate(jatuh = x^2 + y^2,
+           ket = ifelse(jatuh <= 1, 1,0))
+  return(4 * sum(data$ket)/n)
+}
 
 ```
 
+```{r,echo=FALSE,fig.retina=10}
+# saatnya simulasi
+simulasi = data.frame(
+  n = c(10,20,50,75,100,400,600,999,1100,2000,
+        3000,5000,7500,10000,20000,30000,500000,
+        1000000,2000000,4000000),
+  pi = 0
+)
+
+simulasi$pi = sapply(simulasi$n,hitung_pi)
+simulasi$beda = pi - simulasi$pi
+
+simulasi %>%
+    ggplot(aes(x = n,
+               y = pi)) +
+    geom_line(color = "darkred") +
+    labs(title = "Berapa nilai Pi?\nDihitung dengan pendekatan luas lingkaran yang memiliki radius = 1",
+        subtitle = "Perhitungan menggunakan simulasi Monte Carlo",
+        caption = "Simulasi dan visualisasi\nmenggunakan R\nikanx101.com",
+        x = "Banyak Simulasi",
+        y = "Nilai aproksimasi") +
+        annotate("text",
+                 x = 500000, 
+                 y = 3.22, 
+                 label = paste0("Pi ~ ",simulasi$pi[18],
+                                "\nselisih dengan Pi aslinya = ",round(simulasi$beda[18],7))
+                 )
+
+```
+
+Ternyata hasil perhitungan saya lebih akurat dibandingkan pendekatan $\frac{22}{7}$.
