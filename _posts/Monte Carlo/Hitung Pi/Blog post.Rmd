@@ -68,8 +68,8 @@ Saya mulai dari lingkaran dengan $r = 1$ berikut ini:
 
 ```{r, echo=FALSE,fig.retina=10,fig.width=7,fig.height=7}
 # gambar lingkaran
-xc = 1
-yc = 1
+xc = 0
+yc = 0
 r = 1
 ggplot() + annotate("path",
    x=xc+r*cos(seq(0,2*pi,length.out=100)),
@@ -77,11 +77,11 @@ ggplot() + annotate("path",
    labs(title = "Lingkaran r=1",
         caption = "digambar dengan R\nikanx101.com") +
    annotate("text",
-            x = 1.25,
-            y = 1.5,
+            x = .4,
+            y = .4,
             label = "Luas Area Ini\n(L1)") +
-  geom_vline(xintercept = 1) +
-  geom_hline(yintercept = 1)
+  geom_vline(xintercept = 0) +
+  geom_hline(yintercept = 0)
 ```
 
 Dari gambar di atas, luas area pada $x$ di range $[0,1]$ saya tuliskan sebagai berikut:
@@ -139,7 +139,9 @@ data_sim %>%
          theme(legend.position = "none")
 ```
 
-Jika dilihat dari grafik di atas, semakin banyak _dots_ yang saya buat, semakin banyak area $L1$ yang ter-_cover_. Luas $L1$ dapat saya tuliskan sebagai:
+Jika dilihat dari grafik di atas, semakin banyak _dots_ yang saya buat, semakin banyak area $L1$ yang ter-_cover_. Akibatnya semakin akurat saya menghitung $L1$.
+
+Luas $L1$ dapat saya tuliskan sebagai:
 
 $$L1 \approx \frac{count(dots_{inner})}{count(all.dots)}$$
 
@@ -154,9 +156,10 @@ hitung_pi = function(n){
   data = data.frame(x,y)
   data =
     data %>%
+    distinct() %>%
     mutate(jatuh = x^2 + y^2,
            ket = ifelse(jatuh <= 1, 1,0))
-  return(4 * sum(data$ket)/n)
+  return(4 * sum(data$ket)/length(data$ket))
 }
 
 ```
