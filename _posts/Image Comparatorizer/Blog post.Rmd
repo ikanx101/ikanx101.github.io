@@ -1,0 +1,18 @@
+ 
+---
+title: "Membandingkan Kesamaan Mutlak Antara Dua Gambar"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Pada `2` tulisan sebelumnya, saya telah membahas dua topik terkait data berupa _image_ yang bisa diolah di __R__:
+
+1. Penggunaan [Google Vision](https://ikanx101.com/blog/google-vision/) untuk melakukan ekstraksi label dari suatu gambar dengan mudah (tanpa perlu membuat model _deep learning_).
+1. Membuat model _deep learning_ dengan _TensorFlow_ dan _KERAS_ di __R__ untuk menghitung _likelihood_ suatu gambar masuk ke kelompok gambar yang mana (_supervised learning_: _image classifying_).
+
+Sekarang saya akan membuat model yang sangat sederhana terkait perbandingan dua gambar.
