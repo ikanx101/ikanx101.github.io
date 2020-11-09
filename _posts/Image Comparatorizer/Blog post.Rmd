@@ -51,13 +51,133 @@ Setelah kita tahu `2` matriks tersebut, kita akan bandingkan langsung keduanya. 
 
 Sekarang kita masuk ke _case studies_ biar lebih terlihat.
 
+Awalnya saya meminta si sulung untuk menggambar satu gambar menggunakan _Galaxy Tab_ yang akan dijadikan basis.
+
 ```{r,echo=FALSE}
 img_1 = readImage('Screenshot_20201109-084453_Samsung Notes.jpg')
+print("Gambar basis:")
 plot(img_1)
 ```
 
+Lalu saya mengubah beberapa elemen gambar dan menambahkan beberapa elemen lainnya. Perlu diperhatikan juga bahwa sebenarnya ada perubahan di bagian _status bar_ atas.
+
 ```{r,echo=FALSE}
 img_2 = readImage('Screenshot_20201109-084611_Samsung Notes.jpg')
+print("Gambar yang akan dicek")
 plot(img_2)
 ```
 
+Proses selanjutnya adalah kita lihat terlebih dahulu data awal dari _images_ ini: 
+
+```{r}
+img_1
+img_2
+```
+
+Selanjutnya saya akan _resize_ kedua gambar ini. Kenapa harus di-_resize_? Perlu diperhatikan bahwa _file_ berekstensi `.jpg` memiliki `3` buah _layers_. Sedangkan _file_ berekstensi `.png` memiliki `4` buah _layers_.
+
+Maka jika gambar diatas memiliki _dimension_ sebesar `1920 X 1200`, maka akan dihasilkan matriks sebesar `1920` X `1200` X `3`.
+
+_Nah_, komputer saya tidak cukup kuat untuk mengolah matriks sebesar itu.
+
+Maka dari itu saya akan _resize_ dengan mengecilkan `20%` dari ukuran sebenarnya.
+
+```{r}
+w = 1200/5
+h = 1920/5
+img_1 = resize(img_1,w,h)
+img_2 = resize(img_2,w,h)
+```
+
+Kemudian saya akan ekstrak matriks datanya:
+
+```{r}
+gbr_1 = imageData(img_1) 
+gbr_2 = imageData(img_2)
+```
+
+Buat yang penasaran gimana bentuk matriksnya, maaf saya gak bisa kasih unjuk di blog ini karena sangat panjang. _hehe_ 
+
+Kalau mau lihat, _feel free to contact me yah_.
+
+Dari kedua buah matriks tersebut, kita sudah bisa menghitung `2` hal sebenarnya:
+
+### Proporsi sama vs tidak sama
+
+```{r}
+prop.table(table(gbr_1 == gbr_2)) * 100
+```
+
+Terlihat bahwa kedua gambar tersebut `~88.75%` sama.
+
+### Korelasi `2` matriks
+
+Berikut adalah korelasi antara `2` matriks yang ada:
+
+```{r}
+cor(gbr_1,gbr_2)
+plot(gbr_1,gbr_2)
+```
+
+Dari plot di atas terlihat bahwa ada beberapa elemen matriks yang berbeda.
+
+> Jadi jika kedua gambar sama persis, maka semua titik akan berada di satu garis lurus.
+
+---
+
+Sekarang kita akan ekstrak elemen dari kedua matriks yang nilainya berbeda. Ingat _yah_, elemen yang kita ekstrak itu adalah elemen matriks yang nilainya berbeda di `3` _layers_ sekaligus!
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+# matriks result
+mat_gam = gbr_1 == gbr_2
+# sekarang kita ekstrak row dan kolom matriks yang isinya berbeda
+result = which(mat_gam == F, arr.ind = T)
+# sekarang dari hasil result tersebut, saya hanya akan mengambil "masalah"
+  # yang keluar di ketiga layer RGB saja (jika datanya berupa JPEG)
+  # jika datanya berupa PNG, maka akan ada 4 layer
+    result = as.data.frame(result)
+  # proses ekstraksi
+    result =
+        result %>% 
+        group_by(dim1,dim2) %>% 
+        summarise(freq = n()) %>% 
+        ungroup() %>%
+        filter(freq == 3)
+
+print("Contoh 5 data teratas elemen matriks")
+result %>% select(-freq) %>% head(5)
+```
+
+Nah, bagian final dan yang tersulit adalah membuat _overlay_ antara gambar kedua dengan data dari `result`. 
+
+Entah kenapa skrip yang saya buat semalam dengan [_Google Colab_](https://ikanx101.com/blog/google-colab/) harus dimodifikasi banyak saat mau di-_run_ menggunakan _R Studio_.
+
+Ini adalah hasil akhirnya:
+
+```{r,echo=FALSE,fig.retina=10,message=FALSE,warning=FALSE}
+# panggil libraries lagi
+      library(grid)
+      library(ggplot2)
+      library(ggpubr)
+    # Panggil image kedua
+      image_new = jpeg::readJPEG("Screenshot_20201109-084611_Samsung Notes.jpg")
+      g = rasterGrob(image_new,width=unit(1,"npc"), height=unit(1,"npc"), interpolate=F)
+      
+      qplot(1:h, 1:h, geom="blank") +
+        annotation_custom(g, xmin=1, xmax=w, ymin=1, ymax=h) +
+        geom_point(aes(x = result$dim1,
+                       y = h-result$dim2),
+                   size = .05,
+                   color = "darkred",
+                   shape = 4) +
+        theme_minimal() +
+        labs(title = "Apa saja perbedaan dari gambar ini ke gambar basis?",
+             subtitle = "Algoritma Match Matriks Gambar",
+             caption = "Dibuat oleh\nikanx101\nmenggunakan R") +
+        theme(axis.text = element_blank(),
+              axis.title = element_blank())
+```
+
+Titik merah saya jadikan sebagai penanda area mana saja yang berbeda.
+
+> _Gimana_ hasilnya? Lumayan _yah_...
