@@ -8,7 +8,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
+setwd("~/Documents/ikanx101/_posts/Image Comparatorizer")
 library(EBImage)
 library(dplyr)
 ```
@@ -21,7 +21,8 @@ Pada `2` tulisan sebelumnya, saya telah membahas dua topik terkait data berupa _
 Sekarang saya akan membuat model yang sangat sederhana terkait perbandingan dua gambar. Saking sederhananya, sehingga orang lebih suka _ngoprek deep learning model_ dan mengabaikan hal fundamental seperti ini. Mirip-mirip dengan kasus seperti ini:
 
 ```{r,echo=FALSE}
-contoh = readImage(images.jpeg)
+print("Sumber gambar: Technoplast")
+contoh = readImage('images.jpeg')
 plot(contoh)
 ```
 
@@ -49,3 +50,14 @@ Setelah kita tahu `2` matriks tersebut, kita akan bandingkan langsung keduanya. 
 ## _Case Studies_
 
 Sekarang kita masuk ke _case studies_ biar lebih terlihat.
+
+```{r,echo=FALSE}
+img_1 = readImage('Screenshot_20201109-084453_Samsung Notes.jpg')
+plot(img_1)
+```
+
+```{r,echo=FALSE}
+img_2 = readImage('Screenshot_20201109-084611_Samsung Notes.jpg')
+plot(img_2)
+```
+
