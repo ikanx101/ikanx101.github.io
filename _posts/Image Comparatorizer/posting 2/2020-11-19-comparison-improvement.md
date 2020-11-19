@@ -1,5 +1,19 @@
-Penjelasan Algoritma Images Comparison
-================
+---
+date: 2020-11-19T08:00:00-04:00
+title: "Penjelasan dan Improvement Algoritma Images Comparison"
+categories:
+  - Blog
+tags:
+  - R
+  - Machine Learning
+  - Artificial Intelligence
+  - Image Processing
+  - Image Matchmaking
+  - Aljabar
+  - Image
+  - Image Recognition
+  - Matriks
+---
 
 Ternyata tulisan saya terakhir terkait algoritma perbandingan kesamaan
 mutlak antara dua gambar mendapatkan sambutan yang lumayan. Namun
@@ -49,15 +63,15 @@ Misalkan saya coba *images* hasil *screenshot* di bawah ini:
 
     ## [1] "Gambar Base:"
 
-<img src="Blog-post_files/figure-gfm/unnamed-chunk-1-1.png" width="672" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Image%20Comparatorizer/posting%202/Blog-post_files/figure-gfm/unnamed-chunk-1-1.png" width="672" />
 
     ## [1] "Gambar yang akan dicek:"
 
-<img src="Blog-post_files/figure-gfm/unnamed-chunk-1-2.png" width="672" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Image%20Comparatorizer/posting%202/Blog-post_files/figure-gfm/unnamed-chunk-1-2.png" width="672" />
 
     ## [1] "hasil pengecekan: (red dots)"
 
-<img src="Blog-post_files/figure-gfm/unnamed-chunk-1-3.png" width="672" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Image%20Comparatorizer/posting%202/Blog-post_files/figure-gfm/unnamed-chunk-1-3.png" width="672" />
 
 Seperti dilihat, algoritmanya berjalan sempurna. Berhasil menemukan
 perbedaan-perbedaan **kecil** yang ada.
@@ -73,15 +87,15 @@ antara dua gambar berikut:
 
     ## [1] "Gambar Base:"
 
-<img src="Blog-post_files/figure-gfm/unnamed-chunk-2-1.png" width="672" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Image%20Comparatorizer/posting%202/Blog-post_files/figure-gfm/unnamed-chunk-2-1.png" width="672" />
 
     ## [1] "Gambar yang akan dicek:"
 
-<img src="Blog-post_files/figure-gfm/unnamed-chunk-2-2.png" width="672" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Image%20Comparatorizer/posting%202/Blog-post_files/figure-gfm/unnamed-chunk-2-2.png" width="672" />
 
 Hasil pengecekannya cukup mencengangkan:
 
-<img src="Blog-post_files/figure-gfm/unnamed-chunk-3-1.png" width="672" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Image%20Comparatorizer/posting%202/Blog-post_files/figure-gfm/unnamed-chunk-3-1.png" width="672" />
 
 > Semua area dinilai berbeda\!
 
@@ -109,13 +123,13 @@ masih dalam *safety range*, maka ![0.98
 
 Maka, berikut adalah hasil algoritma barunya:
 
-<img src="Blog-post_files/figure-gfm/unnamed-chunk-4-1.png" width="672" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Image%20Comparatorizer/posting%202/Blog-post_files/figure-gfm/unnamed-chunk-4-1.png" width="672" />
 
 > Mmmh, masih belum memuaskan yah…
 
 TAPI jika saya mengubah sensitivitas menjadi `10%`, kita dapatkan:
 
-<img src="Blog-post_files/figure-gfm/unnamed-chunk-5-1.png" width="672" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Image%20Comparatorizer/posting%202/Blog-post_files/figure-gfm/unnamed-chunk-5-1.png" width="672" />
 
 Nah dapet deh sekarang perbedannya di mana.
 
