@@ -93,6 +93,8 @@ antara dua gambar berikut:
 
 <img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Image%20Comparatorizer/posting%202/Blog-post_files/figure-gfm/unnamed-chunk-2-2.png" width="672" />
 
+Kalau diperhatikan dengan detail, perbedaan antara dua _images_ itu sangat sedikit sekali. Coba deh dilihat, nemu gak?
+
 Hasil pengecekannya cukup mencengangkan:
 
 <img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Image%20Comparatorizer/posting%202/Blog-post_files/figure-gfm/unnamed-chunk-3-1.png" width="672" />
@@ -131,6 +133,6 @@ TAPI jika saya mengubah sensitivitas menjadi `10%`, kita dapatkan:
 
 <img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Image%20Comparatorizer/posting%202/Blog-post_files/figure-gfm/unnamed-chunk-5-1.png" width="672" />
 
-Nah dapet deh sekarang perbedannya di mana.
+Nah dapet deh sekarang perbedaannya di mana.
 
 Jangan-jangan kalian juga *gak ngeh* bedanya di mana?
