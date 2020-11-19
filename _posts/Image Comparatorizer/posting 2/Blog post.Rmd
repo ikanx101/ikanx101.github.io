@@ -1,0 +1,110 @@
+---
+title: "Penjelasan Algoritma Images Comparison"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/Documents/ikanx101/_posts/Image Comparatorizer/posting 2")
+library(EBImage)
+library(dplyr)
+```
+
+Ternyata tulisan saya terakhir terkait algoritma perbandingan kesamaan mutlak antara dua gambar mendapatkan sambutan yang lumayan. Namun beberapa rekan mengatakan bahwa contoh yang saya tampilkan itu terlalu sederhana. Jika ada _images_ lain yang lebih rumit, belum tentu berhasil.
+
+Seperti yang telah saya jelaskan di [tulisan sebelumnya](https://ikanx101.com/blog/image-comparison/), data berupa _image_ atau gambar bisa dibaca menjadi matriks penyusunnya. Matriks tersebut berisi angka nilai dari dimensi (`width` x `height`) dan _layer_ yang ada. Sebagai contoh:
+
+1. _Image_ ber-_extension_ `.jpg` disusun berdasarkan `3` _layers_ RGB.
+1. _Image_ ber-_extension_ `.png` disusun berdasarkan `4` _layers_.
+
+Sehingga dari satu buah _image_, kita bisa mendapatkan matriks penyusun berukuran `w x h x layer`.
+
+> Perbandingan yang saya lakukan itu adalah membandingkan dua matriks data gambar.
+
+Jadi secara logika mau gambar seperti apapun bisa diaplikasikan.
+
+Dari sebuah _image_, kita bisa mendapatkan satu buah matriks yang _unique_. Jika kita hendak menemukan kesamaan dan perbedaan dari dua buah _images_, maka kita sebenarnya hendak membandingkan dua buah matriks.
+
+Oleh karena itu, berikut beberapa syarat yang harus dipenuhi:
+
+1. Ukuran matriks harus sama. Konsekuensinya adalah:
+  1. Dimensi harus sama. Idealnya kedua _images_ harus berasal dari dimensi yang sama. Walaupun berbeda, kita bisa melakukan proses _resizing_ agar kedua _images_ tersebut memiliki dimensi yang sama. Tapi akan ada konsekuensi dari hal ini.
+  1. Banyaknya _layer_ harus sama (kedua _images_ berasal dari _extension_ yang sama).
+1. Kedua _images_ harus memiliki _start_ yang sama. Maksudnya, _margin_ gambar harus sama persis. Tidak ada perbedaan rotasi _images_.
+
+---
+
+## _Case I_
+
+Misalkan saya coba _images_ hasil _screenshot_ di bawah ini:
+
+```{r,echo=FALSE,fig.retina=10}
+print("Gambar Base:")
+base = readImage('~/Documents/ikanx101/_posts/Image Comparatorizer/posting 2/case 1/asli.png')
+plot(base)
+print("Gambar yang akan dicek:")
+cek = readImage('~/Documents/ikanx101/_posts/Image Comparatorizer/posting 2/case 1/cek.png')
+plot(cek)
+print("hasil pengecekan: (red dots)")
+hasil = readImage('~/Documents/ikanx101/_posts/Image Comparatorizer/posting 2/case 1/hasil.png')
+plot(hasil)
+```
+
+Seperti dilihat, algoritmanya berjalan sempurna. Berhasil menemukan perbedaan-perbedaan __kecil__ yang ada.
+
+---
+
+## _Case II_
+
+Komplikasi muncul saat saya menggunakan _images_ hasil _scan_. Kenapa? Kita belum tentu bisa mendapatkan konsistensi pembacaan warna hasil _scan_. Sebagai contoh, saat algoritma berusaha menemukan perbedaan antara dua gambar berikut:
+
+```{r,echo=FALSE,fig.retina=10}
+load("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/Image Comparatorizer/Kasus 1/buat pres.rda")
+print("Gambar Base:")
+plot(img_1)
+print("Gambar yang akan dicek:")
+plot(img_2)
+```
+
+Hasil pengecekannya cukup mencengangkan:
+
+```{r,echo=FALSE,fig.retina=10}
+hasil1 = readImage("~/Documents/Antara/Pekerjaan Sebelumnya/Image Comparatorizer/Kasus 1/hasil 1.png")
+plot(hasil1)
+```
+
+> Semua area dinilai berbeda!
+
+### _Improvement_ ke Algoritma
+
+Hal ini terjadi karena algoritma awal saya benar-benar mengecek kesamaan mutlak _values_ dari dua matriks _images_ yang ada. Oleh karena itu, saya memperbaiki algoritmanya dengan menambahkan parameter _sensitivitas_. 
+
+> Apa maksudnya?
+
+Misalkan kita hendak membandingkan nilai $0.98$ dan $0.99$.
+
+Dengan algoritma yang sekarang, $0.98 \neq 0.99$. 
+
+Kita bisa memberikan _rules_ baru: jika perbedaan nilai antara keduanya masih dalam _safety range_, maka $0.98 \simeq 0.99$.
+
+Maka, berikut adalah hasil algoritma barunya:
+
+```{r,echo=FALSE,fig.retina=10}
+hasil1 = readImage("~/Documents/Antara/Pekerjaan Sebelumnya/Image Comparatorizer/Kasus 1/hasil 3.png")
+plot(hasil1)
+```
+
+> Mmmh, masih belum memuaskan yah...
+
+TAPI jika saya mengubah sensitivitas menjadi `10%`, kita dapatkan:
+
+```{r,echo=FALSE,fig.retina=10}
+hasil1 = readImage("~/Documents/Antara/Pekerjaan Sebelumnya/Image Comparatorizer/Kasus 1/hasil 2.png")
+plot(hasil1)
+```
+
+Nah dapet deh sekarang perbedannya di mana.
+
+Jangan-jangan kalian juga _gak ngeh_ bedanya di mana?
