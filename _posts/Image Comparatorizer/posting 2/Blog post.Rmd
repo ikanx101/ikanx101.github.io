@@ -40,16 +40,16 @@ Oleh karena itu, berikut beberapa syarat yang harus dipenuhi:
 
 Misalkan saya coba _images_ hasil _screenshot_ di bawah ini:
 
-```{r,echo=FALSE,fig.retina=10}
+```{r,echo=FALSE}
 print("Gambar Base:")
-base = readImage('~/Documents/ikanx101/_posts/Image Comparatorizer/posting 2/case 1/asli.png')
-plot(base)
+#base = readImage('~/Documents/ikanx101/_posts/Image Comparatorizer/posting 2/case 1/asli.png')
+#plot(base)
 print("Gambar yang akan dicek:")
-cek = readImage('~/Documents/ikanx101/_posts/Image Comparatorizer/posting 2/case 1/cek.png')
-plot(cek)
+#cek = readImage('~/Documents/ikanx101/_posts/Image Comparatorizer/posting 2/case 1/cek.png')
+#plot(cek)
 print("hasil pengecekan: (red dots)")
-hasil = readImage('~/Documents/ikanx101/_posts/Image Comparatorizer/posting 2/case 1/hasil.png')
-plot(hasil)
+#hasil = readImage('~/Documents/ikanx101/_posts/Image Comparatorizer/posting 2/case 1/hasil.png')
+#plot(hasil)
 ```
 
 Seperti dilihat, algoritmanya berjalan sempurna. Berhasil menemukan perbedaan-perbedaan __kecil__ yang ada.
@@ -60,7 +60,7 @@ Seperti dilihat, algoritmanya berjalan sempurna. Berhasil menemukan perbedaan-pe
 
 Komplikasi muncul saat saya menggunakan _images_ hasil _scan_. Kenapa? Kita belum tentu bisa mendapatkan konsistensi pembacaan warna hasil _scan_. Sebagai contoh, saat algoritma berusaha menemukan perbedaan antara dua gambar berikut:
 
-```{r,echo=FALSE,fig.retina=10}
+```{r,echo=FALSE}
 load("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/Image Comparatorizer/Kasus 1/buat pres.rda")
 print("Gambar Base:")
 plot(img_1)
@@ -70,7 +70,7 @@ plot(img_2)
 
 Hasil pengecekannya cukup mencengangkan:
 
-```{r,echo=FALSE,fig.retina=10}
+```{r,echo=FALSE}
 hasil1 = readImage("~/Documents/Antara/Pekerjaan Sebelumnya/Image Comparatorizer/Kasus 1/hasil 1.png")
 plot(hasil1)
 ```
@@ -91,7 +91,7 @@ Kita bisa memberikan _rules_ baru: jika perbedaan nilai antara keduanya masih da
 
 Maka, berikut adalah hasil algoritma barunya:
 
-```{r,echo=FALSE,fig.retina=10}
+```{r,echo=FALSE}
 hasil1 = readImage("~/Documents/Antara/Pekerjaan Sebelumnya/Image Comparatorizer/Kasus 1/hasil 3.png")
 plot(hasil1)
 ```
@@ -100,7 +100,7 @@ plot(hasil1)
 
 TAPI jika saya mengubah sensitivitas menjadi `10%`, kita dapatkan:
 
-```{r,echo=FALSE,fig.retina=10}
+```{r,echo=FALSE}
 hasil1 = readImage("~/Documents/Antara/Pekerjaan Sebelumnya/Image Comparatorizer/Kasus 1/hasil 2.png")
 plot(hasil1)
 ```
