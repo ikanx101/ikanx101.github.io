@@ -1,0 +1,28 @@
+---
+title: "Deep Learning: Anak itu mirip Ayah atau Ibunya?"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(EBImage)
+library(ggplot2)
+```
+
+Beberapa bulan lalu, saya memiliki keponakan baru. Kalau kata istri saya, keponakan saya memiliki muka yang mirip dengan ayahnya. Sedangkan saya tidak bisa menilai sama sekali bayi itu mirip siapa.
+
+> Masih terlalu kecil... Nanti juga mukanya berubah-ubah kalau sudah besar.
+
+Begitu kata saya ke istri.
+
+Tapi kalau saya perhatikan baik-baik. Memang setiap anak itu hanya punya dua pilihan: mirip dengan ayahnya atau ibunya. Sama dengan si sulung yang kata orang-orang mirip saya dan si bungsu yang kata orang-orang mirip dengan istri saya.
+
+Bagaimana cara otak kita memproses dan menentukan seseorang mirip atau tidak? Semua berawal dari pengenalan pola wajah orang tuanya terlebih dahulu. Lalu kita akan melihat pola wajah si anak. Dari sana kita akan menentukan, pola siapa yang paling sesuai dengan pola si anak itu.
+
+Berbekal itu, saya akan membuat model [_deep learning_](https://ikanx101.com/blog/deep-nutrisari/) untuk melihat dari sekian banyak kasus (poto) orang tua dan anak, si anak itu lebih mirip siapa.
+
+Saya mulai _yah_...
+
