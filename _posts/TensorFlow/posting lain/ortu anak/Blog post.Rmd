@@ -14,7 +14,7 @@ library(ggplot2)
 
 Beberapa bulan lalu, saya memiliki keponakan baru. Kalau kata istri saya, keponakan saya memiliki muka yang mirip dengan ayahnya. Sedangkan saya tidak bisa menilai sama sekali bayi itu mirip siapa.
 
-> Masih terlalu kecil... Nanti juga mukanya berubah-ubah kalau sudah besar.
+> "Masih terlalu kecil... Nanti juga mukanya berubah-ubah kalau sudah besar."
 
 Begitu kata saya ke istri.
 
@@ -22,7 +22,299 @@ Tapi kalau saya perhatikan baik-baik. Memang setiap anak itu hanya punya dua pil
 
 Bagaimana cara otak kita memproses dan menentukan seseorang mirip atau tidak? Semua berawal dari pengenalan pola wajah orang tuanya terlebih dahulu. Lalu kita akan melihat pola wajah si anak. Dari sana kita akan menentukan, pola siapa yang paling sesuai dengan pola si anak itu.
 
-Berbekal itu, saya akan membuat model [_deep learning_](https://ikanx101.com/blog/deep-nutrisari/) untuk melihat dari sekian banyak kasus (poto) orang tua dan anak, si anak itu lebih mirip siapa.
+Berbekal itu, sebenarnya kita bisa membuat [_deep learning_](https://ikanx101.com/blog/deep-nutrisari/) untuk melihat dari sekian banyak poto muka orang tua dan anak, muka si anak itu lebih mirip siapa.
 
-Saya mulai _yah_...
+_Nah_, sebagai _case studies_, ada `5` keluarga yang akan saya cek _yah_.
+
+---
+
+## __Case I__
+
+Kebetulan istri saya lagi sering _ngeliatin_ beberapa cuplikan serial [_The Crown_](https://en.wikipedia.org/wiki/The_Crown_(TV_series)). 
+
+> "Gimana kalau kasus pertama ini saya akan mengecek para pangeran itu mirip siapa?"
+
+Saya awali dengan mengambil beberapa poto muka orang tuanya sebagai `train` dan `test` _dataset_ saya sebagai berikut:
+
+```{r,echo=FALSE}
+train = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/TensorFlow ortu anak/charles diana.png")
+plot(train)
+```
+
+Dari poto-poto di atas, saya membuat model _deep learning_ di Tensorflow yang berfungsi sebagai _image classifier_. Berikut adalah performa model saya:
+
+```{r,echo=FALSE,fig.retina=8}
+plot3 = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/TensorFlow ortu anak/Case 1/Akurasi Model.png")
+plot(plot3)
+```
+
+Karena sifatnya adalah _for fun only_, jadi saya sudah cukup puas dengan modelnya. Poto para pangeran yang mau saya cek adalah sebagai berikut:
+
+```{r,echo=FALSE,fig.retina=8,fig.height=2}
+plot1 = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/TensorFlow ortu anak/Case 1/Harry.png")
+plot2 = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/TensorFlow ortu anak/Case 1/William.png")
+plot3 = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/TensorFlow ortu anak/Case 1/Akurasi Model.png")
+
+par(mfrow=c(1,2))
+plot(plot1);plot(plot2)
+```
+
+Bagaimana hasilnya?
+
+```{r,echo=FALSE,fig.retina=8}
+rm(list=ls())
+load("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/TensorFlow ortu anak/Case 1/bahan blog.rda")
+
+pred_2 = as.data.frame(pred_2)
+pred_2 = round(pred_2*100,2)
+colnames(pred_2) = c("Diana","Charles")
+pred_2$poto = c("Harry","William")
+
+pred_2 %>% 
+  reshape2::melt(id.vars = "poto") %>% 
+  ggplot(aes(x = poto,
+             y = value,
+             fill = variable)) +
+  geom_col() +
+  geom_label(aes(label = paste0(variable,": ",value,"%"))) +
+  scale_fill_brewer(palette="Dark2") +
+  theme_minimal() +
+  labs(title = "Anak-anak ini mirip siapa?",
+       subtitle = "Probability poto anak berdasarkan model deep learning",
+       caption = "Created using R\nikanx101.com") +
+  theme(axis.title = element_blank(),
+        legend.position = "none",
+        axis.text.y = element_blank())
+```
+
+
+---
+
+## __Case II__
+
+Masih seputar orang ternama di luar negeri. Kali ini saya mau mengecek `Tilly Ramsay` itu lebih mirip siapa.
+
+Saya awali dengan mengambil beberapa poto muka orang tuanya sebagai `train` dan `test` _dataset_ saya sebagai berikut:
+
+```{r,echo=FALSE}
+train = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/TensorFlow ortu anak/ramsay tana.png")
+plot(train)
+```
+
+Dari poto-poto di atas, saya membuat model _deep learning_ di Tensorflow yang berfungsi sebagai _image classifier_. Berikut adalah performa model saya:
+
+```{r,echo=FALSE,fig.retina=8}
+plot3 = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/TensorFlow ortu anak/Case 5/Akurasi Model.png")
+plot(plot3)
+```
+
+Poto yang mau saya cek adalah sebagai berikut:
+
+```{r,echo=FALSE,fig.retina=8,fig.height=2}
+plot1 = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/TensorFlow ortu anak/Case 5/tilly.png")
+plot(plot1)
+```
+
+Bagaimana hasilnya?
+
+```{r,echo=FALSE,fig.retina=8}
+rm(list=ls())
+load("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/TensorFlow ortu anak/Case 5/bahan blog.rda")
+
+pred_2 = as.data.frame(pred_2)
+pred_2 = round(pred_2*100,2)
+colnames(pred_2) = c("Tana","Gordon")
+pred_2$poto = "Tilly"
+
+pred_2 %>% 
+  reshape2::melt(id.vars = "poto") %>% 
+  ggplot(aes(x = poto,
+             y = value,
+             fill = variable)) +
+  geom_col() +
+  geom_label(aes(label = paste0(variable,": ",value,"%"))) +
+  scale_fill_brewer(palette="Dark2") +
+  theme_minimal() +
+  labs(title = "Anak-anak ini mirip siapa?",
+       subtitle = "Probability poto anak berdasarkan model deep learning",
+       caption = "Created using R\nikanx101.com") +
+  theme(axis.title = element_blank(),
+        legend.position = "none",
+        axis.text.y = element_blank())
+```
+
+---
+
+## __Case III__
+
+Kali ini saya mau mengecek `Brooklyn Beckham` itu lebih mirip siapa.
+
+Saya awali dengan mengambil beberapa poto muka orang tuanya sebagai `train` dan `test` _dataset_ saya sebagai berikut:
+
+```{r,echo=FALSE}
+train = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/TensorFlow ortu anak/becks posh.png")
+plot(train)
+```
+
+Dari poto-poto di atas, saya membuat model _deep learning_ di Tensorflow yang berfungsi sebagai _image classifier_. Berikut adalah performa model saya:
+
+```{r,echo=FALSE,fig.retina=8}
+plot3 = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/TensorFlow ortu anak/Case 4/Akurasi Model.png")
+plot(plot3)
+```
+
+Poto yang mau saya cek adalah sebagai berikut:
+
+```{r,echo=FALSE,fig.retina=8,fig.height=2}
+plot1 = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/TensorFlow ortu anak/Case 4/brooklyn.png")
+plot(plot1)
+```
+
+Bagaimana hasilnya?
+
+```{r,echo=FALSE,fig.retina=8}
+rm(list=ls())
+load("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/TensorFlow ortu anak/Case 4/bahan blog.rda")
+
+pred_2 = as.data.frame(pred_2)
+pred_2 = round(pred_2*100,2)
+colnames(pred_2) = c("Victoria","Beckham")
+pred_2$poto = "Brooklyn"
+
+pred_2 %>% 
+  reshape2::melt(id.vars = "poto") %>% 
+  ggplot(aes(x = poto,
+             y = value,
+             fill = variable)) +
+  geom_col() +
+  geom_label(aes(label = paste0(variable,": ",value,"%"))) +
+  scale_fill_brewer(palette="Dark2") +
+  theme_minimal() +
+  labs(title = "Anak-anak ini mirip siapa?",
+       subtitle = "Probability poto anak berdasarkan model deep learning",
+       caption = "Created using R\nikanx101.com") +
+  theme(axis.title = element_blank(),
+        legend.position = "none",
+        axis.text.y = element_blank())
+```
+
+
+---
+
+## __Case IV__
+
+Sekarang, saya coba cek dari nama-nama tersohor dalam negeri, yakni: Al, El, dan Dul.
+
+Saya awali dengan mengambil beberapa poto muka orang tuanya sebagai `train` dan `test` _dataset_ saya sebagai berikut:
+
+```{r,echo=FALSE}
+train = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/TensorFlow ortu anak/dhani maia.png")
+plot(train)
+```
+
+Dari poto-poto di atas, saya membuat model _deep learning_ di Tensorflow yang berfungsi sebagai _image classifier_. Berikut adalah performa model saya:
+
+```{r,echo=FALSE,fig.retina=8}
+plot3 = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/TensorFlow ortu anak/Case 3/Akurasi Model.png")
+plot(plot3)
+```
+
+Karena sifatnya adalah _for fun only_, jadi saya sudah cukup puas dengan modelnya. Poto anak-anaknya yang mau saya cek adalah sebagai berikut:
+
+```{r,echo=FALSE,fig.retina=8,fig.height=2}
+plot1 = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/TensorFlow ortu anak/Case 3/al.png")
+plot2 = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/TensorFlow ortu anak/Case 3/el.png")
+plot3 = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/TensorFlow ortu anak/Case 3/dul.png")
+
+par(mfrow=c(1,3))
+plot(plot1);plot(plot2);plot(plot3)
+```
+
+Bagaimana hasilnya?
+
+```{r,echo=FALSE,fig.retina=8}
+rm(list=ls())
+load("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/TensorFlow ortu anak/Case 3/bahan blog.rda")
+
+pred_2 = as.data.frame(pred_2)
+pred_2 = round(pred_2*100,2)
+colnames(pred_2) = c("Maia","Dhani")
+pred_2$poto = c("Al","El","Dul")
+pred_2$poto = factor(pred_2$poto,levels = c("Al","El","Dul"))
+
+pred_2 %>% 
+  reshape2::melt(id.vars = "poto") %>% 
+  mutate(ypos = ifelse(poto == "Dul" & variable == "Maia",
+                       70,
+                       value)) %>% 
+  ggplot(aes(x = poto,
+             y = value,
+             fill = variable)) +
+  geom_col() +
+  geom_label(aes(y = ypos,label = paste0(variable,": ",value,"%"))) +
+  scale_fill_brewer(palette="Dark2") +
+  theme_minimal() +
+  labs(title = "Anak-anak ini mirip siapa?",
+       subtitle = "Probability poto anak berdasarkan model deep learning",
+       caption = "Created using R\nikanx101.com") +
+  theme(axis.title = element_blank(),
+        legend.position = "none",
+        axis.text.y = element_blank())
+```
+
+---
+
+## __Case V__
+
+Sebagai penutup, saya akan mengecek poto berikut ini.
+
+Saya awali dengan mengambil beberapa poto muka orang tuanya sebagai `train` dan `test` _dataset_ saya sebagai berikut:
+
+```{r,echo=FALSE}
+train = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/TensorFlow ortu anak/nobisuke nobi.png")
+plot(train)
+```
+
+Dari poto-poto di atas, saya membuat model _deep learning_ di Tensorflow yang berfungsi sebagai _image classifier_. Berikut adalah performa model saya:
+
+```{r,echo=FALSE,fig.retina=8}
+plot3 = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/TensorFlow ortu anak/Case 2/Akurasi Model.png")
+plot(plot3)
+```
+
+Poto yang mau saya cek adalah sebagai berikut:
+
+```{r,echo=FALSE,fig.retina=8,fig.height=2}
+plot1 = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/TensorFlow ortu anak/Case 2/nobita.png")
+plot(plot1)
+```
+
+Bagaimana hasilnya?
+
+```{r,echo=FALSE,fig.retina=8}
+rm(list=ls())
+load("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/TensorFlow ortu anak/Case 2/bahan blog.rda")
+
+pred_2 = as.data.frame(pred_2)
+pred_2 = round(pred_2*100,2)
+colnames(pred_2) = c("Ibu","Ayah")
+pred_2$poto = "Nobita"
+
+pred_2 %>% 
+  reshape2::melt(id.vars = "poto") %>% 
+  ggplot(aes(x = poto,
+             y = value,
+             fill = variable)) +
+  geom_col() +
+  geom_label(aes(label = paste0(variable,": ",value,"%"))) +
+  scale_fill_brewer(palette="Dark2") +
+  theme_minimal() +
+  labs(title = "Anak-anak ini mirip siapa?",
+       subtitle = "Probability poto anak berdasarkan model deep learning",
+       caption = "Created using R\nikanx101.com") +
+  theme(axis.title = element_blank(),
+        legend.position = "none",
+        axis.text.y = element_blank())
+```
+
 
