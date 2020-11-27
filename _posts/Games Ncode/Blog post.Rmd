@@ -1,4 +1,3 @@
-
 ---
 title: "Membuat Games Kata-Kata dengan Machine Learning"
 output: 
@@ -16,3 +15,21 @@ Jadi kali ini saya akan membuat machine learning model untuk membuat games kata-
 
 ---
 
+Hal yang disepakati di awal adalah bagaimana cara main games ini. Jadi pada hari H nanti, 300 orang peserta meeting akan diberikan sekitar 200 kata yang ditampilkan di layar. Mereka akan adu cepat menuliskan 5 kata-kata terkait 4 buah topik yang ditetapkan, yakni:
+
+1. Agile
+1. Purposeful
+1. Inclusive
+1. Digital transformation
+
+Sehingga total, setiap orang akan submit 20 kata-kata (5 kata per masing-masing topik).
+
+Dari kata-kata yang dituliskan tersebut, peserta akan mendapatkan skor (seberapa terkait kata-kata tersebut ke masing-masing topik). 40 peserta drngan skor terbaik akan menjadi pemenang.
+
+---
+
+Sudah kebayang kan cara mainnya? Sekarang bagaimana membuat model machine learningnya?
+
+Pertama-tama, saya tentukan dulu kata-kata apa saja yang bisa dikaitkan dengan 4 topik di atas. Pencqrian related queries yang saya lakukan di Google Ttends tidak memuaskan bagi saya. Sehingga saya harus mengambil sumber lain. Apa itu? Artikel-artikel yang ada di Harvard Business Review. Kenapa HBR? Di perusahaan saya, artikel HBR sudah biasa berseliweran di Workplace (sebutan untuk Facebook@work). Jadi saya asumsikan sebagian rekan-rekan sudah fasih membaca artikel-artikel dari HBR.
+
+Saya mencari semua artikel terkait 4 topik itu sejak tahun 2000 hingga tanggal 23 November 2020.
