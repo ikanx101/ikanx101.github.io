@@ -1,1 +1,18 @@
-Lala
+
+---
+title: "Membuat Games Kata-Kata dengan Machine Learning"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+Ceritanya pada tanggal 25 November lalu, perusahaan saya melaksanakan corporate meeting. Oleh karena pandemi, maka untuk tahun ini diadakan secara virtual saja. Tepat seminggu sebelum hari pelaksanaan, salah seorang rekan dari tim HR menghubungi saya.
+
+> Mas Ikang nonton Netflix gak? Nonton serial Start Up gak? Kami mau bikin games seperti di serial itu.
+
+Iya betul, saya berlangganan Netflix tapi biasanya saya pakai bukan untuk nonton serial K-drama. Hehe. Ternyata, setelah saya tonton serialnya di episode 4 menit ke 56 hingga 60an, saya mendapatkan ide bagaimana games itu akan dilakukan. Tentunya dengan twist yang disesuaikan dengan kearifan lokal perusahaan saya juga donk.
+
+Jadi kali ini saya akan membuat machine learning model untuk membuat games kata-kata. Bagaimana caranya? Cekidot yah 
+
+---
+
