@@ -5,6 +5,13 @@ output:
     pandoc_args: --webtex
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+library(dplyr)
+library(ggplot2)
+```
+
 Ceritanya pada tanggal 25 November lalu, perusahaan saya melaksanakan corporate meeting. Oleh karena pandemi, maka untuk tahun ini diadakan secara virtual saja. Tepat seminggu sebelum hari pelaksanaan, salah seorang rekan dari tim HR menghubungi saya.
 
 > Mas Ikang nonton Netflix gak? Nonton serial Start Up gak? Kami mau bikin games seperti di serial itu.
@@ -44,15 +51,30 @@ Tidak cuma artikel saja, rekan HR saya juga memberikan 7 jurnal (berformat `.pdf
 Langkah berikutnya adalah saya harus membaca semua tulisan dari sumber-sumber tersebut untuk mendapatkan kata-kata yang akan dites. Oh maaf, bukan saya yang harus membaca yah, tapi algoritma mesinnya yang saya suruh scrape semua tulisan yang ada.
 
 ```{r,echo=FALSE}
-data = data.frame()
+data = data.frame(
+id = c(1:8),
+sumber = rep(c("link","pdf"),4),
+topik = c(rep("agile",2),
+          rep("inclusive",2),
+          rep("purposeful",2),
+          rep("digital transformation")
+          ),
+isi = paste0("isi artikel/jurnal ",c(1:8))
+)
+
+knitr::kable(data,caption="Contoh ilustrasi data")
 ```
 
 Selanjutnya adalah tahap bebersih. Semua angka dan tanda baca selain titik saya hapus. Sengaja titik tetap saya gunakan sebagai pembeda antara satu kalimat dengan kalimat yang lain.
 
 Setelah itu saya akan hapus semua English stopwords dan lakukan stemming dengan membuat custom function berbasis library(hunspell) di R.
 
+Untuk menghindari kata yang terlalu banyak, untuk masing-masing topik saya hanya akan mencari 100 kata dengan frekuensi muncul terbesar.
+
 Setelah itu, saya akan pecah baris datanya perkalimat. Sehingga saya akan dapatkan:
 
 ```{r,echo=FALSE}
-
+data
 ```
+
+Setelah itu, barulah 
