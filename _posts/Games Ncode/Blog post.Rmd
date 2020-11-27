@@ -30,6 +30,29 @@ Dari kata-kata yang dituliskan tersebut, peserta akan mendapatkan skor (seberapa
 
 Sudah kebayang kan cara mainnya? Sekarang bagaimana membuat model machine learningnya?
 
-Pertama-tama, saya tentukan dulu kata-kata apa saja yang bisa dikaitkan dengan 4 topik di atas. Pencqrian related queries yang saya lakukan di Google Ttends tidak memuaskan bagi saya. Sehingga saya harus mengambil sumber lain. Apa itu? Artikel-artikel yang ada di Harvard Business Review. Kenapa HBR? Di perusahaan saya, artikel HBR sudah biasa berseliweran di Workplace (sebutan untuk Facebook@work). Jadi saya asumsikan sebagian rekan-rekan sudah fasih membaca artikel-artikel dari HBR.
+Pertama-tama, saya tentukan dulu kata-kata apa saja yang bisa dikaitkan dengan 4 topik di atas. Pencarian related queries yang saya lakukan di Google Ttends tidak memuaskan bagi saya. Sehingga saya harus mengambil sumber lain. Apa itu? Artikel-artikel yang ada di Harvard Business Review. Kenapa HBR? Di perusahaan saya, artikel HBR sudah biasa berseliweran di Workplace (sebutan untuk Facebook@work). Jadi saya asumsikan sebagian rekan-rekan sudah fasih membaca artikel-artikel dari HBR.
 
-Saya mencari semua artikel terkait 4 topik itu sejak tahun 2000 hingga tanggal 23 November 2020.
+Saya mencari semua artikel terkait 4 topik itu sejak tahun 2000 hingga tanggal 23 November 2020. Saya mendapati:
+
+- 48 links artikel terkait agile.
+- 26 links artikel terkait purposeful.
+- 27 links artikel terkait inclusive.
+- 34 links artikel terkait digital transformation.
+
+Tidak cuma artikel saja, rekan HR saya juga memberikan 7 jurnal (berformat `.pdf`) tentang agile, 7 jurnal tentang inclusive, dan 6 jurnal tentang purposeful.
+
+Langkah berikutnya adalah saya harus membaca semua tulisan dari sumber-sumber tersebut untuk mendapatkan kata-kata yang akan dites. Oh maaf, bukan saya yang harus membaca yah, tapi algoritma mesinnya yang saya suruh scrape semua tulisan yang ada.
+
+```{r,echo=FALSE}
+data = data.frame()
+```
+
+Selanjutnya adalah tahap bebersih. Semua angka dan tanda baca selain titik saya hapus. Sengaja titik tetap saya gunakan sebagai pembeda antara satu kalimat dengan kalimat yang lain.
+
+Setelah itu saya akan hapus semua English stopwords dan lakukan stemming dengan membuat custom function berbasis library(hunspell) di R.
+
+Setelah itu, saya akan pecah baris datanya perkalimat. Sehingga saya akan dapatkan:
+
+```{r,echo=FALSE}
+
+```
