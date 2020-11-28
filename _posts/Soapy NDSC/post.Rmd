@@ -105,7 +105,9 @@ Setelah berdiskusi, maka ada beberapa _features_ yang akan kami ekstrak:
   
 Jadi kami fokus untuk mengekstrak semua informasi yang bisa diekstrak dari hari Minggu sampai Kamis (26 November 2020).
   
-Singkat cerita, dari 4 variabel penting (2 _titles_ dan 2 _images_), kami berhasil mendapatkan `48` variabel.
+Singkat cerita, dari 4 variabel penting (2 _titles_ dan 2 _images_), kami berhasil mendapatkan `48` _features_. 
+
+> _Features_ itu apa sih? Secara simpel, _features_ bisa saya katakan sebagai variabel numerik.
 
 Oh iya, untuk mengekstrak _features_ dari `10.181` pasang _images_, saya membutuhkan waktu `1` jam penuh.
 
@@ -167,4 +169,39 @@ data %>%
   theme(axis.text.y = element_blank())
 
 ```
+
+Pada _pre competition_ ini, ada `r length(unique(data$team_name))` buah tim yang berkompetisi.
+
+Sebagai orang yang biasa berkutat terkait otomasi di __R__, mendapatkan _prediction score_ segitu sudah membahagiakan bagi saya pribadi.
+
+Analoginya seperti seorang tukang gado-gado yang memasak _beef wellington_ dan diberikan pujian _good effort_ oleh __Gordon Ramsay__. _hehe_.
+
+---
+
+# _Competition Day_: 28 November 2020
+
+Akhirnya hari yang dinanti datang juga. Acara dimulai pada pukul 10.00 WIB dengan sambutan-sambutan dari pihak _Shopee_ dan Menristek (Prof. Bambang Brodjonegoro).
+
+Seperti biasa, saat dibuka forum _QnA_ di _live chat_ _Zoom_, ada saja pertanyaan-pertanyaan kocak yang ditanyakan para peserta iseng. Berikut skrinsutnya:
+
+```{r fig.width="60%",echo=FALSE}
+print("Boleh pakai excel?")
+plot = readImage("excel.jpeg")
+display(rotate(plot,45))
+
+print("Boleh telepon rekan setim?")
+plot = readImage("telepon.jpeg")
+display(rotate(plot,45))
+
+
+print("Apakah perlu kirim installernya?")
+plot = readImage("installer.jpg")
+display(plot)
+
+print("Mimin apa kabar?")
+plot = readImage("kabar.jpeg")
+display(rotate(plot,45))
+
+```
+
 
