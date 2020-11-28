@@ -7,7 +7,8 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-setwd("~/Documents/ikanx101/_posts/Soapy NDSC")
+setwd("/cloud/project/_posts/Soapy NDSC")
+#setwd("~/Documents/ikanx101/_posts/Soapy NDSC")
 library(dplyr)
 library(EBImage)
 library(ggplot2)
@@ -53,7 +54,7 @@ _Bismillah_, kami tetap maju dengan komposisi yang ada. _Toh_ niat kita awalnya 
 
 ---
 
-# _Pre Competition_
+# _Pre Competition_: 22 November 2020
 
 Seminggu tepat sebelum hari kompetisi, ada _email_ surat cinta lagi. Setiap tim diwajibkan mengikuti _pre competition_ yang diadakan di __Kaggle__. Apa itu?
 
@@ -64,4 +65,91 @@ plot = readImage("problem.png")
 plot(plot)
 ```
 
-_Shopee_ mengedepankan _fairness_ terhadap semua barang yang dijual oleh _seller_-nya. Bisa jadi beberapa barang yang memiliki deskripsi
+_Shopee_ mengedepankan _fairness_ terhadap semua barang yang dijual oleh _seller_-nya. Bisa jadi sepasang barang memiliki _title_ berbeda dan poto yang sedikit berbeda TAPI pada kenyataannya merupakan sepasang barang yang sama.
+
+> Mungkin selama ini kita hanya mengetahui _fraud_ berupa penipuan yang ada di _marketplace_. Bisa jadi _fraud_ dilakukan dengan cara yang halus semacam ini.
+
+Jadi tujuan _pre competition_ kali ini adalah membuat model _machine learning_ yang bisa memprediksi apakah sepasang barang merupakan barang yang sama atau beda dengan bermodalkan informasi:
+
+1. Sepasang _titles_ barang.
+1. Sepasang _images_ barang.
+
+Data yang digunakan murni hanya `6` variabel saja!
+
+```{r,echo=FALSE}
+print("Contoh dataset yang diberikan:")
+data = read.csv("new_training_set.csv")
+head(data,5)
+```
+
+Dataset di atas ada `10.181` baris. Sedangkan data _images_ melebihi 1 GB ukurannya.
+
+### Bagaimana cara menyelesaikannya?
+
+Melihat data di atas, kami murni menghadapi _unstructured data_. Jadi langkah awal yang harus kami lakukan adalah mengekstrak _features_ variabel _titles_ dan _images_. Tentunya variabel _titles_ harus dibersihkan dulu dari tanda baca yang tidak diperlukan.
+
+Setelah berdiskusi, maka ada beberapa _features_ yang akan kami ekstrak:
+
+- _Titles_
+  - Berapa banyak kata dari dua _titles_ barang?
+  - Berapa banyak karakter dari dua _titles_ barang?
+  - Berapa banyak kata yang sama dari dua _titles_ barang?
+  - Berapa banyak _n-grams_ dari dua _titles_ barang? Terkait _n-grams_ ini, kami sampai menghitung kesamaan __bigrams__ hingga __7-grams__.
+  - Berapa banyak angka yang sama dari dua _titles_ barang?
+  - Berapa banyak huruf yang sama dari dua _titles_ barang? Ini kami hitung dari huruf __a__ sampai __z__.
+  - Berapa jarak relatif antara dua vektor _character_ dari dua _titles_ barang?
+  - Berapa jarak relatif antara dua vektor _character_ dari dua _titles_ barang (setelah dihilangkan semua angka)?
+- _Images_. Ternyata apa yang saya lakukan [beberapa waktu lalu](https://ikanx101.com/blog/comparison-improvement/) saat _ngoprek_ data _images_ sangat berguna sekali.
+  - Menghitung korelasi dari dua matriks _images_.
+  - Menghitung proporsi kesamaan dua matriks _images_ untuk berbagai nilai sensitivitas.
+  
+Jadi kami fokus untuk mengekstrak semua informasi yang bisa diekstrak dari hari Minggu sampai Kamis (26 November 2020).
+  
+Singkat cerita, dari 4 variabel penting (2 _titles_ dan 2 _images_), kami berhasil mendapatkan `48` variabel.
+
+Oh iya, untuk mengekstrak _features_ dari `10.181` pasang _images_, saya membutuhkan waktu `1` jam penuh.
+
+### Membuat model _machine learning_
+
+Ada hal yang menarik saat kami mulai mengerjakan _pre competition_ ini. Pihak _Shopee_ merekomendasikan para peserta untuk menggunakan __Phyton__ daripada bahasa _data science_ lainnya.
+
+Kami sebagai _R User_ garis keras merasa tertantang untuk tetap mengerjakannya dengan __R__. Ada satu dugaan dari saya:
+
+> Jangan-jangan solusinya menggunakan deep learning.
+
+Kenapa? Karena [_TensorFlow_](https://ikanx101.com/blog/deep-nutrisari/) yang digunakan untuk _Artificial Neural Network_ dibangun berbasis _Phyton_.
+
+Harusnya tidak masalah, karena _TensorFlow_ bisa digunakan di __R__ juga.
+
+Saya akhirnya mencoba membuat model _deep learning_, sementara teman saya yang lain _ngoprek_ _Support Vector Machine_ dan _XGBLinear_.
+
+Hasilnya bagaimana?
+
+Kami masih belum puas dengan _score_ yang dihasilkan saat dilakukan validasi.
+
+### _Submission_ Jawaban Pertama: 26 November 2020
+
+Di Kamis pagi, saya coba iseng membuat model _machine learning_ menggunakan _Random Forest Algorithm_. Tanpa disangka, _validation score_ yang saya dapatkan lebih tinggi dibandingkan model _deep learning_ yang saya buat sebelumnya.
+
+Saat saya coba masukkan `data test pre competition` ke dalam model, lalu saya _submit_ ke _Kaggle_, saya terkejut karena mendapatkan nilai yang cukup tinggi: `0.89583` (max nilai = 1).
+
+```{r fig.width="60%",echo=FALSE}
+plot = readImage("percobaan 1.jpg")
+plot(plot)
+```
+
+Walaupun tidak termasuk ke dalam `10` besar, tapi _score_ `0.89583` masuk ke dalam __TOP 5__ _score_ teratas.
+
+Kok bisa?
+
+> Jadi ada beberapa tim yang memiliki _score_ yang sama.
+
+```{r,echo=FALSE,fig.retina=10}
+data = read.csv("precomp.csv")
+
+data %>% 
+  group_by(TeamName) %>% 
+  filter(Score = max(Score))
+
+```
+
