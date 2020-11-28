@@ -146,10 +146,11 @@ Kok bisa?
 
 ```{r,echo=FALSE,fig.retina=10}
 data = read.csv("precomp.csv")
+data = janitor::clean_names(data)
 
 data %>% 
-  group_by(TeamName) %>% 
-  filter(Score = max(Score))
+  ggplot(aes(x = score)) +
+  geom_density()
 
 ```
 
