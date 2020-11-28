@@ -219,4 +219,10 @@ Ada `32.580` baris pasang data beserta 2 GB _images_ yang harus diselesaikan sel
 
 Awalnya kami akan menggunakan model _random forest_ kemarin yang sudah jadi dengan beberapa modifikasi penambahan beberapa _features_ pada variabel _character_.
 
-Secara paralel,
+Jadi ada dua hal yang kami kerjakan terkait variabel _titles_:
+
+1. Menghapus _stopwords_ (Indonesia dan _English_).
+1. Menghitung `tf_idf`.
+
+Secara paralel, saya mengekstrak _features_ dari `32.580` pasang _images_.
+
