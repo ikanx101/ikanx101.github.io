@@ -193,7 +193,6 @@ print("Boleh telepon rekan setim?")
 plot = readImage("telepon.jpeg")
 display(rotate(plot,45))
 
-
 print("Apakah perlu kirim installernya?")
 plot = readImage("installer.jpg")
 display(plot)
@@ -201,7 +200,23 @@ display(plot)
 print("Mimin apa kabar?")
 plot = readImage("kabar.jpeg")
 display(rotate(plot,45))
-
 ```
 
+Pada sesi _QnA_ ini, ternyata _Shopee_ memperbolehkan penggunaan bahasa lain seperti __R__ dan _Matlab_.
 
+### Pukul 11.00 WIB
+
+Kompetisi kelas dimulai tepat pukul 11.00 WIB via _Kaggle_. Ternyata masalah yang dihadapi masih sama seperti masalah di _pre competition_.
+
+Berikut adalah data yang digunakan pada kompetisi tadi siang:
+
+```{r,echo=FALSE}
+data = read.csv("new_test_set.csv")
+head(data,10)
+```
+
+Ada `32.580` baris pasang data beserta 2 GB _images_ yang harus diselesaikan selama `3` jam.
+
+Awalnya kami akan menggunakan model _random forest_ kemarin yang sudah jadi dengan beberapa modifikasi penambahan beberapa _features_ pada variabel _character_.
+
+Secara paralel
