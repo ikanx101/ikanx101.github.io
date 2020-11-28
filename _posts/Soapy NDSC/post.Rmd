@@ -13,7 +13,7 @@ library(EBImage)
 library(ggplot2)
 ```
 
-Sore ini adalah akhir dari rangkaian acara __Shopee National Data Science Competition 2020__. Suatu kompetisi yang sangat seru dan berbeda dengan [kompetisi _data science_ yang dulu](https://passingthroughresearcher.wordpress.com/2018/11/15/belajar-dari-finhacks-id-2018/) pernah saya ikuti. Walaupun _gak_ menang dan hanya mendapatkan peringkat yang _gak_ sebegitu bagusnya, saya ingin bercerita mengenai pengalaman saya ini.
+Sore ini adalah akhir dari rangkaian acara __Shopee National Data Science Competition 2020__. Suatu kompetisi yang sangat seru dan berbeda dengan [kompetisi _data science_ yang dulu](https://passingthroughresearcher.wordpress.com/2018/11/15/belajar-dari-finhacks-id-2018/) pernah saya ikuti. Walaupun _gak_ menang dan hanya mendapatkan peringkat yang _gak_ sebegitu bagusnya, saya ingin bercerita mengenai pengalaman seru ini.
 
 ---
 
@@ -64,3 +64,4 @@ plot = readImage("problem.png")
 plot(plot)
 ```
 
+_Shopee_ mengedepankan _fairness_ terhadap semua barang yang dijual oleh _seller_-nya. Bisa jadi beberapa barang yang memiliki deskripsi
