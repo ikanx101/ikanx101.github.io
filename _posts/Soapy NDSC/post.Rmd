@@ -7,7 +7,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-setwd("/cloud/project/_posts/Soapy NDSC")
+setwd("~/ikanx101.github.io/_posts/Soapy NDSC")
 #setwd("~/Documents/ikanx101/_posts/Soapy NDSC")
 library(dplyr)
 library(EBImage)
