@@ -60,7 +60,8 @@ Seminggu tepat sebelum hari kompetisi, ada _email_ surat cinta lagi. Setiap tim 
 
 ## _Problem Statement_
 
-```{r fig.width="60%",echo=FALSE}
+
+```{r out.width="60%",echo=FALSE}
 plot = readImage("problem.png")
 plot(plot)
 ```
@@ -135,7 +136,7 @@ Di Kamis pagi, saya coba iseng membuat model _machine learning_ menggunakan _Ran
 
 Saat saya coba masukkan `data test pre competition` ke dalam model, lalu saya _submit_ ke _Kaggle_, saya terkejut karena mendapatkan nilai yang cukup tinggi: `0.89583` (max nilai = 1).
 
-```{r fig.width="60%",echo=FALSE}
+```{r out.width="60%",echo=FALSE}
 plot = readImage("percobaan 1.jpg")
 plot(plot)
 ```
@@ -184,22 +185,25 @@ Akhirnya hari yang dinanti datang juga. Acara dimulai pada pukul 10.00 WIB denga
 
 Seperti biasa, saat dibuka forum _QnA_ di _live chat_ _Zoom_, ada saja pertanyaan-pertanyaan kocak yang ditanyakan para peserta iseng. Berikut skrinsutnya:
 
-```{r fig.width="60%",echo=FALSE}
+```{r out.width="60%",echo=FALSE}
 print("Boleh pakai excel?")
-plot = readImage("excel.jpeg")
-display(rotate(plot,45))
+plot1 = readImage("excel.jpeg")
+plot1 = rotate(plot1,-45) 
+plot(plot1)
 
 print("Boleh telepon rekan setim?")
-plot = readImage("telepon.jpeg")
-display(rotate(plot,45))
+plot1 = readImage("telepon.jpeg")
+plot1 = rotate(plot1,-45) 
+plot(plot1)
 
 print("Apakah perlu kirim installernya?")
-plot = readImage("installer.jpg")
-display(plot)
+plot1 = readImage("installer.jpg")
+plot(plot1)
 
 print("Mimin apa kabar?")
-plot = readImage("kabar.jpeg")
-display(rotate(plot,45))
+plot1 = readImage("kabar.jpeg")
+plot1 = rotate(plot1,-45) 
+plot(plot1)
 ```
 
 Pada sesi _QnA_ ini, ternyata _Shopee_ memperbolehkan penggunaan bahasa lain seperti __R__ dan _Matlab_.
@@ -240,7 +244,7 @@ Kini dengan banyaknya pasang _images_ yang tiga kali lipat, maka akan dibutuhkan
 
 __Bisa jadi kami tidak akan menyelesaikan kompetisi ini tepat waktu!__
 
-```{r  fig.width="60%",echo=FALSE}
+```{r  out.width="60%",echo=FALSE}
 print("Chat insecure di grup WA")
 plot = readImage("sadar.jpg")
 plot(plot)
@@ -260,7 +264,7 @@ Akibatnya saya dan rekan akhirnya `berpisah` untuk membuat model sendiri-sendiri
 
 Saya coba buat kembali model _machine learning_ menggunakan _Random Forest Algorithm_. Pede dengan _validation score_-nya,saya coba _submit_ jawaban.
 
-```{r  fig.width="60%",echo=FALSE}
+```{r  out.width="60%",echo=FALSE}
 print("Chat insecure di grup WA")
 plot1 = readImage("sadar 2.jpg")
 plot2 = readImage("sadar 3.jpg")
@@ -293,4 +297,76 @@ Lalu saya set _epoch_ (iterasi) sebanyak `20` kali saja. Lalu hasil prediksinya 
 
 > Hasilnya ternyata menggembirakan!
 
-Nilai kami naik jadi `0.66994`.
+_Score_ kami naik jadi `0.66994`.
+
+```{r  out.width="60%",echo=FALSE}
+print("Chat insecure di grup WA")
+plot1 = readImage("NN akhirnya.jpg")
+plot2 = readImage("NN akhirnya 2.jpg")
+
+par(mfrow=c(1,2))
+plot(plot1);plot(plot2)
+```
+
+### Pukul 13.57 WIB
+
+Mendekati menit-menit akhir, setelah saya mengetahui bahwa _deep learning_ model memberikan _score_ yang lebih baik, saya coba _fine tuning_ kembali beberapa parameternya.
+
+Sementara, rekan tim saya juga sudah berhasil membuat model lain dengan _XGBoost Algorithm_.
+
+Dalam waktu yang relatif sama, kami sama-sama _submit_ jawaban final. 
+
+Keduanya memiliki _score_ yang mirip-mirip, sekitar `0.73`. 
+
+```{r  out.width="60%",echo=FALSE}
+print("Chat insecure di grup WA")
+plot1 = readImage("NN pertama.jpg")
+plot2 = readImage("submit final.jpg")
+
+par(mfrow=c(1,2))
+plot(plot1);plot(plot2)
+```
+
+### Pukul 14.00 WIB ENDING
+
+Akhirnya waktu menunjukkan pukul 14.00 WIB. Panitia mengumumkan bahwa _submission_ telah berakhir.
+
+Kini,posisi tim saya adalah sebagai berikut:
+
+```{r,echo=FALSE,fig.retina=10}
+data = read.csv("final.csv")
+data = janitor::clean_names(data)
+
+data %>% 
+  ggplot(aes(x = score)) +
+  geom_density(fill = "darkred",
+               alpha = .4) +
+  geom_vline(xintercept = 0.73422,
+             color = "steelblue") +
+  theme_minimal() +
+  annotate("label",
+           x = .7,
+           y = 2.5,
+           label = "Posisi tim saya\n0.73422") +
+  labs(title = "Sebaran Score Para Tim yang Berlaga di Competition",
+       subtitle = "Shopee National Data Science Competition 2020",
+       labs = "Visualized using R\nikanx101.com",
+       x = "Score",
+       y = "Density") +
+  theme(axis.text.y = element_blank())
+
+```
+
+Dari total `r length(unique(data$team_name))` buah tim yang berkompetisi di hari ini.
+
+---
+
+# Summary
+
+## _Key take points_
+
+1. Kami tidak pernah berpikir bahwa kompetisi kali ini tetap melibatkan data _images_ dengan jumlah yang sangat besar. Jika mengetahuinya, mungkin kami bisa memodifikasi _function_ pembacaan _images_ sehingga secara komputasi bisa lebih cepat.
+1. Tanpa disengaja saya _build_ dan _fine tune_ _deep learning model_ secepat kilat dengan hasil yang tidak mengecewakan. Tentunya ini akan menjadi bahasan yang bisa diulik di kemudian hari.
+1. Walaupun diadakan secara virtual (dimana banyak distraksi di sana-sini), tapi keseruan dan greget kompetisi ini _dapet banget_.
+
+> It is such a great experience for us! 
