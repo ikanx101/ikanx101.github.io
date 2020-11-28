@@ -204,6 +204,8 @@ display(rotate(plot,45))
 
 Pada sesi _QnA_ ini, ternyata _Shopee_ memperbolehkan penggunaan bahasa lain seperti __R__ dan _Matlab_.
 
+Setiap tim hanya diperbolehkan melakukan `5` kali _submission_ jawaban.
+
 ### Pukul 11.00 WIB
 
 Kompetisi kelas dimulai tepat pukul 11.00 WIB via _Kaggle_. Ternyata masalah yang dihadapi masih sama seperti masalah di _pre competition_.
@@ -217,7 +219,7 @@ head(data,10)
 
 Ada `32.580` baris pasang data beserta 2 GB _images_ yang harus diselesaikan selama `3` jam.
 
-Awalnya kami akan menggunakan model _random forest_ kemarin yang sudah jadi dengan beberapa modifikasi penambahan beberapa _features_ pada variabel _character_.
+Awalnya kami akan menggunakan model _random forest_ dan _XGBLinear_ kemarin yang sudah jadi dengan beberapa modifikasi penambahan beberapa _features_ pada variabel _character_.
 
 Jadi ada dua hal yang kami kerjakan terkait variabel _titles_:
 
@@ -226,3 +228,69 @@ Jadi ada dua hal yang kami kerjakan terkait variabel _titles_:
 
 Secara paralel, saya mengekstrak _features_ dari `32.580` pasang _images_.
 
+### Pukul 12.46
+
+Saya sudah selesai menyelesaikan masalah _stopwords_, sementara rekan saya yang lain telah menyelesaikan masalah `tf_idf`. 
+
+Namun saya baru menyadari suatu hal penting:
+
+> Kemarin, untuk mengekstrak 10 ribu pasang _images_ saya butuh waktu sejam.
+
+Kini dengan banyaknya pasang _images_ yang tiga kali lipat, maka akan dibutuhkan waktu `3` jam. 
+
+__Bisa jadi kami tidak akan menyelesaikan kompetisi ini tepat waktu!__
+
+```{r  fig.width="60%",echo=FALSE}
+print("Chat insecure di grup WA")
+plot = readImage("sadar.jpg")
+plot(plot)
+```
+
+### Pukul 13.21 WIB
+
+Ternyata benar, sampai tersisa 40 menit lagi saya masih belum selesai mengekstrak _features_ dari _images_ tersebut. Laptop saya hanya sempat menghitung matriks korelasi dari pasangan _images_.
+
+> Cuma 1 _feature_ dari total 7 _features_ yang direncanakan.
+
+Akhirnya kami membuat keputusan untuk menggunakan _features_ seadanya saja dan membuat model kembali dari _scratch_.
+
+Karena saya sempat panik, akibatnya _training dataset_ yang jadi acuan antara saya dan rekan-rekan satu tim putus.
+
+Akibatnya saya dan rekan akhirnya `berpisah` untuk membuat model sendiri-sendiri. Siapa yang tercepat dan percaya bahwa modelnya memberikan _validation score_ terbaik dipersilakan untuk _submit_ jawaban.
+
+Saya coba buat kembali model _machine learning_ menggunakan _Random Forest Algorithm_. Pede dengan _validation score_-nya,saya coba _submit_ jawaban.
+
+```{r  fig.width="60%",echo=FALSE}
+print("Chat insecure di grup WA")
+plot1 = readImage("sadar 2.jpg")
+plot2 = readImage("sadar 3.jpg")
+
+par(mfrow=c(1,2))
+plot(plot1);plot(plot2)
+```
+
+Hasilnya tim kami mendapatkan score `0.37905`.
+
+Beberapa menit berselang, rekan setim saya yang lain mencoba submit jawaban dan hasilnya tetap sama-sama buruk `0.37106`.
+
+> _Hopeless_...
+
+Walaupun tidak ada niatan untuk menang TAPI tidak juga gugur dengan nilai  yang buruk seperti ini.
+
+### Pukul 13.42 WIB
+
+Setelah beristirahat sejenak, saya mulai berpikir.
+
+> Kenapa _gak_ pakai _deep learning_ saja _yah_?  Barangkali bagus.
+
+Dalam waktu seadanya, saya coba _build deep learning_ model di __TensorFlow__. Saking _ngasal_-nya, saya hanya buat `3` _layers_:
+
+1. _Layer_ pertama berisi _nodes_ sebanyak tahun kelahiran saya.
+1. _Layer_ kedua berisi _nodes_ sebanyak tanggal lahir saya.
+1. _Layer_ ketiga berisi _nodes_ sebanyak tanggal lahir istri saya.
+
+Lalu saya set _epoch_ (iterasi) sebanyak `20` kali saja. Lalu hasil prediksinya saya _submit_.
+
+> Hasilnya ternyata menggembirakan!
+
+Nilai kami naik jadi `0.66994`.
