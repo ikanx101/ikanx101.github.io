@@ -150,7 +150,21 @@ data = janitor::clean_names(data)
 
 data %>% 
   ggplot(aes(x = score)) +
-  geom_density()
+  geom_density(fill = "darkred",
+               alpha = .4) +
+  geom_vline(xintercept = 0.89583,
+             color = "steelblue") +
+  theme_minimal() +
+  annotate("label",
+           x = .8,
+           y = 3,
+           label = "Posisi tim saya\n0.89583") +
+  labs(title = "Sebaran Score Para Tim yang Berlaga di Pre Competition",
+       subtitle = "Shopee National Data Science Competition 2020",
+       labs = "Visualized using R\nikanx101.com",
+       x = "Score",
+       y = "Density") +
+  theme(axis.text.y = element_blank())
 
 ```
 
