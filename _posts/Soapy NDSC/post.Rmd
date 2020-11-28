@@ -219,4 +219,4 @@ Ada `32.580` baris pasang data beserta 2 GB _images_ yang harus diselesaikan sel
 
 Awalnya kami akan menggunakan model _random forest_ kemarin yang sudah jadi dengan beberapa modifikasi penambahan beberapa _features_ pada variabel _character_.
 
-Secara paralel
+Secara paralel,
