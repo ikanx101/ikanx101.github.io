@@ -1,0 +1,66 @@
+---
+title: "Belajar Banyak Dari Shopee National Data Science Competition 2020"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/Documents/ikanx101/_posts/Soapy NDSC")
+library(dplyr)
+library(EBImage)
+library(ggplot2)
+```
+
+Sore ini adalah akhir dari rangkaian acara __Shopee National Data Science Competition 2020__. Suatu kompetisi yang sangat seru dan berbeda dengan [kompetisi _data science_ yang dulu](https://passingthroughresearcher.wordpress.com/2018/11/15/belajar-dari-finhacks-id-2018/) pernah saya ikuti. Walaupun _gak_ menang dan hanya mendapatkan peringkat yang _gak_ sebegitu bagusnya, saya ingin bercerita mengenai pengalaman saya ini.
+
+---
+
+# Pendaftaran
+
+Di awal tahun 2020, ada salah seorang teman kuliah saya dulu di Matematika ITB 2004 mengirimkan pesan _WhatsApp_. Ia menginformasikan bahwa ada kompetisi _data science_ yang akan diselenggarakan oleh Shopee pada bulan Maret 2020. Kompetisi itu bertajuk _National Data Science Competition_ (NDSC). Ada `2` kelas yang dipertandingkan:
+
+1. _Beginner_.
+1. _Advance_.
+
+Kompetisi itu bisa diikuti secara perorangan dan tim. Sebagaimana pengalaman saya di kompetisi sebelumnya, alangkah lebih baik jika mengikutinya secara tim. Oleh karena itu, kami coba mencari lagi siapa yang bisa diajak kolaborasi bareng. Dapatlah `2` orang tambahan:
+
+1. Satu orang merupakan teman seangkatan kami dulu.
+1. Satu orang lainnya merupakan rekan kerja teman saya yang menginformasikan adanya kompetisi.
+
+Setelah membentuk tim, kami mendaftar. Awalnya, kami kira bisa mendaftar di kelas _beginner_, ternyata pada saat pendaftaran, tim panitia dari Shopee benar-benar menyeleksi peserta dengan ketat. Singkat cerita, kami (terpaksa) mendaftar di kelas _advance_.
+
+> Tenang saja, rekan kerja saya yang satu ini jago banget kok.
+
+Ujar teman saya itu. _Hehe_
+
+---
+
+# Pandemi Covid
+
+Tidak disangka pada bulan Maret 2020, negara api (baca: pandemi Covid 19) menyerang Indonesia. Perhelatan yang awalnya akan dilakukan dengan cara `karantina` peserta di suatu tempat selama seharian penuh ternyata diundur ke waktu yang tidak bisa ditentukan.
+
+Sampai akhirnya pada awal bulan November 2020, _email_ surat cinta itupun datang.
+
+Kompetisi akan tetap digelar secara _online_ menggunakan platform __Kaggle__ pada `28 November 2020`. Lalu semua tim diharapkan untuk bisa mendaftar ulang jika ada perubahan komposisi anggota.
+
+Nah, pada waktu ini, rekan kerja teman saya itu tiba-tiba menghilang dari grup _WhatsApp_ yang kami bentuk. 
+
+> _But the show must go on(line)!_
+
+_Bismillah_, kami tetap maju dengan komposisi yang ada. _Toh_ niat kita awalnya bukan untuk menang tapi untuk mencari pengalaman saja.
+
+---
+
+# _Pre Competition_
+
+Seminggu tepat sebelum hari kompetisi, ada _email_ surat cinta lagi. Setiap tim diwajibkan mengikuti _pre competition_ yang diadakan di __Kaggle__. Apa itu?
+
+## _Problem Statement_
+
+```{r fig.width="60%",echo=FALSE}
+plot = readImage("problem.png")
+plot(plot)
+```
+
