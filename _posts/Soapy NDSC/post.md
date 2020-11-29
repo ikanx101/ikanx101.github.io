@@ -1,5 +1,26 @@
-Belajar Banyak Dari Shopee National Data Science Competition 2020
-================
+---
+date: 2020-11-28T20:00:00-04:00
+title: "Belajar Banyak Dari Shopee National Data Science Competition 2020"
+categories:
+  - Blog
+tags:
+  - R
+  - Machine Learning
+  - Artificial Intelligence
+  - Image Processing
+  - Image Classifier
+  - TensorFlow
+  - Image
+  - Image Recognition
+  - KERAS
+  - Neural Network
+  - Deep Learning
+  - Machine Learning
+  - Shopee
+  - NDSC
+  - Kaggle
+---
+
 
 Sore ini adalah akhir dari rangkaian acara **Shopee National Data
 Science Competition 2020**. Suatu kompetisi yang sangat seru dan berbeda
@@ -74,7 +95,7 @@ Setiap tim diwajibkan mengikuti *pre competition* yang diadakan di
 
 ## *Problem Statement*
 
-![](post_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Soapy%20NDSC/post_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
 *Shopee* mengedepankan *fairness* terhadap semua barang yang dijual oleh
 *seller*-nya. Bisa jadi sepasang barang memiliki *title* berbeda dan
@@ -209,7 +230,7 @@ Saat saya coba masukkan `data test pre competition` ke dalam model, lalu
 saya *submit* ke *Kaggle*, saya terkejut karena mendapatkan nilai yang
 cukup tinggi: `0.89583` (max nilai = 1).
 
-![](post_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Soapy%20NDSC/post_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 Walaupun tidak termasuk ke dalam `10` besar, tapi *score* `0.89583`
 masuk ke dalam **TOP 5** *score* teratas.
@@ -218,7 +239,7 @@ Kok bisa?
 
 > Jadi ada beberapa tim yang memiliki *score* yang sama.
 
-<img src="post_files/figure-gfm/unnamed-chunk-4-1.png" width="672" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Soapy%20NDSC/post_files/figure-gfm/unnamed-chunk-4-1.png" width="672" />
 
 Pada *pre competition* ini, ada 121 buah tim yang berkompetisi.
 
@@ -243,19 +264,19 @@ skrinsutnya:
 
     ## [1] "Boleh pakai excel?"
 
-![](post_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Soapy%20NDSC/post_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
     ## [1] "Boleh telepon rekan setim?"
 
-![](post_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Soapy%20NDSC/post_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->
 
     ## [1] "Apakah perlu kirim installernya?"
 
-![](post_files/figure-gfm/unnamed-chunk-5-3.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Soapy%20NDSC/post_files/figure-gfm/unnamed-chunk-5-3.png)<!-- -->
 
     ## [1] "Mimin apa kabar?"
 
-![](post_files/figure-gfm/unnamed-chunk-5-4.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Soapy%20NDSC/post_files/figure-gfm/unnamed-chunk-5-4.png)<!-- -->
 
 Pada sesi *QnA* ini, ternyata *Shopee* memperbolehkan penggunaan bahasa
 lain seperti **R** dan *Matlab*.
@@ -357,7 +378,7 @@ dibutuhkan waktu `3` jam.
 
     ## [1] "Chat insecure di grup WA"
 
-![](post_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Soapy%20NDSC/post_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 ### Pukul 13.21 WIB
 
@@ -384,7 +405,7 @@ jawaban.
 
     ## [1] "Chat insecure di grup WA"
 
-![](post_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Soapy%20NDSC/post_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 Hasilnya tim kami mendapatkan score `0.37905`.
 
@@ -418,7 +439,7 @@ prediksinya saya *submit*.
 
     ## [1] "Chat insecure di grup WA"
 
-![](post_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Soapy%20NDSC/post_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ### Pukul 13.57 WIB
 
@@ -433,9 +454,9 @@ Dalam waktu yang relatif sama, kami sama-sama *submit* jawaban final.
 
 Keduanya memiliki *score* yang mirip-mirip, sekitar `0.73`.
 
-    ## [1] "Chat insecure di grup WA"
+    ## [1] "Kenaikan score di akhir waktu"
 
-![](post_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Soapy%20NDSC/post_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 ### Pukul 14.00 WIB ENDING
 
@@ -444,7 +465,7 @@ Akhirnya waktu menunjukkan pukul 14.00 WIB. Panitia mengumumkan bahwa
 
 Kini,posisi tim saya adalah sebagai berikut:
 
-<img src="post_files/figure-gfm/unnamed-chunk-11-1.png" width="672" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Soapy%20NDSC/post_files/figure-gfm/unnamed-chunk-11-1.png" width="672" />
 
 Dari total 137 buah tim yang berkompetisi di hari ini.
 
