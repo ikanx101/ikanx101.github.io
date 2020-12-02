@@ -7,7 +7,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-setwd("/cloud/project/_posts/home tester club")
+setwd("~/Documents/ikanx101/_posts/home tester club")
 library(dplyr)
 library(ggplot2)
 library(EBImage)
@@ -102,10 +102,19 @@ Dari situs tersebut, ada beberapa data yang bisa saya ambil, yakni:
 Berikut adalah _functions_ algoritma yang saya buat:
 
 ```{r}
-# function di mari
+scrape_func = function(url){
+  data = read_html(url) %>% {tibble(
+      merek = html_nodes(.,"#htc-breadcrumb .active") %>% html_text(),
+      rate = html_nodes(.,".pp-ratereview-counter li") %>% html_text() %>% paste(collapse = " "),
+      deskripsi = (html_nodes(.,".text-left") %>% html_text())[[1]]
+  )}
+  return(data)
+}
 ```
 
-Sebagai _showcase_, saya akan mengambil `3xx` produk yang ada di kategori [__Dapur Makanan__](https://www.hometesterclub.com/id/id/reviews/category-food-pantry).
+Cukup gunakan _function_ tersebut ke _links_ masing-masing produk di situs tersebut. 
+
+Sebagai _showcase_, saya akan mengambil `384` produk yang ada di kategori [__Dapur Makanan__](https://www.hometesterclub.com/id/id/reviews/category-food-pantry). _Links_ `384` produk itu tersedia di [sini](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/Home%20Tester%20Club/Scraping%20Bahan/links.txt).
 
 ---
 
@@ -114,9 +123,10 @@ Sebagai _showcase_, saya akan mengambil `3xx` produk yang ada di kategori [__Dap
 Setelah saya bersihkan data hasil _scrape_, saya dapatkan data berupa tabel seperti di bawah ini:
 
 ```{r,echo=FALSE}
+rm(list=ls())
 print("Contoh 10 data teratas hasil scrape")
-# load()
-# head(data,10)
+load("~/Documents/belajaR/Bukan Infografis/Home Tester Club/Scraping Bahan/data dapur makanan.rda")
+head(clean_data,10)
 ```
 
 Mari kita cek beberapa analisa sederhana berikut ini:
@@ -125,19 +135,99 @@ Mari kita cek beberapa analisa sederhana berikut ini:
 
 ### _Top Reviewed Product_
 
-Dari `3xx` produk yang ada di kategori __dapur makanan__, ada beberapa produk yang paling banyak di-_review_ oleh _member_. Apa saja?
+Dari `84` produk yang ada di kategori __dapur makanan__, ada beberapa produk yang paling banyak di-_review_ oleh _member_. Mari kita lihat __Top 20__ produk yang paling banyak di-_review_.
 
-```{r,fig.retina=10}
-# plot
+```{r,fig.retina=10,echo=FALSE}
+clean_data %>% 
+  arrange(desc(review_no)) %>% 
+  head(20) %>% 
+  mutate(warna = ifelse(grepl("tropicana",merek,ignore.case = T),
+                        1,
+                        0),
+         merek = stringr::str_to_title(merek)
+         ) %>% 
+  ggplot(aes(x = reorder(merek,review_no),
+             y = review_no)) +
+  geom_col(aes(fill = factor(warna)),
+           color = "black") +
+  geom_label(aes(label = review_no),
+             size = 2) +
+  labs(title = "Produk apa saja yang paling banyak\ndi-review oleh member?",
+        subtitle = "Top 20 produk yang mendapatkan review terbanyak",
+        caption = "Scraped and Visualized\nusing R\nikanx101.com") +
+  coord_flip() +
+  theme_minimal() +
+  theme(axis.title = element_blank(),
+        axis.text.x = element_blank(),
+        legend.position = "none")
 ```
+
+Sekarang kebalikannya, kita cek 20 produk terbawah yang paling sedikit di-_review_ oleh _member_:
+
+```{r,fig.retina=10,echo=FALSE}
+clean_data %>% 
+  arrange(review_no) %>% 
+  head(20) %>% 
+  mutate(warna = ifelse(grepl("tropicana",merek,ignore.case = T),
+                        1,
+                        0),
+         merek = stringr::str_to_title(merek)
+         ) %>% 
+  ggplot(aes(x = reorder(merek,-review_no),
+             y = review_no)) +
+  geom_col(aes(fill = factor(warna)),
+           color = "black") +
+  geom_label(aes(label = review_no),
+             size = 2) +
+  labs(title = "Produk apa saja yang paling sedikit\ndi-review oleh member?",
+        subtitle = "Bottom 20 produk yang mendapatkan review tersedikit",
+        caption = "Scraped and Visualized\nusing R\nikanx101.com") +
+  coord_flip() +
+  theme_minimal() +
+  theme(axis.title = element_blank(),
+        axis.text.x = element_blank(),
+        legend.position = "none")
+```
+
 
 ### Sebaran Banyaknya _Reviews_
 
 Kalau kita lihat sebaran data banyaknya _reviews_, saya dapatkan informasi berikut:
 
 ```{r,fig.retina=10}
-# plot
+nfi = 
+  clean_data %>% 
+  filter(grepl("tropicana|nutrisari|wrp|lmen|hilo|hi lo|orang",merek,ignore.case = T))
+produk_nfi = nfi$review_no
+
+clean_data %>% 
+  ggplot(aes(x = review_no)) +
+  geom_density(color = "darkred",
+               fill = "darkred",
+               alpha = .4) +
+  geom_vline(xintercept = produk_nfi,
+             color = "darkgreen") +
+  annotate(x = 1450,
+           y = .002,
+           "label",
+           label = "Tropicana Slim\nBeras Merah: 866 reviews",
+           color = "darkgreen",
+           size = 3) +
+  annotate(x = 1100,
+           y = .0035,
+           "label",
+           label = "TS Kecap Manis: 56 reviews\nTS Stevia: 76 reviews\nWRP Fruitbar Apricot Raisin: 113 reviews\nTS Alergon Cookis: 113 reviews\nWRP Active Body Shape: 116 reviews\nTS SWT Green Tea: 136 reviews",
+           color = "darkgreen",
+           size = 3) +
+  theme_minimal() +
+  labs(x = "Banyaknya reviews",
+       subtitle = "Density plot dari banyaknya reviews",
+       title = "Sebaran banyaknya reviews yang diberikan oleh member di\nkategori dapur makanan") +
+  theme(axis.text.y = element_blank(),
+        axis.title.y = element_blank())
 ```
+
+Ternyata terjadi 
 
 ### _Top Rating Product_
 
