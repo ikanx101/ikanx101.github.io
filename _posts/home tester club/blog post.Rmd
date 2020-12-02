@@ -7,27 +7,174 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-setwd("~/Documents/ikanx101/_posts/home tester club")
+setwd("/cloud/project/_posts/home tester club")
+library(dplyr)
+library(ggplot2)
+library(EBImage)
 ```
 
-## GitHub Documents
+Di dunia _market research_, data terkait konsumen bisa dibagi menjadi dua:
 
-This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
+1. Data persepsi.
+1. Data habit.
 
-## Including Code
+---
 
-You can include R code in the document as follows:
+## Data Persepsi
 
-```{r cars}
-summary(cars)
+Persepsi (dari bahasa Latin: _perceptio_ atau _percipio_) adalah tindakan menyusun, mengenali, dan menafsirkan informasi sensoris guna memberikan gambaran dan pemahaman tentang lingkungan.
+
+Data persepsi merupakan data yang berasal dari pemahaman, ide, atau pendapat pribadi dari konsumen.
+
+Untuk mendapatkan data ini, cara terbaik yang bisa dilakukan adalah dengan cara survey (DITANYAKAN langsung kepada responden).
+
+---
+
+## Data Habit
+
+Habit atau kebiasaan adalah suatu hal yang lazim, umum, dan yang biasa dilakukan. Menurut Peter Cape (2013):
+
+> _When you ask people randomly throughout the day what they are doing (behavior), 30% of the time there will be a mismatch between what they are doing and what they are thinking about._
+
+Oleh karena itu, cara terbaik untuk mendapatkan data ini adalah dengan memanfaatkan sumber data lain seperti jejak digital, data transaksi, dan lainnya.
+
+Data seperti ini sebaiknya tidak ditanyakan langsung. Jika terpaksa ditanyakan langsung, sebaiknya ada metode untuk melakukan validasi atas jawaban tersebut.
+
+---
+
+Sebagai _market researcher_, saya tahu betul bagaimana sulitnya mencari data persepsi. Berdasarkan pengalaman saya selama ini, saya sangat percaya bahwa metode seperti _face-to-face_ interview adalah cara terbaik untuk mendapatkan data persepsi konsumen. Namun biasanya ada tiga hal yang membuat F2F interview menjadi sulit dilakukan:
+
+1. Waktu yang mepet.
+1. Biaya yang terbatas.
+1. Kekurangan tenaga (_man power_).
+
+Di zaman transformasi digital seperti sekarang ini, kadang kita hanya butuh duduk sejenak dan mencari apa yang kita mau di internet. Sama seperti mencari data persepsi konsumen.
+
+> Jika dulu saya harus mencari konsumen untuk dijadikan responden. Kini responden sendiri yang __"datang"__ memberikan data persepsinya.
+
+_Lho, gimana maksudnya?_
+
+---
+
+Beberapa waktu lalu, seorang rekan kerja saya menginformasikan mengenai keberadaan situs yang menampung _review_ konsumen bernama [_Home Tester Club Indonesia_](https://www.hometesterclub.com/id/id/).
+
+```{r,echo=FALSE}
+plot1 = readImage("skrin.jpg")
+plot(plot1)
 ```
 
-## Including Plots
+---
 
-You can also embed plots, for example:
+## Situs Home Tester Club Indonesia
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+Berdasarkan informasi di situsnya:
+
+> _Home Tester Club_ adalah komunitas para pembeli yang menguji dan membagikan _review_ produk untuk membantu pembeli lainnya berbelanja lebih baik. _Home Tester Club_ adalah rumahnya ribuan _review_ produk. Dengan bergabung di sini kamu akan mendapat kesempatan menguji coba produk gratis dan produknya akan diantar langsung ke rumah kamu.
+
+Namun demikian, tidak semua _member_ mendapatkan produk gratis untuk diuji. Beberapa _member_ masih bisa memberikan _review_ berdasarkan pengalaman pribadi mereka menggunakan produk yang mereka beli dengan uang pribadi.
+
+Jika kita asumsikan semua _member_ memberikan _review_ yang jujur, maka data _review_ ini sangat kaya akan informasi.
+
+---
+
+## Bagaimana cara saya mengeksplorasi data ini?
+
+Sebelum berbicara lebih jauh mengenai cara saya mengeksplorasi, pertanyaan paling mendasar yang harus saya jawab adalah:
+
+> __Bagaimana cara saya mengambil semua data yang ada di situs tersebut?__
+
+Pertanyaan di atas adalah pertanyaan __paling standar__ yang biasa dihadapi oleh semua orang di zaman sekarang. _hehe_
+
+---
+
+## _Webscraping_ __Home Tester Club__
+
+Seperti biasa, saya menggunakan __R__ untuk membuat beberapa baris algoritma yang bertugas untuk mendapatkan data yang saya mau.
+
+Dari situs tersebut, ada beberapa data yang bisa saya ambil, yakni:
+
+1. Nama produk.
+1. Deskripsi produk.
+1. _Rating_ produk.
+1. Berapa banyak _reviewers_.
+1. Isi komentar atau _review_.
+
+Berikut adalah _functions_ algoritma yang saya buat:
+
+```{r}
+# function di mari
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Sebagai _showcase_, saya akan mengambil `3xx` produk yang ada di kategori [__Dapur Makanan__](https://www.hometesterclub.com/id/id/reviews/category-food-pantry).
+
+---
+
+## _Showcase_: Semua Produk di Kategori __Dapur Makanan__
+
+Setelah saya bersihkan data hasil _scrape_, saya dapatkan data berupa tabel seperti di bawah ini:
+
+```{r,echo=FALSE}
+print("Contoh 10 data teratas hasil scrape")
+# load()
+# head(data,10)
+```
+
+Mari kita cek beberapa analisa sederhana berikut ini:
+
+---
+
+### _Top Reviewed Product_
+
+Dari `3xx` produk yang ada di kategori __dapur makanan__, ada beberapa produk yang paling banyak di-_review_ oleh _member_. Apa saja?
+
+```{r,fig.retina=10}
+# plot
+```
+
+### Sebaran Banyaknya _Reviews_
+
+Kalau kita lihat sebaran data banyaknya _reviews_, saya dapatkan informasi berikut:
+
+```{r,fig.retina=10}
+# plot
+```
+
+### _Top Rating Product_
+
+Produk apa saja yang mendapatkan _rating_ terbaik?
+
+```{r,fig.retina=10}
+# plot
+```
+
+### Sebaran _Rating_ Produk
+
+Mari kita lihat bersama bagaimana sebaran dari _rating_ yang diberikan oleh _member_:
+
+```{r,fig.retina=10}
+# plot
+```
+
+---
+
+## Beberapa Produk yang Ada di Kategori __Dapur Makanan__
+
+Ternyata setelah saya lihat dengan seksama, ada beberapa pasang produk dan kompetitornya yang ada di sana. Menarik jika kita lakukan analisa _head-to-head_ dari pasangan produk tersebut.
+
+Apa saja analisanya?
+
+> Tentunya analisa terkait dengan data komentar _member_ yang berupa _free text_.
+
+Hal yang bisa dilakukan:
+
+1. _Wordcloud_,
+1. _Bigrams_,
+1. _Topic modelling_
+1. _Crosswords_
+1. _Log odds ratio_
+
+Nah, ada satu hal baru yang ingin saya lakukan (karena dari dulu belum sempat mengerjakannya). Apa itu? _Sentiment analysis_. 
+
+Doakan semoga yang terakhir ini bisa dilakukan dengan baik _yah_.
+
+Sekian dulu tulisan ini, hasil analisa komentar akan saya tulis di tulisan berikutnya.
