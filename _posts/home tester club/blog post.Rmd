@@ -116,6 +116,8 @@ Cukup gunakan _function_ tersebut ke _links_ masing-masing produk di situs terse
 
 Sebagai _showcase_, saya akan mengambil `384` produk yang ada di kategori [__Dapur Makanan__](https://www.hometesterclub.com/id/id/reviews/category-food-pantry). _Links_ `384` produk itu tersedia di [sini](https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/Home%20Tester%20Club/Scraping%20Bahan/links.txt).
 
+Data saya _scrape_ pada tanggal `1 Desember 2020 pukul 14∶34∶57 WIB`.
+
 ---
 
 ## _Showcase_: Semua Produk di Kategori __Dapur Makanan__
@@ -135,7 +137,7 @@ Mari kita cek beberapa analisa sederhana berikut ini:
 
 ### _Top Reviewed Product_
 
-Dari `84` produk yang ada di kategori __dapur makanan__, ada beberapa produk yang paling banyak di-_review_ oleh _member_. Mari kita lihat __Top 20__ produk yang paling banyak di-_review_.
+Dari `384` produk yang ada di kategori __dapur makanan__, ada beberapa produk yang paling banyak di-_review_ oleh _member_. Mari kita lihat __Top 20__ produk yang paling banyak di-_review_.
 
 ```{r,fig.retina=10,echo=FALSE}
 clean_data %>% 
@@ -194,7 +196,7 @@ clean_data %>%
 
 Kalau kita lihat sebaran data banyaknya _reviews_, saya dapatkan informasi berikut:
 
-```{r,fig.retina=10}
+```{r,fig.retina=10,echo=FALSE}
 nfi = 
   clean_data %>% 
   filter(grepl("tropicana|nutrisari|wrp|lmen|hilo|hi lo|orang",merek,ignore.case = T))
@@ -222,30 +224,96 @@ clean_data %>%
   theme_minimal() +
   labs(x = "Banyaknya reviews",
        subtitle = "Density plot dari banyaknya reviews",
-       title = "Sebaran banyaknya reviews yang diberikan oleh member di\nkategori dapur makanan") +
+       title = "Sebaran banyaknya reviews yang diberikan oleh member di\nkategori dapur makanan",
+       caption = "Scraped and Visualized\nusing R\nikanx101.com") +
   theme(axis.text.y = element_blank(),
         axis.title.y = element_blank())
 ```
 
-Ternyata terjadi 
+Dari graifk sebaran di atas, kita bisa melihat ada ketidakmerataan banyaknya _reviews_ yang diberikan oleh _member_. Sebagian kecil produk mendapatkan lebih dari `1000` _reviews_. Mayoritas dari produk mendapatkan _reviews_ sebanyak `r median(clean_data$review_no)` (nilai tengah - median - dari data _review_).
+
+Kita bisa melihat bahwa beberapa produk Nutrifood mendapatkan _reviews_ di kisaran angka tersebut kecuali produk __Tropicana Slim Beras Merah__ yang mendapatkan _reviews_ yang cukup banyak sehingga masuk __Top 20 Reviewed Products__.
 
 ### _Top Rating Product_
 
-Produk apa saja yang mendapatkan _rating_ terbaik?
+_Member_ bisa memberikan _rating_ kepada produk yang pernah dikonsumsinya menggunakan skala `1-5`. Produk apa saja yang mendapatkan _rating_ terbaik?
 
-```{r,fig.retina=10}
-# plot
+```{r,fig.retina=3,fig.height=9,echo=FALSE}
+clean_data %>% 
+  arrange(desc(rate_no)) %>% 
+  head(59) %>% 
+  mutate(warna = ifelse(grepl(paste(nfi$merek,collapse = "|"),merek,ignore.case = T),
+                        1,
+                        0
+                        )
+         ) %>% 
+  ggplot(aes(x = reorder(merek,rate_no),
+             y = rate_no)) +
+  geom_col(aes(fill = factor(warna))) +
+  geom_label(aes(label = rate_no),
+             size = 2) +
+  coord_flip() +
+  labs(title = "Top 59 Produk dengan Rata-Rata Rating Terbaik",
+       subtitle = "Dari 384 produk di kategori dapur makanan",
+       caption = "Scraped and Visualized\nusing R\nikanx101.com") +
+  theme_minimal() +
+  theme(axis.title = element_blank(),
+        axis.text.x = element_blank(),
+        legend.position = "none")
 ```
+Mungkin kalian bertanya-tanya, kenapa `59` produk yang ditampilkan?
+
+Karena produk urutan ke `60` memiliki nilai yang sama dengan produk urutan ke `61` sampai produk urutan ke `116`. 
 
 ### Sebaran _Rating_ Produk
 
 Mari kita lihat bersama bagaimana sebaran dari _rating_ yang diberikan oleh _member_:
 
-```{r,fig.retina=10}
-# plot
+```{r,fig.retina=10,echo=FALSE}
+produk_nfi = unique(nfi$rate_no)
+
+clean_data %>% 
+  ggplot(aes(x = rate_no)) +
+  geom_density(color = "darkred",
+               fill = "darkred",
+               alpha = .4) +
+  geom_vline(xintercept = produk_nfi,
+             color = "darkgreen") +
+  annotate(x = 3.5,
+           y = 1,
+           "label",
+           label = "TS SWT Green Tea: 4.9\nTS Alergon Cookies: 4.9\nTS Kecap Manis: 4.9\nTS Stevia: 4.8\nTS Beras Merah: 4.8\nWRP Active Body Shape: 4.8\nWRP Fruitbar Apricot Raisin: 4.6",
+           color = "darkgreen",
+           size = 3) +
+  theme_minimal() +
+  labs(x = "Rating",
+       subtitle = "Density plot dari rating",
+       title = "Sebaran rating yang diberikan oleh member di\nkategori dapur makanan",
+       caption = "Scraped and Visualized\nusing R\nikanx101.com") +
+  theme(axis.text.y = element_blank(),
+        axis.title.y = element_blank())
 ```
 
+Ternyata mayoritas produk memiliki rating yang baik (diatas skala `4`). Hanya sebagian kecil produk saja yang memiliki rating dibawah `3.5`.
+
+Penasaran produk apa saja yang mendapatkan nilai rendah di antara produk-produk yang bergelimang rating bagus?
+
+```{r,echo=FALSE}
+print("Produk yang memiliki rating di bawah 3.5")
+clean_data %>% 
+  filter(rate_no<3.5) %>% 
+  arrange(desc(rate_no)) %>% 
+  select(-deskripsi)
+```
+
+Hanya ada `6` produk yang memiliki rating di bawah `3.5`. _Special cases_ ada pada __Chocomory__ dan __Gado Telur__:
+
+- Hanya ada `3` _member_ saja yang memberikan _rating_ dan _review_ pada produk __Chocomory__.
+- Belum ada _member_ yang memberikan _rating_ dan _review_ pada produk __Gado Telur Siap Saji__.
+
 ---
+
+# _What's Next?_
 
 ## Beberapa Produk yang Ada di Kategori __Dapur Makanan__
 
