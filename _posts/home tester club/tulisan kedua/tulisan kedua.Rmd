@@ -1,0 +1,63 @@
+---
+title: "Text Analysis: Review Konsumen Pemanis Rendah Kalori"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("/cloud/project/_posts/home tester club/tulisan kedua")
+library(dplyr)
+library(tidytext)
+library(tidyr)
+library(ggplot2)
+library(ggraph)
+library(igraph)
+load("bahan_blog.rda")
+```
+
+Melanjutkan [tulisan pertama](https://ikanx101.com/blog/review-htci/) saya terkait _hometesterclub Indonesia_, kali ini saya akan coba membuat analisa sederhana dari data komentar konsumen terhadap dua buah produk pemanis rendah kalori yang ada di pasaran.
+
+Apa saja?
+
+1. Tropicana Slim Stevia.
+1. Diabetasol Sweetener.
+
+```{r,echo=FALSE}
+library(EBImage)
+gbr1 = readImage("p1.jpg")
+gbr2 = readImage("p2.jpg")
+
+par(mfrow = c(2,1))
+plot(gbr2)
+plot(gbr1)
+```
+
+Data komentar saya _scrape_ pagi ini (`3 Desember 2020 9.46 WIB`).
+
+---
+
+## Bagaimana cara _scrape_-nya?
+
+Seperti biasa, saya menggunakan __R__ untuk membuat algoritma _web scraping_ dengan memanfaatkan `library(rvest)`.
+
+```{r}
+scrape_komen = function(url){
+  read_html(url) %>% 
+  html_nodes(".review-user_comment") %>% 
+  html_text()
+}
+```
+
+Cukup aplikasikan _function_ di atas ke halaman _review_ produk di situs _hometesterclub Indonesia_.
+
+Data yang saya dapatkan adalah sebagai berikut:
+
+```{r,echo = FALSE}
+print("10 data pertama hasil scrape")
+head(data,10)
+```
+
+
+
