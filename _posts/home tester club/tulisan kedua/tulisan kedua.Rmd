@@ -14,7 +14,7 @@ library(tidyr)
 library(ggplot2)
 library(ggraph)
 library(igraph)
-load("bahan_blog.rda")
+load("bahan_blog (1).rda")
 ```
 
 Melanjutkan [tulisan pertama](https://ikanx101.com/blog/review-htci/) saya terkait _hometesterclub Indonesia_, kali ini saya akan coba membuat analisa sederhana dari data komentar konsumen terhadap dua buah produk pemanis rendah kalori yang ada di pasaran.
@@ -73,11 +73,22 @@ Kali ini saya akan membandingkan komentar _member_ terhadap kedua produk yang _h
 
 Hal standar yang harus dilakukan setiap kali melakukan _text analysis_ adalah dengan membersihkan data terlebih dahulu dari tanda baca dan _stopwords_. Kali ini sengaja saya tidak melakukan _stemming_ karena saya masih belum mendapatkan algoritma terbaik untuk melakukan _stemming_ dalam Bahasa Indonesia. 
 
+_Stopwords_ Bahasa Indonesia saya ambil dari [sini](https://raw.githubusercontent.com/stopwords-iso/stopwords-id/master/stopwords-id.txt).
+
 Hasilnya sebagai berikut:
 
 ```{r,echo = FALSE}
+stop = readLines("https://raw.githubusercontent.com/stopwords-iso/stopwords-id/master/stopwords-id.txt")
+stop = c(stop,"saya","kamu","kamu","kita","aku")
+
+pre_data %>%
+  unnest_tokens("words",komen) %>%
+  filter(!komen %in% stop)
+  
 print("10 data pertama hasil pre processing")
 head(predata,10)
 ```
 
+---
 
+## _Wordcloud_
