@@ -59,5 +59,25 @@ print("10 data pertama hasil scrape")
 head(data,10)
 ```
 
+Kali ini saya akan membandingkan komentar _member_ terhadap kedua produk yang _head to head_ di pasaran. Ada beberapa analisa yang hendak saya lakukan untuk membandingkannya, yakni:
+
+1. _Wordcloud_,
+1. _Bigrams_,
+1. _Topic modelling_,
+1. _Crosswords_,
+1. _Log odds ratio_.
+
+---
+
+## _Pre-Processing_
+
+Hal standar yang harus dilakukan setiap kali melakukan _text analysis_ adalah dengan membersihkan data terlebih dahulu dari tanda baca dan _stopwords_. Kali ini sengaja saya tidak melakukan _stemming_ karena saya masih belum mendapatkan algoritma terbaik untuk melakukan _stemming_ dalam Bahasa Indonesia. 
+
+Hasilnya sebagai berikut:
+
+```{r,echo = FALSE}
+print("10 data pertama hasil pre processing")
+head(predata,10)
+```
 
 
