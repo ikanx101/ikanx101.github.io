@@ -7,7 +7,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-setwd("~/Documents/ikanx101/_posts/home tester club/tulisan kedua")
+setwd("/cloud/project/_posts/home tester club/tulisan kedua")
 library(dplyr)
 library(tidytext)
 library(tidyr)
@@ -253,13 +253,15 @@ Ada beberapa temuan yang menarik:
 
 Selesai bermain-main dengan kata-kata, sekarang saatnya kita melihat dari segi konteks.
 
+Karena tidak memungkinkan bagi saya membaca ratusan _reviews_ di kedua produk, maka saya akan mempercepatnya dengan hanya melihat pola terbanyak yang terjadi.
+
 ---
 
 ## _Bi-Grams_
 
-Untuk membuktikannya, saya akan lakukan analisa _bi-grams_ dari semua pasangan kata yang mengandung kata `tidak` dan persamaan katanya.
+_Bi gram_ adalah pasangan kata yang muncul secara berurutan. Mari kita lihat _bi gram_ apa saja yang sering muncul pada _review_ Diabetasol.
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE}
+```{r,fig.retina = 10,echo=FALSE,message=FALSE,warning=FALSE}
 pre_data %>% 
   filter(produk == "Diabetasol") %>% 
   unnest_tokens("bigrams",komen,token = "ngrams",n = 2) %>% 
@@ -267,14 +269,42 @@ pre_data %>%
   count(sort = T) %>% 
   ungroup() %>% 
   filter(n > 3) %>% 
-  #filter(grepl("tidak",bigrams)) %>% 
   separate(bigrams,into = c("from","to"),sep = " ") %>% 
   graph_from_data_frame() %>% 
   ggraph(layout = 'fr') +
-  geom_edge_link(aes(edge_alpha=n),
+  geom_edge_bend(aes(edge_alpha=n),
                  show.legend = F,
                  color='darkred') +
   geom_node_point(size=1,color='steelblue') +
   geom_node_text(aes(label=name),alpha=0.4,size=3,repel = T) +
   theme_void()
 ```
+
+Berikutnya adalah _bi gram_ yang sering muncul pada _review_ Tropicana Slim Stevia:
+
+```{r,fig.retina = 10,echo=FALSE,message=FALSE,warning=FALSE}
+pre_data %>% 
+  filter(produk == "TS Stevia") %>% 
+  unnest_tokens("bigrams",komen,token = "ngrams",n = 2) %>% 
+  group_by(bigrams) %>% 
+  count(sort = T) %>% 
+  ungroup() %>% 
+  filter(n > 3) %>% 
+  separate(bigrams,into = c("from","to"),sep = " ") %>% 
+  graph_from_data_frame() %>% 
+  ggraph(layout = 'fr') +
+  geom_edge_bend(aes(edge_alpha=n),
+                 show.legend = F,
+                 color='darkred') +
+  geom_node_point(size=1,color='steelblue') +
+  geom_node_text(aes(label=name),alpha=0.4,size=3,repel = T) +
+  theme_void()
+```
+
+Secara garis besar ada kesamaan _review_ antara kedua produk ini, yakni sama-sama `pengganti gula darah bagi penderita diabetes` dan `suka minum manis`. Namun satu _bi gram_ yang hanya muncul di Diabetasol, yakni: `hidup sehat`. Sementara ada satu _bi gram_ yang hanya muncul di Tropicana Slim Stevia, yakni: `cocok banget`.
+
+---
+
+## _Topic Modelling_
+
+
