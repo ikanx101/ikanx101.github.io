@@ -7,17 +7,18 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-setwd("/cloud/project/_posts/home tester club/tulisan kedua")
+setwd("~/Documents/ikanx101/_posts/home tester club/tulisan kedua")
 library(dplyr)
 library(tidytext)
 library(tidyr)
 library(ggplot2)
 library(ggraph)
 library(igraph)
-load("bahan_blog (1).rda")
+library(RColorBrewer)
+load("bahan_blog.rda")
 ```
 
-Melanjutkan [tulisan pertama](https://ikanx101.com/blog/review-htci/) saya terkait _hometesterclub Indonesia_, kali ini saya akan coba membuat analisa sederhana dari data komentar konsumen terhadap dua buah produk pemanis rendah kalori yang ada di pasaran.
+Melanjutkan [tulisan pertama](https://ikanx101.com/blog/review-htci/) saya terkait _hometesterclub Indonesia_, kali ini saya akan coba membuat analisa sederhana dari data _review_ konsumen terhadap dua buah produk pemanis rendah kalori yang ada di pasaran.
 
 Apa saja?
 
@@ -34,7 +35,7 @@ plot(gbr2)
 plot(gbr1)
 ```
 
-Data komentar saya _scrape_ pagi ini (`3 Desember 2020 9.46 WIB`).
+Data _review_ saya _scrape_ pagi ini (`3 Desember 2020 9.46 WIB`).
 
 ---
 
@@ -59,7 +60,7 @@ print("10 data pertama hasil scrape")
 head(data,10)
 ```
 
-Kali ini saya akan membandingkan komentar _member_ terhadap kedua produk yang _head to head_ di pasaran. Ada beberapa analisa yang hendak saya lakukan untuk membandingkannya, yakni:
+Kali ini saya akan membandingkan _review_ _member_ terhadap kedua produk yang _head to head_ di pasaran. Ada beberapa analisa yang hendak saya lakukan untuk membandingkannya, yakni:
 
 1. _Wordcloud_,
 1. _Bigrams_,
@@ -73,22 +74,207 @@ Kali ini saya akan membandingkan komentar _member_ terhadap kedua produk yang _h
 
 Hal standar yang harus dilakukan setiap kali melakukan _text analysis_ adalah dengan membersihkan data terlebih dahulu dari tanda baca dan _stopwords_. Kali ini sengaja saya tidak melakukan _stemming_ karena saya masih belum mendapatkan algoritma terbaik untuk melakukan _stemming_ dalam Bahasa Indonesia. 
 
-_Stopwords_ Bahasa Indonesia saya ambil dari [sini](https://raw.githubusercontent.com/stopwords-iso/stopwords-id/master/stopwords-id.txt).
+_List stopwords_ Bahasa Indonesia saya ambil dari [sini](https://raw.githubusercontent.com/stopwords-iso/stopwords-id/master/stopwords-id.txt).
 
 Hasilnya sebagai berikut:
 
-```{r,echo = FALSE}
+```{r,echo = FALSE,warning=FALSE,message=FALSE}
 stop = readLines("https://raw.githubusercontent.com/stopwords-iso/stopwords-id/master/stopwords-id.txt")
-stop = c(stop,"saya","kamu","kamu","kita","aku")
+stop = c(stop,"saya","kamu","kita","aku")
+stop = stop[-grep("tak|tidak",stop)]
 
-pre_data %>%
-  unnest_tokens("words",komen) %>%
-  filter(!komen %in% stop)
+pre_data =
+  pre_data %>%
+  mutate(kalimat = c(1:437)) %>% 
+  unnest_tokens("words",out) %>%
+  filter(!words %in% stop) %>% 
+  filter(stringr::str_length(words) > 3) %>% 
+  group_by(member,produk,kalimat) %>% 
+  summarise(komen = paste(words,collapse = " ")) %>% 
+  ungroup() %>% 
+  select(-kalimat)
   
 print("10 data pertama hasil pre processing")
-head(predata,10)
+pre_data %>% 
+  rename(id = member) %>% 
+  head(10)
 ```
 
 ---
 
 ## _Wordcloud_
+
+Saya mulai dari yang paling mudah dahulu, yakni _wordcloud_. Saya akan hitung frekuensi dari kata-kata yang sering muncul di _review_ _member_.
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,include=FALSE}
+dia_wc = 
+  pre_data %>% 
+  filter(produk == "Diabetasol") %>% 
+  unnest_tokens("words",komen) %>% 
+  group_by(words) %>% 
+  count(sort = T) %>% 
+  ungroup() %>% 
+  rename(word = words,
+         freq = n)
+
+png("dia cloud.png",width = 900,height = 750,res = 150)
+wordcloud::wordcloud(words = dia_wc$word, 
+                     freq = dia_wc$freq, 
+                     min.freq = 0,
+                     max.words=150, 
+                     use.r.layout=FALSE,
+                     random.order=FALSE,
+                     rot.per = .25,
+                     colors=brewer.pal(5, "Dark2"))
+dev.off()
+
+ste_wc = 
+  pre_data %>% 
+  filter(produk == "TS Stevia") %>% 
+  unnest_tokens("words",komen) %>% 
+  group_by(words) %>% 
+  count(sort = T) %>% 
+  ungroup() %>% 
+  rename(word = words,
+         freq = n)
+
+png("stevi cloud.png",width = 900,height = 750,res = 150)
+wordcloud::wordcloud(words = ste_wc$word, 
+                     freq = ste_wc$freq, 
+                     min.freq = 0,
+                     max.words=150, 
+                     use.r.layout=FALSE,
+                     random.order=FALSE,
+                     rot.per = .25,
+                     colors=brewer.pal(5, "Dark2"))
+dev.off()
+```
+
+```{r,echo=FALSE,fig.retina=1}
+print("Wordcloud Review Diabetasol")
+gbr1 = readImage("dia cloud.png")
+plot(gbr1)
+print("Wordcloud Review TS Stevia")
+gbr2 = readImage("stevi cloud.png")
+plot(gbr2)
+```
+
+
+
+Sekilas kedua wordclouds ini menghasilkan kata-kata yang mirip. Untuk mengukur perbedaannya, saya akan gunakan _crosswords analysis_.
+
+---
+
+## _Crosswords_
+
+Prinsip dari analisa ini adalah melihat kesamaan frekuensi dari semua kata yang muncul dari semua _reviews_.
+
+Jika _reviews_ yang diberikan kepada dua produk itu sama, maka akan ada [korelasi](https://ikanx101.com/blog/materi-korelasi/) positif yang kuat.
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10}
+colnames(dia_wc)[2] = "Diabetasol"
+colnames(ste_wc)[2] = "Stevia"
+cross = merge(dia_wc,ste_wc,all = T)
+cross[is.na(cross)] = 0
+
+korel = cor(cross$Diabetasol,cross$Stevia,method = "pearson")
+korel = round(korel,3)
+
+cross %>% 
+  mutate(label_n = ifelse(Diabetasol + Stevia > 15,word,NA)) %>% 
+  ggplot(aes(x = Diabetasol,
+             y = Stevia)) +
+  geom_smooth(method = "lm",
+              color = "yellow",
+              fill = "orange",
+              alpha = .3) +
+  ggrepel::geom_text_repel(aes(label = label_n),
+                           size = 3) +
+  geom_point(color = "darkred",
+             alpha = .7) +
+  theme_minimal() +
+  labs(title = "Crosswords Analysis: Reviews Diabetasol vs Reviews Tropicana Slim",
+       subtitle = paste("Korelasi yang dihasilkan:",korel),
+       caption = "Calculated and Visualized\nusing R\nikanx101.com",
+       x = "Frekuensi Kata yang Muncul di\nReview Diabetasol",
+       y = "Frekuensi Kata yang Muncul di\nReview TS Stevia") +
+  theme(axis.text = element_blank())
+```
+
+Walaupun tidak sama persis, tapi ada tren kesamaan _reviews_ dari kedua produk tersebut. Dari hasil di atas, sekarang akan saya tentukan kata mana saja yang lebih identik dengan Diabetasol atau Tropicana Slim dengan menghitung [_log odds ratio_](https://ikanx101.com/blog/artikel-HBR/#log-odds-ratio).
+
+---
+
+## _Log Odds Ratio_
+
+Frekuensi kata dari kedua _reviews_ akan dihitung nilai `logratio`-nya dengan rumus: 
+
+$$logratio = ln(\frac{freq_{kel1}}{freq_{kel2}})$$
+Mari kita lihat kata apa saja yang identik dengan masing-masing kelompok _review_!
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=4,fig.height=12}
+cross %>% 
+  filter(Diabetasol > 0 & Stevia > 0) %>% 
+  mutate(log_rat = log(Diabetasol / Stevia),
+         penanda = ifelse(log_rat > 0,"Diabetasol","Stevia"),
+         penanda  = factor(penanda)) %>% 
+  filter(log_rat != 0) %>% 
+  ggplot(aes(x = reorder(word,log_rat),
+             y = log_rat)) +
+  geom_col(aes(fill = penanda),
+           color = "black") +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "Log Ratio: Kata Apa Saja yang Lebih Sering Digunakan Di\nMasing-Masing Kelompok Reviews",
+       subtitle = "Reviews Diabetasol dan Reviews Tropicana Slim Stevia",
+       fill = "Keterangan",
+       caption = "Calculated and Visualized\nusing R\nikanx101.com") +
+  theme(axis.text.x = element_blank(),
+        axis.title = element_blank())
+```
+
+Ada beberapa temuan yang menarik:
+
+- Kata-kata yang lebih sering dipakai di _review_ Diabetasol:
+  - `sweetener`
+  - `diabetes`
+  - `rumah`
+  - `mama`
+  - `manis`
+  - `gula`
+  - `kopi`
+- Kata-kata yang lebih sering dipakai di _review_ Tropicana Slim:
+  - `makanan`
+  - `minuman`
+  - `penyakit`
+  - `diet`
+  - `papa`
+  - `pemanis`
+
+Selesai bermain-main dengan kata-kata, sekarang saatnya kita melihat dari segi konteks.
+
+---
+
+## _Bi-Grams_
+
+Untuk membuktikannya, saya akan lakukan analisa _bi-grams_ dari semua pasangan kata yang mengandung kata `tidak` dan persamaan katanya.
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+pre_data %>% 
+  filter(produk == "Diabetasol") %>% 
+  unnest_tokens("bigrams",komen,token = "ngrams",n = 2) %>% 
+  group_by(bigrams) %>% 
+  count(sort = T) %>% 
+  ungroup() %>% 
+  filter(n > 3) %>% 
+  #filter(grepl("tidak",bigrams)) %>% 
+  separate(bigrams,into = c("from","to"),sep = " ") %>% 
+  graph_from_data_frame() %>% 
+  ggraph(layout = 'fr') +
+  geom_edge_link(aes(edge_alpha=n),
+                 show.legend = F,
+                 color='darkred') +
+  geom_node_point(size=1,color='steelblue') +
+  geom_node_text(aes(label=name),alpha=0.4,size=3,repel = T) +
+  theme_void()
+```
