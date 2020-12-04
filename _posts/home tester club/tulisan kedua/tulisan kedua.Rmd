@@ -307,4 +307,27 @@ Secara garis besar ada kesamaan _review_ antara kedua produk ini, yakni sama-sam
 
 ## _Topic Modelling_
 
+```{r,echo=FALSE}
+library(NLP)
+library(tm)
 
+topik_dia = pre_data %>% filter(produk == "Diabetasol")
+NAME = topik_dia$komen
+NAME = Corpus(VectorSource(NAME))
+NAME = tm_map(NAME, content_transformer(tolower))
+NAME = tm_map(NAME,removePunctuation)
+NAME = tm_map(NAME, stripWhitespace)
+NAME = tm_map(NAME,removeNumbers)
+tdm = TermDocumentMatrix(NAME)
+
+
+dtm = as.DocumentTermMatrix(tdm) 
+rowTotals = apply(dtm , 1, sum) 
+dtm = dtm[rowTotals> 0, ]           
+library(topicmodels)
+lda = LDA(dtm, k = 2)  
+term = terms(lda, 3)  
+term = apply(term, MARGIN = 2, paste, collapse = ", ")
+cbind(term)
+
+```
