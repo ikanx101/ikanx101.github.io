@@ -289,3 +289,7 @@ Doakan semoga yang terakhir ini bisa dilakukan dengan baik *yah*.
 
 Sekian dulu tulisan ini, hasil analisa komentar akan saya tulis di
 tulisan berikutnya.
+
+---
+
+Dukung selalu _blog_ ini agar bisa terus bertumbuh dengan cara klik iklan selepas Kamu membaca setiap tulisan yang ada _yah_.
