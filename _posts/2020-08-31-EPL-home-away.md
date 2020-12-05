@@ -228,3 +228,7 @@ seperti ini:
 > Bentuknya seperti *bell curve* sempurna *yah*.
 
 Kalau sudah menemukan fakta ini, enaknya diapakan lagi *yah*?
+
+---
+
+Dukung selalu _blog_ ini agar bisa terus bertumbuh dengan cara klik iklan selepas Kamu membaca setiap tulisan yang ada _yah_.
