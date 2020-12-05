@@ -43,3 +43,9 @@ Banyak orang mengira bahwa seorang _data scientist_ selalu erat kaitannya dengan
 - Selain itu, perkembangan teknologi yang pesat memungkinkan algoritma untuk mengambil alih _well defined jobs_ yang kadangkala menghabiskan waktu dan tenaga para pekerja.
 
 *Feel free to discuss yah*…
+
+---
+
+Dukung selalu blog ini agar bisa terus bertumbuh dengan cara klik iklan selepas Kamu membaca setiap tulisan yang ada yah.
+
+_Wassalam_
