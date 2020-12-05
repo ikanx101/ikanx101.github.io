@@ -316,3 +316,7 @@ Ternyata algoritma saya membaca *packaging* `Herbalice` sebagai
 ### *Notes*
 
 Tulisan ini dibuat untuk *educational purposes only*.
+
+---
+
+Dukung selalu _blog_ ini agar bisa terus bertumbuh dengan cara klik iklan selepas Kamu membaca setiap tulisan yang ada _yah_.
