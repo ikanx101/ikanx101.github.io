@@ -251,3 +251,7 @@ konsteks dari *reviews* produk tersebut.
 
 Selanjutnya saya akan buat *sentiment analysis*. Nantikan di tulisan
 berikutnya ya.
+
+---
+
+Dukung selalu _blog_ ini agar bisa terus bertumbuh dengan cara klik iklan selepas Kamu membaca setiap tulisan yang ada _yah_.
