@@ -1,0 +1,287 @@
+---
+title: "Optimisasi Produksi Furniture dengan Model Matematika"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/ikanx101.github.io/_posts/linear problem/post 1")
+library(dplyr)
+library(ggplot2)
+```
+
+Semalam saya mengobrol secara _virtual_ dengan beberapa senior saya dan beberapa rekan-rekan mahasiswa di Matematika ITB. Dari obrolan itu, saya menjadi teringat ada salah satu teknik dalam matematika yang berguna banget sebenarnya di dunia nyata dan hal yang menarik adalah teknik ini sudah diajarkan sejak kita (minimal saya pribadi) saat di bangku SMA.
+
+Apa itu? _Linear Programming_.
+
+Lupa _yah_? Saya kasih contoh berikut _ya_.
+
+---
+
+# _Problem Statement_
+
+Saya memiliki area parkir seluas 1.960 $m^2$. Luas rata-rata untuk mobil berukuran kecil adalah 4 $m^2$ dan mobil besar adalah 20 $m^2$. Daya tampung maksimum hanya 250 kendaraan, biaya parkir mobil kecil adalah Rp 7.000 per jam dan mobil besar adalah Rp 12.000 per jam. Jika dalam 1 jam area parkir saya terisi penuh dan tidak ada kendaraan yang pergi dan datang, maka berapa pendapatan maksimum yang bisa saya dapatkan dari tempat parkir itu?
+
+---
+
+# _Math Statement_
+
+Dari kasus di atas, kita bisa menuliskan beberapa persamaan berikut:
+
+Persamaan I: Limitasi luas area vs luas kendaraan
+
+$$4x + 20y \leq 1960$$
+Persamaan II: Limitasi jumlah kendaraan
+
+$$x+y \leq 250$$
+
+Kita harus menemukan nilai $x$ dan $y$ yang tepat sehingga memaksimalkan kondisi berikut:
+
+Persamaan III:
+
+$$7000x + 12000y$$
+
+---
+
+# Bagaimana cara menyelesaikannya?
+
+Setidaknya saya memiliki tiga cara untuk menyelesaikannya. Tentunya masing-masing memiliki kelebihan dan kekurangan. Apa saja?
+
+## Cara I: Membuat Grafik
+
+Cara termudah yang dulu pernah diajarkan pada saat SMA adalah dengan membuat grafik dari dua persamaan garis yang ada. Lalu melihat ada berapa titik yang memenuhi kondisi yang ada. 
+
+> Biasanya, solusi terbaik didapatkan pada perpotongan dua garis persamaan.
+
+```{r,warning=FALSE,message=FALSE}
+x_1 = c(0:220)
+
+fung_1 = function(x){
+  y = (1960 - (4*x))/20
+  return(y)
+}
+
+fung_2 = function(x){
+  y = (250 - (x))
+  return(y)
+}
+
+fung_max = function(x,y){
+  7000*x + 12000*y
+}
+
+data = data.frame(x = x_1)
+data$y1 = sapply(data$x,fung_1)
+data$y2 = sapply(data$x,fung_2)
+```
+
+Kita dapatkan hanya ada tiga titik yang memenuhi kondisi persamaan 1 dan 2.
+
+```{r,echo=FALSE,fig.retina=10,message=FALSE,warning=FALSE}
+data %>% 
+  ggplot() +
+  geom_line(aes(x = x,
+                y = y1),
+            color = "blue") +
+  geom_line(aes(x = x,
+                y = y2),
+            color = "red") +
+  theme_minimal() +
+  labs(title = "Menggambar Dua Persamaan Garis\nLalu mencari titik yang memenuhi kondisi",
+       subtitle = "Ada tiga titik yang berpeluang menjadi solusi",
+       caption = "Visualized using R\nikanx101.com",
+       x = "# Mobil kecil",
+       y = "# Mobil besar") +
+  annotate("label",x = 7,y = 115, label = "98 mobil besar\n0 mobil kecil",size = 2.5) +
+  annotate("label",x = 200,y = 75, label = "190 mobil kecil\n60 mobil besar",size = 2.5) +
+  annotate("label",x = 210,y = 10, label = "220 mobil kecil\n0 mobil besar",size = 2.5)
+```
+
+Kenapa hanya tiga?
+
+> Titik yang diambil adalah titik yang berada tepat atau di bawah kedua garis.
+
+Sekarang dari ketiga titik yang ada, kita akan hitung titik mana yang memberikan nilai persamaan III terbesar:
+
+
+```{r}
+# Titik I:
+  # 0 mobil kecil
+  # 98 mobil besar
+  fung_max(0,98)
+
+# Titik II:
+  # 190 mobil kecil
+  # 60 mobil besar
+  fung_max(190,60)
+
+# Titik III:
+  # 220 mobil kecil
+  # 0 mobil besar
+  fung_max(220,0)
+```
+
+Pendapatan maksimum terjadi pada titik II, sebesar Rp 2.050.000 yakni saat area parkir dipenuhi 190 mobil kecil dan 60 mobil besar.
+
+### Kelebihan dan Kekurangan Cara I
+
+- Kelebihan:
+  - Cara ini adalah cara yang paling mudah dilakukan. Cukup bermodalkan grafik, kita bisa mendapatkan solusi dari masalah optimisasi seperti ini.
+- Kelemahan:
+  - Cara ini tidak bisa digunakan saat variabel yang terlibat lebih dari dua. 
+  - Akan sulit secara visual untuk menggambarkan persamaan garis pada dimensi `3` atau lebih.
+  - Contoh: pada kasus area parkir di atas, jika ditambahkan `motor` dan `sepeda` dalam persamaannya. Maka akan sulit digambarkan ke dalam grafik.
+  
+  
+---
+
+## Cara II: _Brute Force_ dengan Simulasi Monte Carlo
+
+Cara kedua ini cenderung sangat mudah dan intuitif. Proses kerjanya mirip seperti apa yang saya lakukan untuk menemukan nilai $\pi$ pada [tulisan saya yang lalu](https://ikanx101.com/blog/hitung-pi/).
+
+Bagaimana caranya?
+
+Saya akan membuat banyak sekali pasangan _random number_ di rentang $x=[0,200]$ dan $y=[0,220]$. Lalu dari sekian banyak pasangan tersebut, saya hanya akan pilih pasangan yang memenuhi kondisi. Selanjutnya akan dipilih pasangan yang memaksimalkan persamaan pendapatan.
+
+```{r,echo=FALSE,fig.retina=1,fig.height=5,message=FALSE,warning=FALSE}
+simulasi = function(n){
+  data = data.frame(x = 0,
+                    y = 0,
+                    marker = 0,
+                    earning = 0,
+                    rand_number = 0)
+  for(i in 1:n){
+    percobaan = sample(220,2,replace = T)
+    x1 = percobaan[1]
+    x2 = percobaan[2]
+    marker = ifelse(4*x1 + 20*x2 <= 1960 & x1 + x2 <= 250,1,0)
+    earning = ifelse(marker == 1, fung_max(x1,x2), 0)
+    data[i,] = c(x1,x2,marker,earning,n)
+  }
+  return(data)
+}
+
+banyak_sim = c(10,100,250,500,750,1000,2000,5000,7000)
+
+data_sim = simulasi(banyak_sim[1])
+for(i in banyak_sim[-1]){
+  temp = simulasi(i)
+  data_sim = rbind(data_sim,temp)
+}
+
+data_sim %>% 
+  group_by(rand_number) %>% 
+  mutate(marker = ifelse(earning == max(earning),2,marker)) %>% 
+  ungroup() %>% 
+  ggplot(aes(x = x,
+             y = y)) +
+  geom_point(aes(color = factor(marker),
+                 alpha = marker,
+                 size = marker)) +
+  facet_wrap(~rand_number) +
+  theme_minimal() + 
+  labs(title = "Simulasi Monte Carlo yang Dilakukan untuk Berbagai\nRandom Number yang Dibuat",
+       subtitle = "Titik biru adalah solusi pendapatan terbesar",
+       caption = "Simulated and Visualized\nusing R\nikanx101",
+       x = "# Mobil Kecil",
+       y = "# Mobil Besar") +
+  theme(legend.position = "none")
+```
+
+Dengan memperbanyak pasangan titik $(x,y)$, diharapkan saya akan mendapatkan pasangan titik solusi yang memaksimalkan pendapatan.
+
+```{r,echo=FALSE,fig.retina=3,message=FALSE,warning=FALSE}
+banyak_sim = c(10,100,200,300,500,600,700,800,900)
+data_sim = simulasi(banyak_sim[1])
+for(i in banyak_sim[-1]){
+  temp = simulasi(i)
+  data_sim = rbind(data_sim,temp)
+}
+data_sim[101,] = c(190,60,1,fung_max(190,60),1)
+data_sim %>% 
+  filter(marker != 0 ) %>% 
+  group_by(rand_number) %>% 
+  filter(earning == max(earning)) %>%
+  ungroup() %>% 
+  ggplot(aes(x = earning)) +
+  geom_density(color = "steelblue",
+               fill = "lightblue",
+               alpha = .4) +
+  theme_minimal() +
+  labs(title = "Berapa Maksimal Pendapatan yang Bisa Diperoleh?",
+       subtitle = "Hasil simulasi Monte Carlo",
+       caption = "Simulated and Visualized\nusing R\nikanx101",
+       x = "Pendapatan Parkir") +
+  theme(axis.text.y = element_blank(),
+        axis.title.y = element_blank()) +
+  annotate("label",
+           x = 2000000,
+           y = .000006,
+           label = "Max pendapatan saat\nMobil kecil 190\nMobil besar 60")
+
+```
+
+### Kelebihan dan Kekurangan Cara II
+
+- Kelebihan:
+  - Cara ini juga mudah dilakukan. Tanpa mengetahui grafik dan pengetahuan matematika, kita bisa mendapatkan solusi dari masalah optimisasi seperti ini.
+  - Cara ini juga bisa dilakukan untuk variabel yang banyak.
+- Kelemahan:
+  - Secara komputasi lebih lama karena harus generate semua kemungkinan yang mungkin muncul.
+
+---
+
+## Cara III: Menyelesaikan dengan Matriks Aljabar
+
+Salah satu kegunaan matriks dalam aljabar adalah untuk menyelesaikan sistem persamaan linear. Menggunakan __R__, ada satu _library_ yang didedikasikan untuk hal ini, yakni: `library(lpSolve)`.
+
+```{r,echo=FALSE}
+## Load the package lpsolve
+library(lpSolve)
+```
+
+```{r}
+# Membuat matriks
+  # Berasal dari dua persamaan yang diketahui
+  const.mat = matrix(c(4,20,1,1),
+                     nrow = 2,
+                     byrow = T)
+  const.mat
+# Memasukkan persamaan pendapatan yang ingin dimaksimalkan
+objective.in = c(7000,12000)
+# define constraints
+area_constraint = 1960
+total_cars_constraint = 250
+
+# RHS for the constraints
+const.rhs = c(area_constraint, total_cars_constraint)
+
+# Constraints direction
+const.dir = c("<=",  "<=")
+
+# Find the optimal solution
+optimum = lp(direction="max",  objective.in, const.mat, const.dir,  const.rhs)
+```
+
+Kita akan mendapatkan hasil sebagai berikut:
+
+```{r}
+optimum
+optimum$solution
+```
+
+190 mobil kecil dan 60 mobil besar.
+
+### Kelebihan dan Kekurangan Cara II
+
+- Kelebihan:
+  - Cara ini bisa dilakukan untuk variabel yang banyak.
+  - Secara komputasi merupakan cara tercepat dibandingkan dua cara sebelumnya.
+- Kelemahan:
+  - Penulisan matriks bisa jadi menyulitkan bagi sebagian orang yang belum terbiasa.
+  
+---
+
+> _Jika Kamu merasa tulisan ini berguna, dukung selalu blog ini agar bisa terus bertumbuh dengan cara klik iklan selepas Kamu membaca tulisan ini yah_.
