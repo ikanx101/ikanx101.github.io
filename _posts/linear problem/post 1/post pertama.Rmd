@@ -39,9 +39,7 @@ $$x+y \leq 250$$
 
 Kita harus menemukan nilai $x$ dan $y$ yang tepat sehingga memaksimalkan kondisi berikut:
 
-Persamaan III:
-
-$$7000x + 12000y$$
+Persamaan III: $7000x$ + $12000y$
 
 ---
 
