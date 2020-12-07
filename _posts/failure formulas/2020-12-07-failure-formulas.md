@@ -139,3 +139,8 @@ Ternyata curah hujan pada saat itu mengakibatkan sungai meluap hingga
 > Pesan moralnya adalah, komunikasikan dengan jelas prediksi yang kita
 > lakukan beserta dengan tingkat kesalahan atau range yang mungkin
 > terjadi.
+
+
+---
+
+> Jika Kamu merasa tulisan ini berguna, dukung selalu blog ini agar bisa terus bertumbuh dengan cara klik iklan selepas Kamu membaca tulisan ini yah.
