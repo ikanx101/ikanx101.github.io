@@ -210,3 +210,7 @@ dengan algoritma yang ada di *library*.
 Contoh: algoritma analisa *simple linear regression* `lm()` memerlukan
 input berupa `data.frame()` dengan masing-masing *variables* yang ada di
 dalamnya berjenis *numeric*.
+
+---
+
+Dukung selalu _blog_ ini agar bisa terus bertumbuh dengan cara klik iklan selepas Kamu membaca setiap tulisan yang ada _yah_.

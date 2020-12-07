@@ -632,3 +632,7 @@ Ada yang mau menebak pas di _timeline_ ke berapa?
 -----
 
 ### *Udah ah segitu dulu…*
+
+---
+
+Dukung selalu _blog_ ini agar bisa terus bertumbuh dengan cara klik iklan selepas Kamu membaca setiap tulisan yang ada _yah_.
