@@ -9,6 +9,7 @@ tags:
   - R
   - Prediction
   - Modelling
+  - Bias
 ---
 
 # Case 1: *Overfitting the Earthquake*
@@ -25,7 +26,7 @@ model sebagai berikut:
 
     ## [1] "Model A – sumbu X menandakan kekuatan gempa, sumbu Y menandakan frekuensi gempa"
 
-<img src="https://passingthroughresearcher.files.wordpress.com/2015/06/fuku-1.png" width="40%" style="display: block; margin: auto;" />
+<img src="https://passingthroughresearcher.files.wordpress.com/2015/06/fuku-1.png" width="50%" style="display: block; margin: auto;" />
 
 Dari model yang didapatkan, mereka tampak tidak puas karena menurut
 mereka model tersebut tidak fit. masih ada titik – titik yang tidak
@@ -34,7 +35,7 @@ menjadi seperti ini:
 
     ## [1] "Model B"
 
-<img src="https://passingthroughresearcher.files.wordpress.com/2015/06/fuku-2.png" width="40%" style="display: block; margin: auto;" />
+<img src="https://passingthroughresearcher.files.wordpress.com/2015/06/fuku-2.png" width="50%" style="display: block; margin: auto;" />
 
 Kali ini, mereka puas dengan model baru. Titik – titik data tampak
 sangat fit dengan garis model yang dibentuk.
@@ -55,7 +56,7 @@ gempa berkekuatan 9 skala Richter sangat sedikit sekali.
 > explaining the real world. It is good in paper, but worse in real
 > world.
 
-<img src="https://passingthroughresearcher.files.wordpress.com/2015/06/fit.png" width="40%" style="display: block; margin: auto;" />
+<img src="https://passingthroughresearcher.files.wordpress.com/2015/06/fit.png" width="70%" style="display: block; margin: auto;" />
 
 > Pesan moralnya adalah, seringkali kita mencoba membuat model yang
 > sangat fit. Misal dalam regresi, kita selalu mencoba mendapatkan R
@@ -128,12 +129,12 @@ informasi bahwa ada range sebesar `+- 9` *feet*.
 Oleh karena itu, dibuatlah tanggul setinggi `51` *feet*, `2` *feet*
 lebih tinggi dibanding angka yang telah diinformasikan sebelumnya.
 
-<img src="https://passingthroughresearcher.files.wordpress.com/2015/06/banjir.png" width="50%" style="display: block; margin: auto;" />
+<img src="https://passingthroughresearcher.files.wordpress.com/2015/06/banjir.png" width="70%" style="display: block; margin: auto;" />
 
 Ternyata curah hujan pada saat itu mengakibatkan sungai meluap hingga
 `54` *feet*. Akibatnya, terjadi banjir yang merendam wilayah tersebut.
 
-<img src="https://passingthroughresearcher.files.wordpress.com/2015/06/north-dakota-lagi.png" width="40%" style="display: block; margin: auto;" />
+<img src="https://passingthroughresearcher.files.wordpress.com/2015/06/north-dakota-lagi.png" width="70%" style="display: block; margin: auto;" />
 
 > Pesan moralnya adalah, komunikasikan dengan jelas prediksi yang kita
 > lakukan beserta dengan tingkat kesalahan atau range yang mungkin
