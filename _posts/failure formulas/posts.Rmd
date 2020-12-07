@@ -1,0 +1,108 @@
+---
+title: "Failure Formulas: 3 Case Studies Menarik Seputar Data"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/Documents/ikanx101/_posts/failure formulas")
+```
+
+# Case 1: _Overfitting the Earthquake_
+
+```{r out.width="60%",echo=FALSE,fig.align='center'}
+knitr::include_graphics("https://passingthroughresearcher.files.wordpress.com/2015/06/fukushima-meltdown-prevailing-winds1.jpg")
+```
+
+
+Alkisah sebelum membangun reaktor nuklir Fukushima, para ilmuwan di Jepang mengumpulkan data historikal frekuensi gempa dan kekuatannya sebagai basis untuk menentukan seberapa kuat pondasi reaktor tersebut dibangun.
+
+Setelah mengumpukan data – data yang diperlukan, mereka membuat suatu model sebagai berikut:
+
+```{r out.width="40%",echo=FALSE,fig.align='center'}
+print("Model A – sumbu X menandakan kekuatan gempa, sumbu Y menandakan frekuensi gempa")
+knitr::include_graphics("https://passingthroughresearcher.files.wordpress.com/2015/06/fuku-1.png")
+```
+
+
+
+Dari model yang didapatkan, mereka tampak tidak puas karena menurut mereka model tersebut tidak fit. masih ada titik – titik yang tidak dilalui oleh garis model. Oleh karena itu, mereka membuat ulang modelnya menjadi seperti ini:
+
+```{r out.width="40%",echo=FALSE,fig.align='center'}
+print("Model B")
+knitr::include_graphics("https://passingthroughresearcher.files.wordpress.com/2015/06/fuku-2.png")
+```
+
+Kali ini, mereka puas dengan model baru. Titik – titik data tampak sangat fit dengan garis model yang dibentuk.
+
+Berdasarkan model ini, mereka membangun pondasi reaktor Fukushima agar kuat menghadapi gempa berkekuatan 8 – 8.5 skala Richter. Namun apa yang terjadi, Maret 2011, Jepang dhantam gempat dahsyat berkekuatan 9 skala Richter. Akibatnya, reaktor ini jebol. Lalu apa yang salah dengan model yang dibuat?
+
+Jika kita bandingkan kedua model yang dibuat, model A (yang dianggap tidak fit) masih memperhitungkan peluang terjadinya gempa berkekuatan 9 skala Richter. Sedangkan model B justru sebaliknya. Peluang terjadinya gempa berkekuatan 9 skala Richter sangat sedikit sekali.
+
+> Overfit model will score better according to most statistical test. It is fitting the noise rather than signal hence it actually worse explaining the real world. It is good in paper, but worse in real world.
+
+```{r out.width="40%",echo=FALSE,fig.align='center'}
+knitr::include_graphics("https://passingthroughresearcher.files.wordpress.com/2015/06/fit.png")
+```
+
+> Pesan moralnya adalah, seringkali kita mencoba membuat model yang sangat fit. Misal dalam regresi, kita selalu mencoba mendapatkan R square yang hampir 1. pada kenyataannya, mungkin kita tidak perlu sangat sempurna untuk itu.
+
+[Sumber](https://mpra.ub.uni-muenchen.de/69383/1/MPRA_paper_69383.pdf).
+
+---
+
+# Case 2: _Butterfly Effect_
+
+> The flap of a butterfly’s wings in Brazil can set off a tornado in Texas.
+
+```{r out.width="30%",echo=FALSE,fig.align='center'}
+knitr::include_graphics("https://passingthroughresearcher.files.wordpress.com/2015/06/bfly.jpg")
+```
+
+Sudah pernah menonton film __Butterfly Effect__? Alkisah seorang pria bernama Evan (diperankan oleh Ashton Kutcher) memiliki kemampuan untuk kembali ke masa lalu. Singkat cerita, sedikit saja perubahan yang ia lakukan di masa lalu ternyata mengubah total masa depannya.
+
+> In chaos theory, the butterfly effect is the sensitive dependence on initial conditions in which a small change in one state of a deterministic nonlinear system can result in large differences in a later state.
+
+Istilah ini populer setelah matematikawan MIT __Edward Lorenz__ (yang juga seorang meteorologis _US Air Force_) sedang mengembangkan suatu model _weather forecasting_ di tahun 1972.
+
+```{r out.width="20%",echo=FALSE,fig.align='center'}
+knitr::include_graphics("https://passingthroughresearcher.files.wordpress.com/2015/06/lorents.png")
+```
+
+Saat melakukan _first trial_, cuaca di Kansas disebutkan _clear sky_. Namun pada _second trial_, cuaca di Kansas berubah menjadi _thunderstorm_.
+
+Saat ditelusuri, ternyata pada saat _first trial_, _engineer_ memasukkan data konstanta `29,5168` pada model. 
+
+Sedangkan pada _second trial_, _engineer_ memasukkan data konstanta `29,517`.
+
+Suatu pembulatan yang biasanya kita remehkan (akibat terlalu kecil) justru mengubah keseluruhan _output_ pada model atau sistem. Beruntung sekarang ini, untuk melakukan perhitungan yang rumit, kita sudah tidak menggunakan hitungan manual kalkulator dan kertas lagi.
+
+> Pesan moralnya adalah, perhatikan baik – baik data Anda jika bekerja pada suatu model. Sekecil apapun perubahan yang ada bisa jadi berdampak besar.
+
+---
+
+# Case 3: _The Role of The Range_
+
+```{r out.width="40%",echo=FALSE,fig.align='center'}
+knitr::include_graphics("https://passingthroughresearcher.files.wordpress.com/2015/06/north-dakota.png")
+```
+
+Gambar di atas adalah kondisi __North Dakota__ pada tahun 1997. Sebelum dan pasca banjir besar yang melanda. Konon katanya banjir terparah sejak 1826.
+
+Apa sebenarnya yang terjadi pada saat itu?
+
+Banjir terjadi karena __Red River Valley__ meluap. _National Weather Forecast_ memberikan prediksi bahwa akibat curah hujan pada saat itu, sungai akan meluap setinggi `49` _feet_. Namun mereka tidak memberikan informasi bahwa ada range sebesar `+- 9` _feet_.
+
+Oleh karena itu, dibuatlah tanggul setinggi `51` _feet_, `2` _feet_ lebih tinggi dibanding angka yang telah diinformasikan sebelumnya.
+
+```{r out.width="50%",echo=FALSE,fig.align='center'}
+knitr::include_graphics("https://passingthroughresearcher.files.wordpress.com/2015/06/banjir.png")
+```
+
+Ternyata curah hujan pada saat itu mengakibatkan sungai meluap hingga `54` _feet_. Akibatnya, terjadi banjir yang merendam wilayah tersebut.
+
+```{r out.width="40%",echo=FALSE,fig.align='center'}
+knitr::include_graphics("https://passingthroughresearcher.files.wordpress.com/2015/06/north-dakota-lagi.png")
+```
+
+> Pesan moralnya adalah, komunikasikan dengan jelas prediksi yang kita lakukan beserta dengan tingkat kesalahan atau range yang mungkin terjadi.
