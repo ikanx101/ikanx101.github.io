@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(dplyr)
 library(nomnoml)
+library(EBImage)
 ```
 
 > Suatu masih SD, SMP, hingga SMA dulu. Pernah beberapa kali guru menugaskan saya dan teman-teman sekelas untuk merangkum materi dari buku.
@@ -49,6 +50,15 @@ Maka hasil _abstraction based summarization_-nya adalah:
 
 _Summary_ yang dihasilkan adalah kalimat baru hasil _rephrase_ dari konteks tulisan. Untuk bisa melakukan hal ini, kita perlu membuat model _deep learning_ yang rumit dan melatih model dengan berbagai macam prinsip-prinsip __NLP__ atau _language modelling_.
 
+Analoginya itu seperti pulpen.
+
+```{r out.width="50%",echo=FALSE}
+pulpen = readImage("images.jpeg")
+plot(pulpen)
+```
+
+Kita bisa menuliskan apapun yang kita mau untuk merangkum tulisan tersebut.
+
 ### Merangkum dengan menuliskan kata-kata yang sesuai di buku
 
 Dalam dunia _data science_, merangkum dengan cara ini disebut dengan _extraction based summarization_.
@@ -57,6 +67,15 @@ Cara kerjanya relatif lebih mudah dibandingkan dengan cara pertama. Yakni dengan
 
 1. Kalimat yang `penting`.
 1. Kalimat yang `sama`.
+
+Analoginya seperti stabilo.
+
+```{r out.width="50%",echo=FALSE}
+stabilo = readImage("images (1).jpeg")
+plot(stabilo)
+```
+
+Kita hanya memberikan _highlight_ terhadap kata atau kalimat yang menurut kita penting dari tulisan tersebut.
 
 Saya akan membuat algoritma berdasarkan cara kedua ini.
 
@@ -116,13 +135,46 @@ nomnoml("#direction: down,
 
 Dari kesederhanaan _framework_ di atas, ada beberapa titik kritis yang perlu diperhatikan, yakni:
 
-- _Pre-processing_
-  - Dari tulisan yang ada, kita perlu mengetahui kalimat mana masuk ke dalam paragraf mana. Untuk itu, tanda `titik` menjadi krusial sebagai pembeda kalimat. Namun pada kenyataannya, `titik` tidak hanya digunakan sebagai penanda antar kalimat tapi bisa digunakan sebagai pengganti `koma` dalam _metric_ atau _currency_. 
-  - Oleh karena itu, perlu ada algoritma yang bisa melakukan _tricky parts_ semacam ini memanfaatkan _regex_ (_reguler expression_) dari pola-pola karakter yang ada.
-- _Importance_
-  - Ini adalah proses yang termudah dari sekian langkah yang ada. Prinsipnya adalah _word counting_. Secara logika, kata-kata yang sering muncul merupakan kata yang penting dalam tulisan tersebut.
-  - Agar tidak terjadi bias, maka _stopwords_ dan _numbers_ harus sudah dihapus di tahap _pre-processing_.
-  - Langkah yang penting di sini adalah mengembalikan _importance score_ per kata kembali ke kalimat awalnya. Lalu menghitung _importance score_ dari masing-masing kalimat. 
-  - Agar tidak terjadi bias, _importance score_ suatu kalimat dihitung dengan cara: $\frac{\Sigma score_{words}}{n_{words}}$.
-- _Similarity_
-- _Summarizing_
+### _Pre-processing_
+
+Dari tulisan yang ada, kita perlu mengetahui kalimat mana masuk ke dalam paragraf mana. Untuk itu, tanda `titik` menjadi krusial sebagai pembeda kalimat. Namun pada kenyataannya, `titik` tidak hanya digunakan sebagai penanda antar kalimat tapi bisa digunakan sebagai pengganti `koma` dalam _metric_ atau _currency_. 
+
+Oleh karena itu, perlu ada algoritma yang bisa melakukan _tricky parts_ semacam ini memanfaatkan _regex_ (_reguler expression_) dari pola-pola karakter yang ada.
+
+### _Importance_
+
+Ini adalah proses yang termudah dari sekian langkah yang ada. Prinsipnya adalah _word counting_. Secara logika, kata-kata yang sering muncul merupakan kata yang penting dalam tulisan tersebut.
+
+Agar tidak terjadi bias, maka _stopwords_ dan _numbers_ harus sudah dihapus di tahap _pre-processing_.
+
+Langkah yang penting di sini adalah mengembalikan _importance score_ per kata kembali ke kalimat awalnya. Lalu menghitung _importance score_ dari masing-masing kalimat. 
+
+Agar tidak terjadi bias, _importance score_ suatu kalimat dihitung dengan cara: $\frac{\Sigma score_{words}}{n_{words}}$.
+
+### _Similarity_
+
+_Similarity_ dari dua kalimat dihitung dengan _cosine similarity_.
+
+_Cosine similarity is a metric used to measure how similar the documents are irrespective of their size. Mathematically, it measures the cosine of the angle between two vectors projected in a multi-dimensional space._
+
+Kita perlu menghitung angka _cosine similarity_ dari semua kombinasi pasangan kalimat yang ada. Oleh karena itu _output_ dari perhitungan ini berupa _matriks_.
+
+> Sekarang sudah mengerti kenapa aljabar menjadi penting kan? _hehe_
+
+Misalkan saya punya 51 buah kalimat. Maka akan terbentuk matriks `51 x 51` dengan isinya berupa _cosine similarity_.
+
+Setelah itu, saya akan menentukan kata mana yang menjadi _centroid_ dengan menghitung _degree_ menggunakan prinsip [_network analysis_](https://ikanx101.com/blog/sna-feedback/).
+
+Sebenarnya ada beberapa cara menentukan _centroids_ (pusat dari _network_ graf). Saya sudah mencoba menggunakan _degree_, _betweenness_, dan _eigen value_. Tapi _degree_ menghasilkan _summary_ yang lebih baik.
+
+Saya juga sudah mencoba alternatif lain seperti algoritma _Travelling Salesperson Problem_ untuk _clustering_ _nodes_ berdasarkan jaraknya. Tapi cara _network analysis_ masih memberikan hasil _summary_ yang lebih baik.
+
+### _Summarizing_
+
+Langkah terakhir ini adalah menentukan _threshold_ untuk _importance score_ dan _degree_. Pada nilai berapa saja algoritma memilih kalimat yang diinginkan.
+  
+---
+
+# _Case Study_
+
+
