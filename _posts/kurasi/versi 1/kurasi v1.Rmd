@@ -177,4 +177,6 @@ Langkah terakhir ini adalah menentukan _threshold_ untuk _importance score_ dan 
 
 # _Case Study_
 
+Sebagai contoh, saya akan mencoba melakukan _extraction based summarization_ dari tulisan di blog CEO Nutrifood (Pak @wumard) berjudul: __Toxic Seniority__.
 
+Tulisan lengkap beliau bisa dibaca di [_link _berikut ini](https://wumard.wordpress.com/2020/09/20/toxic-seniority).
