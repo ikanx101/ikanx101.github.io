@@ -209,7 +209,7 @@ head(data_tiga_blog,7)
 
 Lalu bentuk _network analysis_-nya sebagai berikut:
 
-```{r,echo=FALSE,fig.retina=10,warning=FALSE,message=FALSE}
+```{r,echo=FALSE,fig.retina=1,warning=FALSE,message=FALSE}
 library(igraph)
 library(ggraph)
 
