@@ -69,7 +69,7 @@ prinsip-prinsip **NLP** atau *language modelling*.
 
 Analoginya itu seperti pulpen.
 
-<img src="kurasi-v1_files/figure-gfm/unnamed-chunk-1-1.png" width="50%" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/kurasi/versi%201/kurasi-v1_files/figure-gfm/unnamed-chunk-1-1.png" width="50%" />
 
 Kita bisa menuliskan apapun yang kita mau untuk merangkum tulisan
 tersebut.
@@ -87,7 +87,7 @@ Yakni dengan menentukan:
 
 Analoginya seperti stabilo.
 
-<img src="kurasi-v1_files/figure-gfm/unnamed-chunk-2-1.png" width="50%" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/kurasi/versi%201/kurasi-v1_files/figure-gfm/unnamed-chunk-2-1.png" width="50%" />
 
 Kita hanya memberikan *highlight* terhadap kata atau kalimat yang
 menurut kita penting dari tulisan tersebut.
@@ -112,7 +112,7 @@ perlu menuliskan satu kalimat saja. Tidak perlu semuanya.
 Berdasarkan *framework* sederhana itu, saya akan membuat algoritmanya
 sebagai berikut:
 
-<img src="kurasi-v1_files/figure-gfm/unnamed-chunk-3-1.png" width="672" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/kurasi/versi%201/kurasi-v1_files/figure-gfm/unnamed-chunk-3-1.png" width="672" />
 
 Dari kesederhanaan *framework* di atas, ada beberapa titik kritis yang
 perlu diperhatikan, yakni:
@@ -269,7 +269,7 @@ ke data di atas, didapatkan:
 
 Lalu bentuk *network analysis*-nya sebagai berikut:
 
-![](kurasi-v1_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/kurasi/versi%201/kurasi-v1_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 Menggunakan *threshold* berupa *mean* dari *importance* dan *degree*,
 maka hasil rangkuman dari tulisan ini adalah:
