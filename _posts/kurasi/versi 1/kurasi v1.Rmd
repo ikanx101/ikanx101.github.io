@@ -1,5 +1,5 @@
 ---
-title: "Merangkum Tulisan Menggunakan Algoritma"
+title: "Merangkum Tulisan Menggunakan Algoritma Extraction Based Summarization di R"
 output: 
   github_document:
     pandoc_args: --webtex
@@ -23,8 +23,8 @@ Untuk beberapa guru, malahan kami disuruh untuk mencari sumber selain buku yang 
 
 Setidaknya ada dua cara merangkum, yakni:
 
-1. Merangkum dengan kata-kata sendiri.
-1. Merangkum dengan menuliskan kata-kata sesuai dengan yang ada di buku.
+1. __Merangkum dengan kata-kata sendiri__. Biasanya kita harus membaca semua tulisan terlebih dahulu, lalu menuliskan apa yang penting sesuai dengan pemahaman kita. 
+1. __Merangkum dengan menuliskan kata-kata sesuai dengan yang ada di buku__. Biasanya saat membaca semua tulisan, kita menandai kata atau kalimat mana yang penting. Lalu kita tuliskan ulang kalimat-kalimat tersebut apa adanya. 
 
 Pertanyaannya:
 
@@ -34,7 +34,7 @@ Saya jawab _yah_:
 
 > __Jawabannya bisa!__
 
-Sebelum saya membuat algoritmanya, mari saya perkenalkan dulu 2 cara tersebut.
+Sebelum saya membuat algoritmanya menggunakan __R__, mari saya perkenalkan dulu dua cara tersebut.
 
 ### Merangkum dengan kata-kata sendiri
 
@@ -44,7 +44,7 @@ Contoh sederhananya adalah sebagai berikut. Misalkan saya punya kalimat:
 
 > Manchester United baru saja kalah dari RB Leipzig dengan skor 3-2 di laga penyisihan Liga Champion Eropa/
 
-Maka hasil _abstraction based summarization_-nya adalah:
+Maka hasil _abstraction based summarization_-nya kira-kira sebagai berikut:
 
 > Manchester United dikalahkan RB Leipzig.
 
@@ -161,7 +161,7 @@ Kita perlu menghitung angka _cosine similarity_ dari semua kombinasi pasangan ka
 
 > Sekarang sudah mengerti kenapa aljabar menjadi penting kan? _hehe_
 
-Misalkan saya punya 51 buah kalimat. Maka akan terbentuk matriks `51 x 51` dengan isinya berupa _cosine similarity_.
+Misalkan saya punya 51 buah kalimat. Maka akan terbentuk matriks `51 x 51` dengan isinya berupa _cosine similarity_. Matriks ini kita ubah menjadi matriks jarak.
 
 Setelah itu, saya akan menentukan kata mana yang menjadi _centroid_ dengan menghitung _degree_ menggunakan prinsip [_network analysis_](https://ikanx101.com/blog/sna-feedback/).
 
@@ -175,8 +175,12 @@ Langkah terakhir ini adalah menentukan _threshold_ untuk _importance score_ dan 
   
 ---
 
-# _Case Study_
+# _Case Studies_
+
+## _Toxic Seniority_
 
 Sebagai contoh, saya akan mencoba melakukan _extraction based summarization_ dari tulisan di blog CEO Nutrifood (Pak @wumard) berjudul: __Toxic Seniority__.
 
 Tulisan lengkap beliau bisa dibaca di [_link _berikut ini](https://wumard.wordpress.com/2020/09/20/toxic-seniority).
+
+## Masker New Zealand
