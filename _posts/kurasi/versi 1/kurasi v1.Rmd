@@ -7,7 +7,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
+setwd("~/Documents/ikanx101/_posts/kurasi/versi 1")
 library(dplyr)
 library(nomnoml)
 library(EBImage)
@@ -175,12 +175,67 @@ Langkah terakhir ini adalah menentukan _threshold_ untuk _importance score_ dan 
   
 ---
 
-# _Case Studies_
+# _Case Study_
 
 ## _Toxic Seniority_
 
-Sebagai contoh, saya akan mencoba melakukan _extraction based summarization_ dari tulisan di blog CEO Nutrifood (Pak @wumard) berjudul: __Toxic Seniority__.
+Sebagai contoh, saya akan mencoba melakukan _extraction based summarization_ dari tulisan di blog CEO [Nutrifood](https://www.nutrifood.co.id/) (Pak [Wumard](https://www.instagram.com/wumard/?hl=en)) berjudul: __Toxic Seniority__. 
 
-Tulisan lengkap beliau bisa dibaca di [_link _berikut ini](https://wumard.wordpress.com/2020/09/20/toxic-seniority).
+> Bagi rekan-rekan yang menjadi _leader_ di organisasi apapun, saya menyarankan kalian membaca tulisan beliau _yah_.
 
-## Masker New Zealand
+Tulisan lengkap beliau bisa dibaca di [_link_ berikut ini](https://wumard.wordpress.com/2020/09/20/toxic-seniority).
+
+Berikut adalah data yang saya _scrape_:
+
+```{r,echo=FALSE}
+rm(list=ls())
+load("bahan_blog.rda")
+data_awal_blog
+```
+
+Jika saya pecah ke bentuk kalimat, hasilnya sebagai berikut:
+
+```{r,echo=FALSE}
+print("7 Kalimat Teratas")
+head(data_dua_blog,7)
+```
+
+Jika saya cari _importance score per words_ lalu saya kembalikan kembali ke data di atas, didapatkan:
+
+```{r,echo=FALSE}
+print("7 Kalimat Teratas")
+head(data_tiga_blog,7)
+```
+
+Lalu bentuk _network analysis_-nya sebagai berikut:
+
+```{r,echo=FALSE,fig.retina=10,warning=FALSE,message=FALSE}
+library(igraph)
+library(ggraph)
+
+matrix_blog %>% 
+  graph_from_incidence_matrix() %>% 
+  ggraph(layout = "fr") +
+  geom_edge_arc(alpha = .3,
+                color = "darkgreen") +
+  geom_node_point(color = "darkred",
+                  size = 5) +
+  labs(title = "Network Analysis dari Semua Kalimat yang Ada",
+       subtitle = "Toxic Seniority",
+       caption = "Scraped, Computed, and Visualized\nusing R\nikanx101.com")
+```
+
+Menggunakan _threshold_ berupa _mean_ dari _importance_ dan _degree_, maka hasil rangkuman dari tulisan ini adalah:
+
+```{r,echo=FALSE}
+kesimpulan = strsplit(kesimpulan,split = "\\.")
+kesimpulan[[1]]
+```
+
+---
+
+# _Summary_
+
+Algoritma ini sudah dicoba untuk berbagai macam tipe artikel. Saya pribadi cukup puas dengan kinerja algoritma ini walaupun ada beberapa celah yang bisa terus dikembangkan.
+
+Salah satu kelemahan algoritma ini adalah saat menemui artikel yang dipenuhi dengan angka.
