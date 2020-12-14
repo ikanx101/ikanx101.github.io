@@ -9,11 +9,12 @@ setwd("~/Documents/ikanx101/_posts/phonebook problem")
 
 rm(list=ls())
 
+library(dplyr)
 library(stringdist)
 library(stringr)
 library(readxl)
 
-data = read.csv("phonebook.csv")
+df = read.csv("phonebook.csv")
 ```
 Suatu waktu saya sedang bebersih _phonebook_ ponsel saya.
 
@@ -21,7 +22,7 @@ Suatu waktu saya sedang bebersih _phonebook_ ponsel saya.
 
 Begitu pikir saya.
 
-Bagi para pengguna Android, hal seperti ini sangat dimudahkan dengan layanan _Google Contacts_. Dengan algoritmanya, Google bisa memberikan saran _contacts_ mana saja yang `kemungkinan` merupakan _contact_ yang sama.
+Bagi para pengguna __Android__, hal seperti ini sangat dimudahkan dengan layanan _Google Contacts_. Dengan algoritmanya, Google bisa memberikan saran _contacts_ mana saja yang `kemungkinan` merupakan _contact_ yang sama.
 
 Algoritma tersebut akan menyarankan agar _contacts_ tersebut di-_merge_.
 
@@ -43,3 +44,123 @@ Misal `Toko Aman Jaya` bisa saja ditulis sebagai:
 1. `Tk. A Jaya`
 1. dan lain sebagainya
 
+Lantas bagaimana caranya kita bisa mengetahui dan melakukan _merge_ terhadap beberapa _contacts_ yang diduga adalah sama?
+
+---
+
+## Algoritma _Similarity_
+
+Sebenarnya saya menuliskan algoritma ini secara tidak sengaja ketika sata membuat algoritma [_extraction based summarization_](https://ikanx101.com/blog/ext-based-sum/). Prosesnya mirip saat saya menyusun kemiripan beberapa kalimat yang akan dipilih sebagai _summary_ dari suatu tulisan.
+
+Bagaimana _framework_ algoritmanya?
+
+```{r,echo=FALSE,fig.retina=10}
+nomnoml::nomnoml("#direction: down,
+                 [set of entries] -> [pre-processing]
+                 [pre-processing] -> [cosine simmilarity]
+                 [cosine simmilarity] -> [simmilarity scoring]
+                 [simmilarity scoring] -> [final recommendation]
+                 
+                 [set of entries|
+                  Yakni berisi kumpulan baris data yang akan dicocokkan]
+                 [pre-processing|
+                  lowercase\nstripping whitespaces]
+                 [cosine simmilarity|
+                  Output: matriks n x n\nMulai paham kenapa harus belajar aljabar kan?]
+                 [simmilarity scoring|
+                  Memasangkan entries dan memberikan score]
+                 ")
+```
+
+Cukup simpel _kan_?
+
+Saya berikan contoh berikut _yah_.
+
+---
+
+### _John Smith Problems_
+
+Sebagai contoh, saya akan gunakan _dataset_ berisi `10` nama _John Smith_ yang akan dicocokkan. Dataset ini tersedia di publik dan ada beberapa _data scientist_ lain yang membuat model _simmilarity_ juga.
+
+Lantas bedanya apa dengan algoritma yang saya buat? Saya menggunakan metode _Cosine_ yang dinilai lebih baik berdasarkan salah satu jurnal yang saya baca.
+
+Oke, berikut adalah datanya:
+
+```{r,echo=FALSE}
+knitr::kable(df)
+```
+
+Saya akan menggunakan semua informasi yang ada pada data tersebut (tentunya selain _variable_ `id`) untuk melihat pasangan baris yang mungkin merupakan satu _entry_.
+
+#### _Pre-Processing_
+
+Langkah pre-processing ini hanya tinggal menjadikan semua tulisan menjadi _lowercase_, lalu menghilangkan _whitespaces_ yang tidak perlu, dan menggabungkan semua _variable_ yang saya kehendaki.
+
+```{r,echo=FALSE}
+target = paste(df$FirstName,df$LastName,df$Title,
+                df$AddressLine1,df$AddressSuburb,
+                df$AddressPostcode,df$Phone)
+target = janitor::make_clean_names(target)
+target = gsub("\\_","",target)
+target
+```
+
+#### Membuat matriks _cosine simmilarity_ dan _scoring_
+
+Berikutnya adalah membuat matriks kesamaan antara `10` _entries_ yang ada.
+
+```{r,echo=FALSE}
+matriks = stringsimmatrix(target,method = "cosine")
+matriks = as.matrix(matriks)
+sim_matrix = round(matriks,3)
+sim_matrix[lower.tri(sim_matrix)] = 0
+diag(sim_matrix) = 0
+sim_matrix
+```
+
+#### _Pairing Entries_
+
+Sekarang dari matriks di atas, kita akan ekstrak pasangan _entries_ mana saja yang mendapatkan _score_ tertinggi.
+
+_Oh iya_, _max score_ yang memungkinkan adalah nilai `1` _yah_. Kali ini saya akan buat _threshold_ di angka `0.95`.
+
+```{r,echo=FALSE}
+res = order(sim_matrix,decreasing = T)
+hasil = arrayInd(res,dim(sim_matrix),useNames = TRUE)
+hasil = data.frame(hasil)
+hasil$score = sim_matrix[res]
+final = 
+  hasil %>% 
+  filter(score >= .95) %>% 
+  rename(entry_1 = row,
+         entry_2 = col)
+knitr::kable(final)
+```
+
+#### _Final Recommendation_
+
+Dari hasil di atas, kita bisa memberikan rekomendasi bahwa:
+
+```{r,echo=FALSE}
+n = length(final$entry_1)
+
+for(i in 1:n){
+  kata_1 = paste(df[final$entry_1[i],],collapse = " ")
+  kata_2 = paste(df[final$entry_2[i],],collapse = " ")
+  cat("Rekomendasi ",i," dengan score: ",final$score[i],"\n")
+  cat("Entry ke: ",final$entry_1[i]," ~ ",kata_1,"\n")
+  cat("Entry ke: ",final$entry_2[i]," ~ ",kata_2,"\n\n")
+}
+```
+
+---
+
+# _Summary_
+
+Jika dirasa belum puas terhadap kinerja atau rekomendasi yang diberikan, kita bisa melakukan beberapa cara untuk _tweaking the algorithm_, apa saja?
+
+1. Mengubah cara _pre-processing_ dengan:
+  1. Hanya mengambil beberapa _variables_ yang dinilai penting (_instead of_ mengambil _all variables_).
+  1. Mengilangkan angka.
+  1. Mengubah aturan mengenai _whitespaces_.
+1. Mengubah nilai _threshold_.
