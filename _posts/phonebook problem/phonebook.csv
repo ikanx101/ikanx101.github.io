@@ -1,0 +1,11 @@
+CustomerID,FirstName,LastName,Title,AddressLine1,AddressSuburb,AddressPostcode,Phone
+1,John,Smith,Mr,12 Acadia Rd,Burnton,9671,1234 5678
+2,Jhon,Smith,Mr,12 Arcadia Road,Bernton,967,1233 5678
+3,J,Smith,Mr.,12 Acadia Ave,Burnton,867`1,1233 567
+4,John,Smith,Mr,13 Kynaston Rd,Burnton,9671,34561234
+5,John,Smith,Dr,NA,Burnton,9671,34561233
+6,John,S,Dr.,12 Kinaston Road,Bernton,9677,34561223
+7,Jon,Smith,Mr.,13 Kinaston Rd,Barnston,9761,36451223
+8,John,Smith,Dr,12 Aracadia St,Brenton,9761,12345666
+9,John,Smith,Mr,13 Acacia Ave,Burnside,8961,67231231
+10,John,Smith,Dr,12 Kingsford Rd,Burnton,9671,89624328

@@ -1,0 +1,45 @@
+---
+title: "Menyelesaikan Phonebook Problem Menggunakan R"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/Documents/ikanx101/_posts/phonebook problem")
+
+rm(list=ls())
+
+library(stringdist)
+library(stringr)
+library(readxl)
+
+data = read.csv("phonebook.csv")
+```
+Suatu waktu saya sedang bebersih _phonebook_ ponsel saya.
+
+> Barangkali ada beberapa kontak yang _double input_ atau _update_ nomornya.
+
+Begitu pikir saya.
+
+Bagi para pengguna Android, hal seperti ini sangat dimudahkan dengan layanan _Google Contacts_. Dengan algoritmanya, Google bisa memberikan saran _contacts_ mana saja yang `kemungkinan` merupakan _contact_ yang sama.
+
+Algoritma tersebut akan menyarankan agar _contacts_ tersebut di-_merge_.
+
+---
+
+Percaya atau tidak, permasalahan `sederhana` tersebut adalah permasalahan besar di level perusahaan. Banyak perusahaan memiliki _database_ konsumen, toko, atau _reseller_ yang __tidak bersih__.
+
+Banyak duplikasi terjadi.
+
+Sebagai contoh:
+
+> Satu toko yang sama bisa jadi dicatat berbeda oleh dua orang _salesman_ dari perusahaan yang sama.
+
+Misal `Toko Aman Jaya` bisa saja ditulis sebagai:
+
+1. `Toko Aman Jaya`
+1. `Tk. Aman Jaya`
+1. `Toko Amanjaya`
+1. `Tk. A Jaya`
+1. dan lain sebagainya
+
