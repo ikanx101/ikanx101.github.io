@@ -1,0 +1,55 @@
+---
+title: "Product Portofolio Management: Produk Mana Saja yang Harus Diberi Promo? Binary Linear Programming di R"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("/cloud/project/_posts/linear problem/post 2")
+library(dplyr)
+library(tictoc)
+library(lpSolve)
+```
+
+## Prolog
+
+Sudah beberapa bulan ini, saya dan beberapa teman-teman alumni Matematika sedang membentuk komunitas bersama dengan para mahasiswa Matematika ITB tingkat 2 dan 3. Tujuan kami alumni adalah untuk _grooming_ para mahasiswa agar `siap pakai` setelah lulus dalam bidang _data science_.
+
+Dari kami alumni sendiri, bidang pekerjaannya cukup beragam. Ada yang dari FMCG, _retail_, _telco_, _banking_, sampai _start up market place_.
+
+Salah satu keuntungan bagi saya dalam _sharing_ dan `mengajar` di komunitas ini adalah saya _gak_ harus menjelaskan secara detail kepada mereka. Kenapa?
+
+> Mereka kan mahasiswa matematika. Justru secara _skill_ bisa jadi mereka lebih jago daripada saya dan teman-teman alumni lainnya.
+
+Kami tinggal memoles di bagian _softskill_ dan membuka wawasan terhadap algoritma-algoritma dan teknik yang biasa dipakai di berbagai bidang industri.
+
+---
+
+## _Competition_
+
+Beberapa waktu yang lalu, salah satu senior saya yang sekarang bekerja di salah satu _marketplace_ memberikan satu _dataset_ untuk dikompetisikan.
+
+Kali ini kompetisinya bukan tentang _prediction_ atau _classification_! Justru harus diselesaikan dengan teknik yang kita sudah pelajari sejak SMA. Apa itu? [_Linear Programming_](https://ikanx101.com/blog/linear-r/).
+
+Saya sudah menuliskan tentang aplikasi _linear programming_ di [tulisan sebelumnya](https://ikanx101.com/blog/linear-r/). Tapi kali ini teknik yang digunakan sedikit berbeda.
+
+---
+
+## _Problem Statement_
+
+Ceritanya, senior saya memiliki data xx produk yang dijual di _marketplace_-nya. Produk-produk tersebut adalah produk yang memiliki [_price elasticity_](https://ikanx101.com/blog/blog-posting-regresi/) yang tinggi. 
+
+Jadi, saat ada diskon potongan harga di produk tersebut, _sales qty_-nya akan meningkat.
+
+> Semakin bagus jualan produk tersebut tentunya juga akan menambah profit dari _marketplace_ tersebut!
+
+Diskon potongan harga bisa diberikan oleh si _seller_ atau dari pihak _marketplace_. Bisa saja dua-duanya (baik _seller_ dan _marketplace_) memberikan diskon terhadap produk tersebut.
+
+> Coba deh diingat saat kita berbelanja di _marketplace_, apa kita pernah mendapatkan diskon potongan harga _double_? Potongan dari seller dan `kupon` yang diberikan _marketplace_.
+
+Dia diberikan _budget_ sebesar `Rp 200.000.000` untuk melakukan promo. Kini dia harus memilih sebanyak-banyaknya produk yang bisa digelontorkan promo diskon. Tujuannya simpel: _gain the highest profit_ dari produk-produk pilihan tersebut.
+
+Kompetisi: Produk apa saja yang harus dipilih?
+
+## _Dataset_
+
