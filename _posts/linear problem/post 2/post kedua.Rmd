@@ -1,6 +1,8 @@
 ---
-title: "Product Portofolio Management: Produk Mana Saja yang Harus Diberi Promo? Binary Linear Programming di R"
-output: github_document
+title: "Product Portofolio Management: Produk Mana Saja yang Harus Diberi Promo? Sebuah Cerita Optimasi di R"
+output: 
+  github_document:
+    pandoc_args: --webtex
 ---
 
 ```{r setup, include=FALSE}
@@ -53,3 +55,35 @@ Kompetisi: Produk apa saja yang harus dipilih?
 
 ## _Dataset_
 
+Berikut adalah cuplikan _dataset_ yang digunakan:
+
+```{r}
+# knitrr:kable(head(data,10),caption = "10 Data Teratas")
+```
+
+Ada tiga variabel yang digunakan, yakni:
+
+1. `product_code`, yakni kode product yang listed di marketplace. Sebenarnya nama _brand_ dan deskripsi produk ada. Tapi saya _hide_ saja _yah_ __v(n_n)__.
+1. `cost`, yakni biaya yang harus dikeluarkan untuk memberikan potongan diskon kepada pelanggan. Ini adalah variabel yang harus diperhatikan, karena apapun produk yang dipilih nanti, $\sum(cost_i) \leq Rp200jt$.
+1. `expected_profit`, yakni profit yang diproyeksikan akan didapatkan _marketplace_ saat produk diberikan diskon. _Nah_, untuk menghitung berapa besar `expected_profit` per produk ada caranya tersendiri. Kelak, perhitungan ini akan dijadikan kompetisi tahap kedua.
+
+---
+
+# Solusi
+
+Sebagaimana yang telah saya sampaikan di tulisan sebelumnya, kini saya akan selesaikan permasalahan ini dengan dua cara:
+
+1. Simulasi Monte Carlo, dan
+1. _Binary Linear Programming_.
+
+Tapi sebelum saya masuk ke cara penyelesaian, saya akan lakukan pemilihan dataset terlebih dahulu.
+
+Total ada xx baris data TAPI tidak semua data akan saya gunakan. Saya hanya akan menggunakan produk-produk yang memiliki `expected_profit` $> Rp 0$.
+
+```{r}
+# filter data
+```
+
+Ternyata, setelah saya _filter_ dari xx baris, saya hanya akan menggunakan xx baris. Tidak sampai
+
+## Simulasi Monte Carlo
