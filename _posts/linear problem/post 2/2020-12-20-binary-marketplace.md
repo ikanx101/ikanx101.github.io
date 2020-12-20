@@ -58,7 +58,7 @@ yang digunakan sedikit berbeda.
 
 ## *Problem Statement*
 
-Ceritanya, senior saya memiliki data xx produk yang dijual di
+Ceritanya, senior saya memiliki data 7000an produk yang dijual di
 *marketplace*-nya. Produk-produk tersebut adalah produk yang memiliki
 [*price elasticity*](https://ikanx101.com/blog/blog-posting-regresi/)
 yang tinggi.
@@ -149,8 +149,7 @@ Setelah saya cek, ada tiga data yang saya dapatkan, yakni:
 
 ## data\_1
 
-Kalau saya hitung, saya dapatkan $(expectedprofit\_{data1}) = $
-146862305.4135 dan $(cost\_{data1}) = $ 90442848.93.
+Kalau saya hitung, saya dapatkan `expectedprofit` dari `data_1` sebesar `146862305.4135` dan `cost` sebesar `90442848.93`.
 
 Karena saya dapatkan total *cost* masih di bawah `Rp 200 jt`, maka saya
 akan gunakan semua produk pada `data_1` ini.
