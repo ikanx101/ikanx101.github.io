@@ -15,8 +15,6 @@ tags:
   - Montecarlo
 ---
 
-================
-
 ## Prolog
 
 Sudah beberapa bulan ini, saya dan beberapa teman-teman alumni
