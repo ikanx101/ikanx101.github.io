@@ -7,10 +7,36 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-setwd("/cloud/project/_posts/linear problem/post 2")
+options(scipen = 99)
+setwd("~/Documents/ikanx101/_posts/linear problem/post 2")
 library(dplyr)
 library(tictoc)
 library(lpSolve)
+library(readxl)
+
+data = 
+  read_excel("~/Documents/Data-Science-101/Competition/Tahap I/20201207 Product list.xlsx") %>%
+  janitor::clean_names() %>% 
+  mutate(id = c(1:length(cost_benefit)))
+draft = 
+  data %>% 
+  filter(cost_benefit>0) %>% 
+  select(id,product_code,cost_benefit,burn_3m)
+
+hasil = data.frame(id = 0,
+                   n = 0,
+                   cost = 0,
+                   profit = 0)
+
+data_1 = 
+  draft %>% 
+  filter(burn_3m <= cost_benefit)
+data_2 = 
+  draft %>% 
+  filter(burn_3m > cost_benefit)
+data_3 = 
+  data %>% 
+  filter(cost_benefit <= 0)
 ```
 
 ## Prolog
@@ -57,8 +83,14 @@ Kompetisi: Produk apa saja yang harus dipilih?
 
 Berikut adalah cuplikan _dataset_ yang digunakan:
 
-```{r}
-# knitrr:kable(head(data,10),caption = "10 Data Teratas")
+```{r,echo=FALSE}
+cat("10 Data Teratas")
+data %>% 
+  select(product_code,burn_3m,cost_benefit) %>% 
+  rename(cost = burn_3m,
+         expected_profit = cost_benefit) %>% 
+  head(10) %>%  
+  knitr::kable()
 ```
 
 Ada tiga variabel yang digunakan, yakni:
@@ -73,17 +105,207 @@ Ada tiga variabel yang digunakan, yakni:
 
 Sebagaimana yang telah saya sampaikan di tulisan sebelumnya, kini saya akan selesaikan permasalahan ini dengan dua cara:
 
-1. Simulasi Monte Carlo, dan
-1. _Binary Linear Programming_.
+1. Cara probabilistik: Simulasi Monte Carlo, dan
+1. Cara eksak: _Binary Linear Programming_.
 
-Tapi sebelum saya masuk ke cara penyelesaian, saya akan lakukan pemilihan dataset terlebih dahulu.
+Tapi sebelum saya masuk ke cara penyelesaian, saya akan lakukan pemilahan _dataset_ terlebih dahulu.
 
-Total ada xx baris data TAPI tidak semua data akan saya gunakan. Saya hanya akan menggunakan produk-produk yang memiliki `expected_profit` $> Rp 0$.
+Total ada `7617` baris data TAPI tidak semua data akan saya gunakan. Saya hanya akan menggunakan produk-produk yang memiliki `expected_profit` `> 0`.
 
-```{r}
-# filter data
+```{r,echo=FALSE,fig.align='center'}
+cat("Framework Pemilahan Data")
+nomnoml::nomnoml("
+                 [All Data] -> [Profit > 0]
+                 [All Data] -> [Profit <= 0]
+                 
+                 [Profit <= 0] -> [data_3]
+                 
+                 [Profit > 0] -> [Profit >= Cost]
+                 [Profit > 0] -> [Profit < Cost]
+                 
+                 [Profit >= Cost] -> [data_1]
+                 [Profit < Cost] -> [data_2]
+                 ")
 ```
 
-Ternyata, setelah saya _filter_ dari xx baris, saya hanya akan menggunakan xx baris. Tidak sampai
+Setelah saya cek, ada tiga data yang saya dapatkan, yakni:
+
+1. `data_1`, berisi `626` baris data.
+1. `data_2`, berisi `1327` baris data.
+1. `data_3`, berisi `5664` baris data. Saya tidak akan memilih _dataset_ ini karena bukan _profit_ yang didapatkan tapi malah rugi.
+
+## data_1
+
+Kalau saya hitung, saya dapatkan $\sum(expectedprofit_{data1}) = $ `r sum(data_1$cost_benefit)` dan $\sum(cost_{data1}) = $ `r sum(data_1$burn_3m)`.
+
+Karena saya dapatkan total _cost_ masih di bawah `Rp 200 jt`, maka saya akan gunakan semua produk pada `data_1` ini.
+
+## data_2
+
+Sekarang saya tinggal memilih produk-produk apa saja yang harus dimasukkan dari _dataset_ ini. 
+
+Formulasi matematika dari kondisi ini adalah:
+
+### _Constraint Cost_
+
+$$\sum(cost_{data2}) \leq 200.000.000 - \sum(cost_{data1})$$
+
+$$\sum(cost_{data2}) \leq 109.557.151$$
+
+Karena `data_2` memiliki `1327` baris produk, maka saya tulis sebagai berikut:
+
+$$cost_1*x_1 + cost_2*x_2 + ... + cost_n*x_n + ... + cost_{1327}*x_{1327} \leq 109.557.151$$
+
+Dengan nilai $x_1,x_2,...,x_n,x_{1327}$ berupa bilangan _binary_ `{0,1}`.
+
+- `0` berarti produk tidak dipilih.
+- `1` berarti produk dipilih.
+
+
+### _Objective Function_
+
+Tujuan saya adalah memaksimalkan `expected_profit`.
+
+$$MAX (\sum(profit_{data2}))$$
+Karena `data_2` memiliki `1327` baris produk, maka saya tulis sebagai berikut:
+
+$$MAX (profit_1*x_1 + profit_2*x_2 + ... + profit_n*x_n + ... + profit_{1327}*x_{1327})$$
+Dengan nilai $x_1,x_2,...,x_n,x_{1327}$ berupa bilangan _binary_ `{0,1}`.
+
+- `0` berarti produk tidak dipilih.
+- `1` berarti produk dipilih.
+
+---
+
+# Solusi
 
 ## Simulasi Monte Carlo
+
+Ini adalah cara pertama yang terpikir oleh saya saat pertama kali mendapatkan _problem_ seperti ini. Saya tidak akan mencari solusinya secara _brute force_ (mencoba-coba semua kombinasi yang mungkin dari `1327` produk).
+
+Kenapa?
+
+> Secara algoritma memang mudah untuk membuat semua kombinasi yang mungkin. Tapi secara komputasi pasti melakukan ini butuh waktu yang lama.
+
+Oleh karena itu, alih-alih mencoba semua kombinasi, saya hanya akan _generate a large finite of random numbers_ untuk melakukan simulasi kombinasi yang mungkin muncul dari `data_2` yang memenuhi _constraint cost_ dan _objective function_.
+
+Biar _gak_ kelamaan, saya akan _set_ di `5000` iterasi saja. Berapa lama prosesnya? Berapa _max_ `expected profit` yang saya dapatkan?
+
+```{r,echo=FALSE,fig.align='center'}
+nomnoml::nomnoml("#direction: down,
+                 [Langkah Kerja] -> [data_1]
+                 [Langkah Kerja] -> [data_2]
+                 
+                 [data_1] -> [already optimized|set of products]
+                 [data_2] -> [Monte Carlo|5000 iterations]
+                 
+                 [Monte Carlo] -> [output|set of products]
+                 
+                 [output] -> [FINAL set of products]
+                 [already optimized] -> [FINAL set of products]
+                 ")
+
+tic("Proses iterasi memakan waktu selama: ")
+wajib = 
+  draft %>% 
+  filter(burn_3m <= cost_benefit)
+
+new_draft = draft %>% filter(!id %in% wajib$id)
+
+for(i in 1:5000){
+  n = sample(1327,1)
+  set = sample(new_draft$id,n,replace = F)
+  draft_n = 
+    new_draft %>% 
+    filter(id %in% set) %>% 
+    summarise(cost = sum(burn_3m),
+              profit = sum(cost_benefit))
+  set = paste(sort(set),collapse = ";")
+  hasil[i,] = c(set,n,draft_n$cost,draft_n$profit)
+}
+
+toc()
+
+submit = 
+  hasil %>% 
+  mutate(cost = as.numeric(cost),
+         profit = as.numeric(profit)) %>% 
+  filter(cost <= 109557151) %>% 
+  filter(profit == max(profit))
+
+cat("FINAL FINDINGS: set of products")
+submit %>% 
+  select(-id) %>% 
+  mutate(cost = cost + sum(data_1$burn_3m),
+         profit = profit + sum(data_1$cost_benefit),
+         n = as.numeric(n),
+         n = n + 626) %>% 
+  rename("Banyak produk" = n,
+         "Total cost" = cost,
+         "Total expected profit" = profit)
+```
+Tentunya dengan menambah banyaknya iterasi, saya menduga total `expected profit`-nya bisa lebih besar karena bisa jadi saya mendapatkan kombinasi produk yang lebih baik.
+
+## _Binary Linear Programming_
+
+Sekarang saya akan mencoba cara kedua, yakni dengan salah satu cabang _linear programming_. Kalau saya perhatikan kembali, jawaban dari persamaan _constraint cost_ dan _objective function_, yakni $(x_1,x_2,...,x_n,...,x_{1327})$ hanya memiliki jawaban biner `0` atau `1`.
+
+Maka, saya akan gunakan _binary linear programming_ untuk mencari solusinya menggunakan `library(lpSolve)` di __R__.
+
+```{r,echo=FALSE,fig.align='center'}
+nomnoml::nomnoml("#direction: down,
+                 [Langkah Kerja] -> [data_1]
+                 [Langkah Kerja] -> [data_2]
+                 
+                 [data_1] -> [already optimized|set of products]
+                 [data_2] -> [binary linear programming]
+                 
+                 [binary linear programming] -> [output|set of products]
+                 
+                 [output] -> [FINAL set of products]
+                 [already optimized] -> [FINAL set of products]
+                 ")
+
+# Set coefficients of the objective function
+f.obj <- new_draft$cost_benefit
+
+# Set matrix corresponding to coefficients of constraints by rows
+f.con <- matrix(c(new_draft$cost_benefit,
+                  new_draft$burn_3m), 
+                ncol = 1327, 
+                byrow = TRUE)
+
+# Set unequality/equality signs
+f.dir <- c(">=",
+           "<=")
+
+# Set right hand side coefficients
+f.rhs <- c(40000000,
+           109557151)
+
+tic("Proses solving memakan waktu selama: ")
+
+# Variables final values
+hasil = lp("max", f.obj, f.con, f.dir, f.rhs, int.vec = 1:n, all.bin = TRUE)$solution
+new_draft$hasil = hasil
+new_draft = 
+  new_draft %>% 
+  filter(hasil == 1)
+
+toc()
+
+all_ids = c(new_draft$id,wajib$id)
+
+submit = draft %>% filter(id %in% all_ids)
+cat("FINAL FINDINGS: set of products")
+submit %>% summarise("Banyak produk" = n(),
+                     "Total cost" = sum(burn_3m),
+                     "Total expected profit" = sum(cost_benefit))
+```
+
+---
+
+# _SUMMARY_
+
+- Cara perhitungan eksak memberikan hasil yang lebih baik dan tinggi dibandingkan cara probabilistik pada kasus ini. Tapi jika tidak ada _constraint_ pada waktu komputasi, membuat algoritma Monte Carlo lebih mudah bagi saya.
+- _Binary linear programming_ bisa digunakan untuk berbagai macam masalah _real_, seperti pemilihan portofolio saham, alokasi karyawan, dan sebagainya.
