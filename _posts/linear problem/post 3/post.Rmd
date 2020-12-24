@@ -1,0 +1,220 @@
+---
+title: "Optimization Schedulling in R: Masalah Penjadwalan Tenaga Kesehatan di Rumah Sakit"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(lpSolve)
+```
+
+Gara-gara tulisan saya terakhir terkait [_Linear Programming_](https://ikanx101.com/blog/linear-r/) untuk menyelesaikan masalah [_product portofolio_ di _marketplace_](https://ikanx101.com/blog/binary-marketplace/) yang lalu, saya jadi _gak_ mau lepas untuk _ngoprek_ lebih lanjut terkait hal ini.
+
+Setelah membaca jurnal ini itu dan tulisan ini itu, saya mendapati salah satu faedah dari _linear programming_ adalah bisa untuk menyelesaikan _schedulling problem_. Mulai dari yang simpel hingga yang rumit.
+
+> Salah satu teknik yang saya ketahui bisa menyelesaikan _schedulling problem_ adalah dengan memanfaatkan algoritma _travelling salesman problem_ dengan memodifikasi matriks jarak sehingga bisa _applied_ dengan masalah jadwal. Topik ini akan saya simpan untuk tulisan di kemudian hari _yah_.
+
+_Nah_ kali ini, saya akan memberikan contoh bagaimana _linear programming_ bisa digunakan untuk menyelesaikan _schedulling problem_ sederhana di rumah sakit.
+
+> Ingat _yah_, ini masih case yang sederhana. Kalau rumit gimana? Percayalah, masalah rumit bisa dipecah menjadi masalah-masalah yang sederhana. Jadi secara algoritma, bisa kita pecah-pecah menjadi beberapa algoritma yang saling terhubung.
+
+---
+
+# _Problem_
+
+Pada masa pandemi ini, suatu rumah sakit membutuhkan tenaga kesehatan yang siap sedia setiap hari. Di setiap harinya, mereka membutuhkan minimal nakes tertentu agar pelayanan bisa dilakukan secara maksimal. Tapi mereka tidak bisa mempekerjakan terlalu banyak nakes karena alasan ruang dan _budget_ yang terbatas. 
+
+Berikut adalah tabel kebutuhan nakes di rumah sakit tersebut setiap harinya:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center'}
+kondisi = 
+  data.frame(
+    hari = c("Senin","Selasa","Rabu","Kamis","Jumat","Sabtu","Minggu"),
+    needs = sample(c(10:25),7,replace = F)
+  )
+
+kondisi$max =  kondisi$needs + 5
+kondisi %>% 
+  rename(min_nakes_required = needs,
+         max_nakes_required = max) %>% 
+  knitr::kable(align = "c")
+```
+
+Jika berlaku kondisi sebagai berikut:
+
+1. Setiap nakes yang bekerja hanya diperbolehkan bekerja 5 hari secara berturut-turut dan harus istirahat (libur) secara 2 hari berturut-turut.
+1. _Shift_ atau jam kerja kita abaikan dulu sementara.
+
+Pertanyaannya:
+
+> Berapa banyak nakes yang harus dipekerjakan oleh rumah sakit tersebut?
+
+---
+
+# Mencari Solusi
+
+Untuk memudahkan saya membuat formulasi matematika dari _problem_ di atas, saya akan buat terlebih dahulu tabel jadwal berikut:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center'}
+solusi = data.frame(
+  hari = c(1:7),
+  x1 = c(rep("v",5),"",""),
+  x2 = c("",rep("v",5),""),
+  x3 = c("","",rep("v",5)),
+  x4 = c("v",rep("",2),rep("v",4)),
+  x5 = c(rep("v",2),rep("",2),rep("v",3)),
+  x6 = c(rep("v",3),rep("",2),rep("v",2)),
+  x7 = c(rep("v",4),rep("",2),rep("v",1)),
+  min_required = kondisi$needs,
+  max_required = kondisi$max
+)
+
+solusi %>% 
+  mutate(hari = c("Senin","Selasa","Rabu","Kamis","Jumat","Sabtu","Minggu")) %>% 
+  rename(min_nakes_required = min_required,
+         max_nakes_required = max_required) %>% 
+  knitr::kable(align = "c")
+```
+Keterangan:
+
+- $x_1,x_2,x_3,x_4,x_5,x_6,x_7$ menandakan kelompok nakes yang perlu dipekerjakan. 
+- Nilai $x$ berupa bilangan bulat positif: $x \geq 0,x \in integer$.
+- `v` menandakan hari saat kelompok nakes harus masuk kerja. 
+
+## Formulasi Matematika
+
+Dari tabel di atas, kita akan buat formulasi matematikanya berikut:
+
+### _Objective Function_
+
+Tujuan kita kali ini adalah menentukan jumlah nakes seminimal mungkin yang bisa memenuhi tabel di atas:
+
+$$MIN(x_1+x_2+x_3+x_4+x_5+x_6+x_7)$$
+
+## _Constraint_
+
+Dari tabel, kita bisa tuliskan _constraints_ sebagai berikut:
+
+- Hari Senin: $min_{required} \leq x_1+x_4+x_5+x_6+x_7 \leq max_{required}$
+- Hari Selasa: $min_{required} \leq x_1+x_2+x_5+x_6+x_7 \leq max_{required}$
+- Hari Rabu: $min_{required} \leq x_1+x_2+x_3+x_6+x_7 \leq max_{required}$
+- Hari Kamis: $min_{required} \leq x_1+x_2+x_3+x_4+x_7 \leq max_{required}$
+- Hari Jumat: $min_{required} \leq x_1+x_2+x_3+x_4+x_5 \leq max_{required}$
+- Hari Sabtu: $min_{required} \leq x_2+x_3+x_4+x_5+x_6 \leq max_{required}$
+- Hari Minggu: $min_{required} \leq x_3+x_4+x_5+x_6+x_7 \leq max_{required}$
+
+## Saatnya mencari solusi!
+
+Jika kita buat matriks dari persamaan di atas:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center'}
+matrix_solusi = 
+  solusi %>% 
+  select(-hari,-min_required,-max_required)
+
+matrix_solusi[matrix_solusi == "v"] = 1
+matrix_solusi[matrix_solusi == ""] = 0
+matrix_solusi$min = kondisi$needs
+cat("Constraint minimum required\n")
+as.matrix(matrix_solusi)
+
+matrix_solusi = 
+  solusi %>% 
+  select(-hari,-min_required,-max_required)
+
+matrix_solusi[matrix_solusi == "v"] = 1
+matrix_solusi[matrix_solusi == ""] = 0
+matrix_solusi$max = kondisi$max
+cat("Constraint maximum required\n")
+as.matrix(matrix_solusi)
+```
+
+Saat saya hitung dengan `library(lpSolve)`, saya dapatkan
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center'}
+f.obj = rep(1,7)
+
+matrix_solusi = 
+  solusi %>% 
+  select(-hari,-min_required,-max_required)
+
+matrix_solusi[matrix_solusi == "v"] = 1
+matrix_solusi[matrix_solusi == ""] = 0
+matrix_solusi = rbind(matrix_solusi,matrix_solusi)
+
+f.con = as.matrix(matrix_solusi)
+
+f.dir <- c(rep(">=", 7),rep("<=",7))
+
+# Set right hand side coefficients
+f.rhs <- c(kondisi$needs,kondisi$max)
+
+# Final value (z)
+lp("min", f.obj, f.con, f.dir, f.rhs, int.vec = 1:7)
+
+# Variables final values
+hasil = lp("min", f.obj, f.con, f.dir, f.rhs, int.vec = 1:7)$solution
+```
+
+Kita cukup memerlukan `r sum(hasil)` orang nakes untuk memenuhi kebutuhan rumah sakit tersebut. Bagaimana konfigurasi nakesnya?
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center'}
+optimasi = data.frame(shift = paste0("x",c(1:7)),
+                      banyak_pekerja = hasil)
+
+cat("Konfigurasi Nakes per Kelompok Kerja")
+optimasi %>% 
+  rename(kelompok_nakes = shift,
+         banyak_nakes = banyak_pekerja) %>% 
+  knitr::kable(align = "c")
+```
+
+Oke, biar tidak bingung, saya kembalikan ke tabel di atas.
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center'}
+cat("Konfigurasi Final Solusi")
+solusi %>% 
+  mutate(x1 = ifelse(x1 == "v",
+                     optimasi$banyak_pekerja[1],
+                     0),
+         x2 = ifelse(x2 == "v",
+                     optimasi$banyak_pekerja[2],
+                     0),
+         x3 = ifelse(x3 == "v",
+                     optimasi$banyak_pekerja[3],
+                     0),
+         x4 = ifelse(x4 == "v",
+                     optimasi$banyak_pekerja[4],
+                     0),
+         x5 = ifelse(x5 == "v",
+                     optimasi$banyak_pekerja[5],
+                     0),
+         x6 = ifelse(x6 == "v",
+                     optimasi$banyak_pekerja[6],
+                     0),
+         x7 = ifelse(x7 == "v",
+                     optimasi$banyak_pekerja[7],
+                     0)
+         ) %>% 
+  mutate(hari = c("Senin","Selasa","Rabu","Kamis","Jumat","Sabtu","Minggu")) %>% 
+  rowwise() %>% 
+  mutate(rekomendasi_pekerja = x1+x2+x3+x4+x5+x6+x7) %>% 
+  ungroup() %>% 
+  knitr::kable(align = "c")
+```
+
+---
+
+# _Summary_
+
+Dari kasus ini, saya bisa mendapatkan konfigurasi terbaik berapa banyak nakes yang harus dipekerjakan setiap harinya. 
+
+Jika mau dibuat lebih detail, misalkan:
+
+1. Detail _shift_.
+1. Tambahan _constraint_ _wages_ dan syarat-syarat per nakes.
+
+Saya tinggal membuat formulasi matematika yang lebih detail lagi.
