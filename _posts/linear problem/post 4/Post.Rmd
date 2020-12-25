@@ -32,33 +32,34 @@ Kini, saya akan mengggunakan _mixed integer linear programming_ (__MILP__) untuk
 
 # _Problem_
 
-Pada tahun 2021 nanti, tim HR akan melakukan _full day training_ kepada sebagian karyawan. _Training_ ini akan disebar di 12 bulan sepanjang 2021. _Training_ ini cukup diikuti sekali per _trainee_. Karyawan yang tertarik bisa mendaftar dan memilih sendiri pada bulan berapa dia bisa mengikuti _training_ tersebut.
+Pada tahun 2021 nanti, tim HR akan melakukan _full day training_ kepada sebagian karyawan. _Training_ ini akan disebar di 4 tanggal di Q1 2021. _Training_ ini cukup diikuti sekali per _trainee_. Karyawan yang tertarik bisa mendaftar dan memilih sendiri pada tanggal berapa dia bisa mengikuti _training_ tersebut.
 
-- Sampai detik ini, ada 167 orang karyawan yang mendaftar.
-- Satu kali _training_ hanya bisa diikuti maksimal 16 orang _trainee_.
-- Ada 12 pilihan bulan _training_. 
-- Calon _trainee_ bisa memilih 3 bulan yang tersedia. Namun hanya akan dimasukkan ke dalam satu bulan saja.
-  - Bulan pilihan pertama memiliki bobot terbesar. Ini adalah bulan pilihan utama _trainee_. Jika jumlah _trainee_ di bulan ini masih kosong atau mencukupi, maka _trainee_ akan dimasukkan ke dalam kelas tersebut.
-  - Bulan pilihan kedua sebagai alternatif berikutnya.
-  - Bulan pilihan ketiga sebagai alternatif terakhir jika _trainee_ tidak bisa masuk ke dalam bulan pilihan pertama dan kedua.
+- Sampai detik ini, ada 87 orang karyawan yang mendaftar.
+- Satu kali _training_ hanya bisa diikuti maksimal 22 orang _trainee_.
+- Ada 4 pilihan tanggal _training_. 
+- Calon _trainee_ bisa memilih 3 dari 4 tanggal yang tersedia. Namun hanya akan dimasukkan ke dalam satu kelas saja.
+  - Tanggal pilihan pertama memiliki bobot terbesar. Ini adalah tanggal pilihan utama _trainee_. Jika jumlah _trainee_ di tanggal ini masih kosong atau mencukupi, maka _trainee_ akan dimasukkan ke dalam kelas tersebut.
+  - Tanggal pilihan kedua sebagai alternatif berikutnya.
+  - Tanggal pilihan ketiga sebagai alternatif terakhir jika _trainee_ tidak bisa masuk ke dalam tanggal pilihan pertama dan kedua.
 
-Bagaimana cara kita menyusun _trainee_ mana saja yang masuk ke bulan berapa dari pilihan yang mereka berikan?
+Bagaimana cara kita menyusun _trainee_ mana saja yang masuk ke tanggal berapa dari pilihan yang mereka berikan?
 
 ---
 
 # _a little bit of math_
 
-Oke, ini adalah bagian serunya jika kita menyelesaikan _linear programming_ yakni membuat formulasi matematika dari masalah yang ada. Misalkan saya telah mendapatkan data pilihan dari 167 orang tersebut.
+Oke, ini adalah bagian serunya jika kita menyelesaikan _linear programming_ yakni membuat formulasi matematika dari masalah yang ada. Misalkan saya telah mendapatkan data pilihan dari 87 orang tersebut.
 
 ```{r,echo=FALSE}
-cat("Cuplikan 10 data pilihan trainee")
+setwd("/cloud/project/_posts/linear problem/post 4")
+cat("Cuplikan 10 data pilihan trainee\n")
 
 rm(list=ls())
-load("bahan blog.rda")
+load("bahan blog (1).rda")
 head(pilihan,10)
 ```
 
-Kita lihat bahwa _trainee_ pertama memberikan pilihan `r pilihan[1]`. Kita harus memberikan bobot terbesar terhadap pilihan pertama, kedua, dan ketiga. Sementara bulan yang tidak terpilih, kita akan berikan bobot yang sangat kecil.
+Kita lihat bahwa _trainee_ pertama memberikan pilihan `r pilihan[[1]]`. Kita harus memberikan bobot terbesar terhadap pilihan pertama, kedua, dan ketiga. Sementara bulan yang tidak terpilih, kita akan berikan bobot yang sangat kecil.
 
 > Apa gunanya?
 
@@ -68,34 +69,113 @@ Berikut adalah formulasi matematikanya:
 
 $n$ menandakan banyaknya _trainee_. 
 
-$$n = 1,2,3...,167$$
+$$n = 1,2,3...,87$$
 
 $m$ menandakan banyaknya kelas _training_.
 
-$$m = 1,2,3,...,12$$
+$$m = 1,2,3,4$$
 
 Misalkan saya notasikan $x_{i,j}$ adalah bilangan biner (0,1) yang menandakan:
 
-- `1` jika _trainee_ $i$ mengikuti _training_ di bulan $j$.
-- `0` jika _trainee_ $i$ tidak mengikuti _training_ di bulan $j$.
+- `1` jika _trainee_ $i$ mengikuti _training_ di tanggal ke $j$.
+- `0` jika _trainee_ $i$ tidak mengikuti _training_ di tanggal ke $j$.
 
-Misalkan saya notasikan $w_{i,j}$ adalah bobot _trainee_ $i$ terhadap training bulan ke $j$. Nilai $w_{i,j}$ akan besar saat bulan yang dipilih merupakah pilihan pertama dan seterusnya.
+Misalkan saya notasikan $w_{i,j}$ adalah bobot _trainee_ $i$ terhadap training tanggal ke $j$. Nilai $w_{i,j}$ akan besar saat tanggal yang dipilih merupakah pilihan pertama dan seterusnya.
 
 ## _Objective Function_
 
 Kita harus memaksimalkan fungsi berikut:
 
-$$\sum_{i=1}^{n} \sum_{j=1}^{m} w_{i,j} * x_{i,j}$$
+$$MAX \sum_{i=1}^{n} \sum_{j=1}^{m} w_{i,j} * x_{i,j}$$
 
 ## _Constraints_
 
-_Constraint_ kapasitas per kelas yang maksimal 16 orang.
+_Constraint_ kapasitas per kelas yang maksimal 22 orang.
 
-$\sum_{i=1}^{n} x_{i,j} \leq 16$ dengan $j = 1,2,3,...,12$.
+$\sum_{i=1}^{n} x_{i,j} \leq 22$ dengan $j = 1,2,3,4$.
 
 _Constraint_ seorang _trainee_ harus terpasang ke satu kelas saja.
 
-$\sum_{j=1}^{m} x_{i,j} = 1$ dengan $i = 1,2,3,...,167$.
+$\sum_{j=1}^{m} x_{i,j} = 1$ dengan $i = 1,2,3,...,87$.
 
-_Constraint_ nilai $x_{1,j} \in (0,1)$ dengan $i = 1,2,3,...,167$ dan $j = 1,2,3,...,12$.
+_Constraint_ nilai $x_{i,j} \in (0,1)$ dengan $i = 1,2,3,...,87$ dan $j = 1,2,3,4$.
 
+## Solusi
+
+Kali ini saya tidak akan menggunakan `library(lpSolve)` untuk menyelesaikan masalah ini. Saya akan menggunakan __OMPR__ (_Optimization Modelling Package in R_).
+
+Jadi alih-alih membentuk beberapa matriks, saya akan langsung menggunakan persamaan-persamaan di atas.
+
+```{r}
+# model = MIPModel() %>%
+  
+  # Definisi x[i,j]: bernilai 1 jika trainee dimasukkan ke training bulan j
+#  add_variable(x[i, j], i = 1:n, j = 1:m, type = "binary") %>%
+  
+  # Maksimalkan objective function
+#  set_objective(sum_expr(bobot(pilihan[i], j) * x[i, j], i = 1:n, j = 1:m),
+#                "max") %>%
+  
+  # Constraint kapasitas kelas
+#  add_constraint(sum_expr(x[i, j], i = 1:n) <= capacity[j], j = 1:m) %>% 
+  
+  # Constraint satu trainee hanya boleh masuk ke dalam satu training saja
+#  add_constraint(sum_expr(x[i, j], j = 1:m) == 1, i = 1:n)
+```
+
+Setelah saya selesaikan, saya dapatkan konfigurasi sebagai berikut:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+final %>% 
+  group_by(batch_ke) %>% 
+  summarise(freq = n()) %>% 
+  ungroup() %>% 
+  rename(training_tanggal_ke = batch_ke,
+         banyak_trainee = freq) %>% 
+  knitr::kable()
+```
+
+Melihat hasil optimal di atas, tidak ada satupun _constraint_ yang dilanggar.
+
+Jika dilihat detailnya, saya akan cek apakah _trainee_ memang dimasukkan ke dalam tanggal sesuai dengan pilihan mereka sendiri atau tidak:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center'}
+final$pilihan = 0
+for(i in 1:87){
+  new = unlist(pilihan[i])
+  new = paste(new,collapse = ",")
+  final$pilihan[i] = new
+}
+
+library(tidyr)
+library(ggplot2)
+
+final %>% 
+  separate(pilihan,into = c("p1","p2","p3"),sep = ",") %>%
+  rowwise() %>% 
+  mutate(penanda = ifelse(batch_ke == p1 | batch_ke == p2 | batch_ke == p3,
+                          "Chosen by him/herself",
+                          "Chosen by algorithm")
+         ) %>% 
+  ungroup() %>% 
+  group_by(batch_ke,penanda) %>% 
+  summarise(freq = n()) %>% 
+  ungroup() %>% 
+  ggplot(aes(x = batch_ke,
+             y = freq,
+             fill = penanda)) +
+  geom_col(color = "black") +
+  scale_fill_brewer(palette = "Seq3") +
+  labs(title = "Berapa banyak trainee yang mendapatkan waktu training\nsesuai dengan apa yang mereka pilih?",
+       subtitle = "Diselesaikan dengan MILP Algorithm",
+       caption = "Solved and Visualized\nusing R\nikanx101.com",
+       x = "Waktu Training\nTanggal ke-",
+       y = "# Trainees",
+       fill = "Keterangan") +
+  theme(legend.position = "bottom")
+
+```
+
+Ternyata ada sebagian kecil dari _trainee_ yang dimasukkan ke dalam _training_ tanggal tertentu bukan berdasarkan pilihan dari mereka.
+
+Hal ini dimungkinkan karena algoritma akan memasukkan _trainees_ yang lebih bisa memaksimalkan _objective function_ sehingga _trainee_ `sisa` ini dimasukkan ke dalam tanggal tertentu yang tidak melanggar _constraints_ dan tetap memaksimalkan _objective function_ yang ada.
