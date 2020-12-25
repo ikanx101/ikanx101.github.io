@@ -1,0 +1,36 @@
+---
+title: "Optimization Story: Pemilahan Peserta Training dengan Mixed Integer Linear Programming"
+output:
+  github_document:
+     pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(ompr)
+library(ROI)
+library(ROI.plugin.gltk)
+```
+
+Pada tahun ini, saya dan beberapa rekan di kantor mengadakan [_training_ __R__](https://ikanx101.com/blog/training-replikasi/) secara online di kantor. Ternyata animonya luar biasa. 
+
+> Ibarat kata jualan gorengan, dagangan kami laku keras.
+
+Saking banyaknya pendaftar, tim _training_ HR harus membagi para peserta menjadi beberapa _batches_.
+
+Saat itu, ada 57 orang yang mendaftar. Sementara kapasitas para _trainers_ untuk satu _batch_ hanya bisa mengajar 12-16 orang saja. Oleh karena itu dibagilah para peserta menjadi 5 _batches_.
+
+Saat itu, secara manual kami membagi para peserta ke dalam _batches_ tersebut. Para peserta dipilih dan dipilah berdasarkan skor urgensi yang kami nilai secara subjektif sesuai dengan _roles_ pekerjaan masing-masing.
+
+Ternyata menentukan jadwal memang tidak semudah yang dibayangkan.
+
+---
+
+Pada tulisan sebelumnya, saya telah membahas bagaimana _linear programming_ bisa digunakan untuk menentukan jadwal yang optimal.
+
+Kini, saya akan mengggunakan _mixed integer linear programming_ (__MILP__) untuk membuat jadwal _training_. Kasusnya tidak akan mirip persis dengan pengalaman saya tapi akan saya _twist_ agar lebih seru.
+
+---
+
+# _Problem_
