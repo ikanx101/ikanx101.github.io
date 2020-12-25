@@ -8,9 +8,6 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
-library(ompr)
-library(ROI)
-library(ROI.plugin.gltk)
 ```
 
 Pada tahun ini, saya dan beberapa rekan di kantor mengadakan [_training_ __R__](https://ikanx101.com/blog/training-replikasi/) secara online di kantor. Ternyata animonya luar biasa. 
@@ -61,11 +58,44 @@ load("bahan blog.rda")
 head(pilihan,10)
 ```
 
-Kita lihat bahwa _trainee_ pertama memberikan pilihan `r pilihan[1]`
+Kita lihat bahwa _trainee_ pertama memberikan pilihan `r pilihan[1]`. Kita harus memberikan bobot terbesar terhadap pilihan pertama, kedua, dan ketiga. Sementara bulan yang tidak terpilih, kita akan berikan bobot yang sangat kecil.
 
+> Apa gunanya?
 
+Agar kita bisa menjadikan pilihan-pilihan ini menjadi _objective function_ yang harus kita __maksimalkan__.
 
+Berikut adalah formulasi matematikanya:
 
+$n$ menandakan banyaknya _trainee_. 
 
+$$n = 1,2,3...,167$$
 
+$m$ menandakan banyaknya kelas _training_.
+
+$$m = 1,2,3,...,12$$
+
+Misalkan saya notasikan $x_{i,j}$ adalah bilangan biner (0,1) yang menandakan:
+
+- `1` jika _trainee_ $i$ mengikuti _training_ di bulan $j$.
+- `0` jika _trainee_ $i$ tidak mengikuti _training_ di bulan $j$.
+
+Misalkan saya notasikan $w_{i,j}$ adalah bobot _trainee_ $i$ terhadap training bulan ke $j$. Nilai $w_{i,j}$ akan besar saat bulan yang dipilih merupakah pilihan pertama dan seterusnya.
+
+## _Objective Function_
+
+Kita harus memaksimalkan fungsi berikut:
+
+$$\sum_{i=1}^{n} \sum_{j=1}^{m} w_{i,j} * x_{i,j}$$
+
+## _Constraints_
+
+_Constraint_ kapasitas per kelas yang maksimal 16 orang.
+
+$\sum_{i=1}^{n} x_{i,j} \leq 16$ dengan $j = 1,2,3,...,12$.
+
+_Constraint_ seorang _trainee_ harus terpasang ke satu kelas saja.
+
+$\sum_{j=1}^{m} x_{i,j} = 1$ dengan $i = 1,2,3,...,167$.
+
+_Constraint_ nilai $x_{1,j} \in (0,1)$ dengan $i = 1,2,3,...,167$ dan $j = 1,2,3,...,12$.
 
