@@ -114,7 +114,7 @@ Misalkan saya telah mendapatkan data pilihan dari 87 orang tersebut.
 
 Kita lihat bahwa *trainee* pertama memberikan pilihan 1, 4, 2. Kita
 harus memberikan bobot terbesar terhadap pilihan pertama, kedua, dan
-ketiga. Sementara bulan yang tidak terpilih, kita akan berikan bobot
+ketiga. Sementara tanggal yang tidak terpilih, akan saya berikan bobot
 yang sangat kecil.
 
 > Apa gunanya?
