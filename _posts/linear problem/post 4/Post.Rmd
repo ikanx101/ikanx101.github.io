@@ -34,3 +34,25 @@ Kini, saya akan mengggunakan _mixed integer linear programming_ (__MILP__) untuk
 ---
 
 # _Problem_
+
+Pada suatu waktu, tim HR akan melakukan _full day training_ kepada sebagian karyawan. Karyawan yang tertarik bisa mendaftar dan memilih sendiri pada tanggal berapa dia bisa mengikuti _training_ tersebut.
+
+- Ada 57 orang karyawan yang mendaftar.
+- Satu kali _training_ hanya bisa diikuti 12-16 orang _trainee_.
+- Ada 5 pilihan tanggal _training_. 
+- Calon _trainee_ bisa memilih 3 tanggal yang tersedia. Namun hanya akan dimasukkan ke dalam satu tanggal saja.
+- Tanggal pilihan pertama memiliki bobot terbesar. Ini adalah tanggal pilihan utama _trainee_. Jika jumlah _trainee_ di tanggal ini masih kosong atau mencukupi, maka _trainee_ akan dimasukkan ke dalam tanggal tersebut.
+- Tanggal pilihan kedua sebagai alternatif berikutnya.
+- Tanggal pilihan ketiga sebagai alternatif terakhir jika trainee tidak bisa masuk ke dalam tanggal pilihan pertama dan kedua.
+
+Bagaimana cara kita menyusun _trainee_ mana saja yang masuk ke tanggal berapa dari pilihan yang mereka berikan?
+
+---
+
+# _a little bit of math_
+
+Oke, ini adalah bagian serunya jika kita menyelesaikan _linear programming_.
+
+
+
+
