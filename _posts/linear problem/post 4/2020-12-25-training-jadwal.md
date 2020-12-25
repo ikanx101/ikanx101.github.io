@@ -1,6 +1,20 @@
-Optimization Story: Pemilahan Peserta Training dengan Mixed Integer
-Linear Programming
-================
+---
+date: 2020-12-25T14:55:00-04:00
+title: "Optimization Story: Pemilahan Peserta Training dengan Mixed Integer Linear Programming"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - R
+  - Modelling
+  - Linear Programming
+  - Aljabar
+  - Binary Linear Programming
+  - MILP
+  - Mixed Integer Linear Programming
+---
+
 
 Pada tahun ini, saya dan beberapa rekan di kantor mengadakan [*training*
 **R**](https://ikanx101.com/blog/training-replikasi/) secara online di
@@ -222,7 +236,7 @@ dilanggar.
 Jika dilihat detailnya, saya akan cek apakah *trainee* memang dimasukkan
 ke dalam tanggal sesuai dengan pilihan mereka sendiri atau tidak:
 
-<img src="Post_files/figure-gfm/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/linear%20problem/post%204/Post_files/figure-gfm/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" />
 
 Ternyata ada sebagian kecil dari *trainee* yang dimasukkan ke dalam
 *training* tanggal tertentu bukan berdasarkan pilihan dari mereka.
