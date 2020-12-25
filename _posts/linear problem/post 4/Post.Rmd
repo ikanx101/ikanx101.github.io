@@ -51,7 +51,7 @@ Bagaimana cara kita menyusun _trainee_ mana saja yang masuk ke bulan berapa dari
 
 # _a little bit of math_
 
-Oke, ini adalah bagian serunya jika kita menyelesaikan _linear programming_ yakni membuat formulasi matematika dari masalah yang ada. Misalkan saya telah mendapatkan data pilihan dari 57 orang tersebut.
+Oke, ini adalah bagian serunya jika kita menyelesaikan _linear programming_ yakni membuat formulasi matematika dari masalah yang ada. Misalkan saya telah mendapatkan data pilihan dari 167 orang tersebut.
 
 ```{r,echo=FALSE}
 cat("Cuplikan 10 data pilihan trainee")
@@ -61,8 +61,7 @@ load("bahan blog.rda")
 head(pilihan,10)
 ```
 
-
-
+Kita lihat bahwa _trainee_ pertama memberikan pilihan `r pilihan[1]`
 
 
 
