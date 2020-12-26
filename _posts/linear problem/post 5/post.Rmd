@@ -1,5 +1,5 @@
 ---
-title: "Optimization Story: Menentukan Letak Distribution Hub dengan Mixed Integer Linear Programming"
+title: "Optimization Story: Menentukan Letak Pool Taxi dengan Mixed Integer Linear Programming"
 output:
   github_document:
      pandoc_args: --webtex
@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
+load("bahan_blog.rda")
 ```
 
 Beberapa waktu lalu, saya dan beberapa rekan di kantor berdiskusi ringan mengenai data spasial (_longlat location_).
@@ -25,4 +26,8 @@ Optimisasi ini bisa digunakan untuk berbagai macam kasus, tapi kali ini saya aka
 ---
 
 # _Problem_
+
+Suatu perusahaan taxi sedang mempertimbangkan untuk membangun beberapa _pool taxi_ untuk mendekatkan mereka kepada konsumen-konsumennya. Mereka memiliki data lokasi-lokasi mana saja memiliki _high demand_ terhadap taxi mereka.
+
+Tercatat ada `r titik` buah lokasi yang memiliki _high demand_. Mereka juga telah melakukan survey terhadap `r toko` buah calon lokasi _pool_ taxi. Masing-masing calon lokasi _pool_ taxi tersebut memiliki harga sewa yang beragam.
 
