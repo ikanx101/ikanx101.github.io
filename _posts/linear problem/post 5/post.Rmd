@@ -7,6 +7,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+options(scipen = 99)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
@@ -31,3 +32,154 @@ Suatu perusahaan taxi sedang mempertimbangkan untuk membangun beberapa _pool tax
 
 Tercatat ada `r titik` buah lokasi yang memiliki _high demand_. Mereka juga telah melakukan survey terhadap `r toko` buah calon lokasi _pool_ taxi. Masing-masing calon lokasi _pool_ taxi tersebut memiliki harga sewa yang beragam.
 
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center'}
+data = 
+  data %>% 
+  group_by(ket) %>% 
+  mutate(id = c(1:n())) %>% 
+  ungroup %>% 
+  mutate(id = ifelse(ket == "hub",id,NA))
+
+data = 
+  data %>% 
+  mutate(ket = ifelse(ket == "hub","Calon Pool","High Demand"))
+
+data %>% 
+  ggplot(aes(x,y)) +
+  geom_point(aes(color = ket,shape = ket),alpha = .5) +
+  ggrepel::geom_text_repel(aes(label = id),
+                           size = 1.95) +
+  labs(title = "Peta Sebaran Lokasi dengan High Demand dan Calon Lokasi Pool Taxi",
+       color = "Keterangan",
+       shape = "Keterangan",
+       caption = "Visualized using R\nikanx101.com",
+       subtitle = paste(titik," lokasi high demand dan",toko,"calon lokasi pool")) +
+  theme_minimal() +
+  theme(axis.title = element_blank(),
+        axis.text = element_blank(),
+        legend.position = "bottom")
+```
+
+Berikut adalah biaya yang dibutuhkan untuk menyewa dan me-_maintain_ masing-masing calon lokasi _pool_ taxi tersebut:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+cat("Tabel Biaya yang Akan Dikeluarkan")
+data %>% 
+  filter(ket == "Calon Pool") %>% 
+  select(id,cost_setup) %>% 
+  rename(id_calon_pool = id,
+         total_biaya = cost_setup) %>% 
+  knitr::kable()
+```
+
+Permasalahannya:
+
+Perusahaan taxi tersebut memiliki _budget_ dan sumber daya terbatas. Oleh karena itu mereka perlu mencari berapa jumlah _pool_ taxi yang seminimum mungkin tapi tetap _covering_ area-area _high demand_ tersebut.
+
+# Formulasi Matematika
+
+Oke, sekarang saya mulai bagian serunya. Inti permasalahan ini sebenarnya adalah:
+
+> Memasangkan lokasi-lokasi _high demand_ secara optimal dengan beberapa calon lokasi _pool taxi_.
+
+Misalkan $i$ menandakan banyaknya lokasi _high demand_, $i = 1,2,...,200$.
+
+Sedangkan $j$ menandakan berapa banyak calon lokasi _pool_ taxi $j = 1,2,...,40$.
+
+Lalu $x[i,j]$ merupakan bilangan biner (0,1) yang menandakan:
+
+- `0` jika lokasi _high demand_ ke $i$ tidak dipasangkan dengan calon lokasi _pool_ taxi ke $j$.
+- `1` jika lokasi _high demand_ ke $i$ dipasangkan dengan calon lokasi _pool_ taxi ke $j$.
+
+Lalu $y[j]$ merupakan bilangan biner (0,1) yang menandakan:
+
+- `0` jika calon lokasi _pool_ taxi ke $j$ tidak perlu disewa.
+- `1` jika calon lokasi _pool_ taxi ke $j$ perlu disewa.
+
+## _Constraints_
+
+Kita ketahui bahwa satu lokasi _high demand_ hanya boleh di-_cover_ oleh satu _pool_ taxi saja.
+
+$$\sum_{j=1}^{40} x[i,j] = 1$$ 
+
+untuk $i=1,2,..,200$.
+
+Lalu saat ada lokasi _high demand_ $i$ yang di-_cover_ oleh _pool_ $j$ ($x[i,j]=1$), maka _pool_ $j$ harus dibangun ($y[j]=1$). 
+
+$$x[i,j] \leq y[j]$$
+
+##  _Objective Functions_
+
+Setidaknya ada dua kondisi yang kita wajibkan agar pemilihan _pool_ ini optimal:
+
+1. Total jarak antara _pool_ dan lokasi-lokasi _high demand_ yang di-_cover_ olehnya harus terpendek. Kenapa? Semakin jauh, maka _transportation cost_ yang dikeluarkan juga semakin besar.
+1. Total biaya sewa yang dikeluarkan untuk _pool_ harus paling minimum.
+
+Maka saya tuliskan _objective functions_ sebagai berikut:
+
+$$MIN \sum_{i=1}^{200} \sum_{j=1}^{40} transportcost[i,j]*x[i,j] + \sum_{j=1}^{40} sewa_j * y[j]$$
+
+_Transportation cost_ saya definisikan sebagai jarak antara calon lokasi _pool_ dengan lokasi _high demand_ dikalikan suatu konstanta tertentu.
+
+$$transportcost[i,j] = jarak[i,j] * C$$
+
+# Solusi
+
+Solusi dari formula matematika di atas adalah sebagai berikut:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+cat("Solusi Optimisasi")
+new_final = 
+    final %>%
+    arrange(hub_id,cust_id) %>%
+    mutate(jarak = sqrt((x_hub-x_cust)^2 + (y_hub-y_cust)^2),
+           jarak = round(jarak,2)) %>%
+    group_by(hub_id) %>%
+    summarise(n_cust = n(),
+              cost = mean(cost_setup),
+              total_jarak = sum(jarak)) %>%
+    ungroup() %>%
+  rename(pool_id = hub_id,
+         banyak_high_demand_covered = n_cust,
+         total_transport_cost = total_jarak,
+         cost_sewa = cost)
+new_final %>% 
+  knitr::kable()
+
+```
+
+Ternyata cukup dibutuhkan `19` calon _pool_ taxi saja yang harus disewa dengan total _cost_ sebagai berikut:
+
+- Total _cost_ sewa: `r sum(final$cost)`.
+- Total _transportation cost_: `r sum(new_final$total_transport_cost)`.
+
+Mari kita lihat peta finalnya: 
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center'}
+final %>%
+  ggplot() +
+  geom_point(aes(x_hub,y_hub),color = "blue",shape = 2,size = 2) +
+  geom_point(aes(x_cust,y_cust),color = "red",shape = 5,size = 1) +
+  geom_segment(aes(x = x_hub,
+                   y = y_hub,
+                   xend = x_cust,
+                   yend = y_cust),
+                   alpha = .5
+              ) +
+  geom_label(aes(x_hub,y_hub,label = hub_id),size = 2) +
+  labs(title = "Peta Sebaran Lokasi dengan High Demand dan Calon Lokasi Pool Taxi",
+       caption = "Solved and Visualized\nusing R\nikanx101.com",
+       subtitle = "Solusi dari pemilihan lokasi pool taxi") +
+  theme_minimal() +
+  theme(axis.title = element_blank(),
+        axis.text = element_blank(),
+        legend.position = "bottom")
+
+```
+
+
+---
+
+# _What's next?_
+
+Kita bisa melakukan _another tweaks_ jika diperlukan. Misalkan kita tambahkan syarat agar satu _pool_ taxi wajib meng-_cover_ sejumlah minimal lokasi _high demand_.
