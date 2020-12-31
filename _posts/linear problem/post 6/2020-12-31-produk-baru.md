@@ -16,7 +16,7 @@ tags:
 
 Menyambut tahun 2021, saya rasa tema analisa yang akan sering saya temui
 di pekerjaan tahun depan adalah *optimization*. Jadi ada baiknya saya
-bersiap dengan *ngoprek* lebih jaub terkait ini.
+bersiap dengan *ngoprek* lebih jauh terkait ini.
 
 Setidaknya sudah ada empat metode yang sudah pernah saya lakukan dan
 tulis di blog ini terkait dengan *optimization*, yakni:
