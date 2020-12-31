@@ -1,0 +1,121 @@
+---
+title: "Optimization Story: Menentukan Produksi Optimal dengan MILP"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+```
+
+Menyambut tahun 2021, saya rasa tema analisa yang akan sering saya temui di pekerjaan tahun depan adalah _optimization_. Jadi ada baiknya saya bersiap dengan _ngoprek_ lebih jaub terkait ini.
+
+Setidaknya sudah ada empat metode yang sudah pernah saya lakukan dan tulis di blog ini terkait dengan _optimization_, yakni:
+
+1. Simulasi Monte Carlo,
+1. Visual (grafik),
+1. _Aljabar-based framework_ menggunakan `library(lpSolve)`,
+1. Formulasi model matematis menggunakan `ompr`.
+
+Berdasarkan kasus-kasus yang pernah saya bahas, kasus _optimization_ yang sifatnya __sukar__ hingga __sukar sekali__ bisa diselesaikan dengan lebih mudah dengan `ompr` karena saya tidak perlu membangun matriks. Namun _tricky parts_-nya adalah saya harus menuliskan model matematikanya.
+
+Sekarang saya akan berikan contoh satu kasus dimana _optimization_ bisa dilakukan untuk kasus yang relatif rumit.
+
+---
+
+# _Problem_
+
+Suatu pabrik makanan/minuman sedang berencana untuk membuat `3` produk baru yang rencananya akan diproduksi di `2` _plant_ yang berbeda.
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+problem = 
+data.frame(
+  keterangan = c("Plant 1, jam","Plant 2, jam","Profit per ton","Sales Potential per ton"),
+  produk_1 = c(3,4,5,7),
+  produk_2 = c(4,6,7,5),
+  produk_3 = c(2,2,3,9),
+  limit_production_time_per_plant_per_day = c(30,40,"","")
+)
+cat("Tabel Keterangan Produksi")
+knitr::kable(problem,align = "c")
+```
+
+Masalah timbul saat mereka harus memilih maksimal `2` dari `3` produk baru yang harus diproduksi. Selain itu, mereka juga harus memilih hanya `1` dari `2` _plant_ yang memproduksi produk-produk tersebut.
+
+> Bagaimana cara mereka memilihnya? Lalu berapa ton yang harus diproduksi dari produk yang dipilih tersebut?
+
+---
+
+# Formulasi Matematika
+
+Oke, sekarang saya akan membuat formulasi matematika dari masalah di atas. Berbeda dengan masalah _optimization_ yang telah saya [tulis sebelumnya](https://ikanx101.com/tags/#linear-programming), masalah ini merupakan kombinasi dari _binary integer_ dan _continuous_.
+
+> Maksudnya _gimana yah_?
+
+- Kita harus memilih maksimal `2` produk: _binary integer_.
+- Kita harus menentukan berapa ton yang harus di produksi: _continuous_.
+- Kita harus memilih `1` _plant_: _binary integer_.
+
+Sudah mulai terbayang? Oke, saya mulai _yah_.
+
+## Definisi awal
+
+Misalkan: 
+
+- $x[i] \geq 0$ untuk $i = 1,2,3$ menandakan berapa ton yang harus diproduksi dari produk ke $i$.
+- $y[i] = [0,1]$ untuk $i = 1,2,3$ menandakan produk apa saja yang akan dipilih.
+  - Nilai `1` menandakan produk ke $i$ dipilih.
+  - Nilai `0` menandakan produk ke $i$ tidak dipilih.
+- $z[j] = [0,1]$ untuk $j=1$ menandakan _plant_ mana yang akan dipilih.
+  - Nilai `0` menandakan _plant_ pertama akan dipilih.
+  - Nilai `1` menandakan _plant_ kedua akan dipilih.
+  
+Saya akan definisikan suatu angka _dummy_: $M = 9999$. Bernilai angka yang __besar__ sebagai _reinforce_ model _optimization_ agar bisa memilih produk dan _plant_ secara bersamaan.
+
+## _Decision Variable_
+
+### _Objective Function_
+
+Tujuan utama dari model _optimization_ ini adalah memaksimalkan profit yang akan didapatkan oleh perusahaan:
+
+$$MAX \sum_{i=1}^{3} x[i]*profit[i]$$
+
+## _Constraints_
+
+Berikut adalah _constraints_ dari model ini:
+
+Tonase produksi per produk tidak boleh melebihi tonase _sales potential_:
+
+$$x[i] \leq salespotential[i], i = 1,2,3$$
+
+Sekarang saya harus memilih maksimal `2` dari `3` produk sekalian menghitung tonase:
+
+$$x[i] - y[i] * M \leq 0, i = 1,2,3$$
+$$\sum_{i = 1}^{3} y[i] \leq 2$$
+
+Sekarang saya harus memilih `1` dari `2` _plant_ berdasarkan jam produksi:
+
+$$3*x[1] + 4*x[2] + 2*x[3] - M * z[1] \leq 30$$
+$$4*x[1] + 6*x[2] + 2*x[3] + M * z[1] \leq 40 + M$$
+
+---
+
+# Solusi
+
+Solusi yang saya dapatkan dari model di atas adalah:
+
+- $x[1] = 5.5$ 
+- $x[2] = 0$
+- $x[3] = 9$
+- $y[1] = 1$
+- $y[2] = 0$
+- $y[3] = 1$
+- $z[1] = 1$
+
+# Kesimpulan
+
+- Dari ketiga produk baru, perusahaan bisa memilih produk `1` dan `3` dengan konfigurasi produk `1` sebanyak `5.5` ton dan produk `3` sebanyak `9` ton.
+- Dari _plant_ yang ada, perusahaan bisa memilih _plant_ `2` agar bisa menyelesaikan tonase produksi tersebut tanpa melanggar _limit_ jam produksi.
+- Profit yang bisa diraih adalah sebesar `54.5`.
