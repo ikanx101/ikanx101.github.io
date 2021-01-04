@@ -1,6 +1,19 @@
-Optimization Story: Membuat Jadwal Interviewer pada Central Location
-Survey
-================
+---
+date: 2021-01-04T07:58:00-04:00
+title: "Optimization Story: Membuat Jadwal Interviewer pada Central Location Survey"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - R
+  - Modelling
+  - Linear Programming
+  - Binary Linear Programming
+  - MILP
+  - Mixed Integer Linear Programming
+---
+
 
 Suatu saat, tim riset kami harus melakukan survey secara *central
 location* dengan menyewa tempat di `3` lokasi *high traffic* yang
