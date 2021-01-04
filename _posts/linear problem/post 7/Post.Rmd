@@ -1,5 +1,5 @@
 ---
-title: "Optimization Story: Bedah Usaha Furniture dengan Linear Programming"
+title: "Optimization Story: Membuat Jadwal Interviewer yang Adil"
 output: 
   github_document:
     pandoc_args: --webtex
@@ -8,35 +8,89 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
+load("bahan blog ikang.rda")
 ```
 
-Suatu sore telepon saya berdering. Di ujung sana, seorang teman saya yang sekarang menjadi pengusaha furnitur di kota saya tinggal bertanya:
+Suatu saat, tim riset kami harus melakukan survey secara _central location_ dengan menyewa tempat di `3` lokasi _high traffic_ yang berbeda dalam satu rentang waktu tertentu selama `10` hari. Pada saat tersebut, ada `11` orang _interviewer_ yang akan kami libatkan.
 
-> Kang, aku baca blog kamu. Aku sekarang punya dua _workshops_ buat bikin furnitur. Bisa bantu hitung biar efisien _gak_?
+Sebagai informasi, riset dimulai pada hari Senin (hari pertama). Pada _weekdays_, setidaknya `1-2` orang _interviewer_ harus _stand by_ di masing-masing tempat survey. Sedangkan pada saat _weekend_, setidaknya ada `3` orang _interviewer_ yang harus _stand by_. 
 
-Pas banget temanya _optimization_ nih.
+Dengan berdasarkan azas keadilan, ada aturan yang kami buat waktu itu:
+
+> Setiap _interviewer_ sebisa mungkin bekerja maksimal 6 hari.
+
+__Lantas, bagaimana cara kami mengatur jadwal mereka?__
 
 ---
+
 # _Problem_
 
-Mendengar cerita teman saya ini, sebenarnya masalahnya hampir mirip dengan tulisan saya terakhir terkait pemilihan produk dan _plant_.
+Masalah _optimization_ ini mirip-mirip dengan beberapa kasus _scheduling_ yang pernah saya tulis di blog yang lalu. Namun tentunya agak sedikit lebih sulit. Kenapa?
 
-Teman saya baru saja membuka _workshop_ kedua untuk meningkatkan kapasitas produksi furnitur-nya. Dia ingin mengetahui apakah keputusannya sudah tepat
+> Kalau kita sadari, sebenarnya ada `3` dimensi penjadwalan yang ada di masalah ini.
 
-Bedanya, teman saya tidak membatasi produk mana yang akan diproduksi dan _workshop_ mana yang harus beroperasi.
+Apa saja?
 
-Intinya harus memenuhi pesanan dan stok untuk pajangan di tokonya.
+1. Tanggal / hari
+1. _Interviewer_
+1. Lokasi
 
-```{r}
-problem = 
-data.frame(
-  produk = c("meja","lemari","kursi", "Total man days"),
-  workshop_1 = c("2 man days","5 man days","1 man days","10 man days per week"),
-  workshop_2 = c("1 man days","3 man days","1 man days","14 man days"),
-  demand_perweeks = c(5,3,6,""),
-  profit = c(150,250,100,"")
-)
+Perhatikan tabel berikut ini:
 
-cat("Data yang Diberikan")
-knitr::kable(problem)
+```{r,echo=FALSE}
+problem
 ```
+
+Saya akan membuat formulasi matematika dari aturan yang ada berdasarkan tabel di atas.
+
+# Formulasi Matematika
+
+## Definisi
+
+Misalkan:
+
+- $i = 1,2,...,11$ menandakan indeks _interviewer_.
+- $c = 1,2,3$ menandakan indeks lokasi survey.
+- $h = 1,2,...,14$ menandakan indeks hari / tanggal.
+  - _Weekend_ terjadi pada indeks hari ke `6` dan `7`.
+  - _Weekdays_ terjadi pada indeks selain `6` dan `7`.
+ 
+ Saya tuliskan $x[i,c,h]$ berisi bilangan _binary_ (`0` atau `1`) menandakan _assignment interviewer _`i` di tempat `c` pada hari ke-`h`.
+ 
+ - `0` menandakan _interviewer_ tidak di_assign_ di tempat `c` pada hari ke-`h`.
+ - `1` menandakan _interviewer_ di_assign_ di tempat `c` pada hari ke-`h`.
+ 
+## _Constraint_
+ 
+### Hari Kerja
+ 
+Pada hari kerja ada `1-2` orang yang _stand by_ lokasi survey:
+ 
+$$1 \leq \sum_{i=1}^{11} x[i,c,h] \leq 2$$
+
+Untuk $h=1,2,3,4,5,8,9,10$ dan $c=1,2,3$.
+
+### Hari _Weekend_
+
+Pada hari Sabtu dan Minggu, minimal ada `3` orang yang harus _stand by_.
+
+$$1 \leq \sum_{i=1}^{11} x[i,c,h] \leq 2$$
+
+
+  # kalau hari libur min 3
+  add_constraint(sum_expr(x[i,c,h], i = 1:i_max) >= 3, h = c(6,7), c = 1:3) %>%
+
+  # satu interviewer di satu waktu
+  add_constraint(sum_expr(x[i,c,h], c = 1:3) <= 1, i = 1:i_max, h = 1:10) %>%
+
+  # satu orang interviewer gak boleh bekerja lebih dari 5 hari
+  add_constraint(sum_expr(x[i,c,h], c = 1:3, h = 1:10) <= 6, i = 1:i_max, c = 1:3) %>%
+
+  # set objective
+  set_objective(sum_expr(x[i,c,h],
+                  i = 1:i_max,
+                  c = 1:3,
+                  h = 1:10),
+                "max")
+
+model
