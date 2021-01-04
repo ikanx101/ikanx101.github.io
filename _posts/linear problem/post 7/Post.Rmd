@@ -1,5 +1,5 @@
 ---
-title: "Optimization Story: Membuat Jadwal Interviewer yang Adil"
+title: "Optimization Story: Membuat Jadwal Interviewer pada Central Location Survey"
 output: 
   github_document:
     pandoc_args: --webtex
@@ -8,14 +8,15 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
+rm(list=ls())
 load("bahan blog baru.rda")
 ```
 
-Suatu saat, tim riset kami harus melakukan survey secara _central location_ dengan menyewa tempat di `3` lokasi _high traffic_ yang berbeda dalam satu rentang waktu tertentu selama `10` hari. Pada saat tersebut, ada `11` orang _interviewer_ yang akan kami libatkan.
+Suatu saat, tim riset kami harus melakukan survey secara _central location_ dengan menyewa tempat di `3` lokasi _high traffic_ yang berbeda dalam satu rentang waktu tertentu selama `10` hari. Pada saat tersebut, ada `12` orang _interviewer_ yang akan kami libatkan.
 
-Sebagai informasi, riset dimulai pada hari Senin (hari pertama). Pada _weekdays_, setidaknya `1-2` orang _interviewer_ harus _stand by_ di masing-masing tempat survey. Sedangkan pada saat _weekend_, setidaknya ada `3` orang _interviewer_ yang harus _stand by_. 
+Sebagai informasi, riset dimulai pada hari Senin (hari pertama). Pada _weekdays_, setidaknya `1-2` orang _interviewer_ harus _stand by_ di masing-masing tempat survey. Sedangkan pada saat _weekend_, setidaknya ada `3-5` orang _interviewer_ yang harus _stand by_. 
 
-Dengan berdasarkan azas keadilan, ada aturan yang kami buat waktu itu:
+Ada aturan tambahan yang kami buat waktu itu:
 
 > Setiap _interviewer_ sebisa mungkin bekerja maksimal 6 hari.
 
@@ -35,13 +36,20 @@ Apa saja?
 1. _Interviewer_
 1. Lokasi
 
-Perhatikan tabel berikut ini:
-
 ```{r,echo=FALSE}
-head(problem,5) %>% knitr::kable()
+cat("Contoh Tabel Jadwal")
+data.frame(
+  interviewer_ke = c(rep(1:4,3)),
+  tempat_ke = c(rep(1,4),rep(2,4),rep(3,4)),
+  hari_1 = "",
+  hari_2 = "",
+  hari_3 = "",
+  hari_10 = ""
+) %>% 
+  knitr::kable()
 ```
 
-Saya akan membuat formulasi matematika dari aturan yang ada berdasarkan tabel di atas.
+Saya akan membuat jadwal seperti tabel di atas.
 
 # Formulasi Matematika
 
@@ -49,16 +57,19 @@ Saya akan membuat formulasi matematika dari aturan yang ada berdasarkan tabel di
 
 Misalkan:
 
-- $i = 1,2,..,11$ menandakan indeks _interviewer_.
-- $c = 1,2,3$ menandakan indeks lokasi survey.
-- $h = 1,2,..,14$ menandakan indeks hari / tanggal.
-  - _Weekend_ terjadi pada indeks hari ke `6` dan `7`.
-  - _Weekdays_ terjadi pada indeks selain `6` dan `7`.
+`i = 1,2,..,12` menandakan indeks _interviewer_.
+
+`c = 1,2,3` menandakan indeks lokasi survey.
+
+`h = 1,2,..,10` menandakan indeks hari / tanggal.
+
+- _Weekend_ terjadi pada indeks hari ke `6` dan `7`.
+- _Weekdays_ terjadi pada indeks selain `6` dan `7`.
  
- Saya tuliskan $x[i,c,h]$ berisi bilangan _binary_ (`0` atau `1`) menandakan _assignment interviewer _`i` di tempat `c` pada hari ke-`h`.
+Saya tuliskan $x[i,c,h]$ berisi bilangan _binary_ (`0` atau `1`) menandakan _assignment interviewer _`i` di tempat `c` pada hari ke-`h`.
  
- - `0` menandakan _interviewer_ tidak di_assign_ di tempat `c` pada hari ke-`h`.
- - `1` menandakan _interviewer_ di_assign_ di tempat `c` pada hari ke-`h`.
+- `0` menandakan _interviewer_ tidak di_assign_ di tempat `c` pada hari ke-`h`.
+- `1` menandakan _interviewer_ di_assign_ di tempat `c` pada hari ke-`h`.
  
 ## _Constraint_
  
@@ -66,39 +77,41 @@ Misalkan:
  
 Pada _weekdays_ ada `1-2` orang yang _stand by_ lokasi survey:
  
-$$1 \leq \sum_{i=1}^{11} x[i,c,h] \leq 2$$
+$$ 1 \leq \sum_{i=1}^{12} x[i,c,h] \leq 2$$
 
-Untuk $h=1,2,3,4,5,8,9,10$ dan $c=1,2,3$.
+Untuk `h=1,2,3,4,5,8,9,10` dan `c=1,2,3`.
 
 ### Hari _Weekend_
 
 Pada hari Sabtu dan Minggu, minimal ada `3` orang yang harus _stand by_.
 
-$$\sum_{i=1}^{11} x[i,c,h] \geq 3$$
+$$ 3 \leq \sum_{i=1}^{12} x[i,c,h] \leq 5$$
 
-Untuk $h=6,7$ dan $c=1,2,3$.
+Untuk `h=6,7` dan `c=1,2,3`.
 
 ### Satu Interviewer di Satu Tempat
 
 Hal yang penting juga adalah memastikan bahwa setiap _interviewr_ hanya boleh ditugaskan tepat di satu lokasi di masing-masing harinya.
 
-$$\sum_{c=1}^{3} x[i,c,h] \leq 1$$
+$$ \sum_{c=1}^{3} x[i,c,h] \leq 1$$
 
-Untuk $i=1,2,..,11$ dan $h=1,2,..,10$.
+Untuk `i=1,2,..,12` dan `h=1,2,..,10`.
 
 ### Maksimal 6 Hari Kerja
 
 Saya juga harus memastikan bahwa setiap interviewer harus mendapatkan maksimal `6` hari kerja.
 
-$$\sum_{c=1}^{3} \sum_{h=1}^{10} x[i,c,h] \leq 6$$
+$$ \sum_{c=1}^{3} \sum_{h=1}^{10} x[i,c,h] \leq 6$$
 
-Untuk $i=1,2,..,11$.
+Untuk `i=1,2,..,12`.
 
 ## _Objective Function_
 
 Oke, sekarang untuk _objective function_-nya saya akan memaksimalkan:
 
-$$\sum_{i=1}^{11} \sum_{c=1}^{3} \sum_{h=1}^{10} x[i,c,h]$$
+$$ \sum_{i=1}^{12} \sum_{c=1}^{3} \sum_{h=1}^{10} x[i,c,h]$$
+
+Jadi alih-alih menghemat _budget_ dengan meminimalisir kondisi, kami justru ingin membuat _constraint_ terpenuhi secara maksimal.
 
 ---
 
