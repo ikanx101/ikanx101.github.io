@@ -74,7 +74,7 @@ Misalkan:
 Saya tuliskan
 ![x\[i,c,h\]](https://latex.codecogs.com/png.latex?x%5Bi%2Cc%2Ch%5D
 "x[i,c,h]") berisi bilangan *binary* (`0` atau `1`) menandakan
-*assignment interviewer *`i` di tempat `c` pada hari ke-`h`.
+*assignment interviewer*` i` di tempat `c` pada hari ke-`h`.
 
   - `0` menandakan *interviewer* tidak di\_assign\_ di tempat `c` pada
     hari ke-`h`.
