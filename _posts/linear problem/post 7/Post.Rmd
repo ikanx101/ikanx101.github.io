@@ -62,9 +62,9 @@ Misalkan:
  
 ## _Constraint_
  
-### Hari Kerja
+### Hari _Weekdays_
  
-Pada hari kerja ada `1-2` orang yang _stand by_ lokasi survey:
+Pada _weekdays_ ada `1-2` orang yang _stand by_ lokasi survey:
  
 $$1 \leq \sum_{i=1}^{11} x[i,c,h] \leq 2$$
 
@@ -74,23 +74,50 @@ Untuk $h=1,2,3,4,5,8,9,10$ dan $c=1,2,3$.
 
 Pada hari Sabtu dan Minggu, minimal ada `3` orang yang harus _stand by_.
 
-$$1 \leq \sum_{i=1}^{11} x[i,c,h] \leq 2$$
+$$\sum_{i=1}^{11} x[i,c,h] \geq 3$$
 
+Untuk $h=6,7$ dan $c=1,2,3$.
 
-  # kalau hari libur min 3
-  add_constraint(sum_expr(x[i,c,h], i = 1:i_max) >= 3, h = c(6,7), c = 1:3) %>%
+### Satu Interviewer di Satu Tempat
 
-  # satu interviewer di satu waktu
-  add_constraint(sum_expr(x[i,c,h], c = 1:3) <= 1, i = 1:i_max, h = 1:10) %>%
+Hal yang penting juga adalah memastikan bahwa setiap _interviewr_ hanya boleh ditugaskan tepat di satu lokasi di masing-masing harinya.
 
-  # satu orang interviewer gak boleh bekerja lebih dari 5 hari
-  add_constraint(sum_expr(x[i,c,h], c = 1:3, h = 1:10) <= 6, i = 1:i_max, c = 1:3) %>%
+$$\sum_{c=1}^{3} x[i,c,h] \leq 1$$
 
-  # set objective
-  set_objective(sum_expr(x[i,c,h],
-                  i = 1:i_max,
-                  c = 1:3,
-                  h = 1:10),
-                "max")
+Untuk $i=1,2,...,11$ dan $h=1,2,...,10$.
 
-model
+### Maksimal 6 Hari Kerja
+
+Saya juga harus memastikan bahwa setiap interviewer harus mendapatkan maksimal `6` hari kerja.
+
+$$\sum_{c=1}^{3} \sum_{h=1}^{10} x[i,c,h] \leq 6$$
+
+Untuk $i=1,2,..,11$.
+
+## _Objective Function_
+
+Oke, sekarang untuk _objective function_-nya saya akan memaksimalkan:
+
+$$\sum_{i=1}^{11} \sum_{c=1}^{3} \sum_{h=1}^{10} x[i,c,h]$$
+
+---
+
+# Hasil Optimal
+
+## Beban Kerja per _Interviewer_
+
+Berikut adalah banyaknya hari bekerja per masing-masing _interviewer_:
+
+```{r,echo=FALSE}
+data_2
+```
+
+Kita bisa lihat bahwa semua _interviewer_ mendapatkan beban hari kerja yang sama, yakni pas di `6` hari. 
+
+## Jadwal Final
+
+Berikut adalah jadwal finalnya:
+
+```{r,echo=FALSE}
+data_1
+```
