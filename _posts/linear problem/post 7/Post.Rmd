@@ -8,7 +8,7 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
-load("bahan blog ikang.rda")
+load("bahan blog baru.rda")
 ```
 
 Suatu saat, tim riset kami harus melakukan survey secara _central location_ dengan menyewa tempat di `3` lokasi _high traffic_ yang berbeda dalam satu rentang waktu tertentu selama `10` hari. Pada saat tersebut, ada `11` orang _interviewer_ yang akan kami libatkan.
@@ -38,7 +38,7 @@ Apa saja?
 Perhatikan tabel berikut ini:
 
 ```{r,echo=FALSE}
-problem
+head(problem,5) %>% knitr::kable()
 ```
 
 Saya akan membuat formulasi matematika dari aturan yang ada berdasarkan tabel di atas.
@@ -49,9 +49,9 @@ Saya akan membuat formulasi matematika dari aturan yang ada berdasarkan tabel di
 
 Misalkan:
 
-- $i = 1,2,...,11$ menandakan indeks _interviewer_.
+- $i = 1,2,..,11$ menandakan indeks _interviewer_.
 - $c = 1,2,3$ menandakan indeks lokasi survey.
-- $h = 1,2,...,14$ menandakan indeks hari / tanggal.
+- $h = 1,2,..,14$ menandakan indeks hari / tanggal.
   - _Weekend_ terjadi pada indeks hari ke `6` dan `7`.
   - _Weekdays_ terjadi pada indeks selain `6` dan `7`.
  
@@ -84,7 +84,7 @@ Hal yang penting juga adalah memastikan bahwa setiap _interviewr_ hanya boleh di
 
 $$\sum_{c=1}^{3} x[i,c,h] \leq 1$$
 
-Untuk $i=1,2,...,11$ dan $h=1,2,...,10$.
+Untuk $i=1,2,..,11$ dan $h=1,2,..,10$.
 
 ### Maksimal 6 Hari Kerja
 
@@ -109,7 +109,11 @@ $$\sum_{i=1}^{11} \sum_{c=1}^{3} \sum_{h=1}^{10} x[i,c,h]$$
 Berikut adalah banyaknya hari bekerja per masing-masing _interviewer_:
 
 ```{r,echo=FALSE}
-data_2
+cat("Beban hari kerja per interviewer")
+data_2 %>% 
+  rename(interviewer_id = interviewer,
+         banyak_hari_bekerja = bertugas) %>% 
+  knitr::kable()
 ```
 
 Kita bisa lihat bahwa semua _interviewer_ mendapatkan beban hari kerja yang sama, yakni pas di `6` hari. 
@@ -119,5 +123,19 @@ Kita bisa lihat bahwa semua _interviewer_ mendapatkan beban hari kerja yang sama
 Berikut adalah jadwal finalnya:
 
 ```{r,echo=FALSE}
-data_1
+cat("Jadwal Final")
+cat("Angka menunjukkan indeks interviewer yang bertugas di masing-masing\ntempat survey dan tanggal")
+data_1 %>% 
+  rename(tempat_survey = tempat,
+         tgl_1 = `1`,
+         tgl_2 = `2`,
+         tgl_3 = `3`,
+         tgl_4 = `4`,
+         tgl_5 = `5`,
+         tgl_6 = `6`,
+         tgl_7 = `7`,
+         tgl_8 = `8`,
+         tgl_9 = `9`,
+         tgl_10 = `10`) %>% 
+  knitr::kable()
 ```
