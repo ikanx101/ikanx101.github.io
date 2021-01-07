@@ -39,7 +39,7 @@ target = data_2$target
 
 # kita bagi dua dataset
 set.seed(10104074)
-id = sample(341,280,replace = F)
+id = sample(341,290,replace = F)
 train_df = data_2[id,]
 test_df = data_2[-id,]
 
@@ -74,7 +74,7 @@ fitModel =
   model %>%
   fit(train_matrix,
       train_label_raw,
-      epochs = 70,
+      epochs = 150,
       batch_size = 15,
       validation_split = 0.15)
 
@@ -107,12 +107,10 @@ var_importante = model_parts(explainer_model_keras)
 plot_importance = plot(var_importante,show_boxplots = FALSE)
 
 # model profile
-mp_ball = model_profile(explainer_model_keras, variable =  "ball_control", type = "accumulated")
-mp_react = model_profile(explainer_model_keras, variable =  "reactions", type = "accumulated")
-mp_age = model_profile(explainer_model_keras, variable =  "age", type = "accumulated")
-mp_cross = model_profile(explainer_model_keras, variable =  "crossing", type = "accumulated")
-
-plot(mp_cross)
+mp_ball = model_profile(explainer_model_keras, 
+                        variable =  c("reactions","ball_control","finishing","vision","age"), 
+                        type = "accumulated")
+plot(mp_ball)
 
 # cek with new data
 ronaldo = 
@@ -141,14 +139,12 @@ bruno = as.matrix(bruno)
 bruno = predict_parts(explainer_model_keras, bruno)
 plot(bruno)
 
-
-
 save(data,
      data_2,
      plot_model_keras,
      performa_model,
      plot_importance,
      explainer_model_keras,
-     mp_ball,mp_react,mp_age,
+     mp_ball,
      ronaldo,messi,bruno,
      file = "bahan blog.rda")

@@ -7,8 +7,8 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-#setwd("~/Documents/ikanx101/_posts/Explainable AI/post 1")
-setwd("/cloud/project/_posts/Explainable AI/post 1")
+setwd("~/Documents/ikanx101/_posts/Explainable AI/post 1")
+#setwd("/cloud/project/_posts/Explainable AI/post 1")
 rm(list=ls())
 library(dplyr)
 library(caret)
