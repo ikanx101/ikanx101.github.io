@@ -13,6 +13,7 @@ rm(list=ls())
 library(dplyr)
 library(caret)
 library(DALEX)
+library(EBImage)
 load("bahan blog.rda")
 ```
 
@@ -66,13 +67,14 @@ Oleh karena itu _deep learning_ (_machine learning algorithm_ yang berbasis _Neu
 
 > TAPI kita kehilangan `why` dalam algoritma ini!
 
+
 ## _More Traditional Algorithm_
 
 Jika beberapa algoritma terbaru tersebut susah untuk menjelaskan `why`-nya, kenapa kita tidak pakai algoritma __jadul__ saja?
 
 Algoritma-algoritma __jadul__ seperti __keluarga regresi__ dan _discriminant analysis_ lebih mudah bagi kita untuk mengekplorasi sisi `why`-nya.
 
-Tapi masalahnya algoritma __jadul__ tersebut konon kurang _reliable_ saat berhadapan dengan data berskala besar dengan struktur yang lebih aneh juga (contoh [data _images_](https://ikanx101.com/blog/deep-nutrisari/)).
+Tapi masalahnya algoritma __jadul__ tersebut konon kurang _reliable_ saat berhadapan dengan data berskala besar dengan struktur yang lebih aneh juga (contoh: data _images_. Bagi yang belum baca, coba baca deh. Ada penjelasan terkait __ANN__ dan [Tensorflow](https://ikanx101.com/blog/deep-nutrisari/)).
 
 Oleh karena itu, kita membutuhkan suatu _tools_ yang bisa menjelaskan sisi `why` dari algoritma kekinian seperti __ANN__.
 
@@ -90,15 +92,19 @@ _Gimana?_ Sudah cukup bingung?
 
 Saya akan gunakan contoh sesuai dengan judul tulisan ini _yah_.
 
+---
+
 # _Problem_
 
 ## Kenapa pemain bola dihargai mahal?
 
-Beberapa saat lalu, saya mengambil data dari __FIFA__ terkait statistik pemain dan nilai harga transfer mereka. Sejak SMA dulu, saya penasaran apa sih yang membuat seorang pemain bola dihargai mahal.
+Beberapa saat lalu, saya mengambil data dari __FIFA__ terkait statistik pemain dan nilai harga transfer mereka. 
+
+> Sejak SMA dulu, saya penasaran apa sih yang membuat seorang pemain bola dihargai mahal?
 
 Dari sekian puluh ribu data pemain, saya hanya akan melihat pemain-pemain bola dengan kondisi:
 
-1. Bukan GK dan pemain belakang.
+1. Bukan _goal keeper_ dan pemain belakang.
 1. Memiliki harga minimal `10` juta Euro.
 
 Sehingga saya dapatkan `341` baris data pemain bola. Lalu saya hanya akan melihat `14` _variables_ berikut ini:
@@ -107,11 +113,153 @@ Sehingga saya dapatkan `341` baris data pemain bola. Lalu saya hanya akan meliha
 colnames(data)
 ```
 
-_Variables_ di atas akan saya gunakan untuk memprediksi harga pemain. Berikut adalah cuplikan data yang digunakan:
+_Variables_ di atas akan saya gunakan untuk memprediksi harga pemain. Saya mengeliminir faktor-faktor lain seperti `reputasi` dan `fame`.
+
+Berikut adalah cuplikan data yang digunakan:
 
 ```{r,echo=FALSE}
 data %>% rename(harga_dlm_juta = target) %>% head() %>% knitr::kable()
 ```
 
+## Membuat _Regression Model_ dengan _Deep Learning_
 
+Untuk menjawab pertanyaan saya tersebut, saya akan membuat model regresi:
 
+$$harga \sim age + crossing + finishing + dribbling + ball control + acceleration + agility + reactions + balance + shotpower + stamina + strength + positioning + vision$$
+
+Alih-alih membuat model regresi biasa, saya akan membuat model regresi dengan _deep learning_ menggunakan __Tensorflow__. Mungkin terlihat _overkill_ tapi _worth to try_.
+
+Berikut langkah kerjanya:
+
+```{r,echo=FALSE,fig.align='center'}
+nomnoml::nomnoml("[dataset] -> [normalized]
+                  [normalized|using range method]
+                  [normalized] -> [train dataset]
+                  [normalized] -> [test dataset]
+                  
+                  [train dataset] -> [train matrix]
+                  [test dataset] -> [test matrix]
+                  
+                  [train matrix] -> [model]
+                  
+                  [build Tensorflow\nmodel] -> [model]
+                  
+                  [model] -> [output prediction]
+                  [output prediction] -> [validation]
+                  [test matrix] -- [model]
+                  [test matrix] -> [validation]
+                 ")
+```
+
+Berikut adalah model yang saya buat:
+
+```{r,echo=FALSE,fig.align='center'}
+nomnoml::nomnoml("
+                 [input] -> [layer 1|86 nodes|relu activation function]
+                 [layer 1] -> [layer 2|21 nodes|sigmoid activation function]
+                 [layer 2] -> [layer 3|19 nodes|sigmoid activation function]
+                 [layer 3] -> [layer 4|12 nodes|relu activation function]
+                 [layer 4] -> [output]
+                 ")
+```
+
+Bagaimana performa modelnya?
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+cat("Performa Model")
+plot_model_keras
+cat("Hasil Validasi Model dengan Test Dataset")
+performa_model
+```
+
+Performa modelnya _acceptable_, nilai _mean standard error_-nya `kecil` dan $R^2$ nya `lumayan`.
+
+Sekarang saya akan melakukan _exploratory model analysis_ dari model _deep learning_ ini.
+
+## _Exploratory Model Analysis_
+
+### _Features Importance_
+
+Problem utama yang saya ingin selesaikan adalah:
+
+> Apa yang membuat pemain bola dihargai mahal?
+
+Maka dari itu, saya perlu mengetahui. Dari sekian banyak _variables_ yang ada, mana yang merupakan _variable_ terpenting?
+
+Analisa yang bisa dilakukan adalah _features importance_. Berikut adalah _features importance_ dari model saya:
+
+```{r,echo=FALSE,fig.align='center'}
+plot_importance
+```
+
+_Features importance_ ini didapatkan dengan cara melakukan permutasi terhadap semua _variables_ yang ada.
+
+> Jadi untuk mengetahui seberapa penting `reactions` terhadap model prediksi ini. Algoritma melakukan permutasi terhadap isi _variable_ `reactions` (sedangkan isi _variables_ lainnya dibiarkan tetap sama) lalu memasukkannya ke dalam model prediksi. 
+
+Perubahan _output_ yang terjadi akan menjadi dasar penentuan seberapa penting variabel ini kelak.
+
+### _Partial Dependence Profile_
+
+Kita sudah melihat dari grafik sebelumnya bahwa __top 4__ _variables_ yang penting terhadap harga pemain bola adalah:
+
+1. `reactions`
+1. `ball_control`
+1. `age`
+1. `dribbling`
+
+Permasalahannya adalah kita belum mengetahui apa efek dari masing-masing _variable_ tersebut.
+
+> Apakah berefek positif atau negatif?
+
+Maksudnya apa?
+
+- Positif, contoh: `Apakah dengan semakin bagus reactions, maka harganya semakin mahal?`
+- Negatif, contoh: `Apakah semakin tua seorang pemain maka harganya semakin murah?`
+
+Untuk menjawabnya, saya akan melakukan analisa _partial dependence profile_.
+
+Bagaimana caranya?
+
+Misalkan saya ingin mengetahui efek dari `age`. Maka yang saya lakukan adalah membuat _variables_ lainnya _fixed_ (misalkan dengan mean, median, atau modus) lalu menjadikan `age` bergerak nilainya.
+
+Sekarang saya akan coba hitung efeknya untuk beberapa _variables_ berikut ini:
+
+```{r,fig.align='center',fig.height=10,fig.width=9}
+plot(mp_ball)
+```
+Dari grafik di atas terlihat dengan jelas bahwa:
+
+1. Semakin tua umur pemain, harganya semakin turun dengan landai.
+1. Semakin tinggi `reactions` dan `ball control` seorang pemain, harganya semakin tinggi dengan cepat.
+
+### _Break Down_
+
+Kalau dua analisa di atas adalah analisa yang terkait model secara global. Kali ini saya akan melakukan analisa dalam lingkup kecil, yakni: per pemain bola.
+
+Maksudnya gimana?
+
+> Misalkan saya ingin tahu kenapa Cristiano Ronaldo dihargai sekian? Kenapa Messi sekian? Kenapa Griezmann sekian? Kenapa Bruno Fernandes sekian?
+
+```{r,echo=FALSE,fig.align='center'}
+cat("CRISTIANO RONALDO")
+ronaldo = readImage("ronaldo.png")
+plot(ronaldo)
+
+cat("LIONEL MESSI")
+messi = readImage("messi.png")
+plot(messi)
+
+cat("GRIEZMANN")
+grizman = readImage("grizman.png")
+plot(grizman)
+
+cat("BRUNO FERNANDES")
+bruno = readImage("bruno.png")
+plot(bruno)
+```
+
+Ada yang bisa menyimpulkan grafik di atas?
+
+## _Notes_
+
+Seluruh _exploratory model analysis_ yang saya lakukan di atas diselesaikan menggunakan `library(DALEX)` di __R__.

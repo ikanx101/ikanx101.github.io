@@ -39,7 +39,7 @@ target = data_2$target
 
 # kita bagi dua dataset
 set.seed(10104074)
-id = sample(341,290,replace = F)
+id = sample(341,275,replace = F)
 train_df = data_2[id,]
 test_df = data_2[-id,]
 
@@ -74,7 +74,7 @@ fitModel =
   model %>%
   fit(train_matrix,
       train_label_raw,
-      epochs = 150,
+      epochs = 200,
       batch_size = 15,
       validation_split = 0.15)
 
@@ -108,7 +108,8 @@ plot_importance = plot(var_importante,show_boxplots = FALSE)
 
 # model profile
 mp_ball = model_profile(explainer_model_keras, 
-                        variable =  c("reactions","ball_control","finishing","vision","age"), 
+                        variable =  c("reactions","ball_control","age",
+                                      "vision"), 
                         type = "accumulated")
 plot(mp_ball)
 
@@ -139,12 +140,22 @@ bruno = as.matrix(bruno)
 bruno = predict_parts(explainer_model_keras, bruno)
 plot(bruno)
 
+# cek with new data
+grizman = 
+  data_2 %>% 
+  filter(nama == "A. Griezmann") %>% 
+  select(-nama,-target)
+grizman = as.matrix(grizman)
+grizman = predict_parts(explainer_model_keras, grizman)
+plot(grizman)
+
 save(data,
+     model,
      data_2,
      plot_model_keras,
      performa_model,
      plot_importance,
      explainer_model_keras,
      mp_ball,
-     ronaldo,messi,bruno,
+     ronaldo,messi,bruno,grizman,
      file = "bahan blog.rda")
