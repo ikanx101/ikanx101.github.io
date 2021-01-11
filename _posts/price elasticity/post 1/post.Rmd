@@ -44,3 +44,6 @@ Saya pernah menuliskan materi terkait korelasi [di sini](https://ikanx101.com/bl
 Saat saya menemukan ada produk dengan nilai korelasi positif (dan juga kuat), ada dua hal yang terlintas di pikiran saya, yakni:
 
 - Apakah semakin mahal produknya, `sales qty` malah semakin tinggi? Kalau begitu kita buat mahal saja produknya agar makin mendapatkan profit.
+- Pasti ada yang salah dengan datanya. Kalau begini, produk tersebut tidak bisa dan tidak perlu dianalisa lebih lanjut.
+
+Sebenarnya sangat jarang
