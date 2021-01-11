@@ -93,6 +93,14 @@ Terlihat ada strategi _pricing_ yang dilakukan oleh merek minyak goreng `XYZ` in
 
 Di awal tahun (Q1), mereka sempat menaikkan harganya sehingga mengakibatkan `sales qty`-nya menurun. Tapi saat mereka menurunkan harganya perlahan (namun tetap di atas harga di awal tahun) di Q2 dan Q3, `sales qty` mereka juga perlahan naik. Jadi ada kesan kepada konsumen seolah-olah harga turun. 
 
-Lalu pada Q3 ada anomali saat harganya naik tapi _sales qty_ juga meningkat. Kenapa hal ini terjadi?
+Lalu pada Q4 ada anomali saat harganya naik tapi _sales qty_ juga meningkat. Kenapa hal ini terjadi?
 
-> Melihat _single_ data seperti ini mungkin akan membuat 
+> Melihat _single_ data seperti ini mungkin akan membuat kita bingung kenapa hal ini terjadi.
+
+Tapi setelah melihat harga yang ditawarkan oleh kompetitor langsung minyak goreng `XYZ`, ternyata kompetitor juga menaikkan harganya pada Q4.
+
+Tampaknya tidak ada pilihan lain bagi konsumen untuk menerima harga baru tersebut.
+
+---
+
+Ada yang mau menyimpulkan tulisan di atas?
