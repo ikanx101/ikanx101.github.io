@@ -82,9 +82,13 @@ Dengan hasil tersebut wajar jika kita mengatakan ada yang aneh dengan data terse
 Kita akan dapatkan hasil sebagai berikut:
 
 ```{r}
-
+data = data.frame(
+  bulan = c(1:12),
+  avg_price = c(130,139,144,143,140,138,138,139,139,145,149,151),
+  total_order = c(51547,3245,162,15697,13076,23267,28990,25588,54801,62303,53544,65673)
+  )
 ```
 
-Terlihat sekali bahwa ada strategi _pricing_ yang dilakukan oleh merek minyak goren `XYZ` ini.
+Terlihat ada strategi _pricing_ yang dilakukan oleh merek minyak goreng `XYZ` ini.
 
-Di awal tahun, mereka sempat menaikkan harga 
+Di awal tahun (Q1), mereka sempat menaikkan harganya sehingga mengakibatkan `sales qty`-nya menurun. Tapi saat mereka menurunkan harganya perlahan (namun tetap di atas harga di awal tahun) di Q2 dan Q3, `sales qty` mereka juga perlahan naik.
