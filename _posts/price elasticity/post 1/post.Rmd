@@ -46,4 +46,32 @@ Saat saya menemukan ada produk dengan nilai korelasi positif (dan juga kuat), ad
 - Apakah semakin mahal produknya, `sales qty` malah semakin tinggi? Kalau begitu kita buat mahal saja produknya agar makin mendapatkan profit.
 - Pasti ada yang salah dengan datanya. Kalau begini, produk tersebut tidak bisa dan tidak perlu dianalisa lebih lanjut.
 
-Sebenarnya sangat jarang
+---
+
+### Data seperti itu jangan buru-buru ditinggalkan!
+
+Ternyata saat kita menemukan data yang memiliki korelasi kuat positif seperti ini, kita jangan buru-buru untuk tidak menganalisanya. Setidaknya kita bisa melihat historikal datanya terlebih dahulu dan melakukan investigasi atas data tersebut.
+
+Bingung?
+
+Oke saya jelaskan dengan kasus _real_ berikut _yah_!
+
+---
+
+## Kompetisi _Optimization_ Tahap II
+
+Setelah selesai kompetisi [tahap pertama](https://ikanx101.com/blog/binary-marketplace/) kemarin, kami melanjutkan mengadakan kompetisi tahap II. Berbekal data _real_ dari salah satu _market place_ rekan-rekan mahasiswa disuruh menghitung _price_ paling optimal yang bisa ditawarkan ke konsumen.
+
+Cara menghitung _price_ optimal didasarkan pada model regresi _price elasticity_. Semua berjalan dengan baik hingga ada satu merek minyak goreng `XYZ` memiliki korelasi kuat positif sebesar `xxx`.
+
+Jika saya buat model regresinya, berikut adalah hasilnya:
+
+```{r}
+ggplot
+```
+
+Model regresinya adalah:
+
+$$salesqty = xx*harga$ + C$
+
+Jika
