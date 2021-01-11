@@ -1,2 +1,46 @@
-Kenapa Kita TIdak Boleh Percaya dengan Price Elasticity Semata?
+Kenapa Kita Tidak Boleh Percaya dengan Price Elasticity Semata?
 
+Tahun lalu, saya sempat menjelaskan mengenai [_price elasticity_](https://ikanx101.com/blog/blog-posting-regresi/). Suatu analisa regresi linear sederhana yang memodelkan kausalitas (sebab akibat) antara harga dengan _sales quantity_ suatu produk.
+
+Saya sendiri sering menggunakan analisa ini untuk pekerjaan market riset di kantor. 
+
+Salah satu asumsi yang mendasari analisa ini adalah:
+
+> Jika harga semakin mahal, maka secara logika _sales qty_ akan menurun.
+
+```{r}
+library(dplyr)
+library(ggplot2)
+data = data.frame(
+  harga = c(100,400)
+  qty = c(20,5)
+  ) %>%
+  ggplot(aes(x = harga, y = qty)) +
+  geom_line()
+```
+
+Atau dengan kalimat matematisnya: __ada korelasi kuat negatif antara__ `harga` __dengan__ `sales qty`. 
+
+Oleh karena itu, salah satu langkah terpenting adalah memastikan `harga` dan `sales qty` memiliki data yang cukup untuk bisa dihitung korelasinya (_pearson correlation_).
+
+---
+
+Kenapa saya justru korelasi padahal yang mau dilakukan adalah regresi (kausalitas)?
+
+Jawabannya sederhana:
+
+> Nilai korelasi yang kuat antara `harga` dan `sales qty` (misal saya notasikan sebagai $R$) akan menghasilkan model [regresi linear](https://ikanx101.com/blog/belajar-regresi/) yang kuat juga. Hal ini tergambar dari nilai _R-square_ ($R^2$) yang baik.
+
+Nilai korelasi Pearson jika dikuadratkan akan sama dengan nilai _R-squared_.
+
+Jadi ini adalah _screening_ awal saya dalam membuat model antara `harga` dan `sales qty`.
+
+Saya pernah menuliskan materi terkait korelasi [di sini](https://ikanx101.com/blog/materi-korelasi/).
+
+---
+
+### Lantas bagaimana jika korelasi yang didapatkan bernilai positif?
+
+Saat saya menemukan ada produk dengan nilai korelasi positif (dan juga kuat), ada dua hal yang terlintas di pikiran saya, yakni:
+
+- Apakah semakin mahal produknya, `sales qty` malah semakin tinggi? Kalau begitu kita buat mahal saja produknya agar makin mendapatkan profit.
