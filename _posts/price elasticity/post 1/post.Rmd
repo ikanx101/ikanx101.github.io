@@ -74,4 +74,17 @@ Model regresinya adalah:
 
 $$salesqty = xx*harga$ + C$
 
-Jika
+Dengan hasil tersebut wajar jika kita mengatakan ada yang aneh dengan data tersebut. Tapi jika data tersebut kita _plot_ terpisah menjadi dua:
+
+1. `sales qty` per waktu.
+1. `harga` per waktu.
+
+Kita akan dapatkan hasil sebagai berikut:
+
+```{r}
+
+```
+
+Terlihat sekali bahwa ada strategi _pricing_ yang dilakukan oleh merek minyak goren `XYZ` ini.
+
+Di awal tahun, mereka sempat menaikkan harga 
