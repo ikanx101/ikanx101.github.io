@@ -91,4 +91,8 @@ data = data.frame(
 
 Terlihat ada strategi _pricing_ yang dilakukan oleh merek minyak goreng `XYZ` ini.
 
-Di awal tahun (Q1), mereka sempat menaikkan harganya sehingga mengakibatkan `sales qty`-nya menurun. Tapi saat mereka menurunkan harganya perlahan (namun tetap di atas harga di awal tahun) di Q2 dan Q3, `sales qty` mereka juga perlahan naik.
+Di awal tahun (Q1), mereka sempat menaikkan harganya sehingga mengakibatkan `sales qty`-nya menurun. Tapi saat mereka menurunkan harganya perlahan (namun tetap di atas harga di awal tahun) di Q2 dan Q3, `sales qty` mereka juga perlahan naik. Jadi ada kesan kepada konsumen seolah-olah harga turun. 
+
+Lalu pada Q3 ada anomali saat harganya naik tapi _sales qty_ juga meningkat. Kenapa hal ini terjadi?
+
+> Melihat _single_ data seperti ini mungkin akan membuat 
