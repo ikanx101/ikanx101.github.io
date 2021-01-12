@@ -1,5 +1,5 @@
 ---
-title: "Kenapa Kita Tidak Bisa Mengandalkan dengan Price Elasticity Semata?"
+title: "Kenapa Kita Tidak Bisa Mengandalkan Price Elasticity Semata?"
 date: 2021-01-12T08:16:30-04:00
 categories:
   - Blog
