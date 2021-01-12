@@ -113,9 +113,6 @@ data %>%
        caption = "Visualized using R\nikanx101.com")
 ```
 
-Model regresinya adalah:
-
-$$salesqty = xx*harga$ + C$
 
 Dengan hasil tersebut wajar jika kita mengatakan ada yang aneh dengan data tersebut. Tapi jika data tersebut kita _plot_ terpisah menjadi dua:
 
@@ -124,28 +121,52 @@ Dengan hasil tersebut wajar jika kita mengatakan ada yang aneh dengan data terse
 
 Kita akan dapatkan hasil sebagai berikut:
 
-```{r,echo=FALSE}
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center',fig.retina=10}
 data %>% 
   reshape2::melt(id.vars = "bulan") %>% 
+  mutate(value = as.numeric(value),
+         bulan = factor(bulan, levels = c(1:12)),
+         variable = as.character(variable),
+         variable = ifelse(variable == "avg_price",
+                           "Avg Price",
+                           "Sales Qty")
+         ) %>% 
   ggplot(aes(x = bulan,
              y = value)) +
-  geom_line(group = 1) +
-  geom_label(aes(label = value),size = 1,5) +
-  facet_wrap(~variable,scales = "free",ncol = 1, nrow = 2)
+  geom_line(aes(group = variable),color = "darkred") +
+  facet_wrap(~variable,scales = "free",ncol = 1, nrow = 2) +
+  labs(title = "Harga dan Sales Qty Minyak Goreng XYZ Per bulan",
+       subtitle = "Perhatikan Pola yang Terjadi!",
+       caption = "Visualized using R\nikanx101.com",
+       x = "Bulan") +
+  theme_minimal() +
+  theme(axis.title.y = element_blank())
 ```
+
 
 Terlihat ada strategi _pricing_ yang dilakukan oleh merek minyak goreng `XYZ` ini.
 
+#### Q1 - Q3
+
 Di awal tahun (Q1), mereka sempat menaikkan harganya sehingga mengakibatkan `sales qty`-nya menurun. Tapi saat mereka menurunkan harganya perlahan (namun tetap di atas harga di awal tahun) di Q2 dan Q3, `sales qty` mereka juga perlahan naik. Jadi ada kesan kepada konsumen seolah-olah harga turun. 
+
+#### Q4
 
 Lalu pada Q4 ada anomali saat harganya naik tapi _sales qty_ juga meningkat. Kenapa hal ini terjadi?
 
 > Melihat _single_ data seperti ini mungkin akan membuat kita bingung kenapa hal ini terjadi.
 
-Tapi setelah melihat harga yang ditawarkan oleh kompetitor langsung minyak goreng `XYZ`, ternyata kompetitor juga menaikkan harganya pada Q4.
+Tapi setelah saya melihat data harga yang ada di market minyak goreng kemasan sejenis. Ternyata harga yang ditawarkan oleh kompetitor minyak goreng `XYZ` juga memiliki tren yang mirip (kompetitor juga menaikkan harganya pada Q4).
 
 Tampaknya tidak ada pilihan lain bagi konsumen untuk menerima harga baru tersebut.
 
 ---
 
-Ada yang mau menyimpulkan tulisan di atas?
+# Kesimpulan
+
+Kita tidak bisa mengandalkan hanya satu analisa _price elasticity_. Ada bainya kita juga melihat _historical price_ yang terjadi. Selain itu ada baiknya jika kita memasangkan data produk tertentu dengan data lain seperti data kompetitor agar mendapatkan analisa yang lebih konklusif dan holistik.
+
+---
+
+`if you find this article helpful, please support this blog by clicking the ads.`
