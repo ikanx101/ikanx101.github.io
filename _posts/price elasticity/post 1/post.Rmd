@@ -1,4 +1,17 @@
-Kenapa Kita Tidak Boleh Percaya dengan Price Elasticity Semata?
+---
+title: "Kenapa Kita Tidak Bisa Mengandalkan dengan Price Elasticity Semata?"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+library(dplyr)
+library(ggplot2)
+```
+
 
 Tahun lalu, saya sempat menjelaskan mengenai [_price elasticity_](https://ikanx101.com/blog/blog-posting-regresi/). Suatu analisa regresi linear sederhana yang memodelkan kausalitas (sebab akibat) antara harga dengan _sales quantity_ suatu produk.
 
@@ -8,15 +21,22 @@ Salah satu asumsi yang mendasari analisa ini adalah:
 
 > Jika harga semakin mahal, maka secara logika _sales qty_ akan menurun.
 
-```{r}
-library(dplyr)
-library(ggplot2)
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center',fig.retina=10}
 data = data.frame(
-  harga = c(100,400)
-  qty = c(20,5)
-  ) %>%
+  harga = c(100,400,200,300,250),
+  qty = c(20,3,11,9,15)
+  ) 
+
+data %>%
   ggplot(aes(x = harga, y = qty)) +
-  geom_line()
+  geom_point(color = "steelblue",shape = 7) +
+  geom_smooth(method = "lm",color = "orange",fill = "pink") +
+  theme_minimal() +
+  labs(x = "Harga",
+       y = "Sales Qty",
+       title = "Model Kausalitas Antara Harga dan Sales Qty",
+       subtitle = "Menggunakan Regresi Linear Sederhana",
+       caption = "Visualized using R\nikanx101.com")
 ```
 
 Atau dengan kalimat matematisnya: __ada korelasi kuat negatif antara__ `harga` __dengan__ `sales qty`. 
@@ -58,16 +78,39 @@ Oke saya jelaskan dengan kasus _real_ berikut _yah_!
 
 ---
 
+```{r,include=FALSE}
+data = data.frame(
+  bulan = c(1:12),
+  avg_price = c(130,139,144,143,140,138,138,139,139,145,149,151),
+  total_order = c(51547,3245,162,15697,13076,23267,28990,25588,54801,62303,53544,65673)
+  )
+korel = cor(data$avg_price,data$total_order)
+korel = round(korel,2)
+
+model = lm(total_order~avg_price,data)
+summary(model)
+```
+
 ## Kompetisi _Optimization_ Tahap II
 
 Setelah selesai kompetisi [tahap pertama](https://ikanx101.com/blog/binary-marketplace/) kemarin, kami melanjutkan mengadakan kompetisi tahap II. Berbekal data _real_ dari salah satu _market place_ rekan-rekan mahasiswa disuruh menghitung _price_ paling optimal yang bisa ditawarkan ke konsumen.
 
-Cara menghitung _price_ optimal didasarkan pada model regresi _price elasticity_. Semua berjalan dengan baik hingga ada satu merek minyak goreng `XYZ` memiliki korelasi kuat positif sebesar `xxx`.
+Cara menghitung _price_ optimal didasarkan pada model regresi _price elasticity_. Semua berjalan dengan baik hingga ada satu merek minyak goreng `XYZ` memiliki korelasi positif sebesar `r korel`.
 
 Jika saya buat model regresinya, berikut adalah hasilnya:
 
-```{r}
-ggplot
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center',fig.retina=10}
+data %>% 
+  ggplot(aes(x = avg_price,
+             y = total_order)) + 
+  geom_point() +
+  geom_smooth(method = "lm",color = "orange",fill = "pink") +
+  theme_minimal() +
+  labs(x = "Harga (dalam ribu Rupiah)",
+       y = "Sales Qty",
+       title = "Model Kausalitas Antara Harga dan Sales Qty\nMinyak Goreng Merek XYZ Kemasan Tertentu",
+       subtitle = "Menggunakan Regresi Linear Sederhana",
+       caption = "Visualized using R\nikanx101.com")
 ```
 
 Model regresinya adalah:
@@ -81,12 +124,14 @@ Dengan hasil tersebut wajar jika kita mengatakan ada yang aneh dengan data terse
 
 Kita akan dapatkan hasil sebagai berikut:
 
-```{r}
-data = data.frame(
-  bulan = c(1:12),
-  avg_price = c(130,139,144,143,140,138,138,139,139,145,149,151),
-  total_order = c(51547,3245,162,15697,13076,23267,28990,25588,54801,62303,53544,65673)
-  )
+```{r,echo=FALSE}
+data %>% 
+  reshape2::melt(id.vars = "bulan") %>% 
+  ggplot(aes(x = bulan,
+             y = value)) +
+  geom_line(group = 1) +
+  geom_label(aes(label = value),size = 1,5) +
+  facet_wrap(~variable,scales = "free",ncol = 1, nrow = 2)
 ```
 
 Terlihat ada strategi _pricing_ yang dilakukan oleh merek minyak goreng `XYZ` ini.
