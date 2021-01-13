@@ -1,0 +1,62 @@
+---
+title: "Image Recognition Showdown Google Vision VS Azure Vision"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/Documents/ikanx101/_posts/Google Image/post 2")
+rm(list=ls())
+library(EBImage)
+library(dplyr)
+load("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/Azure/azure.rda")
+load("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/Azure/google.rda")
+plot_1 = readImage("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/Azure/vaksin.png")
+```
+
+Beberapa waktu lalu, saya pernah menceritakan bagaimana [Google Vision](https://ikanx101.com/blog/google-vision/) bisa membantu kita untuk memberikan label terhadap suatu _image_ atau poto.
+
+Layanan _AI cloud_ semata-mata tidak hanya dikuasai oleh _Google Cloud_ tapi ada beberapa layanan lain seperti _Amazon Web Service_ (AWS) dan _Microsoft Azure_. Mereka memberikan layanan yang hampir serupa.
+
+Sebagai contoh, jika di __Google__ memiliki layanan _Google Vision_ maka di __Azure__ ada layanan _Azure Vision_.
+
+> Sama-sama _cloud service_ untuk meng-_handle_ data berupa _images_.
+
+---
+
+# Membaca Konteks _Image_
+
+Salah satu keunggulan dari _Azure Vision_ adalah kemampuannya untuk memberikan _annotation_ atau membaca konteks dari _images_.
+
+> Jadi bukan cuma membaca label, tapi membaca konteks (isi) dari _images_.
+
+Sebagai contoh saya ambil _image_ berikut ini:
+
+```{r,echo=FALSE,fig.align='center'}
+plot(plot_1)
+```
+
+## _Label Detection Google Vision_
+
+Jika _image_ di atas dibaca menggunakan Google Vision, maka label yang terbaca adalah:
+
+```{r,echo=FALSE}
+vision_1 %>% 
+  select(description,score) %>%
+  rename(confidence = score) %>% 
+  mutate(confidence = round(confidence*100,2),
+         confidence = paste0(confidence,"%")) %>% 
+  knitr::kable()
+```
+
+## _Image Description Azure Vision_
+
+Sekarang, jika saya baca _image_ tersebut dengan _Azure Vision_ didapatkan hasil berikut:
+
+```{r,echo=FALSE}
+azure_2
+```
+
+Walaupun hasil pembacaannya relatif __agak jauh__ dari apa yang terjadi tapi setidaknya ada konteks yang bisa dibaca oleh __AI__ terhadap _image_ tersebut.
