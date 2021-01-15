@@ -1,0 +1,17 @@
+---
+title: "Untitled"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tesseract)
+data = ocr_data("handwriting.jpg")
+data
+paste(data$word,collapse = " ")
+```
+
+
