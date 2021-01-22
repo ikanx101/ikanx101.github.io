@@ -1,12 +1,12 @@
 ---
-title: "Full Guide: Dasar-Dasar Web Scraping di R"
+title: "Tutorial: Web Scraping Mudah di R dengan ralger"
 output: 
   github_document:
     pandoc_args: --webtex
 ---
 
 ```{r setup, include=FALSE}
-setwd("~/ikanx101.github.io/_posts/web scraping")
+setwd("~/Documents/ikanx101/_posts/web scraping")
 knitr::opts_chunk$set(echo = TRUE)
 rm(list=ls())
 library(dplyr)
@@ -77,6 +77,11 @@ Sekarang bagaimana melakukannya?
 library(ralger)
 judul = titles_scrap(url)
 judul
+```
+
+Ternyata tidak hanya judul beritanya saja yang terambil tapi beberapa judul _headlines_ berita lain yang terambil. Kelak saya hanya akan mengambil _first entry_ saja.
+
+```{r,message=FALSE,warning=FALSE}
 body = paragraphs_scrap(url)
 body
 ```
@@ -93,11 +98,45 @@ cat(judul,body)
 
 Salah satu jenis data yang paling sering dicari di internet adalah data bentuk tabel. Data bentuk seperti ini adalah data yang paling mudah di-_scrape_.
 
+> Lebih mudah dibandingkan dengan _copy_ dari _browser_ dan _paste_ ke dalam `excel sheet`.
+
+Sebagai contoh saya akan _scrape_ data kecelakaan pesawat pada tahun 2021 yang disajikan di situs [_aviation-safety.net_](https://aviation-safety.net/wikibase/dblist.php?Year=2021)
+
+Bagaimana caranya?
+
 ```{r}
 url = "https://aviation-safety.net/wikibase/dblist.php?Year=2021"
-
-table_scrap(url)
+tabel_hasil = table_scrap(url)
 ```
+
+Karena datanya cukup banyak (`100` baris per 22 Januari 2020 16:18 WIB), saya akan tampilkan top 10 data teratas saja.
+
+```{r,include=FALSE}
+tabel_hasil = tabel_hasil %>% select(is.character)
+```
+
+```{r}
+knitr::kable(head(tabel_hasil))
+```
+
+
+## _Scrape_ `css` Object dari Halaman
+
+Sekarang adalah bagian paling asik saat melakukan _web scraping_, yakni mengambil data yang _scattered_ di dalam suatu _webpage_.
+
+Sebagai contoh saya hendak
+
+```{r}
+url = "https://www.carmudi.co.id/2020-suzuki-ertiga-dp-murah-angsuran-murah-1916271.html"
+
+scrap(url,".c-listing-price")
+scrap(url,".truncated")
+scrap(url,".justify-content-center .font-weight-bold")
+```
+
+---
+
+Sebagai permulaan, saya rasa kedua contoh tersebut sudah cukup 
 
 ---
 
