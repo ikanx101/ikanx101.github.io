@@ -1,0 +1,104 @@
+---
+title: "Full Guide: Dasar-Dasar Web Scraping di R"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+setwd("~/ikanx101.github.io/_posts/web scraping")
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+library(dplyr)
+```
+
+_Web scraping_ adalah proses pengambilan data atau informasi dari internet. Sebagaimana kita ketahui bersama, semua yang ada di internet bisa dengan `mudah`-nya kita ambil (tentu dengan teknik yang tepat _yah_).
+
+Berdasarkan pengalaman saya selama ini, ada beberapa teknik _web scraping_ yang bisa dilakukan. Yakni:
+
+1. _Parsing html_ dengan cara __membaca__ _page source_ `.html` dari situs yang dituju.
+    1. Kelebihan:
+        1. Proses relatif cepat (walau tergantung koneksi juga).
+        1. Bisa untuk kebanyakan situs, seperti: wikipedia, portal berita, blog, dst.
+    1. Kelemahan:
+        1. Harus menentukan target `css` dari situs terlebih dahulu.
+        1. Untuk beberapa situs, proses mencari objek `css` bisa jadi menyulitkan.
+        1. Tidak bisa digunakan untuk situs dinamis yang menggunakan `javascript`.
+        1. Untuk situs yang menggunakan _login_, prosesnya agak rumit. 
+1. _Mimicking browser_ dengan cara membuat _bot_ yang seolah-olah membuka _browser_ tertentu dan berinteraksi seperti layaknya manusia.
+    1. Kelebihan:
+        1. Bisa untuk (hampir) semua situs. Termasuk _social media_ atau situs dengan _login_ yang memiliki beberapa _steps authetification_.
+        1. Bisa mengambil situs dinamis atau mengandung `javascript`.
+    1. Kelemahan:
+        1. Proses relatif lambat. Karena bertindak seolah-olah layaknya manusia membuka _browser_.
+        1. Secara _coding_ lebih rumit karena harus membuat dua bagian algoritma: algoritma _mimick_ dan algoritma _scraper_ `css`.
+1. Mengambil data menggunakan __API__.
+    1. Kelebihan:
+        1. Lebih mudah dan relatif cepat.
+    1. Kelemahan:
+        1. Proses mendapatkan __API__ kadang cukup rumit. Kadang didapatkan dengan cara mendaftar _as developer_ seperti di _Twitter_ atau mencari sendiri saat `inspect` __network__.
+        1. Biasanya data hasil _scrape_ memiliki format `.json` yang jarang dikenal orang awam.
+        
+---
+
+# _Libraries_ __R__ yang Digunakan
+
+Setidaknya ada beberapa _libraries_ yang saya gunakan untuk ketiga teknik di atas:
+
+1. _Parsing html_: `rvest` atau `ralger`.
+1. _Mimicking browser_: `RSelenium`.
+1. __API__: `jsonlite` untuk membaca _file_ `.json`.
+
+---
+
+# Tutorial _Parsing html_ 
+
+Sekarang saya akan menunjukkan satu teknik yang sering saya gunakan untuk _web scrape_, yakni _parsing html_ menggunakan `library(ralger)`.
+
+Kenapa menggunakan `ralger`?
+
+> Jujur, saya lebih suka dan lebih sering menggunakan `library(rvest)`. Tapi `ralger` menawarkan kemudahan dan kepraktisan yang lebih baik bagi _scraper_ pemula yang masih belum paham mengenai `.css` _object_.
+
+Untuk kasus yang rumit seperti _webscraping_ halaman _marketplace_ tidak akan saya bahas di sini _ya_. 
+
+## _Scrape_ Isi _Body_ Halaman
+
+Sebagai contoh, saya akan mencoba untuk _scrape_ berita di situs [Detikcom](https://www.detik.com/) terkait gempa.
+
+Berikut [_link_](https://news.detik.com/berita/d-5344336/tni-ad-kirim-3-kapal-angkut-bantuan-untuk-korban-bencana-alam-kalsel-sulbar?_ga=2.212703508.1474967536.1611281806-371647059.1593093917) yang digunakan.
+
+```{r}
+url = "https://news.detik.com/berita/d-5344336/tni-ad-kirim-3-kapal-angkut-bantuan-untuk-korban-bencana-alam-kalsel-sulbar?_ga=2.212703508.1474967536.1611281806-371647059.1593093917"
+```
+
+Sekarang bagaimana melakukannya?
+
+```{r,message=FALSE,warning=FALSE}
+library(ralger)
+judul = titles_scrap(url)
+judul
+body = paragraphs_scrap(url)
+body
+```
+
+Jika dirapikan, maka akan kita dapatkan hasil seperti ini:
+
+```{r}
+judul = trimws(judul[1])
+body = paste(trimws(body),collapse = "\n")
+cat(judul,body)
+```
+
+## _Scrape_ Tabel dari _Body_ Halaman
+
+Salah satu jenis data yang paling sering dicari di internet adalah data bentuk tabel. Data bentuk seperti ini adalah data yang paling mudah di-_scrape_.
+
+```{r}
+url = "https://aviation-safety.net/wikibase/dblist.php?Year=2021"
+
+table_scrap(url)
+```
+
+---
+
+`if you like this article, please support by clicking the ads, thanks.`
