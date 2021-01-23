@@ -1,5 +1,19 @@
-Tutorial: Web Scraping di R dengan ralger dan jsonlite
-================
+---
+date: 2021-01-23T11:55:00-04:00
+title: "Tutorial: Web Scraping di R dengan ralger dan jsonlite"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - R
+  - Web Scrap
+  - Tutorial
+  - ralger
+  - rvest
+  - selenium
+---
+
 
 *Web scraping* adalah proses pengambilan data atau informasi dari
 internet. Sebagaimana kita ketahui bersama, semua yang ada di internet
@@ -189,7 +203,7 @@ Perhatikan *screenshot* dari salah satu
 [*page*](https://www.carmudi.co.id/2020-suzuki-ertiga-dp-murah-angsuran-murah-1916271.html)
 berikut ini:
 
-<img src="carmudi.png" width="616" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/web%20scraping/carmudi.png" width="616" style="display: block; margin: auto;" />
 
 Sekarang saya hendak mengambil informasi seperti:
 
@@ -250,7 +264,7 @@ satu *listing* mobil saja.
 Bagaimana jika saya ingin *scrape* informasi harga mobil dari
 [halaman](https://www.carmudi.co.id/cars/suzuki/ertiga/) berikut ini?
 
-<img src="carmudi2.png" width="427" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/web%20scraping/carmudi2.png" width="427" style="display: block; margin: auto;" />
 
 `library(ralger)` menawarkan satu cara lain yang simpel untuk *scraping*
 informasi *scattered* dari satu *page* dan langsung menjadikannya dalam
