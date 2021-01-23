@@ -1,5 +1,5 @@
 ---
-title: "Tutorial: Web Scraping Mudah di R dengan ralger"
+title: "Tutorial: Web Scraping di R dengan ralger dan jsonlite"
 output: 
   github_document:
     pandoc_args: --webtex
@@ -48,6 +48,8 @@ Setidaknya ada beberapa _libraries_ yang saya gunakan untuk ketiga teknik di ata
 1. _Parsing html_: `rvest` atau `ralger`.
 1. _Mimicking browser_: `RSelenium`.
 1. __API__: `jsonlite` untuk membaca _file_ `.json`.
+
+Kali ini saya akan membahas teknik pertama dan ketiga. Selamat membaca dan mecoba _yah_.
 
 ---
 
@@ -124,19 +126,105 @@ knitr::kable(head(tabel_hasil))
 
 Sekarang adalah bagian paling asik saat melakukan _web scraping_, yakni mengambil data yang _scattered_ di dalam suatu _webpage_.
 
-Sebagai contoh saya hendak
+Sebagai contoh saya hendak mengambil data dari situs jual beli mobil [__Carmudi__](https://www.carmudi.co.id/).
+
+Perhatikan _screenshot_ dari salah satu [_page_](https://www.carmudi.co.id/2020-suzuki-ertiga-dp-murah-angsuran-murah-1916271.html) berikut ini:
+
+```{r,echo=FALSE,fig.align='center'}
+knitr::include_graphics("carmudi.png")
+```
+
+Sekarang saya hendak mengambil informasi seperti:
+
+1. Merek mobil (judul).
+2. Harga mobil.
+3. Informasi lain seperti: kilometer, transmisi, bahan bakar, dan kapasitas mesin.
+
+Untuk mendapatkannya, saya perlu mencari tahu dulu letak `css` _object_ dari informasi-informasi tersebut. Untuk itu, saya menggunakan _chrome extension_ bernama __SelectorGadget__.
+
+Setelah mengetahuinya, berikut langkah di __R__-nya:
 
 ```{r}
 url = "https://www.carmudi.co.id/2020-suzuki-ertiga-dp-murah-angsuran-murah-1916271.html"
-
 scrap(url,".c-listing-price")
 scrap(url,".truncated")
 scrap(url,".justify-content-center .font-weight-bold")
 ```
 
+Dari data-data di atas, saya tinggal merapikannya saja ke dalam bentuk tabel yang rapih sebagai berikut:
+
+```{r}
+harga = scrap(url,".c-listing-price")[1]
+judul = scrap(url,".truncated")[1]
+kilometer = scrap(url,".justify-content-center .font-weight-bold")[1]
+transmisi = scrap(url,".justify-content-center .font-weight-bold")[2]
+bbm = scrap(url,".justify-content-center .font-weight-bold")[3]
+cc = scrap(url,".justify-content-center .font-weight-bold")[4]
+hasil = data.frame(judul,harga,transmisi,cc,bbm,kilometer)
+
+knitr::kable(hasil)
+```
+
+Contoh di atas adalah saat saya _scrape_ dari _page_ yang menampilkan satu _listing_ mobil saja. 
+
+Bagaimana jika saya ingin _scrape_ informasi harga mobil dari [halaman](https://www.carmudi.co.id/cars/suzuki/ertiga/) berikut ini?
+
+```{r,echo=FALSE,fig.align='center'}
+knitr::include_graphics("carmudi2.png")
+```
+
+`library(ralger)` menawarkan satu cara lain yang simpel untuk _scraping_ informasi _scattered_ dari satu _page_ dan langsung menjadikannya dalam bentuk tabel. Yakni dengan _function_ `tidy_scrap()`.
+
+Contoh:
+
+```{r}
+url_new = "https://www.carmudi.co.id/cars/suzuki/ertiga/"
+
+hasil = 
+  tidy_scrap(url_new,
+             c(".item-title",".price",".icon-gearshift+ span",".catalog-listing-item-location span"),
+             c("judul","harga","transmisi","lokasi"))
+
+knitr::kable(hasil)
+```
+
 ---
 
-Sebagai permulaan, saya rasa kedua contoh tersebut sudah cukup 
+# Tutorial _Web Scraping_ dengan Memanfaatkan __API__
+
+Sekarang saya akan memberikan satu contoh bagaimana kita melakukan web_ scraping_ menggunakan __API__ yang tersedia di situs yang hendak kita _scrape_.
+
+Sebagai contoh, saya akan _scrape_ terjemahan dari Quran Surat Alfatihah yang tersedia di situs [Kementrian Agama](https://quran.kemenag.go.id/sura/1).
+
+Untuk mengambil terjemah dan tulisan arabnya, kita bisa mengecek keberadaan __API__ dari situs tersebut dengan cara melakukan _inspect source_ di _tab_ `network`.
+
+Setelah itu, kita hanya __tinggal__ membaca `.json` dari __API__ tersebut.
+
+```{r}
+url_new = "https://quran.kemenag.go.id/sura/1"
+
+library(jsonlite)
+data = read_json("https://quran.kemenag.go.id/api/v1/ayatweb/1/0/0/10")
+str(data)
+```
+
+Sekarang tinggal merapikan hasilnya saja sebagai berikut:
+
+```{r,echo=FALSE}
+for(i in 1:7){
+  cat(paste(data$data[[i]]$aya_text,collapse = "\n"))
+}
+
+for(i in 1:7){
+  cat(paste(data$data[[i]]$translation_aya_text,collapse = "\n"))
+}
+```
+
+---
+
+# _Summary_
+
+_Web scraping_ sebenarnya bukan perkara yang terlalu sulit. Justru saya lebih sering mendapatkan tantangan saat merapikan data hasil _scraping_ tersebut.
 
 ---
 
