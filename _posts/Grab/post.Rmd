@@ -83,7 +83,7 @@ final %>%
   ggplot(aes(y = nama_merchant,
              x = harga)) +
   geom_boxplot() +
-  labs(title = "Sebaran Harga 35 Merchant GrabFood\ndi Sekitar Rumah Saya",
+  labs(title = "Sebaran Harga 35 Merchant\nGrabFood\ndi Sekitar Rumah Saya",
        subtitle = "Hasil Web Scrape GrabFood",
        caption = "Scraped and Visualized with love\nusing R\nikanx101.com",
        y = "Nama Merchant",
