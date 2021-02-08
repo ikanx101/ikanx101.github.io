@@ -401,3 +401,7 @@ tidak sampai `5` menit.
 Berikut adalah summarynya:
 
 <img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/NJOP%20Jakarta/post_files/figure-gfm/unnamed-chunk-14-1.png" style="display: block; margin: auto;" />
+
+-----
+
+`if you find this article helpful, support this blog by clicking the ads.`
