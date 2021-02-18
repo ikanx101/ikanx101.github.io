@@ -1,0 +1,123 @@
+---
+title: "MATERI TRAINING R: Pendefinisian Object dan Operasi Relasi"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Oke, kita akan memulai bekerja dengan __R__, dimulai dari fungsi-fungsi awal sebagai berikut:
+
+## Fungsi Awal
+
+### Pendefinisian _object_
+
+Setiap data yang akan kita masukkan ke dalam memori __R__, akan saya sebut sebagai _object_. Setiap _object_ yang ingin dimasukkan ke dalam memori perlu didefinisikan terlebih dahulu menggunakan perintah `=` atau `<-`.
+
+Contoh:
+
+Jika saya ingin mendefinisikan dua buah _objects_, yakni `a` dan `b` sebagai berikut:
+```{r}
+a = 6
+b <- 8
+```
+
+Maka: 
+
+```{r}
+a
+b
+```
+
+### Operasi Aritmatika dan Matematika
+
+Setiap _object_ yang sudah masuk ke dalam memori __R__ sudah bisa dilakukan analisa atau dilakukan operasi aritmatika: `+`, `-`, `/`, dan `*` ATAU diberikan fungsi matematika seperti __trigonometri__, __logaritmik__, dan lain-lain.
+
+Karena kita telah mendefinisikan _objects_ `a` dan `b`, maka kita bisa lakukan perintah sebagai berikut:
+
+```{r}
+a + b
+a / b
+c = a * b
+c
+sin(c)
+log(a+b/c)
+```
+
+### Operasi Relasi dan _Logical_ (_Boolean_)
+
+Pada [_post_ sebelumnya](https://ikanx101.com/blog/train-r-2/#mengenal-operator-dasar), kita telah mengetahui operator relasi seperti `==`, `>`, `<`, `<=`, `>=`, dan `!=`. Hasil dari operator relasi ini adalah _logical value_ (__TRUE__ atau __FALSE__).
+
+_Logical value_ yang dihasilkan memiliki sifat sebagai berikut:
+
+1. `TRUE`, berarti __benar__. Bisa disingkat menjadi `T`. Tidak bisa ditulis dalam huruf kecil (harus kapital).
+2. `FALSE`, berarti __salah__. Bisa disingkat menjadi `F`. Tidak bisa ditulis dalam huruf kecil (harus kapital).
+
+_Operator logical_ yang biasa digunakan di __R__ antara lain:
+
+1. `&` menandakan __AND__
+2. `|` menandakan __OR__
+3. `!` menandakan __NOT__
+
+Contoh:
+
+Misalkan saya memiliki dua pernyataan sebagai berikut:
+
+```{r}
+pernyataan_1 = T
+pernyataan_2 = F
+```
+
+Maka:
+
+```{r}
+!pernyataan_1
+pernyataan_1 & pernyataan_2
+pernyataan_1 | pernyataan_2
+```
+
+### _If Conditional_
+
+Mungkin teman-teman bertanya-tanya:
+
+> Apa sih gunanya _logical value_ dan _logical operator_?
+_Logical value_ merupakan unsur utama saat kita hendak membuat fungsi _conditional_ dan _looping_. Masih ingat fungsi di __Ms. Excel__ untuk membuat _conditional_? _Nah_, mirip pengerjaannya di __R__.
+
+Setidaknya ada tiga fungsi _conditional_ di __R__, yakni:
+
+1. `ifelse()`: bawaan dari _package_ `base`.
+2. `if_else()`: fungsi dari _package_ `dplyr` (perlu di- _install_ dulu _package_-nya).
+3. `case_when()`: fungsi dari _package_ `dplyr` (perlu di- _install_ dulu _package_-nya).
+
+Apa perbedaan ketiganya?
+
+`ifelse()` dengan `if_else()` berdasarkan pengalaman saya tidak ada perbedaannya. Selama ini saya cukup memilih salah satu saja.
+
+Sedangkan `case_when()` digunakan bersamaan dengan _pipe_ `%>%` pada saat _tidying data_. Berguna saat kita hendak mem- _vector_-kan _conditional_.
+
+> Masih bingung?
+Saya akan bahas fungsi `ifelse()` dulu _yah_. Pembahasan mengenai `case_when()` akan saya jelaskan pada _section_ khusus mengenai `tidyverse`.
+
+Contoh paling mudah untuk _conditional_ seperti ini:
+
+Misalkan saya memiliki dua buah _objects_, yakni `a` dan `b`.
+
+```{r}
+a = 10
+b = 10 + sin(pi/3)
+```
+
+Maka:
+
+```{r}
+ifelse(a < b, 'hari ini cerah','hari ini mendung')
+ifelse(a == b, 'sama-sama','tidak bersama')
+```
+
+---
+
+_to be continued_
+
+`if you find this article helpful, support this blog by clicking the
+ads.`
