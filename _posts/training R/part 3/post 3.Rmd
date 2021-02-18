@@ -1,0 +1,109 @@
+---
+title: "MATERI TRAINING R: Mengenal Library"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Sekarang pada _posting_ [sebelumnya](https://ikanx101.com/blog/train-r-2/), saya telah menjelaskan beberapa operator dasar yang digunakan di __R__. Kali ini saya akan menjelaskan mengenai _library_. 
+
+> Apa itu?
+
+## Mengenal _packages_ atau _library_
+
+`packages` atau `library` adalah sekumpulan fungsi yang telah dibuat dan dibakukan untuk kemudian disertakan di halaman _web_ CRAN atau github. `library` bisa kita _install_ dan gunakan dengan mudah.
+
+Seperti yang sudah saya infokan di bagian pendahuluan. Banyak orang atau komunitas yang mengembangkan berbagai macam `library` sehingga memudahkan kita untuk menyelesaikan masalah di data kita. Kita tidak perlu lagi membuat algoritma dari nol. Cukup memanfaatkan `library` yang tepat saja.
+
+Beberapa contoh `library` yang sering saya gunakan:
+
+1. `dplyr`: _data carpentry_ menggunakan _tidy principle_.
+2. `ggplot2`: _data visualization_.
+3. `rvest`: _web scraping_.
+4. `tidytext`: _text analysis_.
+5. `reshape2`: _data manipulation_.
+6. `readxl` atau `openxlsx`: _export_ dan _import_ _excel files_.
+7. `officer`: membuat _Ms. Office files_ seperti _excel_, _docx_, dan _powerpoint_.
+8. `expss`: __SPSS__ di __R__.
+8. `xaringan`: membuat _file_ presentasi berformat `html`.
+9. `keras` dan `tensorflow`: membuat algoritma _deep learning_.
+
+### Instalasi _Packages_
+
+`library` di __R__ bisa di-_install_ dengan mudah dengan menggunakan perintah `install.packages('nama packages')`. Tanda dalam kurung diisi `character` nama `library`. Bisa menggunakan `" "` atau `' '`. 
+
+Proses instalasi `library` di _Google Colab_ harus dilakukan setiap kita memulai _session_. Jika terputus, maka harus di-_install_ kembali.
+
+Contoh:
+
+`install.packages('readxl')`
+
+`install.packages("rvest")`
+
+### Mengaktifkan _Packages_
+
+`library` yang sudah di-_install_ bisa diaktifkan dengan menggunakan perintah `library(nama packages)` tanpa menggunakan tanda `" "` atau `' '`.
+
+Pengaktifan `library` cukup dilakukan sekali saja di awal pengerjaan _project_ (tidak perlu dilakukan berulang kali). Contoh:
+
+```{r}
+library(dplyr)
+```
+
+Beberapa `library` saat diaktifkan akan menghasilkan pesan tertentu seperti di atas ini. Hal ini merupakan sesuatu yang __normal__ terjadi.
+
+### Serba-Serbi Tentang _Packages_
+
+Untuk beberapa `library` ada kemungkinan (kecil) ditemukan kasus saat mereka tidak kompatibel. Akibatnya beberapa fungsi perintah di `library` tersebut akan menjadi kacau.
+
+Misalnya pada saat kita memanggil `library(tidyverse)` dan `library(plyr)`, maka perintah `filter()` yang dimiliki `tidyverse` akan tidak berjalan dengan baik. 
+
+Ada beberapa solusi yang bisa kita lakukan:
+
+1. Selalu mengaktifkan `library` sesuai dengan urutannya. Biasanya setiap kali kita mengaktifkan `library` akan muncul _warnings_ mengenai kompatibilitas `library` tersebut dengan `library` lain.
+2. Menonaktikan `library` yang sudah tidak perlu digunakan dengan perintah:
+
+`detach("package:tidytext", unload = TRUE)`
+
+3. Memanggil `library` tanpa harus mengaktifkannya. Kita bisa melakukannya dengan menggunakan tanda `nama packages::`. Contoh:
+
+`reshape2::melt(data)`
+
+### _Help_
+
+Setiap `library` yang telah di-_install_ dan aktif disertai dengan fitur _help_ yang berfungsi sebagai informasi kepada _user_. Jika kita ingin mengetahui bagaimana isi dari perintah suatu fungsi, kita bisa gunakan perintah `help(nama fungsi)` atau `?nama fungsi`. _Help_ akan muncul pada tab _help_ di __R Studio__ atau di bagian bawah _Google Colab_. Contoh:
+
+```{r}
+help(sum)
+```
+
+atau
+
+```{r}
+?sum
+```
+
+### _Example_
+
+Selain _help_, kita bisa melihat contoh pemakaian dari suatu fungsi di __R__ dengan menggunakan perintah `example()`. Contoh:
+
+```{r}
+example(sum)
+```
+
+---
+
+Berikut ini adalah video _recap_ dari materi ini:
+
+```{r}
+# video
+```
+
+---
+
+_to be continued_
+
+`if you find this article helpful, support this blog by clicking the
+ads.`
