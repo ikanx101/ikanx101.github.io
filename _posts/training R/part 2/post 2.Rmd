@@ -1,5 +1,5 @@
 ---
-title: "MATERI TRAINING R: Memulai dengan Google Colab"
+title: "MATERI TRAINING R: Memulai R dengan Google Colab"
 output: github_document
 ---
 
@@ -13,9 +13,15 @@ library(tidyr)
 
 Pada beberapa _posting_ terdahulu, saya sempat menginformasikan bahwa kita bisa Bekerja dengan __R__ di [_Google Colab_](https://ikanx101.com/blog/google-colab/). Kini melanjutkan materi [training sebelumnya](https://ikanx101.com/blog/train-r-1/) saya akan memulai menjelaskan bagaimana _basic skill_ di __R__ dengan menggunakan Google Colab.
 
-Tampilan awal _Google Colab_ adalah sebagai berikut:
+Tampilan awal *Google Colab* beserta penjelasannya bisa dilihat di video berikut ini:
 
+```{r}
+# [![Alt text](https://img.youtube.com/vi/wTJse9y2Bm4/0.jpg)](https://www.youtube.com/watch?v=wTJse9y2Bm4)
+```
 
+Jika sudah melihat, sekarang giliran saya menjelaskan terkait operator-operator dasar di __R__. Teman-teman silakan mencoba sendiri dengan cara mengetikkan _script_-nya di _Google Colab_ _yah_.
+
+Oh iya, penulisan _script_ di dengan bahasa __R__ tidak mempedulikan adanya `spasi`. Jadi teman-teman boleh menggunakan atau tidak. Disesuaikan dengan kerapihan saja.
 
 ## Mengenal operator dasar
 
