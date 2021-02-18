@@ -12,7 +12,8 @@ menggunakan Google Colab.
 
 Tampilan awal *Google Colab* adalah sebagai berikut:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/MBvNjh_mWrQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![Alt text](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/training%20R/part%202/colab1.png)](https://www.youtube.com/watch?v=MBvNjh_mWrQ)
+
 
 ## Mengenal operator dasar
 
