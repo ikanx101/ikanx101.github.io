@@ -12,7 +12,7 @@ menggunakan Google Colab.
 
 Tampilan awal *Google Colab* adalah sebagai berikut:
 
-[![Alt text](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/training%20R/part%202/colab1.png)](https://www.youtube.com/watch?v=MBvNjh_mWrQ)
+[![Alt text](https://img.youtube.com/vi/MBvNjh_mWrQ/0.jpg)](https://www.youtube.com/watch?v=MBvNjh_mWrQ)
 
 
 ## Mengenal operator dasar
