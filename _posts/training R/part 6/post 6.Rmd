@@ -1,0 +1,218 @@
+---
+title: "MATERI TRAINING R - part 6: Mulai Bekerja dengan Data"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Bekerja dengan data
+
+Pada [_post_ sebelumnya](https://ikanx101.com/blog/train-r-4/) telah saya jelaskan beberapa struktur data di __R__, sekarang kita akan melihat bagaimana bentuk _real_-nya di __R__.
+
+Untuk data berbentuk `list`, akan saya jelaskan sekalian bersamaan dengan materi `tidyverse` _yah_.
+
+### _Single Value_
+
+Contoh:
+
+```{r}
+a = 100
+x = 50
+z = 'Indonesia'
+```
+
+### _Vector_
+
+_Vector_ didefinisikan dengan menggunakan perintah `c()`; merupakan istilah lain dari _array_. Bayangkan sebagai satu kolom data (atau satu baris) dalam Ms. Excel.
+
+Contoh:
+
+```{r}
+tinggi_badan = c(164,149,180,184,153,90,139,199,186,158,197)
+tinggi_badan
+```
+
+#### Elemen _Vector_
+
+Ada yang sadar _gak_ dengan tanda `[1]` setiap kali kita _running_ suatu skrip di __R__.
+
+Apa _sih_ artinya?
+
+Itu adalah tanda posisi pertama dari _vector_. Tanda `[]` digunakan untuk memanggil isi _vector_ di posisi tertentu. Istilah kerennya adalah _subset_ dari suatu _vector_.
+
+Contoh:
+
+```{r}
+tinggi_badan[1]
+tinggi_badan[7]
+tinggi_badan[10]
+tinggi_badan[3:5]
+tinggi_badan[c(1,7,10)]
+tinggi_badan[-c(1,7,10)] #pengeculian
+```
+
+#### Operasi Aritmatika Pada _Vector_
+
+_Vector_ yang berupa numerik bisa dilakukan operasi aritmatik.
+
+Contoh:
+
+```{r}
+status = (tinggi_badan - 100)/50
+status
+```
+
+#### Fungsi Pada _Vector_
+
+_Vector_ berupa numerik juga bisa dikenakan fungsi perhitungan seperti:
+
+```{r}
+max(tinggi_badan) # memperoleh nilai maksimum x
+min(tinggi_badan) # memperoleh nilai minimum x
+range(tinggi_badan) # memperoleh range vektor x
+length(tinggi_badan) # memperoleh jumlah vektor x
+sum(tinggi_badan) # memperoleh total penjumlahan vektor x
+mean(tinggi_badan) # memperoleh nilai mean vektor x
+sd(tinggi_badan) # standar deviasi vektor x
+var(tinggi_badan) # varian vektor x
+sort(tinggi_badan) # mengurutkan elemen vektor x dari yang terbesar
+```
+
+#### _Generating Sequences_
+
+_Sequences_ atau deret bisa kita bangun menggunakan __R__ dengan dua cara:
+
+1. Menggunakan `:`.
+2. Menggunakan fungsi `seq()`.
+
+Contoh:
+
+```{r}
+nomor_1 = c(1:10)
+nomor_1
+# perintah untuk menghitung cumulative sum
+cumsum(nomor_1)
+nomor_2 = seq(1,10,0.4) # generating sequence dari 1 hingga 10 dengan jeda 0.4
+nomor_2
+```
+
+> Apa sih gunanya deret?
+
+Percayalah, suatu saat nanti deret bisa digunakan untuk membantu perhitungan atau analisa kita. Seolah-olah berperan sebagai __katalis__ pada reaksi kimia.
+
+#### _Random sampling_ dari suatu _vector_
+
+Ada suatu masa saat kita membutuhkan untuk mengambil sampel (mengambil subset) dari suatu _vector_ secara acak. Kita bisa menggunakan fungsi `sample()`.
+
+Contoh:
+
+Kita memiliki data variabel `nama_orang` berisi 20 nama orang. Kita hanya ingin memilih 3 nama orang saja secara acak. Bagaimana caranya?
+
+Pertama-tama untuk _generating_ nama orang, saya menggunakan `library(randomNames)`. Pastikan teman-teman telah meng-_install_ _library_-nya terlebih dahulu ya.
+
+```{r}
+nama_orang = randomNames::randomNames(20)
+nama_orang
+sample(nama_orang,3,replace = F)
+```
+
+`replace = F` digunakan saat kita tidak ingin ada pemilihan yang berulang. Sedangkan `replace = T` digunakan saat diperbolehkan hasil pemilihan berulang. Coba _run_ sendiri _yah_.
+
+Perintah `sample()` ini akan sangat berguna saat kita hendak menggunakan prinsip simulasi [__Monte Carlo__](https://ikanx101.github.io/tags/#monte-carlo).
+
+#### _Repeat_ 
+
+Adakalanya kita hendak melakukan pengulangan yang simpel. _Instead of using looping_, kita bisa menggunakan perintah `rep()`. Misalkan:
+
+```{r}
+rep('belajar R',3)
+rep(c(4:8),10)
+tinggi_badan = c(120,132,142,90)
+rep(mean(tinggi_badan),4)
+```
+
+Jadi perintah `rep()` tidak hanya bisa untuk mengulang suatu single variabel atau _vector_ saja tapi bisa digunakan untuk mengulang suatu fungsi.
+
+Apa perbedaan dengan fungsi `repeat()`? Fungsi `repeat()` biasanya digunakan dalam _looping_ dan baru akan berhenti saat diberikan perintah `break`.
+
+### _Tibble_ atau _Data Frame_
+
+_Tibble_ atau _data frame_ adalah struktur data di __R__ berupa tabel. Analogi sederhananya adalah mirip dengan tabel di __Ms. Excel__ _files_.
+
+_Data frame_ bisa dibentuk dari beberapa _vector_ yang memiliki `length()` yang sama. Contohnya berikut ini:
+
+Kita akan membuat _data frame_ dari `4` buah _vector_, yakni: `id`, `nama`, dan `tinggi_badan`.
+
+```{r}
+id = c(1:10)
+nama = randomNames::randomNames(10,gender = 0,which.names = 'first')
+tinggi_badan = sample(c(150:199),10,replace = F)
+absensi = data.frame(id,nama,tinggi_badan)
+```
+
+Hasilnya seperti ini:
+
+```{r}
+absensi
+```
+
+Bentuk _data frame_ kelak akan menjadi primadona dalam setiap analisa yang digunakan di __R__. Nanti saat kita belajar _data carpentry_ menggunakan `tidyverse`, struktur _data frame_ mudah dimanipulasi dengan _piping operator_: `%>%`.
+
+### _Missing values_ `NA`
+
+_Missing values_ adalah suatu nilai yang kosong pada suatu data. Kosong berarti tidak berisi data apapun. Bedakan dengan nilai `0` yah!
+
+> `NA` tidak akan diikutsertakan dalam perhitungan sedangkan `0` diikutsertakan. 
+
+Di __R__, nilai `NA` pada data numerik akan membuat _error_ setiap kali dihitung.
+Contoh:
+
+```{r}
+data_1 = c(3,5,0,6,8,3)
+mean(data_1)
+```
+
+Berikut adalah contoh saat ada data berisi `NA`, maka data tersebut tidak akan bisa dihitung:
+
+```{r}
+data_2 = c(3,5,NA,6,8,3)
+mean(data_2)
+```
+
+Bagaimana cara mengecek keberadaan `NA` di data kita?
+
+Kita bisa menggunakan fungsi `is.na()`. _Output_ dari fungsi ini adalah _boolean variable_ berupa `TRUE` atau `FALSE`.
+
+Contoh: mengecek apakah ada `NA` di `data_2`.
+
+```{r}
+is.na(data_2)
+```
+
+Contoh: membuat tabulasi dari _function_ `is.na()`.
+
+```{r}
+table(is.na(data_2))
+```
+
+Contoh: menghitung seberapa banyak yang `TRUE`.
+
+```{r}
+sum(is.na(data_2))
+```
+
+Contoh: mengecek apakah ada data yang __TIDAK__ `NA` di `data_2`.
+
+```{r}
+!is.na(data_2)
+```
+
+
+---
+
+_to be continued_
+
+`if you find this article helpful, support this blog by clicking the
+ads.`
