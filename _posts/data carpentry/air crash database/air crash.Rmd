@@ -5,7 +5,7 @@ output: github_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-setwd("~/ikanx101.github.io/_posts/data carpentry/air crash database")
+setwd("~/Documents/ikanx101/_posts/data carpentry/air crash database")
 library(dplyr)
 library(rvest)
 library(ggplot2)
@@ -103,7 +103,7 @@ dbase %>%
 
 Kategori terbanyak yang terjadi adalah _accident_. Namun di beberapa tahun, _criminal_ memiliki angka yang cukup besar.
 
-Jika saya cek detail kategori kepada jenis kerusakan yang timbul, didapatkan:
+Sekarang jika saya _crosscheck_ ke tingkat kerusakan yang timbul, didapatkan:
 
 ```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center',fig.height=9}
 dbase %>% 
@@ -116,7 +116,7 @@ dbase %>%
   geom_col() +
   scale_fill_brewer(palette = "Dark2") +
   facet_wrap(~cat_1,scales = "free",ncol = 1) +
-  labs(title = "Detail kecelakaan pesawat per tahun",
+  labs(title = "Detail tingkat kerusakan dari kecelakaan pesawat per tahun",
        subtitle = "Sumber aviation-safety.net\nData tahun 2021 hanya sampai Februari",
        caption = "Scraped and Visualized\nusing R\nikanx101.com",
        fill = "Keterangan") +
@@ -124,7 +124,32 @@ dbase %>%
   theme(axis.title = element_blank())
 ```
 
-Kategori _accident_ memiliki banyak _loss_ terbesar
+Ternyata tidak semua _accident_ berujung menjadi _total loss_. Secara proporsi, malah _criminal_ dan _others_ yang paling banyak berujung menjadi _loss_.
+
+Sekarang saya akan coba _cross_ kejadian _accident_ dengan pabrikan pesawatnya:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center',fig.height=9}
+dbase %>% 
+  filter(cat_1 == "Accident") %>% 
+  group_by(thn,manufacture,cat_2) %>% 
+  summarise(n = n()) %>% 
+  ungroup() %>% 
+  ggplot(aes(x = factor(thn),
+             y = n,
+             fill = cat_2)) +
+  geom_col() +
+  scale_fill_brewer(palette = "Dark2") +
+  facet_wrap(~manufacture,scales = "free",ncol = 1) +
+  labs(title = "Detail tingkat kerusakan dari kecelakaan pesawat per tahun",
+       subtitle = "Sumber aviation-safety.net\nData tahun 2021 hanya sampai Februari",
+       caption = "Scraped and Visualized\nusing R\nikanx101.com",
+       fill = "Keterangan") +
+  theme_minimal() +
+  theme(axis.title = element_blank())
+
+```
+
+Dari grafik di atas, ada yang mau menyimpulkan sesuatu?
 
 ---
 
