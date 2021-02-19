@@ -28,7 +28,26 @@ Situs tersebut juga mengumpulkan data kategori kejadian, seperti:
 
 > Apa perbedaan _accident_ dengan _incident_?
 
-_Accident_ selalu disertai dengan timbulnya kerugian, sedangkan _incident_ tidak disertai dengan kerugian.
+---
+
+__Accident__:
+
+_An occurrence associated with the operation of an aircraft which takes place between the time any person boards the aircraft with the intention of flight until such time as all such persons have disembarked, in which:_
+
+1. Person is fatally or seriously injured as a result of:
+    - being in the aircraft, or
+    - direct contact with any part of the aircraft, including parts which have become detached from the aircraft, or
+    - direct exposure to jet blast,except when the injuries are from natural causes, self inflicted or inflicted by other persons, or when the injuries are to stowaways hiding outside the areas normally available to the passengers and crew: or
+1. the aircraft sustains damage or structural failure which:
+    - adversely affects the structural strength, performance or flight characteristics of the aircraft, and
+    - would normally require major repair or replacement of the affected component,
+1. the aircraft is missing or is completely inaccessible. 
+
+__Incident__:
+
+_An occurrence, other than an accident, associated with the operation of an aircraft which affects or could affect the safety of operation._
+
+---
 
 Pada data ini, setiap kejadian hanya bisa masuk ke salah satu kategori di atas.
 
@@ -149,7 +168,47 @@ dbase %>%
 
 ```
 
-Dari grafik di atas, ada yang mau menyimpulkan sesuatu?
+Dari grafik di atas, __Airbus__ dan __Boeing__ ternyata tidak terlalu besar proporsi _loss_ nya dibandingkan dengan __Antonov__ atau __Others__.
+
+---
+
+## Bulan Terjadinya Kecelakaan
+
+Satu hal yang sering saya dan istri perbincangkan adalah kebiasaan kecelakaan pesawat Indonesia yang selalu terjadi di dekat-dekat tahun baru (bulan Desember atau Januari).
+
+Bagaimana sebarannya di dunia? Jika saya hanya mengambil _accident_ saja, maka:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center'}
+dbase %>% 
+  filter(cat_1 == "Accident") %>% 
+  filter(!is.na(bln)) %>% 
+  group_by(bln,thn) %>% 
+  summarise(n = n()) %>% 
+  ungroup() %>% 
+  group_by(bln) %>% 
+  summarise(mean = mean(n),
+            max = max(n),
+            min = min(n)) %>% 
+  ungroup() %>% 
+  ggplot(aes(x = factor(bln),
+             y = mean)) +
+  geom_point(color = "darkred",
+             shape = 1,
+             size = 2.5) +
+  geom_errorbar(aes(ymin = min,
+                    ymax = max),
+                alpha = .5,
+                width = .25) +
+  labs(title = "Sebaran Accident Per Bulan",
+       subtitle = "Sumber aviation-safety.net\nData tahun 2021 hanya sampai Februari\nTitik menandakan mean\nGaris menandakan range (max-min)",
+       caption = "Scraped and Visualized\nusing R\nikanx101.com",
+       x = "Bulan") +
+  theme_minimal() +
+  theme(axis.title.y = element_blank())
+
+```
+
+Ada yang mau menyimpulkan grafik di atas?
 
 ---
 
