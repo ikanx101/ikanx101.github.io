@@ -1,0 +1,131 @@
+---
+title: "Eksplorasi Data Kecelakaan Pesawat"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/ikanx101.github.io/_posts/data carpentry/air crash database")
+library(dplyr)
+library(rvest)
+library(ggplot2)
+rm(list=ls())
+load("aviation.rda")
+dbase$thn = as.numeric(dbase$thn)
+```
+
+Masih hangat dalam ingatan kita kejadian kecelakaan pesawat Sriwijaya Air beberapa waktu yang lalu di sekitar area Kepulauan Seribu. Dipastikan tidak ada korban selamat dari kecelakaan tersebut.
+
+Berdasarkan data yang saya lihat di situs [aviation-safety.net](https://aviation-safety.net/) ternyata kecelakaan Sriwijaya Air bukanlah satu-satunya kecelakaan pesawat yang terjadi di 2021 ini. Per tulisan ini dibuat, sudah terjadi 17 kasus terkait keselamatan pesawat di dunia ini.
+
+Situs tersebut juga mengumpulkan data kategori kejadian, seperti:
+
+1. _Accident_,
+1. _Incident_,
+1. _Hijacking_,
+1. _Criminal occurence_,
+1. _Other occurence_.
+
+> Apa perbedaan _accident_ dengan _incident_?
+
+_Accident_ selalu disertai dengan timbulnya kerugian, sedangkan _incident_ tidak disertai dengan kerugian.
+
+Pada data ini, setiap kejadian hanya bisa masuk ke salah satu kategori di atas.
+
+Selain itu kategori kerusakan juga dipisah menjadi __hull-loss__ dan __repairable damage__.
+
+---
+
+## Web Scrape Data Base Kecelakaan Pesawat
+
+Dari data di situs tersebut, saya coba _scrape_ data kecelakaan selama 10 tahun terakhir. Sampel data asli yang saya dapatkan adalah sebagai berikut:
+
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+head(raw,7) %>% knitr::kable()
+```
+
+Setelah dibersikan, saya dapatkan data sebagai berikut:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+dbase %>% 
+  select(-tgl,-bln,-thn,-cat) %>% 
+  relocate(.,date,before = type) %>% 
+  head(7) %>% knitr::kable()
+```
+
+
+---
+
+## _Exploratory Data Analysis_
+
+Sekarang mari kita lihat berapa banyak kecelakaan terjadi pertahun:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center'}
+dbase %>% 
+  group_by(thn) %>% 
+  summarise(n = n()) %>% 
+  ungroup() %>% 
+  ggplot(aes(x = factor(thn),
+             y = n)) +
+  geom_line(group = 1,color = "darkred") +
+  geom_label(aes(label = n)) +
+  labs(title = "Berapa banyak kecelakaan pesawat terjadi?",
+       subtitle = "Sumber aviation-safety.net\nData tahun 2021 hanya sampai Februari",
+       caption = "Scraped and Visualized\nusing R\nikanx101.com") +
+  theme_minimal() +
+  theme(axis.title = element_blank(),
+        axis.text.y = element_blank())
+```
+
+Ada hal yang menarik dari grafik di atas. Tahun pandemi 2020 kemarin ternyata menurunkan angka kecelakaan pesawat dibanding tahun 2019.
+
+Sekarang kita lihat detail per kategori kejadian:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center'}
+dbase %>% 
+  group_by(thn,cat_1) %>% 
+  summarise(n = n()) %>% 
+  ungroup()  %>%  
+  ggplot(aes(x = factor(thn),
+             y = n,
+             fill = cat_1)) +
+  geom_col() +
+  scale_fill_brewer(palette = "Dark2") +
+  labs(title = "Detail kecelakaan pesawat per tahun",
+       subtitle = "Sumber aviation-safety.net\nData tahun 2021 hanya sampai Februari",
+       caption = "Scraped and Visualized\nusing R\nikanx101.com",
+       fill = "Keterangan") +
+  theme_minimal() +
+  theme(axis.title = element_blank())
+
+```
+
+Kategori terbanyak yang terjadi adalah _accident_. Namun di beberapa tahun, _criminal_ memiliki angka yang cukup besar.
+
+Jika saya cek detail kategori kepada jenis kerusakan yang timbul, didapatkan:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center',fig.height=9}
+dbase %>% 
+  group_by(thn,cat_1,cat_2) %>% 
+  summarise(n = n()) %>% 
+  ungroup() %>% 
+  ggplot(aes(x = factor(thn),
+             y = n,
+             fill = cat_2)) +
+  geom_col() +
+  scale_fill_brewer(palette = "Dark2") +
+  facet_wrap(~cat_1,scales = "free",ncol = 1) +
+  labs(title = "Detail kecelakaan pesawat per tahun",
+       subtitle = "Sumber aviation-safety.net\nData tahun 2021 hanya sampai Februari",
+       caption = "Scraped and Visualized\nusing R\nikanx101.com",
+       fill = "Keterangan") +
+  theme_minimal() +
+  theme(axis.title = element_blank())
+```
+
+Kategori _accident_ memiliki banyak _loss_ terbesar
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`

@@ -1,0 +1,91 @@
+Eksplorasi Data Kecelakaan Pesawat
+================
+
+Masih hangat dalam ingatan kita kejadian kecelakaan pesawat Sriwijaya
+Air beberapa waktu yang lalu di sekitar area Kepulauan Seribu.
+Dipastikan tidak ada korban selamat dari kecelakaan tersebut.
+
+Berdasarkan data yang saya lihat di situs
+[aviation-safety.net](https://aviation-safety.net/) ternyata kecelakaan
+Sriwijaya Air bukanlah satu-satunya kecelakaan pesawat yang terjadi di
+2021 ini. Per tulisan ini dibuat, sudah terjadi 17 kasus terkait
+keselamatan pesawat di dunia ini.
+
+Situs tersebut juga mengumpulkan data kategori kejadian, seperti:
+
+1.  *Accident*,
+2.  *Incident*,
+3.  *Hijacking*,
+4.  *Criminal occurence*,
+5.  *Other occurence*.
+
+> Apa perbedaan *accident* dengan *incident*?
+
+*Accident* selalu disertai dengan timbulnya kerugian, sedangkan
+*incident* tidak disertai dengan kerugian.
+
+Pada data ini, setiap kejadian hanya bisa masuk ke salah satu kategori
+di atas.
+
+Selain itu kategori kerusakan juga dipisah menjadi **hull-loss** dan
+**repairable damage**.
+
+-----
+
+## Web Scrape Data Base Kecelakaan Pesawat
+
+Dari data di situs tersebut, saya coba *scrape* data kecelakaan selama
+10 tahun terakhir. Sampel data asli yang saya dapatkan adalah sebagai
+berikut:
+
+| date        | type                      | registration | operator                   | fat. | location      | pic | cat |
+| :---------- | :------------------------ | :----------- | :------------------------- | :--- | :------------ | :-- | :-- |
+| 01-JAN-2011 | Tupolev Tu-154B-2         | RA-85588     | Kolavia                    | 3    | Surgut Airpo… | NA  | A1  |
+| 03-JAN-2011 | Beech B200 King Air       | C-GSAU       | Saskatchewan Gvt.          | 0    | Maple Creek … | NA  | A2  |
+| 03-JAN-2011 | Boeing 737-823 (WL)       | N831NN       | American Airlines          | 0    | Los Angeles … | NA  | A2  |
+| 05-JAN-2011 | Boeing 737-8F2 (WL)       | TC-JGZ       | THY                        | 0    | Istanbul Ata… | NA  | H2  |
+| 06-JAN-2011 | Learjet 35A               | N800GP       | Priester Aviation          | 0    | Springfield-… | NA  | A1  |
+| 06-JAN-2011 | Cessna 208B Grand Caravan | N715HE       | Hageland Aviation Services | 0    | Kipnuk Airpo… | NA  | A2  |
+| 07-JAN-2011 | Beech B200 Super King Air | F-GMPO       | GCE Bail SA                | 0    | Montpellier,… | NA  | A1  |
+
+Setelah dibersikan, saya dapatkan data sebagai berikut:
+
+| date       | type                      | registration | operator                   | fat. | location      | manufacture | cat\_1    | cat\_2     |
+| :--------- | :------------------------ | :----------- | :------------------------- | :--- | :------------ | :---------- | :-------- | :--------- |
+| 2011-01-01 | Tupolev Tu-154B-2         | RA-85588     | Kolavia                    | 3    | Surgut Airpo… | Others      | Accident  | Loss       |
+| 2011-01-01 | Beech B200 King Air       | C-GSAU       | Saskatchewan Gvt.          | 0    | Maple Creek … | Others      | Accident  | Repairable |
+| 2011-01-01 | Boeing 737-823 (WL)       | N831NN       | American Airlines          | 0    | Los Angeles … | Boeing      | Accident  | Repairable |
+| 2011-01-01 | Boeing 737-8F2 (WL)       | TC-JGZ       | THY                        | 0    | Istanbul Ata… | Boeing      | Hijacking | Repairable |
+| 2011-01-01 | Learjet 35A               | N800GP       | Priester Aviation          | 0    | Springfield-… | Others      | Accident  | Loss       |
+| 2011-01-01 | Cessna 208B Grand Caravan | N715HE       | Hageland Aviation Services | 0    | Kipnuk Airpo… | Cessna      | Accident  | Repairable |
+| 2011-01-01 | Beech B200 Super King Air | F-GMPO       | GCE Bail SA                | 0    | Montpellier,… | Others      | Accident  | Loss       |
+
+-----
+
+## *Exploratory Data Analysis*
+
+Sekarang mari kita lihat berapa banyak kecelakaan terjadi pertahun:
+
+<img src="air-crash_files/figure-gfm/unnamed-chunk-3-1.png" style="display: block; margin: auto;" />
+
+Ada hal yang menarik dari grafik di atas. Tahun pandemi 2020 kemarin
+ternyata menurunkan angka kecelakaan pesawat dibanding tahun 2019.
+
+Sekarang kita lihat detail per kategori kejadian:
+
+<img src="air-crash_files/figure-gfm/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
+
+Kategori terbanyak yang terjadi adalah *accident*. Namun di beberapa
+tahun, *criminal* memiliki angka yang cukup besar.
+
+Jika saya cek detail kategori kepada jenis kerusakan yang timbul,
+didapatkan:
+
+<img src="air-crash_files/figure-gfm/unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
+
+Kategori *accident*
+
+-----
+
+`if you find this article helpful, support this blog by clicking the
+ads.`
