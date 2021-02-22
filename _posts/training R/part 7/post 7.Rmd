@@ -1,0 +1,142 @@
+---
+title: "TUTORIAL R for DATA SCIENCE - part 7: Beberapa Function Dasar dan Looping"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Kali ini saya akan membahas terkait beberapa _function_ dasar di __R__ yang pasti berguna dan selalu dipakai.
+
+## Beberapa Fungsi yang Berguna
+
+### _Paste_
+
+> Apakah kalian mengetahui fungsi bernama __CONCATENATE__ di __Ms. Excel__?
+Fungsi `paste()` mirip penggunaannya dengan perintah __CONCATENATE__, yakni menggabungkan beberapa data menjadi satu.
+
+Contoh: membuat _vector_ berisi `nama_toko` yang berisi urutan nama toko.
+
+```{r}
+nama_toko = paste('toko ke',c(1:10),sep='-')
+nama_toko
+```
+
+Contoh: membuat _vector_ dari `nama_toko` yang sudah pernah dibuat sebelumnya dengan _rules_ `5` toko pertama dari Bandung dan `5` toko selanjutnya dari Bekasi.
+
+```{r}
+nama_toko = paste(nama_toko,rep(c('Bandung','Bekasi'),5))
+nama_toko
+```
+
+`sep = ` berguna untuk mendefinisikan _separator_ apa yang hendak digunakan. Secara _default_, _separator_ yang digunakan adalah spasi.
+
+Coba kalian ganti sendiri bagian _separator_-nya.
+
+### _Print_
+
+Fungsi `print()` digunakan untuk menampilkan data ke layar. Biasanya digunakan pada proses _looping_ agar hasil iterasi dapat tampil ke layar.
+
+```{r}
+print(nama_toko)
+```
+
+### _str_
+
+Fungsi `str()` digunakan untuk melihat tipe dan struktur _object_ yang ada di __R__. Sebagai contoh, kita akan pakai data `absensi` dari [tulisan sebelumnya](https://ikanx101.com/blog/train-r-6/):
+
+```{r}
+id = c(1:10)
+nama = randomNames::randomNames(10,gender = 0,which.names = 'first')
+tinggi_badan = sample(c(150:199),10,replace = F)
+absensi = data.frame(id,nama,tinggi_badan)
+```
+
+Sebelumnya pastikan `library(randomNames)` sudah ter-_install_ _yah_.
+
+Berikut adalah hasil `str()`-nya:
+
+```{r}
+str(absensi)
+```
+
+Terlihat bahwa data `absensi` memiliki struktur __data.frame__ dengan ada `3` _variables_ dan `10` _observations_ (baris data).
+
+### _Summary_
+
+Fungsi `summary()` digunakan untuk melihat statistik deskriptif dari suatu data (tergantung dari tipe datanya). Contoh:
+
+```{r}
+summary(absensi$tinggi_badan)
+```
+
+### _Class_
+
+Fungsi `class()` digunakan untuk melihat tipe atau struktur dari suatu data. Mirip dengan fungsi `str()`, tapi tidak sampai menampilkan dengan detail. Contoh:
+
+```{r}
+class(absensi)
+class(absensi$tinggi_badan)
+```
+
+## _Looping_
+
+_Looping_ berarti pengulangan namun berbeda dengan _repeat_ yang pernah kita bahas sebelumnya. Ada dua fungsi _looping_ yang biasa digunakan, yakni: `for()` dan `while()`. Keduanya memiliki manfaat yang berbeda.
+
+### _For_
+
+Fungsi `for()` biasa dilakukan untuk melakukan _looping_ dengan syarat iterasi yang didefinisikan terlebih dahulu. Jadi kita sudah mengetahui terlebih dahulu berapa kali kita akan melakukan _looping_. 
+
+Contoh:
+
+```{r}
+for(i in 1:10){
+  print(paste('pertanyaan ke',i))
+}
+```
+
+Contoh:
+
+```{r}
+for(i in 1:10){
+  i = 1/i
+  print(round(i,3))
+}
+```
+
+### _While_
+
+Fungsi `while()` digunakan untuk melakukan _looping_ dengan sampai syarat iterasi terpenuhi. Jadi kita belum mengetahui berapa kali kita akan melakukan _looping_. 
+
+Contoh: misalkan dalam satu ruangan ada `100` orang. Saya akan membagi mereka menjadi kelompok - kelompok berisi `1` sampai `5` orang. Kira - kira ada berapa banyak kelompok yang bisa saya dapatkan? 
+
+Caranya, kita set dulu kondisi awalnya.
+
+```{r}
+orang = 100
+i = 0 # berapa banyak kelompok? awalnya nol dulu
+```
+
+Lalu kita buat iterasi dengan `while()`. Yakni mengurangi secara berkala `100` orang dengan kelompok berisi `1` - `3` orang lalu menghitung ada berapa banyak iterasi yang terjadi.
+
+```{r}
+while(orang>0){
+  n = sample(c(1:5),1)
+  orang = orang - n
+  i = i+1
+}
+```
+
+Berapa banyak iterasi (kelompok) yang mungkin muncul:
+
+```{r}
+i
+```
+
+---
+
+_to be continued_
+
+`if you find this article helpful, support this blog by clicking the
+ads.`
