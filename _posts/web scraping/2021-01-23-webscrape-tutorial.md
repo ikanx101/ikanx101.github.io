@@ -1,6 +1,6 @@
 ---
 date: 2021-01-23T11:55:00-04:00
-title: "Tutorial: Web Scraping di R dengan ralger dan jsonlite"
+title: "TUTORIAL WEB SCRAPING di R dengan ralger dan jsonlite"
 categories:
   - Blog
 tags:
