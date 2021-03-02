@@ -1,0 +1,180 @@
+---
+title: "Media Monitoring Menggunakan R: Berita Pajak Mobil"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("/cloud/project/_posts/web scraping/post 3 kompas scraper")
+library(dplyr)
+library(tidytext)
+library(tidyr)
+library(igraph)
+library(ggraph)
+library(ggplot2)
+
+rm(list=ls())
+load("kompas.rda")
+```
+
+Pada 2010 - 2012 lalu, saya sempat bekerja di salah satu _multinational market research agency_ di kawasan Sudirman. Sepengetahuan saya waktu itu, salah satu tim riset _business to consumer_ (__B2C__) biasa melakukan studi _media monitoring_.
+
+> Apa yang mereka lakukan?
+
+Mereka memantau berita-berita yang ada di beberapa portal dan obrolan-obrolan yang ada di forum digital terkait beberapa hal yang penting untuk diketahui oleh klien. Proses pemantauan sendiri dilakukan sangat manual saat itu.
+
+## Kompas Money
+
+Beberapa pekan yang lalu, saya mengobrol dengan salah seorang teman saya yang ternyata sedang berinisiasi untuk melakukan _media monitoring_ di kantornya. Tidak serumit apa yang kami lakukan dulu di _market research agency_. Teman saya hanya ingin melakukan _media monitoring_ secara spesifik dari situs _kompas.com_ bagian finansial ([Kompas Money](https://money.kompas.com/)).
+
+Salah satu ide yang saya kemukakan adalah penggunaan __R__ untuk melakukan _web scraping_ secara berkala terhadap semua berita yang muncul di __Kompas Money__. Jadi teman saya cukup membuat satu algoritma sederhana untuk _web scraping_ semua berita yang ada di sana.
+
+> Iya! Semua berita di Kompas Money!
+
+Setelah itu, tinggal dilakukan analisa yang dibutuhkan dari hasil _scrape_-nya.
+
+### Kompas Scraper _Function_
+
+Di saat santai saya coba bantu membuatkan satu _function_ di __R__ yang berguna untuk mengambil beberapa informasi berikut di __Kompas Money__:
+
+1. Siapa jurnalis penulis beritanya.
+1. _Timestamp_ berita di-_publish_.
+1. Judul berita.
+1. Isi berita.
+
+Berikut adalah _function_-nya:
+
+```{r}
+kompasin_donk = function(url){
+  scrape = read_html(url) %>% html_nodes("p") %>% html_text()
+  penulis = read_html(url) %>% html_nodes("#penulis a") %>% html_text()
+  penulis = ifelse(length(penulis) == 0,NA,penulis)
+  waktu = read_html(url) %>% html_nodes(".read__time") %>% html_text()
+  judul = scrape[1]
+  n = length(scrape) - 1
+  isi = scrape[2:n]
+  isi = paste(isi,collapse = " ")
+  data = data.frame(jurnalis = penulis,
+                    timestamp = waktu,
+                    headline = judul,
+                    berita = isi)
+  return(data)
+}
+```
+
+Ingat _yah_, _function_ di atas adalah untuk melakukan _web scraping_ dari satu alamat situs dari _Kompas Money_. Jika ingin melakukan _web scraping_ untuk semua berita yang ada, kita cukup _scrape_ terlebih dahulu semua _links_ berita yang ada.
+
+> Caranya Bagaimana?
+
+Gunakan saja cara berikut ini:
+
+```{r}
+#global = c(paste0("https://money.kompas.com/whatsnew/",1:10))
+#links = c()
+#for(i in 1:10){
+#  temp = read_html(global[i]) %>% html_nodes("a") %>% html_attr("href")
+#  links = c(links,temp)
+#}
+#links = links[grepl("money",links)]
+#links = links[grepl("read",links)]
+#links_1 = unique(links)
+#links_2 = paste0(links_1,"?page=2")
+#links = c(links_1,links_2)
+```
+
+### Data Hasil _Web Scraping_
+
+Per `2 Maret 2021` pukul `8.40 WIB`, tercatat ada `154` berita yang berhasil saya ambil dari _Kompas Money_. Berikut adalah contoh sampel data yang saya dapatkan:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+clean_data %>% head(5) %>% knitr::kable()
+```
+
+Lantas analisa apa yang bisa dilakukan?
+
+### _Preparation_ dan _Cleaning_
+
+Sebelum jauh melakukan analisa, saya akan bersihkan terlebih dahulu data di atas sehingga menjadi berikut ini:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+data_final = 
+  clean_data %>% 
+  mutate(judul = gsub("ppnbm","ppnbm",headline,ignore.case = T),
+         judul = janitor::make_clean_names(judul),
+         judul = gsub("\\_"," ",judul)) %>% 
+  mutate(timestamp = gsub("Kompas.com - ","",timestamp),
+         timestamp = gsub(" WIB","",timestamp)) %>% 
+  separate(timestamp,
+           into = c("tgl","jam"),
+           sep = "\\,") %>% 
+  mutate(tgl = trimws(tgl),
+         jam = trimws(jam)) %>% 
+  mutate(tgl = as.Date(tgl,"%d/%m/%Y")) %>% 
+  select(-jam) %>% 
+  mutate(berita = gsub("Tulis komentar dengan menyertakan tagar #JernihBerkomentar dan #MelihatHarapan di kolom komentar artikel Kompas.com. Menangkan E-Voucher senilai Jutaan Rupiah dan 1 unit Smartphone. ","",berita)) %>%
+  rowwise() %>% 
+  mutate(berita = gsub(headline,"",berita)) %>% 
+  ungroup() %>% 
+  select(-headline) %>% 
+  mutate(berita = gsub("JAKARTA, KOMPAS.com - ","",berita)) %>% 
+  relocate(judul,.before = berita) %>% 
+  mutate(berita = trimws(berita))
+
+head(data_final,5)
+```
+
+
+### Berita Terkait Pajak Mobil di Kompas Money
+
+Misalkan saya ingin mengetahui semua berita terkait sebuah topik `pajak mobil`. 
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center'}
+mobil = 
+  data_final %>% 
+  filter(grepl("mobil",berita,ignore.case = T)) %>% 
+  filter(grepl("pajak",berita,ignore.case = T)) 
+
+mobil %>% 
+  group_by(tgl) %>% 
+  summarise(n = n()) %>% 
+  ungroup() %>% 
+  ggplot(aes(x = factor(tgl),
+             y = n)) +
+  geom_line(group = 1,color = "steelblue") +
+  geom_label(aes(label = n),size = 3) +
+  labs(title = "Banyaknya Berita Terkait `Pajak Mobil`",
+       subtitle = "sumber: Kompas Money",
+       caption = "Scraped and Visualized\nusing R\nikanx101.com",
+       x = "Tanggal",
+       y = "Banyaknya berita") +
+  theme_minimal() +
+  theme(axis.text.y = element_blank())
+```
+
+Berita terbanyak muncul pada Senin, `1 Maret 2021` kemarin. Apa saja judul beritanya?
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center'}
+wc = 
+  mobil %>% 
+  select(judul) %>% 
+  unnest_tokens(words,judul,"words") %>% 
+  count(words,sort = T) %>% 
+  filter(!words %in% c("dengan","di","dan","ini","dari","yang","akan",
+                       "untuk","dapat","rp"))
+
+library(wordcloud)
+wordcloud(words = wc$words,freq = wc$n, min.freq = 2)
+```
+
+Dari _wordcloud_ di atas kira-kira sudah ketebak _lah_ ya?
+
+Sekarang saya akan merangkum semua berita yang muncul tersebut dengan algoritma _extraction based_ yang [pernah saya tulis dulu](https://ikanx101.com/blog/ext-based-sum/).
+
+```{r,echo=FALSE}
+mobil = 
+  mobil %>% 
+  mutate(berita = janitor::make_clean_names(berita),
+         berita = gsub("\\_"," ",berita))
+tulisan = paste(mobil$berita,collapse = ",")
+```
+
