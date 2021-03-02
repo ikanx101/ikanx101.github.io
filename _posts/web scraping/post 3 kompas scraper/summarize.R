@@ -1,6 +1,12 @@
 library(katadasaR)
 library(stringdist)
 
+mobil = 
+  mobil %>% 
+  mutate(berita = janitor::make_clean_names(berita),
+         berita = gsub("\\_"," ",berita))
+
+
 # ===================================
 # hitung score
 # stop words
@@ -17,26 +23,23 @@ stem_ikanx = function(kata){
 
 # process hitung score
 stem_data = 
-  referensi %>% 
-  mutate(kalimat = janitor::make_clean_names(kalimat),
-         kalimat = gsub("\\_"," ",kalimat)) %>% 
-  unnest_tokens(kata,kalimat,"words") %>% 
+  mobil %>% 
+  unnest_tokens(kata,berita,"words") %>% 
   filter(!kata %in% stop) %>% 
   mutate(penanda = as.numeric(kata)) %>% 
   filter(is.na(penanda)) %>% 
   select(-penanda)
-stem_data$word_stemmed = sapply(stem_data$kata,stem_ikanx)  
+
+stem_data
 dbase_score = 
   stem_data %>% 
-  filter(!is.na(word_stemmed)) %>% 
-  group_by(word_stemmed) %>% 
+  group_by(kata) %>% 
   count(sort = T) %>% 
   ungroup() %>% 
   mutate(score = n/sum(n))
 
 hasil = 
   stem_data %>% 
-  filter(!is.na(word_stemmed)) %>% 
   merge(dbase_score) %>% 
   group_by(id_paragraf,id_kalimat) %>% 
   summarise(kalimat = paste(word_stemmed,collapse = " "),

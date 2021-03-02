@@ -1,5 +1,18 @@
-Web Scraping untuk Media Monitoring
-================
+---
+date: 2021-03-02T12:09:00-04:00
+title: "Media Monitoring Menggunakan R: Berita Pajak Mobil"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - R
+  - Web Scrap
+  - rvest
+  - kompas
+  - mobil
+  - pajak
+---
 
 Pada 2010 - 2012 lalu, saya sempat bekerja di salah satu *multinational
 market research agency* di kawasan Sudirman. Sepengetahuan saya waktu
@@ -101,6 +114,13 @@ data yang saya dapatkan:
 
 Lantas analisa apa yang bisa dilakukan?
 
+Sebenarnya banyak yang bisa dilakukan. Contohnya, teman saya ingin
+melakukan *sentimen analysis* terkait beberapa topik berita yang ada.
+Kita juga bisa melihat apakah ada perbedaan gaya penulisan dari
+masing-masing jurnalis di *Kompas.com*.
+
+Kali ini saya ingin melakukan sesuatu yang sederhana. Apa itu?
+
 ### *Preparation* dan *Cleaning*
 
 Sebelum jauh melakukan analisa, saya akan bersihkan terlebih dahulu data
@@ -114,3 +134,34 @@ di atas sehingga menjadi berikut ini:
     ## 3 Ade Miranti… 2021-02-25 luhut sebut 2 juta vaksin… "Menteri Koordinator Bidan…
     ## 4 Ade Miranti… 2021-02-25 luhut presiden ingin apbn… "Menteri Koordinator Bidan…
     ## 5 Ade Miranti… 2021-03-01 menperin sebut toyota sia… "Menteri Perindustrian (Me…
+
+### Berita Terkait Pajak Mobil di Kompas Money
+
+Misalkan saya ingin mengetahui semua berita terkait sebuah topik
+`pajak mobil` yang sedang hangat diperbincangkan.
+
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/web%20scraping/post%203%20kompas%20scraper/kompost_files/figure-gfm/unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
+
+Berita terbanyak muncul pada Senin, `1 Maret 2021` kemarin. Apa saja
+judul beritanya?
+
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/web%20scraping/post%203%20kompas%20scraper/kompost_files/figure-gfm/unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
+
+Dari *wordcloud* di atas kira-kira sudah ketebak *lah* ya?
+
+Sekarang saya akan melihat *bigrams* yang muncul dari berita-berita
+tersebut.
+
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/web%20scraping/post%203%20kompas%20scraper/kompost_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+------------------------------------------------------------------------
+
+# *Summary*
+
+Dengan **R** saya bisa melakukan *media monitoring* dengan relatif
+mudah. Mulai dari proses *web scraping*, analisa, hingga *reporting*
+dapat dilakukan di dalam **R**.
+
+------------------------------------------------------------------------
+
+`if you find this article helpful, support this blog by clicking on the ads shown.`

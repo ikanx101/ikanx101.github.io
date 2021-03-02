@@ -90,7 +90,11 @@ Per `2 Maret 2021` pukul `8.40 WIB`, tercatat ada `154` berita yang berhasil say
 clean_data %>% head(5) %>% knitr::kable()
 ```
 
-Lantas analisa apa yang bisa dilakukan?
+Lantas analisa apa yang bisa dilakukan? 
+
+Sebenarnya banyak yang bisa dilakukan. Contohnya, teman saya ingin melakukan _sentimen analysis_ terkait beberapa topik berita yang ada. Kita juga bisa melihat apakah ada perbedaan gaya penulisan dari masing-masing jurnalis di _Kompas.com_. 
+
+Kali ini saya ingin melakukan sesuatu yang sederhana. Apa itu?
 
 ### _Preparation_ dan _Cleaning_
 
@@ -126,7 +130,7 @@ head(data_final,5)
 
 ### Berita Terkait Pajak Mobil di Kompas Money
 
-Misalkan saya ingin mengetahui semua berita terkait sebuah topik `pajak mobil`. 
+Misalkan saya ingin mengetahui semua berita terkait sebuah topik `pajak mobil` yang sedang hangat diperbincangkan.
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center'}
 mobil = 
@@ -168,13 +172,42 @@ wordcloud(words = wc$words,freq = wc$n, min.freq = 2)
 
 Dari _wordcloud_ di atas kira-kira sudah ketebak _lah_ ya?
 
-Sekarang saya akan merangkum semua berita yang muncul tersebut dengan algoritma _extraction based_ yang [pernah saya tulis dulu](https://ikanx101.com/blog/ext-based-sum/).
+Sekarang saya akan melihat _bigrams_ yang muncul dari berita-berita tersebut.
 
-```{r,echo=FALSE}
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
 mobil = 
   mobil %>% 
-  mutate(berita = janitor::make_clean_names(berita),
+  mutate(berita = gsub("ppnbm","ppnbm",berita,ignore.case = T),
+         berita = janitor::make_clean_names(berita),
          berita = gsub("\\_"," ",berita))
-tulisan = paste(mobil$berita,collapse = ",")
+
+stop = readLines("https://raw.githubusercontent.com/ikanx101/ID-Stopwords/master/id.stopwords.02.01.2016.txt")
+
+
+mobil %>% 
+  unnest_tokens(words,berita,token = "words") %>% 
+  filter(!words %in% stop) %>% 
+  group_by(judul) %>% 
+  summarise(berita = paste(words,collapse = " ")) %>% 
+  ungroup() %>% 
+  unnest_tokens(bigrams,berita,token = "ngrams",n=2) %>% 
+  count(bigrams,sort = T) %>% 
+  filter(n > 5) %>% 
+  separate(bigrams,into = c("from","to"),sep = " ") %>%
+  graph_from_data_frame() %>% ggraph(layout = 'fr') +
+  geom_edge_bend(aes(edge_alpha=n), show.legend = F, color='darkred') +
+  geom_node_point(size=1,color='steelblue') +
+  geom_node_text(aes(label=name),alpha=0.4,size=3,repel = T) + 
+  theme_void()
+
 ```
 
+---
+
+# _Summary_
+
+Dengan __R__ saya bisa melakukan _media monitoring_ dengan relatif mudah. Mulai dari proses _web scraping_, analisa, hingga _reporting_ dapat dilakukan di dalam __R__.
+
+---
+
+`if you find this article helpful, support this blog by clicking on the ads shown.`
