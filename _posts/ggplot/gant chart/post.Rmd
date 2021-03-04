@@ -1,0 +1,141 @@
+---
+title: "Tutorial Visualisasi di R: Membuat Gantt Chart dengan ggplot2"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/ikanx101.github.io/_posts/ggplot/gant chart")
+rm(list=ls())
+library(dplyr)
+```
+
+Selama kerja di bidang _market research_, saya diharuskan membuat _research proposal_ setiap kali hendak memulai suatu _project_. Salah satu isi yang wajib ada di proposal tersebut adalah perkiraan _timeline_.
+
+Visualisasi yang sering digunakan untuk menggambarkan _timeline_ pengerjaan _project_ adalah _gantt chart_.
+
+Tidak hanya berguna bagi _market research_, setiap pekerjaan yang berkaitan dengan visualisasi _timeline_ biasanya selalu menggunakan _gantt chart_.
+
+Di __R__ kita bisa membuat _gantt chart_ dengan berbagai macam cara. Salah satunya adalah dengan `library(ggplot2)`.
+
+Bagaimana caranya?
+
+---
+
+# Langkah Pertama
+
+Pertama-tama, siapkan terlebih dahulu data sebagai berikut:
+
+```{r,echo=FALSE}
+gant = data.frame(
+  activity = c("Pembuatan proposal",
+               "Proposal submission",
+               "Pembuatan kuesioner",
+               "Finalisasi kuesioner",
+               "Fieldwork",
+               "Quality control",
+               "Data entry",
+               "Data preparation dan cleaning",
+               "Data processing",
+               "Pembuatan report",
+               "Report submission",
+               "Presentasi report"),
+  state = c("Preparation",
+            "Preparation",
+            "Preparation",
+            "Preparation",
+            "Fieldwork",
+            "Fieldwork",
+            "Data Processing",
+            "Data Processing",
+            "Data Processing",
+            "Reporting",
+            "Reporting",
+            "Reporting"),
+  start = c("2021-03-04",
+            "2021-03-06",
+            "2021-03-08",
+            "2021-03-10",
+            "2021-03-14",
+            "2021-03-20",
+            "2021-04-23",
+            "2021-04-29",
+            "2021-05-06",
+            "2021-05-09",
+            "2021-05-15",
+            "2021-05-22"),
+  end = c("2021-03-06",
+          "2021-03-07",
+          "2021-03-10",
+          "2021-03-13",
+          "2021-03-23",
+          "2021-03-24",
+          "2021-04-28",
+          "2021-05-05",
+          "2021-05-10",
+          "2021-05-14",
+          "2021-05-21",
+          "2021-05-25")
+)
+
+knitr::kable(gant)
+```
+
+Data di atas bisa kita siapkan di Excel lalu diimpor ke __R__ atau kita buat langsung di __R__ dalam bentuk `data.frame()`.
+
+Misalkan tabel di atas saya simpan sebagai `data.frame()` bernama `gant`.
+
+```{r,message=FALSE,warning=FALSE}
+str(gant)
+```
+
+Sebelum saya membuat _gantt chart_-nya, ada beberapa hal yang harus dilakukan terlebih dahulu:
+
+## Pertama
+
+Mengubah `start` dan `end` ke dalam format `date`. Lalu saya akan buat `activity` menjadi `factor` agar tidak ada perubahan urutan saat dibuat _plot_-nya.
+
+```{r}
+gant$activity = factor(gant$activity,levels = gant$activity)
+gant$start = as.Date(gant$start,"%Y-%m-%d")
+gant$end = as.Date(gant$end,"%Y-%m-%d")
+```
+
+## Kedua
+
+Saya ubah dulu struktur datanya menjadi tabular dengan bantuan `library(reshape2)` sebagai berikut:
+
+```{r}
+library(reshape2)
+
+gant_2 = 
+  gant %>% 
+  melt(id.vars = c("activity","state")) %>% 
+  rename(keterangan = variable,
+         date = value) 
+
+gant_2
+```
+
+## _Final Step_
+
+Sekarang bagian terakhirnya, kita akan buat _gantt chart_-nya:
+
+```{r,message=FALSE,warning=FALSE,fig.align='center',fig.retina=10}
+library(ggplot2)
+
+gant_2 %>% 
+  ggplot(aes(date,activity,color = state)) +
+  geom_line(aes(group = activity),size = 10) +
+  theme_minimal() +
+  labs(title = "Timeline Project Research",
+       subtitle = "Sebuah Proposal",
+       x = "Tanggal",
+       y = "Aktivitas",
+       color = "Keterangan")
+  
+```
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads shown`.
