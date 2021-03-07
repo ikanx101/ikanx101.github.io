@@ -1,0 +1,69 @@
+---
+title: "Shopee Code League 2021 Week I: Data Analytics Competition"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/ikanx101.github.io/_posts/Soapy NDSC/Shopee Code League 2021/week 1")
+rm(list=ls())
+load("all.rda")
+library(dplyr)
+```
+
+Kompetisi yang ditunggu-tunggu akhirnya sudah dimulai. __Shopee Code League 2021__ mempertandingkan `3` kategori lomba:
+
+1. _Data Analytics_,
+1. _Data Science_, dan
+1. _Programming_.
+
+Ketiga kategori tersebut akan dilombakan pada pekan yang berbeda-beda. Pada giliran pertama di pekan ini (__6 Maret 2021__), Shopee memberikan masalah _data analytics_.
+
+> Bagaimana masalahnya?
+
+# Masalah
+
+_Customer service_ menjadi prioritas utama dan proses kritis bagi Shopee. Penting bagi Shopee untuk menyelesaikan setiap masalah _customer_ dalam waktu singkat dan tidak membuat _customer_ __bolak-balik__ menghubungi Shopee.
+
+Shopee menginginkan agar _customer do less effort_ hingga masalahnya selesai. Oleh karena itu mereka menghitung suatu __KPI__ yang disebut _Repeat Contact Rate_ (__RCR__).
+
+_Customer_ bisa menghubungi Shopee melalui berbagai layanan seperti _livechat_, email, telepon, dan lainnya. Setiap layanan tersebut akan secara otomatis membuat `ticket_id`. Masalah muncul saat _customer_ menggunakan berbagai layanan tersebut dengan informasi data diri berbeda-beda (email dan nomor telepon) untuk menyelesaikan masalah yang sama. Akibatnya muncul berbagai `ticket_id` padahal berasal dari _customer_ dan masalah yang sama.
+
+Jadi, bagaimana caranya agar kita bisa mengidentifikasi dari `500.000` ribu baris `ticket_id`, mana saja `ticket_id` yang sama?
+
+# _Dataset_ yang Digunakan
+
+Jadi persoalan pada pekan ini relatif simpel menurut saya. Hanya membuat algoritma _matching_, bukan membuat model _machine learning_. Lantas bagaimana _dataset_ yang digunakan?
+
+Shopee memberikan satu _file_ berformat `.json` berisi `500.000` `ticket_id`. Berikut adalah isi _file_-nya jika saya baca dengan `library(jsonlite)`.
+
+```{r,echo=FALSE}
+# Contoh 4 data teratas dari dataset
+head(data,4)
+```
+
+Format `.json` menghasilkan struktur data berupa [_list_](https://ikanx101.com/blog/train-r-4/#struktur-data-di-r) di __R__.
+
+Bagi saya, akan mudah mengerjakannya jika diubah dulu strukturnya menjadi _dataframe_. Hasilnya seperti ini:
+
+```{r,echo=FALSE}
+head(data_new,4) %>% knitr::kable()
+```
+
+Lantas bagaimana cara mengerjakannya?
+
+# Hasil Perhitungan Saya
+
+Ternyata algoritma yang saya buat cukup lama saat dirun. Wajar mengingat data yang digunakan sangat besar dan saya menggunakan cara yang __relatif panjang__ untuk menyelesaikannya.
+
+Berikut adalah _sample_ dari jawaban saya:
+
+```{r,echo=FALSE}
+hasil_final %>% head(10)
+```
+
+# _Notes_
+
+Buat teman-teman yang berminat kerja di _marketplace_, percayalah bahwa masalah yang diberikan ini bisa melatih kemampuan berpikir dan _problem solving_ Anda.
+
+Saya dan tim tidak mengikuti kompetisi _data analytics_ karena hanya komit untuk ikut kompetisi pada pekan depan (_data science_).
