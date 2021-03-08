@@ -5,7 +5,7 @@ output: github_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-setwd("~/ikanx101.github.io/_posts/Soapy NDSC/Shopee Code League 2021/week 1")
+setwd("~/Documents/ikanx101/_posts/Soapy NDSC/Shopee Code League 2021/week 1")
 rm(list=ls())
 load("all.rda")
 library(dplyr)
@@ -38,8 +38,8 @@ Jadi persoalan pada pekan ini relatif simpel menurut saya. Hanya membuat algorit
 Shopee memberikan satu _file_ berformat `.json` berisi `500.000` `ticket_id`. Berikut adalah isi _file_-nya jika saya baca dengan `library(jsonlite)`.
 
 ```{r,echo=FALSE}
-# Contoh 4 data teratas dari dataset
-head(data,4)
+# Contoh 4 data teratas dari dataset.
+saved_data
 ```
 
 Format `.json` menghasilkan struktur data berupa [_list_](https://ikanx101.com/blog/train-r-4/#struktur-data-di-r) di __R__.
@@ -47,19 +47,36 @@ Format `.json` menghasilkan struktur data berupa [_list_](https://ikanx101.com/b
 Bagi saya, akan mudah mengerjakannya jika diubah dulu strukturnya menjadi _dataframe_. Hasilnya seperti ini:
 
 ```{r,echo=FALSE}
-head(data_new,4) %>% knitr::kable()
+# Hasil transformasi list ke dataframe.
+saved_data_new %>% knitr::kable()
 ```
 
 Lantas bagaimana cara mengerjakannya?
 
+# Cara Mengerjakan
+
+Misalkan saya memiliki data _contact_ sebagai berikut:
+
+```{r,echo=FALSE}
+dummy = data.frame(
+  ticket_id = c("A","B","C","D"),
+  id = c(0,1,34567,78999),
+  email = c("Jhon@gmail.com",NA,"wick@gmail.com","wick@gmail.com"),
+  phone = c(NA,682211,682211,NA),
+  order_id = c(1234,1234,NA,NA),
+  contacts = c(5,2,4,3)
+)
+dummy %>% knitr::kable()
+```
+
 # Hasil Perhitungan Saya
 
-Ternyata algoritma yang saya buat cukup lama saat dirun. Wajar mengingat data yang digunakan sangat besar dan saya menggunakan cara yang __relatif panjang__ untuk menyelesaikannya.
+Ternyata algoritma yang saya buat cukup lama saat di-_run_. Wajar mengingat data yang digunakan sangat besar dan saya menggunakan cara yang __relatif panjang__ untuk menyelesaikannya.
 
 Berikut adalah _sample_ dari jawaban saya:
 
 ```{r,echo=FALSE}
-hasil_final %>% head(10)
+hasil_final
 ```
 
 # _Notes_
