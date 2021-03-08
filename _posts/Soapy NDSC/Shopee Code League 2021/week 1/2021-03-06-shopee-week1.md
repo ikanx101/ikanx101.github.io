@@ -260,3 +260,7 @@ solving* Anda.
 Saya dan tim tidak mengikuti kompetisi *data analytics* karena hanya
 komit untuk ikut kompetisi pada pekan depan (*data science*). Apalagi di
 Sabtu siang yang syahdu kemarin, **Netflix** begitu menggoda.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads shown.`
