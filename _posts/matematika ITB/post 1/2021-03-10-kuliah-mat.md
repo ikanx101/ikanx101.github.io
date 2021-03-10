@@ -1,5 +1,16 @@
-Kuliah di Matematika Akan Jadi Apa?
-================
+---
+date: 2021-03-10T14:47:00-04:00
+title: "Kuliah di Matematika Akan Jadi Apa?"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - R
+  - Prediction
+  - Modelling
+---
+
 
 > ***Abis lulus jadi guru yah?***
 
@@ -29,16 +40,16 @@ bilang:
 Jawaban yang menurut saya pada saat itu separuh ngasal separuh benar.
 *hahaha*.
 
-Tapi, sebenarnya apa sih yang kami pelajari saat kuliah di matematika
+Tapi, sebenarnya apa sih yang kami pelajari saat kuliah di Matematika
 ITB dulu? Secara simpel **pada zaman saya**, ada beberapa kelompok
-keahlian yang dapat dipelajari, yakni:
+keahlian (KK) yang dapat dipelajari, yakni:
 
-1.  Aljabar
-2.  Analisis
-3.  Keuangan
-4.  Statistika
-5.  Terapan
-6.  Diskrit / komputasi
+1.  Aljabar,
+2.  Analisis,
+3.  Keuangan,
+4.  Statistika,
+5.  Terapan, dan
+6.  Diskrit / komputasi.
 
 Saya coba jelaskan satu persatu berdasarkan pengalaman saya *yah*.
 
@@ -152,3 +163,28 @@ tapi saya mengambil (hampir) semua kuliah *semi-advance* dari masing –
 masing KK. Ada sedikit penyesalan karena saya merasa tidak menjadi
 *specialist* di satu KK tapi di lain sisi saya merasa bisa mengikuti KK
 yang lainnya (semoga jatuhnya *gak* ke *sotoy yah*).
+
+-----
+
+## Pekerjaan Lulusan Matematika
+
+Dari penjelasan saya di atas, sepertinya luas *banget* jenis industri
+yang bisa menjadi pekerjaan seorang *mathematician*. 
+
+Sebagai gambaran, saya coba *scrape* data `60` orang lulusan Matematika ITB angkatan `2002-2005` yang ada di koneksi **LinkedIn** saya.
+
+Saya mengambil *job roles* yang mereka tulis di *profile* **LinkedIn**
+mereka masing-masing.
+
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/post%201/post_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+
+Tentunya temuan di atas bukan mewakili semua *job roles* yang mungkin
+dari lulusan matematika karena berasal dari proses [*convenient
+sampling*](https://en.wikipedia.org/wiki/Convenience_sampling) tapi
+setidaknya cukup menggambarkan banyak *mathematician* di *circle* saya.
+
+Bisa jadi di masa sekarang ini ada pergeseran _minat_ bidang karir dari lulusan matematika.
+
+---
+
+`if you find this article helpful, please support this blog by clicking the ads shown.`
