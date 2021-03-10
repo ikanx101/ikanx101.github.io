@@ -5,7 +5,11 @@ output: github_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
 setwd("~/Documents/ikanx101/_posts/matematika ITB/post 1")
+load("bahan blog.rda")
+library(dplyr)
+library(wordcloud)
 ```
 
 > ___Abis lulus jadi guru yah?___
@@ -22,14 +26,14 @@ Bagaimana cara saya menjawab pertanyaan tersebut? Pertama, saya tersenyum lalu k
 
 Jawaban yang menurut saya pada saat itu separuh ngasal separuh benar. _hahaha_.
 
-Tapi, sebenarnya apa sih yang kami pelajari saat kuliah di matematika ITB dulu? Secara simpel __pada zaman saya__, ada beberapa kelompok keahlian yang dapat dipelajari, yakni:
+Tapi, sebenarnya apa sih yang kami pelajari saat kuliah di matematika ITB dulu? Secara simpel __pada zaman saya__, ada beberapa kelompok keahlian (KK) yang dapat dipelajari, yakni:
 
-1. Aljabar
-1. Analisis
-1. Keuangan
-1. Statistika
-1. Terapan
-1. Diskrit / komputasi
+1. Aljabar,
+1. Analisis,
+1. Keuangan,
+1. Statistika,
+1. Terapan, dan
+1. Diskrit / komputasi.
 
 Saya coba jelaskan satu persatu berdasarkan pengalaman saya _yah_.
 
@@ -87,3 +91,18 @@ Ketika kuliah dulu, saya sebenarnya ingin fokus di matematika keuangan tapi pada
 
 Namun saya tidak mengambil kuliah _advance_ dari spesifik satu KK saja, tapi saya mengambil (hampir) semua kuliah _semi-advance_ dari masing – masing KK. Ada sedikit penyesalan karena saya merasa tidak menjadi _specialist_ di satu KK tapi di lain sisi saya merasa bisa mengikuti KK yang lainnya (semoga jatuhnya _gak_ ke _sotoy yah_).
 
+---
+
+## Pekerjaan Lulusan Matematika
+
+Dari penjelasan saya di atas, sepertinya luas _banget_ jenis industri yang bisa menjadi pekerjaan seorang _mathematician_. Untuk mengeceknya kebenarannya, saya coba _scrape_ data `60` orang lulusan Matematika ITB angkatan `2002-2005` yang ada di koneksi __LinkedIn__ saya.
+
+Saya mengambil _job roles_ yang mereka tulis di _profile_ __LinkedIn__ mereka masing-masing.
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+wordcloud(olah$words,olah$n,min.freq = 1,
+          random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"))
+```
+
+Tentunya temuan di atas bukan mewakili semua _job roles_ yang mungkin dari lulusan matematika karena berasal dari proses [_convenient sampling_](https://en.wikipedia.org/wiki/Convenience_sampling) tapi setidaknya cukup menggambarkan banyak _mathematician_ di _circle_ saya.
