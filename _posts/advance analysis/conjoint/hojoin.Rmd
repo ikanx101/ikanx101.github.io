@@ -10,16 +10,17 @@ rm(list=ls())
 setwd("~/Documents/ikanx101/_posts/advance analysis/conjoint")
 library(dplyr)
 library(ggplot2)
+library(conjoint)
 load("bahan blog.rda")
 ```
 
 Ketika pertama kali saya bekerja di _market research agency_ 2008 lalu, _big boss_ pernah bertanya kepada saya:
 
-> ___Kang, kamu tahu Conjoint Analysis? Ada calon klien yang mau eksplorasi analisa ini.___
+> ___Kamu tahu Conjoint Analysis? Ada calon klien yang mau eksplorasi analisa ini.___
 
-Istilah _conjoint analysis_ masih sangat awam bagi saya waktu itu.
+Istilah _conjoint analysis_ masih sangat awam bagi saya waktu itu. Padahal _big boss_ waktu itu _expect_ saya bisa menjawab pertanyaannya karena beliau tahu saya lulusan jurusan matematika.
 
-Singkat cerita, pada 2011 saat saya sudah bekerja di _multinational market research agency_, salah satu provider telekomunikasi terbesar di __Malaysia__ hendak melakukan _conjoint analysis_ untuk _developing_ beberapa produk baru mereka yang hendak ditargetkan kepada para TKI yang bekerja di sana.
+Singkat cerita, pada 2011 saat saya sudah bekerja di _multinational market research agency_, salah satu provider telekomunikasi terbesar di __Malaysia__ hendak melakukan _conjoint analysis_ untuk _developing_ beberapa produk baru mereka yang hendak ditargetkan kepada para TKI yang bekerja di sana. Untuk melakukan analisanya, saya menggunakan __SPSS__.
 
 Itulah saat __pertama__ dan __terakhir__ kali saya menggunakan _conjoint analysis_ selama saya bekerja di _market research_.
 
@@ -124,13 +125,13 @@ Lantas bagaimana memilih alternatif pilihan yang paling sedikit namun tetap baik
 
 Di [aljabar](https://ikanx101.com/blog/kuliah-mat/#aljabar), ada satu istilah bernama _orthogonal_.
 
-> ___Misalkan suatu vektor x dan y disebut orthogonal saat x dan y tegak lurus. Salah satu kegunaan kumpulan vektor orthogonal adalah dalam membuat basis suatu bidang atau ruang.__
+> ___Misalkan suatu vektor x dan y disebut orthogonal saat x dan y tegak lurus. Salah satu kegunaan kumpulan vektor orthogonal adalah dalam membuat basis suatu bidang atau ruang.___
 
 Nah, dalam kasus _Conjoint Analysis_, pemilihan alternatif produk harus dibuat sesedikit mungkin tapi harus _orthogonal_ sehingga bisa dijadikan basis per _attributes_ untuk membangun produknya kelak.
 
-Masih bingung _yah_? Boleh sambil _Googling kok_.
+Masih bingung _yah_? Tidak mengapa jika tidak memahami hal ini.
 
-Berikut adalah `9` alternatif pilihan yang orthogonal:
+Kali ini, saya akan menggunakan `library(conjoint)` di __R__ untuk mendapatkan beberapa alternatif pilihan yang orthogonal. Ternyata saya dapatkan `9` alternatif pilihan berikut ini: 
 
 ```{r,echo=FALSE}
 factdesign %>% 
@@ -140,39 +141,109 @@ factdesign %>%
   knitr::kable(row.names = F)
 ```
 
-## Install Packages
+## Proses _Interview_
 
-```{r}
+Proses selanjutnya adalah melakukan _interview_. Untuk kasus ini, saya mengistruksikan agar responden memberikan _rating_ `1` hingga `10` kepada `9` alternatif di atas. _Rating_ `1` untuk _least likely_ dan `10` untuk _most likely_.
 
+Misal saya telah mewawancarai 10 orang responden sehingga didapatkan data berikut ini:
+
+```{r,echo=FALSE}
+responses_print %>% 
+  rename(Kamera = Var1,
+         Security = Var2,
+         Charging = Var3) %>% 
+  knitr::kable(row.names = F)
 ```
 
+## Hasil Analisa
+
+Sekarang mari kita lihat hasil analisanya:
 
 ```{r}
-#print(round(cov(prof),5))
-#print(round(cor(prof),5))
+Conjoint(y=responses, x=prof, z=case_level)
 ```
 
-```{r}
-jawab = function(){
-  sample(10,9,replace = T)
-}
+Oke, kalau bingung dengan hasil di atas saya akan buat _summary_ singkatnya sebagai berikut.
 
-for(i in 1:10){
-  nam = paste0("op",i)
-  tes = jawab()
-  assign(nam,tes)
-}
+## _Summary_
 
-responses = data.frame(op1,op2,op3,op4,op5,op6,op7,op8,op9,op10)
-responses
+Setidaknya ada dua hasil dari _Conjoint Analysis_:
 
+1. Nilai _utilities_ per _attributes_
+1. Nilai _utilities_ per _level_
+
+Apa itu nilai _utilities_?
+
+> ___Semakin tinggi nilai utilities, semakin penting kadarnya bagi responden.___
+
+### _Utilities_ per _Attributes_
+
+Saya dapatkan nilai _utilities_ per _attributes_ sebagai berikut:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center'}
+data.frame(att = c("Kamera","Security","Charging"),
+           util = c(37.59,42.81,19.6)) %>% 
+  ggplot(aes(y = att,
+             x = util)) +
+  geom_col(color = "steelblue",
+           fill = "white") +
+  geom_label(aes(label = util),
+             color = "steelblue") +
+  theme_minimal() +
+  labs(title = "Nilai Utilities per Attributes",
+       subtitle = "Kadar kepentingan masing-masing attributes bagi\nresponden dalam memilih smartphone.",
+       caption = "Calculated and Visualized\nusing R\nikanx101.com") +
+  theme(axis.title = element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_text(size = 10,face = "bold")) +
+  coord_polar()
 ```
 
-```{r}
-#Conjoint(y=responses, x=prof, z=case_level)
+Didapatkan bahwa _attribute_ `security` merupakan aspek paling penting bagi responden dengan nilai _utilities_ sebesar `42.81`. Setelah itu _attribute_ `kamera` (`37.59`) lalu `charging` (`19.6`).
 
+### _Utilities_ per _Level_
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center',fig.height=8}
+data.frame(
+  att = c(rep("Kamera",3),rep("Security",3),rep("Charging",2)),
+  level = c("10 MP","15 MP","20 MP",
+            'Fingerprint',"Face recognition","Fingerprint + face recognition",
+            "Fast","Normal"),
+  util = c(-.0889,.3444,-.2556,
+           -.5222,.1778,.3444,
+           .0833,-.0833)
+) %>% 
+  ggplot(aes(y = level,
+             x = util,
+             fill = att)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = util),
+             color = "white",
+             size = 3.5) +
+  scale_fill_manual(values = c("darkred","darkgreen","steelblue")) +
+  facet_wrap(~att,ncol = 1,scales = "free") +
+  theme_minimal() +
+  labs(title = "Detail Nilai Utilities per Level",
+       subtitle = "Kadar kepentingan masing-masing level\nbagi responden dalam memilih smartphone.",
+       caption = "Calculated and Visualized\nusing R\nikanx101.com") +
+  theme(axis.title = element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_text(size = 10,face = "bold"),
+        legend.position = "none",
+        strip.text = element_text(size = 11,face = "bold.italic"),
+        strip.background = element_rect()) 
 ```
 
-```{r}
-#caSegmentation(y=responses, x=prof, c=3)
-```
+Dari grafik di atas, kita bisa menyimpulkan bahwa smartphone dengan fitur: ___fast charging, kamera 15 MP, dan memiliki fingerprint + face recog___ memiliki nilai total _utilities_ __terbesar__.
+
+Seandainya perusahaan ingin mengubah kombinasi fiturnya, mereka tinggal menjumlahkan nilai _utilities_ dari _level_-nya saja.
+
+## _Notes_
+
+Secara logis, semakin banyak _attributes_ dan _levels_, maka alternatif pilihan yang _orthogonal_ juga akan semakin banyak. Lantas bagaimana jika banyaknya pilihan masih terlalu banyak sehingga proses _interview_ menjadi lama dan membuat responden bingung?
+
+Kita bisa memecah beberapa _attributes_, membuat simplifikasi alternatif, dan menanyakannya kepada beberapa kelompok responden yang berbeda dengan metode _hierarchical conjoint_.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads shown.`
