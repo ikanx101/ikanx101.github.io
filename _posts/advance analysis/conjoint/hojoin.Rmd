@@ -1,0 +1,178 @@
+---
+title: "Mengenal Conjoint Analysis untuk Development Produk atau Jasa"
+output: 
+  github_document:
+   pandoc_args: --webtex
+---
+
+```{r,include=FALSE}
+rm(list=ls())
+setwd("~/Documents/ikanx101/_posts/advance analysis/conjoint")
+library(dplyr)
+library(ggplot2)
+load("bahan blog.rda")
+```
+
+Ketika pertama kali saya bekerja di _market research agency_ 2008 lalu, _big boss_ pernah bertanya kepada saya:
+
+> ___Kang, kamu tahu Conjoint Analysis? Ada calon klien yang mau eksplorasi analisa ini.___
+
+Istilah _conjoint analysis_ masih sangat awam bagi saya waktu itu.
+
+Singkat cerita, pada 2011 saat saya sudah bekerja di _multinational market research agency_, salah satu provider telekomunikasi terbesar di __Malaysia__ hendak melakukan _conjoint analysis_ untuk _developing_ beberapa produk baru mereka yang hendak ditargetkan kepada para TKI yang bekerja di sana.
+
+Itulah saat __pertama__ dan __terakhir__ kali saya menggunakan _conjoint analysis_ selama saya bekerja di _market research_.
+
+---
+
+Mengutip dari halaman [Wikipedia](https://en.wikipedia.org/wiki/Conjoint_analysis), _conjoint analysis_ adalah:
+
+> ___Survey-based statistical technique used in market research that helps determine how people value different attributes (feature, function, benefits) that make up an individual product or service.___
+
+Ada _keywords_ yang hendak saya _highlight_ dari definisi di atas:
+
+1. _How people value different attibutes?_
+1. _Product or service_.
+
+Jadi analisa ini biasa dipakai saat suatu perusahaan sedang _developing new product or service_. 
+
+Salah satu ciri analisa ini yang saya sukai adalah:
+
+> ___Mampu melakukan analisa atribut yang terpenting secara implisit (tidak menanyakan langsung) atribut kepada responden.___
+
+Bagaimana maksudnya? Saya berikan contoh sederhana melakukan _Conjoint Analysis_ dengan __R__ berikut ini.
+
+---
+
+## Contoh Kasus
+
+Suatu perusahaan _smartphone_ berencana untuk meluncurkan _smartphone_ varian terbarunya di akhir tahun ini. Namun mereka masih bingung kira-kira fitur apa saja yang harus disematkan di _smartphone_ tersebut.
+
+Mereka sudah _list_ beberapa alternatif pilihan fitur sebagai berikut:
+
+1. Fitur kamera utama, pilihannya:
+    - `10 MP`
+    - `15 MP`
+    - `20 MP`
+1. Fitur _security_, pilihannya:
+    - _Fingerprint_
+    - _Face recognition_
+    - _Fingerprint_ dan _face recognition_
+1. Fitur _charging_, pilihannya:
+    - _Fast charging_
+    - _Wireless charging_
+
+Fitur `kamera utama`, `security` dan `charging` selanjutnya akan disebut ___attributes___. Sedangkan pilihan-pilihan yang ada (misal `10 MP`, `15 MP`, ..., _wireless charging_) akan disebut ___level___.
+
+---
+
+Jika kita melakukan __survey biasa__, hal yang paling sering terjadi adalah memberikan pertanyaan langsung (_direct question_) kepada responden terkait seberapa penting masing-masing _attributes_ dan _level_ mana yang mereka pilih. 
+
+Contohnya sebagai berikut:
+
+1. Dalam memilih suatu smartphone, dari ketiga aspek berikut ini: kamera, _security_, dan _charging_. Urutkan dari aspek yang __paling penting__ ke aspek yang paling __tidak penting__!
+    - Urutan 1:
+    - Urutan 2:
+    - Urutan 3:
+1. Berapa spek ketajaman kamera yang Anda inginkan ada di _smartphone_ pilihan Anda? (pilih salah satu)
+    - `10 MP`
+    - `15 MP`
+    - `20 MP`
+1. Apa jenis fitur _security_ yang Anda inginkan ada di _smartphone_ pilihan Anda? (pilih salah satu)
+    - _Fingerprint_
+    - _Face recognition_
+    - _Fingerprint_ dan _face recognition_
+1. Apa jenis fitur _charging_ yang Anda inginkan ada di _smartphone_ pilihan Anda? (pilih salah satu)
+    - _Fast charging_
+    - _Wireless charging_
+
+---
+
+Jika kita menggunakan _Conjoint Analysis_, kita tidak akan bertanya _direct_ kepada responden seperti pada cara sebelumnya. Lantas bagaimana caranya?
+
+> ___Kita akan memberikan beberapa alternatif pilihan produk untuk kemudian dipilih oleh responden.___
+
+Responden bisa diminta untuk:
+
+1. Memberikan _ranking_ (mengurutkan) alternatif produk mana yang __paling disukai__ sampai yang __tidak disukai__.
+1. Memberikan _rating_ (nilai) setiap alternatif produk yang ditanyakan.
+1. Memilih __satu saja alternatif produk__ yang paling disukai.
+
+Pertanyaannya adalah:
+
+> ___Bagaimana caranya kita generate alternatif pilihan produk yang hendak ditanyakan?___
+
+### Orthogonal
+
+Perhatikan bahwa kita memiliki 3 _level_ di _attribute_ `kamera`, 3 _level_ di _atribute_ `security`, dan 2 _level_ di _atribute_ `charging`.
+
+Oleh karena itu, ada $3 * 3 * 2 = 18$ alternatif pilihan produk yang bisa ditawarkan sebagai berikut:
+
+```{r,echo=FALSE}
+experiment %>% 
+  mutate(Alternatif = 1:nrow(experiment)) %>% 
+  relocate(Alternatif,.before = Var1) %>% 
+  rename(Kamera = Var1,
+         Security = Var2,
+         Charging = Var3) %>% 
+  knitr::kable()
+```
+
+Masalahnya adalah jika kita memberikan `18` alternatif produk ini kepada responden untuk diberikan _ranking_ atau _rating_, tentunya responden akan pusing. Terlalu banyak pilihannya.
+
+Lantas bagaimana memilih alternatif pilihan yang paling sedikit namun tetap baik dari segi analisa statistik?
+
+Di [aljabar](https://ikanx101.com/blog/kuliah-mat/#aljabar), ada satu istilah bernama _orthogonal_.
+
+> ___Misalkan suatu vektor x dan y disebut orthogonal saat x dan y tegak lurus. Salah satu kegunaan kumpulan vektor orthogonal adalah dalam membuat basis suatu bidang atau ruang.__
+
+Nah, dalam kasus _Conjoint Analysis_, pemilihan alternatif produk harus dibuat sesedikit mungkin tapi harus _orthogonal_ sehingga bisa dijadikan basis per _attributes_ untuk membangun produknya kelak.
+
+Masih bingung _yah_? Boleh sambil _Googling kok_.
+
+Berikut adalah `9` alternatif pilihan yang orthogonal:
+
+```{r,echo=FALSE}
+factdesign %>% 
+  rename(Kamera = Var1,
+         Security = Var2,
+         Charging = Var3) %>% 
+  knitr::kable(row.names = F)
+```
+
+## Install Packages
+
+```{r}
+
+```
+
+
+```{r}
+#print(round(cov(prof),5))
+#print(round(cor(prof),5))
+```
+
+```{r}
+jawab = function(){
+  sample(10,9,replace = T)
+}
+
+for(i in 1:10){
+  nam = paste0("op",i)
+  tes = jawab()
+  assign(nam,tes)
+}
+
+responses = data.frame(op1,op2,op3,op4,op5,op6,op7,op8,op9,op10)
+responses
+
+```
+
+```{r}
+#Conjoint(y=responses, x=prof, z=case_level)
+
+```
+
+```{r}
+#caSegmentation(y=responses, x=prof, c=3)
+```
