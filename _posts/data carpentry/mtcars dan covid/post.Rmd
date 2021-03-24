@@ -14,7 +14,13 @@ Akibat kesibukan beberapa hari belakangan ini di kantor, saya belum sempat _upda
 
 Seperti yang sudah pernah saya ceritakan di blog saya [dulu](https://ikanx101.com/blog/training-replikasi/), saya dan beberapa rekan menginisiasi _training data science_ menggunakan __R__. _Training_ tersebut sudah selesai dilakukan tahun lalu.
 
-Kemarin beberapa rekan meminta saya untuk mengadakan _refreshment training_ __R__. Kebetulan juga, di sore harinya salah seorang _mentee_ meminta saya untuk memberikan tugas kepada dia sebagai latihan. Sontak saja saya berikan tugas yang sama dengan materi _refreshment_ yang saya berikan di kantor.
+Kemarin beberapa rekan meminta saya untuk mengadakan _refreshment training_ __R__. Kebetulan juga, di malam harinya salah seorang _mentee_ meminta saya untuk memberikan tugas kepada dia sebagai latihan. Sontak saja saya berikan tugas yang sama dengan materi _refreshment_ yang saya berikan di kantor.
+
+```{r,echo=FALSE,fig.align='center',fig.height=1}
+knitr::include_graphics("discord.jpg")
+```
+
+---
 
 > ___Apa sih materinya?___
 
@@ -45,7 +51,7 @@ mtcars %>% knitr::kable(align = "c")
 Tujuan utama dari _data carpentry_ ini adalah untuk menjawab dua pertanyaan berikut ini:
 
 1. Merek mobil apa yang memiliki rata-rata _horse power_ tertinggi dan _miles per gallon_ terendah?
-1. Apakah ada perbedaan performa antara mobil _matic_ dan manual dari data tersebut?
+1. Apakah ada perbedaan keiritan bahan bakar antara mobil _matic_ dan manual dari data tersebut?
 
 Sebelum melakukan analisa, saya selalu membiasakan untuk melihat struktur dari _dataset_ tersebut. Kenapa?
 
@@ -117,3 +123,124 @@ Berikut adalah hasil _data preparation_ yang sudah saya lakukan di atas:
 knitr::kable(clean_data,align = "c")
 ```
 
+Setelah rapi seperti di atas, mari kita lihat _summary statistics_-nya:
+
+```{r}
+summary(clean_data)
+```
+
+Sekarang saatnya menjawab `2` pertanyaan sebelumnya:
+
+#### Merek mobil apa yang memiliki rata-rata _horse power_ tertinggi dan _miles per gallon_ terendah?
+
+```{r,warning=FALSE,message=FALSE}
+clean_data %>% 
+  # group per merek mobil
+  group_by(merek_mobil) %>%
+  # menghitung rata-rata dari horse power dan miles per gallon
+  summarise(avg_hp = mean(hp),
+            avg_mpg = mean(mpg)) %>% 
+  # jangan lupa di-ungroup
+  ungroup() %>% 
+  # sort  data dari hp tertinggi dan mpg terendah
+  arrange(desc(avg_hp),avg_mpg) %>% 
+  # menampilkan top 5
+  head(5)
+```
+
+#### Apakah ada perbedaan keiritan bahan bakar antara mobil _matic_ dan manual dari data tersebut?
+
+```{r,warning=FALSE,message=FALSE}
+clean_data %>% 
+  group_by(am) %>% 
+  summarise(max = max(mpg),
+            avg = mean(mpg),
+            min = min(mpg)) %>% 
+  ungroup()
+```
+
+---
+
+### Part 2: Data Covid 19
+
+Bagian selanjutnya adalah _data carpentry_ dari data Covid 19 yang saya dapatkan dari situs [__worldometers__](https://www.worldometers.info/coronavirus/).
+
+Berbeda dari kasus `mtcars` yang sudah punya tujuan dan pertanyaan yang harus dijawab. Kali ini saya mau melakukan eksplorasi bebas dari datanya.
+
+Data saya dapatkan dengan cara _web scrape_ menggunakan `library(rvest)` sebagai berikut:
+
+```{r,warning=FALSE,message=FALSE}
+library(rvest)
+# set target url
+url = "https://www.worldometers.info/coronavirus/"
+# scrape tabel data
+data_cov = read_html(url) %>% html_table(fill = T)
+data_cov = data_cov[[1]]
+```
+
+Mari kita intip datanya terlebih dahulu:
+
+```{r,echo=FALSE}
+rbind(head(data_cov,10),tail(data_cov,10)) %>% knitr::kable()
+```
+
+Lalu kita lihat struktur datanya sebagai berikut:
+
+```{r}
+str(data_cov)
+```
+
+Terlihat jelas ya dari datanya. Ada banyak hal yang harus dibereskan.
+
+1. Saya hanya akan mengambil variabel `country`, `continent`, `TotalCase` dan `ActiveCase`.
+1. Saya hanya ingin nama negara saja yang masuk ke variabel `country`. Oleh karena itu baris data yang berisi __nama benua dan tulisan TOTAL harus dikeluarkan dari data__.
+1. Variabel `TotalCases` dan `ActiveCases` harus diubah menjadi tipe `numeric`.
+
+Sekali lagi saya tekankan bahwa cara yang saya pakai hanya satu dari sekian banyak cara yang bisa dilakukan di __R__. Oke,saya mulai _yah_.
+
+```{r,message=FALSE,warning=FALSE}
+# hal yang akan saya kerjakan
+  # 1. rename nama variabel: Country,Other -> negara
+  # 2. saya hanya ingin ambil variabel: negara, Continent, TotalCases, ActiveCases
+  # 3. saya mau ubah TotalCases dan ActiveCases yang tadinya character ke numeric
+  # 4. variabel negara murni hanya nama negara. Gak boleh isinya itu total atau nama benua
+  # 5. kita pastikan bahwa tidak ada kolom yang kosong
+
+# Khusus untuk melakukan filter terhadap benua, saya akan bikin variabel baru bernama sensor
+sensor = c("Asia","North America","South America","Europe","Africa","Oceania","World","Total:")
+
+# proses pembuatan data yang clean
+data_cov_clean = 
+  data_cov %>%
+  rename(negara = `Country,Other`) %>% # ini proses rename variabel
+  select(negara, Continent, TotalCases, ActiveCases) %>% # ini proses seleksi variabel
+  mutate(TotalCases = gsub("\\,","",TotalCases),
+         ActiveCases = gsub("\\,","",ActiveCases),
+         TotalCases = as.numeric(TotalCases),
+         ActiveCases = as.numeric(ActiveCases)
+        ) %>%
+  filter(!negara %in% sensor) %>% # filter negara yang diluar sensor
+  filter(!is.na(negara)) %>% # filter gak boleh ada yang kosong di negara
+  filter(!is.na(TotalCases)) %>% # filter gak boleh ada yang kosong di TotalCases
+  filter(!is.na(ActiveCases)) %>% # filter gak boleh ada yang kosong di ActiveCases
+  filter(Continent != "")
+```
+
+Berikut adalah hasil data yang sudah bersih:
+
+```{r,echo=FALSE}
+data_cov_clean %>% arrange(TotalCases) %>% knitr::kable(align = "c")
+```
+
+Dari data tersebut, saya bisa menghitung top 10 negara dengan _ratio active cases_ tertinggi:
+
+```{r}
+data_cov_clean %>% 
+  mutate(ratio = round(ActiveCases / TotalCases * 100,2)) %>% 
+  arrange(desc(ratio)) %>% 
+  head(10)
+```
+
+---
+
+`if you find this article helpful, please support this blog by clicking the ads shown.`
