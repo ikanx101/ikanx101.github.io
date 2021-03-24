@@ -1,0 +1,119 @@
+---
+title: "Tutorial Data Carpentry: Ngoprek Data mtcars dan Covid19"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+```
+
+Akibat kesibukan beberapa hari belakangan ini di kantor, saya belum sempat _update_ blog ini. Kali ini saya mau _post_ sesuatu yang ringan-ringan saja dulu _yah_.
+
+## _Training Refreshment_ __R__
+
+Seperti yang sudah pernah saya ceritakan di blog saya [dulu](https://ikanx101.com/blog/training-replikasi/), saya dan beberapa rekan menginisiasi _training data science_ menggunakan __R__. _Training_ tersebut sudah selesai dilakukan tahun lalu.
+
+Kemarin beberapa rekan meminta saya untuk mengadakan _refreshment training_ __R__. Kebetulan juga, di sore harinya salah seorang _mentee_ meminta saya untuk memberikan tugas kepada dia sebagai latihan. Sontak saja saya berikan tugas yang sama dengan materi _refreshment_ yang saya berikan di kantor.
+
+> ___Apa sih materinya?___
+
+## _Data Carpentry_
+
+Kali ini saya akan memberikan _tutorial data carpentry_ menggunakan prinsip __Tidyverse__ di __R__ untuk membersihkan data dan melakukan analisa sederhana.
+
+Ada dua _datasets_ yang saya gunakan:
+
+1. `mtcars`: data yang sudah _pre-installed_ di __R__ berisi _spec_ beberapa varian mobil.
+1. Data Covid 19 per negara yang akan saya _scrape_ _realtime_.
+
+Pada tutorial ini, saya hanya akan menggunakan dua _libraries_ dari __Tidyverse__, yakni:
+
+```{r,message=FALSE,warning=FALSE}
+library(dplyr) # library utk data carpentry
+library(tidyr) # library utk data carpentry juga - function pamungkas yang sering saya pakai dari library ini adalah separate()
+```
+
+### Part 1: `mtcars`
+
+`mtcars` adalah _dataset_ standar yang paling sering digunakan untuk bahan _training_ di __R__. _Dataset_ ini berisi spesifikasi dari beberapa varian mobil. Berikut adalah datanya:
+
+```{r,echo=FALSE}
+mtcars %>% knitr::kable(align = "c")
+```
+
+Tujuan utama dari _data carpentry_ ini adalah untuk menjawab dua pertanyaan berikut ini:
+
+1. Merek mobil apa yang memiliki rata-rata _horse power_ tertinggi dan _miles per gallon_ terendah?
+1. Apakah ada perbedaan performa antara mobil _matic_ dan manual dari data tersebut?
+
+Sebelum melakukan analisa, saya selalu membiasakan untuk melihat struktur dari _dataset_ tersebut. Kenapa?
+
+> ___Dengan melihat struktur data, kita bisa mengukur seberapa jauh kita akan melakukan data preparation dan data cleaning.___
+
+Berdasarkan pengalaman saya, sangat jarang suatu _raw data_ bisa langsung dianalisa dan dibuat visualisasinya. Langkah _proper_ yang biasanya harus dilalui adalah:
+
+```{r,fig.align='center',echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/ikanx101/Live-Session-Nutrifood-R/master/LEFO%20Market%20Research/NRC%20Grant/getting.png")
+```
+
+Untuk kasus _dataset_ `mtcars`, saya hanya akan melakukan _data preparation_. Saya asumsikan semua data yang ada di sana sudah benar secara kaidah statistik (terkait _extreme values_)
+
+#### Cek Struktur Data dengan _Function_ `str()`
+
+Sekarang kita cek struktur data `mtcars`.
+
+```{r}
+str(mtcars)
+```
+
+Dari temuan di atas, sudah terlihat jelas apa saja yang harus kita lakukan untuk _data preparation_, yakni:
+
+1. Dari tabel sebelumnya, nama varian mobil muncul __tapi__ pada saat kita lihat struktur datanya __tidak ada sama sekali__ variabel yang menunjukkan varian mobil.
+1. Belum ada variabel yang menunjukkan info merek mobil.
+1. Variabel `am` yang menunjukkan jenis transmisi mobil (manual atau _matic_) di kenali sebagai variabel bertipe `numeric`.
+
+#### Data Preparation
+
+Berikut ini adalah langkah-langkah yang akan saya kerjakan di __R__ dari tiga poin di atas:
+
+1. Membuat variabel baru bernama `varian_mobil` yang isinya merupakan `row.names` dari `mtcars`. Setelah itu saya akan menghapus `row.names` karena sudah tidak diperlukan.
+1. Membuat variabel baru bernama `merek_mobil` yang isinya merupakan __kata pertama__ dari variabel `varian_mobil`. Untuk melakukannya, saya akan menggunakan _function_ `separate()`.
+1. Mengubah `am` menjadi variabel bertipe `factor` berisi `0` untuk manual dan `1` untuk _matic_.
+
+Perlu saya sampaikan bahwa cara saya ini bukanlah satu-satunya. Jika rekan-rekan memiliki cara lain yang lebih _simple_, _feel free yah_.
+
+```{r,message=FALSE,warning=FALSE}
+clean_data = 
+  # memanggil dataset mtcars
+  mtcars %>% 
+  # membuat variabel varian mobil dan 
+  # dummy merek untuk kemudian ekstrak merek
+  mutate(varian_mobil = row.names(mtcars),
+         dummy_merek = varian_mobil) %>% 
+  # ekstrak merek mobil
+  separate(dummy_merek,
+           into = "merek_mobil",
+           sep = " ") %>% 
+  # mengubah am menjadi factor
+  mutate(am = ifelse(am == 0,
+                     "manual",
+                     "matic"),
+         am = factor(am, 
+                     levels = c("manual","matic")
+                     )
+         ) %>% 
+  # mengurutkan variabel merek dan varian mobil menjadi 
+  # urutan paling kiri dalam tabel 
+  relocate(merek_mobil,varian_mobil,.before = mpg)
+
+# hapus row names karena sudah tidak diperlukan
+row.names(clean_data) = NULL
+```
+
+Berikut adalah hasil _data preparation_ yang sudah saya lakukan di atas:
+
+```{r,echo=FALSE}
+knitr::kable(clean_data,align = "c")
+```
+
