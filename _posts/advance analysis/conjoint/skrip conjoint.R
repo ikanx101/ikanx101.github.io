@@ -27,7 +27,7 @@ case_level
 
 # buat responden palsu
 jawab = function(){
-  sample(10,9,replace = T)
+  sample(6,8,replace = T)
 }
 
 for(i in 1:10){
