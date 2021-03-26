@@ -1,0 +1,174 @@
+---
+title: "Exploratory Model Analysis: Jaga Gula Darah Biar Gak Kena Diabetes Ya"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/Documents/ikanx101/_posts/Explainable AI/post 2")
+rm(list=ls())
+library(dplyr)
+library(keras)
+library(tensorflow)
+library(DALEX)
+library(caret)
+library(pROC)
+library(ggplot2)
+data = read.csv("diabetes.csv") %>% janitor::clean_names() 
+```
+
+Tulisan ini mengambil tema yang sama terkait _eXplainable Artificial Intelligence_ yang [pernah saya tulis sebelumnya](https://ikanx101.com/blog/EMA-FIFA/).
+
+---
+
+Saya termasuk salah seorang keturunan diabetes. Beberapa anggota keluarga dari garis ayah dan ibu saya meninggal akibat komplikasi diabetes. Menurut data dari Riset Kesehatan Dasar (__Riskedas__) Kementrian Kesehatan 2018, [prevalensi diabetes mencapai angka 10.9%](https://www.kompas.com/sains/read/2020/11/05/100200923/naik-6-2-persen-selama-pandemi-pasien-diabetes-indonesia-peringkat-7-di?page=all). Asal teman-teman tahu, angka Riskesdas didapatkan dari diabetesi yang sudah didiagnosis oleh dokter. Sedangkan jika kita lihat sekilas di sekitaran kita, masih banyak orang yang __tidak suka__ atau __tidak mau__ berkonsultasi ke dokter.
+
+> ___Saya menduga angka prevalensi yang asli lebih banyak dibandingkan angka yang ada di Riskesdas___.
+
+Saya sempat bertanya kepada salah seorang teman saya yang bekerja di bidang _biology and health science_, penegakan diagnosis diabetes itu biasanya berdasarkan cek laboratorium berupa __gula darah__, ___Oral Glucose Tolerance Test___ (OGTT) atau __HbA1C__.
+
+Orang awam seperti kita ini biasanya hanya mengira bahwa faktor yang paling terlihat dari seorang diabetesi adalah __kadar gula darahnya__.
+
+Pernah saya mencari data publik yang detail di Indonesia tapi belum menemukannya. Sampai suatu saat saya sedang menjelajahi situs [Kaggle](https://www.kaggle.com/) kemudian saya menemukan data [___Pima Indians Diabetes Database___](https://www.kaggle.com/uciml/pima-indians-diabetes-database). Berikut adalah deskripsi dari data tersebut:
+
+---
+
+# _Pima Indian Diabetes Database_
+
+## _Context_
+
+_This dataset is originally from the National Institute of Diabetes and Digestive and Kidney Diseases. The objective of the dataset is to diagnostically predict whether or not a patient has diabetes, based on certain diagnostic measurements included in the dataset. Several constraints were placed on the selection of these instances from a larger database. In particular, all patients here are females at least 21 years old of Pima Indian heritage._
+
+## _Content_
+
+_The datasets consists of several medical predictor variables and one target variable, Outcome. Predictor variables includes the number of pregnancies the patient has had, their BMI, insulin level, age, and so on._
+
+---
+
+Kali ini saya akan mencoba membuat model prediksi berdasarkan data tersebut kemudian melakukan analisa eksplorasi terhadap model prediksi tersebut. Tapi jangan berharap tulisan ini sekelas jurnal penelitian _ya_, saya hanya ingin melakukan iseng-iseng berhadiah saja.
+
+Seperti tulisan sebelumnya, saya akan membuat model prediksi _deep learning_ dan di-_explain_ dengan `DALEX`.
+
+# _Exploratory Model Analysis_
+## Data
+
+Berikut adalah cuplikan _dataset_ yang saya gunakan:
+
+```{r,echo=FALSE}
+data %>% 
+  head(15) %>% 
+  mutate(id_person = c(1:15)) %>%  
+  relocate(id_person,.before = pregnancies) %>% 
+  knitr::kable(align = "c")
+```
+
+Berikut adalah struktur dari _dataset_ tersebut:
+
+```{r,echo=FALSE}
+str(data)
+```
+
+Dari semua _variables_ yang ada, saya tidak menggunakan semuanya sebagai _predictor_. Berikut adalah _variables_ yang saya masukkan ke dalam model yang saya buat:
+
+- `pregnancies`: berapa kali wanita tersebut hamil,
+- `glucose`: kadar gula darah
+- `bmi`: _body mass index_ (indeks massa tubuh. Didapatkan dari perhitungan rasio berat dan tinggi badan), 
+- `age`: usia, dan
+- `diabetes_pedigree_function`: keturunan diabetes.
+
+_Target variable_ dari model saya adalah variabel `outcome` yang berisi:
+
+- `0` untuk non diabetes.
+- `1` untuk diabetes.
+
+Ternyata setelah saya cek datanya kembali, saya berhadapan dengan _imbalance dataset_.
+
+```{r,echo=FALSE}
+data %>% 
+  mutate(outcome = ifelse(outcome == 0,"Non Diabetes","Diabetes")) %>% 
+  group_by(outcome) %>% 
+  count() %>% 
+  ungroup() %>% 
+  rename(freq = n) %>% 
+  knitr::kable(align = "c")
+```
+
+Oleh karena itu, _train dataset_ yang akan saya gunakan harus saya paksa menjadi _balance_ terlebih dahulu.
+
+Berikut adalah langkah-langkah yang saya lakukan:
+
+```{r,echo=FALSE}
+nomnoml::nomnoml("
+                 [raw data] -> [preprocess]
+                 [preprocess] -> [train dataset]
+                 [preprocess] -> [test dataset]
+                 [train dataset] -> [build model]
+                 [build model] -> [validasi]
+                 [test dataset] --> [validasi]
+                 
+                 [preprocess|
+                    using caret|method: range]
+                 [train dataset|
+                    balancing target variable|
+                    180 diabetes|180 non diabetes]
+                 [test dataset|
+                    88 diabetes|320 non diabetes]
+                 [build model|
+                    deep learning|using KERAS|5 layers]
+                 [validasi|
+                    AUC: 0.8315|
+                    Accuracy: 0.8259]
+                 ")
+```
+
+---
+
+## Performa Model
+
+```{r,include=FALSE}
+rm(list=ls())
+load("bahan blog.rda")
+```
+
+Berikut adalah parameter performa model yang saya gunakan:
+
+```{r}
+performa_model$measures$accuracy
+performa_model$measures$auc
+```
+
+Saya hanya melihat dari dua parameter saja, yakni _accuracy_ dan luas _area under curve_ (AUC).
+
+Mari kita lihat bersama beberapa penjelasan dari model tersebut:
+
+### _Features Importance_
+
+Dari `5` _variables_ yang saya jadikan _predictor_, variabel mana yang paling penting untuk memprediksi seorang wanita (di India) termasuk __diabetes atau tidak__?
+
+```{r,echo=FALSE}
+plot_importance
+```
+
+Ternyata _obvious_ `glucose` menjadi satu variabel yang paling terpenting dalam memprediksi seorang wanita (di India) terkena diabetes atau tidak.
+
+Hal yang menarik adalah `bmi`, `age` dan `pregnancies` memiliki bobot yang hampir sama tapi `diabetes_pedigree` memiliki andil yang kecil dalam model.
+
+Walaupun [keturunan diabetes 6x lebih beresiko terkena diabetes](https://lifestyle.okezone.com/read/2014/05/15/486/985289/keturunan-diabetes-6-kali-berisiko-ada-cara-cegahnya) tidak menjadikan orang tanpa keturunan menjadi aman _ya_!
+
+### _Partial Dependence Profile_
+
+Sekarang saya akan melihat dari `4` variabel teratas, bagaimana kontribusinya terhadap prediksi diabetes atau tidak.
+
+```{r,fig.align='center',fig.height=10,fig.width=9}
+plot(mp_ball)
+```
+
+Dari grafik di atas, kita melihat bahwa variabel `glucose` dan `bmi` memiliki kenaikan yang sangat curam saat nilainya makin __ke kanan__ dibandingkan `pregnancies`.
+
+Salah satu _key point_ dari grafik di atas adalah menjaga `glucose` dan `bmi` (rasio berat dan tinggi badan) bisa menjadi kunci menurunkan resiko diabetes (setidaknya untuk wanita India).
+
+Sayangnya tidak ada data Indonesia yang cukup sehingga bisa dianalisa seperti ini.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
