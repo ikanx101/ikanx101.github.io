@@ -15,7 +15,7 @@
 # in the templates via {{ site.myvariable }}.
 title: Mathematics, Market Research & Data Science
 email: fake.ikanx@gmail.com
-description: "Project data science sehari-hari menggunakan R untuk membahas topik dan isu-isu terkini. Ada juga tutorialnya juga lho..."
+description: "Bunch of Ideas, a little bit of Maths."
 
 twitter_username: ikanx101
 github_username: ikanx101
@@ -29,7 +29,7 @@ words_per_minute: 80
 
 # Outputting
 permalink: /:categories/:title/
-paginate: 10 # amount of posts to show
+paginate: 7 # amount of posts to show
 paginate_path: /page:num/
 timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
