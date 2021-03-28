@@ -1,0 +1,309 @@
+---
+title: "Optimization Story: Penjadwalan Perawat di Rumah Sakit"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# dimulai dengan hati yang bersih
+rm(list=ls())
+setwd("~/Documents/ikanx101/_posts/linear problem/post 9")
+
+n_per = 30
+min_per = 5
+
+ideal = round(14*3*min_per/n_per,0)
+```
+
+Beberapa waktu yang lalu, saya sempat menuliskan bagaimana _linear programming_ bisa digunakan untuk menyelesaikan permasalahan [penjadwalan tenaga kesehatan dengan optimal](https://ikanx101.com/blog/jadwal-optimal/). Namun jika rekan-rekan membaca tulisan saya tersebut, _final result_ yang ada adalah hanyalah konfigurasi banyaknya tenaga kesehatan yang bekerja di hari-hari tersebut.
+
+> ___Belum ada detail jadwal siapa masuk ke hari apa di shift ke berapa.___
+
+Kali ini saya akan mencoba menyelesaikan permasalahan penjadwalan yang relatif lebih rumit dibandingkan dengan permasalahan yang kemarin.
+
+---
+
+# _Nurse Schedulling_
+
+## Latar Belakang
+
+Di suatu rumah sakit, ada satu lantai berisi kamar rawat inap kelas VIP dengan total ada `r n_per` orang perawat yang ditugaskan di sana. Para perawat bekerja dengan sistem _shift_ dengan peraturan sebagai berikut:
+
+- Terdapat `3` shift kerja yaitu:
+    - _day shift_ (8.00 - 16.00), 
+    - _evening shift_ (16.00 - 24.00), dan
+    - _night shift_ (24.00 - 8.00)
+- Pada setiap shift dibutuhkan minimal `r min_per` orang perawat.
+
+Selain itu, terdapat beberapa __aturan kerja__ yang harus dipenuhi, yakni:
+
+1. Setiap perawat dalam satu hari hanya boleh ditugaskan ke dalam satu _shift_.
+1. Jika seorang perawat ditugaskan pada _shift_ malam, maka dia tidak dapat ditugaskan di _shift_ pagi di hari berikutnya.
+1. Jika seorang perawat ditugaskan dalam `4` hari berturut-turut, maka hari ke-`5` harus diberi libur.
+1. Jika seorang perawat ditugaskan pada suatu _shift_ di _weekend_, maka dia tidak dapat ditugaskan di _weekend_ berikutnya.
+1. _Workload_ (banyaknya penugasan) setiap perawat harus __sama__.
+
+## Masalah
+
+Bagaimana menentukan jadwal yang optimal?
+
+## Model Matematika
+
+### Membangun Model Matematika
+
+#### _Time Frame_
+
+Untuk memudahkan membuat model matematika _nurse schedulling_, saya akan mendefinisikan terlebih dahulu _time frame_ yang hendak digunakan. Apakah akan dibuat jadwal selama seminggu, sebulan, atau periode tertentu.
+
+Untuk itu, saya akan melihat __aturan kerja ke-4__, yakni:
+
+> Jika seorang perawat ditugaskan pada suatu _shift_ di _weekend_, maka dia tidak dapat ditugaskan di _weekend_ berikutnya.
+
+Dari kasus di atas, setidaknya _time frame_ penjadwalan __tersingkat__ yang bisa buat adalah dalam waktu `2` minggu.
+
+### Parameter
+
+Dari penjelasan-penjelasan di atas, saya akan mendefinisikan beberapa hal, yakni:
+
+- $H = \{1,2,...,13,14\}$ adalah himpunan hari dalam _time frame_ `2` minggu. Saya tuliskan `1` sebagai Senin. _Weekend_ terjadi pada $H_w = \{6,7,13,14\}$.
+- $S = \{1,2,3\}$ adalah himpunan _shift_ kerja harian perawat.
+- $N = \{1,2,3,4,...,30\}$ adalah himpunan banyaknya perawat yang dibutuhkan. 
+
+### _Decision Variable_
+
+Saya definisikan:
+
+$$x_{n,h,s} = \begin{cases} 1,& \text{ jika di perawat ke } n \text{ bekerja di hari } h \text{ pada shift ke }s\\ 0, & \text{ lainnya.}\end{cases}$$
+
+### _Constraints_
+
+Sekarang kita akan menuliskan _constraints_ dalam bahasa matematika.
+
+#### Aturan Dasar
+
+Pada setiap shift dibutuhkan minimal `r min_per` orang perawat.
+
+$$\sum_{n \in N} x_{n,h,s} \geq 5 \text{, untuk } h \in H,  \text{ dan } s \in S$$
+
+#### _Constraint_ I
+
+Setiap perawat dalam satu hari hanya boleh ditugaskan ke dalam satu _shift_.
+
+$$\sum_{s \in S}x_{n,h,s} \leq 1 \text{, untuk } n \in N \text{ dan } h \in H$$
+
+Ekspresi matematika di atas memastikan bahwa seorang perawat hanya bisa ditugaskan dalam __satu shift__ per hari __atau__ tidak ditugaskan sama sekali.
+
+#### _Constraint_ II
+
+Jika seorang perawat ditugaskan pada _shift_ malam, maka dia tidak dapat ditugaskan di _shift_ pagi.
+
+$$x_{n,h,3} + x_{n,h+1,1} \leq 1 \text{, untuk } n \in N \text{ dan } h \in \{1,2,..,13\}$$
+
+Ekspresi matematika di atas memastikan bahwa seorang perawat yang bertugas _night shift_ pada hari $h$ tidak boleh bertugas pada _shift_ pagi esok harinya ($h+1$) __atau__ perawat tersebut tidak ditugaskan sama sekali.
+
+
+#### _Constraint_ III
+
+Jika seorang perawat ditugaskan dalam `4` hari berturut-turut, maka hari ke-`5` harus diberi libur.
+
+Jadi seorang perawat bisa saja bertugas di berbagai _shift_ selama 4 hari berturut-turut tapi __tidak diperbolehkan__ untuk bertugas di hari ke-`5`.
+
+$$\sum_{s \in S} x_{n,h,s} + \sum_{s \in S} x_{n,h+1,s} + \sum_{s \in S} x_{n,h+2,s} + \sum_{s \in S} x_{n,h+3,s} + \sum_{s \in S} x_{n,h+4,s} \leq 4 \text{, untuk } n \in N \text{ dan } h \in \{1,..,10\}$$
+
+#### _Constraint_ IV
+
+Jika seorang perawat ditugaskan pada suatu _shift_ di _weekend_, maka dia tidak dapat ditugaskan di _weekend_ berikutnya.
+
+Saya telah menuliskan _weekend_ terjadi saat $H \in \{6,7,13,14\}$. 
+
+Bagi saya, _constraint_ IV merupakan _constraint_ yang tersulit untuk dituliskan model matematikanya. Oleh karena itu, saya akan gunakan induksi sebagai berikut:
+
+##### Tanggal `6`
+
+Jika seorang perawat bertugas di hari `6` (_shift_ apapun), dia tidak boleh bertugas di hari `13` dan `14`. Tapi jika dia tidak bertugas di hari `6`, maka dia diperbolehkan bertugas di hari `13` __dan atau__ `14`. Akibatnya:
+
+- Jika $x_{n,6,s} = 1$ maka $x_{n,13,s} + x_{n,14,s} = 0$
+- Jika $x_{n,6,s} = 0$ maka $x_{n,13,s} + x_{n,14,s} \leq 2$ karena perawat tersebut bisa bertugas di tanggal `13` __dan atau__ `14`.
+
+Maka model matematika pada _constraint_ tanggal `6` adalah sebagai berikut:
+
+$$ 2\sum_{s \in S} x_{n,6,s} + \sum_{s \in S}x_{n,13,s} + \sum_{s \in S}x_{n,14,s} \leq 2 
+\text{, untuk } n \in N $$
+
+##### Tanggal `7`
+
+Dengan prinsip yang sama dengan tanggal `6`, saya bisa dapatkan model matematika pada _constraint_ tanggal `7` adalah sebagai berikut:
+
+$$ 2\sum_{s \in S} x_{n,7,s} + \sum_{s \in S}x_{n,13,s} + \sum_{s \in S}x_{n,14,s} \leq 2 
+\text{, untuk } n \in N $$
+
+#### _Constraint_ V
+
+_Workload_ (banyaknya penugasan) setiap perawat harus __sama__.
+
+Pertama-tama, mari kita hitung. Berapa banyak shift yang ideal per perawat.
+
+$$\text{banyak shift ideal} = \frac{hari*shift*min(\text{perawat per shift})}{\text{total perawat}} $$
+Yakni:
+
+$$\text{banyak shift ideal} = \frac{14*3*5}{30} = \frac{210}{30} = 7$$
+
+Jadi diharapkan setiap perawat mendapatkan banyak _shift_ yang sama, yakni sebanyak `7` _shifts_. 
+
+Maka model matematika dari _constraint_ ini adalah:
+
+$$\sum_{h \in H} \sum_{s \in S} x_{h,n,s} = 7, \text{untuk } n \in N$$
+
+### _Objective Function_
+
+Tujuan utama dari masalah _schedulling_ ini adalah meminimalisir banyaknya perawat yang ditugaskan per hari per _shift_ sehingga tetap memenuhi _constraints_ yang ada.
+
+$$min \sum_{n \in N} \sum_{h \in H} \sum_{s \in S} x_{n,h,s} $$
+
+## _Solver_ __R__
+
+### Penulisan Model Matematika di __R__
+
+Berikut adalah penulisan model matematika di __R__:
+
+```{r,message=FALSE,warning=FALSE}
+# memanggil libraries
+library(dplyr)
+library(ompr)
+library(ompr.roi)
+library(ROI.plugin.glpk)
+
+# membuat model
+model = 
+  MIPModel() %>%
+  # add variables
+  # non negative integers
+  add_variable(x[n,h,s],
+               n = 1:n_per,
+               h = 1:14,
+               s = 1:3,
+               type = "binary",
+               lb = 0) %>%
+  # set obj function
+  set_objective(sum_expr(x[n,h,s],
+                         n = 1:n_per,
+                         h = 1:14,
+                         s = 1:3),
+                "min") %>%
+  # Syarat Minimal per Shift
+  add_constraint(sum_expr(x[n,h,s],
+                          n = 1:n_per) >= min_per,
+                 h = 1:14,
+                 s = 1:3) %>% 
+  # add constraints
+  # constraint I
+  add_constraint(x[n,h,1] + x[n,h,2] + x[n,h,3] <= 1, 
+                 n = 1:n_per,
+                 h = 1:14) %>% 
+  # constraint II
+  add_constraint(x[n,h,3] + x[n,h+1,1] <= 1,
+                 n = 1:n_per,
+                 h = 1:13) %>% 
+  # constraint III
+  add_constraint(x[n,h,1] + x[n,h+1,1] + x[n,h+2,1] + x[n,h+3,1] + x[n,h+4,1] + 
+                 x[n,h,2] + x[n,h+1,2] + x[n,h+2,2] + x[n,h+3,2] + x[n,h+4,2] + 
+                 x[n,h,3] + x[n,h+1,3] + x[n,h+2,3] + x[n,h+3,3] + x[n,h+4,3] <= 4,
+                 n = 1:n_per,
+                 h = 1:9) %>% 
+  # constraint IV tanggal 6
+  add_constraint(2*(x[n,6,1] + x[n,6,2] + x[n,6,3]) + 
+                 sum_expr(x[n,13,s],
+                          s = 1:3) + 
+                 sum_expr(x[n,14,s],
+                          s = 1:3) <= 2,
+                 n = 1:n_per) %>% 
+  # constraint IV tanggal 7
+  add_constraint(2*(x[n,7,1] + x[n,7,2] + x[n,7,3]) + 
+                 sum_expr(x[n,13,s],
+                          s = 1:3) + 
+                 sum_expr(x[n,14,s],
+                          s = 1:3) <= 2,
+                 n = 1:n_per) %>% 
+  # contraint V
+  add_constraint(sum_expr(x[n,h,s],
+                          h = 1:14,
+                          s = 1:3) == ideal,
+                 n = 1:n_per)
+  
+model
+```
+
+### _Solving_
+
+Kemudian saya _solve_ dengan __R__:
+
+```{r,message=FALSE,warning=FALSE}
+result = solve_model(model, with_ROI(solver = "glpk", verbose = TRUE))
+```
+
+## Solusi Optimal
+
+### Jadwal Optimal
+
+Berikut adalah jadwal optimal dalam kasus ini:
+
+```{r,echo = FALSE,message=FALSE,warning=FALSE}
+cat("Jadwal Perawat: Angka Pada Tanggal Menunjukkan id Perawat")
+result %>% 
+  get_solution(x[n,h,s]) %>%
+  filter(value == 1) %>% 
+  group_by(h,s) %>% 
+  summarise(perawat = paste(n,collapse = ",")) %>% 
+  ungroup() %>% 
+  mutate(s = case_when(s == 1 ~ "Pagi",
+                       s == 2 ~ "Siang",
+                       s == 3 ~ "Malam"),
+         s = factor(s, levels = c("Pagi","Siang","Malam"))
+         ) %>% 
+  reshape2::dcast(h ~ s,
+                  value.var = "perawat") %>% 
+  rename(tanggal = h) %>% 
+  knitr::kable(align = "c")
+```
+
+Sedangkan ini adalah rekapan banyaknya _shift_ yang ditugaskan kepada masing-masing perawat:
+
+```{r,echo = FALSE,message=FALSE,warning=FALSE}
+cat("Rekapan Berapa Kali Perawat Bertugas")
+result %>% 
+  get_solution(x[n,h,s]) %>%
+  filter(value == 1) %>% 
+  group_by(n,s) %>% 
+  count() %>% 
+  ungroup() %>% 
+  mutate(s = case_when(s == 1 ~ "Pagi",
+                       s == 2 ~ "Siang",
+                       s == 3 ~ "Malam"),
+         s = factor(s, levels = c("Pagi","Siang","Malam"))
+         ) %>% 
+  rename(id_perawat = n,
+         shift = s,
+         berapa_x_bertugas = nn) %>% 
+  reshape2::dcast(id_perawat ~ shift,
+                  value.var = "berapa_x_bertugas") %>% 
+  mutate(Pagi = ifelse(is.na(Pagi),"-",Pagi),
+         Siang = ifelse(is.na(Siang),"-",Siang),
+         Malam = ifelse(is.na(Malam),"-",Malam)) %>% 
+  knitr::kable(align = "c")
+```
+
+Dari rekapan di atas, semua perawat mendapatkan jatah _shift_ yang sama.
+
+---
+
+# _Discussion_
+
+Mungkin rekan-rekan berpikir bahwa dari `14` hari yang ada, kenapa masing-masing perawat mendapatkan _workload_ __hanya__ `7` hari saja?
+
+Saya sudah mencoba menaikkan batas `ideal` menjadi `10` _shifts_ per perawat namun jadwal yang dihasilkan justru terlihat buruk. Beberapa _shift_ ditemukan terjadi penumpukan perawat sehingga terkesan tidak efektif untuk dilakukan. Artinya, dari aturan-aturan _existing_ yang ada secara tidak langsung membatasi _workload_ dari perawat.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
