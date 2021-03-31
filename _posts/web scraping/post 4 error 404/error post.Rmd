@@ -41,3 +41,78 @@ Hal ini menurut saya hanyalah solusi jangka pendek karena saya tidak ingin _web_
 
 
 ### Bagaimana caranya?
+
+Misalkan saya tuliskan suatu _object_ bernama `links` sebagai _array_ berisi ratusan _links_ yang akan saya _scrape_.
+
+```{r,include = FALSE}
+link = paste0("https://detik.com/",1:500)
+```
+
+```{r}
+str(link)
+```
+
+Berikut adalah _function_ untuk melakukan _web scraping_ yang saya akan gunakan:
+
+```{r}
+scrape_donk = function(url){
+  x = html_session(url)
+  x1 = read_html(x) %>% html_nodes("a") %>% html_text()
+  x2 = read_html(x) %>% html_nodes("b") %>% html_text()
+  return(data.frame(x1,x2))
+}
+```
+
+Kemudian saya akan membuat _object_ bernama `hasil` dengan struktur data berupa _list_ sebagai rumah bagi hasil _scrape_ dari _function_ `scrape_donk()`.
+
+```{r}
+hasil = vector("list", length(link))
+```
+
+Sekarang saya akan menuliskan _looping_ untuk melakukan _web scraping_-nya. Langkah-langkah yang saya lakukan adalah:
+
+1. Menentukan batas berapa kali percobaan _scrape_ per _link_ jika terjadi _error_. Misalkan saya _set_ di angka `5` kali.
+1. Membuat _loop_ besar dari `link[1]` hingga _link_ terakhir (`link[500]`).
+1. Menggunakan _function_ `tryCatch()` untuk melihat apakah muncul _errors_ atau tidak. Jika muncul _error_, maka akan dipaksa melakukan _scrape_ ulang hingga batas scrape yang ditentukan dengan _function_ `while()`.
+
+Berikut adalah algoritmanya:
+
+```
+# menentukan batas percobaan
+batas = 5
+
+for (i in 1:length(link)) {
+  if (!(link[i] %in% names(hasil))) {
+    cat(paste("Scraping", link[i], "..."))
+    ok = FALSE
+    counter = 0
+    while (ok == FALSE & counter <= batas) {
+      counter = counter + 1
+      out = tryCatch({                  
+        scrape_donk(link[i])
+      },
+      error = function(e) {
+        Sys.sleep(2)
+        e
+      }
+      )
+      if ("error" %in% class(out)) {
+        cat(".")
+      } else {
+        ok = TRUE
+        cat(" Done.")
+      }
+    }
+    cat("\n")
+    hasil[[i]] = out
+    names(hasil)[i] = link[i]
+  }
+} 
+
+```
+
+Selamat mencoba.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads shown.`
