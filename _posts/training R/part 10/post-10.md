@@ -1,0 +1,49 @@
+TUTORIAL R for DATA SCIENCE - part 10: Membaca File Excel
+================
+
+# Membaca Data dari **Excel**
+
+Data yang kita temui sehari-hari biasanya memiliki format `.xlsx` atau
+`.xls`. Sekarang kita akan *import* data dari **Excel** untuk masuk ke
+dalam **R**.
+
+*Library* yang digunakan adalah `library(readxl)`
+
+Contoh data yang digunakan bisa diunduh di
+[sini](https://github.com/ikanx101/belajaR/blob/master/Materi%20Training/Day%201%20-%20R%20Series/Contoh_Data.xlsx).
+
+Untuk *importing* data kita bisa melakukan hal ini di R:
+
+``` r
+library(readxl)
+data = read_excel('Contoh_Data.xlsx')
+head(data)
+```
+
+    ## # A tibble: 6 x 8
+    ##   dept  nama.karyawan status bulan tardines.freque… permit.frequency
+    ##   <chr> <chr>         <chr>  <chr>            <dbl>            <dbl>
+    ## 1 JES   Jimenez       Tetap  Jan                  2                2
+    ## 2 JES   Mccarthy      Tetap  Mar                  0                0
+    ## 3 JES   Topaha        Tetap  Jan                  0                1
+    ## 4 JES   el-Ghanem     Tetap  Mar                  3                1
+    ## 5 JES   Topaha        Tetap  Mei                  0                1
+    ## 6 JES   Lofton        Tetap  Mei                  0                2
+    ## # … with 2 more variables: sick.frequency <dbl>, leave.frequency <dbl>
+
+## Membaca Data dari Format File Lain
+
+**R** memiliki kemampuan untuk membaca data dalam format lain seperti
+`csv`, `sav` (SPSS), `txt`, dan lainnya. Secara *default*, **R** bisa
+membaca file dalam bentuk `csv` dan `txt` tanpa menggunakan `library()`
+lainnya.
+
+Gunakan fungsi `read.csv()` untuk membaca file `csv` dan `readLines()`
+untuk file `txt`.
+
+-----
+
+*to be continued*
+
+`if you find this article helpful, support this blog by clicking the
+ads.`

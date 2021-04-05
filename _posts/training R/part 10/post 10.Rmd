@@ -1,0 +1,49 @@
+---
+title: "TUTORIAL R for DATA SCIENCE - part 10: Membaca File Excel"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Membaca Data dari __Excel__
+
+Data yang kita temui sehari-hari biasanya memiliki format `.xlsx` atau `.xls`. Sekarang kita  akan _import_ data dari __Excel__ untuk masuk ke dalam __R__.
+
+_Library_ yang digunakan adalah `library(readxl)`
+
+Contoh data yang digunakan bisa diunduh di [sini](https://github.com/ikanx101/belajaR/blob/master/Materi%20Training/Day%201%20-%20R%20Series/Contoh_Data.xlsx).
+
+Untuk _importing_ data kita bisa melakukan hal ini di R:
+
+```{r}
+library(readxl)
+data = read_excel('Contoh_Data.xlsx')
+head(data)
+```
+
+Secara _default_, _function_ `read_excel()` akan mengambil data pada _sheet_ pertama. Lantas bagaimana jika kita ingin mengambil data dari _sheet_ lainnya?
+
+Kita bisa mengecek ada berapa banyak _sheets_ yang ada dari suatu file excel dengan _function_ `excel_sheets()`.
+
+```{r}
+excel_sheets('Contoh_Data.xlsx')
+```
+
+Ternyata hanya ada satu _sheet_ saja yang ada di _file_ tersebut.
+
+
+
+## Membaca Data dari Format File Lain
+
+__R__ memiliki kemampuan untuk membaca data dalam format lain seperti `csv`, `sav` (SPSS), `txt`, dan lainnya. Secara _default_, __R__ bisa membaca file dalam bentuk `csv` dan `txt` tanpa menggunakan `library()` lainnya.
+
+Gunakan fungsi `read.csv()` untuk membaca file `csv` dan `readLines()` untuk file `txt`.
+
+---
+
+_to be continued_
+
+`if you find this article helpful, support this blog by clicking the
+ads.`
