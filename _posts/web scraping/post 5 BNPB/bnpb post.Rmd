@@ -1,5 +1,5 @@
 ---
-title: "Web Scraping BNPB: Waspada Bencana!"
+title: "Web Scraping BNPB: Waspada Bencana di Indonesia!"
 output: github_document
 ---
 
@@ -11,3 +11,9 @@ load("bahan blog.rda")
 Beberapa hari yang lalu, masyarakat Indonesia berduka. Saudara-saudara kita yang ada di Nusa Tengggara Timur (NTT) tertimpa musibah banjir bandang. Sekilas saya melihat beritanya di beberapa stasiun TV nasional, video yang terekam cukup mencengangkan dan memprihatinkan. 
 
 Tanpa kita sadari, selama 1 Januari - 9 Maret 2021 ini ternyata sudah ada `763` bencana terjadi di Indonesia (sumber: [Kompas.com](https://www.kompas.com/tren/read/2021/03/10/203500465/data-terbaru-bnpb--763-bencana-terjadi-sepanjang-2021?page=all)). Jika saya hitung kasar dari artikel tersebut, setidaknya terjadi rata-rata `r round(763/67,1)` bencana setiap harinya.
+
+> Sebuah angka yang lumayan _yah_.
+
+---
+
+Pagi ini (7 April 2021 10.00 WIB) saya coba mengambil data bencana dari situs [GIS BNPB](https://gis.bnpb.go.id/) untuk kemudian dieksplorasi.
