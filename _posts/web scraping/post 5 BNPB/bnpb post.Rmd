@@ -5,7 +5,12 @@ output: github_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-load("bahan blog.rda")
+setwd("/cloud/project/_posts/web scraping/post 5 BNPB")
+rm(list=ls())
+library(readxl)
+library(dplyr)
+
+data = read_excel("Data Bencana.xlsx",skip = 1) %>% janitor::clean_names()
 ```
 
 Beberapa hari yang lalu, masyarakat Indonesia berduka. Saudara-saudara kita yang ada di Nusa Tengggara Timur (NTT) tertimpa musibah banjir bandang. Sekilas saya melihat beritanya di beberapa stasiun TV nasional, video yang terekam cukup mencengangkan dan memprihatinkan. 
@@ -16,4 +21,6 @@ Tanpa kita sadari, selama 1 Januari - 9 Maret 2021 ini ternyata sudah ada `763` 
 
 ---
 
-Pagi ini (7 April 2021 10.00 WIB) saya coba mengambil data bencana dari situs [GIS BNPB](https://gis.bnpb.go.id/) untuk kemudian dieksplorasi.
+Pagi ini (7 April 2021 10.30 WIB) saya coba mengambil data bencana dari situs [GIS BNPB](https://gis.bnpb.go.id/) untuk kemudian dieksplorasi.
+
+Ternyata dari 1 Januari - 7 April 2021 sudah terjadi `1.113` bencana di Indonesia.
