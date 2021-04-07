@@ -20,9 +20,9 @@ Tanpa kita sadari, selama 1 Januari - 9 Maret 2021 ini ternyata sudah ada `763` 
 
 ---
 
-Pagi ini (7 April 2021 10.30 WIB) saya coba mengambil data bencana dari situs [GIS BNPB](https://gis.bnpb.go.id/) untuk kemudian dieksplorasi.
+Untuk mencari data tentang kebencanaan di Indonesia, kita bisa mendapatkannya di situs resmi Badan Nasional Penanggulangan Bencana (BNPB). Pagi ini (7 April 2021 10.30 WIB) saya coba mengambil data bencana dari situs [GIS BNPB](https://gis.bnpb.go.id/) untuk kemudian dieksplorasi.
 
-Ternyata dari 1 Januari - 7 April 2021 sudah terjadi `1.113` bencana di Indonesia. Tentunya sudah bertambah dibandingkan berita Kompas yang lalu.
+Ternyata dari 1 Januari - 7 April 2021 sudah terjadi `1.113` bencana di Indonesia. Tentunya sudah bertambah dibandingkan berita Kompas yang saya kutip sebelumnya.
 
 Berikut adalah cuplikan dari datanya:
 
@@ -32,25 +32,57 @@ id = sample(1113,10)
 data %>% filter(no %in% id) %>% knitr::kable()
 ```
 
-Sekarang kita akan lakukan eksplorasi sederhana dari data di atas. Tujuan saya adalah untuk melihat apakah ada pola-pola tertentu sehingga kita bisa mengantisipasi hal ini di kemudian hari.
+Sekarang saya akan lakukan eksplorasi sederhana dari data di atas. Tujuan saya adalah untuk melihat apakah ada pola-pola tertentu sehingga kita bisa mengantisipasi kemungkinan bencana sejenis di kemudian hari.
 
 # Bencana Per Bulan
 
 Mari kita lihat sebaran bencana yang terjadi per bulan:
 
-```{r,echo=FALSE}
+```{r,echo=FALSE,fig.align = "center",fig.retina = 10}
 library(ggplot2)
 
+data = 
+  data %>%
+  mutate(bulan = lubridate::month(tanggal_kejadian,label = T))
+
 data %>%
-  mutate(bulan = lubridate::month(tanggal_kejadian,label = T)) %>% 
-  group_by(bulan,kejadian) %>% 
+  group_by(bulan) %>% 
   count() %>% 
   ungroup() %>% 
   ggplot(aes(x = bulan,
              y = n)) +
-  geom_col() +
+  geom_col(color = "darkred",
+           fill = "grey") +
   geom_label(aes(label = n),
+             color = "darkred"
              size = 2) +
-  facet_wrap(~kejadian)
+  labs(title = "Banyaknya Kejadian Bencana di Indonesia",
+       x = "Bulan") +
+  theme_minimal() +
+  theme(axis.text.y = element_blank(),
+        axis.title.y = element_blank())
+```
+
+Karena bulan `April` baru saja dimulai, kita coba perhatikan
+
+```{r,echo=FALSE,fig.align = "center",fig.retina = 10}
+data %>%
+  group_by(bulan,kejadian) %>% 
+  count() %>% 
+  ungroup() %>% 
+  ggplot(aes(x = bulan,
+             y = n,
+             fill = kejadian)) +
+  geom_col(color = "darkred") +
+  geom_label(aes(label = n),
+             color = "darkred"
+             size = 2)  +
+  facet_wrap(~kejadian) +
+  labs(title = "Banyaknya Kejadian Bencana di Indonesia",
+       subtitle = "Detail per Kejadian",
+       x = "Bulan") +
+  theme_minimal() +
+  theme(axis.text.y = element_blank(),
+        axis.title.y = element_blank())
 ```
 
