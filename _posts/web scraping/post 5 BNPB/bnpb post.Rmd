@@ -32,7 +32,7 @@ id = sample(1113,10)
 data %>% filter(no %in% id) %>% knitr::kable()
 ```
 
-Sekarang kita akan lakukan eksplorasi sederhana dari data di atas:
+Sekarang kita akan lakukan eksplorasi sederhana dari data di atas. Tujuan saya adalah untuk melihat apakah ada pola-pola tertentu sehingga kita bisa mengantisipasi hal ini di kemudian hari.
 
 # Bencana Per Bulan
 
