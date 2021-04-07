@@ -38,9 +38,19 @@ Sekarang kita akan lakukan eksplorasi sederhana dari data di atas:
 
 Mari kita lihat sebaran bencana yang terjadi per bulan:
 
-
 ```{r,echo=FALSE}
+library(ggplot2)
+
 data %>%
-    mutate(
+  mutate(bulan = lubridate::month(tanggal_kejadian,label = T)) %>% 
+  group_by(bulan,kejadian) %>% 
+  count() %>% 
+  ungroup() %>% 
+  ggplot(aes(x = bulan,
+             y = n,
+             fill = kejadian)) +
+  geom_col(position = "dodge") +
+  geom_label(aes(label = n),
+             position = position_dodge())
 ```
 
