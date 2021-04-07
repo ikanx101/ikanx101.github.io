@@ -1,30 +1,13 @@
 ---
-title: "Untitled"
+title: "Web Scraping BNPB: Waspada Bencana!"
 output: github_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+load("bahan blog.rda")
 ```
 
-## GitHub Documents
+Beberapa hari yang lalu, masyarakat Indonesia berduka. Saudara-saudara kita yang ada di Nusa Tengggara Timur (NTT) tertimpa musibah banjir bandang. Sekilas saya melihat beritanya di beberapa stasiun TV nasional, video yang terekam cukup mencengangkan dan memprihatinkan. 
 
-This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
-
-## Including Code
-
-You can include R code in the document as follows:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Tanpa kita sadari, selama 1 Januari - 9 Maret 2021 ini ternyata sudah ada `763` bencana terjadi di Indonesia (sumber: [Kompas.com](https://www.kompas.com/tren/read/2021/03/10/203500465/data-terbaru-bnpb--763-bencana-terjadi-sepanjang-2021?page=all)). Jika saya hitung kasar dari artikel tersebut, setidaknya terjadi rata-rata `r round(763/67,1)` bencana setiap harinya.
