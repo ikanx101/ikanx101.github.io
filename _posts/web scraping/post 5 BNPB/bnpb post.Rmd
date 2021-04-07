@@ -23,4 +23,15 @@ Tanpa kita sadari, selama 1 Januari - 9 Maret 2021 ini ternyata sudah ada `763` 
 
 Pagi ini (7 April 2021 10.30 WIB) saya coba mengambil data bencana dari situs [GIS BNPB](https://gis.bnpb.go.id/) untuk kemudian dieksplorasi.
 
-Ternyata dari 1 Januari - 7 April 2021 sudah terjadi `1.113` bencana di Indonesia.
+Ternyata dari 1 Januari - 7 April 2021 sudah terjadi `1.113` bencana di Indonesia. Tentunya sudah bertambah dibandingkan berita Kompas yang lalu.
+
+Berikut adalah cuplikan dari datanya:
+
+```{r,echo=FALSE}
+data$tanggal_kejadian = as.Date(data$tanggal_kejadian,"%Y-%m-%d")
+id = sample(1113,10)
+data %>% filter(no %in% id) %>% knitr::kable()
+```
+
+
+
