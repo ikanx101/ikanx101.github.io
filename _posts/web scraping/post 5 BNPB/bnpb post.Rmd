@@ -9,7 +9,6 @@ setwd("/cloud/project/_posts/web scraping/post 5 BNPB")
 rm(list=ls())
 library(readxl)
 library(dplyr)
-
 data = read_excel("Data Bencana.xlsx",skip = 1) %>% janitor::clean_names()
 ```
 
@@ -33,5 +32,15 @@ id = sample(1113,10)
 data %>% filter(no %in% id) %>% knitr::kable()
 ```
 
+Sekarang kita akan lakukan eksplorasi sederhana dari data di atas:
 
+# Bencana Per Bulan
+
+Mari kita lihat sebaran bencana yang terjadi per bulan:
+
+
+```{r,echo=FALSE}
+data %>%
+    mutate(
+```
 
