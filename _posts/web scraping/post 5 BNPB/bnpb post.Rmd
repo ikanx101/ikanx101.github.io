@@ -47,10 +47,10 @@ data %>%
   count() %>% 
   ungroup() %>% 
   ggplot(aes(x = bulan,
-             y = n,
-             fill = kejadian)) +
-  geom_col(position = "dodge") +
+             y = n)) +
+  geom_col() +
   geom_label(aes(label = n),
-             position = position_dodge())
+             size = 2) +
+  facet_wrap(~kejadian)
 ```
 
