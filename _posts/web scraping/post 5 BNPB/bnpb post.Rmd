@@ -5,7 +5,7 @@ output: github_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-setwd("/cloud/project/_posts/web scraping/post 5 BNPB")
+setwd("~/ikanx101.github.io/_posts/web scraping/post 5 BNPB")
 rm(list=ls())
 library(readxl)
 library(dplyr)
@@ -54,16 +54,17 @@ data %>%
   geom_col(color = "darkred",
            fill = "grey") +
   geom_label(aes(label = n),
-             color = "darkred"
+             color = "darkred",
              size = 2) +
   labs(title = "Banyaknya Kejadian Bencana di Indonesia",
-       x = "Bulan") +
+       x = "Bulan",
+       caption = "April per tanggal 7\nScraped and Visualized\nusing R\nikanx101.com") +
   theme_minimal() +
   theme(axis.text.y = element_blank(),
         axis.title.y = element_blank())
 ```
 
-Karena bulan `April` baru saja dimulai, kita coba perhatikan
+Karena bulan `April` baru saja dimulai, mari kita perhatikan seksama di `3` bulan pertama 2021.
 
 ```{r,echo=FALSE,fig.align = "center",fig.retina = 10}
 data %>%
@@ -75,7 +76,7 @@ data %>%
              fill = kejadian)) +
   geom_col(color = "darkred") +
   geom_label(aes(label = n),
-             color = "darkred"
+             color = "darkred",
              size = 2)  +
   facet_wrap(~kejadian) +
   labs(title = "Banyaknya Kejadian Bencana di Indonesia",
