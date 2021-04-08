@@ -34,8 +34,6 @@ data %>% filter(no %in% id) %>% knitr::kable()
 
 Sekarang saya akan lakukan eksplorasi sederhana dari data di atas. Tujuan saya adalah untuk melihat apakah ada pola-pola tertentu sehingga kita bisa mengantisipasi kemungkinan bencana sejenis di kemudian hari.
 
-# Bencana Per Bulan
-
 Mari kita lihat sebaran bencana yang terjadi per bulan:
 
 ```{r,echo=FALSE,fig.align = "center",fig.retina = 10}
@@ -52,11 +50,13 @@ data %>%
   ggplot(aes(x = bulan,
              y = n)) +
   geom_col(color = "darkred",
-           fill = "grey") +
+           fill = "black",
+           alpha = .5) +
   geom_label(aes(label = n),
              color = "darkred",
-             size = 2) +
+             size = 3) +
   labs(title = "Banyaknya Kejadian Bencana di Indonesia",
+       subtitle = "sumber: Data BNPB per 7 April 2021",
        x = "Bulan",
        caption = "April per tanggal 7\nScraped and Visualized\nusing R\nikanx101.com") +
   theme_minimal() +
@@ -64,7 +64,7 @@ data %>%
         axis.title.y = element_blank())
 ```
 
-Karena bulan `April` baru saja dimulai, mari kita perhatikan seksama di `3` bulan pertama 2021.
+Karena bulan `April` baru saja dimulai, mari kita perhatikan seksama di `3` bulan pertama 2021. Pada bulan Februari terjadi penambahan banyaknya kejadian bencana yang relatif tinggi. Coba kita lihat detail bencana yang terjadi setiap bulan.
 
 ```{r,echo=FALSE,fig.align = "center",fig.retina = 10}
 data %>%
@@ -74,16 +74,82 @@ data %>%
   ggplot(aes(x = bulan,
              y = n,
              fill = kejadian)) +
-  geom_col(color = "darkred") +
+  geom_col(color = "darkred",
+           alpha = .5) +
   geom_label(aes(label = n),
              color = "darkred",
-             size = 2)  +
-  facet_wrap(~kejadian) +
-  labs(title = "Banyaknya Kejadian Bencana di Indonesia",
-       subtitle = "Detail per Kejadian",
-       x = "Bulan") +
+             size = 3)  +
+  facet_wrap(~kejadian,ncol = 2) +
+  scale_fill_brewer(palette = "Dark2") +
+  labs(title = "Detail Banyaknya Kejadian Bencana di Indonesia",
+       subtitle = "sumber: Data BNPB per 7 April 2021",
+       x = "Bulan",
+       caption = "April per tanggal 7\nScraped and Visualized\nusing R\nikanx101.com") +
   theme_minimal() +
   theme(axis.text.y = element_blank(),
-        axis.title.y = element_blank())
+        axis.title.y = element_blank(),
+        legend.position = "none")
 ```
 
+Dari grafik di atas, kita mendapatkan informasi sebagai berikut:
+
+- Bencana `banjir` ada tren penurunan sejak Januari ke Maret.
+- Bencana `angin puting beliung` ada tren kenaikan sejak Januari ke Maret.
+- Bencana `tanah longsor` ada peningkatan dari Januari ke Februari. Namun ada sedikit penurunan di Maret.
+    - Saya bukan ahli cuaca tapi apakah ada hubungan antara ketiga bencana _hidrometeorologi_ ini?
+    - Saya menduga ada faktor perubahan musim dari penghujan ke kemarau. _Sotoy sih ini. Hehe_
+- Di saat banyak daerah terkena `banjir` dan `puting beliung`, justru ada kenaikan jumlah bencana `kebakaran hutan dan lahan` di bulan Februari.
+
+Bagaimana dengan sebaran bencana _hidrometeorologi_ per provinsi?
+
+```{r,echo=FALSE,fig.align = "center",fig.height = 13}
+data %>% 
+  group_by(kejadian,provinsi) %>% 
+  count() %>% 
+  ungroup() %>% 
+  filter(kejadian %in% c("BANJIR","PUTING BELIUNG","TANAH LONGSOR")) %>% 
+  ggplot(aes(y = reorder(provinsi,n),
+             x = n,
+             fill = kejadian)) +
+  geom_col(color = "darkred",
+           alpha = .5) +
+  geom_label(aes(label = n),
+             color = "darkred",
+             size = 3)  +
+  facet_wrap(~kejadian,ncol = 1,scales = "free") +
+  scale_fill_brewer(palette = "Dark2") +
+  labs(title = "Detail Banyaknya Kejadian Bencana di Indonesia",
+       subtitle = "sumber: Data BNPB per 7 April 2021",
+       y = "Provinsi",
+       caption = "April per tanggal 7\nScraped and Visualized\nusing R\nikanx101.com") +
+  theme_minimal() +
+  theme(axis.text.x = element_blank(),
+        axis.title.x = element_blank(),
+        legend.position = "none")
+```
+
+Kita lihat di atas, beberapa provinsi sangat rawan bencana _hidrometerologi_. Saya tidak ingin menggunakan kata __langganan__ namun ada baiknya masyarakat yang ada di daerah tersebut bisa lebih waspada.
+
+Bagaimana dengan korban akibat bencana?
+
+```{r,echo=FALSE,fig.align = "center",fig.retina = 10,warning=FALSE,message=FALSE}
+data %>% 
+  group_by(kejadian) %>% 
+  summarise(death = sum(meninggal),
+            lost = sum(hilang),
+            injured = sum(terluka),
+            incident = length(kejadian)) %>% 
+  ungroup() %>% 
+  rename(Bencana = kejadian,
+         "Berapa banyak kejadian" = incident) %>% 
+  arrange(desc(death)) %>% 
+  knitr::kable(align = "c")
+```
+
+Gempa bumi menjadi bencana yang memiliki rasio banyak korban per kejadian terbesar di Indonesia.
+
+> Hal ini menjadi peringatan bersama bahwa selain bencana _hidrometeorologi_, Indonesia yang terletak di atas lempeng Eurasia, Pasifik, dan Indo-Australia juga memiliki potensi bencana gempa yang tidak bisa diacuhkan. (sumber: [Kompas.com](https://www.kompas.com/skola/read/2020/04/20/060000069/mengapa-di-indonesia-sering-terjadi-gempa-?page=all#:~:text=Indonesia%20rawan%20gempa%20karena%20terletak,%2C%20dan%20Lempeng%20Indo%2DAustralia.))
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads shown.`
