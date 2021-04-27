@@ -1,6 +1,6 @@
 library(gtrendsR)
 
-data = gtrends(c("puasa","ramadhan","sirup","marjan"),geo = "ID")
+data = gtrends(c("puasa","ramadhan","tarawih","sahur","mudik"),geo = "ID")
 
 str(data)
 

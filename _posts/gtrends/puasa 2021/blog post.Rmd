@@ -1,0 +1,300 @@
+---
+title: "Tren Pencarian Google Terkait Ramadhan Tahun Ini"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/Documents/ikanx101.github.io/_posts/gtrends/puasa 2021")
+library(ggplot2)
+library(dplyr)
+library(tidytext)
+library("RColorBrewer")
+
+rm(list=ls())
+load("bahan puasa.rda")
+data_int = 
+  data_int %>% 
+  mutate(tahun = lubridate::year(date),
+         bulan = lubridate::month(date),
+         date = as.Date(date,"%Y-%M-%D"),
+         hits = as.numeric(hits))
+```
+
+Sebenarnya tema tulisan ini hendak saya _post_ di awal Ramadhan tapi _qodarullah_ baru bisa direalisasikan saat ini.
+
+Ibadah puasa pada bulan Ramadhan 1442 Hijriah telah memasuki hari ke-15 pada Selasa, 27 April 2021. Tidak terasa ternyata sudah memasuki pertengahan bulan. Sama dengan Ramadhan sebelumnya, bulan Ramadhan tahun ini masih bertemakan pandemi Covid-19. Tentunya ada _experiences_ yang bisa kita bawa dari Ramadhan tahun lalu agar pelaksanaan ibadah Ramadhan tahun ini lebih lancar.
+
+Saya tertarik dengan _excitement_ ___netizen___ __+62__ dalam menyambut bulan Ramadhan tahun ini. Salah satu cara saya melihat seberapa besar _excitement_ _netizen_ adalah dengan melihat tren pencarian di Google terkait _keywords_ tentang Ramadhan. Oleh karena itu, saya coba mengambil data _Google Trends_ dari _keywords_ berikut ini:
+
+1. Puasa
+1. Ramadhan
+1. Tarawih
+1. Sahur
+
+Sebagai informasi tambahan, saya mengambil data ini menggunakan __R__ sekaligus sehingga nilai `hits` (suatu indeks yang menyatakan seberapa _keyword_ dicari oleh _netizen_) dari 4 _keywords_ di atas bisa dibandingkan langsung.
+
+# __Puasa__
+
+Sekarang kita akan lihat data _Google Trends_ terkait _keyword_ __puasa__ dalam dua tahun terakhir.
+
+```{r,echo=FALSE,fig.retina=10,fig.align='center'}
+data_int %>% 
+  filter(keyword == "puasa") %>% 
+  filter(tahun %in% c(2020,2021)) %>% 
+  ggplot(aes(x = date,
+             y = hits)) +
+  geom_line(color = "darkgreen") +
+  annotate("label",
+           x = as.Date("2020-04-19"),
+           y = 68,
+           label = "Max hits 2020 terjadi\npada 19 April 2020",
+           size = 2.25,
+           color = "darkgreen",
+           fill = "grey") +
+  annotate("label",
+           x = as.Date("2021-04-1"),
+           y = 90,
+           label = "Max hits 2021 terjadi\npada 11 April 2021",
+           size = 2.25,
+           color = "darkgreen",
+           fill = "grey") +
+  theme_minimal() +
+  labs(title = "Tren Pencarian Keyword: Puasa",
+       subtitle = "Terlihat bahwa di tahun ini, tren pencarian terkait puasa lebih tinggi dibandingkan tahun sebelumnya.",
+       caption = "Scraped and Visualized\nusing R\nikanx101.com",
+       x = "Tanggal",
+       y = "Hits") +
+  theme(plot.title = element_text(hjust = .5, face = "bold"),
+        plot.subtitle = element_text(hjust = .5),
+        plot.caption = element_text(hjust = .5))
+```
+
+Apa saja _related queries_ yang dicari terkait _keyword_ __puasa__?
+
+```{r,echo=FALSE,fig.retina=10,fig.align='center',message=FALSE,warning=FALSE}
+wc = 
+  data_query %>% 
+  filter(keyword == "puasa") %>% 
+  select(value,subject) %>% 
+  mutate(subject = as.numeric(subject),
+         subject = ifelse(is.na(subject),5,subject)) %>% 
+  unnest_tokens("words",value) %>% 
+  filter(words != "puasa") %>% 
+  group_by(words) %>% 
+  summarise(freq = sum(subject)) %>%
+  ungroup()
+
+wordcloud::wordcloud(wc$words,
+                     wc$freq,
+                     rot.per = 0.35,
+                     min.freq = 1,
+                     scale=c(8,.2),
+                     colors = brewer.pal(8, "Dark2"))      
+```
+
+# Ramadhan
+
+Sekarang kita akan lihat data _Google Trends_ terkait _keyword_ __Ramadhan__ dalam dua tahun terakhir.
+
+```{r,echo=FALSE,fig.retina=10,fig.align='center'}
+data_int %>% 
+  filter(keyword == "ramadhan") %>% 
+  filter(tahun %in% c(2020,2021)) %>% 
+  mutate(hits = ifelse(is.na(hits),0,hits)) %>% 
+  ggplot(aes(x = date,
+             y = hits)) +
+  geom_line(color = "darkgreen") +
+  annotate("label",
+           x = as.Date("2020-04-19"),
+           y = 50,
+           label = "Max hits 2020 terjadi\npada 19 April 2020",
+           size = 2.25,
+           color = "darkgreen",
+           fill = "grey") +
+  annotate("label",
+           x = as.Date("2021-04-1"),
+           y = 55,
+           label = "Max hits 2021 terjadi\npada 11 April 2021",
+           size = 2.25,
+           color = "darkgreen",
+           fill = "grey") +
+  theme_minimal() +
+  labs(title = "Tren Pencarian Keyword: Ramadhan",
+       subtitle = "Terlihat bahwa tren pencarian terkait ramadhan di dua tahun terakhir relatif sama.",
+       caption = "Scraped and Visualized\nusing R\nikanx101.com",
+       x = "Tanggal",
+       y = "Hits") +
+  theme(plot.title = element_text(hjust = .5, face = "bold"),
+        plot.subtitle = element_text(hjust = .5),
+        plot.caption = element_text(hjust = .5))
+```
+
+Apa saja _related queries_ yang dicari terkait _keyword_ __ramadhan__?
+
+```{r,echo=FALSE,fig.retina=10,fig.align='center',message=FALSE,warning=FALSE}
+wc = 
+  data_query %>% 
+  filter(keyword == "ramadhan") %>% 
+  select(value,subject) %>% 
+  mutate(subject = as.numeric(subject),
+         subject = ifelse(is.na(subject),5,subject)) %>% 
+  unnest_tokens("words",value) %>% 
+  filter(words != "ramadhan") %>% 
+  group_by(words) %>% 
+  summarise(freq = sum(subject)) %>%
+  ungroup()
+
+wordcloud::wordcloud(wc$words,
+                     wc$freq,
+                     rot.per = 0.35,
+                     min.freq = 1,
+                     scale=c(9,.2),
+                     colors = brewer.pal(8, "Dark2"))      
+```
+
+# Tarawih
+
+Sekarang kita akan lihat data _Google Trends_ terkait _keyword_ __tarawih__ dalam dua tahun terakhir.
+
+```{r,echo=FALSE,fig.retina=10,fig.align='center'}
+data_int %>% 
+  filter(keyword == "tarawih") %>% 
+  filter(tahun %in% c(2020,2021)) %>% 
+  mutate(hits = ifelse(is.na(hits),0,hits)) %>% 
+  ggplot(aes(x = date,
+             y = hits)) +
+  geom_line(color = "darkgreen") +
+  annotate("label",
+           x = as.Date("2020-04-19"),
+           y = 20,
+           label = "Max hits 2020 terjadi\npada 19 April 2020",
+           size = 2.25,
+           color = "darkgreen",
+           fill = "grey") +
+  annotate("label",
+           x = as.Date("2021-04-1"),
+           y = 20,
+           label = "Max hits 2021 terjadi\npada 11 April 2021",
+           size = 2.25,
+           color = "darkgreen",
+           fill = "grey") +
+  theme_minimal() +
+  labs(title = "Tren Pencarian Keyword: Tarawih",
+       subtitle = "Terlihat bahwa tren pencarian terkait tarawih di dua tahun terakhir relatif sama.\nJika kita lihat besaran indeks hits, nilainya relatif sangat kecil.",
+       caption = "Scraped and Visualized\nusing R\nikanx101.com",
+       x = "Tanggal",
+       y = "Hits") +
+  theme(plot.title = element_text(hjust = .5, face = "bold"),
+        plot.subtitle = element_text(hjust = .5),
+        plot.caption = element_text(hjust = .5))
+```
+
+Menarik bahwa tren pencariannya __tarawih__ relatif kecil padahal jika kita ingat di tahun lalu sempat ada pembatasan shalat tarawih di masjid yang menyebabkan munculnya imam-imam dadakan di rumah.
+
+Jika dugaan saya benar, maka related queries yang dicari adalah seputar __tata cara shalat tarawih__. Mari kita lihat _related queries_ dari _keyword_ __tarawih__?
+
+```{r,echo=FALSE,fig.retina=10,fig.align='center',message=FALSE,warning=FALSE}
+wc = 
+  data_query %>% 
+  filter(keyword == "tarawih") %>% 
+  select(value,subject) %>% 
+  mutate(subject = as.numeric(subject),
+         subject = ifelse(is.na(subject),5,subject)) %>% 
+  unnest_tokens("words",value) %>% 
+  filter(words != "tarawih") %>% 
+  group_by(words) %>% 
+  summarise(freq = sum(subject)) %>%
+  ungroup()
+
+wordcloud::wordcloud(wc$words,
+                     wc$freq,
+                     rot.per = 0.35,
+                     min.freq = 1,
+                     scale=c(8,.5),
+                     colors = brewer.pal(8, "Dark2"))      
+```
+
+# Sahur
+
+Sekarang kita akan lihat data _Google Trends_ terkait _keyword_ __sahur__ dalam dua tahun terakhir.
+
+```{r,echo=FALSE,fig.retina=10,fig.align='center'}
+data_int %>% 
+  filter(keyword == "sahur") %>% 
+  filter(tahun %in% c(2020,2021)) %>% 
+  mutate(hits = ifelse(is.na(hits),0,hits)) %>% 
+  ggplot(aes(x = date,
+             y = hits)) +
+  geom_line(color = "darkgreen") +
+  annotate("label",
+           x = as.Date("2020-04-19"),
+           y = 8,
+           label = "Max hits 2020 terjadi\npada 19 April 2020",
+           size = 2.25,
+           color = "darkgreen",
+           fill = "grey") +
+  annotate("label",
+           x = as.Date("2021-04-1"),
+           y = 9,
+           label = "Max hits 2021 terjadi\npada 11 April 2021",
+           size = 2.25,
+           color = "darkgreen",
+           fill = "grey") +
+  annotate("label",
+           x = as.Date("2020-07-26"),
+           y = 2,
+           label = "Terjadi pencarian sahur\nmendekati Idul Adha\npada September 2020",
+           size = 2.25,
+           color = "darkgreen",
+           fill = "orange") +
+  annotate("label",
+           x = as.Date("2021-02-7"),
+           y = 2,
+           label = "Terjadi pencarian sahur\npada awal Februari 2021.\nAda ide ini ada apa?",
+           size = 2.25,
+           color = "darkgreen",
+           fill = "orange") +
+  theme_minimal() +
+  labs(title = "Tren Pencarian Keyword: Sahur",
+       subtitle = "Terlihat bahwa tren pencarian terkait sahur di dua tahun terakhir relatif sama.\nNamun ada dua kenaikan kecil di dua waktu di antara dua Ramadhan.",
+       caption = "Scraped and Visualized\nusing R\nikanx101.com",
+       x = "Tanggal",
+       y = "Hits") +
+  theme(plot.title = element_text(hjust = .5, face = "bold"),
+        plot.subtitle = element_text(hjust = .5),
+        plot.caption = element_text(hjust = .5))
+```
+
+Apa saja _related queries_ yang dicari terkait _keyword_ __sahur__?
+
+```{r,echo=FALSE,fig.retina=10,fig.align='center',message=FALSE,warning=FALSE}
+wc = 
+  data_query %>% 
+  filter(keyword == "sahur") %>% 
+  select(value,subject) %>% 
+  mutate(subject = as.numeric(subject),
+         subject = ifelse(is.na(subject),5,subject)) %>% 
+  unnest_tokens("words",value) %>% 
+  filter(words != "sahur") %>% 
+  group_by(words) %>% 
+  summarise(freq = sum(subject)) %>%
+  ungroup()
+
+wordcloud::wordcloud(wc$words,
+                     wc$freq,
+                     rot.per = 0.35,
+                     min.freq = 1,
+                     scale=c(5,.6),
+                     colors = brewer.pal(8, "Dark2"))      
+```
+
+---
+
+Bagaimana? 
+
+Apakah ada temuan yang menarik?
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
