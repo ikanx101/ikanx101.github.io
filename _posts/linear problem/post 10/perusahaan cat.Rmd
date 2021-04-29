@@ -1,0 +1,183 @@
+---
+title: "Optimization Story: Menyelesaikan Masalah Schedulling dengan Algoritma Travelling Salesperson Problem"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+library(dplyr)
+```
+
+Mungkin rekan-rekan bingung saat membaca judul dari tulisan ini.
+
+> ___Bagaimana caranya algoritma yang biasa digunakan untuk menentukan rute terbaik _salesperson_ bisa digunakan untuk menyelesaikan masalah penjadwalan?___
+
+Dalam dunia _optimization_, ada banyak sekali bentuk dari penjadwalan. Setidaknya saya pernah menuliskan 4 kasus penjadwalan di blog saya ini:
+
+1. [Pemilahan jadwal peserta training](https://ikanx101.com/blog/training-jadwal/),
+1. [Penjadwalan perawat di rumah sakit - detail](https://ikanx101.com/blog/nurse-schedulling/),
+1. [Penjadwalan _interviewer_ di lokasi survey](https://ikanx101.com/blog/jadwal-survey/),
+1. [Penjadwalan _shift_ tenaga kesehatan di rumah sakit](https://ikanx101.com/blog/jadwal-optimal/).
+
+Kali ini saya akan menuliskan salah satu kasus penjadwalan lain terkait jadwal produksi suatu industri. Masalah ini masuk ke dalam contoh kasus sederhana.
+
+---
+
+## Perusahaan Cat
+Suatu perusahaan cat memproduksi `4` warna cat yaitu:
+
+-   Putih,
+-   Kuning,
+-   Hitam, dan
+-   Merah.
+
+Keempat cat tersebut diproduksi di mesin-mesin yang sama, sehingga ada keperluan untuk __mencuci mesin-mesin__ (_cleaning_) tersebut di antara produksi `2` cat yang berbeda warna.
+
+Kita mempunyai masalah untuk menentukan urutan produksi cat harian yang *optimal*, yakni urutan produksi cat yang menghasilkan total waktu pencucian paling kecil.
+
+> ***Urutan harian ini akan dipakai tiap hari, karena perusahaan setiap hari harus memproduksi keempat cat tersebut.***
+
+Tabel berikut menampilkan waktu pencucian antara produksi cat di suatu baris jika akan dilanjutkan dengan cat di suatu kolom.
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+data = data.frame(putih = c(NA,15,35,30),
+                  kuning = c(5,NA,40,35),
+                  hitam = c(12,20,NA,25),
+                  merah = c(14,20,28,NA))
+
+row.names(data) = c("putih","kuning","hitam","merah")
+
+options(knitr.kable.NA = '~')
+cat("Matriks Cleaning Mesin Cat (dalam menit)")
+knitr::kable(data,row.names = T,align = "c")
+```
+
+> ***Urutan produksi cat seperti apa yang meminimalkan waktu cleaning?***
+
+---
+
+Sebenarnya masalah di atas mirip sekali dengan **Travelling Salesperson Problem**, yakni suatu masalah *optimization* yang mencari rute terpendek dari beberapa tempat.
+
+> _Kenapa kok mirip dengan_ __TSP__?
+
+Jika pada __TSP__ kita bertujuan untuk meminimalisir jarak dan/atau waktu tempuh, maka di kasus ini kita akan meminimalisir waktu _cleaning_.
+
+### Formulasi Matematika
+
+Menggunakan formula __Miller-Tucker_Zemlin__, saya akan memecahkan masalah ini.
+
+Misalkan saya tuliskan:
+
+- $W = \{1,2,3,4\}$ sebagai himpunan warna cat yang diproduksi. 
+    - 1 menunjukkan putih, 
+    - 2 menunjukkan kuning, 
+    - 3 menunjukkan hitam, dan 
+    - 4 menunjukkan merah.
+- $c_{ij}$ menunjukkan waktu *cleaning* antara produksi cat warna $i$ ke $j$, dimana $i,j \in W$.
+
+$$x_{ij} = \begin{cases} 1,& \text{ jika pabrik memproduksi cat ke } i \text{ dilanjutkan cat ke } j \\ 0, & \text{ lainnya.}\end{cases}$$
+
+Mari kita bangun beberapa *constraints* dari kasus ini.
+
+_Constraint_ dasar adalah tidak boleh dari cat warna yang sama menuju cat warna yang sama.
+
+$$\sum_{i \in W} x_{ii} = 0$$
+
+*Constraint* pertama adalah satu warna hanya bisa diikuti oleh satu warna yang lain. Maksudnya dari warna ke $i$, hanya bisa diikuti *unique* oleh warna ke $j$. Saya tuliskan ekspresinya menjadi:
+
+$$\sum_{j \in W,j \neq i} x_{ij} = 1$$
+
+*Constraint* kedua adalah satu warna hanya bisa berasal dari satu warna yang lain. Maksudnya dari warna $i$, hanya bisa berasal *unique* dari warna ke $j$. Saya tuliskan ekspresinya menjadi:
+
+$$\sum_{i \in W,i \neq j} x_{ij} = 1$$
+
+Kedua *constraints* yang di atas ternyata belum cukup untuk menjelaskan kondisi *real*-nya. Kenapa? Kita harus pastikan:
+
+> Semua $i \in W$ terlewati. Solusi yang ada **harus melibatkan semua warna**.
+
+Lantas bagaimana caranya?
+
+Misalkan saya definisikan:
+
+$$u_i \in \mathbb{Z}, \text{ dimana } i = \{1,2,3,4\}$$
+
+Sebagai urutan _tour_. Misalkan $u_i < u_j$, artinya kota $i$ dikunjungi terlebih dahulu baru kota $j$.
+
+Lalu saya akan paksakan agar rute yang ada tidak memiliki _subtour_ dengan:
+
+$$u_i - u_j + 4x_{ij} \leq 4 - 1, \text{ dimana } 2 \leq i \neq j \leq 4$$
+
+$$1 \leq u_i \leq 4-1, \text{ dimana } 2 \leq i \leq 4$$
+
+---
+
+### ___Solver R___
+
+Berikut adalah algoritma di __R__-nya:
+
+```{r,include=FALSE}
+data[is.na(data)] = 100000
+```
+
+```{r,warning=FALSE,message=FALSE}
+# memanggil libraries
+library(ompr)
+library(ompr.roi)
+library(ROI.plugin.glpk)
+
+# memasukkan matriks jarak
+distance = as.matrix(data)
+
+# banyaknya cat
+n = 4
+
+# menuliskan model matematika
+model <- MIPModel() %>%
+  # decision variabel I
+  # berupa binary, 1 jika dari i ke j,
+  # 0 jika lainnya
+  add_variable(x[i, j], i = 1:n, j = 1:n, 
+               type = "integer", lb = 0, ub = 1) %>%
+  # dummy variabel
+  # agar memastikan tidak ada subtour
+  add_variable(u[i], i = 1:n, lb = 1, ub = n) %>% 
+  # objective function
+  # minimize waktu cleaning
+  set_objective(sum_expr(distance[i, j] * x[i, j], i = 1:n, j = 1:n), "min") %>%
+  # tidak boleh dari dan ke warna yang sama
+  set_bounds(x[i, i], ub = 0, i = 1:n) %>%
+  # pergi dari setiap warna cat
+  add_constraint(sum_expr(x[i, j], j = 1:n) == 1, i = 1:n) %>%
+  # masuk ke setiap warna cat
+  add_constraint(sum_expr(x[i, j], i = 1:n) == 1, j = 1:n) %>%
+  # ensure no subtours (arc constraints)
+  add_constraint(u[i] >= 2, i = 2:n) %>% 
+  add_constraint(u[i] - u[j] + 1 <= (n - 1) * (1 - x[i, j]), i = 2:n, j = 2:n)
+
+model
+```
+
+Saya _solve_ sehingga hasilnya:
+
+```{r,warning=FALSE,message=FALSE}
+result <- solve_model(model, with_ROI(solver = "glpk", verbose = TRUE))
+```
+
+Berikut adalah solusinya:
+
+```{r}
+solution = get_solution(result, x[i, j]) %>% filter(value > 0)
+solution
+result
+```
+
+Total waktu _cleaning_ yang dihasilkan adalah `83` menit dengan urutan sebagai berikut:
+
+`putih - kuning - hitam - merah`.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
