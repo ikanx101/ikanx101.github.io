@@ -1,0 +1,106 @@
+---
+title: "Uji Validitas dan Reliabilitas Menggunakan R"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+library(psych)
+library(dplyr)
+```
+
+Pagi ini ada satu __DM__ masuk ke _inbox_ saya.
+
+> Uji validitas dan reliabilitas itu gimana _sih_?
+
+Seketika itu juga saya coba _search_ di _blog_ saya yang lama, ternyata saya belum pernah menuliskan tentang hal ini sama sekali.
+
+Pertama kali saya bersentuhan dengan uji validitas dan reliabilitas adalah saat membantu istri saya dulu ketika saat mengerjakan tugas akhir di jurusan Psikologi. Berdasarkan pengalaman saya, kedua uji ini memang lebih sering dipakai oleh rekan-rekan di jurusan sosial karena terkait _design_ alat pengukuran (kuesioner) yang menggunakan skala _likert_.
+
+Bagi saya sebenarnya kedua uji ini cukup simpel untuk dilakukan. Sekarang saya akan memberikan contoh dan langkah-langkah mengerjakannya di __R__.
+
+---
+
+Saat sedang berseluncur di [Kaggle](https://www.kaggle.com/), saya menemukan data [survey kepuasan pelanggan Starbucks di Malaysia](https://www.kaggle.com/mahirahmzh/starbucks-customer-retention-malaysia-survey). Menggunakan data tersebut, saya akan coba menguji validitas dan reliabilitasnya.
+
+Berikut adalah data yang digunakan:
+
+```{r,echo=FALSE}
+data = read.csv("sux.csv") %>% janitor::clean_names() %>% select(-promo_rate)
+str(data)
+```
+
+Ada sebanyak `113` orang responden yang memberikan jawaban berupa skala _likert_ (1-5) terhadap 7 _items_ pertanyaan.
+
+```{r,echo=FALSE}
+cat("Cuplikan 10 Data yang Digunakan")
+id = sort(sample(113,10))
+data[id,] %>% knitr::kable(align = "c",row.names = F)
+```
+
+Uji validitas dan reliabilitas bertujuan untuk mengecek apakah kuesioner atau _items_ pertanyaan yang kita buat sudah baik atau belum.
+
+## Validitas
+
+Uji validitas dilakukan dengan cara membuat satu variabel (kolom) baru berisi penjumlahan dari semua variabel _rates_ yang ada. Misalkan saya definisikan variabel baru bernama `starbucks_rate` sebagai berikut:
+
+```
+starbucks_rate = product_rate + price_rate + ambiance_rate + wifi_rate + service_rate + choose_rate
+```
+
+Berikut __R__ _script_-nya:
+
+```{r,warning=FALSE,message=FALSE}
+data = 
+  data %>% 
+  mutate(starbucks_rate = product_rate + price_rate + ambiance_rate + wifi_rate + service_rate + choose_rate)
+```
+
+Ini adalah hasilnya:
+
+```{r,echo=FALSE}
+cat("Cuplikan 10 Data Hasil Perhitungan")
+data[id,] %>% knitr::kable(align = "c",row.names = F)
+```
+
+Untuk menguji validitas, kita cukup menghitung korelasi antar variabel terhadap variabel totalnya.
+
+```{r}
+korel = data %>% select(-id) %>% cor(method = "pearson") 
+korel = round(korel,2)
+```
+
+```{r,echo=FALSE}
+korel %>% 
+  knitr::kable(align = "c")
+```
+
+Terlihat bahwa semua _items_ memiliki korelasi $>0.5$ yang berarti semua _items_ tersebut _valid_.
+
+## Uji Reliabilitas
+
+Uji reliabilitas digunakan untuk melihat konsistensi responden dalam menjawab kuisioner. Uji ini dilakukan terhadap seluruh pertanyaan yang ada.
+
+Kita akan melihat nilai _Cronbach's Alpha_ sebagai pedoman:
+
+1. Jika nilai _Cronbach’s Alpha_ $> 0.60$ maka reliabel.
+1. Jika nilai _Cronbach’s Alpha_ $< 0.60$ maka tidak reliabel.
+
+Untuk menghitung _Cronbach’s Alpha_, saya menggunakan `library(psych)` sebagai berikut:
+
+
+```{r}
+library(psych)
+data %>% select(-id,-starbucks_rate) %>% alpha()
+```
+
+Nilai _Cronbach’s Alpha_ dapat dilihat dari nilai `raw_alpha`, yakni sebesar `0.7889495`, artinya kuesioner yang kita gunakan sudah reliabel.
+
+Selanjutnya, kita bisa melihat data `raw_alpha` per variabel. Nilai `raw_alpha` tersebut mengindikasikan besaran `raw_alpha` dari kuesioner jika _item_ tersebut dihapus.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
