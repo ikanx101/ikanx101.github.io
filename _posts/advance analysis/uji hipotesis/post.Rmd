@@ -1,0 +1,169 @@
+---
+title: "Statistika Inferensi: Uji Perbedaan Rata-Rata dari Dua Sampel"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(ggplot2)
+library(ggridges)
+```
+
+Bagi rekan-rekan yang pernah mendapatkan mata kuliah __analisis data__ atau __statistika dasar__, pasti familiar dengan istilah __statistika inferensi__. Saya mendefinisikannya secara simpel adalah:
+
+> Statistika inferensi adalah sekumpulan metode statistik yang digunakan untuk menganalisa data _sample_ untuk kemudian diambil kesimpulannya secara __general__ ke populasinya.
+
+Dari uraian di atas, setidaknya saya _highlight_ ada `3` _keywords_ mendasar, yakni:
+
+1. _Sample_,
+1. Populasi, dan
+1. Mengambil kesimpulan.
+
+---
+
+Apa itu _sample_? Apa itu populasi?
+
+Saya akan menjabarkannya dengan analogi __sensus__ dan ___survey___ agar rekan-rekan lebih mudah memahami.
+
+Misalkan suatu saat saya ingin melakukan penelitian terhadap kebiasaan makan masyarakat Jakarta. Salah satu langkah awal yang wajib saya lakukan adalah mendefinisikan target penelitian ini, yakni __warga yang berdomisili di Jakarta__.
+
+__Populasi__ dari penelitian ini berarti __SEMUA ORANG YANG BERDOMISILI DI JAKARTA__. Jika saya melakukan _interview_ kepada semua orang tersebut, maka saya disebut telah melakukan __sensus__.
+
+Masalah yang saya hadapi adalah: ___saya tidak memiliki banyak waktu, tenaga, dan biaya untuk melakukan sensus___.
+
+Saya hanya mampu meng-_interview_ sekitar `200` orang saja, namun saya harapkan hasil _interview_-nya cukup mewakili populasi.
+
+`200` orang inilah yang disebut sebagai ___sample___.
+
+__Statistika inferensi__ mengambil peranan sebagai alat untuk mengambil keputusan dari data _sample_ untuk di-_generalisasi_ ke level populasi.
+
+Statistika inferensi ada banyak jenisnya, mulai dari __uji dua proporsi__, __uji mean satu sample__, __uji mean dua sample__, dan __uji mean tiga atau lebih sample__.
+
+Statistika inferensi juga bisa dibedakan menjadi dua, yakni: parametrik dan non parametrik tergantung dari karakteristik data yang kita miliki.
+
+```{r out.width="50%",echo=FALSE,fig.align='center'}
+knitr::include_graphics("https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/advance%20analysis/uji%20hipotesis/assets/parnonpar.png")
+knitr::include_graphics("https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/advance%20analysis/uji%20hipotesis/assets/parnonpar%20new.png")
+```
+
+Beberapa waktu lalu, saya pernah menuliskan contoh statistika inferensi non parametrik untuk menguji suatu [kasus real](https://ikanx101.com/blog/ingat-lagi-t-test/) di sebuah perusahaan.
+
+Statistika inferensi erat kaitannya dengan pengujian hipotesis. Kelak pengambilan kesimpulan yang dilakukan merupakan hasil pengujian dari hipotesis yang ada. 
+
+Sekarang saya hendak mengingatkan kembali bagaimana langkah-langkah yang harus dilakukan untuk melakukan pengujian hipotesis. Saya akan memberikan contoh __uji mean dari 2 sample__ sebagai berikut:
+
+---
+
+# Uji Rata-Rata dari 2 _Sample_
+
+## Masalah
+
+Tim _sales_ di kota A sedang melakukan suatu penelitian. Mereka hendak membandingkan jualan harian dari dua produk minuman:
+
+1. Minuman A: rasa pepaya,
+1. Minuman B: rasa jambu.
+
+Kedua minuman tersebut memiliki harga, bentuk kemasan (_sachet_), dan gramasi yang sama. 
+
+Untuk itu, mereka mengumpulkan data total sachet terjual dalam sehari selama 60 hari berturut-turut.
+
+Berikut adalah datanya:
+
+```{r,echo=FALSE}
+data = data.frame(hari_ke = 1:60,
+                  minuman_a = sample(10:20,60,replace = T),
+                  minuman_b = sample(15:25,60,replace = T))
+
+cat("Data Rekapan: Total Sachet Terjual Harian")
+knitr::kable(data,align = "c")
+```
+
+
+Berikut adalah _density plot_ (persebaran data) yang ada:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10}
+data %>% 
+  reshape2::melt(id.vars = "hari_ke") %>% 
+  ggplot(aes(x = value,
+             y = variable,
+             fill = variable)) +
+  geom_density_ridges() +
+  scale_fill_brewer() +
+  labs(x = "Banyak sachet terjual dalam sehari",
+       y = "Produk minuman",
+       title = "Persebaran Data Sachet Terjual Harian\nDari Dua Minuman Buah",
+       subtitle = "Apakah ada perbedaan rata-rata sachet terjual dari dua minuman tersebut?",
+       caption = "Contoh Ilustrasi\nDibuat menggunakan R") +
+  theme_minimal() +
+  theme(legend.position = "none",
+        plot.title = element_text(hjust = .5,
+                                  face = "bold", 
+                                  size = 15),
+        plot.subtitle = element_text(hjust = .5,
+                                     face = "italic",
+                                     size = 10),
+        plot.caption = element_text(hjust = .5))
+```
+
+```{r,include=FALSE}
+hasil = t.test(data$minuman_a,data$minuman_b)
+```
+
+## Langkah-Langkah Uji Hipotesis
+
+Perlu saya ingatkan kembali bahwa __uji mean 2 sample__ ada dua jenis, yakni:
+
+1. Uji untuk dua data berpasangan: dilakukan jika __subjek penelitian sama dan ingin melihat apakah perlakuan yang ada memberikan dampak terhadap perubahan mean data atau tidak__. Contoh: peneliti hendak menguji apakah ada perbedaan nilai _pre test_ dan _post test_ dari suatu kelompok murid dalam mengikuti suatu pelatihan. Pada uji ini, kedua _sample_ wajib memiliki jumlah baris yang sama.
+1. Uji untuk data independen: dilakukan jika __dua kelompok sample yang diuji tidak saling berkaitan sama sekali__. Pada uji ini, tidak ada keharusan jumlah baris data dari kedua _sample_ harus sama (bisa berbeda).
+
+Pada kasus ini, kita akan melakukan __uji mean 2 sample__ yang independen.
+
+Untuk melakukannya, ada dua pendekatan:
+
+1. Menggunakan __z-test__: digunakan jika kita mengetahui parameter variansi dari populasi.
+1. Menggunakan __t-test__: digunakan jika kita tidak mengetahui parameter variansi dari populasi sehingga variansi populasi akan kita dekati dengan variansi dari _sample_.
+
+Pada kasus ini, kita akan melakukan __uji mean 2 sample__ yang independen menggunakan __t-test__.
+
+Berikut adalah langkah-langkah uji hipotesis:
+
+- Tentukan hipotesis nol dan hipotesis tandingan.
+    - Notasi: $H_0$ dan $H_1$
+    - Hipotesis nol adalah hipotesis yang mengandung unsur sama dengan.
+- Hitung statistik uji atau p-value.
+- Kesimpulan: Tolak $H_0$ jika $p_{value} < 0.05$.
+    - Kenapa dipilih nilai `0.05`?
+    - Nilai tersebut sebenarnya bisa kita ganti tergantung seberapa besar atau kecil akurasi pengujian yang kita lakukan.
+    - Nilai `0.05` yang digunakan biasanya lazim dipakai pada banyak kasus.
+    - Penjelasan terkait nilai `0.05` atau $\alpha$ atau yang biasa disebut sebagai ___significance level___ bisa rekan-rekan cari di berbagai sumber.
+- Tuliskan kesimpulan dengan kalimat non matematis.
+
+## Pengujian Hipotesis
+
+Pertama-tama kita tentukan hipotesis nol dan hipotesis tandingan.
+
+- Hipotesis nol pada kasus ini adalah: rata-rata _sachet_ terjual dari minuman A dan minuman B sama (tidak ada perbedaan). Notasi: $\mu_A = \mu_B$.
+- Hipotesis tandingan pada kasus ini adalah: rata-rata _sachet_ terjual dari minuman A dan minuman B berbeda. Notasi: $\mu_A \neq \mu_B$.
+    
+Selanjutnya kita akan hitung _p-value_. Untuk melakukannya, saya akan menggunakan __R__ dengan perintah mudah sebagai berikut:
+
+```{r}
+t.test(data$minuman_a,data$minuman_b)
+```
+
+Kita dapatkan _p-value_ sebesar `r hasil$p.value`.
+
+Rata-rata _sachet_ terjual dari minuman A adalah: `r round(mean(data$minuman_a),2)`. Sedankan rata-rata _sachet_ terjual dari minuman B adalah: `r round(mean(data$minuman_b),2)`
+
+Jika dibandingkan dengan nilai `0.05`, maka didapatkan bahwa $p_{value} < 0.05$ sehingga kita __menolak__ $H_0$.
+
+Kesimpulannya:
+
+> Rata-rata sachet terjual dari kedua minuman tersebut berbeda. Minuman B terjual lebih banyak dibandingkan minuman A.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
