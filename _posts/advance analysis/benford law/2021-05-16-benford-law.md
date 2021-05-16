@@ -1,5 +1,5 @@
 ---
-date: 2021-05-16T5:15:00-04:00
+date: 2021-05-16T5:09:14-04:00
 title: "Fenomena Matematis: BENFORD’S LAW"
 categories:
   - Blog
@@ -7,8 +7,8 @@ tags:
   - Machine Learning
   - Artificial Intelligence
   - R
-  - Benford's Law
   - Science
+  - Benford Law
 ---
 
 Setidaknya ada tiga fenomena matematis - statistik yang saya selalu
