@@ -180,7 +180,7 @@ populasi %>%
 
 Ternyata hasilnya mengagetkan! Temuan saya tersebut hampir menyerupai __Benford's Law__.
 
-## Luar Area Negara (dalam km<sup>2</sup>)
+## Luas Area Negara (dalam km<sup>2</sup>)
 Sekarang saya coba iseng menggunakan data luas area setiap negara yang ada di atas. Jika saya hitung _first digit_ dari angka populasi pernegara, lalu saya hitung frekuensinya. Saya dapatkan grafik sebagai berikut:
 
 ```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=5,fig.align='center'}
@@ -507,8 +507,18 @@ benford(tes$omset) %>%
         axis.title = element_blank())
 ```
 
-## Jumlah Ayat dalam Setiap Surat di Al Qur'an
-Rasa penasaran saya semakin dalam. Sampai akhirnya saya mau mencoba apakah jumlah ayat dalam Al Qur'an juga memenuhi __Benford's Law__?
+---
+
+## _So what?_
+Dari penjelasan yang saya dapatkan, jika kita memiliki suatu data yang tidak mengikuti __Benford's Law__, maka bisa jadi data tersebut sudah pernah dimodifikasi sebelumnya. Kelak ini yang akan dijadikan salah satu indikasi terjadinya _fraud_.
+
+Bagaimana cara melihat indikasinya? Teman-teman coba tonton saja _docuseries_-nya di __Netflix__ lalu perhatikan saat sang narasumber menjelaskan bagaimana menentukan foto _fake_ menggunakan __Benford's Law__. Setelah itu, dari grafik-grafik di atas, kira-kira mana yang bisa kita indikasikan adanya modifikasi pada data?
+
+---
+
+## ___Updates___: Jumlah Ayat dalam Setiap Surat di Al Qur'an
+
+Sebagai penutup rasa penasaran saya, saya mau mencoba apakah jumlah ayat dalam Al Qur'an juga memenuhi __Benford's Law__?
 
 Mengambil sumber dari rekapan [blog berikut](https://blog.miftahussalam.com/jumlah-ayat-dalam-alquran/) ini, saya coba menghitungnya:
 
@@ -560,12 +570,8 @@ benford(quran$jumlah_ayat) %>%
         axis.title = element_blank())
 ```
 
+
 ___MasyaAllah___ ternyata hampir mengikuti __Benford's Law__.
-
----
-
-## _So what?_
-Dari penjelasan yang saya dapatkan, jika kita memiliki suatu data yang tidak mengikuti __Benford's Law__, maka bisa jadi data tersebut sudah pernah dimodifikasi sebelumnya. Kelak ini yang akan dijadikan salah satu indikasi terjadinya _fraud_.
 
 ---
 
