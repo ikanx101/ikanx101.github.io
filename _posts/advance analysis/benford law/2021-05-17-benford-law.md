@@ -188,8 +188,7 @@ indikasi terjadinya *fraud*.
 Bagaimana cara melihat indikasinya? Teman-teman coba tonton saja
 *docuseries*-nya di **Netflix** lalu perhatikan saat sang narasumber
 menjelaskan bagaimana menentukan foto *fake* menggunakan **Benford’s
-Law**. Setelah itu, dari grafik-grafik di atas, kira-kira mana yang bisa
-kita indikasikan adanya modifikasi pada data?
+Law**.
 
 ------------------------------------------------------------------------
 
