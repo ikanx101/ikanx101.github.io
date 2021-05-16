@@ -1,8 +1,6 @@
 ---
 title: "Fenomena Matematis: BENFORD'S LAW"
-output: 
-  github_document:
-    pandoc_args: --webtex
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -35,7 +33,7 @@ Jadi setara dengan hukum-hukum lainnya seperti Hukum Newton, Hukum Keppler, Huku
 
 Apa sih isinya?
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center'}
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=5,fig.align='center'}
 dist = data.frame(d = 1:9,
                   p = c(30.1,
                         17.6,
@@ -119,7 +117,7 @@ Bagaimana caranya?
 ## Data Populasi Penduduk di Dunia 2020
 Pertama-tama, saya mengambil data populasi penduduk per negara di dunia dari situs [_worldometers_](https://www.worldometers.info/world-population/population-by-country/). Ada 235 negara yang ada pada data tersebut. Berikut adalah contoh 20 data negara dengan populasi terbanyak:
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center'}
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=5,fig.align='center'}
 rm(list=ls())
 load("bahan blog.rda")
 knitr::kable(head(populasi,20),
@@ -129,7 +127,7 @@ knitr::kable(head(populasi,20),
 
 Jika saya hitung _first digit_ dari angka populasi pernegara, lalu saya hitung frekuensinya. Saya dapatkan grafik sebagai berikut:
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center'}
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=5,fig.align='center'}
 populasi = benford(populasi_clean$population_2020)
 land = benford(populasi_clean$land_area_km2)
 
@@ -185,7 +183,7 @@ Ternyata hasilnya mengagetkan! Temuan saya tersebut hampir menyerupai __Benford'
 ## Luar Area Negara (dalam km<sup>2</sup>)
 Sekarang saya coba iseng menggunakan data luas area setiap negara yang ada di atas. Jika saya hitung _first digit_ dari angka populasi pernegara, lalu saya hitung frekuensinya. Saya dapatkan grafik sebagai berikut:
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center'}
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=5,fig.align='center'}
 land %>% 
   filter(!is.na(benford)) %>% 
   ggplot(aes(x = benford,
@@ -243,7 +241,7 @@ Sekarang saya akan gunakan data Covid 19 yang dihimpun di situs [Wikipedia berik
 
 Saya akan mencoba mengecek apakah data _confirmed case_ per negara mengikuti __Benford's Law__?
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center'}
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=5,fig.align='center'}
 benford(cov_clean$cases_b) %>% 
   ggplot(aes(x = benford,
                y = persen)) +
@@ -295,7 +293,7 @@ Ternyata data Covid 19 _confirmed cases_ hampir mengikuti __Benford's Law__.
 
 Bagaimana dengan data kematian akibat Covid 19?
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center'}
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=5,fig.align='center'}
 benford(cov_clean$deaths_c) %>% 
   ggplot(aes(x = benford,
                y = persen)) +
@@ -350,7 +348,7 @@ Kali ini saya mau menggunakan data lokal di Indonesia, yakni data hasil pemilu p
 
 Saya akan menggunakan data hitung suara untuk kedua pasangan calon presiden yang berkontestasi pada saat itu. Bagaimana hasilnya?
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center'}
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=5,fig.align='center'}
 benford(c(data_pemilu$jomin,data_pemilu$prasangka)) %>% 
   ggplot(aes(x = benford,
                y = persen)) +
@@ -402,7 +400,7 @@ Ternyata hasilnya juga mendekati __Benford's Law__.
 ## Data _Sales Retailer_
 Tahun lalu, saya sempat mendapatkan [data _sales_ produk-produk yang dijual di salah satu _retail_](https://ikanx101.com/blog/minimarket-bekasi/) yang dimiliki bersama oleh beberapa teman saya. Karena penasaran, saya coba cek data harga semua barang-barang yang ditransaksikan selama bulan Januari 2020. Apakah memenuhi __Benford's Law__ atau tidak?
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center',fig.cap="Fig7. Products Prices"}
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=5,fig.align='center',fig.cap="Fig7. Products Prices"}
 mart = read.csv("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/212 Mart/jan 2020.csv")
 benford(mart$harga) %>% 
   ggplot(aes(x = benford,
@@ -453,12 +451,68 @@ benford(mart$harga) %>%
 
 Sekali lagi, data harga ternyata hampir mengikuti __Benford's Law__.
 
+Begitu pula dengan data total transaksi per konsumen, saya dapatkan:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=5,fig.align='center',fig.cap="Fig7. Products Prices"}
+tes = 
+     mart %>% 
+     group_by(id_transaksi) %>% 
+     summarise(omset = harga*qty) %>% 
+     ungroup()
+
+benford(tes$omset) %>% 
+  ggplot(aes(x = benford,
+               y = persen)) +
+  geom_col(color = "black",
+           fill = "#08ff1f",
+           width = .5) +
+  geom_line(aes(x = 1:9,
+                y = c(30.1,
+                    17.6,
+                    12.5,
+                    9.7,
+                    7.9,
+                    6.7,
+                    5.8,
+                    5.1,
+                    4.6)),
+            color = "#23797d",
+            size = 1.5
+            ) +
+  theme_minimal() +
+  labs(title = "First Digit from Total Transaction per Consumer\nAll Transaction Data January 2020\nClose to Benford's Law",
+       subtitle = "Source: Retailer in Bekasi",
+       caption = "Scraped and Visualized using R\nikanx101.com") +
+  annotate("segment",
+           x = 7,
+           y = 5.8,
+           xend = 8,
+           yend = 10,
+           color = "#23797d") +
+  annotate("label",
+           x = 8,
+           y = 10,
+           color = "#23797d",
+           fill = "#f4d7f5",
+           label = "Green line is\nBenford's Law Distribution") +
+  
+  theme(plot.title = element_text(hjust = .5,
+                                  size = 15),
+        plot.subtitle = element_text(hjust = .5,
+                                     size = 12),
+        plot.caption = element_text(hjust = .5,
+                                    size = 8,
+                                    face = "bold.italic"),
+        axis.text.y = element_blank(),
+        axis.title = element_blank())
+```
+
 ## Jumlah Ayat dalam Setiap Surat di Al Qur'an
 Rasa penasaran saya semakin dalam. Sampai akhirnya saya mau mencoba apakah jumlah ayat dalam Al Qur'an juga memenuhi __Benford's Law__?
 
 Mengambil sumber dari rekapan [blog berikut](https://blog.miftahussalam.com/jumlah-ayat-dalam-alquran/) ini, saya coba menghitungnya:
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center'}
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=5,fig.align='center'}
 benford(quran$jumlah_ayat) %>% 
   ggplot(aes(x = benford,
                y = persen)) +
