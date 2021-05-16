@@ -1,0 +1,518 @@
+---
+title: "Fenomena Matematis: BENFORD'S LAW"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/Documents/ikanx101.github.io/_posts/advance analysis/benford law")
+
+rm(list=ls())
+library(dplyr)
+library(ggplot2)
+library(reshape2)
+```
+
+Setidaknya ada tiga fenomena matematis - statistik yang saya selalu kagumi di dunia ini:
+
+1. __Distribusi Normal__; Konon katanya __hampir semua data di dunia ini__ berdistribusi normal (berbentuk _bell curved_). Di beberapa kesempatan saya sempat membuktikan bahwa:
+    1. Mayoritas data statistik ___FIFA World Cup___ lalu berdistribusi normal.
+    1. Data rekapitulasi pemilu lalu berdistribusi normal.
+    1. Data [selisih gol di Premier League](https://ikanx101.com/blog/EPL-home-away/#bell-curve-pada-data-selisih-goal) berdistribusi normal.
+    1. Data kejadian alamiah seperti berat badan dan tinggi badan di suatu populasi penduduk berdistribusi normal.
+1. __Distribusi Pareto__; Jika distribusi normal saya temukan di kejadian-kejadian alamiah, maka data yang melibatkan suatu perlakuan atau _effort_ berdistribusi pareto. Maksudnya bagaimana? Suatu ketika saya sempat menganalisa data performa karyawan di suatu perusahaan. Alih-alih berdistribusi normal, justru data tersebut berdistribusi pareto. Salah satu dugaan saya dulu adalah karena karyawan yang bekerja sudah benar-benar terseleksi dengan baik.
+1. ___Golden Ratio___; Konon semua keindahan yang ada di dunia ini mengikuti _golden ratio_ sehingga orang berlomba-lomba untuk mengikutinya. Mulai dari ukuran televisi, kartu debit/kredit, dst.
+
+---
+
+Pada saat sahur di hari terakhir puasa kemarin, saya menonton _Docuseries_ di __Netflix__ berjudul ___Connected___. Pada salah satu episode berjudul ___Codes___, saya dikenalkan kepada salah satu fenomena matematis lainnya bernama: __Benford's Law__ atau yang biasa dikenal sebagai ___First-Digit Law___.
+
+> Ini bukanlah sebuah cocoklogi karena statusnya adalah LAW alias hukum dalam science.
+
+Jadi setara dengan hukum-hukum lainnya seperti Hukum Newton, Hukum Keppler, Hukum Gravitasi, dst.
+
+Apa sih isinya?
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center',fig.cap="Fig1. Benford's Law"}
+dist = data.frame(d = 1:9,
+                  p = c(30.1,
+                        17.6,
+                        12.5,
+                        9.7,
+                        7.9,
+                        6.7,
+                        5.8,
+                        5.1,
+                        4.6))
+
+dist %>% 
+  mutate(p1 = 40 - p,
+         d = factor(d,levels = 1:9)) %>% 
+  melt(id.vars = "d") %>% 
+  mutate(variable = factor(variable,levels = c("p1","p")),
+         label_plot = ifelse(variable == "p",
+                             paste0(value,"%"),
+                             NA)) %>% 
+  ggplot() +
+  geom_col(aes(x = d,
+               y = value,
+               fill = variable),
+           color = "white",
+           width = .8) +
+  geom_line(aes(x = rep(1:9,2),
+                y = rep(c(30.1,
+                      17.6,
+                      12.5,
+                      9.7,
+                      7.9,
+                      6.7,
+                      5.8,
+                      5.1,
+                      4.6),2)
+                ),
+            color = "#23797d",
+            size = 1.5
+            ) +
+  geom_label(aes(x = d,
+                 y = value,
+                 label = label_plot),
+             alpha = .7,
+             color = "#23797d") +
+  scale_fill_manual(values = c("#d1e5e6","#05a8ad")) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(size = 15),
+        legend.position = "none",
+        axis.text.y = element_blank()) +
+  labs(title = "BENFORD'S LAW",
+       subtitle = "The law states that in many naturally occurring collections of numbers,\nthe leading digit is likely to be small. In sets that obey the law,\nthe number 1 appears as the leading significant digit about 30% of the time,\nwhile 9 appears as the leading significant digit less than 5% of the time",
+       caption = "Visualized using R\nikanx101.com",
+       x = "First Digit",
+       y = "Probability") +
+  theme(plot.title = element_text(hjust = .5,
+                                  face = "bold",
+                                  size = 20),
+        plot.subtitle = element_text(hjust = .5,
+                                     face = "italic"),
+        plot.caption = element_text(hjust = .5,
+                                    face = "bold.italic")) +
+  annotate("label",
+           x = 4.5,
+           y = 30,
+           label = "Grafik Distribusi Peluang",
+           color = "#7f8a82")
+```
+
+Jadi jika kita memiliki suatu kumpulan data angka dan mengambil hanya _digit_ pertamanya saja, maka sebaran dari frekuensi digit pertama tersebut akan mengikuti __Benford's Law__.
+
+Lantas apa kegunaan dari hukum ini? Mulai dari menemukan _fraud_ di perpajakan sampai mengecek keaslian suatu gambar.
+
+Penasaran dengan hukum tersebut, sekarang saya akan mengecek dengan data-data yang tersedia di publik. Apakah benar __Benford's Law__ berlaku atau tidak.
+
+Bagaimana caranya?
+
+> Simpel, saya cukup menghitung frekuensi dari ___first digit___ saja.
+
+---
+
+## Data Populasi Penduduk di Dunia 2020
+Pertama-tama, saya mengambil data populasi penduduk per negara di dunia dari situs [_worldometers_](https://www.worldometers.info/world-population/population-by-country/). Ada 235 negara yang ada pada data tersebut. Berikut adalah contoh 20 data negara dengan populasi terbanyak:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center'}
+rm(list=ls())
+load("bahan blog.rda")
+knitr::kable(head(populasi,20),
+             caption = "20 Data Negara dengan Populasi Terbanyak")
+```
+
+
+Jika saya hitung _first digit_ dari angka populasi pernegara, lalu saya hitung frekuensinya. Saya dapatkan grafik sebagai berikut:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center',fig.cap="Fig2. Population"}
+populasi = benford(populasi_clean$population_2020)
+land = benford(populasi_clean$land_area_km2)
+
+populasi %>% 
+  ggplot(aes(x = benford,
+               y = persen)) +
+  geom_col(color = "black",
+           fill = "#b700ba",
+           width = .25) +
+  geom_line(aes(x = 1:9,
+                y = c(30.1,
+                    17.6,
+                    12.5,
+                    9.7,
+                    7.9,
+                    6.7,
+                    5.8,
+                    5.1,
+                    4.6)),
+            color = "#23797d",
+            size = 1.5
+            ) +
+  theme_minimal() +
+  labs(title = "First Digit from Population Data\nAll Countries in the World\nClose to Benford's Law",
+       subtitle = "Source: worldometers.info",
+       caption = "Scraped and Visualized using R\nikanx101.com") +
+  annotate("segment",
+           x = 7,
+           y = 5.8,
+           xend = 8,
+           yend = 10,
+           color = "#23797d") +
+  annotate("label",
+           x = 8,
+           y = 10,
+           color = "#23797d",
+           fill = "#f4d7f5",
+           label = "Green line is\nBenford's Law Distribution") +
+  
+  theme(plot.title = element_text(hjust = .5,
+                                  size = 15),
+        plot.subtitle = element_text(hjust = .5,
+                                     size = 12),
+        plot.caption = element_text(hjust = .5,
+                                    size = 8,
+                                    face = "bold.italic"),
+        axis.text.y = element_blank(),
+        axis.title = element_blank())
+```
+
+Ternyata hasilnya mengagetkan! Temuan saya tersebut hampir menyerupai __Benford's Law__.
+
+## Luar Area Negara (dalam $km^2$)
+Sekarang saya coba iseng menggunakan data luas area setiap negara yang ada di atas. Jika saya hitung _first digit_ dari angka populasi pernegara, lalu saya hitung frekuensinya. Saya dapatkan grafik sebagai berikut:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center',fig.cap="Fig3. Land Area"}
+land %>% 
+  filter(!is.na(benford)) %>% 
+  ggplot(aes(x = benford,
+               y = persen)) +
+  geom_col(color = "black",
+           fill = "#946d2f",
+           width = .25) +
+  geom_line(aes(x = 1:9,
+                y = c(30.1,
+                    17.6,
+                    12.5,
+                    9.7,
+                    7.9,
+                    6.7,
+                    5.8,
+                    5.1,
+                    4.6)),
+            color = "#23797d",
+            size = 1.5
+            ) +
+  theme_minimal() +
+  labs(title = "First Digit from Land Area Data\nAll Countries in the World\nClose to Benford's Law",
+       subtitle = "Source: worldometers.info",
+       caption = "Scraped and Visualized using R\nikanx101.com") +
+  annotate("segment",
+           x = 7,
+           y = 5.8,
+           xend = 8,
+           yend = 10,
+           color = "#23797d") +
+  annotate("label",
+           x = 8,
+           y = 10,
+           color = "#23797d",
+           fill = "#f4d7f5",
+           label = "Green line is\nBenford's Law Distribution") +
+  
+  theme(plot.title = element_text(hjust = .5,
+                                  size = 15),
+        plot.subtitle = element_text(hjust = .5,
+                                     size = 12),
+        plot.caption = element_text(hjust = .5,
+                                    size = 8,
+                                    face = "bold.italic"),
+        axis.text.y = element_blank(),
+        axis.title = element_blank())
+```
+
+Ternyata data luas area setiap negara mengikuti __Benford's Law__.
+
+## Data COVID 19
+Saya masih penasaran, kenapa kedua data di atas mengikuti __Benford's Law__? Apakah ini kesengajaan? _Hehehe_.
+
+Sekarang saya akan gunakan data Covid 19 yang dihimpun di situs [Wikipedia berikut](https://en.wikipedia.org/wiki/Template:COVID-19_pandemic_data). Per 16 Mei 2021 pukul 11:00 WIB, ada 242 baris data per negara.
+
+Saya akan mencoba mengecek apakah data _confirmed case_ per negara mengikuti __Benford's Law__?
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center',fig.cap="Fig4. Covid 19 Confirmed Cases"}
+benford(cov_clean$cases_b) %>% 
+  ggplot(aes(x = benford,
+               y = persen)) +
+  geom_col(color = "black",
+           fill = "#962035",
+           width = .75) +
+  geom_line(aes(x = 1:9,
+                y = c(30.1,
+                    17.6,
+                    12.5,
+                    9.7,
+                    7.9,
+                    6.7,
+                    5.8,
+                    5.1,
+                    4.6)),
+            color = "#23797d",
+            size = 1.5
+            ) +
+  theme_minimal() +
+  labs(title = "First Digit from Covid 19 Confirmed Cases Data\nAll Countries in the World\nClose to Benford's Law",
+       subtitle = "Source: Wikipedia",
+       caption = "Scraped and Visualized using R\nikanx101.com") +
+  annotate("segment",
+           x = 7,
+           y = 5.8,
+           xend = 8,
+           yend = 10,
+           color = "#23797d") +
+  annotate("label",
+           x = 8,
+           y = 10,
+           color = "#23797d",
+           fill = "#f4d7f5",
+           label = "Green line is\nBenford's Law Distribution") +
+  
+  theme(plot.title = element_text(hjust = .5,
+                                  size = 15),
+        plot.subtitle = element_text(hjust = .5,
+                                     size = 12),
+        plot.caption = element_text(hjust = .5,
+                                    size = 8,
+                                    face = "bold.italic"),
+        axis.text.y = element_blank(),
+        axis.title = element_blank())
+```
+
+Ternyata data Covid 19 _confirmed cases_ hampir mengikuti __Benford's Law__.
+
+Bagaimana dengan data kematian akibat Covid 19?
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center',fig.cap="Fig5. Covid 19 Deaths"}
+benford(cov_clean$deaths_c) %>% 
+  ggplot(aes(x = benford,
+               y = persen)) +
+  geom_col(color = "black",
+           fill = "#540312",
+           width = .75) +
+  geom_line(aes(x = 1:9,
+                y = c(30.1,
+                    17.6,
+                    12.5,
+                    9.7,
+                    7.9,
+                    6.7,
+                    5.8,
+                    5.1,
+                    4.6)),
+            color = "#23797d",
+            size = 1.5
+            ) +
+  theme_minimal() +
+  labs(title = "First Digit from Covid 19 Death Data\nAll Countries in the World\nClose to Benford's Law",
+       subtitle = "Source: Wikipedia",
+       caption = "Scraped and Visualized using R\nikanx101.com") +
+  annotate("segment",
+           x = 7,
+           y = 5.8,
+           xend = 8,
+           yend = 10,
+           color = "#23797d") +
+  annotate("label",
+           x = 8,
+           y = 10,
+           color = "#23797d",
+           fill = "#f4d7f5",
+           label = "Green line is\nBenford's Law Distribution") +
+  
+  theme(plot.title = element_text(hjust = .5,
+                                  size = 15),
+        plot.subtitle = element_text(hjust = .5,
+                                     size = 12),
+        plot.caption = element_text(hjust = .5,
+                                    size = 8,
+                                    face = "bold.italic"),
+        axis.text.y = element_blank(),
+        axis.title = element_blank())
+```
+
+Ternyata data Covid 19 _deaths_ hampir mengikuti __Benford's Law__.
+
+## Data Hasil Pemilu Presiden 2019
+Kali ini saya mau menggunakan data lokal di Indonesia, yakni data hasil pemilu presiden 2019 yang direkap di [situs KPU](https://pemilu2019.kpu.go.id/#/ppwp/hitung-suara/).
+
+Saya akan menggunakan data hitung suara untuk kedua pasangan calon presiden yang berkontestasi pada saat itu. Bagaimana hasilnya?
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center',fig.cap="Fig6. Pilpres 2019"}
+benford(c(data_pemilu$jomin,data_pemilu$prasangka)) %>% 
+  ggplot(aes(x = benford,
+               y = persen)) +
+  geom_col(color = "black",
+           fill = "#152999",
+           width = .15) +
+  geom_line(aes(x = c(1:5,7:9),
+                y = c(30.1,
+                    17.6,
+                    12.5,
+                    9.7,
+                    7.9,
+                    5.8,
+                    5.1,
+                    4.6)),
+            color = "#23797d",
+            size = 1.5
+            ) +
+  theme_minimal() +
+  labs(title = "First Digit from Pilpres 2019 Data\nRekapitulasi KPU Indonesia\nClose to Benford's Law",
+       subtitle = "Source: pemilu2019.kpu.go.id",
+       caption = "Scraped and Visualized using R\nikanx101.com") +
+  annotate("segment",
+           x = 7,
+           y = 5.8,
+           xend = 8,
+           yend = 10,
+           color = "#23797d") +
+  annotate("label",
+           x = 8,
+           y = 10,
+           color = "#23797d",
+           fill = "#f4d7f5",
+           label = "Green line is\nBenford's Law Distribution",
+           size = 3) +
+  theme(plot.title = element_text(hjust = .5,
+                                  size = 15),
+        plot.subtitle = element_text(hjust = .5,
+                                     size = 12),
+        plot.caption = element_text(hjust = .5,
+                                    size = 8,
+                                    face = "bold.italic"),
+        axis.text.y = element_blank(),
+        axis.title = element_blank())
+```
+
+Ternyata hasilnya juga mendekati __Benford's Law__.
+
+## Data _Sales Retailer_
+Tahun lalu, saya sempat mendapatkan [data _sales_ produk-produk yang dijual di salah satu _retail_](https://ikanx101.com/blog/minimarket-bekasi/) yang dimiliki bersama oleh beberapa teman saya. Karena penasaran, saya coba cek data harga semua barang-barang yang ditransaksikan selama bulan Januari 2020. Apakah memenuhi __Benford's Law__ atau tidak?
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center',fig.cap="Fig7. Products Prices"}
+mart = read.csv("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/212 Mart/jan 2020.csv")
+benford(mart$harga) %>% 
+  ggplot(aes(x = benford,
+               y = persen)) +
+  geom_col(color = "black",
+           fill = "#08ffff",
+           width = .5) +
+  geom_line(aes(x = 1:9,
+                y = c(30.1,
+                    17.6,
+                    12.5,
+                    9.7,
+                    7.9,
+                    6.7,
+                    5.8,
+                    5.1,
+                    4.6)),
+            color = "#23797d",
+            size = 1.5
+            ) +
+  theme_minimal() +
+  labs(title = "First Digit from Product Price\nAll Transaction Data January 2020\nClose to Benford's Law",
+       subtitle = "Source: Retailer in Bekasi",
+       caption = "Scraped and Visualized using R\nikanx101.com") +
+  annotate("segment",
+           x = 7,
+           y = 5.8,
+           xend = 8,
+           yend = 10,
+           color = "#23797d") +
+  annotate("label",
+           x = 8,
+           y = 10,
+           color = "#23797d",
+           fill = "#f4d7f5",
+           label = "Green line is\nBenford's Law Distribution") +
+  
+  theme(plot.title = element_text(hjust = .5,
+                                  size = 15),
+        plot.subtitle = element_text(hjust = .5,
+                                     size = 12),
+        plot.caption = element_text(hjust = .5,
+                                    size = 8,
+                                    face = "bold.italic"),
+        axis.text.y = element_blank(),
+        axis.title = element_blank())
+```
+
+Sekali lagi, data harga ternyata hampir mengikuti __Benford's Law__.
+
+## Jumlah Ayat dalam Setiap Surat di Al Qur'an
+Rasa penasaran saya semakin dalam. Sampai akhirnya saya mau mencoba apakah jumlah ayat dalam Al Qur'an juga memenuhi __Benford's Law__?
+
+Mengambil sumber dari rekapan [blog berikut](https://blog.miftahussalam.com/jumlah-ayat-dalam-alquran/) ini, saya coba menghitungnya:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center',fig.cap="Fig8. Verses in Al Qur'an"}
+benford(quran$jumlah_ayat) %>% 
+  ggplot(aes(x = benford,
+               y = persen)) +
+  geom_col(color = "black",
+           fill = "#08ffff",
+           width = .5) +
+  geom_line(aes(x = 1:9,
+                y = c(30.1,
+                    17.6,
+                    12.5,
+                    9.7,
+                    7.9,
+                    6.7,
+                    5.8,
+                    5.1,
+                    4.6)),
+            color = "#23797d",
+            size = 1.5
+            ) +
+  theme_minimal() +
+  labs(title = "First Digit from Number of Verses in Each Surah\nAl Qur'an\nClose to Benford's Law",
+       subtitle = "Source: blog.miftahussalam.com",
+       caption = "Scraped and Visualized using R\nikanx101.com") +
+  annotate("segment",
+           x = 7,
+           y = 5.8,
+           xend = 8,
+           yend = 10,
+           color = "#23797d") +
+  annotate("label",
+           x = 8,
+           y = 10,
+           color = "#23797d",
+           fill = "#f4d7f5",
+           label = "Green line is\nBenford's Law Distribution") +
+  
+  theme(plot.title = element_text(hjust = .5,
+                                  size = 15),
+        plot.subtitle = element_text(hjust = .5,
+                                     size = 12),
+        plot.caption = element_text(hjust = .5,
+                                    size = 8,
+                                    face = "bold.italic"),
+        axis.text.y = element_blank(),
+        axis.title = element_blank())
+```
+
+___MasyaAllah___ ternyata hampir mengikuti __Benford's Law__.
+
+---
+
+## _So what?_
+Dari penjelasan yang saya dapatkan, jika kita memiliki suatu data yang tidak mengikuti __Benford's Law__, maka bisa jadi data tersebut sudah pernah dimodifikasi sebelumnya. Kelak ini yang akan dijadikan salah satu indikasi terjadinya _fraud_.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
