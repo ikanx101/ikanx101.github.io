@@ -35,7 +35,7 @@ Jadi setara dengan hukum-hukum lainnya seperti Hukum Newton, Hukum Keppler, Huku
 
 Apa sih isinya?
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center',fig.cap="Fig1. Benford's Law"}
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center'}
 dist = data.frame(d = 1:9,
                   p = c(30.1,
                         17.6,
@@ -129,7 +129,7 @@ knitr::kable(head(populasi,20),
 
 Jika saya hitung _first digit_ dari angka populasi pernegara, lalu saya hitung frekuensinya. Saya dapatkan grafik sebagai berikut:
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center',fig.cap="Fig2. Population"}
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center'}
 populasi = benford(populasi_clean$population_2020)
 land = benford(populasi_clean$land_area_km2)
 
@@ -182,10 +182,10 @@ populasi %>%
 
 Ternyata hasilnya mengagetkan! Temuan saya tersebut hampir menyerupai __Benford's Law__.
 
-## Luar Area Negara (dalam $km^2$)
+## Luar Area Negara (dalam km<sup>2</sup>)
 Sekarang saya coba iseng menggunakan data luas area setiap negara yang ada di atas. Jika saya hitung _first digit_ dari angka populasi pernegara, lalu saya hitung frekuensinya. Saya dapatkan grafik sebagai berikut:
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center',fig.cap="Fig3. Land Area"}
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center'}
 land %>% 
   filter(!is.na(benford)) %>% 
   ggplot(aes(x = benford,
@@ -243,7 +243,7 @@ Sekarang saya akan gunakan data Covid 19 yang dihimpun di situs [Wikipedia berik
 
 Saya akan mencoba mengecek apakah data _confirmed case_ per negara mengikuti __Benford's Law__?
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center',fig.cap="Fig4. Covid 19 Confirmed Cases"}
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center'}
 benford(cov_clean$cases_b) %>% 
   ggplot(aes(x = benford,
                y = persen)) +
@@ -295,7 +295,7 @@ Ternyata data Covid 19 _confirmed cases_ hampir mengikuti __Benford's Law__.
 
 Bagaimana dengan data kematian akibat Covid 19?
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center',fig.cap="Fig5. Covid 19 Deaths"}
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center'}
 benford(cov_clean$deaths_c) %>% 
   ggplot(aes(x = benford,
                y = persen)) +
@@ -350,7 +350,7 @@ Kali ini saya mau menggunakan data lokal di Indonesia, yakni data hasil pemilu p
 
 Saya akan menggunakan data hitung suara untuk kedua pasangan calon presiden yang berkontestasi pada saat itu. Bagaimana hasilnya?
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center',fig.cap="Fig6. Pilpres 2019"}
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center'}
 benford(c(data_pemilu$jomin,data_pemilu$prasangka)) %>% 
   ggplot(aes(x = benford,
                y = persen)) +
@@ -458,12 +458,12 @@ Rasa penasaran saya semakin dalam. Sampai akhirnya saya mau mencoba apakah jumla
 
 Mengambil sumber dari rekapan [blog berikut](https://blog.miftahussalam.com/jumlah-ayat-dalam-alquran/) ini, saya coba menghitungnya:
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center',fig.cap="Fig8. Verses in Al Qur'an"}
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=10,fig.align='center'}
 benford(quran$jumlah_ayat) %>% 
   ggplot(aes(x = benford,
                y = persen)) +
   geom_col(color = "black",
-           fill = "#08ffff",
+           fill = "steelblue",
            width = .5) +
   geom_line(aes(x = 1:9,
                 y = c(30.1,
