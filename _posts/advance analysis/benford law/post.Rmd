@@ -400,7 +400,7 @@ Ternyata hasilnya juga mendekati __Benford's Law__.
 ## Data _Sales Retailer_
 Tahun lalu, saya sempat mendapatkan [data _sales_ produk-produk yang dijual di salah satu _retail_](https://ikanx101.com/blog/minimarket-bekasi/) yang dimiliki bersama oleh beberapa teman saya. Karena penasaran, saya coba cek data harga semua barang-barang yang ditransaksikan selama bulan Januari 2020. Apakah memenuhi __Benford's Law__ atau tidak?
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=5,fig.align='center',fig.cap="Fig7. Products Prices"}
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=5,fig.align='center'}
 mart = read.csv("/home/ikanx101githubio/Documents/Antara/Pekerjaan Sebelumnya/212 Mart/jan 2020.csv")
 benford(mart$harga) %>% 
   ggplot(aes(x = benford,
@@ -453,7 +453,7 @@ Sekali lagi, data harga ternyata hampir mengikuti __Benford's Law__.
 
 Begitu pula dengan data total transaksi per konsumen, saya dapatkan:
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=5,fig.align='center',fig.cap="Fig7. Products Prices"}
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=5,fig.align='center'}
 tes = 
      mart %>% 
      group_by(id_transaksi) %>% 
