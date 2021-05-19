@@ -1,5 +1,17 @@
-Install Debian 10 dan RKWARD di Galaxy Tab
-================
+---
+date: 2021-05-19T09:50:00-04:00
+title: "TUTORIAL: Install Linux Debian 10 dan RKWARD di Galaxy Tab"
+categories:
+  - Blog
+tags:
+  - R
+  - Machine Learning
+  - Artificial Intelligence
+  - Training R
+  - Tutorial
+  - Linux
+  - R IDE
+---
 
 Sekitar dua tahun lalu, di blog saya yang
 [lama](https://passingthroughresearcher.wordpress.com/2019/06/12/analytics-on-the-go-cara-install-r-ke-gadget-android/),
@@ -47,7 +59,7 @@ eksternal. Untuk instalasi **Linux** sampai **R** dan **RKWARD** beserta
 
 Selain itu, kita perlu meng-*install* aplikasi ***VNC Viewer*** juga.
 
-<img src="vnc viewer.jpg" width="50%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/training%20R/special%20RKWARD/vnc viewer.jpg" width="50%" style="display: block; margin: auto;" />
 
 Langkah pertama adalah, kita cukup membuka ***UserLand*** lalu memilih
 instalasi **Linux Desktop: Lxde**. Linux ini berbasis **Debian 10**
@@ -56,7 +68,7 @@ alias **Debian Buster**.
 Kita pilih opsi **VNC** pada saat instalasi tersebut. Silakan mengisi
 *username*, *password*, dan *password VNC* sesuai selera kita.
 
-<img src="userland.jpg" width="50%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/training%20R/special%20RKWARD/userland.jpg" width="50%" style="display: block; margin: auto;" />
 
 Proses instalasi akan berlangsung sekitar 5-10 menit tergantung dengan
 koneksi internet.
@@ -64,7 +76,7 @@ koneksi internet.
 Setelah selesai, kita akan langsung dialihkan ke aplikasi **VNC Viewer**
 seperti ini:
 
-<img src="koneksi1.jpg" width="50%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/training%20R/special%20RKWARD/koneksi1.jpg" width="50%" style="display: block; margin: auto;" />
 
 Kita cukup klik **OK**.
 
@@ -72,17 +84,17 @@ Selanjutnya akan ada *warning* terkait ***unencrypted connection***.
 Biarkan saja karena kita sebenarnya sedang mengakses koneksi dari dalam
 *gadget* kita (**bukan mengakses cloud**). Kita klik **OK**.
 
-<img src="koneksi2.jpg" width="50%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/training%20R/special%20RKWARD/koneksi2.jpg" width="50%" style="display: block; margin: auto;" />
 
 Selanjutnya kita harus memasukkan *password VNC* yang telah kita
 definisikan sebelumnya:
 
-<img src="password.jpg" width="50%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/training%20R/special%20RKWARD/password.jpg" width="50%" style="display: block; margin: auto;" />
 
 Jika langkah yang dilakukan benar, maka kita akan masuk ke halaman depan
 **Linux Debian** berikut ini:
 
-<img src="linux1.jpg" width="50%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/training%20R/special%20RKWARD/linux1.jpg" width="50%" style="display: block; margin: auto;" />
 
 ## Instalasi **R**
 
@@ -96,7 +108,7 @@ Lantas bagaimana caranya?
 
 Buka dulu **LXTerminal** sebagai berikut:
 
-<img src="terminal.jpg" width="50%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/training%20R/special%20RKWARD/terminal.jpg" width="50%" style="display: block; margin: auto;" />
 
 Pada **terminal**, ketikkan perintah ini:
 
@@ -110,7 +122,7 @@ Silakan tunggu beberapa saat hingga selesai. Setelah itu, silakan ketik
 
 InsyaAllah hasilnya sebagai berikut:
 
-<img src="terminaR.jpg" width="50%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/training%20R/special%20RKWARD/terminaR.jpg" width="50%" style="display: block; margin: auto;" />
 
 **R** sudah selesai kita *install*.
 
@@ -128,7 +140,7 @@ menggunakan **R**.
 Sebenarnya ada beberapa pilihan di luar sana. Kebetulan saya memilih
 aplikasi bernama **RKWARD**.
 
-<img src="rkward.jpg" width="50%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/training%20R/special%20RKWARD/rkward.jpg" width="50%" style="display: block; margin: auto;" />
 
 Instalasinya juga sangat mudah. Cukup menuliskan perintah berikut pada
 **terminal**:
