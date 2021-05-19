@@ -1,11 +1,23 @@
-Instalasi R STUDIO SERVER
-================
+---
+date: 2021-05-19T17:50:00-04:00
+title: "TUTORIAL: Instalasi R STUDIO SERVER di Laptop Ubuntu"
+categories:
+  - Blog
+tags:
+  - R
+  - Machine Learning
+  - Artificial Intelligence
+  - Training R
+  - Tutorial
+  - Linux
+  - R IDE
+---
 
 > ***Salah satu persepsi yang sangat kuat di kepala saya adalah R STUDIO
 > SERVER merupakan software berbayar.***
 
 Setelah saya menuliskan artikel terkait [instalasi RKWARD
-kemarin](https://ikanx101.com/blog/rkward-debian/), salah seorang teman
+pagi ini](https://ikanx101.com/blog/rkward-debian/), salah seorang teman
 saya yang merupakan ***useR*** memberikan satu saran:
 
 > *Kenapa gak pakai R STUDIO SERVER aja Kang?*
@@ -25,7 +37,7 @@ time*. Sama seperti R Studio Desktop tapi bisa diakses di manapun dengan
 Sebagai contoh, tulisan ini ditulis menggunakan R STUDIO SERVER yang
 saya buka menggunakan *browser* **Google Chrome** di *Galaxy Tab*.
 
-<img src="server1.jpg" width="60%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/training%20R/Studio%20Server/server1.jpg" width="60%" style="display: block; margin: auto;" />
 
 Jadi bagaimana caranya?
 
@@ -64,7 +76,7 @@ saya, saya tinggal menuju: `http://192.168.8.113:8787/`.
 
 Halaman depannya berupa *login page*.
 
-<img src="login.jpg" width="60%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/training%20R/Studio%20Server/login.jpg" width="60%" style="display: block; margin: auto;" />
 
 Kita perlu memasukkan *login* yang sama dengan *profile* pada *setting
 user* di **Ubuntu**.
