@@ -1,0 +1,134 @@
+---
+title: "Memodelkan Performa Sales dan Risk dengan Matematika"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/Documents/ikanx101.github.io/_posts/advance analysis/regresi polinom")
+
+rm(list=ls())
+
+#libraries
+library(readxl)
+library(dplyr)
+library(ggplot2)
+
+# ambil data
+# nasional
+path_nasional = "~/Documents/Antara/Project Ongoing Rawabali/40 20/Data Mentah/Nasyenel"
+file = list.files(path_nasional)
+data_nasional = 
+  read_excel(paste0(path_nasional,"/",file)) %>% 
+  janitor::clean_names() %>% 
+  select(item_group,status_item,
+         percent_avg_ea_this_year,percent_moving_avg_ea,
+         percent_ro_f3_0_this_year,percent_moving_ro_f3_0) %>% 
+  rename(ea = percent_avg_ea_this_year,
+         ro = percent_ro_f3_0_this_year) %>% 
+  filter(!is.na(ea)) %>% 
+  filter(ea <= 1) %>% 
+  select(item_group,ea,ro) %>% 
+  filter(ea > .4 | ro > .2) 
+```
+
+Pada suatu waktu, salah seorang teman saya yang menjadi _sales manager_ di suatu daerah bertanya:
+
+> _Bisa gak sih kita buat model yang bisa memberikan_ ___early warning sign___ suatu produk bakalan sukses atau tidak?
+
+Teman saya ini bekerja di salah satu distributor produk __FMCG__ yang terkenal. Dalam kesehariannya, dia meng-_handle_ distribusi ratusan SKU produk.
+
+---
+
+Singkat cerita, dia memberikan kepada saya sejumlah data yang dia kumpulkan. Data tersebut dia sajikan dalam bentuk tabel berisi 3 kolom:
+
+1. `Nama produk`.
+1. `Performa produk`; teman saya menghitung performa produk dengan cara menghitung berapa persen toko yang rutin _reorder_ produk tersebut dari total populasi toko di daerahnya. Rentang waktu perhitungan ini dibuat selama `3` bulan.
+1. `Risk`; teman saya menghitung _risk_ dengan cara menghitung persentase berapa persen toko yang tidak _reorder_ dan _retur_ (mengembalikan produk akibat tidak laku) dari total toko yang dia lakukan penetrasi. Rentang waktu perhitungan ini dibuat selama `3` bulan juga.
+
+Terlepas dari cara dia mendefinisikan __performa sales__ dan __risk__, saya yakin dia sebagai _business expert_ sudah mempertimbangkan hal ini dengan matang.
+
+Hal pertama yang saya lakukan saat mendapatkan data ini adalah membuat _scatter plot_ dari kedua variabel tersebut.
+
+```{r,echo=FALSE,fig.retina=10,fig.align='center'}
+data_nasional %>% 
+  ggplot(aes(x = ea,y = ro)) +
+  geom_point(color = "darkgreen") +
+  theme_minimal() +
+  labs(title = "Grafik Performa Sales vs Risk",
+       subtitle = "Secara visual kita bisa menduga ada korelasi negatif antara kedua variabel tersebut",
+       caption = "Visualized using R\nikanx101.com",
+       x = "Performa Sales",
+       y = "Risk") +
+  theme(plot.title = element_text(hjust = .5,
+                                  face = "bold",
+                                  size = 20),
+        plot.subtitle = element_text(hjust = .5,
+                                     size = 10),
+        plot.caption = element_text(hjust = .5),
+        axis.text = element_blank()) 
+```
+
+Secara visual, kita bisa menduga
+```{r}
+korel = cor.test(data_nasional$ea,data_nasional$ro)
+korel
+```
+
+
+
+
+
+```{r}
+data_nasional %>% 
+  ggplot(aes(x = ea,y = ro)) +
+  theme_minimal() +
+  geom_smooth(method = "lm",
+              se = F,
+              col = "#ff8c00") +
+  geom_smooth(method = "lm",
+              formula = y~poly(x,2),
+              se = F,
+              col = "steelblue") +
+  geom_smooth(method = "lm",
+              formula = y~poly(x,3),
+              se = F,
+              col = "#e600ff") +
+  geom_hline(yintercept = 0,
+             color = "red") +
+  geom_point(color = "darkgreen",alpha = .2) +
+  labs(title = "Grafik EA dan RO dari Data Nasional",
+       subtitle = "Perbandingan kurva regresi linear dan polinomial dari data yang ada.",
+       caption = "Sumber data: Tim Sales",
+       x = "EA",
+       y = "F3 = 0") +
+  annotate("label",
+           x = .6,
+           y = .6,
+           label = "Orange - Regresi Linear\nBiru - Regresi polinom orde 2\nUngu - Regresi polinom orde s3") +
+  theme(plot.title = element_text(hjust = .5,
+                                  face = "bold",
+                                  size = 15),
+        plot.subtitle = element_text(hjust = .5),
+        plot.caption = element_text(hjust = .5))
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
