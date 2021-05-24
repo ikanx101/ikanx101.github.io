@@ -39,7 +39,7 @@ kagumi di dunia ini:
 
 Pada saat sahur di hari terakhir puasa kemarin, saya menonton
 *Docuseries* di **Netflix** berjudul ***Connected***. Pada salah satu
-episode berjudul ***Codes***, saya dikenalkan kepada salah satu fenomena
+episode berjudul ***Digits***, saya dikenalkan kepada salah satu fenomena
 matematis lainnya bernama: **Benford’s Law** atau yang biasa dikenal
 sebagai ***First-Digit Law***.
 
@@ -188,8 +188,7 @@ indikasi terjadinya *fraud*.
 Bagaimana cara melihat indikasinya? Teman-teman coba tonton saja
 *docuseries*-nya di **Netflix** lalu perhatikan saat sang narasumber
 menjelaskan bagaimana menentukan foto *fake* menggunakan **Benford’s
-Law**. Setelah itu, dari grafik-grafik di atas, kira-kira mana yang bisa
-kita indikasikan adanya modifikasi pada data?
+Law**.
 
 ------------------------------------------------------------------------
 
