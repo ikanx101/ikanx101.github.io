@@ -1,8 +1,8 @@
 ---
-title: "Memodelkan Performa Sales dan Risk dengan Matematika"
-output: 
-  github_document:
-    pandoc_args: --webtex
+title: "Memodelkan Performa <i>Sales</i> dan <i>Risk</i> dengan Matematika"
+subtitle: "Aplikasi Kalkulus pada Dunia <i>Sales Marketing</i>"
+author: "Ikang Fadhli <b>find me at ikanx101.com</b>"
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -30,8 +30,7 @@ data_nasional =
          ro = percent_ro_f3_0_this_year) %>% 
   filter(!is.na(ea)) %>% 
   filter(ea <= 1) %>% 
-  select(item_group,ea,ro) %>% 
-  filter(ea > .4 | ro > .2) 
+  select(item_group,ea,ro) 
 ```
 
 Pada suatu waktu, salah seorang teman saya yang menjadi _sales manager_ di suatu daerah bertanya:
@@ -42,20 +41,23 @@ Teman saya ini bekerja di salah satu distributor produk __FMCG__ yang terkenal. 
 
 ---
 
-Singkat cerita, dia memberikan kepada saya sejumlah data yang dia kumpulkan. Data tersebut dia sajikan dalam bentuk tabel berisi 3 kolom:
+Singkat cerita, dia memberikan kepada saya sejumlah data yang dia kumpulkan. Asumsi yang digunakan adalah semua produk tersebut memiliki level harga yang sama dan kita mengabaikan faktor lainnya. Data tersebut dia sajikan dalam bentuk tabel berisi 3 kolom:
 
 1. `Nama produk`.
-1. `Performa produk`; teman saya menghitung performa produk dengan cara menghitung berapa persen toko yang rutin _reorder_ produk tersebut dari total populasi toko di daerahnya. Rentang waktu perhitungan ini dibuat selama `3` bulan.
-1. `Risk`; teman saya menghitung _risk_ dengan cara menghitung persentase berapa persen toko yang tidak _reorder_ dan _retur_ (mengembalikan produk akibat tidak laku) dari total toko yang dia lakukan penetrasi. Rentang waktu perhitungan ini dibuat selama `3` bulan juga.
+1. `Performa sales`; teman saya menghitung performa sales dengan cara menghitung berapa persen toko yang rutin _reorder_ produk tersebut dari total populasi toko di daerahnya. Rentang waktu perhitungan ini dibuat selama `12` bulan.
+1. `Risk`; teman saya menghitung _risk_ dengan cara menghitung persentase berapa persen toko yang tidak _reorder_ dan _retur_ (mengembalikan produk akibat tidak laku) dari total toko yang dia lakukan penetrasi selama beberapa periode tertentu.
 
-Terlepas dari cara dia mendefinisikan __performa sales__ dan __risk__, saya yakin dia sebagai _business expert_ sudah mempertimbangkan hal ini dengan matang.
+
+Perlu diperhatikan bahwa menghitung `performa sales` lebih mudah dan cepat karena `risk` biasanya harus menunggu dalam rentang yang lebih lama (terkait prosedur retur). Terlepas dari cara dia mendefinisikan __performa sales__ dan __risk__, saya yakin dia sebagai _business expert_ sudah mempertimbangkan hal ini dengan matang.
+
 
 Hal pertama yang saya lakukan saat mendapatkan data ini adalah membuat _scatter plot_ dari kedua variabel tersebut.
 
 ```{r,echo=FALSE,fig.retina=10,fig.align='center'}
 data_nasional %>% 
   ggplot(aes(x = ea,y = ro)) +
-  geom_point(color = "darkgreen") +
+  geom_point(color = "#032aa8",
+             shape = 8) +
   theme_minimal() +
   labs(title = "Grafik Performa Sales vs Risk",
        subtitle = "Secara visual kita bisa menduga ada korelasi negatif antara kedua variabel tersebut",
@@ -71,43 +73,158 @@ data_nasional %>%
         axis.text = element_blank()) 
 ```
 
-Secara visual, kita bisa menduga
-```{r}
+> Secara visual, kita bisa menduga ada korelasi negatif antara `performa sales` dengan `risk`.
+
+Namun seberapa kuat?
+
+Saya akan menghitungnya menggunakan _Pearson's Correlation_:
+
+```{r,echo=FALSE}
 korel = cor.test(data_nasional$ea,data_nasional$ro)
 korel
 ```
 
+Hasilnya kita dapatkan bahwa korelasinya __kuat negatif__ sebesar $r \approx -0.69$.
 
+> Ada kecenderungan semakin tinggi `performa sales`, `risk`-nya turun; _vice versa_.
 
+---
 
+Sekarang pertanyaannya adalah apakah kita bisa membuat model antara `performa sales` dengan `risk`? 
 
-```{r}
+___Top of mind___ yang muncul di benak saya adalah kita bisa memodelkan kedua variabel itu dengan model kausalitas berupa regresi. Kenapa? Karena teman saya ingin mengetahui:
+
+> Berapa persentase `performa sales` yang mulai memberikan peningkatan persentase `risk`?
+
+Maksudnya bagaimana?
+
+Contoh: Suatu saat teman saya harus memasarkan produk baru (sebut saja produk XYZ). Pada akhir bulan ketiga, dihitung `performa sales`-nya sebesar $x\%$. Tanpa harus menunggu perhitungan _retur_, dia harus bisa menentukan berapa `risk`-nya. Sehingga: 
+
+- Jika `performa sales`-nya __buruk__, tentu dia tidak akan melanjutkan ekspansi dan penetrasi ke toko lainnya. 
+- Jika `performa sales`-nya __baik__, maka dia harus melakukan ekspansi dan penetrasi ke toko-toko lainnya.
+
+Jadi langsung saja saya buatkan model regresinya. Saya membuat tiga model regresi:
+
+1. Regresi linear,
+1. Regresi polinom orde 2,
+1. Regresi polinom orde 3.
+
+```{r,echo=FALSE,fig.retina=10,fig.align='center'}
 data_nasional %>% 
   ggplot(aes(x = ea,y = ro)) +
   theme_minimal() +
   geom_smooth(method = "lm",
               se = F,
-              col = "#ff8c00") +
+              col = "#ff8c00",
+              alpha = .1) +
   geom_smooth(method = "lm",
               formula = y~poly(x,2),
               se = F,
-              col = "steelblue") +
+              col = "steelblue",
+              alpha = .1) +
   geom_smooth(method = "lm",
               formula = y~poly(x,3),
               se = F,
               col = "#e600ff") +
   geom_hline(yintercept = 0,
-             color = "red") +
-  geom_point(color = "darkgreen",alpha = .2) +
-  labs(title = "Grafik EA dan RO dari Data Nasional",
+             color = "black") +
+  geom_point(color = "#032aa8",
+             shape = 8,
+             alpha = .1) +
+  labs(title = "Grafik Performa Sales vs Risk",
        subtitle = "Perbandingan kurva regresi linear dan polinomial dari data yang ada.",
-       caption = "Sumber data: Tim Sales",
-       x = "EA",
-       y = "F3 = 0") +
+       caption = "Visualized using R\nikanx101.com",
+       x = "Performa Sales",
+       y = "Risk") +
   annotate("label",
            x = .6,
            y = .6,
-           label = "Orange - Regresi Linear\nBiru - Regresi polinom orde 2\nUngu - Regresi polinom orde s3") +
+           label = "Orange - Regresi Linear\nBiru - Regresi polinom orde 2\nUngu - Regresi polinom orde 3") +
+  theme(plot.title = element_text(hjust = .5,
+                                  face = "bold",
+                                  size = 20),
+        plot.subtitle = element_text(hjust = .5),
+        plot.caption = element_text(hjust = .5))
+```
+
+Model regresi yang akan kita pakai kelak harus memenuhi tiga syarat sebagai berikut:
+
+1. Memiliki akurasi yang baik. Saya akan menggunakan ___Root Mean-Squared Error___ sebagai parameter _goodness of fit_ dari model yang ada. Semakin kecil __RMSE__, maka akurasi model akan semakin baik.
+
+$$RMSE = \sqrt{\frac{(predicted - real)^2}{n}}$$
+
+2. Garis kurva tidak melewati garis hitam (saat sumbu $y = 0$).
+
+3. Bisa digunakan untuk menghitung ___cut off___ persentase `performa sales` dan `risk`.
+
+---
+
+Terlihat jelas bahwa hanya ada satu kurva regresi yang tidak melanggar syarat `2`, yakni regresi polinom orde `3`.
+
+```{r,echo=FALSE,fig.retina=10,fig.align='center'}
+data_nasional %>% 
+  ggplot(aes(x = ea,y = ro)) +
+  theme_minimal() +
+  geom_smooth(method = "lm",
+              formula = y~poly(x,3),
+              se = F,
+              col = "#e600ff") +
+  geom_point(color = "#032aa8",
+             shape = 8,
+             alpha = .6) +
+  labs(title = "Grafik Performa Sales vs Risk",
+       subtitle = "Kurva regresi polinom order 3",
+       caption = "Visualized using R\nikanx101.com",
+       x = "Performa Sales",
+       y = "Risk") +
+  theme(plot.title = element_text(hjust = .5,
+                                  face = "bold",
+                                  size = 20),
+        plot.subtitle = element_text(hjust = .5),
+        plot.caption = element_text(hjust = .5)) +
+  geom_hline(yintercept = 0,
+             color = "black")
+```
+
+> Apakah kurva regresi tersebut akan _overfit_ terhadap data?
+
+Menurut saya, kurva regresi polinom orde 3 dinilai mampu memberikan gambaran _real_ terhadap fenomena yang ada di lapangan.
+
+
+```{r,echo=FALSE}
+model_3 = data_nasional %>% lm(formula = ro~poly(ea,3))
+summary(model_3)
+```
+
+Formula regresinya adalah:
+
+$$risk = -0.401429psales^3 + 0.816537psales^2 - 0.919544psales+ 0.065310$$
+
+Sekarang bagaimana caranya saya menentukan nilai _cut off_ persentase performa sales, yakni:
+
+> Pada persentase performa sales berapa akan menghasilkan nilai risk yang mulai membesar?
+
+Nilai __cut off__ bisa kita dapatkan dengan memanfaatkan aturan di kalkulus terkait persamaan kuadratik yakni __titik belok__.
+
+Perhatikan ilustrasi di bawah ini:
+
+```{r,echo=FALSE,fig.retina=10,fig.align='center'}
+contoh = data.frame(x = -100:100)
+contoh$y = -.0003*(contoh$x)^3 + .002*-(contoh$x)^2 - .1*(contoh$x)
+
+contoh %>% 
+  ggplot(aes(x,y)) +
+  geom_line() +
+  theme_classic() +
+  geom_point(aes(x = 0,y = 0),
+             shape = 7,
+             color = "red") +
+  annotate("label",x = 0,y = 50,
+           label = "Titik belok berada pada (0,0)",
+           color = "red") +
+  labs(title = "Contoh Kurva Persamaan Kuadrat Orde 3",
+       subtitle = "Salah satu ciri utama dari kurva persamaan kuadrat orde 3 adalah keberadaan titik belok.\nTitik belok bisa terlihat secara visual dimana arah kurva di sebelah kiri dan sebelah kanan\ntitik tersebut berbeda.",
+       caption = "Contoh ilustrasi titik belok\nKurva di sebelah kiri (0,0) terbuka ke atas.\nSedangkan kurva di sebelah kanan (0,0) terbuka ke bawah.") +
   theme(plot.title = element_text(hjust = .5,
                                   face = "bold",
                                   size = 15),
@@ -115,20 +232,201 @@ data_nasional %>%
         plot.caption = element_text(hjust = .5))
 ```
 
+__Titik belok__ bisa didapatkan dengan cara mencari turunan kedua $\frac{d}{dx^2}f(x)$. Suatu titik $a$ disebut titik belok saat $f(a)$ ter-diferensiabel dua kali, $\frac{d}{dx^2}f(a) = 0$, dan memenuhi:
 
-```{r}
+- Untuk $x < a$, didapatkan $\frac{d}{dx^2}f(x) > 0$.
+- Untuk $x > a$, didapatkan $\frac{d}{dx^2}f(x) < 0$.
 
+__ATAU__
+
+- Untuk $x < a$, didapatkan $\frac{d}{dx^2}f(x) < 0$.
+- Untuk $x > a$, didapatkan $\frac{d}{dx^2}f(x) > 0$.
+
+Selain titik belok, kita juga perlu menemukan titik _early signal_, yakni suatu nilai persentase `performa sales` di mana terjadinya perlambatan penurunan persentase `risk`.
+
+Mari kita lihat kembali grafik berikut ini:
+
+```{r,echo=FALSE,fig.retina=10,fig.align='center'}
+contoh = data.frame(x = -100:100)
+contoh$y = -.0003*(contoh$x)^3 + .002*-(contoh$x)^2 - .1*(contoh$x)
+
+contoh %>% 
+  ggplot(aes(x,y)) +
+  geom_line() +
+  theme_classic() +
+  geom_point(aes(x = -78,y = 137.9976),
+             shape = 7,
+             color = "darkgreen") +
+  annotate("label",x = -60,y = 180,
+           label = "Titik early signal",
+           color = "darkgreen") +
+  geom_point(aes(x = 0,y = 0),
+             shape = 7,
+             color = "red") +
+  annotate("label",x = 0,y = 50,
+           label = "Titik belok berada pada (0,0)",
+           color = "red") +
+  labs(title = "Contoh Kurva Persamaan Kuadrat Orde 3",
+       subtitle = "Perhatikan kurva pada x < 0.\nKurva tampak turun dengan curam pada saat x = -100 lalu penurunan akan semakin melandai\nhingga titik belok (0,0). Titik early signal memberikan gambaran kapan penurunan kurva\nmulai melandai.",
+       caption = "Contoh ilustrasi titik early signal\nPerhatikan kurva di sebelah kiri (0,0) yanag terbuka ke atas.") +
+  theme(plot.title = element_text(hjust = .5,
+                                  face = "bold",
+                                  size = 15),
+        plot.subtitle = element_text(hjust = .5),
+        plot.caption = element_text(hjust = .5))
 ```
 
+---
 
-```{r}
+## Menentukan Titik Belok
 
+Berikut adalah turunan kedua dari persamaan regresi yang ada:
+
+$$risk = -0.401429psales^3 + 0.816537psales^2 - 0.919544psales+ 0.065310 \\ 
+risk' = -1.204287psales^2 + 1.633074psales - 0.919544 \\
+risk'' = -2.408574psales + 1.633074 $$
+
+
+$$risk' = -2.408574psales + 1.633074 = 0$$
+
+$$2.408574psales  = 1.633074$$
+
+$$psales = 0.6780253$$
+
+Maka didapatkan titik belok pada:
+
+1. Persentase `performa sales` sebesar 0.6780253 ~ `67.8%`, dan
+1. Persentase `risk` sebesar `r predict.lm(model_3,newdata = data.frame(ea = 0.6780253))` ~ `r paste0(round(as.numeric(predict.lm(model_3,newdata = data.frame(ea = 0.6780253)))*100,2),"%")`.
+
+## Menentukan Titik _Early Signal_
+
+Titik _early signal_ didapatkan dari titik persentase `performa sales` yang memiliki perlambatan laju persentase `risk` terbesar (kurva mulai melandai).
+
+Untuk mendapatkannya, kita perlu mencari _gradient_ dari persamaan regresi polinom orde 3.
+
+Diketahui:
+
+$$risk' = -1.204287psales^2 + 1.633074psales - 0.919544$$
+
+
+Ingat bahwa:
+
+$$\text{gradient} = risk'$$
+
+Di sini saya akan mendefinisikan batasan _gradient_ yang disebut __mulai landai__ adalah saat nilainya `-0.5`.
+
+```{r,echo=FALSE}
+ggplot() +
+  geom_line(aes(x = 0:10,
+                y = 10:0),
+            color = "darkred") +
+  geom_line(aes(x = 0:10,
+                y = 0.5*(10:0)),
+            color = "steelblue") +
+  geom_line(aes(x = 0:10,
+                y = 0.25*(10:0)),
+            color = "darkgreen") +
+  annotate("label",
+           x = 5,
+           y = 5,
+           label = "Gradient = -1",
+           color = "darkred") +
+  annotate("label",
+           x = 5,
+           y = 2.5,
+           label = "Gradient = -0.5",
+           color = "steelblue") +
+  annotate("label",
+           x = 5,
+           y = 2.5/2,
+           label = "Gradient = -0.25",
+           color = "darkgreen") +
+  theme_classic() +
+  labs(x = "x",
+       y = "y",
+       title = "Ilustrasi Gradient")
+  
 ```
 
+Sehingga didapatkan:
 
+```{r,echo=FALSE}
+options(scipen = 99)
+turunan_dua = function(x){
+  y = -1.204287*(x^2) + 1.633074*x - 0.919544
+  return(y)
+}
 
+simulasi = 
+  data.frame(ea = seq(0,.7,by = .01)) %>%
+  mutate(gradient = turunan_dua(ea)) %>% 
+  filter(gradient > -.5) %>% 
+  rename("Performa sales" = ea,
+         "Gradient" = gradient) 
+knitr::kable(simulasi[1,],
+             caption = "Persen performa sales yang memiliki gradient kurva terlandai")
+```
 
+_Gradient_ kurva mulai melandai pada saat `performa sales` sebesar 0.35 ~ `35%` dengan nilai `risk` sebesar `r predict.lm(model_3,newdata = data.frame(ea = 0.35))` ~ `r paste0(round(as.numeric(predict.lm(model_3,newdata = data.frame(ea = 0.35)))*100,2),"%")`.
 
+---
 
+# KESIMPULAN
 
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+data_nasional %>% 
+  ggplot(aes(x = ea,y = ro)) +
+  theme_minimal() +
+  geom_point(color = "darkgreen",
+             alpha = .3) +
+  geom_smooth(method = "lm",
+              formula = y~poly(x,3),
+              se = F,
+              col = "#e600ff") +
+  geom_vline(xintercept = 0.35,
+             color = "red",
+             alpha = .5) +
+  geom_vline(xintercept = 0.6780253,
+             color = "red",
+             alpha = .5) +
+  annotate("label",
+           x = .17,
+           y = .6,
+           label = "Area warning\nSaat persen performa sales mengecil\nterjadi kenaikan risk yang signifikan.",
+           size = 3,
+           fill = "darkred",
+           color = "white") +
+  annotate("label",
+           x = .85,
+           y = .3,
+           label = "Area best performance\nSaat persen performa sales besar\npersen risk relatif kecil dan stabil.",
+           size = 3,
+           fill = "darkgreen",
+           color = "white") +
+  annotate("label",
+           x = .34,
+           y = .8,
+           label = "Early Warning\nPerforma sales = 35%",
+           size = 2) +
+  annotate("label",
+           x = .67,
+           y = .8,
+           label = "Titik belok\nPerforma sales = 67.8%%",
+           size = 2) +
+  labs(title = "Final Cut Off",
+       subtitle = "Semakin besar persen performa sales suatu produk maka semakin kecil persen risk.\nKita perlu melihat titik persen performa sales = 35% sebagai titik early warning,\nyakni saat ada produk yang memiliki performa kurang dari 35%,\nmaka akan terjadi kenaikan persen risk yang sangat signifikan.",
+       caption = "Visualized and Simulation using R\nikanx101.com",
+       x = "Performa Sales",
+       y = "Risk") +
+  theme(plot.title = element_text(hjust = .5,
+                                  face = "bold",
+                                  size = 15),
+        plot.subtitle = element_text(hjust = .5),
+        plot.caption = element_text(hjust = .5))
+```
 
+---
+
+`Feel free to discuss.`
+
+Kunjungi blog pribadi saya di [ikanx101.com](https://ikanx101.com/).
