@@ -1,0 +1,328 @@
+---
+title: "Mengukur Kesamaan Produk yang Dijual dari Dua Online Stores"
+output: github_document
+---
+
+```{r,echo=FALSE, setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/ikanx101 BLOG/_posts/kurasi/Onizuka")
+rm(list=ls())
+
+library(dplyr)
+library(ggplot2)
+library(tidytext)
+
+load("~/Mega-Scraper/Unilever/Report/report_data.rda")
+```
+
+Beberapa waktu yang lalu, saya iseng-iseng melihat dua _official stores_ dari perusahaan yang sama (sebut saja perusahaan __X__). Satu _official store_ ada di Tokopedia, sedangkan satu lagi ada di Shopee.
+
+Ketika _skimming_ singkat, saya jadi penasaran:
+
+> Apakah ada perbedaan __listed products__ antara dua __official stores__ tersebut?
+
+Bagaimana cara saya melihatnya?
+
+---
+
+Singkat cerita, saya berhasil _scrape_ __semua nama__ ___listed products___ dari dua _official stores_ tersebut. Saya dapatkan data banyaknya _listed products_ berikut:
+
+```{r,echo=FALSE,,echo=FALSE,fig.align='center',message=FALSE,warning=FALSE,fig.retina=10}
+gabung_data %>% 
+  filter(toko %in% c("Unilever Official Store","Shopee Unilever OS")) %>% 
+  select(link,marketplace,toko) %>% 
+  distinct() %>% 
+  group_by(marketplace,toko) %>% 
+  tally %>% 
+  ungroup() %>% 
+  mutate(persen = n / sum(n)*100,
+         persen = round(persen,2),
+         persen = paste0(persen,"%"),
+         label = paste0("n: ",n,"\n",persen)) %>% 
+  ggplot(aes(x = reorder(marketplace,-n),
+             y = n)) +
+  geom_col(aes(fill = marketplace),
+           color = "black") +
+  geom_label(aes(y = n + 150,
+                 label = label),
+             size = 2.5) +
+  scale_fill_manual(values = c("#f04705","#0b6902")) +
+  theme_minimal() +
+  labs(title = "Banyaknya Listed Product yang Diambil",
+       subtitle = "Official Store Perusahaan X di Tokopedia dan Shopee",
+       caption = "Scraped and Visualized\nusing R\nikanx101.com",
+       fill = "Marketplace") +
+  theme(axis.text.y = element_blank(),
+        axis.title = element_blank(),
+        plot.title = element_text(size = 15,face = "bold",hjust = .5),
+        plot.subtitle = element_text(size = 12,hjust = .5),
+        plot.caption = element_text(size = 10,hjust = .5),
+        legend.position = "none") +
+  ylim(0,1900)
+```
+
+Saya lihat sekilas ternyata perusahaan tersebut lebih banyak _listing_ produknya di Shopee dibandingkan di Tokopedia. 
+
+> Karena produknya banyak, saya tidak mungkin membandingkannya satu persatu.
+
+Jadi, bagaimana cara saya membandingkan dengan cepat dan (lumayan) tepat?
+
+Setidaknya ada dua cara yang terpikir oleh saya.
+
+1. Menggunakan _crosswords analysis_ dan _log odds ratio_ seperti yang pernah saya _post_ di [sini](https://ikanx101.com/blog/artikel-HBR/).
+1. Menggunakan _cosine similarity_ seperti yang pernah saya _post_ di [sini](https://ikanx101.com/blog/phone-book/).
+
+---
+
+## Metode Pertama
+### _Crosswords Analysis_
+Metode ini sangat mudah dilakukan. Saya cukup menghitung berapa banyak kata yang muncul per _listed products_ dari kedua _official stores_ tersebut dan membandingkan frekuensinya dalam _scatter plot_.
+
+```{r,echo=FALSE,,fig.align='center',message=FALSE,warning=FALSE,fig.retina=10}
+sensor = c("ml","pack","x","g","c","of","for","gr","free","buy","get","multipack","twin","stl","refill","bareng","dan","isi",
+           "cair","pakai","siap","twinpack","oe","kemasan","mix","kantong","bag","beli","and","pcs","box","bubuk","celup","gift",
+           "gram","hampers","kg","e","pa","go","with")
+nama_produk = 
+  gabung_data %>% 
+  select(marketplace,toko,nama) %>% 
+  distinct() %>% 
+  unnest_tokens("words",nama,"words") %>% 
+  group_by(toko,words) %>% 
+  tally() %>% 
+  ungroup() %>% 
+  mutate(penanda = gsub("[a-z]|\\,|\\.","",words),
+         penanda = as.numeric(penanda)) %>% 
+  filter(is.na(penanda)) %>% 
+  select(-penanda) %>% 
+  filter(!words %in% sensor)
+
+nama_produk_shopee = nama_produk %>% filter(toko == "Shopee Unilever OS")
+nama_produk_toped3 = nama_produk %>% filter(toko == "Unilever Official Store")
+
+nama_produk_shopee = nama_produk_shopee %>% select(-toko) %>% mutate(shopee = round(n/sum(n)*100,2)) %>% rename(freq_shopee = n)
+nama_produk_toped3 = nama_produk_toped3 %>% select(-toko) %>% mutate(tokped = round(n/sum(n)*100,2)) %>% rename(freq_tokped = n)
+join_os1 = merge(nama_produk_shopee,nama_produk_toped3)
+join_os1 %>% 
+  mutate(label = ifelse(shopee > 0.5 | tokped > 0.5,
+                        words,
+                        NA)) %>% 
+  ggplot(aes(x = shopee,
+             y = tokped)) +
+  geom_point(size = 1,
+             shape = 9,
+             color = "#11c4d1",
+             aes(alpha = shopee + tokped)) +
+  geom_abline(color = "#04267d") +
+  geom_abline(color = "#04267d",
+              intercept = seq(-.5,.5,by = .1),
+              alpha = .1) +
+  theme_minimal() +
+  labs(title = "Crosswords Analysis",
+       subtitle = "Antara dua Official Stores Perusahaan X di Tokopedia dan Shopee",
+       x = "Shopee",
+       y = "Tokopedia",
+       caption = "Setiap titik menandakan satu kata dari nama produk yang listed di official store.") +
+  theme(axis.text = element_blank(),
+        plot.title = element_text(size = 15,face = "bold",hjust = .5),
+        plot.subtitle = element_text(size = 12,hjust = .5),
+        plot.caption = element_text(size = 10,hjust = .5),
+        legend.position = "none")
+```
+
+Terlihat sekilas bahwa sangat sedikit sekali kata-kata yang hanya _unique_ terdapat di salah satu _official store_. Untuk membuktikannya, saya akan hitung _log odds ratio_-nya.
+
+### _Log Odds Ratio_
+Rumus untuk menghitung _ratio_ adalah sebagai berikut:
+
+$$logratio = ln(\frac{freq_{kelompok1}}{freq_{kelompok2}})$$
+
+Angka tersebut akan menunjukkan kata mana yang _less or most likely come from each group_. Jika nilai $logratio=0$ artinya kata tersebut dipakai oleh kedua _official stores_ dengan frekuensi yang sama. Selain itu, maka kata-kata lebih sering dipakai di salah satu _official store_ saja.
+
+```{r,echo=FALSE,,fig.align='center',message=FALSE,warning=FALSE,fig.retina=10,fig.height=8}
+# positif shopee
+# negatif tokped
+join_os1 %>% 
+  mutate(logratio = log(freq_shopee/freq_tokped),
+         marker = ifelse(logratio < 0,
+                         "Tokopedia",
+                         "Shopee")) %>%
+  filter(abs(logratio) > 1.4) %>% 
+  ggplot(aes(x = logratio,
+             y = reorder(words,logratio),
+             fill = marker)) +
+  geom_col(width = .3,
+           color = "black") +
+  theme_minimal() +
+  scale_fill_manual(values = c("#f04705","#0b6902")) +
+  labs(title = "Log Odds Ratio",
+       subtitle = "Official Store Perusahaan X di Tokopedia dan Shopee",
+       y = "Kata dari Nama Produk",
+       fill = "Official Stores",
+       caption = "Threshold untuk ratio sebesar |1.4|") +
+  theme(axis.text.x = element_blank(),
+        axis.title.x = element_blank(),
+        plot.title = element_text(size = 15,face = "bold",hjust = .5),
+        plot.subtitle = element_text(size = 12,hjust = .5),
+        plot.caption = element_text(size = 8,hjust = .5),
+        legend.position = "right")
+```
+
+Beberapa _highlights_ yang bisa diambil:
+
+- Shopee: Sambal cabai, masker wajah, pelembab, _bodyspray_, oatmeal, antiseptik, penyegar dan pelembab.
+- Tokopedia: Pemutih (_bleach_), _handwash_, _disinfectant_, pomade, dan __St. Ives__.
+
+
+## Metode Kedua
+### _Cosine Similarity_
+
+Ketika saya melihat kembali tulisan _listed product_ yang ada, saya menemukan beberapa produk sebenarnya sama tapi ditulis dengan cara berbeda.
+
+Ilustrasi:
+
+- Produk 1: __Kecap Manis Jerigen 10l__.
+- Produk 2: __Kecap Manis Jerigen 10l Free Piring Cantik Selusin__.
+
+Sejatinya kedua produk tersebut adalah produk yang sama hanya ada penambahan _gimmick_ atau bonus.
+
+Untuk mengakomodir kasus seperti di atas yang bisa saja terjadi untuk ratusan _listed products_, kita akan gunakan metode analisa [_cosine similarity_](https://ikanx101.com/blog/phone-book/).
+
+Ilustrasi:
+
+Misalkan saya memiliki 4 _listed products_ di bawah ini:
+
+- Produk 1: __Kecap Manis Jerigen 10l__.
+- Produk 2: __Kecap Manis Jerigen 10l Free Piring Cantik Selusin__.
+- Produk 3: __Kecap Asin Pouch 5.2Kg__.
+- Produk 4: __Kecap Asin Pouch 5.2Kg - 3 Pouch__.
+
+Kita hendak memasangkan dua _listed products_ yang mirip. Maka kita bisa menghitung skor _similarity_ sebagai berikut:
+
+```{r,echo=FALSE,,warning=FALSE,message=FALSE}
+library(stringdist)
+library(stringr)
+
+produk_raw = c("Kecap Manis Jerigen 10l","Kecap Manis Jerigen 10l Free Piring Cantik Selusin",
+               "Kecap Asin Pouch 5.2Kg","Kecap Asin Pouch 5.2Kg - 3 Pouch")
+produk = janitor::make_clean_names(produk_raw)
+produk = gsub("\\_","",produk)
+
+matriks = stringsimmatrix(produk,method = "cosine")
+matriks = as.matrix(matriks)
+sim_matrix = round(matriks,3)
+sim_matrix[lower.tri(sim_matrix)] = 0
+diag(sim_matrix) = 0
+#sim_matrix
+
+res = order(sim_matrix,decreasing = T)
+hasil = arrayInd(res,dim(sim_matrix),useNames = TRUE)
+hasil = data.frame(hasil)
+hasil$score = sim_matrix[res]
+final = 
+  hasil %>% 
+  filter(score >= .9) %>% 
+  rename(entry_1 = row,
+         entry_2 = col)
+
+final %>% knitr::kable(align = "c")
+
+
+n = length(final$entry_1)
+
+for(i in 1:n){
+  kata_1 = produk_raw[final$entry_1[i]]
+  kata_2 = produk_raw[final$entry_2[i]]
+  cat("Pasangan produk ",i," dengan score similarity: ",final$score[i],"\n")
+  cat("Produk ke: ",final$entry_1[i]," ~ ",kata_1,"\n")
+  cat("Produk ke: ",final$entry_2[i]," ~ ",kata_2,"\n\n")
+}
+```
+
+Dengan prinsip di atas, menggunakan _threshold_ indeks _similarity_ sebesar `0.8` kita akan hitung ada berapa banyak produk yang sama di kedua _official stores_ tersebut.
+
+```{r,echo=FALSE,,fig.align='center',message=FALSE,warning=FALSE,fig.retina=10}
+dbase_produk = 
+  gabung_data %>% 
+  filter(toko %in% c("Unilever Official Store","Shopee Unilever OS")) %>% 
+  select(nama,toko,marketplace) %>% 
+  distinct() %>% 
+  mutate(id = 1:length(toko))
+
+produk_raw = dbase_produk$nama
+produk = janitor::make_clean_names(produk_raw)
+produk = gsub("\\_","",produk)
+
+matriks = stringsimmatrix(produk,method = "cosine")
+matriks = as.matrix(matriks)
+sim_matrix = round(matriks,3)
+sim_matrix[lower.tri(sim_matrix)] = 0
+diag(sim_matrix) = 0
+
+res = order(sim_matrix,decreasing = T)
+hasil = arrayInd(res,dim(sim_matrix),useNames = TRUE)
+hasil = data.frame(hasil)
+hasil$score = sim_matrix[res]
+final = 
+  hasil %>% 
+  filter(score >= .6) %>% 
+  rename(entry_1 = row,
+         entry_2 = col)
+
+lhs_produk = dbase_produk[final$entry_1,]
+rhs_produk = dbase_produk[final$entry_2,]
+
+rekap_irisan = 
+  data.frame(
+    produk1 = lhs_produk$nama,
+    produk2 = rhs_produk$nama,
+    toko1 = lhs_produk$toko,
+    toko2 = rhs_produk$toko,
+    marketplace1 = lhs_produk$marketplace,
+    marketplace2 = rhs_produk$marketplace
+  )
+
+rekap_irisan %>% 
+  rowwise() %>% 
+  mutate(kesimpulan = ifelse(toko1 == toko2,0,1)
+         ) %>% 
+  ungroup() %>% 
+  group_by(produk1) %>% 
+  summarise(freq = sum(kesimpulan)) %>% 
+  ungroup() %>% 
+  mutate(marker = ifelse(freq > 0,
+                         "Tersedia di lebih\ndari satu toko",
+                         "Hanya tersedia\ndi satu toko")) %>% 
+  group_by(marker) %>% 
+  tally() %>% 
+  ungroup() %>% 
+  mutate(persen = n/sum(n),
+         persen = round(persen*100,2),
+         label = paste0(marker,"\n",persen,"%")) %>% 
+  ggplot(aes(x = marker,
+             y = persen)) +
+  geom_col(aes(fill = marker),
+           color = "black",
+           width = .5) +
+  geom_label(aes(label = label),
+             size = 2.5,
+             vjust = .5) +
+  scale_fill_brewer(palette = "Pastel1") +
+  coord_polar(theta = "x") +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.title = element_blank(),
+        axis.text = element_blank()) +
+  labs(title = "Berapa banyak produk yang dijual?",
+       subtitle = "Perhitungan persamaan produk dilakukan berdasarkan\nindeks cosine similarity",
+       caption = paste0("Base: semua listed produk dari dua official stores\nThreshold indeks similarity sebesar 0.8")) +
+  theme(plot.title = element_text(size = 15,face = "bold",hjust = .5),
+        plot.subtitle = element_text(size = 14,hjust = .5),
+        plot.caption = element_text(size = 10,hjust = .5)) +
+  ylim(0,70)
+
+```
+
+Ternyata dari _cosine similarity_ saya mendapatkan bahwa lebih dari separuh produk hanya _unique_ dimiliki oleh masing-masing _official store_.
+
+---
+`if you find this article helpful, support this blog by clicking the ads.`
