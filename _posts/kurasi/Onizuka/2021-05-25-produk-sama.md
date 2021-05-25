@@ -1,5 +1,5 @@
 ---
-date: 2021-03-25T11:30:00-04:00
+date: 2021-05-25T11:30:00-04:00
 title: "Mengukur Kesamaan Produk yang Dijual dari Dua Online Stores"
 categories:
   - Blog
@@ -73,7 +73,7 @@ saya akan hitung *log odds ratio*-nya.
 
 Rumus untuk menghitung *ratio* adalah sebagai berikut:
 
-$$logratio = ln(\\frac{freq\_{kelompok1}}{freq\_{kelompok2}})$$
+logratio = ln(freq kelompok1 / freq kelompok2)
 
 Angka tersebut akan menunjukkan kata mana yang *less or most likely come
 from each group*. Jika nilai *l**o**g**r**a**t**i**o* = 0 artinya kata
