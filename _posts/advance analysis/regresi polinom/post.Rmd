@@ -109,7 +109,7 @@ Jadi langsung saja saya buatkan model regresinya. Saya membuat tiga model regres
 1. Regresi polinom orde 2,
 1. Regresi polinom orde 3.
 
-```{r,echo=FALSE,fig.retina=10,fig.align='center'}
+```{r,echo=FALSE,fig.retina=10,fig.align='center',message=FALSE,warning=FALSE}
 data_nasional %>% 
   ggplot(aes(x = ea,y = ro)) +
   theme_minimal() +
@@ -232,15 +232,15 @@ contoh %>%
         plot.caption = element_text(hjust = .5))
 ```
 
-__Titik belok__ bisa didapatkan dengan cara mencari turunan kedua $\frac{d}{dx^2}f(x)$. Suatu titik $a$ disebut titik belok saat $f(a)$ ter-diferensiabel dua kali, $\frac{d}{dx^2}f(a) = 0$, dan memenuhi:
+__Titik belok__ bisa didapatkan dengan cara mencari turunan kedua $\frac{d^2}{dx^2}f(x)$. Suatu titik $a$ disebut titik belok saat $f(a)$ ter-diferensiabel dua kali, $\frac{d^2}{dx^2}f(a) = 0$, dan memenuhi:
 
-- Untuk $x < a$, didapatkan $\frac{d}{dx^2}f(x) > 0$.
-- Untuk $x > a$, didapatkan $\frac{d}{dx^2}f(x) < 0$.
+- Untuk $x < a$, didapatkan $\frac{d^2}{dx^2}f(x) > 0$.
+- Untuk $x > a$, didapatkan $\frac{d^2}{dx^2}f(x) < 0$.
 
 __ATAU__
 
-- Untuk $x < a$, didapatkan $\frac{d}{dx^2}f(x) < 0$.
-- Untuk $x > a$, didapatkan $\frac{d}{dx^2}f(x) > 0$.
+- Untuk $x < a$, didapatkan $\frac{d^2}{dx^2}f(x) < 0$.
+- Untuk $x > a$, didapatkan $\frac{d^2}{dx^2}f(x) > 0$.
 
 Selain titik belok, kita juga perlu menemukan titik _early signal_, yakni suatu nilai persentase `performa sales` di mana terjadinya perlambatan penurunan persentase `risk`.
 
@@ -268,7 +268,7 @@ contoh %>%
            color = "red") +
   labs(title = "Contoh Kurva Persamaan Kuadrat Orde 3",
        subtitle = "Perhatikan kurva pada x < 0.\nKurva tampak turun dengan curam pada saat x = -100 lalu penurunan akan semakin melandai\nhingga titik belok (0,0). Titik early signal memberikan gambaran kapan penurunan kurva\nmulai melandai.",
-       caption = "Contoh ilustrasi titik early signal\nPerhatikan kurva di sebelah kiri (0,0) yanag terbuka ke atas.") +
+       caption = "Contoh ilustrasi titik early signal\nPerhatikan kurva di sebelah kiri (0,0) yang terbuka ke atas.") +
   theme(plot.title = element_text(hjust = .5,
                                   face = "bold",
                                   size = 15),
@@ -286,8 +286,9 @@ $$risk = -0.401429psales^3 + 0.816537psales^2 - 0.919544psales+ 0.065310 \\
 risk' = -1.204287psales^2 + 1.633074psales - 0.919544 \\
 risk'' = -2.408574psales + 1.633074 $$
 
+Perhatikan bahwa $risk'' = 0$, maka:
 
-$$risk' = -2.408574psales + 1.633074 = 0$$
+$$risk'' = -2.408574psales + 1.633074 = 0$$
 
 $$2.408574psales  = 1.633074$$
 
@@ -407,12 +408,12 @@ data_nasional %>%
            x = .34,
            y = .8,
            label = "Early Warning\nPerforma sales = 35%",
-           size = 2) +
+           size = 2.5) +
   annotate("label",
            x = .67,
            y = .8,
            label = "Titik belok\nPerforma sales = 67.8%%",
-           size = 2) +
+           size = 2.5) +
   labs(title = "Final Cut Off",
        subtitle = "Semakin besar persen performa sales suatu produk maka semakin kecil persen risk.\nKita perlu melihat titik persen performa sales = 35% sebagai titik early warning,\nyakni saat ada produk yang memiliki performa kurang dari 35%,\nmaka akan terjadi kenaikan persen risk yang sangat signifikan.",
        caption = "Visualized and Simulation using R\nikanx101.com",
