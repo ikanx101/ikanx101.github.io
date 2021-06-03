@@ -1,0 +1,86 @@
+---
+title: "<i>Library</i> Kalkulus dan Aljabar di R"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(ggplot2)
+library(Ryacas)
+```
+
+Saat kuliah dulu di Matematika, salah satu _software_ yang menjadi andalan saya mengarungi perkuliahan adalah [__Maple__ (Mathematical Pleasure)](https://www.maplesoft.com/). 
+
+```{r,echo=FALSE,fig.align='center',fig.cap="Courtesy: maplesoft.com"}
+knitr::include_graphics("mapple.png")
+```
+
+
+```{r}
+rm(list=ls())
+
+library(Ryacas)
+
+# contoh
+eq <- "x^2 + 4 + 2*x + 2*x"
+
+# simplify
+eq %>% y_fn("Simplify") %>% yac_str()
+
+# factorisasi
+eq %>% y_fn("Factor") %>% yac_str()
+
+# finding root
+eq %>% y_fn("FindRealRoots") %>% yac_str()
+
+# bentuk ke tex
+eq %>% y_fn("Factor") %>% y_fn("TeXForm") %>% yac_str()
+
+# turunan
+eq %>% y_fn("D(x)") %>% yac_str()
+
+# integral
+eq %>% y_fn("Integrate(x)") %>% yac_str() 
+yac_str("Integrate(x,a,b) x^2")
+yac_str("Integrate(x) x^2")
+
+
+# limit
+yac_str("Limit(x, 1) (x^2 - 1)/(x - 1)")
+
+# sum
+yac_str("Sum(n, 1, Infinity, (1/2)^n)")
+
+# ODE Solve
+yac_str("OdeSolve( y'' + y == 0 )")
+
+yac_str("OldSolve(x^2+x*y==z,y)")
+
+```
+
+
+```{r}
+rm(list=ls())
+library(matlib)
+
+A = matrix(c(1, 2, -1, 2), 2, 2)
+b = c(2,1)
+showEqn(A, b)
+
+c( R(A), R(cbind(A,b)) )          # show ranks
+all.equal( R(A), R(cbind(A,b)) )  # consistent?
+
+plotEqn(A,b)
+
+Solve(A, b, fractions = TRUE)
+
+echelon(A, b, verbose=TRUE, fractions=TRUE)
+
+# https://cran.r-project.org/web/packages/matlib/vignettes/linear-equations.html
+```
+
+
+
