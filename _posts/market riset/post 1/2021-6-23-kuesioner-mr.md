@@ -86,7 +86,7 @@ kuesioner:
             satu** jawaban.
         -   *Open question*: responden bisa menjawab dengan bebas (tanpa
             ada pilihan jawaban).
-        -   *Ranking* atau *order*: responden disuruh untuk mengurukan
+        -   *Ranking* atau *order*: responden disuruh untuk mengurutkan
             atau membuat *ranking* dari pilihan yang ada.
     -   Masing-masing tipe pertanyaan memiliki tujuan dan cara analisa
         yang berbeda-beda.
