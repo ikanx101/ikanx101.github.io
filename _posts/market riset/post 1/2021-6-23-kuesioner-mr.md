@@ -195,6 +195,8 @@ kuesioner:
         ada kemungkinan responden mengisi berulang kali dengan *gadget*
         yang berbeda-beda.
 
+Saran saya, jika kita sudah menyusun _draft_ kuesionernya, segera lakukan _pilot_ wawancara kepada 2 - 3 orang responden. Perhatikan dengan seksama bagaimana reaksi responden terhadap pertanyaan yang ada dan durasi wawancara. _Feedbacks_ yang mungkin muncul bisa untuk memperbaiki kuesioner final kita kelak.
+
 Demikian panduan singkat ini, semoga membantu.
 
 ------------------------------------------------------------------------
