@@ -1,0 +1,191 @@
+---
+title: "WARNING! Kapasitas Tempat Tidur di RS Sudah Hampir Penuh"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/ikanx101 BLOG/_posts/Covid Update/kapasitas RS")
+rm(list=ls())
+
+library(rvest)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+load("bekasi.rda")
+```
+
+Penambahan kasus Covid 19 yang semakin menjadi-jadi beberapa hari terakhir membuat kita semua harus tetap waspada. Jikalau tahun lalu _circle_ terdekat saya masih "aman", kali ini tidak. 
+
+> Beberapa anggota keluarga dan teman-teman dekat sudah terpapar Covid 19 yang disinyalir merupakan varian delta baru.
+
+Saat saya menonton [__Mata Najwa__](https://www.youtube.com/watch?v=f_KyDslQVrs) episode kemarin, di mana para nakes _take over_ acara tersebut (_host_ oleh [dr. Tompi](https://www.instagram.com/dr_tompi/)). Sekali lagi saya mendengar bahwa __sistem pelayanan kesehatan seperti Rumah Sakit akan kolaps__ jika kita tidak dengan segera menghentikan penyebaran Covid 19.
+
+Salah seorang anggota keluarga yang bekerja di RS rujukan Covid 19 di Kota Bekasi juga membenarkan bahwa saat ini tempat tidur untuk Covid 19 di RS-nya __penuh__.
+
+> _Ingat yah, saya tidak dalam posisi menakut-nakuti tapi mengingatkan agar kita tetap waspada._
+
+Sepanjang pengetahuan saya, ternyata __Kementrian Kesehatan__ memiliki suatu __Sistem Informasi Rawat Inap__ ([__SIRANAP__](http://yankes.kemkes.go.id/app/siranap/wilayah?jenis=1)) berisi _database_ informasi jumlah kapasitas tempat tidur dan keterisian di setiap Rumah Sakit (baik RS swasta, RS pemerintah, RS daerah, RS TNI dan POLRI, dan RS lainnya). Tentu saja data yang ada akan _reliable_ jika diasumsikan setiap RS selalu meng-_update_ datanya ke dalam SIRANAP tersebut.
+
+Saya mencoba membuat _script_ _web scraper_ menggunakan __R__ dan berhasil mengambil datanya untuk bisa saya olah. _Script_-nya saya lampirkan di bagian bawah.
+
+## Data 32 RS di Kota Bekasi pada 08:52 WIB
+Saat saya ambil data ketersediaan tempat tidur di 32 RS Kota Bekasi yang ada di SIRANAP, saya mendapatkan informasi sebagai berikut:
+
+```{r,echo=FALSE,fig.retina=10,fig.align='center',warning=FALSE,message=FALSE,fig.height=8}
+bekasi %>% 
+  mutate(jenis_kamar = tolower(jenis_kamar),
+         jenis_kamar = stringr::str_squish(jenis_kamar),
+         jenis_kamar = stringr::str_to_title(jenis_kamar)) %>% 
+  group_by(jenis_kamar,keterangan) %>% 
+  summarise(n = sum(n_kamar)) %>% 
+  ungroup() %>% 
+  filter(!jenis_kamar %in% c("7","8","Alamanda, Ged A")) %>% 
+  ggplot(aes(y = jenis_kamar,
+             x = n)) +
+  geom_col(aes(fill = keterangan),
+           position = "dodge") +
+  scale_fill_manual(values = c("darkgreen","darkred")) +
+  geom_label(aes(fill = keterangan,
+                 label = n),
+             color = "white",
+             position = position_dodge(1),
+             size = 3) +
+  theme_minimal() +
+  labs(title = "DATA KETERSEDIAAN TEMPAT TIDUR\nDI 32 RUMAH SAKIT DI KOTA BEKASI",
+       caption = "Sumber Data: SIRANAP\nData di-scrape pada 25 Juni 2021 08:52 WIB dan divisualisasikan dengan R\nikanx101.com",
+       subtitle = "Perhatikan banyaknya tempat tidur yang masih kosong!\nBandingkan dengan kapasitas yang ada!",
+       fill = "Keterangan") +
+  theme(axis.text.x = element_blank(),
+        plot.title = element_text(size = 15,face="bold",hjust = .5),
+        plot.subtitle = element_text(size = 10,hjust = .5),
+        plot.caption = element_text(size = 10,hjust = .5),
+        axis.title = element_blank(),
+        legend.position = "bottom")
+```
+
+Coba kita bandingkan angka pada warna __merah__ (tempat tidur kosong) dengan angka pada warna __hijau__ (kapasitas tempat tidur). Cukup jauh perbedaannya ya.
+
+## Data 127 RS di DKI Jakarta pada 09:26 WIB 
+Setelah itu saya coba _scrape_ untuk data 127 RS di DKI Jakarta. Saya dapatkan informasi sebagai berikut:
+
+```{r,echo=FALSE,fig.retina=10,fig.align='center',warning=FALSE,message=FALSE,fig.height=8}
+load("dki.rda")
+dki %>% 
+  mutate(jenis_kamar = tolower(jenis_kamar),
+         jenis_kamar = stringr::str_squish(jenis_kamar),
+         jenis_kamar = stringr::str_to_title(jenis_kamar)) %>% 
+  reshape2::melt(id.vars = c("nama_rs","alamat_rs","jenis_kamar")) %>%
+  rename(keterangan = variable,
+         n_kamar = value) %>% 
+  group_by(jenis_kamar,keterangan) %>% 
+  summarise(n = sum(n_kamar)) %>% 
+  ungroup() %>% 
+  mutate(keterangan = ifelse(keterangan == "n_kamar","Kapasitas","Kosong")) %>% 
+  ggplot(aes(y = jenis_kamar,
+             x = n)) +
+  geom_col(aes(fill = keterangan),
+           position = "dodge") +
+  scale_fill_manual(values = c("darkgreen","darkred")) +
+  geom_label(aes(fill = keterangan,
+                 label = n),
+             color = "white",
+             position = position_dodge(1),
+             size = 3) +
+  theme_minimal() +
+  labs(title = "DATA KETERSEDIAAN TEMPAT TIDUR\nDI 127 RUMAH SAKIT DI DKI JAKARTA",
+       caption = "Sumber Data: SIRANAP\nData di-scrape pada 25 Juni 2021 09:26 WIB dan divisualisasikan dengan R\nikanx101.com",
+       subtitle = "Perhatikan banyaknya tempat tidur yang masih kosong!\nBandingkan dengan kapasitas yang ada!",
+       fill = "Keterangan") +
+  theme(axis.text.x = element_blank(),
+        plot.title = element_text(size = 15,face="bold",hjust = .5),
+        plot.subtitle = element_text(size = 10,hjust = .5),
+        plot.caption = element_text(size = 10,hjust = .5),
+        axis.title = element_blank(),
+        legend.position = "bottom")
+```
+
+Jika kita bandingkan kembali angka __merah__ dengan __hijau__ kita akan dapatkan bahwa kapasitas tempat tidur yang ada hampir penuh.
+
+Sekarang saya akan coba cek, RS mana saja yang masih memiliki tempat tidur kosong di atas `30%`.
+
+```{r,echo=FALSE,fig.retina=3,fig.align='center',warning=FALSE,message=FALSE,fig.height=65}
+dki %>% 
+  mutate(persen = n_kamar_kosong / n_kamar,
+         persen = persen*100,
+         persen = round(persen,1),
+         label = paste0(persen,"%"),
+         label = paste0(label,"\ndengan sisa kamar: ",n_kamar_kosong)) %>% 
+  filter(persen >= 30) %>% 
+  ggplot(aes(y = reorder(nama_rs,persen),
+             x = persen)) +
+  geom_col(color = "black",
+           width = .5,
+           aes(fill = persen)) +
+  geom_label(aes(label = label),
+             size = 2) +
+  scale_fill_gradient2(low = "darkred",mid = "red",high = "darkgreen",midpoint = 60) +
+  facet_wrap(~jenis_kamar,
+             scales = "free_y",
+             ncol = 1) +
+  xlim(0,110) +
+  theme_minimal() +
+  labs(title = "DATA KETERSEDIAAN TEMPAT TIDUR KOSONG\nDI 127 RUMAH SAKIT DI DKI JAKARTA",
+       caption = "Sumber Data: SIRANAP\nData di-scrape pada 25 Juni 2021 09:26 WIB dan divisualisasikan dengan R\nikanx101.com",
+       subtitle = "Persentase tempat tidur kosong untuk Covid 19 per jenis kamar di RS",
+       fill = "Persen") +
+  theme(axis.text.x = element_blank(),
+        plot.title = element_text(size = 15,face="bold",hjust = .5),
+        plot.subtitle = element_text(size = 10,hjust = .5),
+        plot.caption = element_text(size = 10,hjust = .5),
+        axis.title = element_blank(),
+        legend.position = "bottom",
+        strip.background = element_rect(color = "black"))
+```
+
+Semoga _summary_ di atas bisa membantu.
+
+---
+
+## _Script Scraper_
+
+Rekan-rekan bisa mencoba _scrape_ datanya sendiri dengan __R__ menggunakan _script_ berikut ini:
+
+```
+library(rvest)
+library(dplyr)
+library(tidyr)
+
+ambil_data = function(url){
+  # specific information
+  nama = url %>% read_html() %>% html_nodes("span") %>% html_text()
+  alamat = url %>% read_html() %>% html_nodes(".fa-hospital-o") %>% html_text()
+  jenis_kamar = url %>% read_html() %>% html_nodes("h5:nth-child(1)") %>% html_text()
+  n_kamar = url %>% read_html() %>% html_nodes(".mr-2 h1") %>% html_text()
+  n_kamar_kosong = url %>% read_html() %>% html_nodes(".pt-1+ .pt-1 h1") %>% html_text()
+  
+  # make it data frame
+  final = 
+    data.frame(nama_rs = nama,
+               alamat_rs = alamat,
+               jenis_kamar,
+               n_kamar,
+               n_kamar_kosong)
+  
+  # final result
+  return(final)
+}
+
+```
+
+_Function_ di atas membutuhkan _input_ berupa _url_ per RS yang ada di SIRANAP.
+
+_Function_ di atas mungkin tidak terlalu _tidy_ dan efisien karena harus membaca `html` berulang kali tapi ada dua alasan kenapa saya membuatnya seperti itu:
+
+1. _Web_ kementrian biasanya tidak memiliki `bot.txt` sehingga _web scrape - friendly_. Jadi membaca `html` berulang kali tidak menjadikan aktivitas kita _suspicious_.
+1. Sebagai _learning curve_ untuk rekan-rekan yang hendak belajar _web scrape_ dan _data carpentry_ sekaligus.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
