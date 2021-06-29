@@ -5,7 +5,9 @@ output: github_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-setwd("~/ikanx101 BLOG/_posts/Explainable AI/post 3")
+
+#setwd("~/ikanx101 BLOG/_posts/Explainable AI/post 3")
+setwd("/cloud/project/_posts/Explainable AI/post 3")
 
 rm(list=ls())
 library(dplyr)
@@ -24,9 +26,83 @@ Jika ditanyakan kepada saya:
 
 > Apakah harga tersebut kemahalan atau tidak?
 
-Saya akan langsung menjawab __tidak tahu__.
+Saya akan langsung menjawab: __"tidak tahu"__.
+
+---
+
+Saya sendiri tidak terlalu mengerti apa yang menjadi patokan harga mobil bekas. Beberapa  faktor yang saya duga berpengaruh penting adalah:
+
+1. _Brand_, dan
+1. Kilometer tempuh.
+
+Sabtu lalu, saya sempat membuat _polling_ kecil-kecilan di instagram mengenai hal ini.
+
+```{r,echo=FALSE,fig.align='center'}
+knitr::include_graphics("tanya.jpg")
+```
+
+Beberapa teman saya telah menjawabnya.
+
+```{r out.width="30%",echo=FALSE,fig.align='center'}
+knitr::include_graphics("jawab.jpg")
+```
 
 
 ---
 
-Saya sendiri tidak terlalu mengerti apa yang menjadi patokan harga mobil bekas.
+Untuk menjawab rasa penasaran saya, saya akan mencoba membuat model yang bisa memprediksi harga mobil bekas dari beberapa _predictors_.
+
+Saya mengambil data mobil bekas dengan cara _web scraping_ 500 data mobil bekas yang _listed_ di situs [Carmudi](https://www.carmudi.co.id/) pada Sabtu, 26 Juni 2021. Cara _scrape_-nya sudah pernah saya tulis di [sini](https://ikanx101.com/blog/blog-post-terios/).
+
+Saya mengambil data sebagai berikut:
+
+1. Harga mobil. 
+    - Saya melakukan transformasi pada data ini dengan cara melakukan operasi _log natural_ ($ln()$).
+    - Tujuannya adalah agar data lebih _compact_ dan tidak lebar _range_-nya.
+    - Tipe data ini adalah numerik.
+1. _Brand_.
+    - Tipe data ini berupa kategorik.
+1. Status: _new car_ dan _used car_. 
+    - Ternyata ada sebagian kecil dari _listed car_ di Carmudi yang merupakan _new car_.
+    - Tipe data ini berupa kategorik.
+1. Tahun.
+    - Tipe data ini adalah numerik.
+1. _Seat_.
+    - Tipe data ini adalah numerik.
+1. _Mileage_.
+    - Tipe data ini adalah numerik.
+1. Kapasitas _cc_ mesin.
+    - Tipe data ini adalah numerik.
+
+Tujuan saya adalah membuat model sebagai berikut:
+
+$$\text{harga} \sim \text{brand}+\text{status}+\text{tahun}+\text{seat}+\text{mileage}+\text{cc}$$
+
+Oleh karena `brand` dan `status` memiliki tipe kategorik, saya akan lakukan _preprocessing_ berupa _one hot encoding_ agar menjadi numerik _binary_.
+
+---
+
+## Model Regresi Linear
+
+Untuk membuat model regresi linearnya, saya menggunakan _deep learning_ via __Tensorflow__ dan __Keras__. 
+
+Langkah kerjanya adalahh sebagai berikut:
+
+```{r,echo=FALSE,fig.align='center'}
+nomnoml::nomnoml("
+                 [data] -> [train]
+                 [data] -> [test]
+                 [train] -> [build model]
+                 [build model] -> [validasi model]
+                 [test] -> [validasi model]
+                 ")
+```
+
+Berikut ini adalah performa modelnya yang saya hitung dengan _test dataset_:
+
+```{r,echo=FALSE}
+performa_model
+```
+
+
+
