@@ -72,7 +72,7 @@ Saya mengambil data sebagai berikut:
 
 1.  Harga mobil.
     -   Saya melakukan transformasi pada data ini dengan cara melakukan
-        operasi *log natural* (*l**n*()).
+        operasi *log natural* (*ln()*).
     -   Tujuannya adalah agar data lebih *compact* dan tidak lebar
         *range*-nya.
     -   Tipe data ini adalah numerik.
