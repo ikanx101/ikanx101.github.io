@@ -185,11 +185,9 @@ variabel menjadi dua:
     -   `mileage` : semakin besar jarak tempuh, mobil akan semakin
         murah.
     -   `brand` : Di antara brand berikut: Toyota, Daihatsu, Honda,
-        Mitsubishi, dan Suzuki kita bisa simpulkan: - `Toyota` memiliki
-        penurunan yang relatif lebih landai dibandingkan mobil merek
-        lainnya. - *Brand* mobil yang memiliki penurunan harga terbesar
-        jika saya urutkan adalah: `Daihatsu`, `Suzuki`, `Mitsubishi`,
-        `Honda`, dan `Toyota`.
+        Mitsubishi, dan Suzuki kita bisa simpulkan: 
+          - `Toyota` memiliki penurunan yang relatif lebih landai dibandingkan mobil merek lainnya. 
+          - *Brand* mobil yang memiliki penurunan harga terbesar jika saya urutkan adalah: `Daihatsu`, `Suzuki`, `Mitsubishi`, `Honda`, dan `Toyota`.
 
 ------------------------------------------------------------------------
 
