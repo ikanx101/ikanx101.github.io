@@ -6,8 +6,8 @@ output: github_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-#setwd("~/ikanx101 BLOG/_posts/Explainable AI/post 3")
-setwd("/cloud/project/_posts/Explainable AI/post 3")
+setwd("~/ikanx101 BLOG/_posts/Explainable AI/post 3")
+#setwd("/cloud/project/_posts/Explainable AI/post 3")
 
 rm(list=ls())
 library(dplyr)
@@ -88,21 +88,72 @@ Untuk membuat model regresi linearnya, saya menggunakan _deep learning_ via __Te
 
 Langkah kerjanya adalahh sebagai berikut:
 
-```{r,echo=FALSE,fig.align='center'}
-nomnoml::nomnoml("
-                 [data] -> [train]
-                 [data] -> [test]
-                 [train] -> [build model]
-                 [build model] -> [validasi model]
-                 [test] -> [validasi model]
-                 ")
+```{r,echo=FALSE,fig.align='center',fig.cap="Gambar 1. Langkah Kerja"}
+knitr::include_graphics("nomnoml.png")
 ```
 
 Berikut ini adalah performa modelnya yang saya hitung dengan _test dataset_:
+
+```{r,echo=FALSE,fig.align='center',message=FALSE,warning=FALSE,fig.cap="Gambar 2. Performa Model (loss dan MAE) dengan Epoch=200"}
+plot_model_keras
+```
+
+Berikut adalah _summary_ dari performa modelnya:
 
 ```{r,echo=FALSE}
 performa_model
 ```
 
+Dari performa model di atas, saya cukup puas dengan model regresinya karena angka $MSE \rightarrow 0$ dan $R^2>0.7$. 
 
+Sekarang tinggal mendeskripsikan modelnya saja. Karena saya menggunakan _deep learning_ (___ANN___) untuk membuat modelnya, maka saya membutuhkan `DALEX` untuk membantu saya mendeskripsikan modelnya.
 
+### _Feature Importance_
+
+```{r,echo=FALSE,fig.cap="Gambar 2. Feature Importance"}
+plot_importance
+```
+
+Dari __data yang terbatas ini__ saya dapatkan bahwa `cc mesin` dan `brand Toyota` merupakan variabel terpenting dan paling berpengaruh terhadap harga mobil yang _listed_ di Carmudi.
+
+Beberapa variabel lain seperti `tahun` dan `mileage` juga cukup berpengaruh.
+
+> Bagaimana bentuk pengaruhnya?
+
+Mari kita lihat _model profile_ berikut ini.
+
+### _Model Profile_
+
+```{r,echo=FALSE,fig.height=10,fig.cap="Gambar 3. Accumulated Dependence Profile"}
+plot(mp_ball)
+```
+
+Ada hal yang menarik dari grafik di atas. Saya bisa kategorikan beberapa variabel menjadi dua:
+
+1. Variabel yang membuat harga semakin mahal.
+    - `cc mesin` : semakin besar kapasitas dari mesin akan membuat harga mobil menjadi lebih mahal.
+    - `tahun` : semakin muda tahunnya, mobil akan semakin mahal.
+    - Jika dibandingkan antara `cc mesin` dan `tahun`, variabel yang paling _ngefek_ memberikan peningkata harga terbesar adalah `cc mesin`.
+        
+1. Variabel yang membuat harga semakin murah.
+    - `mileage` : semakin besar jarak tempuh, mobil akan semakin murah.
+    - `brand` : Di antara brand berikut: Toyota, Daihatsu, Honda, Mitsubishi, dan Suzuki kita bisa simpulkan:
+            - `Toyota` memiliki penurunan yang relatif lebih landai dibandingkan mobil merek lainnya.
+            - _Brand_ mobil yang memiliki penurunan harga terbesar jika saya urutkan adalah: `Daihatsu`, `Suzuki`, `Mitsubishi`, `Honda`, dan `Toyota`.
+
+---
+
+### _Notes_
+
+Analisa ini berdasarkan data terbatas yang saya kumpulkan dari situs Carmudi. Jika ada data lebih banyak, misalkan:
+
+1. _Service history_ per _listed_ mobil.
+1. Kualitas _after service_ masing-masing _brand_ yang bisa dikuantifikasi.
+1. Estetik interior dan exterior yang bisa dikuantifikasi.
+1. dan lainnya.
+
+Bisa jadi model ini akan lebih akurat.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
