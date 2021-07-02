@@ -1,0 +1,162 @@
+---
+title: "Mendapatkan Nilai Bagus pada Ujian dengan Cara Menjawab Asal"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/ikanx101 BLOG/_posts/Monte Carlo/Ujian Asal")
+
+rm(list=ls())
+
+library(dplyr)
+library(ggplot2)
+
+# benar atau tidak jawaban ngasal tersebut?
+betul = function(){
+  sample(c(1,0),1,prob = c(1/4,3/4))
+}
+
+# berapa banyak jawaban yang benar?
+# berapa nilainya?
+ujian = function(n){
+  n
+  x = 0
+  for(i in 1:50){
+    x = x + betul()
+  }
+  return(100*x/50)
+}
+
+# iterasi 8.000 kali
+data = data.frame(iterasi = c(1:1001))
+data$nilai_simulasi = sapply(data$iterasi,ujian)
+
+rekap = 
+  data %>%
+  group_by(nilai_simulasi) %>%
+  tally() %>%
+  ungroup() %>%
+  mutate(persen = n/sum(n) *100,
+         persen = round(persen,1),
+         label_1 = paste0(persen,"%"),
+         cum = cumsum(persen),
+         label_2 = paste0(cum,"%"))
+```
+
+Waktu sekolah dulu (SMP atau SMA), apakah kalian pernah memiliki teman yang selalu mendapatkan nilai bagus saat ujian tapi saat ditanya-tanya, dia hanya bilang:
+
+> ___Gw gak belajar, beruntung aja dapat nilai bagus padahal jawabnya ngasal...___
+
+
+Dulu saya ppernah punya teman yang seperti itu. Saya pribadi _sih_ tidak percaya bahwa itu adalah keberuntungan. Kenapa? Secara simulasi statistik, kita bisa membuktikan pernyataan itu.
+
+---
+
+## Perhitungan Matematis
+
+Misalkan saya memiliki 50 pertanyaan ujian berupa pilihan ganda (empat opsi pilihan) dengan __hanya satu opsi yang benar__.
+
+Secara simpel, kita bisa hitung bahwa __peluang seseorang menjawab satu pertanyaan dengan benar_ __secara ___ngasal___ adalah $\frac{1}{4} = 25 \%$.
+
+Jadi untuk menjawab 50 pertanyaan secara ___ngasal___, kita bisa hitung _expected_ nilai ujiannya sebesar:
+
+$$\frac{\text{banyak pertanyaan benar}}{\text{banyak pertanyaan}}.100 = \frac{\frac{1}{4} . 50}{50}.100 = 25$$
+
+Dari hitung-hitungan di atas, kita bisa dapatkan bahwa _expected_ nilai ujiannya adalah sebesar __25__. 
+
+## Pembuktian dengan Simulasi
+Perhitungan di atas belum cukup untuk membuktikan pernyataan teman saya tersebut. Kenapa?
+
+> ___Saya perlu menghitung berapa peluang seseorang mendapatkan nilai bagus dengan cara menjawab ngasal!___
+
+Lantas bagaimana cara saya menghitung peluangnya?
+
+Saya akan gunakan simulasi Monte Carlo.
+
+Bagaimana cara kerjanya?
+
+Saya akan _generate_ semua kemungkinan nilai ujian yang muncul sebanyak `90.000` kali iterasi dengan ketentuan:
+
+1. Ada `50` soal ujian pilihan ganda.
+1. Ada `4` opsi jawaban dengan __hanya satu__ pilihan yang benar.
+
+Dari hasil `90.000` kali iterasi, saya akan buat histogramnya dan kemudian saya akan hitung berapa peluang seseorang mendapatkan nilai __bagus__.
+
+Saya akan definisikan nilai __bagus__ adalah minimal sebesar __80__ (minimal 40 soal terjawab benar dari 50 total soal yang ada).
+
+Berikut hasil simulasi saya:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center',fig.retina=10}
+rekap %>%
+  ggplot(aes(x = nilai_simulasi)) +
+  geom_col(aes(y = persen),
+           color = "black",
+           fill = "steelblue") +
+  geom_line(aes(y = cum),
+            group = 1,
+            color = "darkred",
+            alpha = .5) +
+  geom_label(aes(y = persen,
+                 label = label_1),
+             fill = "steelblue",
+             color = "white",
+             size = 2.5) +
+  geom_label(aes(y = cum,
+                 label = label_2),
+             fill = "darkred",
+             color = "white",
+             size = 2.5) +
+  theme_minimal() +
+  labs(x = "Nilai Ujian",
+       title = "Berapa peluang seseorang bisa mendapatkan nilai ujian sebesar ... ",
+       subtitle = "Biru menandakan peluang seseorang mendapatkan nilai ujian sebesar ...\nMerah menandakan peluang kumulatif seseorang mendapatkan nilai ujian sebesar ... ",
+       caption = "Simulasi dan Visualisasi dengan R\nikanx101.com") +
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        plot.title = element_text(hjust = .5,size = 14),
+        plot.subtitle = element_text(hjust = .5, size = 8),
+        plot.caption = element_text(hjust = .5)) +
+  annotate("label",
+           x = 27,
+           y = 30,
+           label = "Expected nilai ujian:\n25") +
+  annotate("label",
+           x = 40,
+           y = 30,
+           label = "Lihat sb X, tidak mungkin\nmuncul nilai 80!")
+```
+
+Dilihat dari grafik hasil simulasi di atas, bahwa hampir tidak mungkin seseorang mendapatkan nilai ujian minimal __80__. 
+
+> Peluangnya __nol__.
+
+## Pembuktian dengan Distribusi Binomial
+Sebenarnya kasus di atas bisa dipandang sebagai masalah di data berdistribusi Binomial.
+
+$$P_x = \begin{pmatrix}
+ n\\x
+\end{pmatrix} p^x(1-p)^{n-x}$$
+
+
+Peluang terjadinya _event_ $x$ dari total $n$ dengan proporsi __sukses__ sebesar $p$.
+
+Untuk kasus ini, maka peluang seseorang mendapatkan nilai __bagus__ adalah:
+
+$$P_{40 \leq x \leq 50} = \sum_{i=40}^{50} P_i = \sum_{i=40}^{50} \begin{pmatrix}
+ 50\\i
+\end{pmatrix} 0.25^i(0.75)^{50-i} \approx 4*10^{-16} \approx 0$$
+
+Peluangnya __nol__.
+
+---
+
+## Kesimpulan
+
+Jadi teman saya sepertinya tidak bisa dipercayai omongannya. _hehe_
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads`.
