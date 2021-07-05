@@ -1,0 +1,271 @@
+---
+title: "Serba-Serbi Vaksin Covid 19: Penelusuran Data"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/ikanx101 BLOG/_posts/Covid Update/vaxin")
+
+library(dplyr)
+library(igraph)
+library(ggraph)
+library(ggplot2)
+
+rm(list=ls())
+load("bahan_blog.rda")
+load("scrape vaxin.rda")
+```
+
+Hari ini tepat seminggu setelah saya menerima suntikan pertama dosis vaksin ___Sinovac___. _Alhamdulillah_, saya mendapatkan kesempatan vaksin dari kantor yang bekerja sama dengan Himpunan Penyewa Pusat Perbelanjaan Indonesia ([HIPPINDO](https://www.hippindo.com/)). Vaksinasi tersebut diselenggarakan di Gedung SMESCO Jakarta.
+
+> Setelah divaksin, beberapa efek samping yang saya alami adalah pusing dan _ngantuk_. _hehe_
+
+Efek samping tersebut saya alami selama dua hari.
+
+---
+
+## _Progress_ Vaksinasi
+
+Akibat varian delta yang mengganas dalam beberapa pekan belakangan ini, pemerintah berusaha mengebut proses vaksinasi kepada semua warga, tidak terkecuali. Ditargetkan dalam sehari ada [satu juta vaksin](https://www.presidenri.go.id/siaran-pers/pemerintah-terus-kejar-target-vaksinasi-di-indonesia/) yang diberikan. Menurut saya pribadi, langkah yang dilakukan ini sudah terlambat.
+
+> Setelah tenaga kesehatan selesai divaksin, seharusnya sudah ada _mix proportion_ target vaksin antara lansia dan usia produktif. Jadi tidak harus menunggu lansia selesai terlebih dahulu!
+
+Saya mengambil data _progress_ vaksinasi dunia di situs [Our World in Data](https://ourworldindata.org/covid-vaccinations), saya akan coba bandingkan _progress_ vaksinasi Indonesia dengan beberapa negara lain sebagai berikut:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center',fig.retina=10,fig.cap="Fig1. Progress Vaksinasi"}
+vaxin = read.csv("owid-covid-data.csv")
+
+vaxin = 
+  vaxin %>% 
+  mutate(tanggal = lubridate::date(date)) %>% 
+  select(location,tanggal,population,people_fully_vaccinated)
+
+sel_vaxin = 
+  vaxin %>% 
+  filter(grepl("malaysia|indonesia|singa|united states|india|israel",location,ignore.case = T)) %>% 
+  mutate(persen = people_fully_vaccinated/population * 100,
+         persen = round(persen,2)) %>% 
+  mutate(warna = ifelse(location == "Indonesia","a","b"))
+
+sel_vaxin %>% 
+  filter(!is.na(persen)) %>% 
+  mutate(label = paste0(location,"\n",persen,"%")) %>% 
+  group_by(location) %>% 
+  mutate(label = ifelse(tanggal == max(tanggal),
+                        label,
+                        NA)
+         ) %>% 
+  ggplot(aes(x = tanggal,
+             y = persen,
+             group = location,
+             color = warna)) +
+  geom_line() +
+  scale_color_manual(values = c("darkred","grey")) +
+  ggrepel::geom_label_repel(aes(label = label)) +
+  labs(title = "Progress Vaksinasi Covid-19 di Berbagai Negara",
+       subtitle = "Persentase dihitung dari rasio People Fully Vaccinated dengan Populasi Masing-Masing Negara\nsumber: Our World in Data",
+       caption = "di-scrape dan visualisasi dengan R\nikanx101.com",
+       y = "Persentase",
+       x = "Tanggal") +
+  theme_minimal() +
+  theme(legend.position = "none",
+        plot.title = element_text(hjust = .5,size = 15),
+        plot.subtitle = element_text(hjust = .5,size = 10),
+        plot.caption = element_text(hjust = .5),
+        axis.text.y = element_blank())
+```
+
+Dengan cakupan vaksinasi yang masih rendah, tampaknya pemerintah harus bekerja lebih keras lagi agar semakin banyak masyarakat yang divaksin. 
+
+> Jangan sampai ___herd immunity___ bisa tercapai gara-gara kasus alami. 
+
+---
+
+## Pemberitaan Terkait Vaksin
+
+Pagi ini saya melakukan _scraping_ terhadap `2.700` _latest headline news_ di situs [detik.com](https://www.detik.com/) yang mengandung kata __vaksin__. Apa saja yang saya temukan?
+
+Pertama-tama saya akan buat _wordcloud_ dari _headlines_ tersebut:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center',fig.retina=10,fig.cap="Fig2. Wordcloud"}
+library(tidytext)
+library(wordcloud)
+
+id_stop = readLines("https://raw.githubusercontent.com/ikanx101/ID-Stopwords/master/id.stopwords.02.01.2016.txt")
+
+# kita bikin wc
+wc = 
+  data %>%
+  unnest_tokens("words",headline) %>% 
+  group_by(words) %>% 
+  tally() %>% 
+  ungroup() %>% 
+  mutate(marker = as.numeric(words)) %>% 
+  filter(is.na(marker)) %>%
+  filter(!words %in% id_stop) %>% 
+  arrange(desc(n)) %>% 
+  head(300)
+
+wordcloud(wc$words,
+          wc$n,
+          rot.per=0.25,
+          colors=brewer.pal(10, "Dark2"))
+```
+
+Ternyata ___Astrazeneca___ lebih banyak masuk _headline_ dibandingkan ___Sinovac___. Hal ini wajar karena dalam beberapa pekan terakhir pemerintah sedang `menghabiskan stok vaksin Astrazeneca`. 
+
+Sekarang saya akan buat _bigrams_-nya:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center',fig.retina=10,fig.cap="Fig3. Bigrams"}
+# bigram
+bigram = 
+  data %>% 
+  unnest_tokens("words",headline) %>% 
+  filter(!words %in% id_stop) %>% 
+  group_by(id) %>% 
+  summarise(headline = paste(words,collapse = " ")) %>% 
+  unnest_tokens("bigrams",headline,"ngrams",n=2) %>% 
+  group_by(bigrams) %>% 
+  tally() %>% 
+  ungroup() %>% 
+  arrange(desc(n)) %>% 
+  filter(n > 20)
+
+library(tidyr)
+
+bigram = 
+  bigram %>% 
+  separate(bigrams,
+           into = c("from","to"),
+           sep = " ")
+
+bigram %>% 
+  graph_from_data_frame() %>% 
+  ggraph(layout = 'fr') +
+  geom_edge_bend(aes(edge_alpha=n),
+                 show.legend = F,
+                 color='darkred') +
+  geom_node_point(size=1,color='steelblue') +
+  geom_node_text(aes(label=name),alpha=0.4,size=3,repel = T) +
+  theme_void()
+```
+
+Kita bisa lihat beberapa topik berita yang __sering muncul__ ada di _headlines_ tersebut. Teman-teman bisa menelaah sendiri hasil di atas.
+
+---
+
+## Jenis Vaksin Covid 19
+
+Sepengetahuan saya selama ini, baru ada `2+1` jenis vaksin yang telah digunakan di Indonesia, yakni:
+
+1. _Sinovac_,
+1. _Astrazeneca_, dan
+1. _Nusantara_.
+
+Kalau diperhatikan dengan seksama, ketiganya masuk ke dalam _wordcloud_ _headlines_ berita di atas.
+
+> Apakah kalian tahu bahwa sebenarnya sudah ada `147` kandidat vaksin Covid-19 di dunia? Namun baru `19` yang sudah disetujui penggunaannya.
+
+Saya mengambil data dari situs [_Track Vaccines_](https://covid19.trackvaccines.org/vaccines/) sebagai berikut:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center',fig.retina=10,fig.cap="Fig4. Phase Vaksin",fig.width=8}
+data.frame(
+  ket = c("Fase I","Fase II","Fase III","Approved","No longer\nprogressing"),
+  n = c(35,49,39,19,5)
+) %>% 
+  mutate(label = paste0(ket,":\n",n," vaksin")) %>% 
+  mutate(label = factor(label,levels = label)) %>% 
+  ggplot(aes(x = label,
+             y = n)) +
+  geom_col(fill = "steelblue",
+           color = "black") +
+  coord_polar(theta = "x") +
+  theme_minimal() +
+  theme(axis.text.y = element_blank(),
+        axis.title = element_blank(),
+        axis.text.x = element_text(size = 9),
+        plot.title = element_text(hjust = .5,size = 15),
+        plot.subtitle = element_text(hjust = .5,size = 10),
+        plot.caption = element_text(hjust = .5)) +
+  labs(title = "Covid 19 Vaccine Phase Tracking",
+       subtitle = "sumber: trackvaccines.org",
+       caption = "di-scrape dan visualisasi dengan R\nikanx101.com")
+
+```
+
+Sekarang kita lihat apa saja `19` vaksin yang telah mendapatkan _approval_:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center',fig.retina=10,fig.cap="Fig5. 19 Approved Vaccines"}
+n = 19
+approved = data.frame()
+for(i in 1:19){
+  temp = hasil[[i]]
+  approved = rbind(temp,approved)
+}
+
+approved = 
+  approved %>% 
+  distinct()
+
+approved %>% 
+  group_by(nama) %>% 
+  tally() %>% 
+  ungroup() %>% 
+  arrange(desc(n)) %>% 
+  ggplot(aes(y = reorder(nama,n),
+             x = n)) +
+  geom_col(fill = "steelblue",
+           color = "black") +
+  geom_label(aes(label = n),
+             size = 2.5) +
+  theme_minimal() +
+  theme(axis.title = element_blank(),
+        axis.text.x = element_blank(),
+        plot.title = element_text(hjust = .5,size = 15),
+        plot.subtitle = element_text(hjust = .5,size = 10),
+        plot.caption = element_text(hjust = .5)) +
+  labs(title = "Berapa banyak negara yang telah\nmenyetujui penggunaan vaksin ...",
+       subtitle = "sumber: trackvaccines.org",
+       caption = "di-scrape dan visualisasi dengan R\nikanx101.com")
+```
+
+__Astrazeneca__ menjadi vaksin yang paling banyak disetujui penggunaannya di dunia.
+
+Hal yang menarik juga adalah ternyata __Sinopharm__, merek vaksin yang hendak akan digunakan di Indonesia dengan skema __vaksin gotong royong__, ternyata sudah disetujui di banyak negara dibandingkan __Sinovac__.
+
+Mari kita lihat _network_ diagram negara-negara mana saja yang telah menyetujui vaksin tersebut.
+
+Saya hanya memilih `8` vaksin yang memiliki _approval_ terbanyak:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center',fig.retina=10,fig.cap="Fig6. Network Vaccines - Countries"}
+sel = 
+  approved %>% 
+  group_by(nama) %>% 
+  tally() %>% 
+  ungroup() %>% 
+  arrange(desc(n)) %>% 
+  head(8)
+
+sel = sel$nama
+
+approved %>% 
+  rename(from = nama,
+         to = approval) %>% 
+  filter(from %in% sel) %>% 
+  graph_from_data_frame() %>% 
+  ggraph(layout = 'fr') +
+  geom_edge_fan(show.legend = F,
+                aes(color = factor(from)),
+                alpha = .4) +
+  scale_colour_brewer(palette = "Dark2") +
+  geom_node_point(size=1,color='steelblue') +
+  geom_node_text(aes(label=name),alpha=0.4,size=3,repel = T) +
+  theme_void()
+```
+
+Catatan: warna yang berbeda menandakan jenis vaksin yang berbeda.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
