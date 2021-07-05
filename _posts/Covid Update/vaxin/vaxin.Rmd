@@ -33,7 +33,7 @@ Akibat varian delta yang mengganas dalam beberapa pekan belakangan ini, pemerint
 
 Saya mengambil data _progress_ vaksinasi dunia di situs [Our World in Data](https://ourworldindata.org/covid-vaccinations), saya akan coba bandingkan _progress_ vaksinasi Indonesia dengan beberapa negara lain sebagai berikut:
 
-```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center',fig.retina=10,fig.cap="Fig1. Progress Vaksinasi"}
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center',fig.retina=5,fig.cap="Fig1. Progress Vaksinasi"}
 vaxin = read.csv("owid-covid-data.csv")
 
 vaxin = 
@@ -88,7 +88,7 @@ Pagi ini saya melakukan _scraping_ terhadap `2.700` _latest headline news_ di si
 
 Pertama-tama saya akan buat _wordcloud_ dari _headlines_ tersebut:
 
-```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center',fig.retina=10,fig.cap="Fig2. Wordcloud"}
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center',fig.retina=5,fig.cap="Fig2. Wordcloud"}
 library(tidytext)
 library(wordcloud)
 
@@ -117,7 +117,7 @@ Ternyata ___Astrazeneca___ lebih banyak masuk _headline_ dibandingkan ___Sinovac
 
 Sekarang saya akan buat _bigrams_-nya:
 
-```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center',fig.retina=10,fig.cap="Fig3. Bigrams"}
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center',fig.retina=5,fig.cap="Fig3. Bigrams"}
 # bigram
 bigram = 
   data %>% 
@@ -169,7 +169,7 @@ Kalau diperhatikan dengan seksama, ketiganya masuk ke dalam _wordcloud_ _headlin
 
 Saya mengambil data dari situs [_Track Vaccines_](https://covid19.trackvaccines.org/vaccines/) sebagai berikut:
 
-```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center',fig.retina=10,fig.cap="Fig4. Phase Vaksin",fig.width=8}
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center',fig.retina=5,fig.cap="Fig4. Phase Vaksin",fig.width=8}
 data.frame(
   ket = c("Fase I","Fase II","Fase III","Approved","No longer\nprogressing"),
   n = c(35,49,39,19,5)
@@ -196,7 +196,7 @@ data.frame(
 
 Sekarang kita lihat apa saja `19` vaksin yang telah mendapatkan _approval_:
 
-```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center',fig.retina=10,fig.cap="Fig5. 19 Approved Vaccines"}
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center',fig.retina=5,fig.cap="Fig5. 19 Approved Vaccines"}
 n = 19
 approved = data.frame()
 for(i in 1:19){
@@ -238,7 +238,7 @@ Mari kita lihat _network_ diagram negara-negara mana saja yang telah menyetujui 
 
 Saya hanya memilih `8` vaksin yang memiliki _approval_ terbanyak:
 
-```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center',fig.retina=10,fig.cap="Fig6. Network Vaccines - Countries"}
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center',fig.retina=5,fig.cap="Fig6. Network Vaccines - Countries"}
 sel = 
   approved %>% 
   group_by(nama) %>% 
