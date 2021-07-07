@@ -1,0 +1,9 @@
+http://yankes.kemkes.go.id/app/siranap/tempat_tidur?kode_rs=1701014&jenis=1
+http://yankes.kemkes.go.id/app/siranap/tempat_tidur?kode_rs=1702015&jenis=1
+http://yankes.kemkes.go.id/app/siranap/tempat_tidur?kode_rs=1705018&jenis=1
+http://yankes.kemkes.go.id/app/siranap/tempat_tidur?kode_rs=1706019&jenis=1
+http://yankes.kemkes.go.id/app/siranap/tempat_tidur?kode_rs=1707026&jenis=1
+http://yankes.kemkes.go.id/app/siranap/tempat_tidur?kode_rs=1708010&jenis=1
+http://yankes.kemkes.go.id/app/siranap/tempat_tidur?kode_rs=1709038&jenis=1
+http://yankes.kemkes.go.id/app/siranap/tempat_tidur?kode_rs=1771040&jenis=1
+http://yankes.kemkes.go.id/app/siranap/tempat_tidur?kode_rs=1771051&jenis=1

@@ -1,0 +1,18 @@
+---
+title: "Fenomena Bear Brand"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+rm(list=ls())
+
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+
+load("bahan blog.rda")
+load("twit.rda")
+```
+

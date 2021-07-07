@@ -7,7 +7,7 @@ library(dplyr)
 library(tidyr)
 
 # ambil links
-link = readLines("dki.txt")
+link = readLines("bengkulu.txt")
 
 # function ambil data
 scrape_donk = function(url){
@@ -63,7 +63,7 @@ for (i in 1:length(link)) {
 data = data.frame()
 n = length(hasil)
 
-for(i in 1:n){
+for(i in 9:n){
   data = rbind(hasil[[i]],data)
 }
 
@@ -79,9 +79,9 @@ clean =
          n_kamar_kosong = as.numeric(n_kamar_kosong)
          )
 
-dki = clean
+#dki = clean
 
-save(dki,file = "dki.rda")
+#save(dki,file = "dki.rda")
 
 # visualisasi
 library(ggplot2)
