@@ -73,6 +73,9 @@ author:
     - label: "Telegram"
       icon: "fab fa-telegram-plane"
       url: "https://t.me/Ikanx"
+    - label: "Youtube"
+      icon: "fab fa-youtube-play"
+      url: "https://youtube.com/playlist?list=PLKTrGqv6_ymb_hL8UUQYKGuVfUvO9woq1"
     
     
 footer:
@@ -86,6 +89,9 @@ footer:
     - label: "Telegram"
       icon: "fab fa-telegram-plane"
       url: "https://t.me/Ikanx"    
+    - label: "Youtube"
+      icon: "fab fa-youtube-play"
+      url: "https://youtube.com/playlist?list=PLKTrGqv6_ymb_hL8UUQYKGuVfUvO9woq1"
     
 defaults:
   # _posts
