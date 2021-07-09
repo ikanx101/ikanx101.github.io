@@ -86,7 +86,7 @@ tersebut berdasarkan *Google Trend*:
 
 <img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/gtrends/bear%20brand/bear-brand_files/figure-gfm/unnamed-chunk-3-1.png" alt="fig2. Suggestion Google" width="90%" />
 <p class="caption">
-fig2. Suggestion Google
+fig3. Suggestion Google
 </p>
 
 </div>
@@ -121,7 +121,7 @@ terbanyak pada *hashtag* ini:
 
 <img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/gtrends/bear%20brand/bear-brand_files/figure-gfm/unnamed-chunk-5-1.png" alt="fig3. User Twitter" width="90%" />
 <p class="caption">
-fig3. User Twitter
+fig4. User Twitter
 </p>
 
 </div>
@@ -152,7 +152,7 @@ Oke, kita lihat ada topik pembicaraan apa saja yang ada di twitter:
 
 <img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/gtrends/bear%20brand/bear-brand_files/figure-gfm/unnamed-chunk-7-1.png" alt="fig4. Twit" width="90%" />
 <p class="caption">
-fig4. Twit
+fig5. Twit
 </p>
 
 </div>
