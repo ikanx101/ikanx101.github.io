@@ -74,7 +74,7 @@ author:
       icon: "fab fa-telegram-plane"
       url: "https://t.me/Ikanx"
     - label: "Youtube"
-      icon: "fab fa-youtube-play"
+      icon: "fab fa fa-youtube-play"
       url: "https://youtube.com/playlist?list=PLKTrGqv6_ymb_hL8UUQYKGuVfUvO9woq1"
     
     
@@ -90,7 +90,7 @@ footer:
       icon: "fab fa-telegram-plane"
       url: "https://t.me/Ikanx"    
     - label: "Youtube"
-      icon: "fab fa-youtube-play"
+      icon: "fab fa fa-youtube-play"
       url: "https://youtube.com/playlist?list=PLKTrGqv6_ymb_hL8UUQYKGuVfUvO9woq1"
     
 defaults:
