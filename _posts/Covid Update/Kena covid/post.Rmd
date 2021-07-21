@@ -1,0 +1,50 @@
+---
+title: "Iya, Saya Positif Covid 19"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+```
+
+> ___Kamu kena darimana Kang?___
+
+Itulah pertanyaan terbanyak yang Saya terima di _WhatsApp_ dan _DM_ Instagram saat saya menginformasikan saya terkena Covid 19 minggu lalu.
+
+Untuk teman-teman yang mengenal saya dengan baik pasti bertanya seperti itu. Kenapa?
+
+Mereka tahu bahwa saya dan keluarga memiliki protokol kesehatan yang sangat amat ketat.
+
+Istri saya memiliki beberapa kondisi kesehatan tertentu yang menyebabkan kami sangat menjaga betul jangan sampai ada yang terpapar Covid 19 di rumah. Tapi _qodarullah_ kejadian juga akhirnya.
+
+---
+
+## Prokes Ketat
+Kami memiliki protokol kesehatan tersendiri, begini ceritanya:
+
+1. Kurir dan paket.
+    - Di depan pagar, kami sediakan tempat untuk kurir menaruh barang. Sehingga kami tidak kontak dengan orang luar sama sekali.
+    - Setelah kurir pergi, 5-10 menit kemudian baru saya akan mengambil barang tersebut.
+    - Keluar ke teras, saya telah memakai masker dobel setelah masa-masa pemberitaan varian delta meningkat.
+    - Semua paket disemprot dengan alkohol di teras sebelum dibuka.
+    - Setelah dibuka, isi paket juga disemprot dengan alkohol sebelum dimasukkan ke dalam rumah.
+1. Makanan dan minuman dari luar.
+1. Belanja kebutuhan sehari-hari.
+1. Bepergian keluar.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
