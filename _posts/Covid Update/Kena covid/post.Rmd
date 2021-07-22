@@ -1,5 +1,5 @@
 ---
-title: "Iya, Saya Positif Covid 19"
+title: "Iya, Saya Positif Covid 19!"
 output: github_document
 ---
 
@@ -10,41 +10,78 @@ rm(list=ls())
 
 > ___Kamu kena darimana Kang?___
 
-Itulah pertanyaan terbanyak yang Saya terima di _WhatsApp_ dan _DM_ Instagram saat saya menginformasikan saya terkena Covid 19 minggu lalu.
+Itulah pertanyaan terbanyak yang Saya terima di _WhatsApp_ dan _DM_ Instagram saat saya menginformasikan saya terkonfirmasi positif Covid 19 Rabu minggu lalu (14 Juli 2021).
 
 Untuk teman-teman yang mengenal saya dengan baik pasti bertanya seperti itu. Kenapa?
 
-Mereka tahu bahwa saya dan keluarga memiliki protokol kesehatan yang sangat amat ketat.
+Mereka tahu bahwa saya dan keluarga memiliki protokol kesehatan yang sangat amat ketat. Seketat apa?
+
+1. Kurir dan paket.
+    - Di depan pagar, kami sediakan tempat untuk kurir menaruh paket. Sehingga kami tidak kontak dengan orang luar sama sekali.
+    - Setelah kurir pergi, 5-10 menit kemudian baru saya akan mengambil paket tersebut.
+    - Keluar ke teras, saya telah memakai masker dobel setelah masa-masa pemberitaan varian delta meningkat.
+    - Semua paket disemprot dengan alkohol di teras sebelum dibuka sampai benar-benar basah dan ter-_cover_ semua permukaannya.
+    - Setelah dibuka, isi paket juga disemprot dengan alkohol sebelum dimasukkan ke dalam rumah.
+1. Makanan dan minuman dari luar.
+    - Semua kemasan makanan dan minuman disemprot dengan alkohol. Isinya kemudian dipanaskan dengan _microwave_ selama 1 - 3 menit.
+    - Pernah kami membeli puding. DIpanaskan hingga meleleh dan mendidih. _Hehe_.
+1. Belanja kebutuhan sehari-hari.
+    - Untuk belanja sayur, kami menggunakan SayurBox, Segari, atau layanan lainnya.
+    - Untuk kebutuhan lain, saya bisa beli menggunakan klikIndomaret atau Tokopedia.
+    - Bagaimana dengan Aqua dan gas? Semua dibeli dengan _delivery service_. Keduanya ditaruh di luar dengan cara bayar transfer.
+1. Bepergian keluar.
+    - Kami memang meminimalisir pergi keluar. Bahkan sangat jarang. Kalaupun pergi hanya di dalam mobil saja.
+    - Bahkan kami tidak bepergian keluar di bulan lalu. Kecuali saya dalam rangka vaksin.
+    - Apakah saya kena pada saat vaksin? TIdak mungkin! Terlalu jauh jaraknya hingga masa gejala pertama.
+1. ART.
+    - Semenjak awal pandemi 2020, ART yang biasa datang pulang - pergi tidak bekerja kembali di rumah kami.
+
+> _Kenapa sih sampai begitu banget prokesnya?_
 
 Istri saya memiliki beberapa kondisi kesehatan tertentu yang menyebabkan kami sangat menjaga betul jangan sampai ada yang terpapar Covid 19 di rumah. Tapi _qodarullah_ kejadian juga akhirnya.
 
 ---
 
-## Prokes Ketat
-Kami memiliki protokol kesehatan tersendiri, begini ceritanya:
+## Bagaimana rasanya Covid 19?
 
-1. Kurir dan paket.
-    - Di depan pagar, kami sediakan tempat untuk kurir menaruh barang. Sehingga kami tidak kontak dengan orang luar sama sekali.
-    - Setelah kurir pergi, 5-10 menit kemudian baru saya akan mengambil barang tersebut.
-    - Keluar ke teras, saya telah memakai masker dobel setelah masa-masa pemberitaan varian delta meningkat.
-    - Semua paket disemprot dengan alkohol di teras sebelum dibuka.
-    - Setelah dibuka, isi paket juga disemprot dengan alkohol sebelum dimasukkan ke dalam rumah.
-1. Makanan dan minuman dari luar.
-1. Belanja kebutuhan sehari-hari.
-1. Bepergian keluar.
+_Alhamdulillah_ saya hanya mengalami gejala ringan saja. Kronologisnya seperti ini:
 
+1. Pada hari Senin dan Selasa (11 - 12 Juli 2021), saya sempat kehilangan suara karena banyak lendir di tenggorokan. Pada dua hari ini, saya masih sempat kardio selama 30 menit tanpa ada apa-apa.
+1. Pada Rabu pagi, si sulung sempat demam. Istri saya menyarankan agar saya tes antigen. Hasilnya ternyata positif. Saya akhirnya cek PCR istri dan anak-anak. 
+1. Pada hari Kamis, hasil PCR istri dan anak-anak keluar. _Alhamdulillah_ mereka semua negatif. Tapi karena si sulung sempat demam, akhirnya dia juga diisolasi. Istri saya juga meriang dan lemas seharian. Malamnya saya sempat meriang dan mata panas.
+1. Pada hari Jumat hingga Minggu, saya merasakan anosmia. Tidak bisa mencium bau dan aroma. Pengecapan juga berkurang.
+1. Pada hari Senin (18 Juli 2021), penciuman saya kembali normal. Semua terasa biasa saja. Hanya ada sesedikit batuk.
 
+Kamis ini (22 Juli 2021) saya sudah kerja seperti biasa.
 
+> Bagaimana dengan si sulung?
 
+Dia hanya merasakan demam sehari, selebihnya kembali normal tanpa ada gejala apapun.
 
+> Bagaimana dengan istri?
 
+_Alhamdulillah_ tidak ada demam, hanya meriang dan pusing saja. Entah apakah terinfeksi Covid 19 atau karena sempat _stres_ dengan keadaan karena hasil PCRnya negatif. 
 
+Pada Sabtu dan Minggu kemarin dia sempat anosmia tapi hanya sebagian saja. Sekarang kondisinya sedang masa pemulihan.
 
+> Bagaimana dengan si bungsu?
 
+_Alhamdulillah_ tidak ada apa-apa.
 
+---
 
+## Apa yang harus dilakukan?
 
+Pertama, kalian tidak perlu panik. Segera lapor RT dan RW setempat. Mereka akan melaporkannya kepada Puskesmas terdekat. 
 
+Percayalah banyak banget orang baik di sekitar kita yang akan _support_ macem-macem. Tetangga dan rekan-rekan mengirimi kami makanan selama masa isolasi mandiri.
 
+Sayangnya tidak ada _follow up_ yang berarti dari pihak Puskesmas. Semua tes PCR dan antigen yang saya lakukan adalah mandiri. Obat-obatan dan vitamin juga kami dapatkan dari keluarga yang notabene adalah nakes.
 
+__Perbanyak minum air putih dan vitamin__ saja. Karena ini adalah virus, jadi yang terpenting adalah imun tubuh.
 
+> Tapi berhubung respon tubuh orang berbeda-beda, saya sarankan untuk tetap berkonsultasi dengan nakes _yah_.
+
+Jangan panik intinya! Saya sendiri menganggap Covid 19 ini hanya flu biasa untuk mensugesti respon tubuh saya dan keluarga.
+
+Salam sehat ya...
