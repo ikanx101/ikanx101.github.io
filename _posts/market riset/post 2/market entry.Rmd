@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Mengenal Market Entry Research"
 output: github_document
 ---
 
@@ -7,102 +7,66 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# PENDAHULUAN
-## Latar Belakang
-_Air conditioner_ (AC) sudah menjadi salah satu barang elektronik wajib yang harus dimiliki di setiap hunian masyarakat Indonesia di kota-kota besar. Di Indonesia sendiri sudah banyak _brands_ yang menawarkan berbagai macam jenis AC sesuai dengan kebutuhan _target market_-nya.
+Di _market research agency_ tempat saya bekerja sebelumnya, kami seringkali mendapatkan klien yang berasal dari luar negeri. Biasanya mereka hendak masuk ke Indonesia untuk memulai bisnisnya di sini. Setidaknya ada beberapa strategi yang bisa mereka pilih:
 
-Salah satu _message_ yang kini sering digaungkan di pasar AC dan barang elektronik lainnya di Indonesia adalah _issue_ efisiensi dan penggunaan teknologi yang lebih hemat energi.
+1. Mengakuisisi _existing company_ di Indonesia.
+1. Bermitra dengan _existing company_ di Indonesia.
+1. Membuat perusahaan baru di Indonesia.
 
-Dalam beberapa waktu ke depan, salah satu _brand_ AC baru akan masuk ke pasar Indonesia. Salah satu _key message_ yang akan ditawarkan kepada _market_ adalah mengenai efisiensi. Oleh karena itu, diperlukan suatu _market entry research_ untuk melihat kesiapan _market_ terhadap AC baru ini.
+Lalu bagaimana caranya mereka menentukan strategi mana yang dipilih?
 
-## Tujuan
-Tujuan utama dari _market entry research_ ini adalah untuk melihat dan mengukur kesiapan _market_ terhadap AC yang mengusung teknologi dan fitur yang lebih efisien.
-
-Setidaknya akan ada tiga elemen penting yang akan dirisetkan, yakni:
-
-1. _Consumer_.
-    - Konsumen dari AC dapat dikategorikan menjadi beberapa, seperti:
-      - Konsumen rumah tangga.
-      - Konsumen industri dan perkantoran.
-    - Konsumen memegang peranan penting bagi sebuah _brand_ AC. Kita perlu mengetahui seperti apa _demand_, _usership_, _habit_, dan persepsi mereka terhadap AC.
-1. _Competition_.
-    - Kita telah mengetahui bersama bahwa sudah ada beberapa _brands_ besar di _market_ AC Indonesia yang telah memiliki basis konsumen yang kuat.
-    - Oleh sebab itu, kita perlu mengetahui kekuatan dan kelemahan dari masing-masing _brand_ kompetitor tersebut.
-    - Selain itu, kita perlu mendapatkan data dan informasi dari _retailers_ mengenai kompetisi yang ada.
-1. _Regulation_.
-    - Setiap barang elektronik yang dijual di Indonesia tentunya harus memenuhi regulasi yang berlaku. 
-    - Oleh karena itu, kita perlu mengetahui lebih dalam:
-        - Apa saja regulasi yang ada, 
-        - Dari lembaga mana saja regulasi tersebut berasal, contoh:
-            - Kementrian ESDM.
-            - Kementrian Perindustrian.
-            - Badan Standarisasi Nasional.
-            - Dan lainnya.
-        - Apa saja konsekuensi langsung dan tak langsung terhadap:
-            - Konsumen.
-            - _Supply chain management_.
-            - _Sales process_.
+> ___Dengan melakukan market entry research terlebih dahulu.___
 
 ---
 
-# DASAR TEORI
-## Alur Pelaksanaan _Research_
-Berikut adalah _flow_ dalam pelaksanaan _research_:
+# Apa itu _market entry research_?
 
-```{r,echo=FALSE,fig.retina=10,fig.align='center',fig.cap="Gambar 1. Alur Pelaksanaan Research"}
-knitr::include_graphics("https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/puzzles/Timeline%20Survey/proses%20riset.png")
-```
+Sesuai namanya, _market entry research_ adalah riset komprehensif yang dilakukan untuk mengetahui keadaan _market_ di suatu wilayah tertentu saat ada pemain baru yang hendak masuk ke _market_ tersebut.
 
-Setidaknya ada __tiga__ proses kritis dalam _flow_ tersebut, yakni:
+Karena riset ini bersifat komprehensif, setidaknya ada tiga elemen yang perlu dirisetkan. Apa saja?
 
-1. Formulasi masalah.
-2. _Design research_ dan pengumpulan data.
-3. Analisa data.
+1. Segi konsumen,
+1. Segi kompetisi (kompetitor atau B2B),
+1. Segi regulasi (regulator atau pemerintah).
+
+Bagaimana teknis pelaksanaannya?
+
+---
+
+## Segi Konsumen
+
+Konsumen memegang peranan penting bagi semua _brand_. Pada riset terkait konsumen ini, kita perlu mengetahui seperti apa _demand_, _usership_, _habit_, dan persepsi mereka terhadap _brand_ atau produk dari pemain baru yang hendak masuk ke _market_.
+
+
+## Segi Kompetisi
+Bisa jadi _market_ yang hendak dimasuki sudah penuh dengan pemain-pemain lain sudah _settle_. Sehingga riset akan berfokus pada analisa seperti ___SWOT analysis___ untuk produk atau _brand_ yang sudah ada.
+
+Bisa jadi juga _market_ belum terbentuk sepenuhnya di wilayah tersebut (tidak ada _direct competitor_ untuk produk baru yang hendak ditawarkan pemain baru tersebut).
+
+## Segi Regulasi
+Setiap produk yang dijual di Indonesia tentunya harus memenuhi regulasi yang berlaku. Oleh karena itu, kita perlu mengetahui lebih dalam:
+
+- Apa saja regulasi yang ada, 
+- Dari lembaga mana saja regulasi tersebut berasal, contoh:
+    - Kementrian terkait.
+    - Badan-badan terkait, misal: BPOM dan BSN.
+- Apa saja konsekuensi langsung dan tak langsung terhadap:
+    - Konsumen.
+    - _Supply chain management_.
+    - _Sales process_.
+
+---
 
 ## Jenis Data
-Jenis data yang akan digunakan dalam _research_ ini adalah:
+Jenis data yang akan digunakan dalam semua riset ini adalah:
 
 1. Data primer, berupa data hasil _interview_.
 1. Data sekunder, berupa data dari sumber-sumber lain yang terkait (misal: regulasi, _market condition_, dsb).
 
-## Alur Data, Informasi dan _Insights_
-Dalam setiap _research_, salah satu _output_ terpenting adalah _strategic insights_.
-
-```{r,echo=FALSE,fig.retina=10,fig.align='center',fig.cap="Gambar 2. Bagaimana Data Menghasilkan Insight"}
-nomnoml::nomnoml("
-                 [Data] -> [Nice to know]
-                 [Data] -> [Have to know]
-                 [Nice to know] -> [Information]
-                 [Have to know] -> [Strategic Insights]
-                 [Strategic Insights] --> [New Target Market]
-                 [Strategic Insights] --> [New Product Development]
-                 [Strategic Insights] --> [New Campaign\nNew Message]
-                 ")
-```
-
-## Menghitung Berapa Banyak Sampel
-Untuk menghitung berapa banyak minimal sampel survey yang dibutuhkan, kita perlu memiliki tiga informasi sebagai berikut:
-
-1. _Population size_; Apakah kita tahu berapa banyak populasi dari target penelitian kita?
-2. _Margin of error_; Rentang kesalahan yang bisa diterima (_sample_ vs populasi = survey vs sensus).
-3. _Confidence level_; Seberapa yakin survey kita akan menghasilkan hasil yang relatif sama jika dilakukan berulang kali.
-
-Ilustrasi:
-
-Misalkan saya telah melakukan penelitian kepada `300` orang diabetes dengan _margin of error_ sebesar `5%` dan _confidence level_ sebesar `80%`. Lalu Saya mendapatkan data bahwa `75%` dari responden suka dengan makanan manis.
-
-__Maka__ arti dari _margin of error_ dan _confidence level_ adalah sebagai berikut:
-
-Jika hasil survey saya __kembalikan__ ke populasi orang diabetes:
-
-- $75 \pm 5$ % orang diabetes suka dengan makanan manis.
-- Jika survey saya diulang `10` kali, maka `8` dari `10` pengulangan tersebut akan menghasilkan $75 \pm 5$ % orang diabetes suka dengan makanan manis.
-
 ---
 
-# PERENCANAAN _RESEARCH_
-## Metode _Research_
-Untuk mengakomodir tiga elemen penting di atas, maka metode _research_ untuk masing-masing elemen akan berbeda.
+## Metode Riset
+Untuk mengakomodir tiga elemen penting di atas, maka metode riset untuk masing-masing elemen akan berbeda.
 
 ## _Consumer Research_
 Konsumen akan dibagi menjadi dua kelompok, yakni:
@@ -110,24 +74,15 @@ Konsumen akan dibagi menjadi dua kelompok, yakni:
 1. Konsumen rumah tangga.
 1. Konsumen industri atau perkantoran.
 
-Target responden kita adalah orang yang memenuhi syarat berikut ini:
-
-1. Konsumen rumah tangga: 
-    - Sudah memiliki AC dan menggunakannya selama minimal 1 tahun.
-    - _Decision maker_ pemilihan _brand_ AC dalam rumah tangganya.
-1. Konsumen industri atau perkantoran: orang yang bertindak sebagai _decision maker_ pemilihan _brand_ AC di organisasinya.
-1. Jenis kelamin dijaga agar memenuhi proporsi pria - wanita: 50-50.
-1. Usia berada di _range_ 20 - 50 tahun.
-1. _Social economic status_ _middle - up_ (berdasarkan standar AC Nielsen).
+Riset akan dilakukan secara kualitatif dan kuantitatif.
 
 ### _Research Qualitative_
-Untuk mengetahui poin-poin penting yang hendak ditanyakan di survey, kita __perlu__ melakukan ___Focus Group Discussion___ (FGD) terlebih dahulu. FGD dilaksanakan untuk kedua kelompok tersebut. Minimal ada dua FGD per kelompok konsumen di kota-kota pelaksanaan riset kuantitatif.
+Untuk mengetahui poin-poin penting yang hendak ditanyakan di survey, kita __perlu__ melakukan ___Focus Group Discussion___ (FGD) terlebih dahulu. FGD dilaksanakan untuk kedua kelompok tersebut. 
 
-FGD ini bertujuan untuk mendapatkan _initial findings_ sebagai berikut:
+FGD ini biasanya bertujuan untuk mendapatkan _initial findings_ sebagai berikut:
 
-1. _Habit_ dan _usership_ menggunakan AC.
-1. _Demand_ dan persepsi terhadap _brand_ AC.
-1. Definisi __AC yang efisien bagi konsumen__.
+1. _Habit_ dan _usership_. 
+1. _Demand_ dan persepsi.
 1. _Media habit_ dan _social media habit_.
 1. Informasi kualitatif lainnya.
 
@@ -136,74 +91,36 @@ Hasil dari FGD ini akan sangat berguna sebagai _guideline_ pembuatan kuesioner s
 ### _Research Quantitative_
 Kuesioner yang sudah tersusun akan disurveykan kepada banyak konsumen sehingga bisa mendapatkan kuantifikasi dari jawaban-jawaban kualitatif dari FGD sebelumnya.
 
-Riset direncanakan dilakukan secara nasional di beberapa kota seperti:
-
-1. Jabodetabek.
-1. Medan.
-1. Semarang.
-1. Surabaya.
-1. Makassar.
-1. Balikpapan.
-
-Banyaknya responden akan dihitung dan disesuaikan untuk menjaga _margin of error_ sebesar __5%__ dan _confidence interval_ sebesar __80%__ untuk masing-masing kelompok konsumen.
-
-Berikut _summary_-nya:
-
-```{r,echo=FALSE,fig.retina=10,fig.align='center',fig.cap="Gambar 3. Alur Pelaksanaan Consumer Research"}
-nomnoml::nomnoml("#direction:down
-                 [Konsumen] -> [Konsumen Rumah Tangga]
-                 [Konsumen] -> [Konsumen Industri\natau Perkantoran]
-                 
-                 [Konsumen Rumah Tangga] --> [FGD kelompok I]
-                 [Konsumen Industri\natau Perkantoran] --> [FGD kelompok II]
-                 
-                 [FGD kelompok I] -> [Insight]
-                 [FGD kelompok II] -> [Insight]
-                 
-                 [Insight|
-                  Digunakan untuk membuat kuesioner survey]
-                  
-                 [Insight] -> [Kuesioner]
-                 
-                 [Kuesioner] -> [Survey Nasional]
-                 ")
-```
+Banyaknya responden akan dihitung dan disesuaikan untuk menjaga _margin of error_ dan _confidence interval_ di level tertentu.
 
 ## _Competition Research_
-Untuk melakukan riset terkait kompetisi _market_ AC di Indonesia, akan dilakukan dua pendekatan. Yakni:
+Untuk melakukan riset terkait kompetisi biasanya dilakukan dua pendekatan. Yakni:
 
 1. _Desk research_.
     - Dilakukan dengan cara mencari dan mengambil data-data yang terkait kompetisi dan kondisi _market_ dari berbagai sumber.
     - Misal:
-        - Analisa harga AC yang ada di _market_.
-        - Analisa konsumsi daya vs kekuatan (PK) AC.
+        - Analisa harga produk-produk _existing_ di _market_.
+        - Analisa SWOT.
         - _Social media listening_.
         - TV _campaign spending budget_.
         - Dan lainnya.
 1. FGD.
-    - Dilakukan untuk mendapatkan _insights_ dari sisi _retailers_.
-    - Prinsip yang digunakan mirip pada bagian _consumer survey_.
-    - Target responden adalah __pemilik toko elektronik__ atau ___manager___ __toko__ yang menjual AC kepada _end user_.
-    - FGD dilakukan minimal tiga grup. 
+    - Biasanya dilakukan untuk mendapatkan _insights_ dari sisi _retailers_ yang terkait dengan produk.
 
 ## _Regulation Research_
-Untuk melakukan riset terkait regulasi _market_ AC di Indonesia, akan dilakukan dua pendekatan. Yakni:
+Untuk melakukan riset terkait regulasi biasanya dilakukan dua pendekatan. Yakni:
 
 1. _Desk research_.
     - Dilakukan dengan cara mencari dan mengambil data-data yang terkait regulasi dari berbagai sumber.
 1. _In-depth interview_ (IDI).
-    - IDI dilakukan kepada 5 - 6 orang _expert_ dari kementrian, badan standarisasi, atau asosiasi industri terkait.
-
+    - IDI dilakukan kepada beberapa orang _expert_ dari kementrian terkait, badan terkait, atau asosiasi industri terkait.
 
 ---
 
-# PENUTUP
-Dokumen ini dibuat untuk kalangan terbatas. Dilarang meng-_copy_ sebagian atau keseluruhan materi tanpa seizin penulis.
+Tentunya semua penjelasan di atas akan disesuaikan dengan kondisi _real_ yang akan dihadapi.
 
-__Terima Kasih__
+Semoga berguna _yah_.
 
-Bekasi, 3 Juli 2021
+`if you find this article helpful, support this blog by clicking the ads.`
 
-Ikang Fadhli
 
-_Find me at_ [ikanx101.com](https://ikanx101.com/)
