@@ -1,9 +1,10 @@
 Tutorial Web Scraping detik.com dengan R
 ================
 
-*Weekend* kemarin salah seorang pembaca *blog* saya ini menghubungi saya
-untuk menanyakan bagaimana cara melakukan *web scraping* situs
-[detik.com](https://www.detik.com/).
+*Weekend* kemarin, sebelum saya tahu [saya positif
+COVID](https://ikanx101.com/blog/pos-covid/). Salah seorang pembaca
+*blog* saya ini menghubungi saya untuk menanyakan bagaimana cara
+melakukan *web scraping* situs [detik.com](https://www.detik.com/).
 
 Tujuan dia simpel, bagaimana mengambil data:
 
@@ -13,23 +14,19 @@ Tujuan dia simpel, bagaimana mengambil data:
 
 > Bagaimana caranya?
 
-Yuk saya mulai caranya.
+Begini caranya:
 
 ------------------------------------------------------------------------
 
 ## Langkah I
 
-Pertama, saya akan ambil satu contoh *url* beritanya terlebih dahulu.
-Jika saya berhasil membuat *function* untuk melakukan *scrape*, berarti
-saya akan bisa melakukannya untuk semua *url* yang ada.
+Kita panggil terlebih dahulu *libraries*-nya, yakni:
 
-``` r
-url = "https://finance.detik.com/berita-ekonomi-bisnis/d-5641707/menkes-jamin-vaksin-berbayar-bukan-dari-hibah?tag_from=news_mostpop"
-```
+1.  `rvest` untuk *web scraping*.
+2.  `dplyr` untuk *data carpentry*.
+3.  `stringr` untuk *cleaning* data berupa teks.
 
-## Langkah II
-
-Kita panggil terlebih dahulu *libraries*-nya:
+Kita panggil *libraries*-nya di **R** sebagai berikut:
 
 ``` r
 library(rvest)
@@ -37,19 +34,164 @@ library(dplyr)
 library(stringr)
 ```
 
-``` r
-data = 
-  url %>% 
-  read_html() %>% 
-  {tibble(
-    headline = html_nodes(.,".detail__title") %>% html_text() %>% str_squish(),
-    tanggal = html_nodes(.,".detail__date") %>% html_text() %>% str_squish(),
-    teks = html_nodes(.,"p") %>% html_text() %>% str_squish() %>% paste(collapse = " ")
-  )}
+## Langkah II
 
-data %>% knitr::kable()
+Langkah berikutnya adalah membuat *custom function* yang berfungsi untuk
+mengambil data yang diinginkan.
+
+*Input* dari *custom function* ini adalah sebuah *url*. *Output*-nya
+adalah sebuah *data frame*.
+
+<img src="nomnoml.png" width="470" style="display: block; margin: auto;" />
+
+Saya ambil satu contoh *url* berita terlebih dahulu. Jika saya berhasil
+membuat *function* untuk melakukan *scrape*, berarti saya akan bisa
+melakukannya untuk semua *url* yang ada.
+
+``` r
+url = "https://finance.detik.com/berita-ekonomi-bisnis/d-5641707/menkes-jamin-vaksin-berbayar-bukan-dari-hibah?tag_from=news_mostpop"
 ```
 
-| headline                                      | tanggal                       | teks                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-|:----------------------------------------------|:------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Menkes Jamin Vaksin Berbayar Bukan dari Hibah | Selasa, 13 Jul 2021 13:54 WIB | Menteri Kesehatan (Menkes) Budi Gunadi Sadikin memastikan 500 ribu vaksin hibah yang diterima Presiden Joko Widodo (Jokowi) dari Pemerintah Uni Emirat Arab (UEA) tidak digunakan dalam program vaksinasi berbayar. “Saya ingin memastikan bahwa 500 ribu Sinopharm dan akan tambah lagi 250 ribu hibah pribadi dari raja UEA ke Presiden Jokowi tidak dijual oleh Bio Farma,” katanya dalam rapat kerja bersama Komisi IX DPR RI, Selasa (13/7/2021). Budi Gunadi menjelaskan pihaknya sangat hati-hati menggunakan vaksin hibah itu dan selalu meminta arahan Jokowi. Menurutnya, vaksin hibah Sinopharm dari UEA akan digunakan untuk kelompok difabel. “Arahannya tadinya mau dipakai untuk haji supaya cepat. Bapak Presiden bilang ‘sudah jangan dikasih ke mana-mana siapkan untuk haji’. Tapi karena hajinya sekarang tidak jadi, diarahkan untuk ke difabel, orang-orang yang jadi masalahnya mungkin tuli, bisu, atau cacat. Orang-orang yang cacat ini diberikan sebagai jatah pribadi, ke difabel-difabel yang ada di zona-zona merah,” jelasnya. Budi Gunadi menjelaskan asal-usul sampai adanya kebijakan vaksin berbayar. Hal itu dikarenakan cakupan vaksinasi gotong royong yang selama ini gratis masih di bawah target. “26 Juni itu ada rapat di Kemenko Perekonomian atas inisiatif KPC-PEN, melihat bahwa vaksinasi gotong royong itu speed-nya sangat perlu ditingkatkan. Sekarang 10-15 ribu per hari dari target 1,5 juta baru 300 ribu, jadi memang ada concern ini kok lamban yang vaksin gotong royong,” katanya. “Sehingga keluar hasil diskusi beberapa inisiatif apakah itu mau dibuka juga ke RS yang sama dengan vaksin program, atau buat anak, ibu hamil, menyusui, termasuk individu,” tambahnya. |
+## Langkah III
+
+Sekarang adalah proses membuat *function*-nya, setidaknya ada tiga
+komponen data yang harus di-*scrape* sesuai dengan tujuan awal. Untuk
+itu, saya akan membuat satu-persatu *function* lalu menggabungkannya.
+
+Prosesnya sebenarnya cukup mudah jika kita menggunakan `library(rvest)`,
+yakni dengan menargetkan `css object` dari elemen yang hendak kita ambil
+dari suatu *web*.
+
+### Mengambil Judul / *Headline* Berita
+
+Elemen pertama yang hendak kita ambil adalah judul atau *headline*
+berita. Dengan mudah, kita bisa mendapatkan `css object`-nya adalah
+`.detail__title`.
+
+Berikut adalah *function*-nya:
+
+``` r
+url %>% 
+  read_html() %>% 
+  html_nodes(.,".detail__title") %>% 
+  html_text() 
+```
+
+    ## [1] "\r\n        Menkes Jamin Vaksin Berbayar Bukan dari Hibah    "
+
+Untuk membereskan teks yang masih amburadul di atas, cukup dengan
+memanfaatkan *function* `str_squish()` dari `library(stringr)` berikut:
+
+``` r
+url %>% 
+  read_html() %>% 
+  html_nodes(.,".detail__title") %>% 
+  html_text() %>% 
+  str_squish()
+```
+
+    ## [1] "Menkes Jamin Vaksin Berbayar Bukan dari Hibah"
+
+### Mengambil Tanggal Berita
+
+Elemen kedua yang hendak kita ambil adalah tanggal berita. Dengan mudah,
+kita bisa mendapatkan `css object`-nya adalah `.detail__date`.
+
+Berikut adalah *function*-nya:
+
+``` r
+url %>% 
+  read_html() %>% 
+  html_nodes(.,".detail__date") %>% 
+  html_text() 
+```
+
+    ## [1] "Selasa, 13 Jul 2021 13:54 WIB"
+
+Teks di atas sudah cukup rapi.
+
+### Mengambil Isi Berita
+
+Elemen terakhir yang hendak kita ambil adalah isi berita.
+`css object`-nya adalah `p`.
+
+Berikut adalah *function*-nya:
+
+``` r
+url %>% 
+  read_html() %>% 
+  html_nodes(.,"p") %>% 
+  html_text() 
+```
+
+    ##  [1] "Menteri Kesehatan (Menkes) Budi Gunadi Sadikin memastikan 500 ribu vaksin hibah yang diterima Presiden Joko Widodo (Jokowi) dari Pemerintah Uni Emirat Arab (UEA) tidak digunakan dalam program vaksinasi berbayar."                                                                                                                                                                                 
+    ##  [2] "\"Saya ingin memastikan bahwa 500 ribu Sinopharm dan akan tambah lagi 250 ribu hibah pribadi dari raja UEA ke Presiden Jokowi tidak dijual oleh Bio Farma,\" katanya dalam rapat kerja bersama Komisi IX DPR RI, Selasa (13/7/2021)."                                                                                                                                                                
+    ##  [3] "Budi Gunadi menjelaskan pihaknya sangat hati-hati menggunakan vaksin hibah itu dan selalu meminta arahan Jokowi. Menurutnya, vaksin hibah Sinopharm dari UEA akan digunakan untuk kelompok difabel."                                                                                                                                                                                                 
+    ##  [4] "\"Arahannya tadinya mau dipakai untuk haji supaya cepat. Bapak Presiden bilang 'sudah jangan dikasih ke mana-mana siapkan untuk haji'. Tapi karena hajinya sekarang tidak jadi, diarahkan untuk ke difabel, orang-orang yang jadi masalahnya mungkin tuli, bisu, atau cacat. Orang-orang yang cacat ini diberikan sebagai jatah pribadi, ke difabel-difabel yang ada di zona-zona merah,\" jelasnya."
+    ##  [5] "Budi Gunadi menjelaskan asal-usul sampai adanya kebijakan vaksin berbayar. Hal itu dikarenakan cakupan vaksinasi gotong royong yang selama ini gratis masih di bawah target."                                                                                                                                                                                                                        
+    ##  [6] "\"26 Juni itu ada rapat di Kemenko Perekonomian atas inisiatif KPC-PEN, melihat bahwa vaksinasi gotong royong itu speed-nya sangat perlu ditingkatkan. Sekarang 10-15 ribu per hari dari target 1,5 juta baru 300 ribu, jadi memang ada concern ini kok lamban yang vaksin gotong royong,\" katanya."                                                                                                
+    ##  [7] "\"Sehingga keluar hasil diskusi beberapa inisiatif apakah itu mau dibuka juga ke RS yang sama dengan vaksin program, atau buat anak, ibu hamil, menyusui, termasuk individu,\" tambahnya."                                                                                                                                                                                                           
+    ##  [8] ""                                                                                                                                                                                                                                                                                                                                                                                                    
+    ##  [9] "Simak video 'Epidemiolog Pertanyakan Motif Pemerintah soal Vaksin COVID-19 Berbayar':"                                                                                                                                                                                                                                                                                                               
+    ## [10] " "                                                                                                                                                                                                                                                                                                                                                                                                   
+    ## [11] "[Gambas:Video 20detik]"                                                                                                                                                                                                                                                                                                                                                                              
+    ## [12] ""                                                                                                                                                                                                                                                                                                                                                                                                    
+    ## [13] "\r\n        "
+
+Untuk membereskan teks yang masih amburadul di atas, kita akan gunakan
+kembali *function* `str_squish()` dari `library(stringr)`. Selain itu,
+kita akan gabung teks di atas menjadi satu kesatuan dengan *function*
+`paste()` berikut:
+
+``` r
+url %>% 
+  read_html() %>% 
+  html_nodes(.,"p") %>% 
+  html_text() %>% 
+  str_squish() %>% 
+  paste(collapse = " ")
+```
+
+    ## [1] "Menteri Kesehatan (Menkes) Budi Gunadi Sadikin memastikan 500 ribu vaksin hibah yang diterima Presiden Joko Widodo (Jokowi) dari Pemerintah Uni Emirat Arab (UEA) tidak digunakan dalam program vaksinasi berbayar. \"Saya ingin memastikan bahwa 500 ribu Sinopharm dan akan tambah lagi 250 ribu hibah pribadi dari raja UEA ke Presiden Jokowi tidak dijual oleh Bio Farma,\" katanya dalam rapat kerja bersama Komisi IX DPR RI, Selasa (13/7/2021). Budi Gunadi menjelaskan pihaknya sangat hati-hati menggunakan vaksin hibah itu dan selalu meminta arahan Jokowi. Menurutnya, vaksin hibah Sinopharm dari UEA akan digunakan untuk kelompok difabel. \"Arahannya tadinya mau dipakai untuk haji supaya cepat. Bapak Presiden bilang 'sudah jangan dikasih ke mana-mana siapkan untuk haji'. Tapi karena hajinya sekarang tidak jadi, diarahkan untuk ke difabel, orang-orang yang jadi masalahnya mungkin tuli, bisu, atau cacat. Orang-orang yang cacat ini diberikan sebagai jatah pribadi, ke difabel-difabel yang ada di zona-zona merah,\" jelasnya. Budi Gunadi menjelaskan asal-usul sampai adanya kebijakan vaksin berbayar. Hal itu dikarenakan cakupan vaksinasi gotong royong yang selama ini gratis masih di bawah target. \"26 Juni itu ada rapat di Kemenko Perekonomian atas inisiatif KPC-PEN, melihat bahwa vaksinasi gotong royong itu speed-nya sangat perlu ditingkatkan. Sekarang 10-15 ribu per hari dari target 1,5 juta baru 300 ribu, jadi memang ada concern ini kok lamban yang vaksin gotong royong,\" katanya. \"Sehingga keluar hasil diskusi beberapa inisiatif apakah itu mau dibuka juga ke RS yang sama dengan vaksin program, atau buat anak, ibu hamil, menyusui, termasuk individu,\" tambahnya.  Simak video 'Epidemiolog Pertanyakan Motif Pemerintah soal Vaksin COVID-19 Berbayar':  [Gambas:Video 20detik]  "
+
+------------------------------------------------------------------------
+
+## Menggabungkan *Functions*
+
+Dari ketiga *function* di atas, saya akan membuat satu *function*
+gabungan. Tujuannya adalah agar pembacaan `read_html()` dilakukan sekali
+saja agar efisien. Yakni:
+
+``` r
+scrape_detik = function(url){
+  data = 
+    url %>% 
+    read_html() %>% 
+    {tibble(
+        headline = html_nodes(.,".detail__title") %>% 
+                   html_text() %>% 
+                   str_squish(),
+        tanggal = html_nodes(.,".detail__date") %>% 
+                  html_text(),
+        teks = html_nodes(.,"p") %>% 
+               html_text() %>% 
+               str_squish() %>% 
+               paste(collapse = " ")
+  )}
+  return(data)
+}
+```
+
+Sekarang saatnya menguji *function* di atas:
+
+    scrape_detik(url)
+
+|                   headline                    |            tanggal            |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         teks                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+|:---------------------------------------------:|:-----------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| Menkes Jamin Vaksin Berbayar Bukan dari Hibah | Selasa, 13 Jul 2021 13:54 WIB | Menteri Kesehatan (Menkes) Budi Gunadi Sadikin memastikan 500 ribu vaksin hibah yang diterima Presiden Joko Widodo (Jokowi) dari Pemerintah Uni Emirat Arab (UEA) tidak digunakan dalam program vaksinasi berbayar. “Saya ingin memastikan bahwa 500 ribu Sinopharm dan akan tambah lagi 250 ribu hibah pribadi dari raja UEA ke Presiden Jokowi tidak dijual oleh Bio Farma,” katanya dalam rapat kerja bersama Komisi IX DPR RI, Selasa (13/7/2021). Budi Gunadi menjelaskan pihaknya sangat hati-hati menggunakan vaksin hibah itu dan selalu meminta arahan Jokowi. Menurutnya, vaksin hibah Sinopharm dari UEA akan digunakan untuk kelompok difabel. “Arahannya tadinya mau dipakai untuk haji supaya cepat. Bapak Presiden bilang ‘sudah jangan dikasih ke mana-mana siapkan untuk haji’. Tapi karena hajinya sekarang tidak jadi, diarahkan untuk ke difabel, orang-orang yang jadi masalahnya mungkin tuli, bisu, atau cacat. Orang-orang yang cacat ini diberikan sebagai jatah pribadi, ke difabel-difabel yang ada di zona-zona merah,” jelasnya. Budi Gunadi menjelaskan asal-usul sampai adanya kebijakan vaksin berbayar. Hal itu dikarenakan cakupan vaksinasi gotong royong yang selama ini gratis masih di bawah target. “26 Juni itu ada rapat di Kemenko Perekonomian atas inisiatif KPC-PEN, melihat bahwa vaksinasi gotong royong itu speed-nya sangat perlu ditingkatkan. Sekarang 10-15 ribu per hari dari target 1,5 juta baru 300 ribu, jadi memang ada concern ini kok lamban yang vaksin gotong royong,” katanya. “Sehingga keluar hasil diskusi beberapa inisiatif apakah itu mau dibuka juga ke RS yang sama dengan vaksin program, atau buat anak, ibu hamil, menyusui, termasuk individu,” tambahnya. Simak video ‘Epidemiolog Pertanyakan Motif Pemerintah soal Vaksin COVID-19 Berbayar’: \[Gambas:Video 20detik\] |
+
+------------------------------------------------------------------------
+
+Bagaimana? Gampang kan?
+
+`if you find this article helpful, support this blog by clicking the ads.`
