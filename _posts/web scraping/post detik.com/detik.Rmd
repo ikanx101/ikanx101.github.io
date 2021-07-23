@@ -1,0 +1,74 @@
+---
+title: "Tutorial Web Scraping detik.com dengan R"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+```
+
+_Weekend_ kemarin salah seorang pembaca _blog_ saya ini menghubungi saya untuk menanyakan bagaimana cara melakukan _web scraping_ situs [detik.com](https://www.detik.com/).
+
+Tujuan dia simpel, bagaimana mengambil data:
+
+1. Judul atau _headline_,
+1. Tanggal berita di-_publish_,
+1. Isi berita.
+
+> Bagaimana caranya?
+
+Yuk saya mulai caranya.
+
+---
+
+## Langkah I
+
+Kita panggil terlebih dahulu _libraries_-nya, yakni:
+
+1. `rvest` untuk _web scraping_.
+1. `dplyr` untuk _data carpentry_.
+1. `stringr` untuk _cleaning_ data berupa teks.
+
+_Yuk_, kita panggil _libraries_-nya:
+
+```{r,warning=FALSE,message=FALSE}
+library(rvest)
+library(dplyr)
+library(stringr)
+```
+
+## Langkah II 
+
+Tujuan saya berikutnya adalah membuat custom function 
+Pertama, saya akan ambil satu contoh _url_ beritanya terlebih dahulu. Jika saya berhasil membuat _function_ untuk melakukan _scrape_, berarti saya akan bisa melakukannya untuk semua _url_ yang ada.
+
+```{r}
+url = "https://finance.detik.com/berita-ekonomi-bisnis/d-5641707/menkes-jamin-vaksin-berbayar-bukan-dari-hibah?tag_from=news_mostpop"
+```
+
+
+
+```{r}
+data = 
+  url %>% 
+  read_html() %>% 
+  {tibble(
+    headline = html_nodes(.,".detail__title") %>% html_text() %>% str_squish(),
+    tanggal = html_nodes(.,".detail__date") %>% html_text() %>% str_squish(),
+    teks = html_nodes(.,"p") %>% html_text() %>% str_squish() %>% paste(collapse = " ")
+  )}
+
+data %>% knitr::kable()
+```
+
+
+
+
+
+
+
+
+
+
+
