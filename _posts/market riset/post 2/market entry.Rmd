@@ -1,0 +1,126 @@
+---
+title: "Mengenal Market Entry Research"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Di _market research agency_ tempat saya bekerja sebelumnya, kami seringkali mendapatkan klien yang berasal dari luar negeri. Biasanya mereka hendak masuk ke Indonesia untuk memulai bisnisnya di sini. Setidaknya ada beberapa strategi yang bisa mereka pilih:
+
+1. Mengakuisisi _existing company_ di Indonesia.
+1. Bermitra dengan _existing company_ di Indonesia.
+1. Membuat perusahaan baru di Indonesia.
+
+Lalu bagaimana caranya mereka menentukan strategi mana yang dipilih?
+
+> ___Dengan melakukan market entry research terlebih dahulu.___
+
+---
+
+# Apa itu _market entry research_?
+
+Sesuai namanya, _market entry research_ adalah riset komprehensif yang dilakukan untuk mengetahui keadaan _market_ di suatu wilayah tertentu saat ada pemain baru yang hendak masuk ke _market_ tersebut.
+
+Karena riset ini bersifat komprehensif, setidaknya ada tiga elemen yang perlu dirisetkan. Apa saja?
+
+1. Segi konsumen,
+1. Segi kompetisi (kompetitor atau B2B),
+1. Segi regulasi (regulator atau pemerintah).
+
+Bagaimana teknis pelaksanaannya?
+
+---
+
+## Segi Konsumen
+
+Konsumen memegang peranan penting bagi semua _brand_. Pada riset terkait konsumen ini, kita perlu mengetahui seperti apa _demand_, _usership_, _habit_, dan persepsi mereka terhadap _brand_ atau produk dari pemain baru yang hendak masuk ke _market_.
+
+
+## Segi Kompetisi
+Bisa jadi _market_ yang hendak dimasuki sudah penuh dengan pemain-pemain lain sudah _settle_. Sehingga riset akan berfokus pada analisa seperti ___SWOT analysis___ untuk produk atau _brand_ yang sudah ada.
+
+Bisa jadi juga _market_ belum terbentuk sepenuhnya di wilayah tersebut (tidak ada _direct competitor_ untuk produk baru yang hendak ditawarkan pemain baru tersebut).
+
+## Segi Regulasi
+Setiap produk yang dijual di Indonesia tentunya harus memenuhi regulasi yang berlaku. Oleh karena itu, kita perlu mengetahui lebih dalam:
+
+- Apa saja regulasi yang ada, 
+- Dari lembaga mana saja regulasi tersebut berasal, contoh:
+    - Kementrian terkait.
+    - Badan-badan terkait, misal: BPOM dan BSN.
+- Apa saja konsekuensi langsung dan tak langsung terhadap:
+    - Konsumen.
+    - _Supply chain management_.
+    - _Sales process_.
+
+---
+
+## Jenis Data
+Jenis data yang akan digunakan dalam semua riset ini adalah:
+
+1. Data primer, berupa data hasil _interview_.
+1. Data sekunder, berupa data dari sumber-sumber lain yang terkait (misal: regulasi, _market condition_, dsb).
+
+---
+
+## Metode Riset
+Untuk mengakomodir tiga elemen penting di atas, maka metode riset untuk masing-masing elemen akan berbeda.
+
+## _Consumer Research_
+Konsumen akan dibagi menjadi dua kelompok, yakni:
+
+1. Konsumen rumah tangga.
+1. Konsumen industri atau perkantoran.
+
+Riset akan dilakukan secara kualitatif dan kuantitatif.
+
+### _Research Qualitative_
+Untuk mengetahui poin-poin penting yang hendak ditanyakan di survey, kita __perlu__ melakukan ___Focus Group Discussion___ (FGD) terlebih dahulu. FGD dilaksanakan untuk kedua kelompok tersebut. 
+
+FGD ini biasanya bertujuan untuk mendapatkan _initial findings_ sebagai berikut:
+
+1. _Habit_ dan _usership_. 
+1. _Demand_ dan persepsi.
+1. _Media habit_ dan _social media habit_.
+1. Informasi kualitatif lainnya.
+
+Hasil dari FGD ini akan sangat berguna sebagai _guideline_ pembuatan kuesioner survey di tahap selanjutnya.
+
+### _Research Quantitative_
+Kuesioner yang sudah tersusun akan disurveykan kepada banyak konsumen sehingga bisa mendapatkan kuantifikasi dari jawaban-jawaban kualitatif dari FGD sebelumnya.
+
+Banyaknya responden akan dihitung dan disesuaikan untuk menjaga _margin of error_ dan _confidence interval_ di level tertentu.
+
+## _Competition Research_
+Untuk melakukan riset terkait kompetisi biasanya dilakukan dua pendekatan. Yakni:
+
+1. _Desk research_.
+    - Dilakukan dengan cara mencari dan mengambil data-data yang terkait kompetisi dan kondisi _market_ dari berbagai sumber.
+    - Misal:
+        - Analisa harga produk-produk _existing_ di _market_.
+        - Analisa SWOT.
+        - _Social media listening_.
+        - TV _campaign spending budget_.
+        - Dan lainnya.
+1. FGD.
+    - Biasanya dilakukan untuk mendapatkan _insights_ dari sisi _retailers_ yang terkait dengan produk.
+
+## _Regulation Research_
+Untuk melakukan riset terkait regulasi biasanya dilakukan dua pendekatan. Yakni:
+
+1. _Desk research_.
+    - Dilakukan dengan cara mencari dan mengambil data-data yang terkait regulasi dari berbagai sumber.
+1. _In-depth interview_ (IDI).
+    - IDI dilakukan kepada beberapa orang _expert_ dari kementrian terkait, badan terkait, atau asosiasi industri terkait.
+
+---
+
+Tentunya semua penjelasan di atas akan disesuaikan dengan kondisi _real_ yang akan dihadapi.
+
+Semoga berguna _yah_.
+
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
