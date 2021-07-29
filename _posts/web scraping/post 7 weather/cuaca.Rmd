@@ -1,33 +1,81 @@
 ---
-title: "Untitled"
+title: "Mencari Cuaca Saat Ini dengan R"
 output: github_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+library(dplyr)
 ```
 
-situsnya: https://openweathermap.org/price
+Pada 2016 lalu, saya pernah mengerjakan suatu model prediksi yang berkaitan dengan cuaca di suatu area tertentu. Saat itu, saya belum berkenala dengan __R__ dan masih kesusahan untuk mencari data cuaca yang _reliable_.
 
-api = 
 
-api.openweathermap.org/data/2.5/weather?q=Jakarta&appid=2aa1a2d45460c618fae5fd910f25b8ed
+Saat ini, kita bisa dengan mudahnya mendapatkan data cuaca untuk dianalisa lebih lanjut atau dijadikan _support data_ dari analisa yang hendak kita kerjakan.
 
+Layanan cuaca dari ___Oke Google___ sebenarnya sangat baik tapi ada cara lain yang lebih mudah untuk mendapatkan data cuaca dan menghubungkannya ke __R__ _environment_, yakni dengan memanfaatkan layanan situs [__Open Weather Map__](https://openweathermap.org).
+
+Prosesnya cukup mudah, yaitu:
+
+1. Daftarkan _email_ kita ke sana.
+1. Ambil _API Key_.
+1. Panggil _API_ dan baca sebagai `.json` dari __R__.
+
+Untuk kebutuhan saya saat ini, saya tidak memerlukan _API_ yang berbayar. Layanan _free_ sudah cukup.
+
+Berikut saya berikan langkah-langkah di __R__-nya:
+
+## Langkah 1
+
+Saya buat _single object_ bernama `API_key`. Kita _copy-paste_ _API Key_ yang didapatkan dari situs Open Weather:
 
 ```{r}
-library(jsonlite)
-API_key = "a35087bda8c2199cfaa548330c069a15" #masked!
-City_name = "Jakarta"
-  
-api <- paste0("http://api.openweathermap.org/data/2.5/weather?q=",City_name,"&appid=",API_key,"&units=metric")
-res <- fromJSON(api)
-perc <- res$clouds$all[1]
-perc <- as.integer(perc)
-
-rain <- " "
-  if (perc<=20) rain <-'Meeh'
-  if (perc>20 & perc<=60) rain <- 'Huuuh, but still meeh'
-  if (perc>60 & perc<=85) rain <- 'Looking better'
-  if (perc>85) rain <- 'Bring it on!'
-  return(rain)
+API_Key = "copy key di sini"
 ```
+
+```{r,echo=FALSE}
+API_key = "a35087bda8c2199cfaa548330c069a15" 
+```
+
+## Langkah 2
+
+Panggil _API_ dengan rumus:
+
+__api.openweathermap.org/data/2.5/weather?q=__ KOTA __&appid=__ API KEY
+
+Baca _link_ tersebut dengan _function_ `fromJSON()` dari `library(jsonlite)`.
+
+Di akhir _link_ tersebut saya tambahkan __units=metric__ agar satuan yang dihasilkan standar (bukan _imperial units_).
+
+Sebagai contoh, saya akan mengambil cuaca saat ini di Jakarta:
+
+```{r}
+# panggil library
+library(jsonlite)
+
+# set kotanya
+city = "Jakarta"
+
+# tempel kota dan api key ke dalam link API
+api = paste0("http://api.openweathermap.org/data/2.5/weather?q=",
+             city,
+             "&appid=",
+             API_key,
+             "&units=metric")
+
+# baca datanya
+data = fromJSON(api)
+```
+
+Data yang didapatkan memiliki struktur berupa _list_ sederhana. Kita bisa lihat menggunakan _function_ dari _base_ __R__ yakni `str()` sebagai berikut:
+
+```{r}
+str(data)
+```
+
+> ___Gimana? Mudah kan?___
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
