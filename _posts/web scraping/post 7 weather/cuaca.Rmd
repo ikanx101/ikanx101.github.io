@@ -1,0 +1,33 @@
+---
+title: "Untitled"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+situsnya: https://openweathermap.org/price
+
+api = 
+
+api.openweathermap.org/data/2.5/weather?q=Jakarta&appid=2aa1a2d45460c618fae5fd910f25b8ed
+
+
+```{r}
+library(jsonlite)
+API_key = "a35087bda8c2199cfaa548330c069a15" #masked!
+City_name = "Jakarta"
+  
+api <- paste0("http://api.openweathermap.org/data/2.5/weather?q=",City_name,"&appid=",API_key,"&units=metric")
+res <- fromJSON(api)
+perc <- res$clouds$all[1]
+perc <- as.integer(perc)
+
+rain <- " "
+  if (perc<=20) rain <-'Meeh'
+  if (perc>20 & perc<=60) rain <- 'Huuuh, but still meeh'
+  if (perc>60 & perc<=85) rain <- 'Looking better'
+  if (perc>85) rain <- 'Bring it on!'
+  return(rain)
+```
