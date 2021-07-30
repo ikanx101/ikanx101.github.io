@@ -1,0 +1,191 @@
+---
+title: "World Happiness Report 2021: Apa yang Membuat Warga Suatu Negara Bahagia?"
+output: 
+  github_document: 
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/ikanx101 BLOG/_posts/Explainable AI/post 4")
+
+rm(list=ls())
+
+library(dplyr)
+library(ggplot2)
+
+load("bahan_blog.rda")
+```
+
+Di blog saya yang lama, saya pernah menuliskan tentang bagaimana [GDP memiliki hubungan dengan level kebahagiaan suatu negara](https://passingthroughresearcher.wordpress.com/2019/11/19/infografis-kemakmuran-vs-kebahagiaan-suatu-negara/). Pada 2021 ini, __Gallup__ telah mengeluarkan data terbaru ___World Happiness Report___, datanya saya ambil dari situs [Kaggle berikut ini](https://www.kaggle.com/ajaypalsinghlo/world-happiness-report-2021).
+
+> Kali ini saya akan mencoba eksplorasi, faktor apa saja yang mempengaruhi kebahagiaan warga suatu negara?
+
+---
+
+## Analisa Deskriptif dari Data
+Dari data yang saya ambil tersebut, ada `124` negara yang disurvey oleh __Gallup__. Saya mengambil `9` _variables_ utama dari data tersebut, yakni:
+
+```{r,echo=FALSE}
+str(data_sel)
+```
+
+1. `country_name`: nama negara.
+1. `regional_indicator`: area atau region dari negara tersebut.
+1. `ladder_score`: tingkat kebahagiaan.
+1. `logged_gdp_per_capita`: angka ___GDP per capita___ yang telah ditransformasi dengan fungsi _lognormal_.
+1. `social_support`: tingkat _social support_ dari warga suatu negara.
+1. `healthy_life_expectancy`: angka harapan hidup.
+1. `freedom_to_make_life_choices`: tingkat seberapa bebas seseorang bisa mengambil keputusan terhadap kehidupannya. 
+1. `generosity`: tingkat __kemurahan hati__ dari warga suatu negara.
+1. `perception_of_corruption`: persepsi tingkat korupsi warga di negaranya.
+
+Mari kita bedah satu-persatu.
+
+### 10 Negara dengan Kebahagiaan Tertinggi
+Apa saja 10 negara dengan kebahagiaan tertinggi?
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center'}
+data %>% 
+  select(country_name,ladder_score,upperwhisker,lowerwhisker) %>% 
+  arrange(desc(ladder_score)) %>% 
+  head(10) %>% 
+  ggplot(aes(x = reorder(country_name,-ladder_score),
+             y = ladder_score,
+             ymin = lowerwhisker,
+             ymax = upperwhisker)) +
+  geom_errorbar(width = .2,
+                color = "steelblue") +
+  geom_point(shape = 5) +
+  geom_label(aes(label = round(ladder_score,2),
+                 y = ladder_score + .02),
+             size = 2,
+             alpha = .75,
+             color = "steelblue") +
+  theme_minimal() +
+  scale_x_discrete(guide = guide_axis(n.dodge = 2)) +
+  labs(title = "10 Negara dengan Tingkat Kebahagiaan Tertinggi",
+       subtitle = "Indeks Kebahagiaan dan Rentang Nilainya",
+       caption = "Visualized using R\nikanx101.com") +
+  theme(plot.title = element_text(hjust = .5),
+        plot.subtitle = element_text(hjust = .5),
+        plot.caption = element_text(hjust = .5),
+        axis.title = element_blank(),
+        axis.text.y = element_blank())
+```
+
+### 10 Negara dengan Kebahagiaan Terendah
+
+Sekarang negara mana saja yang memiliki indeks kebahagiaan terendah?
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center'}
+data %>% 
+  select(country_name,ladder_score,upperwhisker,lowerwhisker) %>% 
+  arrange(desc(ladder_score)) %>% 
+  tail(10) %>% 
+  ggplot(aes(x = reorder(country_name,-ladder_score),
+             y = ladder_score,
+             ymin = lowerwhisker,
+             ymax = upperwhisker)) +
+  geom_errorbar(width = .2,
+                color = "darkred") +
+  geom_point(shape = 5) +
+  geom_label(aes(label = round(ladder_score,2),
+                 y = ladder_score + .02),
+             size = 2,
+             alpha = .75,
+             color = "darkred") +
+  theme_minimal() +
+  scale_x_discrete(guide = guide_axis(n.dodge = 2)) +
+  labs(title = "10 Negara dengan Tingkat Kebahagiaan Terendah",
+       subtitle = "Indeks Kebahagiaan dan Rentang Nilainya",
+       caption = "Visualized using R\nikanx101.com") +
+  theme(plot.title = element_text(hjust = .5),
+        plot.subtitle = element_text(hjust = .5),
+        plot.caption = element_text(hjust = .5),
+        axis.title = element_blank(),
+        axis.text.y = element_blank())
+```
+
+### Indonesia sebagai Negara yang Paling Murah Hati
+
+> ___Apakah kalian pernah mendengar kalimat di atas?___
+
+Setidaknya beberapa rekan saya di _timeline_ sempat membahas hal ini. Mari kita lihat datanya:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center'}
+data %>% 
+  select(country_name,generosity) %>% 
+  arrange(desc(generosity)) %>% 
+  head(10) %>%  
+  ggplot(aes(x = reorder(country_name,-generosity),
+             y = generosity)) +
+  geom_col(width = .4,
+           fill = "steelblue",
+           color = "black") +
+  geom_label(aes(label = round(generosity,2)),
+             size = 2.5,
+             color = "steelblue") +
+  theme_minimal() +
+  scale_x_discrete(guide = guide_axis(n.dodge = 2)) +
+  labs(title = "10 Negara dengan Tingkat Kemurahan Hati Tertinggi",
+       subtitle = "Indeks Generosity",
+       caption = "Visualized using R\nikanx101.com") +
+  theme(plot.title = element_text(hjust = .5),
+        plot.subtitle = element_text(hjust = .5),
+        plot.caption = element_text(hjust = .5),
+        axis.title = element_blank(),
+        axis.text.y = element_blank())
+```
+
+### Analisa Per Region
+Berikut ini adalah nilai rata-rata dari semua variabel per region:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center'}
+library(kableExtra)
+
+data_sel %>% 
+  group_by(regional_indicator) %>% 
+  summarise(ladder = mean(ladder_score),
+            gdp = mean(logged_gdp_per_capita),
+            social = mean(social_support),
+            health = mean(healthy_life_expectancy),
+            freedom = mean(freedom_to_make_life_choices),
+            generosity = mean(generosity),
+            corrupt = mean(perceptions_of_corruption)) %>% 
+  ungroup() %>% 
+  
+
+
+mtcars[1:8, 1:8] %>%
+  kbl() %>%
+  kable_paper(full_width = F) %>%
+  column_spec(2, color = spec_color(mtcars$mpg[1:8]),
+              link = "https://haozhu233.github.io/kableExtra/") %>%
+  column_spec(6, color = "white",
+              background = spec_color(mtcars$drat[1:8], end = 0.7),
+              popover = paste("am:", mtcars$am[1:8]))
+```
+
+## Analisa Prediktif dari Data
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

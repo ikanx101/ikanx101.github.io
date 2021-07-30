@@ -1,4 +1,4 @@
-setwd("/cloud/project/_posts/Explainable AI/post 4")
+setwd("~/ikanx101 BLOG/_posts/Explainable AI/post 4")
 
 rm(list=ls())
 
@@ -52,7 +52,8 @@ summary(model_1)
 rmse = caret::RMSE(model_1$fitted.values,data_reg$ladder_score)
 
 # save hasil kerjaan dulu
-save(by_country_happiness,
+save(data,
+     by_country_happiness,
      by_country_generosity,
      by_region_happiness,
      data_reg,
