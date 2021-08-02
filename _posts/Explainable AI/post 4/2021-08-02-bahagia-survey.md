@@ -1,6 +1,19 @@
-World Happiness Report 2021: Apa yang Membuat Warga Suatu Negara
-Bahagia?
-================
+---
+date: 2021-08-02T13:48:00-04:00
+title: "World Happiness Report 2021: Apa yang Membuat Warga Suatu Negara Bahagia?"
+categories:
+  - Blog
+tags:
+  - R
+  - Machine Learning
+  - Artificial Intelligence
+  - Responsible AI
+  - Regresi
+  - Modelling
+  - Interpretable Machine Learning
+  - Happiness
+  - Gallup
+---
 
 Di blog saya yang lama, saya pernah menuliskan tentang bagaimana [GDP
 memiliki hubungan dengan level kebahagiaan suatu
@@ -50,7 +63,7 @@ Mari kita bedah satu-persatu.
 
 Apa saja 10 negara dengan kebahagiaan tertinggi?
 
-<img src="bahagia_files/figure-gfm/unnamed-chunk-2-1.png" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Explainable%20AI/post%204/bahagia_files/figure-gfm/unnamed-chunk-2-1.png" style="display: block; margin: auto;" />
 
 Ternyata didominasi oleh negara-negara Eropa.
 
@@ -58,7 +71,7 @@ Ternyata didominasi oleh negara-negara Eropa.
 
 Sekarang negara mana saja yang memiliki indeks kebahagiaan terendah?
 
-<img src="bahagia_files/figure-gfm/unnamed-chunk-3-1.png" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Explainable%20AI/post%204/bahagia_files/figure-gfm/unnamed-chunk-3-1.png" style="display: block; margin: auto;" />
 
 Negara-negara tersebut didominasi oleh negara Afrika dan Asia yang
 memiliki sejarah konflik.
@@ -75,7 +88,7 @@ Foundation***](https://www.femina.co.id/trending-topic/good-news-indonesia-dinob
 Sekarang, dari data yang saya punya, saya akan melihat 10 negara dengan
 nilai *generosity* tertinggi:
 
-<img src="bahagia_files/figure-gfm/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Explainable%20AI/post%204/bahagia_files/figure-gfm/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
 
 Ternyata dari data ini kita bisa mendapatkan kesimpulan yang sama.
 
@@ -85,7 +98,7 @@ Ternyata dari data ini kita bisa mendapatkan kesimpulan yang sama.
 
 Berikut ini adalah nilai rata-rata dari semua variabel per region:
 
-<img src="bahagia_files/figure-gfm/unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Explainable%20AI/post%204/bahagia_files/figure-gfm/unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
 
 ## Analisa Prediktif dari Data
 
@@ -98,7 +111,7 @@ Saya berharap mendapatkan model sebagai berikut:
 
 Berikut ini adalah langkah-langkah yang saya lakukan:
 
-<img src="nomnoml.png" width="211" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Explainable%20AI/post%204/nomnoml.png" width="211" style="display: block; margin: auto;" />
 
 Untuk proses *pre-processing* data, saya melakukan normalisasi dengan
 menggunakan *range*. Untuk melakukan validasi dan mengecek *goodness of
