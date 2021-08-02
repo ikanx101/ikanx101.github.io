@@ -85,297 +85,127 @@ Ternyata dari data ini kita bisa mendapatkan kesimpulan yang sama.
 
 Berikut ini adalah nilai rata-rata dari semua variabel per region:
 
-<table>
-<thead>
-<tr>
-<th style="text-align:center;">
-regional\_indicator
-</th>
-<th style="text-align:center;">
-ladder\_score
-</th>
-<th style="text-align:center;">
-logged\_gdp\_per\_capita
-</th>
-<th style="text-align:center;">
-social\_support
-</th>
-<th style="text-align:center;">
-healthy\_life\_expectancy
-</th>
-<th style="text-align:center;">
-freedom\_to\_make\_life\_choices
-</th>
-<th style="text-align:center;">
-generosity
-</th>
-<th style="text-align:center;">
-perceptions\_of\_corruption
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center;">
-Central and Eastern Europe
-</td>
-<td style="text-align:center;">
-5.98
-</td>
-<td style="text-align:center;">
-10
-</td>
-<td style="text-align:center;">
-0.89
-</td>
-<td style="text-align:center;">
-68.34
-</td>
-<td style="text-align:center;">
-0.80
-</td>
-<td style="text-align:center;">
--0.08
-</td>
-<td style="text-align:center;">
-0.85
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-Commonwealth of Independent States
-</td>
-<td style="text-align:center;">
-5.47
-</td>
-<td style="text-align:center;">
-9
-</td>
-<td style="text-align:center;">
-0.87
-</td>
-<td style="text-align:center;">
-65.01
-</td>
-<td style="text-align:center;">
-0.82
-</td>
-<td style="text-align:center;">
--0.04
-</td>
-<td style="text-align:center;">
-0.73
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-East Asia
-</td>
-<td style="text-align:center;">
-5.81
-</td>
-<td style="text-align:center;">
-10
-</td>
-<td style="text-align:center;">
-0.86
-</td>
-<td style="text-align:center;">
-71.25
-</td>
-<td style="text-align:center;">
-0.76
-</td>
-<td style="text-align:center;">
--0.06
-</td>
-<td style="text-align:center;">
-0.68
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-Latin America and Caribbean
-</td>
-<td style="text-align:center;">
-5.91
-</td>
-<td style="text-align:center;">
-9
-</td>
-<td style="text-align:center;">
-0.84
-</td>
-<td style="text-align:center;">
-67.08
-</td>
-<td style="text-align:center;">
-0.83
-</td>
-<td style="text-align:center;">
--0.07
-</td>
-<td style="text-align:center;">
-0.79
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-Middle East and North Africa
-</td>
-<td style="text-align:center;">
-5.22
-</td>
-<td style="text-align:center;">
-10
-</td>
-<td style="text-align:center;">
-0.80
-</td>
-<td style="text-align:center;">
-65.61
-</td>
-<td style="text-align:center;">
-0.72
-</td>
-<td style="text-align:center;">
--0.08
-</td>
-<td style="text-align:center;">
-0.76
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-North America and ANZ
-</td>
-<td style="text-align:center;">
-7.13
-</td>
-<td style="text-align:center;">
-11
-</td>
-<td style="text-align:center;">
-0.93
-</td>
-<td style="text-align:center;">
-72.33
-</td>
-<td style="text-align:center;">
-0.90
-</td>
-<td style="text-align:center;">
-0.12
-</td>
-<td style="text-align:center;">
-0.45
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-South Asia
-</td>
-<td style="text-align:center;">
-4.44
-</td>
-<td style="text-align:center;">
-9
-</td>
-<td style="text-align:center;">
-0.70
-</td>
-<td style="text-align:center;">
-62.68
-</td>
-<td style="text-align:center;">
-0.76
-</td>
-<td style="text-align:center;">
-0.04
-</td>
-<td style="text-align:center;">
-0.80
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-Southeast Asia
-</td>
-<td style="text-align:center;">
-5.41
-</td>
-<td style="text-align:center;">
-9
-</td>
-<td style="text-align:center;">
-0.82
-</td>
-<td style="text-align:center;">
-64.89
-</td>
-<td style="text-align:center;">
-0.91
-</td>
-<td style="text-align:center;">
-0.16
-</td>
-<td style="text-align:center;">
-0.71
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-Sub-Saharan Africa
-</td>
-<td style="text-align:center;">
-4.49
-</td>
-<td style="text-align:center;">
-8
-</td>
-<td style="text-align:center;">
-0.70
-</td>
-<td style="text-align:center;">
-55.89
-</td>
-<td style="text-align:center;">
-0.72
-</td>
-<td style="text-align:center;">
-0.01
-</td>
-<td style="text-align:center;">
-0.77
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-Western Europe
-</td>
-<td style="text-align:center;">
-6.91
-</td>
-<td style="text-align:center;">
-11
-</td>
-<td style="text-align:center;">
-0.91
-</td>
-<td style="text-align:center;">
-73.03
-</td>
-<td style="text-align:center;">
-0.86
-</td>
-<td style="text-align:center;">
-0.00
-</td>
-<td style="text-align:center;">
-0.52
-</td>
-</tr>
-</tbody>
-</table>
+<img src="bahagia_files/figure-gfm/unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
 
 ## Analisa Prediktif dari Data
+
+Sekarang saatnya melakukan analisa kausalitas dengan cara melakukan
+analisa multilinear regresi dari data yang ada.
+
+Saya berharap mendapatkan model sebagai berikut:
+
+![ladder \\sim gdp + social + healthy + freedom + generosity +corruption](https://latex.codecogs.com/png.latex?ladder%20%5Csim%20gdp%20%2B%20social%20%2B%20healthy%20%2B%20freedom%20%2B%20generosity%20%2Bcorruption "ladder \sim gdp + social + healthy + freedom + generosity +corruption")
+
+Berikut ini adalah langkah-langkah yang saya lakukan:
+
+<img src="nomnoml.png" width="211" style="display: block; margin: auto;" />
+
+Untuk proses *pre-processing* data, saya melakukan normalisasi dengan
+menggunakan *range*. Untuk melakukan validasi dan mengecek *goodness of
+fit* dari model, saya menggunakan beberapa prinsip yang pernah saya
+tuliskan di [sini](https://ikanx101.com/blog/belajar-regresi/). Saya
+akan gunakan tiga parameter, yakni:
+![R^2](https://latex.codecogs.com/png.latex?R%5E2 "R^2"), **RMSE** dan
+**p-value**.
+
+### Iterasi Pertama
+
+Pada percobaan pertama, saya memasukkan semua variabel yang ada untuk
+memprediksi nilai `ladder_score`, hasilnya adalah sebagai berikut:
+
+    ## 
+    ## Call:
+    ## lm(formula = "ladder_score ~ .", data = data_reg_new)
+    ## 
+    ## Residuals:
+    ##      Min       1Q   Median       3Q      Max 
+    ## -0.34790 -0.05645  0.01078  0.06273  0.19718 
+    ## 
+    ## Coefficients:
+    ##                              Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)                   0.06091    0.06319   0.964 0.336779    
+    ## logged_gdp_per_capita         0.26340    0.08183   3.219 0.001595 ** 
+    ## social_support                0.24208    0.06533   3.706 0.000301 ***
+    ## healthy_life_expectancy       0.16228    0.07138   2.274 0.024494 *  
+    ## freedom_to_make_life_choices  0.22225    0.05470   4.063 7.98e-05 ***
+    ## generosity                    0.05686    0.05012   1.134 0.258541    
+    ## perceptions_of_corruption    -0.09749    0.04681  -2.083 0.039058 *  
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 0.1018 on 142 degrees of freedom
+    ## Multiple R-squared:  0.7558, Adjusted R-squared:  0.7455 
+    ## F-statistic: 73.27 on 6 and 142 DF,  p-value: < 2.2e-16
+
+Dari hasil di atas ternyata `generosity` bukanlah variabel yang
+berpengaruh signifikan terhadap kebahagiaan. Berdasarkan temuan ini,
+saya akan membuat modelnya kembali tanpa variabel tersebut.
+
+### Iterasi Kedua
+
+Kali ini saya membuat model dengan menghilangkan variabel `generosity`,
+sebagai berikut:
+
+    ## 
+    ## Call:
+    ## lm(formula = "ladder_score ~ . - generosity", data = data_reg_new)
+    ## 
+    ## Residuals:
+    ##      Min       1Q   Median       3Q      Max 
+    ## -0.36342 -0.05597  0.01290  0.06378  0.19234 
+    ## 
+    ## Coefficients:
+    ##                              Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)                   0.08690    0.05895   1.474 0.142643    
+    ## logged_gdp_per_capita         0.24876    0.08088   3.075 0.002518 ** 
+    ## social_support                0.24506    0.06534   3.751 0.000256 ***
+    ## healthy_life_expectancy       0.15719    0.07131   2.204 0.029095 *  
+    ## freedom_to_make_life_choices  0.23576    0.05344   4.412 2.01e-05 ***
+    ## perceptions_of_corruption    -0.10759    0.04600  -2.339 0.020718 *  
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 0.102 on 143 degrees of freedom
+    ## Multiple R-squared:  0.7536, Adjusted R-squared:  0.745 
+    ## F-statistic: 87.49 on 5 and 143 DF,  p-value: < 2.2e-16
+
+    ## [1] "RMSE: 0.0998782690892772"
+
+Jika kita lihat parameter-parameter *goodness of fit* dari model:
+
+1.  `Adjusted R-squared` sebesar `0.745`. Bisa saya simpulkan model
+    sudah cukup baik.
+2.  `p-value` sebesar
+    ![2.2 \* 10^{-16} \\sim 0](https://latex.codecogs.com/png.latex?2.2%20%2A%2010%5E%7B-16%7D%20%5Csim%200 "2.2 * 10^{-16} \sim 0").
+    Model menunjukkan pengaruh signifikan dari variabel prediktor
+    terhadap variabel target.
+3.  `RMSE` sebesar 0.0999. Nilainya sudah bagus karena kecil.
+
+Dari ketiga parameter di atas, artinya model regresi saya sudah baik.
+
+### Interpretasi Model Regresi
+
+Saya dapatkan model sebagai berikut:
+
+![ladder \\simeq 0.09 + 0.25gdp + 0.24social + 0.16healthy + 0.24freedom - 0.11corruption](https://latex.codecogs.com/png.latex?ladder%20%5Csimeq%200.09%20%2B%200.25gdp%20%2B%200.24social%20%2B%200.16healthy%20%2B%200.24freedom%20-%200.11corruption "ladder \simeq 0.09 + 0.25gdp + 0.24social + 0.16healthy + 0.24freedom - 0.11corruption")
+
+Ternyata:
+
+> ***Kebahagiaan itu dipengaruhi oleh 3 variabel utama, yakni:
+> `gdp per capita`, `social support`, dan `freedom to make choices`.***
+
+Ketiganya memiliki hubungan positif. Artinya semakin tinggi nilai ketiga
+variabel tersebut mengakibatkan indeks kebahagiaan juga meningkat.
+
+Sedangkan variabel lainnya seperti `healthy_life_expectancy` dan
+`perceptions_of_corruption` justru memiliki pengaruh yang relatif lebih
+kecil dibandingkan ketiganya.
+
+------------------------------------------------------------------------
+
+Selain harta, tampaknya *social support* dan kebebasan dalam hidup
+adalah kunci bagi kebahagiaan berdasarkan survey ini.
+
+------------------------------------------------------------------------
+
+`if you find this article helpful, support this blog by clicking the ads.`

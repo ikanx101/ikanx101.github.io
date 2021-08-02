@@ -7,7 +7,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-#setwd("~/ikanx101 BLOG/_posts/Explainable AI/post 4")
+setwd("~/ikanx101 BLOG/_posts/Explainable AI/post 4")
 
 rm(list=ls())
 
@@ -175,34 +175,86 @@ data_tabel =
 
 data_tabel %>% 
   melt(id.vars = "regional_indicator") %>% 
+  mutate(warna = log(value)) %>% 
   ggplot(aes(y = regional_indicator,
              x = variable,
-             fill = value)) +
+             fill = warna)) +
   geom_tile() + 
-  scale_fill_brewer(palette = "Seq2")
-  scale_x_discrete(guide = guide_axis(n.dodge = 3))
+  scale_fill_gradient2(low = "darkred", mid = "white", high = "steelblue", midpoint = 1) +
+  scale_x_discrete(guide = guide_axis(n.dodge = 4)) +
+  geom_label(aes(label = value)) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        plot.title = element_text(hjust = .5),
+        plot.subtitle = element_text(hjust = .5),
+        plot.caption = element_text(hjust = .5)) +
+  labs(y = "Region Negara",
+       x = "Variabel Terkait",
+       title = "Rata-rata Nilai per Variabel dari Masing-Masing\nRegion Negara",
+       subtitle = "World Happiness Index Survey",
+       caption = "Visualized using R\nikanx101.com")
 
 ```
 
 ## Analisa Prediktif dari Data
 
+Sekarang saatnya melakukan analisa kausalitas dengan cara melakukan analisa multilinear regresi dari data yang ada.
 
+Saya berharap mendapatkan model sebagai berikut:
 
+$$ladder \sim gdp + social + healthy + freedom + generosity +corruption$$
 
+Berikut ini adalah langkah-langkah yang saya lakukan:
 
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.align='center'}
+knitr::include_graphics("nomnoml.png")
+```
 
+Untuk proses _pre-processing_ data, saya melakukan normalisasi dengan menggunakan _range_. Untuk melakukan validasi dan mengecek _goodness of fit_ dari model, saya menggunakan beberapa prinsip yang pernah saya tuliskan di [sini](https://ikanx101.com/blog/belajar-regresi/). Saya akan gunakan tiga parameter, yakni: $R^2$, __RMSE__ dan __p-value__.
 
+### Iterasi Pertama
+Pada percobaan pertama, saya memasukkan semua variabel yang ada untuk memprediksi nilai `ladder_score`, hasilnya adalah sebagai berikut:
 
+```{r,echo=FALSE}
+summary(model_awal)
+```
 
+Dari hasil di atas ternyata `generosity` bukanlah variabel yang berpengaruh signifikan terhadap kebahagiaan. Berdasarkan temuan ini, saya akan membuat modelnya kembali tanpa variabel tersebut.
 
+### Iterasi Kedua
+Kali ini saya membuat model dengan menghilangkan variabel `generosity`, sebagai berikut:
 
+```{r,echo=FALSE}
+summary(model_1)
+paste0("RMSE: ",rmse_model_1)
+```
 
+Jika kita lihat parameter-parameter _goodness of fit_ dari model:
 
+1. `Adjusted R-squared` sebesar `0.745`. Bisa saya simpulkan model sudah cukup baik.
+1. `p-value` sebesar $2.2 * 10^{-16} \sim 0$. Model menunjukkan pengaruh signifikan dari variabel prediktor terhadap variabel target.
+1. `RMSE` sebesar `r round(rmse_model_1,4)`. Nilainya sudah bagus karena kecil.
 
+Dari ketiga parameter di atas, artinya model regresi saya sudah baik.
 
+### Interpretasi Model Regresi
 
+Saya dapatkan model sebagai berikut:
 
+$$ladder \simeq 0.09 + 0.25gdp + 0.24social + 0.16healthy + 0.24freedom - 0.11corruption$$
 
+Ternyata:
 
+> ___Kebahagiaan itu dipengaruhi oleh 3 variabel utama, yakni: `gdp per capita`, `social support`, dan `freedom to make choices`.___
 
+Ketiganya memiliki hubungan positif. Artinya semakin tinggi nilai ketiga variabel tersebut mengakibatkan indeks kebahagiaan juga meningkat.
 
+Sedangkan variabel lainnya seperti `healthy_life_expectancy` dan `perceptions_of_corruption` justru memiliki pengaruh yang relatif lebih kecil dibandingkan ketiganya.
+
+---
+
+> Selain harta, tampaknya _social support_ dan kebebasan dalam hidup adalah kunci bagi kebahagiaan berdasarkan survey ini.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`

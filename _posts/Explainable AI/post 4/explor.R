@@ -4,6 +4,7 @@ rm(list=ls())
 
 library(tidyr)
 library(dplyr)
+library(caret)
 
 data = read.csv("dbase.csv") %>% janitor::clean_names()
 
@@ -46,17 +47,24 @@ data_reg =
   data_sel %>% 
   select(-country_name,-regional_indicator)
 
+preProcess_range_model = preProcess(data_reg, method='range')
+data_reg_new = predict(preProcess_range_model, newdata = data_reg) 
+
+
 # model regresi 1
-model_1 = lm(formula = "ladder_score ~ . - generosity", data_reg)
+model_awal = lm(formula = "ladder_score ~ .", data_reg_new)
+model_1 = lm(formula = "ladder_score ~ . - generosity", data_reg_new)
 summary(model_1)
-rmse = caret::RMSE(model_1$fitted.values,data_reg$ladder_score)
+rmse_model_1 = caret::RMSE(model_1$fitted.values,data_reg_new$ladder_score)
 
 # save hasil kerjaan dulu
 save(data,
      by_country_happiness,
      by_country_generosity,
      by_region_happiness,
-     data_reg,
+     data_reg_new,
      data_sel,
+     model_awal,
      model_1,
+     rmse_model_1,
      file = "bahan_blog.rda")
