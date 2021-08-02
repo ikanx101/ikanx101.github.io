@@ -7,7 +7,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-setwd("~/ikanx101 BLOG/_posts/Explainable AI/post 4")
+#setwd("~/ikanx101 BLOG/_posts/Explainable AI/post 4")
 
 rm(list=ls())
 
@@ -74,6 +74,8 @@ data %>%
         axis.text.y = element_blank())
 ```
 
+Ternyata didominasi oleh negara-negara Eropa.
+
 ### 10 Negara dengan Kebahagiaan Terendah
 
 Sekarang negara mana saja yang memiliki indeks kebahagiaan terendah?
@@ -107,11 +109,15 @@ data %>%
         axis.text.y = element_blank())
 ```
 
+Negara-negara tersebut didominasi oleh negara Afrika dan Asia yang memiliki sejarah konflik.
+
 ### Indonesia sebagai Negara yang Paling Murah Hati
 
 > ___Apakah kalian pernah mendengar kalimat di atas?___
 
-Setidaknya beberapa rekan saya di _timeline_ sempat membahas hal ini. Mari kita lihat datanya:
+Setidaknya beberapa rekan saya di _timeline_ sempat membahas hal ini. Ternyata pernyataan tersebut berasal dari survey ___World Giving Index___ yang dirilis oleh badan amal [___Charities Aid Foundation___](https://www.femina.co.id/trending-topic/good-news-indonesia-dinobatkan-jadi-negara-paling-murah-hati-di-dunia).
+
+Sekarang, dari data yang saya punya, saya akan melihat 10 negara dengan nilai _generosity_ tertinggi:
 
 ```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center'}
 data %>% 
@@ -138,33 +144,44 @@ data %>%
         axis.text.y = element_blank())
 ```
 
+Ternyata dari data ini kita bisa mendapatkan kesimpulan yang sama.
+
+> ___Indonesia menjadi negara yang paling generous.___
+
 ### Analisa Per Region
 Berikut ini adalah nilai rata-rata dari semua variabel per region:
 
 ```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center'}
-library(kableExtra)
+library(reshape2)
 
-data_sel %>% 
+data_tabel = 
+  data_sel %>% 
   group_by(regional_indicator) %>% 
-  summarise(ladder = mean(ladder_score),
-            gdp = mean(logged_gdp_per_capita),
-            social = mean(social_support),
-            health = mean(healthy_life_expectancy),
-            freedom = mean(freedom_to_make_life_choices),
+  summarise(ladder_score = mean(ladder_score),
+            logged_gdp_per_capita = mean(logged_gdp_per_capita),
+            social_support = mean(social_support),
+            healthy_life_expectancy = mean(healthy_life_expectancy),
+            freedom_to_make_life_choices = mean(freedom_to_make_life_choices),
             generosity = mean(generosity),
-            corrupt = mean(perceptions_of_corruption)) %>% 
+            perceptions_of_corruption = mean(perceptions_of_corruption)) %>% 
   ungroup() %>% 
-  
+  mutate(ladder_score = round(ladder_score,2),
+         logged_gdp_per_capita = round(logged_gdp_per_capita),
+         social_support = round(social_support,2),
+         healthy_life_expectancy = round(healthy_life_expectancy,2),
+         freedom_to_make_life_choices = round(freedom_to_make_life_choices,2),
+         generosity = round(generosity,2),
+         perceptions_of_corruption = round(perceptions_of_corruption,2))
 
+data_tabel %>% 
+  melt(id.vars = "regional_indicator") %>% 
+  ggplot(aes(y = regional_indicator,
+             x = variable,
+             fill = value)) +
+  geom_tile() + 
+  scale_fill_brewer(palette = "Seq2")
+  scale_x_discrete(guide = guide_axis(n.dodge = 3))
 
-mtcars[1:8, 1:8] %>%
-  kbl() %>%
-  kable_paper(full_width = F) %>%
-  column_spec(2, color = spec_color(mtcars$mpg[1:8]),
-              link = "https://haozhu233.github.io/kableExtra/") %>%
-  column_spec(6, color = "white",
-              background = spec_color(mtcars$drat[1:8], end = 0.7),
-              popover = paste("am:", mtcars$am[1:8]))
 ```
 
 ## Analisa Prediktif dari Data

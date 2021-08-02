@@ -52,14 +52,330 @@ Apa saja 10 negara dengan kebahagiaan tertinggi?
 
 <img src="bahagia_files/figure-gfm/unnamed-chunk-2-1.png" style="display: block; margin: auto;" />
 
+Ternyata didominasi oleh negara-negara Eropa.
+
 ### 10 Negara dengan Kebahagiaan Terendah
 
 Sekarang negara mana saja yang memiliki indeks kebahagiaan terendah?
 
 <img src="bahagia_files/figure-gfm/unnamed-chunk-3-1.png" style="display: block; margin: auto;" />
 
+Negara-negara tersebut didominasi oleh negara Afrika dan Asia yang
+memiliki sejarah konflik.
+
 ### Indonesia sebagai Negara yang Paling Murah Hati
 
 > ***Apakah kalian pernah mendengar kalimat di atas?***
+
+Setidaknya beberapa rekan saya di *timeline* sempat membahas hal ini.
+Ternyata pernyataan tersebut berasal dari survey ***World Giving
+Index*** yang dirilis oleh badan amal [***Charities Aid
+Foundation***](https://www.femina.co.id/trending-topic/good-news-indonesia-dinobatkan-jadi-negara-paling-murah-hati-di-dunia).
+
+Sekarang, dari data yang saya punya, saya akan melihat 10 negara dengan
+nilai *generosity* tertinggi:
+
+<img src="bahagia_files/figure-gfm/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
+
+Ternyata dari data ini kita bisa mendapatkan kesimpulan yang sama.
+
+> ***Indonesia menjadi negara yang paling generous.***
+
+### Analisa Per Region
+
+Berikut ini adalah nilai rata-rata dari semua variabel per region:
+
+<table>
+<thead>
+<tr>
+<th style="text-align:center;">
+regional\_indicator
+</th>
+<th style="text-align:center;">
+ladder\_score
+</th>
+<th style="text-align:center;">
+logged\_gdp\_per\_capita
+</th>
+<th style="text-align:center;">
+social\_support
+</th>
+<th style="text-align:center;">
+healthy\_life\_expectancy
+</th>
+<th style="text-align:center;">
+freedom\_to\_make\_life\_choices
+</th>
+<th style="text-align:center;">
+generosity
+</th>
+<th style="text-align:center;">
+perceptions\_of\_corruption
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+Central and Eastern Europe
+</td>
+<td style="text-align:center;">
+5.98
+</td>
+<td style="text-align:center;">
+10
+</td>
+<td style="text-align:center;">
+0.89
+</td>
+<td style="text-align:center;">
+68.34
+</td>
+<td style="text-align:center;">
+0.80
+</td>
+<td style="text-align:center;">
+-0.08
+</td>
+<td style="text-align:center;">
+0.85
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Commonwealth of Independent States
+</td>
+<td style="text-align:center;">
+5.47
+</td>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:center;">
+0.87
+</td>
+<td style="text-align:center;">
+65.01
+</td>
+<td style="text-align:center;">
+0.82
+</td>
+<td style="text-align:center;">
+-0.04
+</td>
+<td style="text-align:center;">
+0.73
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+East Asia
+</td>
+<td style="text-align:center;">
+5.81
+</td>
+<td style="text-align:center;">
+10
+</td>
+<td style="text-align:center;">
+0.86
+</td>
+<td style="text-align:center;">
+71.25
+</td>
+<td style="text-align:center;">
+0.76
+</td>
+<td style="text-align:center;">
+-0.06
+</td>
+<td style="text-align:center;">
+0.68
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Latin America and Caribbean
+</td>
+<td style="text-align:center;">
+5.91
+</td>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:center;">
+0.84
+</td>
+<td style="text-align:center;">
+67.08
+</td>
+<td style="text-align:center;">
+0.83
+</td>
+<td style="text-align:center;">
+-0.07
+</td>
+<td style="text-align:center;">
+0.79
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Middle East and North Africa
+</td>
+<td style="text-align:center;">
+5.22
+</td>
+<td style="text-align:center;">
+10
+</td>
+<td style="text-align:center;">
+0.80
+</td>
+<td style="text-align:center;">
+65.61
+</td>
+<td style="text-align:center;">
+0.72
+</td>
+<td style="text-align:center;">
+-0.08
+</td>
+<td style="text-align:center;">
+0.76
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+North America and ANZ
+</td>
+<td style="text-align:center;">
+7.13
+</td>
+<td style="text-align:center;">
+11
+</td>
+<td style="text-align:center;">
+0.93
+</td>
+<td style="text-align:center;">
+72.33
+</td>
+<td style="text-align:center;">
+0.90
+</td>
+<td style="text-align:center;">
+0.12
+</td>
+<td style="text-align:center;">
+0.45
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+South Asia
+</td>
+<td style="text-align:center;">
+4.44
+</td>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:center;">
+0.70
+</td>
+<td style="text-align:center;">
+62.68
+</td>
+<td style="text-align:center;">
+0.76
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.80
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Southeast Asia
+</td>
+<td style="text-align:center;">
+5.41
+</td>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:center;">
+0.82
+</td>
+<td style="text-align:center;">
+64.89
+</td>
+<td style="text-align:center;">
+0.91
+</td>
+<td style="text-align:center;">
+0.16
+</td>
+<td style="text-align:center;">
+0.71
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Sub-Saharan Africa
+</td>
+<td style="text-align:center;">
+4.49
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+0.70
+</td>
+<td style="text-align:center;">
+55.89
+</td>
+<td style="text-align:center;">
+0.72
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.77
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Western Europe
+</td>
+<td style="text-align:center;">
+6.91
+</td>
+<td style="text-align:center;">
+11
+</td>
+<td style="text-align:center;">
+0.91
+</td>
+<td style="text-align:center;">
+73.03
+</td>
+<td style="text-align:center;">
+0.86
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.52
+</td>
+</tr>
+</tbody>
+</table>
 
 ## Analisa Prediktif dari Data
