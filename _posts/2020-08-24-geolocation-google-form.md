@@ -195,3 +195,5 @@ lalu memberikan *permission* agar skrip yang kita buat tadi bisa
 mengambil data *longlat* secara *realtime* saat itu.
 
 ### Selamat mencoba.
+
+`if you find this article helpful, support this blog by clicking the ads.`
