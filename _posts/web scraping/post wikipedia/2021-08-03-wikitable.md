@@ -132,7 +132,7 @@ dari *list* tersebut. Sebagai contoh, jika saya ingin mengambil data
 dari tabel seperti gambar sebelumnya, saya akan lakukan:
 
 ``` r
-data_indonesia = hasil[[2]] %>% as.data.frame()
+data_indonesia = hasil[[2]] 
 data_indonesia
 ```
 
