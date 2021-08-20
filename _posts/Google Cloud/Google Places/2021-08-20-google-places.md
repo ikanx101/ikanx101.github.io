@@ -1,5 +1,19 @@
-Cara Mengambil Data dari Google Maps dengan R
-================
+---
+date: 2021-08-20T10:18:00-04:00
+title: "Cara Mengambil Data dari Google Maps dengan R"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - R
+  - Google Cloud
+  - Google Places
+  - Google AI
+  - Google Maps
+  - Geolocation
+---
+
 
 Pada tahun 2018, pertama kali saya menggunakan layanan [*Google
 Geocoding*](https://passingthroughresearcher.wordpress.com/2018/09/24/geocoding-with-r-and-google-geocoding-api/)
@@ -43,7 +57,7 @@ saya sebagai *market researcher* di sana.
 
 Kali ini kita perlu mendaftar atau *enabling* layanan *Google Places*.
 
-<img src="api.png" width="485" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Google%20Cloud/Google%20Places/api.png" width="485" style="display: block; margin: auto;" />
 
 Setelah itu, kita memerlukan **API** *key* untuk mendapatkan data yang
 hendak kita ambil.
@@ -57,7 +71,7 @@ lokasi, dan lain-lain.
 *Google Places* memberikan gambaran tipe-tipe tempat apa saja yang bisa
 kita ambil datanya sebagai berikut:
 
-<img src="r1.png" width="545" style="display: block; margin: auto;" /><img src="r2.png" width="561" style="display: block; margin: auto;" /><img src="r3.png" width="496" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Google%20Cloud/Google%20Places/r1.png" width="545" style="display: block; margin: auto;" /><img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Google%20Cloud/Google%20Places/r2.png" width="561" style="display: block; margin: auto;" /><img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Google%20Cloud/Google%20Places/r3.png" width="496" style="display: block; margin: auto;" />
 
 ### Bagaimana cara mengambil datanya?
 
