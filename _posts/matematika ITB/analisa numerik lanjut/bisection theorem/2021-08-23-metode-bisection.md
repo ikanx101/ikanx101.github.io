@@ -1,5 +1,20 @@
-Metode Bisection untuk Mencari Akar Persamaan
-================
+---
+date: 2021-08-23T16:09:00-04:00
+title: "Metode Numerik: Metode Bisection untuk Mencari Akar Persamaan"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - Computational Science
+  - Sains Komputasi
+  - Matematika
+  - Kuliah
+  - ITB
+  - Analisa Numerik Lanjut
+  - Komputasi
+  - Aproksimasi
+---
 
 Hari ini adalah hari pertama saya kuliah S2 di Sains Komputasi ITB.
 Kuliah hari ini dibuka dengan mata kuliah Analisa Numerik Lanjut oleh
@@ -45,7 +60,7 @@ Value Theorem* (Teorema Nilai Antara).
 > *f*(*a*) dan *f*(*b*). Maka **ada** suatu nilai *c* ∈ (*a*, *b*) yang
 > memenuhi *f*(*c*) = *L*.
 
-Atas dasar teorema ini metode *bisection* lahir.
+Atas dasar teorema ini metode *bisection* lahir. _Bisection_ berarti membelah selang daerah fungsi menjadi dua dan mencari akar diantaranya. Begitu seterusnya hingga kita bisa "menerima" _error_ atau galat yang dihasilkan.
 
 ## Algoritma Metode *Bisection*
 
@@ -64,7 +79,7 @@ Ilustrasi:
 
 <div class="figure" style="text-align: center">
 
-<img src="Screenshot from 2021-08-23 12-56-59.png" alt="Ilustrasi Bisection" width="100%" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/analisa%20numerik%20lanjut/bisection%20theorem/Screenshot%20from%202021-08-23%2012-56-59.png" alt="Ilustrasi Bisection" width="100%" />
 <p class="caption">
 Ilustrasi Bisection
 </p>
@@ -93,7 +108,7 @@ Masalah di atas sama dengan mencari nilai *x* ∈ \[0, 2\] sehingga
 
 Perhatikan grafik fungsi berikut ini:
 
-<img src="post_files/figure-gfm/unnamed-chunk-2-1.png" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/analisa%20numerik%20lanjut/bisection%20theorem/post_files/figure-gfm/unnamed-chunk-2-1.png" style="display: block; margin: auto;" />
 
 Terlihat bahwa:
 
