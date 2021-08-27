@@ -1,0 +1,55 @@
+---
+title: "Mencoba Distro Baru LINUX: POP OS"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+
+setwd("~/ikanx101 BLOG/_posts/matematika ITB/linux")
+```
+
+Siang ini di matakuliah __Network and Parallel Data Processing__, sebagai perkenalan diberikan materi pengenalan terhadap Linux dan berbagai keunggulannya dalam hal komputasi.
+
+Tiba-tiba saya jadi teringat sebuah peristiwa beberapa hari lalu.
+
+Jika rekan-rekan membaca tulisan saya yang lama, saya pernah membeli [laptop murah untuk di-_install_ __Chromium OS__](https://ikanx101.com/blog/laptop-chromium/). Berhubung si kecil sudah masuk TK dan membutuhkan _gadget_ untuk pembelajaran jarak jauh, maka saya dedikasikan laptop tersebut untuk dirinya.
+
+> Namun saya baru sadar bahwa selama ini _sound_-nya tidak bekerja. Alias tidak bisa mengeluarkan suara dan _mic_-nya mati.
+
+Setelah saya coba cek, ternyata masalahnya ada pada _bugs_ di __OS__-nya.
+
+---
+
+Ketika sedang berselancar lepas di Youtube, tiba-tiba muncul video yang menjelaskan suatu distro Linux yang sedang naik daun bernama [__POP OS__](https://pop.system76.com/).
+
+_Requirement_-nya cukup _santuy_:
+
+```
+2 GB RAM, 16 GB storage, 64-bit processor
+```
+
+> Laptop __murah__ saya tersebut sudah pasti masuk spek!
+
+Tanpa pikir panjang, saya langsung saja _install_.
+
+Proses instalasinya cukup mudah dan hanya memakan waktu 30 menit (sudah termasuk _install_ [Zoom](https://zoom.us/) untuk PJJ)
+
+1. Kita tinggal _download_ _image_-nya dari situsnya.
+1. Buat _bootable usb disk_ dengan bantuan [__Balena Etcher__](https://www.balena.io/etcher/).
+1. _Boot_ laptopnya dari _usb disk_ tersebut.
+1. Proses _install_-nya sama mudahnya dengan [instalasi Ubuntu yang lalu](https://ikanx101.com/blog/review-ubuntu/).
+1. _Set_ _user name_ dan _password_-nya.
+
+___DONE!___
+
+---
+
+## _REVIEW_
+
+Setelah penggunaan 2 minggu, tidak ada masalah berarti. _Sound_ berjalan lancar dan jernih. Untuk kebutuhan si kecil sudah sangat cukup. TIdak ada _lag_ yang berarti.
+
+Bagaimana untuk _computing_? Di webnya, POP OS mengklaim bahwa kinerjanya sangat baik untuk mengeksekusi data sains dan _deep learning_ sekalipun walau saya belum mencobanya lebih lanjut.
+
+
