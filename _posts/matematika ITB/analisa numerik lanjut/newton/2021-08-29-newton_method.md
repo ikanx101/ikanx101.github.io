@@ -1,5 +1,21 @@
-Metode Numerik: Metode Newton untuk Mencari Akar Persamaan
-================
+---
+date: 2021-08-29T14:45:00-04:00
+title: "Metode Numerik: Metode Newton untuk Mencari Akar Persamaan"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - Computational Science
+  - Sains Komputasi
+  - Matematika
+  - Kuliah
+  - ITB
+  - Analisa Numerik Lanjut
+  - Komputasi
+  - Aproksimasi
+---
+
 
 Pada tulisan sebelumnya, saya sudah membahas bagaimana metode
 *bisection* digunakan untuk mencari akar suatu persamaan.
@@ -34,7 +50,7 @@ Misalkan saya memiliki fungsi:
 ![f(x) = x^3 - x^2 - 70](https://latex.codecogs.com/png.latex?f%28x%29%20%3D%20x%5E3%20-%20x%5E2%20-%2070 "f(x) = x^3 - x^2 - 70")
 dengan grafik sebagai berikut:
 
-<img src="post_files/figure-gfm/unnamed-chunk-1-1.png" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/analisa%20numerik%20lanjut/newton/post_files/figure-gfm/unnamed-chunk-1-1.png" style="display: block; margin: auto;" />
 
 Untuk mencari akar persamaan dengan *bisection*, kita butuh selang
 ![\[a,b\]](https://latex.codecogs.com/png.latex?%5Ba%2Cb%5D "[a,b]")
