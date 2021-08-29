@@ -1,0 +1,176 @@
+---
+title: "Metode Numerik: Metode Newton untuk Mencari Akar Persamaan"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("/cloud/project/_posts/matematika ITB/analisa numerik lanjut/newton")
+
+rm(list=ls())
+library(dplyr)
+library(ggplot2)
+```
+
+Pada tulisan sebelumnya, saya sudah membahas bagaimana metode _bisection_ digunakan untuk mencari akar suatu persamaan.
+
+Walaupun metode tersebut _powerful_ tapi kalau kita ingat kembali dibutuhkan __dua titik awal__ iterasi (misal $a$ dan $b$) dengan syarat wajib: $f(a).f(b) < 0$ dan $f$ kontinu di selang $[a,b]$.
+
+> $f(a)$ dan $f(b)$ harus berlawanan tanda. Salah satu harus positif dan lainnya negatif.
+
+Kenapa harus begitu? Ingat kembali __Teorema Nilai Antara__ yang saya sebutkan juga di tulisan tersebut _yah_.
+
+## Metode _Newton_
+
+Metode _bisection_ bukanlah satu-satunya metode numerik yang bisa digunakan untuk mencari akar persamaan. Salah satu metode lain yang terkenal adalah metode _Newton_.
+
+Berbeda dengan _bisection_ yang membutuhkan 2 buah titik awal iterasi, metode _Newton_ cukup menggunakan satu titik saja.
+
+> _Lho kok bisa?_
+
+Misalkan saya memiliki fungsi: $f(x) = x^3 - x^2 - 70$ dengan grafik sebagai berikut:
+
+```{r,echo=FALSE,fig.align='center'}
+f = function(x){x^3 - x^2 - 70}
+x = seq(-10,10,by = .1)
+plot = 
+  data.frame(x) %>% 
+  mutate(y = f(x)) %>% 
+  ggplot(aes(x,y)) +
+  geom_line(group = 1,
+            color = "darkred") +
+  geom_hline(yintercept = 0,
+             color = "steelblue") +
+  labs(x = "x",
+       y = "y",
+       title = "Grafik f(x)",
+       subtitle = "Akar persamaan f(x) ada di range [0,5]",
+       caption = "Dibuat dengan R\nikanx101.com")
+
+plot
+```
+
+Untuk mencari akar persamaan dengan _bisection_, kita butuh selang $[a,b]$ sebagai permulaan iterasi.
+
+Namun, dengan metode _Newton_ kita bisa mengambil titik manapun dari grafik di atas sebagai titik permulaan.
+
+---
+
+## Bagaimana cara kerjanya?
+
+Metode _Newton_ memanfaatkan ___Deret Taylor___ (_Taylor Series_) dari suatu fungsi. Kali ini syarat agar metode _Newton_ bisa digunakan adalah fungsinya bisa __diturunkan__ (_diferensiable_).
+
+Misalkan dari suatu fungsi $f(x)$ memiliki suatu akar $p$. Saya ingin menghitung suatu barisan $x_0,x_1,x_2,...,x_n$ yang akan konvergen ke akar $p$. Untuk suatu nilai $\delta$ yang __sangat amat kecil__:
+
+$$f(x_n + \delta) = f(x_n) + \delta f'(x_n) + O (\delta^2)$$
+Dengan:
+
+1. Mengabaikan $O(\delta^2)$ (karena si $\delta$ sudah kecil sehingga saat dikuadratkan juga akan lebih kecil lagi).
+1. $f(x_n)=0$ karena kita ingin mencari akar persamaan.
+
+Maka kita bisa dapatkan:
+
+$$f(x_n) + \delta f'(x_n) = 0$$
+
+Sehingga menghasilkan:
+
+$$\delta = - \frac{f(x_n)}{f'(x_n)}$$
+
+> Ingat kembali bahwa kita ingin $x_n$ __sangat dekat sekali dengan akar persamaan__ $p$.
+
+Sehingga:
+
+$$x_{n+1} - x_n = \delta \\ x_{n+1} = x_n + \delta \\ x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$$
+
+Persamaan terakhir ini menjadi dasar bagi algoritma pengerjaan metode _Newton_. 
+
+## Algoritma _Newton_
+
+$$x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$$
+
+---
+
+## Contoh Pengerjaan
+
+Sekarang kita akan gunakan metode Newton ini untuk menyelesaikan contoh soal sebelumnya:
+
+$$f(x) = x^3 - x^2 - 70$$
+
+Berikutnya kita perlu mencari turunan dari $f(x)$. Untuk melakukan itu, kita bisa melakukannya manual dengan mencoret-coret di kertas atau dengan bantuan `library(Ryacas)` yang pernah saya tulis [sebelumnya](https://ikanx101.com/blog/math-r/). Sehingga didapatkan:
+
+```{r,message=FALSE,warning=FALSE}
+library(Ryacas)
+eq = "x^3 - x^2 - 70"
+eq %>% y_fn("D(x)") %>% yac_str()
+```
+
+$$f'(x) = 3x^2 - 2x$$
+
+Setelah itu, saya akan _set_ titik awal iterasinya di $x_0 = 10$ (_bebas yah mau berapa saja_).
+
+Sebagai penunjang algoritma yang saya buat, saya akan atur:
+
+1. Iterasi maksimum yang dijalankan adalah `50`.
+1. Tingkat akurasi atau ketelitian hasil aproksimasinya adalah $10^{-2}$ saja.
+
+```{r}
+# informasi yang dibutuhkan
+x_0 = 10
+f = function(x){x^3 - x^2 - 70}
+df = function(x){3*x^2-2*x}
+iter_max = 50
+tol_max = 10^-2
+
+# initial condition
+i = 1
+hasil = data.frame(n_iter = 0,
+                   p = x_0)
+
+while(i <= iter_max){
+  p = x_0 - (f(x_0) / df(x_0))
+  hasil[i+1,] = list(i,p)
+  if(abs(p-x_0) < tol_max){break}
+  x_0 = p;
+  i  = i + 1
+}
+# print output
+hasil %>% knitr::kable(align = "c")
+```
+
+Ternyata hanya dibutuhkan `5` kali iterasi untuk mendapatkan aproksimasi akar persamaannya.
+
+Sekarang saya akan coba melakukan ulang tapi dengan titik awal $x_0 = -7$.
+
+```{r}
+# informasi yang dibutuhkan
+x_0 = -7
+f = function(x){x^3 - x^2 - 70}
+df = function(x){3*x^2-2*x}
+iter_max = 50
+tol_max = 10^-2
+
+# initial condition
+i = 1
+hasil = data.frame(n_iter = 0,
+                   p = x_0)
+
+while(i <= iter_max){
+  p = x_0 - (f(x_0) / df(x_0))
+  hasil[i+1,] = list(i,p)
+  if(abs(p-x_0) < tol_max){break}
+  x_0 = p;
+  i  = i + 1
+}
+# print output
+hasil %>% knitr::kable(align = "c")
+```
+
+Dengan nilai $x_0$ yang berbeda, didapatkan aproksimasi akar pada iterasi ke `7`.
+
+---
+
+> ___Saya pribadi lebih menyukai metode ini karena algoritmanya sangat mudah dibuat.___
+
+`if you find this article helpful, support this blog by clicking the ads.`
