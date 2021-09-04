@@ -1,0 +1,263 @@
+---
+title: "Bagaimana Caranya Membandingkan Algoritma? Studi Kasus Bilangan Prima"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+setwd("~/ikanx101 BLOG/_posts/matematika ITB/algoritma/prime")
+
+rm(list=ls())
+```
+
+Bagi saya, algoritma adalah sekumpulan baris perintah atau langkah kerja terstruktur yang berfungsi untuk melakukan komputasi.
+
+Masing-masing orang memiliki gaya, cara, dan preferensinya sendiri dalam membuat algoritma.
+
+Bisa jadi suatu permasalahan bisa diselesaikan dengan berbagai macam cara (algoritma). Lantas jika beberapa algoritma __hasilnya sama-sama benar__, bagaimana menentukan algoritma yang terbaik?
+
+> Kita bisa membandingkan seberapa cepat algoritma tersebut bekerja.
+
+Istilahnya adalah _computing time_ atau _running time_.
+
+Saya akan bercerita tentang pengalaman saya dulu ketika kuliah.
+
+---
+
+> Bilangan prima adalah bilangan yang hanya habis dibagi oleh dirinya sendiri.
+
+Pada 2005 silam, saat saya sedang kuliah di tingkat dua, saya mengikuti salah satu mata kuliah wajib di Matematika. Nama mata kuliahnya adalah Komputasi Matematika. Mata kuliah ini adalah mata kuliah matematika dengan praktikum pertama kali.
+
+> Di tingkat pertama (alias __TPB__ -- _Tahap Persiapan Bersama_) hanya ada praktikum Fisika dan Kimia.
+
+Saya ingat benar di laboratorium komputer, kami ditugaskan untuk membuat program yang bisa mendeteksi apakah suatu bilangan termasuk bilangan prima atau bukan. Waktu itu, bahasa yang digunakan adalah [Pascal](https://en.wikipedia.org/wiki/Pascal_(programming_language)). _Output_-nya berupa _executable file_ (`.exe`).
+
+Waktu itu, proses yang saya lakukan adalah sebagai berikut:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center',fig.retina=5}
+nomnoml::nomnoml("#direction: down,
+                 [<start> start] -> [Input angka|Misal: n]
+                 [Input angka] -> [<choice> n = integer?\nAND\nn > 1?]
+                 
+                 [<choice> n = integer?\nAND\nn > 1?] --> NO [STOP]
+                 [<choice> n = integer?\nAND\nn > 1?] --> YES [i = 2\ncount = 0]
+                 [i = 2\ncount = 0] -> [<choice> i <= n]
+                 
+                 [<choice> i <= n] -> YES [<choice> n mod i == 0]
+                 
+                 [<choice> n mod i == 0] -> NO [i = i + 1]
+                 
+                 [<choice> n mod i == 0] -> YES[count = count + 1] 
+                 [count = count + 1] -> [i = i + 1]
+                 
+                 [<choice> i <= n] <- [i = i + 1] 
+                 
+                 [<choice> i <= n] -> NO [<choice> count > 1]
+                 
+                 [<choice> count > 1] -> YES [return NOT PRIME]
+                 [<choice> count > 1] -> NO [return PRIME]
+                 
+                 [return NOT PRIME] -> [<end> end]
+                 [return PRIME] -> [<end> end]
+                 ")
+```
+
+Rekan sebelah saya, Anwar memberikan komentar:
+
+> "Kenapa harus ada _looping_ dari $2$ sampai $n$ ?"
+
+Sambil cengengesan saya menjawab:
+
+> "Ini adalah solusi yang menjamin suatu angka benar prima atau tidak..."
+
+---
+
+Saya yakin jawaban saya benar adanya tapi secara komputasi akan memakan waktu yang lama saat bilangan yang dimasukkan sangat besar. Waktu itu Anwar memberikan saran:
+
+> "Bagaimana jika kita bagi dua saja selang pencariannya? Alih-alih _looping_ dari $2$ hinnga $n$, kita akan _looping_ dari $2$ hingga $\frac{n}{2}$ saja."
+
+Bagaimana jika $n$ yang dimasukkan adalah bilangan ganjil? Kita akan bulatkan $\frac{n}{2}$ ke atas. Lantas bagaimana dengan kriteria penentuannya?
+
+Jika sebelumnya saya menggunakan kriteria $count > 1$ sebagai penentu bilangan tersebut bukan prima. Kali ini saya menggunakan kriteria $count > 0$ sebagai penentu.
+
+Kenapa?
+
+> Karena _looping_-nya tidak sampai $n$. Jadi tidak ada kesempatan bagi bilangan prima bisa dibagi oleh dirinya sendiri.
+
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center',fig.retina=5}
+nomnoml::nomnoml("#direction: down,
+                 [<start> start] -> [Input angka|Misal: n]
+                 [Input angka] -> [<choice> n = integer?\nAND\nn > 1?]
+                 
+                 [<choice> n = integer?\nAND\nn > 1?] --> NO [STOP]
+                 [<choice> n = integer?\nAND\nn > 1?] --> YES [i = 2\ncount = 0]
+                 [i = 2\ncount = 0] -> [<choice> i <= roundup(n/2)]
+                 
+                 [<choice> i <= roundup(n/2)] -> YES [<choice> n mod i == 0]
+                 
+                 [<choice> n mod i == 0] -> NO [i = i + 1]
+                 
+                 [<choice> n mod i == 0] -> YES[count = count + 1] 
+                 [count = count + 1] -> [i = i + 1]
+                 
+                 [<choice> i <= roundup(n/2)] <- [i = i + 1] 
+                 
+                 [<choice> i <= roundup(n/2)] -> NO [<choice> count > 0]
+                 
+                 [<choice> count > 0] -> YES [return NOT PRIME]
+                 [<choice> count > 0] -> NO [return PRIME]
+                 
+                 [return NOT PRIME] -> [<end> end]
+                 [return PRIME] -> [<end> end]
+                 ")
+```
+
+
+Setelah dimodifikasi tersebut, apakah ada perbedaan waktu komputasinya?
+
+Saya telah membuat dua fungsi di __R__ berdasarkan dua _flowchart_ di atas. Mari kita bandingkan waktunya untuk mengecek suatu bilangan yang __besar__ berikut:
+
+```{r,include=FALSE}
+rm(list=ls())
+
+is_prime = function(n){
+  mulai = Sys.time()
+  hasil = NA
+  temp_1 = 0
+  if(n > 1){
+    for(i in 2:n){
+      temp_2 = n %% i == 0
+      temp_1 = temp_1 + temp_2
+      hasil = ifelse(temp_1 == 1,
+                     "Prime",
+                     "Not Prime")
+    } 
+  } else{
+      hasil = "Bilangan < 1"
+    }
+  end = Sys.time()
+  waktu = end - mulai
+  return(
+    list("kesimpulan" = hasil,
+         "waktu proses" = waktu)
+  )
+}
+
+
+is_prime_2 = function(n){
+  mulai = Sys.time()
+  hasil = NA
+  temp_1 = 0
+  if(n > 1){
+    for(i in 2:round(n/2,0)){
+      temp_2 = n %% i == 0
+      temp_1 = temp_1 + temp_2
+      hasil = ifelse(temp_1 == 0,
+                     "Prime",
+                     "Not Prime")
+    } 
+  } else{
+      hasil = "Bilangan < 1"
+    }
+  end = Sys.time()
+  waktu = end - mulai
+  return(
+    list("kesimpulan" = hasil,
+         "waktu proses" = waktu)
+  )
+}
+
+
+is_prime_3 = function(n){
+  mulai = Sys.time()
+  hasil = NA
+  if(n > 1){
+    for(i in 2:round(n/2,0)){
+      temp_2 = n %% i == 0
+      if(temp_2 == 1){
+        hasil = "NOT PRIME"
+        break
+      } else {hasil = "PRIME"}
+      
+    } 
+  } else{
+      hasil = "Bilangan < 1"
+    }
+  end = Sys.time()
+  waktu = end - mulai
+  return(
+    list("kesimpulan" = hasil,
+         "waktu proses" = waktu)
+  )
+}
+
+
+options(scipen = 9999)
+```
+
+```{r}
+is_prime(4092021)
+is_prime_2(4092021)
+```
+
+Terlihat bahwa waktu komputasi pada _function_ kedua lebih hemat $\sim 50 \%$ dari _function_ pertama.
+
+Lantas apakah ada cara penyelesaian (baca: algoritma) lain yang lebih cepat?
+
+Kita bisa modifikasi _flowchart_ kedua dengan cara: 
+
+> Saat suatu bilangan berhasil dibagi oleh angka selain dirinya, kita akan stop iterasinya!
+
+Saya menduga ini akan menjadi penghematan yang cukup besar mengingat kita tidak perlu melakukan _looping_ terlalu banyak.
+
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center',fig.retina=5}
+nomnoml::nomnoml("#direction: down,
+                 [<start> start] -> [Input angka|Misal: n]
+                 [Input angka] -> [<choice> n = integer?\nAND\nn > 1?]
+                 
+                 [<choice> n = integer?\nAND\nn > 1?] --> NO [STOP]
+                 [<choice> n = integer?\nAND\nn > 1?] --> YES [i = 2]
+                 [i = 2] -> [<choice> i <= roundup(n/2)]
+                 
+                 [<choice> i <= roundup(n/2)] -> YES [<choice> n mod i == 0]
+                 
+                 [<choice> n mod i == 0] -> NO [i = i + 1]
+                 
+                 [<choice> n mod i == 0] -> YES[return NOT PRIME] 
+
+                 [<choice> i <= roundup(n/2)] <- [i = i + 1] 
+                 
+                 [<choice> i <= roundup(n/2)] -> NO [return PRIME]
+                 
+                
+                 [return NOT PRIME] -> [<end> end]
+                 [return PRIME] -> [<end> end]
+                 ")
+```
+
+Sekarang kita cek waktu komputasinya dengan angka yang sama:
+
+```{r}
+is_prime_3(4092021)
+```
+
+> _Jauh berkurang kan!_
+
+Mari kita coba kembali untuk angka lainnya.
+
+```{r}
+is_prime(9988771)
+is_prime_2(9988771)
+is_prime_3(9988771)
+```
+
+Algoritma ketiga cenderung akan sangat singkat karena biasanya hampir semua angka bisa dibagi oleh angka lain yang memiliki digit kecil.
+
+Apakah ada cara lain? Tentu saja karena setiap orang pasti punya cara pikir yang berbeda-beda!
+
+--- 
+
+`if you find this article helpful, support this blog by clicking the ads.`
