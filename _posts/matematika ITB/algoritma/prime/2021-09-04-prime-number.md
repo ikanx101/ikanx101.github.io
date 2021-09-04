@@ -1,5 +1,18 @@
-Bagaimana Caranya Membandingkan Algoritma? Studi Kasus Bilangan Prima
-================
+---
+date: 2021-09-04T17:55:00-04:00
+title: "Bagaimana Caranya Membandingkan Algoritma? Studi Kasus Bilangan Prima"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - Computational Science
+  - Sains Komputasi
+  - Matematika
+  - Kuliah
+  - ITB
+  - Algoritma
+---
 
 Bagi saya, algoritma adalah sekumpulan baris perintah atau langkah kerja
 terstruktur yang berfungsi untuk melakukan komputasi.
@@ -38,7 +51,7 @@ prima atau bukan. Waktu itu, bahasa yang digunakan adalah
 
 Waktu itu, proses yang saya lakukan adalah sebagai berikut:
 
-<img src="post_files/figure-gfm/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika ITB/algoritma/prime/post_files/figure-gfm/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" />
 
 Rekan sebelah saya, Anwar memberikan komentar:
 
@@ -71,7 +84,7 @@ Kenapa?
 > Karena *looping*-nya tidak sampai *n*. Jadi tidak ada kesempatan bagi
 > bilangan prima bisa dibagi oleh dirinya sendiri.
 
-<img src="post_files/figure-gfm/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika ITB/algoritma/prime/post_files/figure-gfm/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" />
 
 Setelah dimodifikasi tersebut, apakah ada perbedaan waktu komputasinya?
 
@@ -113,7 +126,7 @@ Kita bisa modifikasi *flowchart* kedua dengan cara:
 Saya menduga ini akan menjadi penghematan yang cukup besar mengingat
 kita tidak perlu melakukan *looping* terlalu banyak.
 
-<img src="post_files/figure-gfm/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika ITB/algoritma/prime/post_files/figure-gfm/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" />
 
 Sekarang kita cek waktu komputasinya dengan angka yang sama:
 
