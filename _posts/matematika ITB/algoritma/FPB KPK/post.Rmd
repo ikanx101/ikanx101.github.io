@@ -1,0 +1,116 @@
+---
+title: "Belajar Membuat Algoritma Pencari Faktor Bilangan"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/ikanx101 BLOG/_posts/matematika ITB/algoritma/FPB KPK")
+```
+
+> _Minggu depan kamu harus ngajarin si sulung faktor bilangan._
+
+Begitu titah nyonya tadi sore kepada saya.
+
+Sekilas mencari faktor dari suatu bilangan adalah hal yang mudah. Kita hanya perlu mencari himpunan bilangan terkecil dan _unique_ yang membangun bilangan tertentu. Caranya adalah dengan membagi bilangan tersebut dengan bilangan yang lebih kecil dan memecahnya menjadi bilangan yang lebih sederhana.
+
+Kalau dipikir-pikir lagi, suatu faktor __pasti__ merupakan [bilangan prima](https://ikanx101.com/blog/prime-number/).
+
+Sebagai contoh, misalkan kita hendak mencari faktor dari bilangan $n = 30$.
+
+```{r out.width="50%",echo=FALSE}
+nomnoml::nomnoml("
+                 [30] -> [3]
+                 [30] -> [10]
+                 [10] -> [2]
+                 [10] -> [5]
+                 ")
+```
+
+Faktor dari bilangan 30 adalah $(2,3,5)$ dan semuanya adalah bilangan prima.
+
+---
+
+## Algoritma
+
+Mencari faktor mungkin hal yang mudah tapi bagaimana dengan __menuliskan langkah kerja tersebut menjadi suatu algoritma__?
+
+> Saya yakin ini hal yang lebih rumit dibanding menghitungnya. _hehe_
+
+Oke, sekarang saya akan coba membuat algoritmanya dalam bentuk _flowchart_. _Oh iya_, algoritma ini sebenarnya modifikasi dari algoritma bilangan prima dari [_post_ saya sebelumnya](https://ikanx101.com/blog/prime-number/).
+
+```{r out.width="50%",echo=FALSE,fig.align='center'}
+nomnoml::nomnoml("#direction: down,
+                 [<start> start] -> [<input> INPUT N]
+                 [<input> INPUT N] -> [<choice> N <= 1]
+                 [<choice> N <= 1] -> Y [STOP]
+                 [<choice> N <= 1] -> N [i = 2]
+                 [i = 2] -> [<choice> N > 1]
+                 [<choice> N > 1] -> Y [<choice> N mod i ==0]
+                 
+                 [<choice> N mod i ==0] Y -> [N = N / i\nPRINT i\ni = 2]
+                 
+                 [N = N / i\nPRINT i\ni = 2] -> [<choice> N > 1] 
+                 
+                 [<choice> N mod i ==0] N -> [i = i + 1]
+                 [i = i + 1] -> [<choice> N mod i ==0]
+                 
+                 [<choice> N > 1] -> N [<end> end]
+                 
+                 ")
+```
+
+Dari _flowchart_ di atas, kita akan buat _function_ __R__-nya. Sekalian saya juga akan hitung _processing time_ dari algoritma ini.
+
+
+```{r}
+cari_faktor = function(n){
+  start = Sys.time()
+  soal = n
+  if(n <= 0){
+    cat("Tidak boleh memasukkan nilai 0 atau negatif")
+    break
+  } else if(n == 1){
+    cat("Anda memasukkan nilai 1")
+    break
+  } else{
+    faktor = c()
+    i = 2
+    while(n > 1){
+      if(n %% i == 0){
+        n = n/i
+        faktor = c(faktor,i)
+        i = 2
+      } else {i = i + 1}
+    }
+    faktor = unique(sort(faktor))
+  }
+  end = Sys.time()
+  waktu = end - start
+  # output
+  output = list("n" = soal,
+                "faktor yang dihasilkan" = faktor,
+                "running time" = waktu)
+  return(output)
+}
+
+```
+
+Sekarang _moment of truth_, kita akan cek hasilnya untuk berbagai macam bilangan.
+
+```{r}
+cari_faktor(6)
+cari_faktor(2021)
+cari_faktor(4552)
+cari_faktor(20922)
+cari_faktor(340673)
+cari_faktor(1234567891011)
+```
+
+Terlihat _function_ di atas berhasil menemukan faktor dari bilangan dan _processing time_-nya masih dibawah 0.5 detik bahkan untuk bilangan berdigit besar.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
