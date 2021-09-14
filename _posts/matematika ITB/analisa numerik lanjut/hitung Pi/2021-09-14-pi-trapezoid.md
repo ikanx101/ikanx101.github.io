@@ -49,7 +49,7 @@ berikut ini:
 
 ![f(x) = \\sqrt{1 - x^2} \\text{, untuk x } \\in \[0,1\]](https://latex.codecogs.com/png.latex?f%28x%29%20%3D%20%5Csqrt%7B1%20-%20x%5E2%7D%20%5Ctext%7B%2C%20untuk%20x%20%7D%20%5Cin%20%5B0%2C1%5D "f(x) = \sqrt{1 - x^2} \text{, untuk x } \in [0,1]")
 
-<img src="pi_lagi_files/figure-gfm/unnamed-chunk-2-1.png" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/analisa%20numerik%20lanjut/hitung%20Pi/pi_lagi_files/figure-gfm/unnamed-chunk-2-1.png" style="display: block; margin: auto;" />
 
 Ekspektasinya adalah:
 ![\\pi = 4 \\times \\int\_0^1 f(x)](https://latex.codecogs.com/png.latex?%5Cpi%20%3D%204%20%5Ctimes%20%5Cint_0%5E1%20f%28x%29 "\pi = 4 \times \int_0^1 f(x)").
@@ -66,7 +66,7 @@ Berikut adalah ilustrasinya:
 
 <div class="figure" style="text-align: center">
 
-<img src="images.png" alt="Sumber bragitoff.com" width="55%" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/analisa%20numerik%20lanjut/hitung%20Pi/images.png" alt="Sumber bragitoff.com" width="55%" />
 <p class="caption">
 Sumber bragitoff.com
 </p>
