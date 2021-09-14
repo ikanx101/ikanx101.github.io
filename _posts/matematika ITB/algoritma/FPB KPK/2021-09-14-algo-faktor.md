@@ -1,5 +1,19 @@
-Belajar Membuat Algoritma Pencari Faktor Bilangan
-================
+---
+date: 2021-09-14T19:55:00-04:00
+title: "Belajar Membuat Algoritma Pencari Faktor Suatu Bilangan"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - Computational Science
+  - Sains Komputasi
+  - Matematika
+  - Kuliah
+  - ITB
+  - Algoritma
+---
+
 
 > *Minggu depan kamu harus ngajarin si sulung faktor bilangan.*
 
@@ -17,7 +31,7 @@ prima](https://ikanx101.com/blog/prime-number/).
 Sebagai contoh, misalkan kita hendak mencari faktor dari bilangan
 *n* = 30.
 
-<img src="post_files/figure-gfm/unnamed-chunk-1-1.png" width="50%" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/algoritma/FPB%20KPK/post_files/figure-gfm/unnamed-chunk-1-1.pngunnamed-chunk-1-1.png" width="50%" />
 
 Faktor dari bilangan 30 adalah (2, 3, 5) dan semuanya adalah bilangan
 prima.
@@ -36,7 +50,7 @@ Oke, sekarang saya akan coba membuat algoritmanya dalam bentuk
 algoritma bilangan prima dari [*post* saya
 sebelumnya](https://ikanx101.com/blog/prime-number/).
 
-<img src="post_files/figure-gfm/unnamed-chunk-2-1.png" width="50%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/algoritma/FPB%20KPK/post_files/figure-gfm/unnamed-chunk-1-1.pngunnamed-chunk-2-1.png" width="50%" style="display: block; margin: auto;" />
 
 Dari *flowchart* di atas, kita akan buat *function* **R**-nya. Sekalian
 saya juga akan hitung *processing time* dari algoritma ini.
