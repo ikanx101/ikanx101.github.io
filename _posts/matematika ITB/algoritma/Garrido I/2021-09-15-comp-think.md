@@ -62,7 +62,7 @@ penyelesaian setiap permasalahan adalah *unique*[1].
 
 <div class="figure" style="text-align: center">
 
-<img src="post_files/figure-gfm/unnamed-chunk-2-1.png" alt="Proses Problem Solving"  />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/algoritma/Garrido%20I/post_files/figure-gfm/unnamed-chunk-2-1.png" alt="Proses Problem Solving"  />
 <p class="caption">
 Proses Problem Solving
 </p>
@@ -126,7 +126,7 @@ Ada **empat pilar utama** dalam *computational thinking*:
 
 <div class="figure" style="text-align: center">
 
-<img src="post_files/figure-gfm/unnamed-chunk-4-1.png" alt="Elemen Computational Thinking"  />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/algoritma/Garrido%20I/post_files/figure-gfm/unnamed-chunk-4-1.png" alt="Elemen Computational Thinking"  />
 <p class="caption">
 Elemen Computational Thinking
 </p>
@@ -150,7 +150,7 @@ Dari sinilah muncul istilah *computational science* (sains komputasi).
 
 <div class="figure" style="text-align: center">
 
-<img src="post_files/figure-gfm/unnamed-chunk-5-1.png" alt="Integrasi Sains Komputasi"  />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/algoritma/Garrido%20I/post_files/figure-gfm/unnamed-chunk-5-1.png" alt="Integrasi Sains Komputasi"  />
 <p class="caption">
 Integrasi Sains Komputasi
 </p>
@@ -194,7 +194,7 @@ berikut:
 
 <div class="figure" style="text-align: center">
 
-<img src="post_files/figure-gfm/unnamed-chunk-8-1.png" alt="Framework Problem - Output" width="100%" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/algoritma/Garrido%20I/post_files/figure-gfm/unnamed-chunk-8-1.png" alt="Framework Problem - Output" width="100%" />
 <p class="caption">
 Framework Problem - Output
 </p>
@@ -318,7 +318,7 @@ Selain fase yang ada di *waterfall model*, ada fase lainnya yakni:
 
 <div class="figure" style="text-align: center">
 
-<img src="post_files/figure-gfm/unnamed-chunk-10-1.png" alt="Fase Lain dalam Sorftware Life Cycle" width="100%" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/algoritma/Garrido%20I/post_files/figure-gfm/unnamed-chunk-10-1.png" alt="Fase Lain dalam Sorftware Life Cycle" width="100%" />
 <p class="caption">
 Fase Lain dalam Sorftware Life Cycle
 </p>
@@ -388,7 +388,7 @@ Salah satu sifat dasar dari metode numerik adalah **aproksimasi**
 
 <div class="figure" style="text-align: center">
 
-<img src="post_files/figure-gfm/unnamed-chunk-12-1.png" alt="Presisi, Akurasi, dan Galat" width="100%" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/algoritma/Garrido%20I/post_files/figure-gfm/unnamed-chunk-12-1.png" alt="Presisi, Akurasi, dan Galat" width="100%" />
 <p class="caption">
 Presisi, Akurasi, dan Galat
 </p>
