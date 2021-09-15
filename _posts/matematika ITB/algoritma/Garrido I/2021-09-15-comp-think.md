@@ -17,7 +17,7 @@ tags:
 Pada minggu-minggu awal perkuliahan pemrograman dalam sains, kami
 diminta untuk merangkum satu buku yang akan dijadikan rujukan dalam
 kuliah ini, yakni: ***INTRODUCTION TO COMPUTATIONAL MODELS WITH
-PHYTON*** karya **Jose M. Garrido**.
+PYTHON*** karya **Jose M. Garrido**.
 
 <img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/algoritma/Garrido%20I/MicrosoftTeams-image.png" width="25%" style="display: block; margin: auto;" />
 
