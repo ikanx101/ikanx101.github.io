@@ -1,12 +1,25 @@
-Computational Thinking, Computational Science, dan Computational Model
-================
+---
+date: 2021-09-15T07:55:00-04:00
+title: "Computational Thinking, Computational Science, dan Computational Model"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - Computational Science
+  - Sains Komputasi
+  - Matematika
+  - Kuliah
+  - ITB
+  - Algoritma
+---
 
 Pada minggu-minggu awal perkuliahan pemrograman dalam sains, kami
 diminta untuk merangkum satu buku yang akan dijadikan rujukan dalam
 kuliah ini, yakni: ***INTRODUCTION TO COMPUTATIONAL MODELS WITH
 PHYTON*** karya **Jose M. Garrido**.
 
-<img src="MicrosoftTeams-image.png" width="25%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/algoritma/Garrido%20I/MicrosoftTeams-image.png" width="25%" style="display: block; margin: auto;" />
 
 Walaupun buku ini ditulis untuk bahasa *Python*, tapi pada **chapter I**
 ini berlaku sangat *general* karena ditekankan pada *computational
@@ -78,7 +91,7 @@ ada beberapa tahapan sebagai berikut:
 
 <div class="figure" style="text-align: center">
 
-<img src="proses riset.png" alt="Flow Melakukan Research" width="100%" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/algoritma/Garrido%20I/proses riset.png" alt="Flow Melakukan Research" width="100%" />
 <p class="caption">
 Flow Melakukan Research
 </p>
@@ -148,7 +161,7 @@ Integrasi Sains Komputasi
 
 <div class="figure" style="text-align: center">
 
-<img src="Screenshot from 2021-09-01 09-39-52.png" alt="Development of Computational Models" width="50%" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/algoritma/Garrido%20I/Screenshot from 2021-09-01 09-39-52.png" alt="Development of Computational Models" width="50%" />
 <p class="caption">
 Development of Computational Models
 </p>
@@ -162,7 +175,7 @@ sistem dengan baik.
 
 <div class="figure" style="text-align: center">
 
-<img src="Screenshot from 2021-09-01 09-50-50.png" alt="Model development and Abstract Levels" width="50%" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/algoritma/Garrido%20I/Screenshot from 2021-09-01 09-50-50.png" alt="Model development and Abstract Levels" width="50%" />
 <p class="caption">
 Model development and Abstract Levels
 </p>
@@ -294,7 +307,7 @@ sebelumnya selesai.
 
 <div class="figure" style="text-align: center">
 
-<img src="Screenshot from 2021-09-01 11-54-45.png" alt="Waterfall Model" width="50%" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/algoritma/Garrido%20I/Screenshot from 2021-09-01 11-54-45.png" alt="Waterfall Model" width="50%" />
 <p class="caption">
 Waterfall Model
 </p>
@@ -332,7 +345,7 @@ penting dalam menyelesaikan masalah.
 
 <div class="figure" style="text-align: center">
 
-<img src="Screenshot from 2021-09-02 07-08-45.png" alt="Konsep Decomposition" width="100%" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/algoritma/Garrido%20I/Screenshot from 2021-09-02 07-08-45.png" alt="Konsep Decomposition" width="100%" />
 <p class="caption">
 Konsep Decomposition
 </p>
@@ -423,6 +436,9 @@ melakukan perhitungan numerik:
             ![\\hat{x} = 1.0104](https://latex.codecogs.com/png.latex?%5Chat%7Bx%7D%20%3D%201.0104 "\hat{x} = 1.0104")
         -   Sehingga *error* yang tercipta adalah
             ![\\Delta = 1.0104074 - 1.0104](https://latex.codecogs.com/png.latex?%5CDelta%20%3D%201.0104074%20-%201.0104 "\Delta = 1.0104074 - 1.0104")
+
+
+_Footnotes:_
 
 [1] *No free lunch*: <https://ikanx101.com/blog/no_free-lunch/>
 
