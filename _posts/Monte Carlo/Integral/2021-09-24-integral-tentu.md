@@ -1,5 +1,23 @@
-Menghitung Nilai Integral Tentu Dengan Modifikasi Simulasi Monte Carlo
-================
+---
+date: 2021-09-24T04:00:00-04:00
+title: "Menghitung Nilai Integral Tentu Dengan Modifikasi Simulasi Monte Carlo"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - Computational Science
+  - Sains Komputasi
+  - Matematika
+  - Kuliah
+  - ITB
+  - Analisa Numerik Lanjut
+  - Komputasi
+  - Aproksimasi
+  - Pi
+  - Matematika
+  - Lingkaran
+---
 
 Sepertinya sudah lama saya tidak menulis lagi karena *riweuh* di kantor
 dan kuliah.
