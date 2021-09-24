@@ -1,0 +1,222 @@
+---
+title: "Menghitung Nilai Integral Tentu Dengan Modifikasi Simulasi Monte Carlo"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+library(dplyr)
+library(ggplot2)
+```
+
+Sepertinya sudah lama saya tidak menulis lagi karena _riweuh_ di kantor dan kuliah. 
+
+Untuk membuka kembali niat untuk menulis, saya akan bercerita tentang salah satu metode aproksimasi (hampiran) yang bisa digunakan untuk menghitung nilai integral tentu di matematika.
+
+Sebelumnya, saya pernah menulis tentang cara menghitung nilai $\pi$ dengan dua cara:
+
+1. [Melempar _darts_ ala Simulasi Monte Carlo](https://ikanx101.com/blog/hitung-pi/).
+1. [Membuat pendekatan trapezoid dari fungsi seperempat lingkaran](https://ikanx101.com/blog/pi-trapezoid/).
+
+Nah, cara ketiga ini merupakan modifikasi atau gabungan dari keduanya.
+
+> _Lho kok bisa?_
+
+Jadi saya akan gunakan prinsip Monte Carlo untuk _generate random points_ di selang integral tentu lalu menggunakan pendekatan luas _square_ seperti halnya _trapezoid_.
+
+---
+
+Sebagai contoh, saya akan menyelesaikan soal berikut:
+
+Hitunglah:
+
+$$f(x) = \int_2^3 (x^2 + 4x \sin{x}) dx$$
+
+Jika kita hendak mencari solusi analitiknya, sepertinya agak susah _yah_. _hehe_ (atau saya saja yang cenderung malas)
+
+Solusi analitik dari $f(x) = \int (x^2 + 4x \sin{x}) dx$ adalah:
+
+$$F(x) = \frac{x^3}{3} - 4x \cos{x} + 4 \sin{x}$$
+
+Sehingga:
+
+$$\int_2^3 (x^2 + 4x \sin{x}) dx \approx 11.811358925$$
+
+Oleh karena itu ada metode aproksimasi yang relatif lebih mudah dilakukan (menurut saya).
+
+Ide dari algoritma ini adalah men-_generate_ titik _random_ di selang integral, kemudian dihitung luas _square_ yang ada.
+
+> Perhatikan bahwa titik yang di-_generate_ adalah pada sumbu $x$ (selang integral) saja. Berbeda dengan _darts_ yang memerlukan random di sumbu $x$ dan $y$.
+
+Sehingga:
+
+$$I = \int_z^b f(x)dx$$
+
+dihitung sebagai:
+
+$$<F^N> = \frac{b-a}{N+1} \sum_{i=0}^N f(a + (b-a) \xi_i)$$
+
+dengan
+
+$$\xi_i \text{ adalah random number antara 0 dan 1}$$
+
+Berikut adalah _flowchart_-nya:
+
+```{r out.width="50%",echo=FALSE,message=FALSE,warning=FALSE,fig.align = "center",fig.cap="Flowchart Modifikasi Monte Carlo"}
+nomnoml::nomnoml("#direction: down,
+                 [<start> start] -> [<input> f(x), a, b, N]
+                 [<input> f(x), a, b, N] -> [DEFINE|sum = 0|i = 0]
+                 [DEFINE] -> [<choice> i <= N]
+                 
+                 [<choice> i <= N] -> N [return (sum * (b-a) / N)]
+                 [return (sum * (b-a) / N)] -> [<end> end]
+                 
+                 [<choice> i <= N] -> Y [GENERATE RANDOM|xi di selang a - b]
+                 [GENERATE RANDOM] -> [sum = sum + (b-a)*f(xi)]
+                 [sum = sum + (b-a)*f(xi)] -> [i = i + 1]
+                 [i = i + 1] -> [<choice> i <= N]
+                 ")
+
+rm(list=ls())
+```
+
+Berdasarkan _flowchart_ di atas, berikut adalah _function_ di __R__ -nya:
+
+```{r}
+modif_monte = function(f,x1,x2,N){
+  # set template terlebih dahulu
+  hasil = c()
+  
+  # kita akan ulang proses ini 100 kali untuk N titik
+  for(ikang in 1:100){
+    # generating random number
+    x = runif(N,x1,x2)
+    # hitung f(x)
+    f_x = f(x)
+    # hitung luas
+    luas = (x2-x1) * f_x
+    mean_luas = mean(luas)
+    hasil[ikang] = mean_luas
+  }
+  # mean luas
+  output = mean(hasil)
+  # output
+  return(output)
+  }
+```
+
+> _Simple_ kan?
+
+Oke, sebelum menyelesaikannya dengan fungsi di atas, saya akan berikan ilustrasi sebagai berikut:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+f = function(x){x^2 + 4*x*sin(x)}
+
+plot = 
+  data.frame(x = seq(0,4,by = .005)) %>% 
+  mutate(y = f(x)) %>% 
+  ggplot(aes(x,y)) +
+  geom_line(group=1,
+            color = "steelblue") +
+  geom_vline(xintercept = 0,
+             color = "black") +
+  geom_hline(yintercept = 0,
+             color = "black") 
+
+plot +
+  geom_vline(xintercept = 2, color = "red") +
+  geom_vline(xintercept = 3, color = "red") +
+  theme_minimal() +
+  labs(title = "Grafik fungsi f(x) di selang 2 dan 3",
+       caption = "Digambar oleh 20921004") +
+  annotate("label", x = 2.5, y = 5, label = "Area Integral")
+```
+
+Di atas adalah grafik dari $f(x)$. Metode ini bertujuan untuk men-_generate_ __satu__ random titik di antara selang $[2,3]$  (misal saya tuliskan sebagai $x_i$ kemudian dihitung nilai $f(x_i)$.
+
+Contoh:
+
+Saya akan _generate_ satu titik sebagai berikut:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+xi = runif(1,2,3)
+f_xi = f(xi)
+
+plot = 
+  plot +
+  geom_vline(xintercept = 2, color = "red") +
+  geom_vline(xintercept = 3, color = "red") +
+  theme_minimal() +
+  labs(title = "Grafik fungsi f(x) di selang 2 dan 3",
+       caption = "Digambar oleh 20921004") +
+  annotate("label", x = 2.5, y = 5, label = "Area Integral") +
+  geom_point(aes(x = xi,
+                 y = f_xi),
+             size = 2) +
+  annotate("label",x = xi, y = .9*f_xi, label = "xi,f(xi)")
+
+plot
+```
+
+Dari titik tersebut, saya akan buat garis sehingga terbentuklah sebuah _square_:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+plot +
+  annotate("segment",x = 2, xend = 3, y = f_xi, yend = f_xi,
+           color = "red")
+```
+
+Kelak kita akan menghitung luas dari _square_ tersebut.
+
+Semakin banyak kita _generate_ titiknya, kita bisa menghitung rata-rata luas dari _squares_ tersebut. Nilai rata-rata tersebut akan dijadikan hampiran integral tentu.
+
+Berikut adalah nilai hampirannya untuk berbagai banyak titik yang di-_generate_:
+
+```{r,echo=FALSE}
+rm(list = ls())
+f = function(x){x^2 + 4*x*sin(x)}
+
+modif_monte = function(f,x1,x2,N){
+  # set template terlebih dahulu
+  hasil = c()
+  
+  # kita akan ulang proses ini 100 kali untuk N titik
+  for(ikang in 1:50){
+    # generating random number
+    x = runif(N,x1,x2)
+    # hitung f(x)
+    f_x = f(x)
+    # hitung luas
+    luas = (x2-x1) * f_x
+    mean_luas = mean(luas)
+    hasil[ikang] = mean_luas
+  }
+  # mean luas
+  output = mean(hasil)
+  # output
+  return(output)
+  }
+
+hasil = 
+  data.frame(N = c(10,100,500,750,1000,5000,7500,10000,25000,50000,100000,250000,500000,750000)) %>% 
+  rowwise() %>% 
+  mutate(selang_full = modif_monte(f,2,3,N)) %>% 
+  ungroup() %>% 
+  mutate(selisih_full_eksak = abs(selang_full - (11.811358925))) 
+
+hasil %>% 
+  rename("Solusi Aproksimasi" = selang_full,
+         "Selisih dengan Nilai Eksak" = selisih_full_eksak) %>% 
+  knitr::kable("simple",align = "c",caption = "Hasil Perbandingan Solusi Numerik dan Eksak")
+```
+
+Untuk setiap banyak titik, prosesnya saya ulangi hingga 100 kali agar lebih konvergen ke hasilnya.
+
+Terlihat bahwa nilai hampirannya sudah __sangat dekat__ dengan nilai eksaknya.
+
+---
+
+`if you find thsi article helpful, support this blog by clicking the ads.`
