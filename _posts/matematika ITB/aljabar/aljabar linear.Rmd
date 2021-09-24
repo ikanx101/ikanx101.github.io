@@ -1,8 +1,19 @@
 ---
 title: "Belajar (Lagi) Aljabar Linear untuk Analisa Numerik"
-output: 
-  github_document:
-    pandoc_args: --webtex
+subtitle: "Ikang Fadhli"
+author: "ikanx101.com"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 5
+    toc_float: 
+        collapsed: false
+        smooth_scroll: true
+    number_sections: false
+    theme: readable
+    highlight: espresso
+    fig_caption: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -282,4 +293,4 @@ Demikian _refreshment_ materi aljabar linear. Aplikasinya pada analisa numerik a
 
 ---
 
-`if you find this article helpful, support this blog by clicking the ads.`
+_Find me at my personal blog_ [ikanx101.com](https://ikanx101.com/).
