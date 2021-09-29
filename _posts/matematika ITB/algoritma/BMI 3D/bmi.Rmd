@@ -1,0 +1,174 @@
+---
+title: "Memahami Fungsi Perhitungan Body Mass Index"
+subtitle: "Sebuah Pendekatan Grafik 2D dan 3D"
+author: "Ikang Fadhli"
+institute: ikanx101.com
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 5
+    toc_float: 
+        collapsed: false
+        smooth_scroll: true
+    number_sections: true
+    theme: readable
+    highlight: espresso
+    fig_caption: yes
+---
+
+# PENDAHULUAN
+
+_Body Mass Index_ merupakan salah satu indeks yang populer di kantor saya. Kenapa?
+
+> Karena kantor saya menawarkan produk makanan dan minuman yang sehat kepada masyarakat sehingga harus dipastikan bahwa karyawan yang bekerja di sini __harus sehat terlebih dahulu__.
+
+Bagaimana kita mau menginspirasi orang lain agar hidup sehat tapi ternyata kitanya sendiri tidak.
+
+## Definisi
+
+_Body mass index_ adalah suatu indeks yang menghitung seberapa ideal tubuh kita. __BMI__ dihitung dengan dua variabel utama, yakni `tinggi_badan` dan `berat_bedan`.
+
+Definisi:
+
+$$bmi = \frac{bb}{(\frac{tb}{100})^2}$$
+
+Di mana:
+
+- `bb` merupakan berat badan dalam satuan `kilogram`.
+- `tb` merupakan tinggi badan dalam satuan `centimeter`.
+
+## Pengelompokan BMI
+
+__BMI__ kemudian dikelompokkan menjadi `4` kelompok, yakni:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+library(dplyr)
+
+data.frame(
+  `Kategori` = c("Underweight", "Normal","Overweight","Obese","Extreme Obese"),
+  `BMI` = c("< 18.5","18.5 - 25","25 - 30","30 - 40","> 40")
+) %>% 
+  knitr::kable("simple",caption = "Pengelompokan BMI")
+
+```
+
+# ANALISA GRAFIK
+
+## Grafik 3D ke 2D dengan _Contour Plot_
+
+Jika kita perhatikan dengan baik, formula __BMI__ tersebut membutuhkan _input_ `2` variabel. Sehingga sebenarnya kita bekerja dengan `3` variabel, yakni:
+
+1. `tinggi_badan`
+1. `berat_badan`
+1. `bmi`
+
+Jika kita gambarkan, sejatinya grafik yang didapatkan berbentuk __ruang 3 dimensi__, dimana `berat_badan` dan `tinggi_badan` menjadi sumbu `x` atau `y` dan `bmi` menjadi sumbu `z`-nya.
+
+Bentuk grafik 3 dimensi bisa kita gambarkan dalam bentuk 2 dimensi menggunakan _contour plot_. Ketinggian atau elevasi di sumbu `z` bisa kita gambarkan sebagai garis atau warna yang berbeda.
+
+Untuk memberikan contoh, saya akan buat _contour plot_-nya dengan menggunakan `library(ggplot2)`. 
+
+_Object_ `ggplot` membutuhkan _input_ berupa `data.frame()`. Oleh karena itu perlu ada simulasi perhitungan `bmi` terlebih dahulu.
+
+Saya akan melakukan simulasi perhitungan `bmi` pada batas:
+
+- `berat_badan` antara 40 kg - 120 kg.
+- `tinggi_badan` antara 120 cm - 180 cm.
+
+```{r,echo=FALSE,fig.retina=10,fig.align='center',fig.cap="Surface Plot BMI"}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/ikanx101 BLOG/_posts/matematika ITB/algoritma/BMI 3D")
+
+rm(list=ls())
+
+library(dplyr)
+library(reshape2)
+library(ggplot2)
+
+bmi = function(bb,tb){bb/(tb/100)^2}
+
+simul_data = data.frame(bb = NA,tb = NA, bmi = NA)
+i = 1
+
+for(bb in 40:120){
+  for(tb in 120:200){
+	simul_data[i,] = list(bb,tb,bmi(bb,tb))
+	i = i + 1
+	  }
+  }
+
+reshape_mat = 
+  simul_data %>%
+  dcast(bb~tb,
+	      value.var = "bmi") %>%
+  as.matrix()
+
+plt1 = 
+  simul_data %>% 
+  ggplot(aes(x = bb,
+             y = tb,
+             z = bmi)) +
+  geom_contour_filled(breaks = c(0,18.5,25,30,40,80)) +
+  scale_fill_manual(labels = c("Underweight", "Normal","Overweight","Obese","Extreme Obese"), 
+                    values = c("gray","darkgreen","orange","red","darkred"))  +
+  geom_contour(color = "black",
+               linetype = 2,
+               breaks = c(0,18.5,25,30,40,110)) +
+  theme_minimal() +
+  labs(fill = "BMI") +
+  geom_point(aes(x = 75,
+                 y = 174),
+             color = "white",
+             shape = 7) +
+  annotate("label",
+           x = 68,
+           y = 175,
+           label = "Posisi saya") +
+  theme(legend.position = "bottom") +
+  labs(title = "Grafik Surface BMI",
+       subtitle = "Visualisasi 3D ke dalam bentuk 2D",
+       x = "Berat Badan",
+       y = "Tinggi Badan",
+       caption = "Visualized using R\nikanx101.com")
+
+plt1
+```
+
+Saya coba sekalian hitung dan tampilkan di mana posisi `bmi` saya pada _plot_ di atas.
+
+Dari _plot_ di atas, perbedaan warna sebenarnya menentukan perbedaan tinggi sumbu `z`.
+
+## Grafik 3D
+
+Jika di atas merupakan bentuk 3D yang dimasukkan ke dalam 2D, maka sekarang saya akan membuat bentuk ruang (3D) dari fungsi `bmi`.
+
+Saya akan menggunakan `library(plotly)`. _Input_ dari `plotly` adalah berupa matriks $m \times n$ dengan isi matriks merupakan nilai di sumbu `z`.
+
+```{r,message=FALSE,warning=FALSE,echo=FALSE,fig.retina=10,fig.align='center',fig.cap="Surface Plot BMI"}
+library(plotly)
+
+plot_ly() %>% 
+  add_trace(data = simul_data,  
+            x=simul_data$bb, 
+            y=simul_data$tb, 
+            z=simul_data$bmi, 
+            type="mesh3d" ) %>% 
+  layout(scene = list(xaxis = list(title = "Berat Badan"), 
+                      yaxis = list(title = "Tinggi Badan"),
+                      zaxis = list(title = "BMI"))
+         )
+  
+```
+
+_SUrface plot_ di atas merupakan _dynamic object_ yang bisa kita putar atau _zoom_.
+
+---
+
+# Catatan {-}
+
+Tulisan ini saya _publish_ di __Rpubs__ karena _github pages_ tidak bisa me-_render_ grafik 3D dari _plotly_.
+
+Kunjungi _blog_ saya di [ikanx101.com](https://ikanx101.com/)
+
+___Wassalam___

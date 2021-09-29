@@ -1,0 +1,12 @@
+---
+title: "Rpubs: Grafik BMI dalam 2D dan 3D"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Saya membuat sebuah tulisan sederhana terkait fungsi _body mass index_ yang melibatkan _berat badan_ dan _tinggi badan_. Tulisan tersebut saya _post_ di situs __Rpubs__ karena _Github Pages_ agak sulit dalam _rendering_ grafik 3D dari `plotly`.
+
+Selamat membaca: [link](https://rpubs.com/QRA_NFI/bmi).
