@@ -1,0 +1,24 @@
+---
+title: "Rpubs: Belajar Lagi Aljabar Linear untuk Persiapan Analisa Numerik"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+> Dunia ini dikendalikan oleh Algoritma!
+
+Pernyataan tersebut seringkali saya dengar di mana-mana. Pernyataan in juga yang membuat saya ingin berkuliah lagi mengambil studi master __sains komputasi__.
+
+Namun setelah mengikuti kuliah beberapa minggu belakangan, saya sadar bahwa pernyataan itu salah sepenuhnya. Pernyataan yang tepat adalah:
+
+> ___Dunia ini dikendalikan oleh ALJABAR!___
+
+Tidak menyangka bahwa dalam dunia numerik, konsep-konsep di aljabar linear __sangat amat__ digunakan.
+
+Tulisan lengkapnya bisa dilihat di [__Rpubs__ ini](https://rpubs.com/QRA_NFI/aljabar-numerik).
+
+Kenapa di __Rpubs__?
+
+> Karena __Github Pages__ tidak bisa me-___render___ terlalu banyak formula __LaTex__.
