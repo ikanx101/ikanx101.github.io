@@ -1,10 +1,22 @@
-Melukis Graf dengan ggplot2
-================
+---
+date: 2021-09-29T10:05:00-04:00
+title: "Melukis Graf dengan ggplot2"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - Computational Science
+  - Sains Komputasi
+  - Matematika
+  - ggplot2
+  - Graf
+---
 
 Pada kuliah *software design* yang lalu, saya diberi PR untuk
 menyelesaikan **Bellman-Ford Algorithm** dari sebuah graf berikut:
 
-<img src="Screenshot_20210929_091128.jpg" width="30%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/algoritma/graf/Screenshot_20210929_091128.jpg" width="30%" style="display: block; margin: auto;" />
 
 Kali ini saya tidak akan membahas bagaimana menyelesaikan algoritma
 tersebut, tapi lebih ke bagaimana melukis graf di atas dengan
@@ -53,7 +65,7 @@ graf =
 graf
 ```
 
-<img src="ggplot-graf_files/figure-gfm/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/algoritma/graf/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" />
 
 Sudah mulai terlihat kan?
 
@@ -94,7 +106,7 @@ graf +
                arrow = arrow(length = unit(.2,"cm"))) 
 ```
 
-<img src="ggplot-graf_files/figure-gfm/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/algoritma/graf/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" />
 
 Sudah mulai terbentuk kan?
 
@@ -103,7 +115,7 @@ dan panjang garis agar tidak saling menutupi.
 
 Hasilnya sebagai berikut:
 
-<img src="ggplot-graf_files/figure-gfm/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/algoritma/graf/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" />
 
 Sekarang tinggal menambahkan bobot garis, caranya dengan
 `annotate("text")` sebagai berikut:
@@ -135,7 +147,7 @@ graf =
 graf
 ```
 
-![](ggplot-graf_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/algoritma/graf/unnamed-chunk-6-1.png)<!-- -->
 
 > Bagaimana? Mudah kan?
 
