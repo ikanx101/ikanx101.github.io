@@ -1,0 +1,128 @@
+---
+title: "Optimization Story: Membuat Jadwal Tatap Muka Terbatas di Sekolah"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/ikanx101 BLOG/_posts/linear problem/post 11")
+```
+
+Beberapa minggu ini, penambahan kasus positif harian Covid 19 semakin menurun di Pulau Jawa. Akibatnya pemerintah mulai melonggarkan aturan PPKM sehingga sekolah-sekolah mulai menggelar pengajaran tatap muka terbatas (PTMT) untuk siswanya secara _offline_. 
+
+Hal ini juga berlaku di sekolah si sulung. Untuk bisa mengikuti PTMT, kami sebagai orang tua harus mendaftar terlebih dahulu ke wali kelasnya. Kemudian wali kelas membuat jadwal kunjungan untuk semua siswa yang mendaftar. Walaupun terkesan hal yang remeh, tapi menyusun jadwal merupakan pekerjaan yang melelahkan.
+
+---
+
+Terinspirasi dari sekolah si sulung, yang
+
+Suatu sekolah memiliki kelas berisi 20 orang siswa. Mereka hendak menggelar PTMT dengana aturan sebagai berikut:
+
+1. PTMT digelar dari Senin hingga Jumat (5 hari).
+1. Dalam sehari, siswa yang boleh hadir dibatasi 4-8 orang saja.
+1. Dalam seminggu, diharapkan siswa bisa hadir 2-3 kali.
+1. Siswa yang hadir di selang sehari baru bisa hadir kembali.
+
+Dari uraian di atas, kita bisa membuat model optimisasinya sebagai berikut:
+
+Saya definisikan $x_{i,j} \in (0,1)$ sebagai bilangan biner di mana $i \in \{1,2,..,20\}$ menandakan siswa dan $j \in \{1,2,..,5\}$ menandakan hari. Berlaku:
+
+$$x_{i,j} = \left\{\begin{matrix}
+0, \text{ siswa i tidak masuk di hari j}\\ 
+1, \text{ siswa i masuk di hari j}
+\end{matrix}\right.$$
+
+___Objective Function___
+
+Tujuan utama kita adalah memaksimalkan siswa yang hadir.
+
+$$\max{\sum_{j=1}^5 \sum_{i=1}^{20} x_{i,j} }$$
+
+___Constraints___
+
+Dalam sehari, ada pembatasan jumlah siswa yang hadir.
+
+$$4 \leq \sum_i x_{i,j} \leq 8, j \in \{1,2,..,5\}$$
+
+Dalam seminggu, siswa hadir dalam frekuensi tertentu.
+
+$$2 \leq \sum_j x_{i,j} \leq 3, i \in \{1,2,..,20\}$$
+
+Ada jeda sehari agar siswa bisa masuk kembali.
+
+$$x_{i,j} + x_{i,j+1} \leq 1$$
+
+Jangan lupa bahwa $x_{i,j} \geq 0$.
+
+Berikut adalah skrip di __R__-nya:
+
+```{r}
+rm(list=ls())
+
+library(dplyr)
+library(ompr)
+library(ompr.roi)
+library(ROI.plugin.glpk)
+
+bin_prog = 
+  MIPModel() %>%
+  # menambah variabel
+  add_variable(x[i,j],
+	       i = 1:20,
+	       j = 1:5,
+	       type = "binary",
+	       lb = 0) %>%
+  # membuat objective function
+  set_objective(sum_expr(x[i,j],
+			 i = 1:20,
+			 j = 1:5),
+		"max") %>%
+  # menambah constraints
+  # max kapasitas kelas
+  add_constraint(sum_expr(x[i,j],i = 1:20) >= 4,
+		 j = 1:5) %>%
+  add_constraint(sum_expr(x[i,j],i = 1:20) <= 8,
+		 j = 1:5) %>%
+  # frek kunjungan siswa
+  add_constraint(sum_expr(x[i,j],j = 1:5) >= 2,
+		 i = 1:20) %>%
+  add_constraint(sum_expr(x[i,j],j = 1:5) <= 3,
+		 i = 1:20) %>%
+  # jeda sehari
+  add_constraint(x[i,j] + x[i,j+1] <= 1,
+		 i = 1:20,
+		 j = 1:4)
+
+bin_prog 
+```
+
+Berikut adalah hasilnya:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+hasil = 
+  bin_prog %>%
+  solve_model(with_ROI(solver = "glpk",
+		       verbose = T))
+
+rekap = 
+  hasil %>% 
+  get_solution(x[i,j]) %>%
+  filter(value == 1) %>%
+  rename(siswa = i,
+         hari = j)
+
+rekap %>%
+  group_by(hari) %>%
+  summarise(presensi = paste(siswa,collapse = ",")) %>%
+  ungroup() %>%
+  knitr::kable("simple",caption = "Jadwal Kunjungan Siswa")
+
+rekap %>%
+  group_by(siswa) %>%
+  tally() %>%
+  ungroup() %>%
+  rename("jumlah kehadiran" = n) %>%
+  knitr::kable("simple",caption = "Rekap Presensi Siswa")
+```
