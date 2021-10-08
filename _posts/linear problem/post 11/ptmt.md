@@ -108,26 +108,13 @@ Jangan lupa bahwa ![x\_{i,j}
 \\geq 0](https://latex.codecogs.com/png.latex?x_%7Bi%2Cj%7D%20%5Cgeq%200
 "x_{i,j} \\geq 0").
 
-Berikut adalah skrip di **R**-nya:
+Sekarang kita akan coba selesaikan model di atas dengan menggunakan
+`library(ompr)`. Berikut adalah skrip di **R**-nya:
 
 ``` r
 rm(list=ls())
 
 library(dplyr)
-```
-
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
-
-``` r
 library(ompr)
 library(ompr.roi)
 library(ROI.plugin.glpk)
@@ -159,102 +146,14 @@ bin_prog =
   # jeda sehari
   add_constraint(x[i,j] + x[i,j+1] <= 1,
          i = 1:20,
-         j = 1:4)
-```
+         j = 1:4) %>%
+  # 3 anak di senin dan jumat
+  add_constraint(x[i,1] + x[i,5] == 2,
+         i = 1:3) %>%
+  # 2 anak di hari rabu
+  add_constraint(x[i,3] == 1,
+         i = 5:6)
 
-    ## ```
-
-## adding constraints \[==================\>———————–\] 46% eta 0s
-
-## adding constraints \[===================\>———————-\] 48% eta 0s
-
-## adding constraints \[===================\>———————-\] 49% eta 0s
-
-## adding constraints \[====================\>———————\] 50% eta 0s
-
-## adding constraints \[=====================\>——————–\] 51% eta 0s
-
-## adding constraints \[=====================\>——————–\] 52% eta 0s
-
-## adding constraints \[======================\>——————-\] 54% eta 0s
-
-## adding constraints \[======================\>——————-\] 55% eta 0s
-
-## adding constraints \[=======================\>——————\] 56% eta 0s
-
-## adding constraints \[=======================\>——————\] 57% eta 0s
-
-## adding constraints \[========================\>—————–\] 59% eta 0s
-
-## adding constraints \[========================\>—————–\] 60% eta 0s
-
-## adding constraints \[=========================\>—————-\] 61% eta 0s
-
-## adding constraints \[=========================\>—————-\] 62% eta 0s
-
-## adding constraints \[==========================\>—————\] 64% eta 0s
-
-## adding constraints \[==========================\>—————\] 65% eta 0s
-
-## adding constraints \[===========================\>————–\] 66% eta 0s
-
-## adding constraints \[===========================\>————–\] 68% eta 0s
-
-## adding constraints \[============================\>————-\] 69% eta 0s
-
-## adding constraints \[============================\>————-\] 70% eta 0s
-
-## adding constraints \[=============================\>————\] 71% eta 0s
-
-## adding constraints \[=============================\>————\] 72% eta 0s
-
-## adding constraints \[==============================\>———–\] 74% eta 0s
-
-## adding constraints \[===============================\>———-\] 75% eta 0s
-
-## adding constraints \[===============================\>———-\] 76% eta 0s
-
-## adding constraints \[================================\>———\] 78% eta 0s
-
-## adding constraints \[================================\>———\] 79% eta 0s
-
-## adding constraints \[=================================\>——–\] 80% eta 0s
-
-## adding constraints \[=================================\>——–\] 81% eta 0s
-
-## adding constraints \[==================================\>——-\] 82% eta 0s
-
-## adding constraints \[==================================\>——-\] 84% eta 0s
-
-## adding constraints \[===================================\>——\] 85% eta 0s
-
-## adding constraints \[===================================\>——\] 86% eta 0s
-
-## adding constraints \[====================================\>—–\] 88% eta 0s
-
-## adding constraints \[====================================\>—–\] 89% eta 0s
-
-## adding constraints \[=====================================\>—-\] 90% eta 0s
-
-## adding constraints \[=====================================\>—-\] 91% eta 0s
-
-## adding constraints \[======================================\>—\] 92% eta 0s
-
-## adding constraints \[======================================\>—\] 94% eta 0s
-
-## adding constraints \[=======================================\>–\] 95% eta 0s
-
-## adding constraints \[=======================================\>–\] 96% eta 0s
-
-## adding constraints \[========================================\>-\] 98% eta 0s
-
-## adding constraints \[========================================\>-\] 99% eta 0s
-
-## adding constraints \[==========================================\] 100% eta 0s
-
-\`\`\`
-
-``` r
 bin_prog 
 ```
 
@@ -264,37 +163,139 @@ bin_prog
     ##   Integer: 0 
     ##   Binary: 100 
     ## Model sense: maximize 
-    ## Constraints: 130
+    ## Constraints: 135
 
-Berikut adalah hasil dari algoritma di atas:
+Berikut adalah hasilnya:
+
+### Jadwal Kunjungan Siswa
 
     ## <SOLVER MSG>  ----
     ## GLPK Simplex Optimizer, v4.65
-    ## 130 rows, 100 columns, 560 non-zeros
-    ##       0: obj =  -0.000000000e+00 inf =   6.000e+01 (25)
-    ##      51: obj =   4.000000000e+01 inf =   0.000e+00 (0)
-    ## *    53: obj =   4.000000000e+01 inf =   0.000e+00 (0)
+    ## 135 rows, 100 columns, 568 non-zeros
+    ##       0: obj =  -0.000000000e+00 inf =   6.800e+01 (30)
+    ##      81: obj =   4.000000000e+01 inf =   0.000e+00 (0)
+    ## *    82: obj =   4.000000000e+01 inf =   0.000e+00 (0)
     ## OPTIMAL LP SOLUTION FOUND
     ## GLPK Integer Optimizer, v4.65
-    ## 130 rows, 100 columns, 560 non-zeros
+    ## 135 rows, 100 columns, 568 non-zeros
     ## 100 integer variables, all of which are binary
     ## Integer optimization begins...
     ## Long-step dual simplex will be used
-    ## +    53: mip =     not found yet <=              +inf        (1; 0)
-    ## +    53: >>>>>   4.000000000e+01 <=   4.000000000e+01   0.0% (1; 0)
-    ## +    53: mip =   4.000000000e+01 <=     tree is empty   0.0% (0; 1)
+    ## +    82: mip =     not found yet <=              +inf        (1; 0)
+    ## +    82: >>>>>   4.000000000e+01 <=   4.000000000e+01   0.0% (1; 0)
+    ## +    82: mip =   4.000000000e+01 <=     tree is empty   0.0% (0; 1)
     ## INTEGER OPTIMAL SOLUTION FOUND
     ## <!SOLVER MSG> ----
 
-| hari | presensi               |
-| ---: | :--------------------- |
-|    1 | 1,2,3,4,9,10,11,12     |
-|    2 | 5,6,7,8,13,14,15,16    |
-|    3 | 1,2,3,4,17,18,19,20    |
-|    4 | 5,6,7,8,13,14,15,16    |
-|    5 | 9,10,11,12,17,18,19,20 |
+<table>
 
-Jadwal Kunjungan Siswa
+<thead>
+
+<tr>
+
+<th style="text-align:right;">
+
+hari
+
+</th>
+
+<th style="text-align:left;">
+
+presensi
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+<td style="text-align:left;">
+
+1,2,3,6,11,12,13,20
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:right;">
+
+2
+
+</td>
+
+<td style="text-align:left;">
+
+7,8,9,10,14,15,16,17
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:right;">
+
+3
+
+</td>
+
+<td style="text-align:left;">
+
+4,5,6,11,12,13,18,19
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:right;">
+
+4
+
+</td>
+
+<td style="text-align:left;">
+
+7,8,9,10,14,15,16,17
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:right;">
+
+5
+
+</td>
+
+<td style="text-align:left;">
+
+1,2,3,4,5,18,19,20
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+### Rekap Presensi Siswa
 
 | siswa | jumlah kehadiran |
 | ----: | ---------------: |

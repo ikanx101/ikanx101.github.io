@@ -72,9 +72,9 @@ $$x_{i,3} = 1, i = 5,6$$
 
 Jangan lupa bahwa $x_{i,j} \geq 0$.
 
-Berikut adalah skrip di __R__-nya:
+Sekarang kita akan coba selesaikan model di atas dengan menggunakan `library(ompr)`. Berikut adalah skrip di __R__-nya:
 
-```{r}
+```{r,message=FALSE,warning=FALSE}
 rm(list=ls())
 
 library(dplyr)
@@ -109,12 +109,20 @@ bin_prog =
   # jeda sehari
   add_constraint(x[i,j] + x[i,j+1] <= 1,
 		 i = 1:20,
-		 j = 1:4)
+		 j = 1:4) %>%
+  # 3 anak di senin dan jumat
+  add_constraint(x[i,1] + x[i,5] == 2,
+		 i = 1:3) %>%
+  # 2 anak di hari rabu
+  add_constraint(x[i,3] == 1,
+		 i = 5:6)
 
 bin_prog 
 ```
 
-Berikut adalah hasil dari algoritma di atas:
+Berikut adalah hasilnya:
+
+### Jadwal Kunjungan Siswa
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 hasil = 
@@ -133,8 +141,12 @@ rekap %>%
   group_by(hari) %>%
   summarise(presensi = paste(siswa,collapse = ",")) %>%
   ungroup() %>%
-  knitr::kable("simple",caption = "Jadwal Kunjungan Siswa")
+  knitr::kable("html")
+```
 
+### Rekap Presensi Siswa
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
 rekap %>%
   group_by(siswa) %>%
   tally() %>%
