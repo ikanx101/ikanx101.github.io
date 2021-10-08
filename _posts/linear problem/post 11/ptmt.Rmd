@@ -7,7 +7,6 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-setwd("~/ikanx101 BLOG/_posts/linear problem/post 11")
 ```
 
 Beberapa minggu ini, penambahan kasus positif harian Covid 19 semakin menurun di Pulau Jawa. Akibatnya pemerintah mulai melonggarkan aturan PPKM sehingga sekolah-sekolah mulai menggelar pengajaran tatap muka terbatas (PTMT) untuk siswanya secara _offline_. 
@@ -16,7 +15,7 @@ Hal ini juga berlaku di sekolah si sulung. Untuk bisa mengikuti PTMT, kami sebag
 
 ---
 
-Terinspirasi dari sekolah si sulung, yang
+Terinspirasi dari sekolah si sulung, saya hendak memberikan ilustrasi bagaimana model optimisasi (baca: matematika alias ___artificial intelligence___) bisa digunakan untuk membuat penjadwalan.
 
 Suatu sekolah memiliki kelas berisi 20 orang siswa. Mereka hendak menggelar PTMT dengana aturan sebagai berikut:
 
@@ -24,6 +23,15 @@ Suatu sekolah memiliki kelas berisi 20 orang siswa. Mereka hendak menggelar PTMT
 1. Dalam sehari, siswa yang boleh hadir dibatasi 4-8 orang saja.
 1. Dalam seminggu, diharapkan siswa bisa hadir 2-3 kali.
 1. Siswa yang hadir di selang sehari baru bisa hadir kembali.
+
+Saat membuat jadwal berdasarkan aturan di atas, tiba-tiba beberapa orang tua murid menelepon sang guru. Ternyata didapatkan:
+
+1. `3` orang siswa hanya bisa hadir di __Senin dan Jumat__.
+1. `2` orang siswa ingin hadir di __Rabu__ dan hari lainnya bebas.
+
+Berdasarkan semua kondisi yang ada ini, sang guru mulai pusing membuat jadwalnya.
+
+---
 
 Dari uraian di atas, kita bisa membuat model optimisasinya sebagai berikut:
 
@@ -53,6 +61,14 @@ $$2 \leq \sum_j x_{i,j} \leq 3, i \in \{1,2,..,20\}$$
 Ada jeda sehari agar siswa bisa masuk kembali.
 
 $$x_{i,j} + x_{i,j+1} \leq 1$$
+
+Ada `3` orang yang hanya bisa masuk di hari Senin dan Jumat.
+
+$$x_{i,1} + x_{i,5} = 2, i = 1,2,3$$
+
+Ada `2` orang yang masuk di hari Rabu sedangkan hari lainnya bebas.
+
+$$x_{i,3} = 1, i = 5,6$$
 
 Jangan lupa bahwa $x_{i,j} \geq 0$.
 
@@ -98,7 +114,7 @@ bin_prog =
 bin_prog 
 ```
 
-Berikut adalah hasilnya:
+Berikut adalah hasil dari algoritma di atas:
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 hasil = 
