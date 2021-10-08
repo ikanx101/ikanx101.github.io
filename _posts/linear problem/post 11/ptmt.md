@@ -101,8 +101,8 @@ Ada `2` orang yang masuk di hari Rabu sedangkan hari lainnya bebas.
 
   
 ![x\_{i,3} = 1, i
-= 5,6](https://latex.codecogs.com/png.latex?x_%7Bi%2C3%7D%20%3D%201%2C%20i%20%3D%205%2C6
-"x_{i,3} = 1, i = 5,6")  
+= 4,5](https://latex.codecogs.com/png.latex?x_%7Bi%2C3%7D%20%3D%201%2C%20i%20%3D%204%2C5
+"x_{i,3} = 1, i = 4,5")  
 
 Jangan lupa bahwa ![x\_{i,j}
 \\geq 0](https://latex.codecogs.com/png.latex?x_%7Bi%2Cj%7D%20%5Cgeq%200
@@ -152,7 +152,7 @@ bin_prog =
          i = 1:3) %>%
   # 2 anak di hari rabu
   add_constraint(x[i,3] == 1,
-         i = 5:6)
+         i = 4:5)
 
 bin_prog 
 ```
@@ -169,23 +169,7 @@ Berikut adalah hasilnya:
 
 ### Jadwal Kunjungan Siswa
 
-    ## <SOLVER MSG>  ----
-    ## GLPK Simplex Optimizer, v4.65
-    ## 135 rows, 100 columns, 568 non-zeros
-    ##       0: obj =  -0.000000000e+00 inf =   6.800e+01 (30)
-    ##      81: obj =   4.000000000e+01 inf =   0.000e+00 (0)
-    ## *    82: obj =   4.000000000e+01 inf =   0.000e+00 (0)
-    ## OPTIMAL LP SOLUTION FOUND
-    ## GLPK Integer Optimizer, v4.65
-    ## 135 rows, 100 columns, 568 non-zeros
-    ## 100 integer variables, all of which are binary
-    ## Integer optimization begins...
-    ## Long-step dual simplex will be used
-    ## +    82: mip =     not found yet <=              +inf        (1; 0)
-    ## +    82: >>>>>   4.000000000e+01 <=   4.000000000e+01   0.0% (1; 0)
-    ## +    82: mip =   4.000000000e+01 <=     tree is empty   0.0% (0; 1)
-    ## INTEGER OPTIMAL SOLUTION FOUND
-    ## <!SOLVER MSG> ----
+Berikut adalah jadwal kunjungan siswa perhari:
 
 <table>
 
@@ -221,7 +205,7 @@ presensi
 
 <td style="text-align:left;">
 
-1,2,3,6,11,12,13,20
+1,2,3,10,11,12,13,20
 
 </td>
 
@@ -237,7 +221,7 @@ presensi
 
 <td style="text-align:left;">
 
-7,8,9,10,14,15,16,17
+6,7,8,9,14,15,16,17
 
 </td>
 
@@ -253,7 +237,7 @@ presensi
 
 <td style="text-align:left;">
 
-4,5,6,11,12,13,18,19
+4,5,10,11,12,13,18,19
 
 </td>
 
@@ -269,7 +253,7 @@ presensi
 
 <td style="text-align:left;">
 
-7,8,9,10,14,15,16,17
+6,7,8,9,14,15,16,17
 
 </td>
 
@@ -297,6 +281,8 @@ presensi
 
 ### Rekap Presensi Siswa
 
+Berikut adalah rekap frekuensi kedatangan siswa selama seminggu:
+
 | siswa | jumlah kehadiran |
 | ----: | ---------------: |
 |     1 |                2 |
@@ -321,3 +307,22 @@ presensi
 |    20 |                2 |
 
 Rekap Presensi Siswa
+
+Ternyata semua siswa mendapatkan kesempatan yang sama untuk bisa hadir
+ke sekolah.
+
+-----
+
+Dari model di atas, kita bisa melakukan modifikasi jikalau ada peraturan
+baru yang akan diterapkan di sekolah tersebut atau ada kondisi lain yang
+terjadi di beberapa orang siswa tertentu.
+
+Selain itu kita bisa melakukan *sensitivity test* dengan cara
+mengubah-ubah parameter yang ada sehingga bisa mendapatkan gambaran
+tentang sistem yang ada. Apakah ada perubahan solusi saat ada perubahan
+nilai parameter?
+
+-----
+
+`if you find this article helpful, support this blog by clicking the
+ads.`
