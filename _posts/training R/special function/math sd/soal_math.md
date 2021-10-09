@@ -33,3 +33,59 @@ bagaimana proses dekomposisi dan *modular* akan sangat berguna saat kita
 hendak membuat suatu model komputasi (dalam hal ini berupa program).
 
 -----
+
+## Ide Dasar
+
+Ide dasar dari program ini adalah:
+
+1.  Men-*generate* dua angka secara acak untuk kemudian dijadikan soal
+    penjumlahan, pengurangan, pembagian, dan perkalian.
+2.  Untuk soal pengurutan, di-*generate* 4-5 bilangan secara acak di
+    suatu *range* bilangan tertentu.
+3.  Untuk faktorisasi bilangan prima, kita bisa menggunakan algoritma
+    yang pernah saya tulis di [tulisan
+    ini](https://ikanx101.com/blog/algo-faktor/).
+
+Masing-masing saya buat *functions* kecil-kecil. Setelah itu, semua
+*functions* tersebut akan digabung ke dalam suatu *function* yang
+berguna sebagai *user interface*.
+
+Tingkat kesulitan soal juga bisa disesuaikan sesuai dengan kelas anak.
+Kita bisa mengatur seberapa “besar” bilangan yang *randomly generated*.
+
+-----
+
+## Contoh *Function*
+
+Untuk membuat keseluruhan program, kita akan mulai dari beberapa
+*functions* kecil seperti *function* yang berfungsi untuk *generator*
+soal. Sebagai contoh saya akan menjelaskan bagaimana cara kerja
+*function* penjumlahan.
+
+### Penjumlahan
+
+Intinya adalah generate soal, cek jawaban *user*, dan catat waktu yang
+dibutuhkan *user* untuk menjawab soal tersebut.
+
+Berikut adalah *function* yang saya buat:
+
+    penjumlahan = function(){
+      bilangan = sample(50:5000,2,replace = F)
+      kunci = sum(bilangan)
+      
+      soal = paste(bilangan,collapse = " + ")
+      soal = paste0(soal," = ")
+      
+      start = Sys.time()
+      jawab = readline(prompt = soal)
+      jawab = as.numeric(jawab)
+      end = Sys.time()
+      waktu = end-start
+      
+      cek = jawab == kunci
+      if(cek == T){cat("Kamu Benar!\n\n")}
+      else {cat("Kamu Salah... Jawaban yang benar adalah: ",kunci,"\n\n")}
+      
+      output = list(waktu,cek)
+      return(output)
+    }
