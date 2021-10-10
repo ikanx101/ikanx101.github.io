@@ -14,9 +14,17 @@ Tidak terasa sudah lebih dari satu setengah tahun kita melalui pandemi Covid 19.
 
 Jika kita pantau dari berbagai sumber berita yang ada, sebenarnya ada beberapa negara yang sudah jauh lebih dulu "terbebas" dari Covid 19. Sementara sebagian lainnya masih berusaha keluar.
 
-Sekarang mari kita lihat __hantaman__ Covid 19 per negara seperti yang saya himpun dari situs `r url` per `r waktu_scrape`.
+Sekarang mari kita lihat __hantaman__ Covid 19 per negara seperti yang saya himpun dari situs `r url` per `r waktu_scrape`. Berikut adalah data yang saya akan gunakan:
 
-```{r}
-ls()
+```{r,echo=FALSE}
+cat("Contoh 10 Data Teratas")
+raw_data %>% head(10)
+cat("Contoh 10 Data Terbawah")
+raw_data %>% tail(10)
 ```
+
+
+---
+
+
 
