@@ -18,9 +18,9 @@ Sekarang mari kita lihat __hantaman__ Covid 19 per negara seperti yang saya himp
 
 ```{r,echo=FALSE}
 cat("Contoh 10 Data Teratas")
-raw_data %>% head(10)
+clean_data %>% head(10) %>% knitr::kable()
 cat("Contoh 10 Data Terbawah")
-raw_data %>% tail(10)
+clean_data %>% tail(10) %>% knitr::kable()
 ```
 
 

@@ -18,50 +18,37 @@ Sementara sebagian lainnya masih berusaha keluar.
 
 Sekarang mari kita lihat **hantaman** Covid 19 per negara seperti yang
 saya himpun dari situs <https://www.worldometers.info/coronavirus/> per
-2021-10-10 10:15:44. Berikut adalah data yang saya akan gunakan:
+2021-10-10 10:15:44. Berikut adalah data yang saya akan
+gunakan:
 
     ## Contoh 10 Data Teratas
 
-    ## # A tibble: 10 x 22
-    ##    number country_other   total_cases new_cases total_deaths new_deaths
-    ##     <int> <chr>           <chr>       <chr>     <chr>        <chr>     
-    ##  1     NA "North America" 54,319,935  "+6,247"  1,104,288    "+353"    
-    ##  2     NA "Asia"          77,035,959  "+24,564" 1,137,766    "+278"    
-    ##  3     NA "South America" 38,016,658  "+303"    1,160,705    "+6"      
-    ##  4     NA "Europe"        60,327,326  "+50,396" 1,244,009    "+1,180"  
-    ##  5     NA "Africa"        8,458,661   "+4"      214,229      ""        
-    ##  6     NA "Oceania"       255,819     "+2,517"  3,192        "+15"     
-    ##  7     NA ""              721         ""        15           ""        
-    ##  8     NA "World"         238,415,079 "+84,031" 4,864,204    "+1,832"  
-    ##  9      1 "USA"           45,179,209  ""        733,058      ""        
-    ## 10      2 "India"         33,953,475  "+1,200"  450,621      ""        
-    ## # ... with 16 more variables: total_recovered <chr>, new_recovered <chr>,
-    ## #   active_cases <chr>, serious_critical <chr>, tot_cases_1m_pop <chr>,
-    ## #   deaths_1m_pop <chr>, total_tests <chr>, tests_1m_pop <chr>,
-    ## #   population <chr>, continent <chr>, x1_caseevery_x_ppl <chr>,
-    ## #   x1_deathevery_x_ppl <chr>, x1_testevery_x_ppl <int>,
-    ## #   new_cases_1m_pop <dbl>, new_deaths_1m_pop <dbl>, active_cases_1m_pop <chr>
+| number | country\_other | population | active\_cases | total\_cases | total\_recovered | total\_deaths | ratio\_sakit | ratio\_aktif | ratio\_death | ratio\_cured |
+| -----: | :------------- | ---------: | ------------: | -----------: | ---------------: | ------------: | -----------: | -----------: | -----------: | -----------: |
+|      1 | USA            |  333468970 |       9815497 |     45179209 |         34630654 |        733058 |    0.1354825 |    0.2172569 |    0.0162256 |    0.7665175 |
+|      2 | India          | 1397235287 |        230939 |     33953475 |         33271915 |        450621 |    0.0243005 |    0.0068016 |    0.0132717 |    0.9799266 |
+|      3 | Brazil         |  214479029 |        295953 |     21567181 |         20670348 |        600880 |    0.1005561 |    0.0137224 |    0.0278609 |    0.9584168 |
+|      4 | UK             |   68339166 |       1363398 |      8120713 |          6619618 |        137697 |    0.1188296 |    0.1678914 |    0.0169563 |    0.8151523 |
+|      5 | Russia         |  146014021 |        700831 |      7775365 |          6858119 |        216415 |    0.0532508 |    0.0901348 |    0.0278334 |    0.8820318 |
+|      6 | Turkey         |   85491480 |        482494 |      7416182 |          6867704 |         65984 |    0.0867476 |    0.0650596 |    0.0088973 |    0.9260431 |
+|      7 | France         |   65457114 |         97187 |      7052520 |          6838289 |        117044 |    0.1077426 |    0.0137805 |    0.0165961 |    0.9696235 |
+|      8 | Iran           |   85357709 |        367749 |      5691634 |          5201515 |        122370 |    0.0666798 |    0.0646122 |    0.0215000 |    0.9138878 |
+|      9 | Argentina      |   45722524 |         18791 |      5265528 |          5131279 |        115458 |    0.1151627 |    0.0035687 |    0.0219271 |    0.9745042 |
+|     10 | Spain          |   46777803 |         86148 |      4973619 |          4800693 |         86778 |    0.1063243 |    0.0173210 |    0.0174477 |    0.9652314 |
 
     ## Contoh 10 Data Terbawah
 
-    ## # A tibble: 10 x 22
-    ##    number country_other total_cases new_cases total_deaths new_deaths
-    ##     <int> <chr>         <chr>       <chr>     <chr>        <chr>     
-    ##  1    222 Micronesia    1           ""        ""           ""        
-    ##  2    223 China         96,398      "+24"     "4,636"      ""        
-    ##  3     NA Total:        54,319,935  "+6,247"  "1,104,288"  "+353"    
-    ##  4     NA Total:        77,035,959  "+24,564" "1,137,766"  "+278"    
-    ##  5     NA Total:        38,016,658  "+303"    "1,160,705"  "+6"      
-    ##  6     NA Total:        60,327,326  "+50,396" "1,244,009"  "+1,180"  
-    ##  7     NA Total:        8,458,661   "+4"      "214,229"    ""        
-    ##  8     NA Total:        255,819     "+2,517"  "3,192"      "+15"     
-    ##  9     NA Total:        721         ""        "15"         ""        
-    ## 10     NA Total:        238,415,079 "+84,031" "4,864,204"  "+1,832"  
-    ## # ... with 16 more variables: total_recovered <chr>, new_recovered <chr>,
-    ## #   active_cases <chr>, serious_critical <chr>, tot_cases_1m_pop <chr>,
-    ## #   deaths_1m_pop <chr>, total_tests <chr>, tests_1m_pop <chr>,
-    ## #   population <chr>, continent <chr>, x1_caseevery_x_ppl <chr>,
-    ## #   x1_deathevery_x_ppl <chr>, x1_testevery_x_ppl <int>,
-    ## #   new_cases_1m_pop <dbl>, new_deaths_1m_pop <dbl>, active_cases_1m_pop <chr>
+| number | country\_other   | population | active\_cases | total\_cases | total\_recovered | total\_deaths | ratio\_sakit | ratio\_aktif | ratio\_death | ratio\_cured |
+| -----: | :--------------- | ---------: | ------------: | -----------: | ---------------: | ------------: | -----------: | -----------: | -----------: | -----------: |
+|    213 | Vatican City     |        804 |             0 |           27 |               27 |            NA |    0.0335821 |    0.0000000 |           NA |    1.0000000 |
+|    214 | Solomon Islands  |     708227 |             0 |           20 |               20 |            NA |    0.0000282 |    0.0000000 |           NA |    1.0000000 |
+|    215 | Western Sahara   |     615948 |             1 |           10 |                8 |             1 |    0.0000162 |    0.1000000 |    0.1000000 |    0.8000000 |
+|    217 | Palau            |      18204 |             3 |            8 |                5 |            NA |    0.0004395 |    0.3750000 |           NA |    0.6250000 |
+|    218 | Vanuatu          |     316241 |             0 |            4 |                3 |             1 |    0.0000126 |    0.0000000 |    0.2500000 |    0.7500000 |
+|    219 | Marshall Islands |      59697 |             0 |            4 |                4 |            NA |    0.0000670 |    0.0000000 |           NA |    1.0000000 |
+|    220 | Samoa            |     200089 |             0 |            3 |                3 |            NA |    0.0000150 |    0.0000000 |           NA |    1.0000000 |
+|    221 | Saint Helena     |       6100 |             0 |            2 |                2 |            NA |    0.0003279 |    0.0000000 |           NA |    1.0000000 |
+|    222 | Micronesia       |     116554 |             0 |            1 |                1 |            NA |    0.0000086 |    0.0000000 |           NA |    1.0000000 |
+|    223 | China            | 1439323776 |           731 |        96398 |            91031 |          4636 |    0.0000670 |    0.0075831 |    0.0480923 |    0.9443246 |
 
 -----
