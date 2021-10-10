@@ -1,5 +1,5 @@
 ---
-title: "Hasil Akhir Pandemi Covid 19 per Negara di Dunia"
+title: "Kondisi Terkini Pandemi Covid 19 per Negara di Dunia"
 output: github_document
 ---
 
@@ -14,15 +14,24 @@ Tidak terasa sudah lebih dari satu setengah tahun kita melalui pandemi Covid 19.
 
 Jika kita pantau dari berbagai sumber berita yang ada, sebenarnya ada beberapa negara yang sudah jauh lebih dulu "terbebas" dari Covid 19. Sementara sebagian lainnya masih berusaha keluar.
 
-Sekarang mari kita lihat __hantaman__ Covid 19 per negara seperti yang saya himpun dari situs `r url` per `r waktu_scrape`. Berikut adalah data yang saya akan gunakan:
+Sekarang mari kita lihat kondisi terkini Covid 19 per negara seperti yang saya himpun dari situs `r url` per `r waktu_scrape`. Saya akan membuat analisa deskriptif sederhana dari data yang saya dapatkan.
 
 ```{r,echo=FALSE}
-cat("Contoh 10 Data Teratas")
-clean_data %>% head(10) %>% knitr::kable()
-cat("Contoh 10 Data Terbawah")
-clean_data %>% tail(10) %>% knitr::kable()
+cat("Contoh 10 Data Teratas yang Didapatkan")
+show_data %>% head(10) %>% knitr::kable()
 ```
 
+Dari data tersebut, saya akan menghitung beberapa _ratio_ seperti:
+
+1. `rasio_sakit`: rasio antara _total cases_ dengan populasi.
+1. `rasio_aktif`: rasio antara _active cases_ dengan _total cases_.
+1. `rasio_cured`: rasio antara _total recovered_ dengan _total cases_.
+1. `rasio_death`: rasio antara _total death_ dengan _total cases_.
+
+```{r,echo=FALSE}
+cat("Contoh 10 Data Teratas Hasil Perhitungan Rasio")
+clean_data %>% head(10) %>% knitr::kable()
+```
 
 ---
 

@@ -26,6 +26,7 @@ data = tabel[[1]]
 
 # bebersih nama
 raw_data = data %>% janitor::clean_names()
+raw_data[is.na(raw_data)] = 0
 
 # kita akan pilihkan beberapa variabel penting
 clean_data = 
@@ -46,4 +47,12 @@ clean_data =
 	 ratio_death = total_deaths/total_cases,
 	 ratio_cured = total_recovered/total_cases)
 
-save(url,waktu_scrape,raw_data,clean_data,file = "bahan_blog.rda")
+show_data = 
+  clean_data %>%
+  select(-contains("ratio"))
+  
+clean_data = 
+  clean_data %>%
+  select(country_other,contains("ratio"))
+
+save(url,waktu_scrape,raw_data,clean_data,show_data,file = "bahan_blog.rda")
