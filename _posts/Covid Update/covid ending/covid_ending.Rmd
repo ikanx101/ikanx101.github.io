@@ -23,10 +23,10 @@ show_data %>% head(10) %>% knitr::kable()
 
 Dari data tersebut, saya akan menghitung beberapa _ratio_ seperti:
 
-1. `rasio_sakit`: rasio antara _total cases_ dengan populasi.
-1. `rasio_aktif`: rasio antara _active cases_ dengan _total cases_.
-1. `rasio_cured`: rasio antara _total recovered_ dengan _total cases_.
-1. `rasio_death`: rasio antara _total death_ dengan _total cases_.
+1. `ratio_sakit`: rasio antara _total cases_ dengan populasi.
+1. `ratio_aktif`: rasio antara _active cases_ dengan _total cases_.
+1. `ratio_cured`: rasio antara _total recovered_ dengan _total cases_.
+1. `ratio_death`: rasio antara _total death_ dengan _total cases_.
 
 ```{r,echo=FALSE}
 cat("Contoh 10 Data Teratas Hasil Perhitungan Rasio")
@@ -35,5 +35,18 @@ clean_data %>% head(10) %>% knitr::kable()
 
 ---
 
+## _Total Cases_
 
+_Total cases_ adalah angka _real infected person_ di suatu negara. Secara total dunia, sampai saat data ini saya _scrape_, sudah ada `r round(sum(show_data$total_cases)/1000000,2)` juta orang yang terinfeksi Covid 19. Jika kita lihat sebaran `ratio_sakit` semua negara, kita bisa melihat:
 
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10}
+clean_data %>%
+  ggplot(aes(x = ratio_sakit)) +
+  geom_density()
+
+clean_data %>%
+  ggplot(aes(y = ratio_sakit)) +
+  geom_boxplot()
+```
+
+xxx

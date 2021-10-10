@@ -39,10 +39,10 @@ dapatkan.
 
 Dari data tersebut, saya akan menghitung beberapa *ratio* seperti:
 
-1.  `rasio_sakit`: rasio antara *total cases* dengan populasi.
-2.  `rasio_aktif`: rasio antara *active cases* dengan *total cases*.
-3.  `rasio_cured`: rasio antara *total recovered* dengan *total cases*.
-4.  `rasio_death`: rasio antara *total death* dengan *total
+1.  `ratio_sakit`: rasio antara *total cases* dengan populasi.
+2.  `ratio_aktif`: rasio antara *active cases* dengan *total cases*.
+3.  `ratio_cured`: rasio antara *total recovered* dengan *total cases*.
+4.  `ratio_death`: rasio antara *total death* dengan *total
 cases*.
 
 <!-- end list -->
@@ -63,3 +63,15 @@ cases*.
 | Spain          |    0.1063243 |    0.0173210 |    0.0174477 |    0.9652314 |
 
 -----
+
+## *Total Cases*
+
+*Total cases* adalah angka *real infected person* di suatu negara.
+Secara total dunia, sampai saat data ini saya *scrape*, sudah ada 238.43
+juta orang yang terinfeksi Covid 19. Jika kita lihat sebaran
+`ratio_sakit` semua negara, kita bisa
+melihat:
+
+<img src="covid_ending_files/figure-gfm/unnamed-chunk-4-1.png" width="672" /><img src="covid_ending_files/figure-gfm/unnamed-chunk-4-2.png" width="672" />
+
+xxx
