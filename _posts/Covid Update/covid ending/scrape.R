@@ -13,7 +13,7 @@ bebersih = function(var){
 }
 
 # mencatat waktu scrape
-waktu_scrape = Sys.time()
+waktu_scrape = Sys.time() + (7*60^2)
 
 # url
 url = "https://www.worldometers.info/coronavirus/"
@@ -42,10 +42,10 @@ clean_data =
 	 total_deaths = bebersih(total_deaths)) %>%
   ungroup() %>%
   filter(!is.na(population)) %>%
-  mutate(ratio_sakit = total_cases/population,
-	 ratio_aktif = active_cases/total_cases,
-	 ratio_death = total_deaths/total_cases,
-	 ratio_cured = total_recovered/total_cases)
+  mutate(ratio_sakit = round(total_cases/population*100,2),
+	 ratio_aktif = round(active_cases/total_cases*100,2),
+	 ratio_death = round(total_deaths/total_cases*100,2),
+	 ratio_cured = round(total_recovered/total_cases*100,2))
 
 show_data = 
   clean_data %>%
@@ -53,6 +53,10 @@ show_data =
   
 clean_data = 
   clean_data %>%
-  select(country_other,contains("ratio"))
+  select(country_other,contains("ratio")) %>%
+  filter(!is.na(ratio_sakit)) %>%
+  filter(!is.na(ratio_aktif)) %>%
+  filter(!is.na(ratio_death)) %>%
+  filter(!is.na(ratio_cured))
 
 save(url,waktu_scrape,raw_data,clean_data,show_data,file = "bahan_blog.rda")

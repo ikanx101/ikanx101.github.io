@@ -18,7 +18,7 @@ Sementara sebagian lainnya masih berusaha keluar.
 
 Sekarang mari kita lihat kondisi terkini Covid 19 per negara seperti
 yang saya himpun dari situs <https://www.worldometers.info/coronavirus/>
-per 2021-10-10 11:34:28. Saya akan membuat analisa deskriptif sederhana
+per 2021-10-10 20:07:41. Saya akan membuat analisa deskriptif sederhana
 dari data yang saya
 dapatkan.
 
@@ -33,7 +33,7 @@ dapatkan.
 |      5 | Russia         |  146014021 |        700831 |      7775365 |          6858119 |        216415 |
 |      6 | Turkey         |   85491480 |        482494 |      7416182 |          6867704 |         65984 |
 |      7 | France         |   65457114 |         97187 |      7052520 |          6838289 |        117044 |
-|      8 | Iran           |   85357709 |        367749 |      5691634 |          5201515 |        122370 |
+|      8 | Iran           |   85357709 |        362299 |      5702890 |          5217999 |        122592 |
 |      9 | Argentina      |   45722524 |         18791 |      5265528 |          5131279 |        115458 |
 |     10 | Spain          |   46777803 |         86148 |      4973619 |          4800693 |         86778 |
 
@@ -51,26 +51,26 @@ cases*.
 
 | country\_other | ratio\_sakit | ratio\_aktif | ratio\_death | ratio\_cured |
 | :------------- | -----------: | -----------: | -----------: | -----------: |
-| USA            |    0.1354825 |    0.2172569 |    0.0162256 |    0.7665175 |
-| India          |    0.0243005 |    0.0068016 |    0.0132717 |    0.9799266 |
-| Brazil         |    0.1005561 |    0.0137224 |    0.0278609 |    0.9584168 |
-| UK             |    0.1188296 |    0.1678914 |    0.0169563 |    0.8151523 |
-| Russia         |    0.0532508 |    0.0901348 |    0.0278334 |    0.8820318 |
-| Turkey         |    0.0867476 |    0.0650596 |    0.0088973 |    0.9260431 |
-| France         |    0.1077426 |    0.0137805 |    0.0165961 |    0.9696235 |
-| Iran           |    0.0666798 |    0.0646122 |    0.0215000 |    0.9138878 |
-| Argentina      |    0.1151627 |    0.0035687 |    0.0219271 |    0.9745042 |
-| Spain          |    0.1063243 |    0.0173210 |    0.0174477 |    0.9652314 |
+| USA            |        13.55 |        21.73 |         1.62 |        76.65 |
+| India          |         2.43 |         0.68 |         1.33 |        97.99 |
+| Brazil         |        10.06 |         1.37 |         2.79 |        95.84 |
+| UK             |        11.88 |        16.79 |         1.70 |        81.52 |
+| Russia         |         5.33 |         9.01 |         2.78 |        88.20 |
+| Turkey         |         8.67 |         6.51 |         0.89 |        92.60 |
+| France         |        10.77 |         1.38 |         1.66 |        96.96 |
+| Iran           |         6.68 |         6.35 |         2.15 |        91.50 |
+| Argentina      |        11.52 |         0.36 |         2.19 |        97.45 |
+| Spain          |        10.63 |         1.73 |         1.74 |        96.52 |
 
 -----
 
 ## *Total Cases*
 
 *Total cases* adalah angka *real infected person* di suatu negara.
-Secara total dunia, sampai saat data ini saya *scrape*, sudah ada 238.43
-juta orang yang terinfeksi Covid 19. Jika kita lihat sebaran
-`ratio_sakit` semua negara, kita bisa
-melihat:
+Secara total dunia, sampai saat data ini saya *scrape*, sudah ada 238.44
+juta orang yang terinfeksi Covid 19. Mari kita lihat sebaran dari
+`ratio_sakit` semua
+negara:
 
 <img src="covid_ending_files/figure-gfm/unnamed-chunk-4-1.png" width="672" /><img src="covid_ending_files/figure-gfm/unnamed-chunk-4-2.png" width="672" />
 
