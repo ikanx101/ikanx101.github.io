@@ -78,7 +78,20 @@ negara:
 Mayoritas negara-negara di dunia memiliki *ratio infected person* **\<
 10%**. Ada hal yang menarik menurut saya: China sebagai negara *suspect*
 bagi *patient zero* ternyata “hanya” memiliki *ratio infected person*
-sebesar **0.1%** saja. Berikut adalah 3 negara yang memiliki *ratio
-infected person* terbesar:
+sebesar **0.1%** saja. Berikut adalah lima negara yang memiliki *ratio
+infected person*
+    terbesar:
 
-    ## Seychelles Montenegro Andorra
+    ## [1] "Seychelles" "Montenegro" "Andorra"    "Gibraltar"  "St. Barth"
+
+-----
+
+## *Active Cases*
+
+Sekarang mari kita lihat, negara mana saja yang masih *struggling*
+dengan *ratio active cases*
+tertinggi:
+
+<img src="covid_ending_files/figure-gfm/unnamed-chunk-6-1.png" width="672" />
+
+xxxx

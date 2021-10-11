@@ -41,8 +41,8 @@ clean_data %>% head(10) %>% knitr::kable()
 _Total cases_ adalah angka _real infected person_ di suatu negara. Secara total dunia, sampai saat data ini saya _scrape_, sudah ada `r round(sum(show_data$total_cases)/1000000,2)` juta orang yang terinfeksi Covid 19. Mari kita lihat sebaran dari `ratio_sakit` semua negara:
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10}
-top_3 = clean_data %>% arrange(desc(ratio_sakit)) %>% head(3)
-top_3 = top_3$country_other
+top_5 = clean_data %>% arrange(desc(ratio_sakit)) %>% head(5)
+top_5 = top_5$country_other
 
 clean_data %>%
   ggplot(aes(x = 1,
@@ -57,16 +57,42 @@ clean_data %>%
   theme_minimal() +
   labs(title = "Boxplot dari Ratio Sakit",
        subtitle = "Sebaran rasio sakit dari semua negara di dunia\nSumber data: worldometers",
-       caption = "Visualized using R\nikanx101.com") +
+       caption = "Visualized using R\nikanx101.com",
+       x = "Ratio Sakit",
+       y = "Persen") +
   theme(axis.text.x = element_blank(),
 	axis.title.y = element_blank())
 
 ```
 
-Mayoritas negara-negara di dunia memiliki _ratio infected person_ __< 10%__. Ada hal yang menarik menurut saya: China sebagai negara _suspect_ bagi _patient zero_ ternyata "hanya" memiliki _ratio infected person_ sebesar __0.1%__ saja. Berikut adalah 3 negara yang memiliki _ratio infected person_ terbesar:
+Mayoritas negara-negara di dunia memiliki _ratio infected person_ __< 10%__. Ada hal yang menarik menurut saya: China sebagai negara _suspect_ bagi _patient zero_ ternyata "hanya" memiliki _ratio infected person_ sebesar __0.1%__ saja. Berikut adalah lima negara yang memiliki _ratio infected person_ terbesar:
 
 ```{r,echo=FALSE}
-cat(top_3)
+print(top_5)
+```
+
+---
+
+## _Active Cases_
+
+Sekarang mari kita lihat, negara mana saja yang masih _struggling_ dengan _ratio active cases_ tertinggi:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10}
+clean_data %>%
+  arrange(desc(ratio_aktif)) %>%
+  head(10) %>%
+  ggplot(aes(x = reorder(country_other,ratio_aktif),
+	     y = ratio_aktif)) +
+  geom_col(color = "black",
+	   fill = "darkred",
+	   width = .5) +
+  geom_label(aes(label = ratio_aktif)) +
+  theme_minimal() +
+  labs(title = "Top 10 Negara dengan Ratio Active Cases Terbanyak",
+       subtitle = "Sumber data: worldometers.info",
+       caption = "Visualized using R\nikanx101.com")
 ```
 
 
+
+xxxx
