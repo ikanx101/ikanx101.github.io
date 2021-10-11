@@ -41,13 +41,19 @@ clean_data %>% head(10) %>% knitr::kable()
 _Total cases_ adalah angka _real infected person_ di suatu negara. Secara total dunia, sampai saat data ini saya _scrape_, sudah ada `r round(sum(show_data$total_cases)/1000000,2)` juta orang yang terinfeksi Covid 19. Mari kita lihat sebaran dari `ratio_sakit` semua negara:
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10}
-modus = 0.3
+top_3 = clean_data %>% arrange(desc(ratio_sakit)) %>% head(3)
+top_3 = top_3$country_other
 
 clean_data %>%
   ggplot(aes(x = 1,
 	     y = ratio_sakit)) +
-  geom_boxplot() +
-  geom_point(position = "jitter") +
+  geom_boxplot(fill = "red",
+	       color = "darkred",
+	       alpha = .4) +
+  geom_point(position = "jitter",
+	     color = "brown",
+	     size = 1.25,
+	     alpha = .6) +
   theme_minimal() +
   labs(title = "Boxplot dari Ratio Sakit",
        subtitle = "Sebaran rasio sakit dari semua negara di dunia\nSumber data: worldometers",
@@ -57,4 +63,10 @@ clean_data %>%
 
 ```
 
-xxx
+Mayoritas negara-negara di dunia memiliki _ratio infected person_ __< 10%__. Ada hal yang menarik menurut saya: China sebagai negara _suspect_ bagi _patient zero_ ternyata "hanya" memiliki _ratio infected person_ sebesar __0.1%__ saja. Berikut adalah 3 negara yang memiliki _ratio infected person_ terbesar:
+
+```{r,echo=FALSE}
+cat(top_3)
+```
+
+
