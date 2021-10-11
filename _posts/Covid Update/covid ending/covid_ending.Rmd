@@ -44,16 +44,16 @@ _Total cases_ adalah angka _real infected person_ di suatu negara. Secara total 
 modus = 0.3
 
 clean_data %>%
-  ggplot(aes(x = ratio_sakit)) +
-  geom_density() +
+  ggplot(aes(x = 1,
+	     y = ratio_sakit)) +
+  geom_boxplot() +
+  geom_point(position = "jitter") +
   theme_minimal() +
-  labs(title = "Density Plot dari Ratio Sakit",
-       subtitle = "Modus sebesar 0.3% (garis hijau)\nSumber data: worldometers",
+  labs(title = "Boxplot dari Ratio Sakit",
+       subtitle = "Sebaran rasio sakit dari semua negara di dunia\nSumber data: worldometers",
        caption = "Visualized using R\nikanx101.com") +
-  theme(axis.text.y = element_blank(),
-	axis.title.y = element_blank()) +
-  geom_vline(xintercept = 0.3,
-	     color = "darkgreen")
+  theme(axis.text.x = element_blank(),
+	axis.title.y = element_blank())
 
 ```
 
