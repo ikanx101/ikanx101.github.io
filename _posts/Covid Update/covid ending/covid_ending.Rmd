@@ -41,19 +41,19 @@ clean_data %>% head(10) %>% knitr::kable()
 _Total cases_ adalah angka _real infected person_ di suatu negara. Secara total dunia, sampai saat data ini saya _scrape_, sudah ada `r round(sum(show_data$total_cases)/1000000,2)` juta orang yang terinfeksi Covid 19. Mari kita lihat sebaran dari `ratio_sakit` semua negara:
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10}
-china = clean_data %>% filter(country_other == "China")
-china = china$ratio_sakit %>% as.numeric()
+modus = 0.3
 
 clean_data %>%
   ggplot(aes(x = ratio_sakit)) +
   geom_density() +
   theme_minimal() +
   labs(title = "Density Plot dari Ratio Sakit",
-       subtitle = "Sumber data: worldometers",
+       subtitle = "Modus sebesar 0.3% (garis hijau)\nSumber data: worldometers",
        caption = "Visualized using R\nikanx101.com") +
   theme(axis.text.y = element_blank(),
 	axis.title.y = element_blank()) +
-  geom_vline(xintercept = china)
+  geom_vline(xintercept = 0.3,
+	     color = "darkgreen")
 
 ```
 
