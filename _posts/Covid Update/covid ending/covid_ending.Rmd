@@ -1,5 +1,5 @@
 ---
-title: "Kondisi Terkini Pandemi Covid 19 per Negara di Dunia"
+title: "Kondisi Terkini Pandemi Covid 19 di Dunia"
 output: github_document
 ---
 
@@ -13,7 +13,7 @@ clean_data = clean_data %>% filter(ratio_sakit > 0)
 
 Tidak terasa sudah lebih dari satu setengah tahun kita melalui pandemi Covid 19. Sejak tulisan pertama saya terkait [model matematika penyebaran covid](https://ikanx101.com/blog/covid/), kini angka pertambahan kasus positif relatif sudah mulai terkendali. Sampai bisa seperti sekarang ini, Indonesia harus melalui jalan terjal dan berliku. Mulai dari hantaman gelombang pertama dan gelombang kedua (varian delta) pada kuartal I dan II tahun ini. Namun menurut saya, Indonesia belum bisa dikatakan menang melawan Covid 19. Masih ada PR yang harus kita selesaikan bersama sebagai negara. Selain itu korban yang berjatuhan sampai saat ini __tidak menjadikan kita pantas__ untuk berbangga hati.
 
-Jika kita pantau dari berbagai sumber berita yang ada, sebenarnya ada beberapa negara yang sudah jauh lebih dulu "terbebas" dari Covid 19. Sementara sebagian lainnya masih berusaha keluar.
+Jika kita pantau dari berbagai sumber berita yang ada, sebenarnya ada beberapa negara yang sudah jauh lebih dulu "terbebas" dari Covid 19 dan kembali beraktivitas dengan "normal". Sementara sebagian lainnya masih berusaha keluar.
 
 Sekarang mari kita lihat kondisi terkini Covid 19 per negara seperti yang saya himpun dari situs `r url` per `r waktu_scrape`. Saya akan membuat analisa deskriptif sederhana dari data yang saya dapatkan.
 
@@ -41,16 +41,20 @@ clean_data %>% head(10) %>% knitr::kable()
 _Total cases_ adalah angka _real infected person_ di suatu negara. Secara total dunia, sampai saat data ini saya _scrape_, sudah ada `r round(sum(show_data$total_cases)/1000000,2)` juta orang yang terinfeksi Covid 19. Mari kita lihat sebaran dari `ratio_sakit` semua negara:
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10}
+china = clean_data %>% filter(country_other == "China")
+china = china$ratio_sakit %>% as.numeric()
+
 clean_data %>%
   ggplot(aes(x = ratio_sakit)) +
   geom_density() +
   theme_minimal() +
   labs(title = "Density Plot dari Ratio Sakit",
-       subtitle = "Sumber data: worldometers")
+       subtitle = "Sumber data: worldometers",
+       caption = "Visualized using R\nikanx101.com") +
+  theme(axis.text.y = element_blank(),
+	axis.title.y = element_blank()) +
+  geom_vline(xintercept = china)
 
-clean_data %>%
-  ggplot(aes(y = ratio_sakit)) +
-  geom_boxplot()
 ```
 
 xxx

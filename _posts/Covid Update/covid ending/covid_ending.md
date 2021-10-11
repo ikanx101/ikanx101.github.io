@@ -1,4 +1,4 @@
-Kondisi Terkini Pandemi Covid 19 per Negara di Dunia
+Kondisi Terkini Pandemi Covid 19 di Dunia
 ================
 
 Tidak terasa sudah lebih dari satu setengah tahun kita melalui pandemi
@@ -13,8 +13,9 @@ selesaikan bersama sebagai negara. Selain itu korban yang berjatuhan
 sampai saat ini **tidak menjadikan kita pantas** untuk berbangga hati.
 
 Jika kita pantau dari berbagai sumber berita yang ada, sebenarnya ada
-beberapa negara yang sudah jauh lebih dulu “terbebas” dari Covid 19.
-Sementara sebagian lainnya masih berusaha keluar.
+beberapa negara yang sudah jauh lebih dulu “terbebas” dari Covid 19 dan
+kembali beraktivitas dengan “normal”. Sementara sebagian lainnya masih
+berusaha keluar.
 
 Sekarang mari kita lihat kondisi terkini Covid 19 per negara seperti
 yang saya himpun dari situs <https://www.worldometers.info/coronavirus/>
@@ -72,6 +73,6 @@ juta orang yang terinfeksi Covid 19. Mari kita lihat sebaran dari
 `ratio_sakit` semua
 negara:
 
-<img src="covid_ending_files/figure-gfm/unnamed-chunk-4-1.png" width="672" /><img src="covid_ending_files/figure-gfm/unnamed-chunk-4-2.png" width="672" />
+<img src="covid_ending_files/figure-gfm/unnamed-chunk-4-1.png" width="672" />
 
 xxx
