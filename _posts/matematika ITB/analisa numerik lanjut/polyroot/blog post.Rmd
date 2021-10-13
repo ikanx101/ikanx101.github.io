@@ -1,0 +1,145 @@
+---
+title: "Mencari Akar Polinomial dengan R"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/ikanx101 BLOG/_posts/matematika ITB/analisa numerik lanjut/polyroot")
+library(dplyr)
+library(ggplot2)
+
+rm(list=ls())
+
+gambar_fx = function(f,a,b,delta){
+  temp = data.frame(
+    x = seq(a,b,by = delta)
+  ) %>% 
+    mutate(y = f(x)) %>% 
+    filter(!is.nan(y))
+  subtitle = paste0("Pada selang [",a,",",b,"]")
+  caption = "Digambar dengan R\nikanx101.com"
+  temp %>% 
+    ggplot(aes(x,y)) +
+    geom_line(color = "steelblue") +
+    theme_minimal() +
+    labs(title = "Grafik f(x)",
+         subtitle = subtitle,
+         caption = caption)
+   
+}
+
+```
+
+Beberapa waktu yang lalu, saya pernah membahas bagaimana cara mencari akar suatu fungsi dengan metode [_bisection_](https://ikanx101.com/blog/metode-bisection/), [_Newton_](https://ikanx101.com/blog/newton_method/), dan [_Golden Section Search_](https://ikanx101.com/blog/golden-ss/). Ketiga metode ini sangat _powerful_ untuk mencari akar suatu persamaan. Baik berupa fungsi polinom dan fungsi non polinom (trigonometri, logaritmik, dan lainnya).
+
+Masalah baru muncul kalau ternyata akar dari fungsi tersebut adalah ___bilangan imajiner___. Bagaimana cara menemukan akarnya?
+
+---
+
+Pada perkuliahan yang lalu, kami membahas tentang penggunaan `numpy` di Python untuk mencari akar dari fungsi polinom. Setelah saya cek, di _base_ __R__ (tanpa harus _install_ _library_ lainnya), ada fungsi sejenis bernama `polyroot()`.
+
+Saya belum melihat secara detail bagaimana cara menghitungnya, tapi percayalah __R__ itu bukan dibuat secara serampangan. _hehe_. Kalau kita mengeksekusi perinta berikut di __R__: `help("polyroot")`. Kita bisa melihat penjelasan beserta __referensi ilmiah__ dibalik algoritmanya.
+
+```
+Source
+C translation by Ross Ihaka of Fortran code in the reference, with modifications by the R Core Team.
+
+References
+Jenkins, M. A. and Traub, J. F. (1972). Algorithm 419: zeros of a complex polynomial. Communications of the ACM, 15(2), 97–99. doi: 10.1145/361254.361262.
+```
+
+[__Ross Ihaka__](https://en.wikipedia.org/wiki/Ross_Ihaka) adalah seorang profesor, _statistician_, dan salah satu _creator_ dari __R__.
+
+Misalkan kita memiliki polinom dengan bentuk seperti berikut:
+
+$$p(x) = z_1 + z_2 x + z_3 x^2 + .. + z_n x^{n-1}$$
+
+Cara menyelesaikan dengan __R__ adalah dengan membuat _vector_ berisi $(z_1,z_2,z_3,...,z_n)$.
+
+_Mudah kan?_
+
+---
+
+## Contoh Soal I
+
+Misalkan saya memiliki fungsi berikut:
+
+$y = x^4 + 4x^2 +7$
+
+Jika saya gambarkan pada selang $[-5,5]$, maka:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina = 10}
+f = function(x){x^4 + 4*x^2 + 7}
+a = -5
+b = 5
+delta = .05
+gambar_fx(f,a,b,delta)
+```
+
+Terlihat bahwa $f(x)$ tidak memiliki akar _real_. Kenapa? Secara visual tidak ada grafik $f(x)$ yang memotong sumbu $x$.
+
+Cara menghitungnya di __R__ adalah sebagai berikut:
+
+```{r}
+fungsi = c(7,0,4,0,1)
+polyroot(fungsi)
+```
+
+Terlihat ada __4__ akar bilangan imajiner dari $f(x)$.
+
+---
+
+## Contoh Soal II
+
+Misalkan saya memiliki fungsi berikut:
+
+$y = 3x^5 + 6$
+
+Jika saya gambarkan pada selang $[-5,5]$, maka:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina = 10}
+f = function(x){3*x^5 + 6}
+a = -5
+b = 5
+delta = .05
+gambar_fx(f,a,b,delta)
+```
+
+Terlihat bahwa $f(x)$ memotong sumbu $x$. Artinya setidaknya ada satu akar bilangan _real_ dari $f(x)$.
+
+Jika kita selesaikan dengan __R__ menjadi:
+
+```{r}
+fungsi = c(6,0,0,0,0,3)
+polyroot(fungsi)
+```
+
+---
+
+## Contoh Soal III
+
+Misalkan saya memiliki fungsi berikut:
+
+$y = 2x^6 - 1.5x^5 + 5x^4 -6.5x^3 + 6x^2 -3x + 4.5$
+
+Jika saya gambarkan pada selang $[-5,5]$, maka:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina = 10}
+f = function(x){2*x^6 - 1.5*x^5 + 5*x^4 - 6.5*x^3 + 6*x^2 - 3*x + 4.5}
+a = -5
+b = 5
+delta = .05
+gambar_fx(f,a,b,delta)
+```
+
+Secara grafik, kita tidak bisa melihat dengan jelas apakah ada perpotongan antara $f(x)$ dengan sumbu $x$. Jadi kita selesaikan saja dengan __R__ berikut:
+
+```{r}
+fungsi = c(4.5,-3,6,-6.5,5,-1.5,2)
+polyroot(fungsi)
+```
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
