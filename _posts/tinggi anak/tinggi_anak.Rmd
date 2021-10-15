@@ -1,0 +1,31 @@
+---
+title: Membandingkan Tinggi Dua Anak
+output: github_document
+---
+
+```{r,include=FALSE}
+rm(list=ls())
+
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+ceisya = 114
+ahnaf = 139
+
+laju_ceisya = 3
+laju_ahnaf = 1
+
+i = 0
+
+while(ceisya < ahnaf){
+  ceisya = ceisya + laju_ceisya
+  ahnaf = ahnaf + laju_ahnaf
+  i = i + 1
+  print(ceisya)
+  print(ahnaf)
+}
+
+print(i * 4 / 12)
+``` 
