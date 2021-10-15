@@ -49,3 +49,43 @@ Berikut adalah gambar
 fungsinya:
 
 <img src="tinggi_anak_files/figure-gfm/unnamed-chunk-2-1.png" width="672" />
+
+Dari grafik di atas, kita bisa hitung bahwa pada periode ke `12.5 x 4`
+bulan tinggi badan si bungsu akan menyamai kakaknya.
+
+-----
+
+## Penyelesaian Cara Lain
+
+Masalah pertumbuhan di atas bisa kita selesaikan dengan berbagai macam
+cara. Bagi rekan-rekan yang tidak menyukai rumus matematika dan ingin
+menggunakan algoritma sederhana (*looping*) bisa memanfaatkan perintah
+`while()`.
+
+Bagaimana caranya?
+
+``` r
+# initial condition
+bungsu = 114
+sulung = 139
+
+# laju pertumbuhan
+laju_bungsu = 3
+laju_sulung = 1
+
+# untuk menghitung periode 4 bulanan
+periode_4_bulanan = 0
+
+while(bungsu < sulung){
+  bungsu = bungsu + laju_bungsu
+  sulung = sulung + laju_sulung
+  periode_4_bulanan = periode_4_bulanan + 1
+  }
+
+pesan = paste0("Si bungsu akan menyalip si sulung saat: ",
+           periode_4_bulanan*4,
+           " bulan")
+print(pesan)
+```
+
+    ## [1] "Si bungsu akan menyalip si sulung saat: 52 bulan"
