@@ -60,7 +60,7 @@ b = function(t)114+3*t
 s = function(t)139+t
 
 data = 
-  data.frame(t = 1:80) %>%
+  data.frame(t = 1:20) %>%
   mutate(Bungsu = b(t),
          Sulung = s(t)) %>%
   melt(id.vars = "t") %>%
@@ -72,7 +72,13 @@ data %>%
 	     y = tinggi,
 	     color = anak)) +
   geom_line() +
-  theme_minimal()
+  theme_minimal() +
+  labs(color = "Anak ke-",
+       title = "Grafik Kenaikan Tinggi Sulung vs Bungsu",
+       subtitle = "Kapan si bungsu menyalip tinggi kakaknya?",
+       x = "Periode 4 bulanan",
+       y = "Tinggi (dalam cm)",
+       caption = "Simulasi dan Visualisasi dengan R\nikanx101.com")
 ```
 
 ```{r,include = FALSE}
