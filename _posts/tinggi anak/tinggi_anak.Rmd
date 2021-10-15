@@ -45,11 +45,11 @@ Jika saya asumsikan kenaikan tinggi badan selalu stabil dan linear, sebenarnya s
 
 __Tinggi badan bungsu__
 
-$$b(t) = 114 + 3t$$
+$b(t) = 114 + 3t$
 
 __Tinggi badan sulung__
 
-$$s(t) = 139 + t$$
+$s(t) = 139 + t$
 
 dimana $t$ adalah waktu atau periode dalam `4 bulanan`.
 
@@ -67,7 +67,12 @@ data =
   rename(anak = variable,
          tinggi = value) 
 
-data
+data %>%
+  ggplot(aes(x = t,
+	     y = tinggi,
+	     color = anak)) +
+  geom_line() +
+  theme_minimal()
 ```
 
 ```{r,include = FALSE}
