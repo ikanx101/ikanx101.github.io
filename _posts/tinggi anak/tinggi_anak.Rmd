@@ -116,3 +116,14 @@ pesan = paste0("Si bungsu akan menyalip si sulung saat: ",
 	       " bulan")
 print(pesan)
 ``` 
+
+---
+
+## Catatan
+
+1. Pada metode grafik, kita bisa dengan eksak menemukan angkanya karena memang diperbolehkan memiliki koma di belakang angka. Sedangkan dengan metode kedua, kita hanya bisa menggunakan _integer_ karena saya ingin memastikan __kapan saat si bungsu sudah menyalip si sulung__.
+1. Tulisan ini saya buat bukan untuk merundung si sulung _yah_. Tapi untuk mengajarkan si sulung tentang deret dan pola kenaikan linier.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`

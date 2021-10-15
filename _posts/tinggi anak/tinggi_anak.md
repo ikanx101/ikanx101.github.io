@@ -89,3 +89,20 @@ print(pesan)
 ```
 
     ## [1] "Si bungsu akan menyalip si sulung saat: 52 bulan"
+
+-----
+
+## Catatan
+
+1.  Pada metode grafik, kita bisa dengan eksak menemukan angkanya karena
+    memang diperbolehkan memiliki koma di belakang angka. Sedangkan
+    dengan metode kedua, kita hanya bisa menggunakan *integer* karena
+    saya ingin memastikan **kapan saat si bungsu sudah menyalip si
+    sulung**.
+2.  Tulisan ini saya buat bukan untuk merundung si sulung *yah*. Tapi
+    untuk mengajarkan si sulung tentang deret dan pola kenaikan linier.
+
+-----
+
+`if you find this article helpful, support this blog by clicking the
+ads.`
