@@ -8,6 +8,7 @@ rm(list=ls())
 
 library(dplyr)
 library(ggplot2)
+library(reshape2)
 
 ceisya = 114
 ahnaf = 139
@@ -36,7 +37,38 @@ Sambil bercanda saya berkata kepada si sulung:
 
 > ___Kak, dengan pertumbuhan segini, suatu saat nanti kamu disalip lho sama adek...___
 
+Si sulung langsung _insecure_ tiba-tiba. _hehe_.
 
+---
+
+Jika saya asumsikan kenaikan tinggi badan selalu stabil dan linear, sebenarnya saya dengan mudah bisa memperkirakan kapan hal tersebut terjadi. Saya bisa membuat dua persamaan linear sebagai berikut:
+
+__Tinggi badan bungsu__
+
+$$b(t) = 114 + 3t$$
+
+__Tinggi badan sulung__
+
+$$s(t) = 139 + t$$
+
+dimana $t$ adalah waktu atau periode dalam `4 bulanan`.
+
+Berikut adalah gambar fungsinya:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=10}
+b = function(t)114+3*t
+s = function(t)139+t
+
+data = 
+  data.frame(t = 1:80) %>%
+  mutate(Bungsu = b(t),
+         Sulung = s(t)) %>%
+  melt(id.vars = "t") %>%
+  rename(anak = variable,
+         tinggi = value) 
+
+data
+```
 
 ```{r,include = FALSE}
 laju_ceisya = 3
