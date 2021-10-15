@@ -1,53 +1,28 @@
 Membandingkan Tinggi Dua Anak
 ================
 
-``` r
-ceisya = 114
-ahnaf = 139
+> ***Pa, kayaknya si bungsu paling tinggi di TK-nya deh…***
 
-laju_ceisya = 3
-laju_ahnaf = 1
+Begitu kata nyonya beberapa hari ini. Si bungsu saat ini masih sekolah
+di TK A. Jika dibandingkan dengan si sulung pada usia yang sama, ukuran
+baju si bungsu memang lebih besar dibanding kakaknya.
 
-i = 0
+Saya selalu mengukur tinggi anak-anak secara berkala. Penasaran dengan
+perkataan nyonya, saya coba ukur tinggi keduanya tadi sore:
 
-while(ceisya < ahnaf){
-  ceisya = ceisya + laju_ceisya
-  ahnaf = ahnaf + laju_ahnaf
-  i = i + 1
-  print(ceisya)
-  print(ahnaf)
-}
-```
+  - Bungsu = 114 cm.
+  - Sulung = 139 cm.
 
-    ## [1] 117
-    ## [1] 140
-    ## [1] 120
-    ## [1] 141
-    ## [1] 123
-    ## [1] 142
-    ## [1] 126
-    ## [1] 143
-    ## [1] 129
-    ## [1] 144
-    ## [1] 132
-    ## [1] 145
-    ## [1] 135
-    ## [1] 146
-    ## [1] 138
-    ## [1] 147
-    ## [1] 141
-    ## [1] 148
-    ## [1] 144
-    ## [1] 149
-    ## [1] 147
-    ## [1] 150
-    ## [1] 150
-    ## [1] 151
-    ## [1] 153
-    ## [1] 152
+Yang menarik adalah laju pertumbuhan kedua anak tersebut. Setelah saya
+bandingkan dengan data historikal pengukuran tinggi badan berkala, saya
+mendapatkan informasi sebagai berikut:
 
-``` r
-print(i * 4 / 12)
-```
+  - Bungsu: laju kenaikan tinggi badan `3 cm per 4 bulan`.
+  - Sulung: laju kenaikan tinggi badan `1 cm per 4 bulan`.
 
-    ## [1] 4.333333
+-----
+
+Sambil bercanda saya berkata kepada si sulung:
+
+> ***Kak, dengan pertumbuhan segini, suatu saat nanti kamu disalip lho
+> sama adek…***
