@@ -1,5 +1,17 @@
-Membandingkan Tinggi Dua Anak
-================
+---
+date: 2021-10-15T21:14:00-04:00
+title: "Membandingkan Tinggi Dua Anak"
+categories:
+  - Blog
+tags:
+  - Parenting
+  - Deret
+  - Aritmatik
+  - Anak
+  - Grafik
+  - ggplot2
+---
+
 
 > ***Pa, kayaknya si bungsu paling tinggi di TK-nya deh…***
 
@@ -37,18 +49,18 @@ terjadi. Saya bisa membuat dua persamaan linear sebagai berikut:
 
 **Tinggi badan bungsu**
 
-\(b(t) = 114 + 3t\)
+b(t) = 114 + 3t
 
 **Tinggi badan sulung**
 
-\(s(t) = 139 + t\)
+s(t) = 139 + t
 
 dimana \(t\) adalah waktu atau periode dalam `4 bulanan`.
 
 Berikut adalah gambar
 fungsinya:
 
-<img src="tinggi_anak_files/figure-gfm/unnamed-chunk-2-1.png" width="672" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/tinggi%20anak/tinggi_anak_files/figure-gfm/unnamed-chunk-2-1.png" width="672" />
 
 Dari grafik di atas, kita bisa hitung bahwa pada periode ke `12.5 x 4`
 bulan tinggi badan si bungsu akan menyamai kakaknya.
