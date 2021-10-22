@@ -71,8 +71,17 @@ atau bisa ditulis sebagai:
 
 $$a \sum_{i=1}^n x_i^2 + b n = \sum_{i=1}^n y_i$$
 
+---
+
+Nah, kedua bentuk persamaan terakhir bisa saya tuliskan dalam bentuk matriks sebagai berikut:
 
 $$\begin{bmatrix}
- & \\ 
- & 
-\end{bmatrix}$$
+n & \sum_{i=1}^n x_i \\ 
+\sum_{i=1}^n x_i & \sum_{i=1}^n x_i^2 
+\end{bmatrix} 
+\begin{bmatrix} b \\ a \end{bmatrix} = 
+\begin{bmatrix} \sum_{i=1}^n y_i \\ \sum_{i=1}^n (x_i y_i) \end{bmatrix}$$
+
+Oleh karena $\sum_{i=1}^n x_i, \sum_{i=1}^n x_i^2, \sum_{i=1}^n (x_i y_i)$ bisa dihitung dari data, maka kita bisa tuliskan bentuk di atas menjadi bentuk $A c = d$. Jika matriks $A$ memiliki invers, artinya __nilai a dan b bisa kita hitung__.
+
+

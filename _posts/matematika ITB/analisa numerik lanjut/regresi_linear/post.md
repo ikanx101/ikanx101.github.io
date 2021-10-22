@@ -129,12 +129,31 @@ atau bisa ditulis sebagai:
 y\_i](https://latex.codecogs.com/png.latex?a%20%5Csum_%7Bi%3D1%7D%5En%20x_i%5E2%20%2B%20b%20n%20%3D%20%5Csum_%7Bi%3D1%7D%5En%20y_i
 "a \\sum_{i=1}^n x_i^2 + b n = \\sum_{i=1}^n y_i")  
 
+-----
+
+Nah, kedua bentuk persamaan terakhir bisa saya tuliskan dalam bentuk
+matriks sebagai berikut:
+
   
 ![\\begin{bmatrix}
-& \\\\ 
-& 
-\\end{bmatrix}](https://latex.codecogs.com/png.latex?%5Cbegin%7Bbmatrix%7D%0A%20%26%20%5C%5C%20%0A%20%26%20%0A%5Cend%7Bbmatrix%7D
+n & \\sum\_{i=1}^n x\_i \\\\ 
+\\sum\_{i=1}^n x\_i & \\sum\_{i=1}^n x\_i^2 
+\\end{bmatrix} 
+\\begin{bmatrix} b \\\\ a \\end{bmatrix} = 
+\\begin{bmatrix} \\sum\_{i=1}^n y\_i \\\\ \\sum\_{i=1}^n (x\_i y\_i)
+\\end{bmatrix}](https://latex.codecogs.com/png.latex?%5Cbegin%7Bbmatrix%7D%0An%20%26%20%5Csum_%7Bi%3D1%7D%5En%20x_i%20%5C%5C%20%0A%5Csum_%7Bi%3D1%7D%5En%20x_i%20%26%20%5Csum_%7Bi%3D1%7D%5En%20x_i%5E2%20%0A%5Cend%7Bbmatrix%7D%20%0A%5Cbegin%7Bbmatrix%7D%20b%20%5C%5C%20a%20%5Cend%7Bbmatrix%7D%20%3D%20%0A%5Cbegin%7Bbmatrix%7D%20%5Csum_%7Bi%3D1%7D%5En%20y_i%20%5C%5C%20%5Csum_%7Bi%3D1%7D%5En%20%28x_i%20y_i%29%20%5Cend%7Bbmatrix%7D
 "\\begin{bmatrix}
- & \\\\ 
- & 
-\\end{bmatrix}")
+n & \\sum_{i=1}^n x_i \\\\ 
+\\sum_{i=1}^n x_i & \\sum_{i=1}^n x_i^2 
+\\end{bmatrix} 
+\\begin{bmatrix} b \\\\ a \\end{bmatrix} = 
+\\begin{bmatrix} \\sum_{i=1}^n y_i \\\\ \\sum_{i=1}^n (x_i y_i) \\end{bmatrix}")  
+
+Oleh karena ![\\sum\_{i=1}^n x\_i, \\sum\_{i=1}^n x\_i^2, \\sum\_{i=1}^n
+(x\_i
+y\_i)](https://latex.codecogs.com/png.latex?%5Csum_%7Bi%3D1%7D%5En%20x_i%2C%20%5Csum_%7Bi%3D1%7D%5En%20x_i%5E2%2C%20%5Csum_%7Bi%3D1%7D%5En%20%28x_i%20y_i%29
+"\\sum_{i=1}^n x_i, \\sum_{i=1}^n x_i^2, \\sum_{i=1}^n (x_i y_i)") bisa
+dihitung dari data, maka kita bisa tuliskan bentuk di atas menjadi
+bentuk ![A c = d](https://latex.codecogs.com/png.latex?A%20c%20%3D%20d
+"A c = d"). Jika matriks ![A](https://latex.codecogs.com/png.latex?A
+"A") memiliki invers, artinya **nilai a dan b bisa kita hitung**.

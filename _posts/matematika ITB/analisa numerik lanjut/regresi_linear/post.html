@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style type="text/css">
+@font-face {
+font-family: octicons-link;
+src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
+}
+body {
+-webkit-text-size-adjust: 100%;
+text-size-adjust: 100%;
+color: #333;
+font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+font-size: 16px;
+line-height: 1.6;
+word-wrap: break-word;
+}
+a {
+background-color: transparent;
+}
+a:active,
+a:hover {
+outline: 0;
+}
+strong {
+font-weight: bold;
+}
+h1 {
+font-size: 2em;
+margin: 0.67em 0;
+}
+img {
+border: 0;
+}
+hr {
+box-sizing: content-box;
+height: 0;
+}
+pre {
+overflow: auto;
+}
+code,
+kbd,
+pre {
+font-family: monospace, monospace;
+font-size: 1em;
+}
+input {
+color: inherit;
+font: inherit;
+margin: 0;
+}
+html input[disabled] {
+cursor: default;
+}
+input {
+line-height: normal;
+}
+input[type="checkbox"] {
+box-sizing: border-box;
+padding: 0;
+}
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+td,
+th {
+padding: 0;
+}
+* {
+box-sizing: border-box;
+}
+input {
+font: 13px / 1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+a {
+color: #4078c0;
+text-decoration: none;
+}
+a:hover,
+a:active {
+text-decoration: underline;
+}
+hr {
+height: 0;
+margin: 15px 0;
+overflow: hidden;
+background: transparent;
+border: 0;
+border-bottom: 1px solid #ddd;
+}
+hr:before {
+display: table;
+content: "";
+}
+hr:after {
+display: table;
+clear: both;
+content: "";
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 15px;
+margin-bottom: 15px;
+line-height: 1.1;
+}
+h1 {
+font-size: 30px;
+}
+h2 {
+font-size: 21px;
+}
+h3 {
+font-size: 16px;
+}
+h4 {
+font-size: 14px;
+}
+h5 {
+font-size: 12px;
+}
+h6 {
+font-size: 11px;
+}
+blockquote {
+margin: 0;
+}
+ul,
+ol {
+padding: 0;
+margin-top: 0;
+margin-bottom: 0;
+}
+ol ol,
+ul ol {
+list-style-type: lower-roman;
+}
+ul ul ol,
+ul ol ol,
+ol ul ol,
+ol ol ol {
+list-style-type: lower-alpha;
+}
+dd {
+margin-left: 0;
+}
+code {
+font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+font-size: 12px;
+}
+pre {
+margin-top: 0;
+margin-bottom: 0;
+font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+.select::-ms-expand {
+opacity: 0;
+}
+.octicon {
+font: normal normal normal 16px/1 octicons-link;
+display: inline-block;
+text-decoration: none;
+text-rendering: auto;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+.octicon-link:before {
+content: '\f05c';
+}
+.markdown-body:before {
+display: table;
+content: "";
+}
+.markdown-body:after {
+display: table;
+clear: both;
+content: "";
+}
+.markdown-body>*:first-child {
+margin-top: 0 !important;
+}
+.markdown-body>*:last-child {
+margin-bottom: 0 !important;
+}
+a:not([href]) {
+color: inherit;
+text-decoration: none;
+}
+.anchor {
+display: inline-block;
+padding-right: 2px;
+margin-left: -18px;
+}
+.anchor:focus {
+outline: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 1em;
+margin-bottom: 16px;
+font-weight: bold;
+line-height: 1.4;
+}
+h1 .octicon-link,
+h2 .octicon-link,
+h3 .octicon-link,
+h4 .octicon-link,
+h5 .octicon-link,
+h6 .octicon-link {
+color: #000;
+vertical-align: middle;
+visibility: hidden;
+}
+h1:hover .anchor,
+h2:hover .anchor,
+h3:hover .anchor,
+h4:hover .anchor,
+h5:hover .anchor,
+h6:hover .anchor {
+text-decoration: none;
+}
+h1:hover .anchor .octicon-link,
+h2:hover .anchor .octicon-link,
+h3:hover .anchor .octicon-link,
+h4:hover .anchor .octicon-link,
+h5:hover .anchor .octicon-link,
+h6:hover .anchor .octicon-link {
+visibility: visible;
+}
+h1 {
+padding-bottom: 0.3em;
+font-size: 2.25em;
+line-height: 1.2;
+border-bottom: 1px solid #eee;
+}
+h1 .anchor {
+line-height: 1;
+}
+h2 {
+padding-bottom: 0.3em;
+font-size: 1.75em;
+line-height: 1.225;
+border-bottom: 1px solid #eee;
+}
+h2 .anchor {
+line-height: 1;
+}
+h3 {
+font-size: 1.5em;
+line-height: 1.43;
+}
+h3 .anchor {
+line-height: 1.2;
+}
+h4 {
+font-size: 1.25em;
+}
+h4 .anchor {
+line-height: 1.2;
+}
+h5 {
+font-size: 1em;
+}
+h5 .anchor {
+line-height: 1.1;
+}
+h6 {
+font-size: 1em;
+color: #777;
+}
+h6 .anchor {
+line-height: 1.1;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table,
+pre {
+margin-top: 0;
+margin-bottom: 16px;
+}
+hr {
+height: 4px;
+padding: 0;
+margin: 16px 0;
+background-color: #e7e7e7;
+border: 0 none;
+}
+ul,
+ol {
+padding-left: 2em;
+}
+ul ul,
+ul ol,
+ol ol,
+ol ul {
+margin-top: 0;
+margin-bottom: 0;
+}
+li>p {
+margin-top: 16px;
+}
+dl {
+padding: 0;
+}
+dl dt {
+padding: 0;
+margin-top: 16px;
+font-size: 1em;
+font-style: italic;
+font-weight: bold;
+}
+dl dd {
+padding: 0 16px;
+margin-bottom: 16px;
+}
+blockquote {
+padding: 0 15px;
+color: #777;
+border-left: 4px solid #ddd;
+}
+blockquote>:first-child {
+margin-top: 0;
+}
+blockquote>:last-child {
+margin-bottom: 0;
+}
+table {
+display: block;
+width: 100%;
+overflow: auto;
+word-break: normal;
+word-break: keep-all;
+}
+table th {
+font-weight: bold;
+}
+table th,
+table td {
+padding: 6px 13px;
+border: 1px solid #ddd;
+}
+table tr {
+background-color: #fff;
+border-top: 1px solid #ccc;
+}
+table tr:nth-child(2n) {
+background-color: #f8f8f8;
+}
+img {
+max-width: 100%;
+box-sizing: content-box;
+background-color: #fff;
+}
+code {
+padding: 0;
+padding-top: 0.2em;
+padding-bottom: 0.2em;
+margin: 0;
+font-size: 85%;
+background-color: rgba(0,0,0,0.04);
+border-radius: 3px;
+}
+code:before,
+code:after {
+letter-spacing: -0.2em;
+content: "\00a0";
+}
+pre>code {
+padding: 0;
+margin: 0;
+font-size: 100%;
+word-break: normal;
+white-space: pre;
+background: transparent;
+border: 0;
+}
+.highlight {
+margin-bottom: 16px;
+}
+.highlight pre,
+pre {
+padding: 16px;
+overflow: auto;
+font-size: 85%;
+line-height: 1.45;
+background-color: #f7f7f7;
+border-radius: 3px;
+}
+.highlight pre {
+margin-bottom: 0;
+word-break: normal;
+}
+pre {
+word-wrap: normal;
+}
+pre code {
+display: inline;
+max-width: initial;
+padding: 0;
+margin: 0;
+overflow: initial;
+line-height: inherit;
+word-wrap: normal;
+background-color: transparent;
+border: 0;
+}
+pre code:before,
+pre code:after {
+content: normal;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font-size: 11px;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.pl-c {
+color: #969896;
+}
+.pl-c1,
+.pl-s .pl-v {
+color: #0086b3;
+}
+.pl-e,
+.pl-en {
+color: #795da3;
+}
+.pl-s .pl-s1,
+.pl-smi {
+color: #333;
+}
+.pl-ent {
+color: #63a35c;
+}
+.pl-k {
+color: #a71d5d;
+}
+.pl-pds,
+.pl-s,
+.pl-s .pl-pse .pl-s1,
+.pl-sr,
+.pl-sr .pl-cce,
+.pl-sr .pl-sra,
+.pl-sr .pl-sre {
+color: #183691;
+}
+.pl-v {
+color: #ed6a43;
+}
+.pl-id {
+color: #b52a1d;
+}
+.pl-ii {
+background-color: #b52a1d;
+color: #f8f8f8;
+}
+.pl-sr .pl-cce {
+color: #63a35c;
+font-weight: bold;
+}
+.pl-ml {
+color: #693a17;
+}
+.pl-mh,
+.pl-mh .pl-en,
+.pl-ms {
+color: #1d3e81;
+font-weight: bold;
+}
+.pl-mq {
+color: #008080;
+}
+.pl-mi {
+color: #333;
+font-style: italic;
+}
+.pl-mb {
+color: #333;
+font-weight: bold;
+}
+.pl-md {
+background-color: #ffecec;
+color: #bd2c00;
+}
+.pl-mi1 {
+background-color: #eaffea;
+color: #55a532;
+}
+.pl-mdr {
+color: #795da3;
+font-weight: bold;
+}
+.pl-mo {
+color: #1d3e81;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.task-list-item {
+list-style-type: none;
+}
+.task-list-item+.task-list-item {
+margin-top: 3px;
+}
+.task-list-item input {
+margin: 0 0.35em 0.25em -1.6em;
+vertical-align: middle;
+}
+:checked+.radio-label {
+z-index: 1;
+position: relative;
+border-color: #4078c0;
+}
+.sourceLine {
+display: inline-block;
+}
+code .kw { color: #000000; }
+code .dt { color: #ed6a43; }
+code .dv { color: #009999; }
+code .bn { color: #009999; }
+code .fl { color: #009999; }
+code .ch { color: #009999; }
+code .st { color: #183691; }
+code .co { color: #969896; }
+code .ot { color: #0086b3; }
+code .al { color: #a61717; }
+code .fu { color: #63a35c; }
+code .er { color: #a61717; background-color: #e3d2d2; }
+code .wa { color: #000000; }
+code .cn { color: #008080; }
+code .sc { color: #008080; }
+code .vs { color: #183691; }
+code .ss { color: #183691; }
+code .im { color: #000000; }
+code .va {color: #008080; }
+code .cf { color: #000000; }
+code .op { color: #000000; }
+code .bu { color: #000000; }
+code .ex { color: #000000; }
+code .pp { color: #999999; }
+code .at { color: #008080; }
+code .do { color: #969896; }
+code .an { color: #008080; }
+code .cv { color: #008080; }
+code .in { color: #008080; }
+</style>
+<style>
+body {
+  box-sizing: border-box;
+  min-width: 200px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 45px;
+  padding-top: 0px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1 id="belajar-membuat-model-regresi-linear---part-1">Belajar Membuat Model Regresi Linear - part 1</h1>
+<p>Kita pasti sudah sering mendengar, melihat, bahkan membuat model regresi linear <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFMAAAARBAMAAABTDI1UAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAMlSZEO+7dkSJq90iZs0qwsm8AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABHUlEQVQoFWNgIAqc+kOUMpAixg+ElbJAlPAmEFbK2wBWw1VAtFJWkA5GZQYmAxQt7EUyDBzKJy47gEShpp5XKmJgcGIVYAOZbrUKCFaCZHMZ1jEIMeZyN4A4UKVXD7A6MDTIM7AKgARhAOiDlQwFjF94wQJQpSsZQE6YxSAPUwWmWS8wRDAwsC8AcaxWrXsFtiqCgR9o3g6GMrASGHH+ACgQ+RQgfIipLB8Y9BkYWL4wpINE4W6VZ2BPaGg478AOVgtRyrOBYTmQ+4HnI1gQRrAy+E24u+G2wx0kpQwbOB4AuTdvAu1DAhxGirY+k05MgvgV6q1OdbAKdgMkhehMqFKwMF8D6wF0eSQ+iwOCw8Vgi+DgZ/FeV8CvAC4LAAPBQLIsbYk7AAAAAElFTkSuQmCC" title="y = ax + b"></embed>. Setidaknya saya pernah menulis tiga <em>posts</em> terkait regresi linear:</p>
+<ol>
+<li>Bagaimana membuat model regresi linear di <strong>R</strong> dan menguji asumsinya di <a href="https://ikanx101.com/blog/belajar-regresi/">sini</a>.</li>
+<li>Aplikasi regresi linear pada perhitungan <em>price elasticity</em> di <a href="https://ikanx101.com/blog/blog-posting-regresi/">sini</a>.</li>
+<li>Menentukan apa yang berpengaruh terhadap kebahagiaan di suatu negara berdasarkan <em>World Happiness Index</em> di <a href="https://ikanx101.com/blog/bahagia-survey/">sini</a>.</li>
+</ol>
+<blockquote>
+<p><em><strong>Tapi belum ada sama sekali tulisan yang menjelaskan bagaimana cara menentukan nilai a dan b pada persamaan regresi linear tersebut.</strong></em></p>
+</blockquote>
+<p>Nah, kali ini saya akan menjelaskan bagaimana cara kita menentukan nilai <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAIBAMAAADZ48iGAAAALVBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAOrOgAAAADnRSTlMAdlQyIrtmq82J70QQmQYtb+8AAAAJcEhZcwAADsQAAA7EAZUrDhsAAAA5SURBVAgdY2BgFDJhYGAIY6hgYGALYKhkYOBKYFjNwODnwPyAgcGOgTFgAwMXw4kJCQzcl5SvHQAAp/IKAhu1YvIAAAAASUVORK5CYII=" title="a"></embed> dan <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAANBAMAAABm7DILAAAALVBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAOrOgAAAADnRSTlMAIqsyZrt270RUEIndzb9TRQIAAAAJcEhZcwAADsQAAA7EAZUrDhsAAABBSURBVAgdY2DUE2BgYLADYgZXEKEGIiqAmPHltAkMLIUMVQxMG4AC7A0MjxnWMXA+YJBhYEpg4GHoZWDg2JnAAAAY7wrDA8QV6QAAAABJRU5ErkJggg==" title="b"></embed> pada persamaan regresi <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFMAAAARBAMAAABTDI1UAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAMlSZEO+7dkSJq90iZs0qwsm8AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABHUlEQVQoFWNgIAqc+kOUMpAixg+ElbJAlPAmEFbK2wBWw1VAtFJWkA5GZQYmAxQt7EUyDBzKJy47gEShpp5XKmJgcGIVYAOZbrUKCFaCZHMZ1jEIMeZyN4A4UKVXD7A6MDTIM7AKgARhAOiDlQwFjF94wQJQpSsZQE6YxSAPUwWmWS8wRDAwsC8AcaxWrXsFtiqCgR9o3g6GMrASGHH+ACgQ+RQgfIipLB8Y9BkYWL4wpINE4W6VZ2BPaGg478AOVgtRyrOBYTmQ+4HnI1gQRrAy+E24u+G2wx0kpQwbOB4AuTdvAu1DAhxGirY+k05MgvgV6q1OdbAKdgMkhehMqFKwMF8D6wF0eSQ+iwOCw8Vgi+DgZ/FeV8CvAC4LAAPBQLIsbYk7AAAAAElFTkSuQmCC" title="y = ax + b"></embed>.</p>
+<hr />
+<p>Misalkan saya memiliki <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAIBAMAAADdFhi7AAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAVHZmEKsyIkTvu92Zic2ZjesdAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAP0lEQVQIHWNgVHY2TWBgqMg0YFzAwCBgzcAUwMDAcJaBVQFIzWDgL2BgYP/AIMfBwMD8gOEsMwMDkwFDrggDAP0FCNipklNgAAAAAElFTkSuQmCC" title="n"></embed> pasang data <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMkAAAATBAMAAADITTR/AAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEHarRM1UZrsi790ymYmFLq+pAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAC9UlEQVQ4EX2UwWsTURDGv91sstl02y4VeiliUCkeVOJJhCILlXorFcTzXrQKBhYvVWpD9CLeFluhINp4KoUeUugfsJeW0kvjSbwVlAiCmt6LcWbevtRsuj6yb+ab95udffM2CxhlnDZMHRzTTr8t90tSGSCEzA3gEjBaSbxy+vrZgXAGCCEvDuAqMK+M6SubngthKmL6qYCWQs5plbJ5pROTWiSZzssEmRx4Jn2/kUC8ZEs6emLbJ+7/QRBZjFK0llZFvNdap+10KpAJgsgSwTNfbn/SOW4VhZaIhp6t6sqSp9d3W6iKz4n/jgZwOsglhgA32Au3dcJ4KS6WRXRkbgK77qshXwRgBJt4Kf5oEtEmEwSRbwETB15oPFS4f4BSPF4n8ZEDzhxQdo9szP9kCcvtYLNQa1ETPAnoqQcmAQGVT+QOexfoLbifLH/FAR7QvbHFAZc9swKnnDtkjZGK23mDm9SE/ioaFEiDShA5wd49umhTMrZxSXaABkujSVM+oGp2nTWGfLO+g6fqQCWiJg32QgwqQedCP8s5os9AUsU4or7z9lUVnv01j743I4eSc87jY/s1UEWDxtUZ9SYxOPatSjumEnkPi/aWHXEV5xrdqOMcSxWnjmVC7sBuLnrPgAlP9CjWYhjUzVXBKWXZk7wEtEfjdg8Mj/lft0o9D/Dh0exj6Zi7TlVqtY5UsUPsh8AknPZKOwamINr+/hvIkV4A4+4G9iPJ0+AekZzIoFtXJJwK3ZkHd6zAjtmSKkXaSAAsc4iGGUeigSvAZQd4keC8yHkaPM+9CyhAoFmmbjEpF8fe0UV03i9FcJoqK6BvAxXjcYuOjpPvYgOWb8rTyUPxIjsanLJu+BrMxdMrah/vGaNX4Af1PqBm4DMwux6BzpCTnRavwul2D0VXhkOsdf9gmKoHskQTOwmIunG9BxZxJhQSFiPJCKidT2iiYceqCmZEysRVFyaVfk4mUG7iZIBgEog022ep82r0HB1QdjArA+T7/wXhR62HmAtcxwAAAABJRU5ErkJggg==" title="(x_1,y_1),(x_2,y_2),..,(x_n,y_n)"></embed> yang akan saya buat menjadi persamaan <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAI4AAAATBAMAAAC0KyimAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAdmZU3TIiRM0Qibvvq5mze/DLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAB40lEQVQ4EZ1SPUscURQ9M7vOuO6OGiwsgjJqQILN5ENLOxG7BRtB0CkEJaBZYoqQQhYsDFYDSZNql2ivlnaLoJJu/QGilWC3IArpcj9e3uyiyGYvzLvnnDnvzJ03A2jl+qU7hnbUnDEgMHHXHSR4V7HsGnkPDJr9bzvIwbJumlkFymZ/93/lJOqekOY1gExo9vdEBrTVxtV1IS1TBvKxKvDrBrTVTM45m3P7uyUUCGzefLoFaqzZmr/GtCUCXkzGxklUc7y7N/wW+RDIAl3RYjgL0Eui95KrSs+ITnHULJA5KBsn6ZrjnuE3kUIRWAMcLCchRCFRy+9q4PQfkT6BoGqcxDUnqOKcSIWuBTYN8TLHi62eOiU11wkKJeOkqb/J1KTck+czXT/Yu81LjRdb2ZJzaAkB70F+FnES1XkqyPDDeAw6Z9/7g37NseeDSpInLT0wmu6lb5w2ZwUBm/jrdyd45c65MbxDYmn14WMxZYRquV1XnSzrPFl8YcIH6UT4MPV1EnBDlmy5vw4sFrD1bum1Oplqjr/H4+QatHh1lqnyiXa7Dlv0BNAcueF/l4hj41pvde/grFVoZT9T2rdVZLJhFPqjm6veGzbTZ7A7Kjf9SJoroal9dCDF7aFYbF575seuvyFSae9EhRSpAAAAAElFTkSuQmCC" title="f(x) = y = ax+b"></embed>.</p>
+<p>Cita-cita saya adalah memiliki persamaan <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAATBAMAAAAHT8L5AAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAdmZU3TIiRM0Qibvvq5mze/DLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA40lEQVQYGS2OvU4CQRSFvx10FlyIdFQmK/gAG6K+ATF0lCQUbCch0Ri0ojAkdlabYG/jA9ja0VDQ4RtYmdjZ2nnmZ5Jzzz3fSWYGwmm0vSchJT1oxeLL++k5dAKh731wDatI6s7tL9TySI4KLbUVZGUk6R4ab893NAXuvxc/sNGW5XAAh8UkvwJdQXMEM0iYVup2Iq/SWOLEjaH0IL248OTGRnKVbk7tH+1APkXqFWdmaErsu9JWSgrml8sLMLn+496zew13sop07cNHANzA8ePIhdtI9GvT9XtaeDO+Dm3pzcI/CskjOBvqKF4AAAAASUVORK5CYII=" title="f(x)"></embed> yang <strong>dekat</strong> dengan <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAMBAMAAABCcoqQAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAMlSZEO+7dkSJq90iZs0qwsm8AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAATElEQVQIHWNgVGZgMmBwYhVgK2BokGdgFWBgmMUgz8DAsIOhjIGB5QtDOpD9gecjkLx58wOQZGA3YGDga2A9wMDAxWAL5PNeV2BgAACoTwyC43HGOwAAAABJRU5ErkJggg==" title="y"></embed> aslinya sehingga menghasilkan prediksi yang <strong>akurat</strong>.</p>
+<p>Misalkan saya definisikan <em>error</em> sebagai:</p>
+<p><embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG8AAAAyBAMAAACg+5h6AAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAVGZ2q0TdiSK7EDLvmc1lVXCEAAAACXBIWXMAAA7EAAAOxAGVKw4bAAACXklEQVRIDe2Uy2vUQBzHf0k2j81uH+xB1FoZtYI9yEY9CwvtzcseLPYgVLwIPa3FsuIDcmm9FLv6FwSfF+uuR73Yo1RhtZ48iBH/ABV81AeM88ikM4FNp3sRwR9s5vP9/b6/zGQmWQCtuD0/GmkZsyb0yx3O5rR0qVXoaBmzJisoZ1N6utA5uaDnzLiKcAdlUv/l39mB7u8XNLoY4/q2VlD9we3eGG4ljZWrOncoYpTYVjY4eEGhodHpdxM/wCi3l2JTzJ3bP/NNlN2I0uMNcHVmBBe/FJ1stFfhXqRkeomPn5WKVYMTSqKneIBDuVZEVkdJyEWFDRzLeiicggDA2BfY89cOwqnpuToYRy9zkI0A775vauvIHg9jsjkTMGUsNi7AznNuDV7DEgcYmKSRbJ4jvTM3YZLdxTwDF3efjqaNu2t2aMYw9IjC5gSMPLwmMuQEJxg7Nw7UI/IG+S7Z8zKC9hMK2ah+ERliec64HZLhPfkNDgMsh1BlwErSpZAeyHJY+gQGAmiTsv+TXNoRwFOADwxAfUYYTB6WWqxWndjB6cCIERPYy4RZY0BYCb4fNFWGhw1EwTtfiayAwDEm9nOgFSmsOBX2q5H1aCyVW8COSDGYjqqVoixKz2RF+HpG95JLbDek6pzEeXhWFN0EZpHI5I7F9CwOJ771MLdBFN8IWPkqSGtMzsJfGMerWg3CNEP+UJNI1yxquePxt2lEucZ/ulhhq/d39fkQBv3w+grdVzu9uVnjuO1GNHu/2Wxe0v6Y0hm9uM8ZXdRno3OLL3WR9+tfBw4xr32Fj7zxDz/3mJU0Qit2AAAAAElFTkSuQmCC" title="error = \sum_{i=1}^n d_i^2"></embed></p>
+<p>di mana <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAQBAMAAAA/jegKAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAMrsiRO92q2ZUEM2Jmd0gkiEXAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAYElEQVQIHWNgYGAQ+gwkgIAlAEKzFUBopgYIzW8Aotkyp4K5GgzlIJpDgaGMgbOBgbWBIRDEtzdg/ACi5RnYFBzaGRhYGVYf6OBbwMByc+KNBdYgGSA4AaEYXjVAGDcMAG1WEZ6zEtUHAAAAAElFTkSuQmCC" title="d_i"></embed> adalah <strong>jarak</strong> antara hasil prediksi <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAALBAMAAAC9q6FRAAAALVBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAOrOgAAAADnRSTlMARFSZImYQMrvddqvNiR1MEkMAAAAJcEhZcwAADsQAAA7EAZUrDhsAAABLSURBVAgdY2AQMhE1Y2BgYFeoCJgIpLkY6hICGFSBrNVADAKHwCQjyzOGBawbGCJZp7E6BExj8FWRVWdgOQCWY+ANgNCcqRCaOQQALzkL1iO8TRIAAAAASUVORK5CYII=" title="x_i"></embed> terhadap nilai <em>real</em> <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAMBAMAAABLmSrqAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAMlSZEO+7dkSJq90iZs0qwsm8AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAX0lEQVQIHWNgVGZgMmBgYHBiFWArANIN8gysAkwXGBhmMcgDuQwMOxjKQBTLF4Z0hltAxgeej7zcDgwMN29+YDgHkmE3YJjLwMDXwHqAYcsFBi4GWwYG2wMMvNcVQJIABTIScuEOF/gAAAAASUVORK5CYII=" title="y_i"></embed>.</p>
+<p>Saya bisa menuliskan:</p>
+<p><embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHIAAAATBAMAAAC+W0SxAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAMrsiRO92q2ZUEM2Jmd0gkiEXAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABrElEQVQ4EZWRP0zCQBTGP2ipJ38K0YnJRhPDyEDi4EDjplOJmxOjDCadZG3CIIsGB6OJIelkTDTBwcmJwQEmcUMnZlxIdHLy3V2PFo0kvIR73/u+3/V6BVikbhRsSLHyqYx5/bAFuApIDoTSHWXM6aw2gmFPgSuhjOmjpsFfYa7aSIW2lHEvdP5VZUrkQQJJt3jLFsUwf7mmeCNEdHpPo3YRGlLlB2j/8u4/ngEH0NulU59npAuoSypT59UFkq0KNqUXrgWSIyAfK5g2dydgFo6x7PFBlR6boBK9FA8qgPYAVGPfTOAHSHjcnK20S3t57axT8dOQJCNGO6H+iDHKxYDieVCmbVhKB10f0W76IdWSjoM1GJZ9wqfpPdHx41XmSiJYxVEOYJd9Axx3kMBdt2n6M1gW5Zw3nrGWqjQ+gY3O/AYjXLOgv50P/e0ZCqz3Ij5HxE3kaKhB65f6ORDOPBn2IoyQR0gHUZB0eN8KBsLjvtRjL/Bke8Q+zNuotXfJpwiuHjIsRjG4GQ+ZRtT6euWTNpAe4e/RNNTNWqilanqi7yqf8WsvUpqCSfwASn5ZNXUnVqQAAAAASUVORK5CYII=" title="d_i = y_i - f(x_i)"></embed></p>
+<p>Kita substitusikan kembali nilai <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAQBAMAAAA/jegKAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAMrsiRO92q2ZUEM2Jmd0gkiEXAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAYElEQVQIHWNgYGAQ+gwkgIAlAEKzFUBopgYIzW8Aotkyp4K5GgzlIJpDgaGMgbOBgbWBIRDEtzdg/ACi5RnYFBzaGRhYGVYf6OBbwMByc+KNBdYgGSA4AaEYXjVAGDcMAG1WEZ6zEtUHAAAAAElFTkSuQmCC" title="d_i"></embed> ke definisi <em>error</em>, sehingga:</p>
+<p><embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAL0AAAAyBAMAAAD7H8cOAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAVGZ2q0TdiSK7EDLvmc1lVXCEAAAACXBIWXMAAA7EAAAOxAGVKw4bAAADl0lEQVRYCe1WS2gTURQ9M5PPJE3T0IX4ofK0ahWRBj8LF0JAd26i+FsoiiBC3aSiVvzALLRFsFpxZVfjf2PpuNSFdSkqtOhGBTHiwqUV/CuM977Jy8xUo5OQ7Hph3j33nvPue7nzeQEi2fWjXXYkYYMi8TOZa3BqpGltIzEnkrBBkZHPNDgz2rSYs+1sNGVjqhRuiMZmzs6a7UBrOzD56ynbpOu6xVas1Pvdq2oucUfqq995Ooo+5YqKbOxbFH1VY+ZjpWpQG6Qnq2W7gHS+ptKnSGMAbWU90g/e+0WVTNqIKRz2xiIEqDHaxxQJkqWw6u9R0mVtxdYpEPbdcwCf0gTQSYJbNg3/tw8ffU3Zh0F0iD6vAYpglujNQUltfMe1FKkJhULenAY04af6qTc5GI7lp/6BNLes2JSlUMhrZSBIbQPiBWxHnpZdlI8fHVqKnbsOF6GtPumB0Gy8+apiOsbauqAFbggz6WPvi+ATbsuLra84wfih6bolYCO2a4OlI5h7MFnAc5z3ANo3sRHPlqi+uQngasZJ0b5ClhIkoqVz98QBJjrommYAfR+Oz99t79JuPo5behkddxlIyh9M93EluAAUJ5BxNOGzhDIOQJSBCVvwk5OxAW9K4lJ30ab3OJ2corTA+H0GM633UyXzgPwRTMgofoVNMB6niyms5YF+iw30STRukXtLVzYHXLTQK4GkAkNMPaG3KHkA6wOUhDtoZEpWIif7z7FcOf2DgQ3e1zsJEO4/siXWktFEUl/GEi9UI2+bqLj5A3m9EKyfcLBAKxO9kK6EoxckIByyTSrK2nTjzJ86NyBgGwkTtUzv0y1BjTkHmCOSN/s7bSNPcA1dZv9iD0jKH4yywkYO6OmZ5psZtCcUEDU0d+cCmGWAyugiKPg3nmMr3iwQMqZwWCWkT0+TkxT5pABG6XWzCUeztke+bhTZYsZCn/BTiF8tcERF2RLX5FJnvCjKeL7oq4bpM/wMeGb5KXTscTga9lLty9FuA/I99jL/G/crQZIekZzeTfcgZDq1myxeza+k9sslQ7JaQaqkmFUELBX86asUAfNPulbmpSLGPivUTF95ONNnV7gPm1lX1dpLf3wqVm2U4prhN7yumt2MerM16u0A/5Wh7/K8eufVp9f4C95Km/FNbtpSesEr1ar6ou/2wMDAiZlnStP2zwcSW6v2zwcSW6vqJ655/Rn0lmn6SAcSW/yU5+uq/xvVNNEzDgY12QAAAABJRU5ErkJggg==" title="error = \sum_{i=1}^n ( y_i - f(x_i) )^2"></embed></p>
+<p><embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANoAAAAyBAMAAADIJNgHAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAVGZ2q0TdiSK7EDLvmc1lVXCEAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAEBUlEQVRYCe1WXWgUVxT+ZmZ3dvYn69aC2IaUqRqjlZK11gcphYUE+tixKPqgNRSkkKdNUFJsCwPViGBrpC+tT1PtD5SGbB9bqAkFQURI0BctiFP6UOhDjVA1TQrTc++du3dmN5sMuBsQcmDu/c53zj3nzrl39iyQSK6c7PESObbFyV7KlNoSKFGQ/ESqlsixLU5GudCWOMmCpGoHziTzbIdXFl/b7YizHmO9As9eBWb/u8lkNggCp/O77/9X5LC2BRNPk03rm0uwPBvYodfkQgL3li6f4K2WNmXIzdaT9AC5srIodEXBZmQQRauuYmezrZk59lhyGQ8piWNzJaZFFOttFzmq4CTjxiKGljATRAq+dzk3w1mO5dw0jRsBzaayDBNeXR48VD6+ggoVFawjTyBWPWb2gYQt8ofAJX8umi3m+Eibb5JewQzQxPr+CPCG1eS0HKEFvqSzrkTR+YuoEuIw2zVS0xXgANIOXRft5XL65NleHDo86kB77UMB4svvP5E6tfB8D7TIQTLLDD17ul3sv/POb0xnIrJZD5+nF5sBCrgQUJQBHNTGqyew+f1MBbdxXgB0DTKp8oUw678iJvBVoZYtC16OQ0DWTvn50k/2ccmJbPp13ADmgQ2c14fwwYtHvMPaNzfSru5jw48MyCXhbAW0hMtngDONQk2zhc5Hywd9S6mqgWnPZjeQiciWquIaWMKCx0jz4lbH+5iuZ2aOKBtTPzPQKP3/hMxVmk+AXWs6ji+Z2FRbH/gVBQd4nfEkVJm/eWWIXALo6pse46dcGn6np1gCLrjo54D0mKTkN/At0cexL2ZEbgjWAt8CCxSKeLcpaPPhuTF+ip7cIgMe2II/OOC7U+eGYpU8mNAtIe/PsU2o4TiD/Dz2pdPWIsp6RZAi2zhS5Ug2s4ZuzSeHl+gxa3qFA8IxGZRa0aMzt5Z0URjJ/kUBc3/q2/Vh3bWpbExENhPvAtYEcI6T1shGz6D02EOPNbJFAG5Sg+FLbJSAvr550G2JyG7g6HO/vHJ286FusCvDRGRLj1Bs3QYocFLZ5ElPq0LImMOoJPh8OqJlbKGIbBxnPeCSYBOM+evK6RKKTsHFsK0o+tg8pZmXBf5eUbQZvkvFrITOO8r6KfWcW8AtV1EUa05pXTsUDhH9vnR5TWwr4j1pyNBHVtK30tk1yP4GPabqNWBXjFlJyVal9VUCrlSisxVVGjEzuo1kS/2utEw+kqhzs+Hz2LkzO4OZzmWRkY/RH8lQ6iWVtvbPb96ri9f+6OsRO1cB0Y1zL3QuQ3NkjfWktZN4l+lUXr0iIq9NNnv4u7GxsVMNHbRT7ya78dq8m+zGa5PNvCwqOd6p4sXiht04/VFzV475ra78D+EZ4W7XKVUsAAAAAElFTkSuQmCC" title="error = \sum_{i=1}^n ( y_i - (a x_i + b) )^2"></embed></p>
+<p><embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMwAAAAyBAMAAADilCmoAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAVGZ2q0TdiSK7EDLvmc1lVXCEAAAACXBIWXMAAA7EAAAOxAGVKw4bAAADbUlEQVRYCe1WTWsTURQ9k8kkk4+mVUHUEh1ttRWVpooLESGg0J3MolIFwSKI0FUiLRU/YECrCNXWurKr8duFtXEnLlo3BSlCY125ECP+ACP4XWG8b2ZekjESH01SXPTCzD3vvHPPm7lv0ldAKO4MxE0hYXUibSHYVJ2DUHVk1J8RElYnkhPR6gzEqv2Z7iExZVWqEO5qVRksFy934H/pwNyvlyzmLMvS6/hMHT8cc7XVGl3UMlJbVqAuZGmuauK7gLxccgFd5WQZE54ruMeBcKJMUJEg+RS2VpS4k8e+clXQhJ9jgXyRnm+C6QYFxAhaJb3dLVLhaiJ5QNKoA30uUTl9/FSczxXhP5FvlCRUIHhWPbIMbilpHAlkP20M0sBeVUBML27luC5kcCSQozqJuqHoMnlsTCgDlzej5/ApHdLOsw7wmrz7xsd0iEbikLJ87GS58ymU+NAO00uPrOgEohixqHw/DkmXUv1YczKYxGsMOwANB1iknLpA4fcfAG5FMyHWjZIYw0E8iYwF2NOXxHYjaqLRJny9OL3uqHlYujerGL4cGp8wUKJlULVmXeYaoE8jmpE0l2CJtroLichPHySNhoXoArWNVqIIXG/RzfP00QWz9IIaJp8x8Gd0fHaZKcr9mLZHyk0Wml02A8hJmwWOMHqMBjNozCBgMnrSoNt7umJNwIiBDhvQ2BN+/knfJ/oE9ngmqYz9QpiBJ8J5bGB7w2KSrvBPBkywp/xgA3j3BrEUKVhQEalvoNUZOvdpyKO6PmLKXlrtpY13lwlk0CzlSL6erkDGl7QBYU8c4KOYCeTVBZ/TCpeN4nFqU+8Ws91Lo1fJAVdskZpeacoJgrvoUtObHGBPFW9yjmOZOtPWlgd9CsVQXjXPP0wPpTNeGj2rSEOOorHa5Eo1SUjO4hQnvPkv9LhXUWEUeVGcHEdMjxro04pUCSqn7ecqUVSAw3px8iodBfPAvFGkSlA53WCWTFeGx/l0EFCafC20P8KxTVgZSnHpDgIGH4hlcfkbbjjxhaM6ZPdrDg9ttZ7XwZ5bHqN/0NwodI/P1TDve1sIs4a2y1Y16cBK2yW8tiZm/zKR2FGxBOH541/79XxJx7POy2h9DwYHB8/8cWbV/HXU3JK8TVBbkmUCt52mXXJWq9e9od12Vs45eTHL/Ab2Qc8Txr/ATgAAAABJRU5ErkJggg==" title="error = \sum_{i=1}^n ( y_i - a x_i - b )^2"></embed></p>
+<hr />
+<p>Ingat kembali bahwa tujuan mulia saya adalah <strong>meminimumkan error</strong>. Untuk itu perlu nilai <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAIBAMAAADZ48iGAAAALVBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAOrOgAAAADnRSTlMAdlQyIrtmq82J70QQmQYtb+8AAAAJcEhZcwAADsQAAA7EAZUrDhsAAAA5SURBVAgdY2BgFDJhYGAIY6hgYGALYKhkYOBKYFjNwODnwPyAgcGOgTFgAwMXw4kJCQzcl5SvHQAAp/IKAhu1YvIAAAAASUVORK5CYII=" title="a"></embed> dan <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAANBAMAAABm7DILAAAALVBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAOrOgAAAADnRSTlMAIqsyZrt270RUEIndzb9TRQIAAAAJcEhZcwAADsQAAA7EAZUrDhsAAABBSURBVAgdY2DUE2BgYLADYgZXEKEGIiqAmPHltAkMLIUMVQxMG4AC7A0MjxnWMXA+YJBhYEpg4GHoZWDg2JnAAAAY7wrDA8QV6QAAAABJRU5ErkJggg==" title="b"></embed> yang tepat. Oleh karena semua data <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADEAAAATBAMAAADL1vgSAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEHarRM1UZrsi790ymYmFLq+pAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABCElEQVQYGW2QsUrDUBSGv9bYNE3T3s1BxILiJuQRBEE36VCc7yaCwt2K2EF9goAILuosdCn4AC6KuKijL1BH9Q0850RBSA/JOV++/3IPBGo9qmVuruphSeXqrKQRxPZnJWotrYZTaBZVLWYTWjK23rfffvPHVw4VRafQ9k/hrkxqfsyZYhcuoM6LC+ypiNpfjBVbjgcVK9qsOrlkUqljUeeuNqt0o36iIHvkiZJvenFuybJrGoqedxzHk7gIE86dbr65F+RS1nuu93cOSPo8B4g/PhUZQlLeQke01wvXDU+F9JVKFywZcKto56/KJDuiIZRnAcHMCUe+jOTnCgzX7GtkvfhL/k1xP2swLP+Np09+AAAAAElFTkSuQmCC" title="(x_i,y_i)"></embed> diketahui, maka kita bisa melakukan turunan parsial terhadap <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAIBAMAAADZ48iGAAAALVBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAOrOgAAAADnRSTlMAdlQyIrtmq82J70QQmQYtb+8AAAAJcEhZcwAADsQAAA7EAZUrDhsAAAA5SURBVAgdY2BgFDJhYGAIY6hgYGALYKhkYOBKYFjNwODnwPyAgcGOgTFgAwMXw4kJCQzcl5SvHQAAp/IKAhu1YvIAAAAASUVORK5CYII=" title="a"></embed> dan <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAANBAMAAABm7DILAAAALVBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAOrOgAAAADnRSTlMAIqsyZrt270RUEIndzb9TRQIAAAAJcEhZcwAADsQAAA7EAZUrDhsAAABBSURBVAgdY2DUE2BgYLADYgZXEKEGIiqAmPHltAkMLIUMVQxMG4AC7A0MjxnWMXA+YJBhYEpg4GHoZWDg2JnAAAAY7wrDA8QV6QAAAABJRU5ErkJggg==" title="b"></embed> yang memenuhi:</p>
+<p><embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFYAAAAmBAMAAACsWnEFAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAdqvvuzJEid0imWYQVM1Bf7+MAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABo0lEQVQ4EZWUv0vDQBTHv2mbpLGJtSoiVqHoP9BBcNChi5MIARGLqM0giE5dFKEUMijiVnDoJK3/QQcHwYIdxLV2cJBSqZNrlwoBQe9S6Q8uTa4PvvDe+37uccklB2ByGbwh6hIvCjHNjQLXI7Cz/KwwRTZRr+HoOGNQQYue2oXDiHXZhG9CMt6v5BgV7nADO2FgoSi28AD59mVNosqFmgjv04RBEc4pLVzUZ1S5CCr4S6ju0YSNLYimapH++GtHhRye7IJlk5BLaov0q5WOUsCnXbBsEM/AJTT9g3hUQT0UsxOWVbLzQL5RRoR4VEr2sZOwLGdHip5xksABxh1eovPyTQhFZ4fttiHF2a5jR7Qg/jg63ebYIo00IBGWHhhPEJDgv0Ojf4bShuaxhx7+Dc3j2br7xQaEWG+le3Y4wlloCwNnLCwl3Gf3udsw+ir3dMfdHnCD3B8SIJgDS12LyAr5H964hgf0cwRKvqbrvH9zDincw0c+Ku+wUMAq/IY3CTGOpGKR2RwhmsiQm22a65I31QTi6leIYy7ytQpOGrvl4ewftul4LKbwM0sAAAAASUVORK5CYII=" title="\frac{\delta error}{\delta a} = 0"></embed></p>
+<p><embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFYAAAAmBAMAAACsWnEFAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAdqvvuzJEid0imWYQVM1Bf7+MAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABnklEQVQ4EZWUPUsjURSGn1FnJmMyfoIsfkDUH2AKUYQUNlayEBBZCz9SLIjNkkYRJDCFInYBC20k8R9YWAgKWsi2MaWIov8gTYSAovdOQFfurB4PvHDuOc89c+aeywW6RpGanXGkKHZOjMLON9gfctbqVk3cVFhe2chq4fethouIElNuQFOHk73edpNaHLJL6BiwVbKrnOAe/E07WoX4Pe0L2jFQ2gtelc2bnoRbQovmI8rz2jFtBjtI1FW87aqhYoHzcGGyc7hHiaqKly8aWoKHcGGyMS5hCz9zp3JasUw8GTom6+X7Ye/2jE6V0/Lypw3HZIURp29NSMIibRGHGL39J1YpOmNGazgpMxoZsevYT5GZt2DrkLYcOIrVA5OYAhX+8l/7t4ZXw/+ih3f8Ef+Lf3vrl2ms5PvOz73f35iFP/BhxtbwpDciHOQsWdTlFdkvRR2LSHXJ1fcHhawVwJiQ7RzHe65cSeiWzDrxCdIStlcdQlNO1kWdIs1ZaoK6doo5yvhVCRuwwb56BQUsQWKSGH8kKHuVC5z8Z2VfARJ4eDkR7TmDAAAAAElFTkSuQmCC" title="\frac{\delta error}{\delta b} = 0"></embed></p>
+<p>Kita dapatkan:</p>
+<p><embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAR4AAAAyBAMAAAB4/qkcAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAdqvvuzJEid0imWYQVM1Bf7+MAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAEtklEQVRYCc1XXWgcVRT+ZrMzu5OZzU8VldTC2tKH4oMLWiW0kBXqg4TCghVLMXYeiqVK7IJo1Li4D1YR87BYSPqiu4IvasGh5CH9gYwoCu1DErBgGyrriz6oGNRUAynjufM/uzOZcXcie+Byz/nOd765Oz/33AU6NPneyfMdlm5LmTRYqmyLcKeiR7C309JtqRtGYVt0seORjnT3CvuUjgojiviSEMEIThflB4MTXaJ8uUuBpMvfS1qwS737uqxPuJy7ix7Y6gpOnppW2EBu5ytGkPB14so9kakiNSQoN97N5NnAxzgLw4mrkCiPa/BrWEDmw28OCmzUpCYGJ5iT6GViiw3WxDW8vXqPnGmADfSpWHqWOeE29ufDzMZ0XVfCWZ1lngJflTeodmDZHPUaFo0gXG/xLzMnXtCL4azOMkeRUeU1ql3SzHEc+NEIwvXSumolr7Jfkqhl8TVwBrnSDyTLRrYk5Q0n/DLymLOMm17Wl94g2ueCKGLlfmDu1hUMU5YNsXLZdILYFnb6HzuZ0WyP5rzHj3DFh2qQGxGk6DT3xmFGyuiNAC6nBIBhEL0WWPUnhZ2v+oHo6HUsGa/O73cCuAMBWCg0T5mWgucwUAvlByfOoL/KMl/pAZUtPzdYwUYfICezbEfGfBhcwwdEBweQWWOsnN5sJz/ZDoUjj1JKyPvy6xAKPiBOkG4arC/+dsnCzdlLGoUkNtGA74sjdPh6DZOfvthy+BfvrNDN8V2e3wC/6aoGef27mZW9qXrJiLKenXmCH88qhFYhL+/H4142kFZTTX75iPqOH5ZGcRBYI9C5hkDrcfYRP3uL6BczJ+okZ9kQvykhp4pNCNQL9/s/m3mkyhyOa6ofTpVBT8zVIClaDC2JelCI2Zcz5hOHyMbpFVQtePEPN8/lmc83KZ2nFTGz+TiAPgXYQRAzgckcIo0+BevADMNsE9eR27SDuDPtlaalPF88a32AXKXNXeGKzHdM3ADbaX5zAMtZQo4WXvDBt5HzA74sC5xna2eEZaimP1C2MSh1jcMFQ31JSw9Ru3GNbtfdgiBuwg/jHFJD5nrca4yDy7uVsbxjz082TOJuhy9VF7SLUlbDr8Ag6iXV9xQK8s/SgjQj1fxwFi9Rayo6Isw58d/3wzHd6hRc05ESK7OVEj4CdgHS9Fug99pjL9w6dmXuxsnrLbBQodsjWffaoud2+foFt6fo0Ylwv9daCNPABwwacV95P8P5Elw4rbl+u/c0lHYwBOFHWxMzKkj+J4wie601Z8QBsPEDAskMfCY00544q7Rin9cgNpDvV9F/sTVnxAHw+UCiDWZrthc9v29TMrbD5klcpncotkmlLalcdcu0N5ku29El22Gz6A2i/Qj68GNm84sWwic25+pt20t8TpdeA2t+MYStj12endcLMeidUUZoY2fNL0b1abfjxaHHUAygbKBuNb+ApB8a+cwxzZ9JLuILOGo1v+REu1Diq5g2ml8XGomWVuUiWPNLVLQLsbkVDaz5xZIw/0rI38Ui/2+kHPt/3UtGh4yeMPsI2CvrUWe+nZqaepMdwnrC7CNgr6zHPuv1ynqy18znda4nnhb9DzKPgMLLwUfBLlb5L2/vQTFS2RVyAAAAAElFTkSuQmCC" title="\frac{\delta error}{\delta a} = -2 \sum_{i=1}^n x_i (y_i - a x_i - b) = 0"></embed></p>
+<p>atau bisa ditulis sebagai:</p>
+<p><embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOUAAAAyBAMAAABR3AGyAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAdlQyIrtmq82J70QQmd0a05NiAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAEqUlEQVRYCe1XTYgcRRR+PdPTszPTM7tGREWEMdHFyyZzMBC8bHtQo0F3vAiCkBZNwvqTKBFjTmk86cnFgxINmIN4yAo75JCwp22DxB+ysojuKWH35CUDWYw/cY12Xv28ruqf6WrQg4d9h3rvfe+r71VXT3f1ACj78pOpUGUjI/fus5dHFkWhpBKS/euNrkGMlZ3x3gcGWkklVKn26z2DGC/vhqMGWlklAGuiadAS5dvgtIFXVgmg3ju/zyDGy0dbbw6KeWWVAGrwtV+sJap99y0DraySQWarvLUD/8MdWNg8w2whiqKiZ68ZcdoZpP014ipKKuHsI78JCftQ1JdildmVjKxD1cdOyAkZSo5ShiOAWuTLyvKvMngEjstIc/t/l4m75mmwFuYoaVU9dBeoFUxJfA8c0Bki/i7yJFjJ7gKvJJXcCUknp+dL/xDaCCk6SQHzj/NFtaJ1Ak9RkPIJpXqqCMsa0Igy63aHWh2qGzz79G8dzIsTSvekGRVfQ97/RUt4SKdpyDOnz91Y1OW+YNCVggxPR9SdItrttohe4a4u7oR2u4iX9ppS4qoET//GqERBcnJrYAlA9GwORLbrRpKWzTSlmpcpn0fE2vaQwNf+VPWzP567PBNJQPSc2b6N19vRXJKnMoqUEvvwYFroqlPAf+oMehbeFtyOegNVu7v9qwLFUfR82WuGHLqm3kCK1z7GTK5GKXWwl9S60OzV2O0Zx6+4Pj36dvQF18TBgunQp0T2PA5yd2c2QyoJ3iSl5JXSXtKahME0NHt4f3HlTR/mJffIHzQJ4E4K8QLe5RcwD+M9DjrR61TUeArCKFbaw2Cp9RFMs6wTwownHzz8BtOelnewSuvne+tuwC42Be1Elzs+MF7WYqXvWU1yrsIdLMP7OQ1Wf8BigLE54QFa9k2YoETsrb0Ob0jkvbjCeQ677MT9VErYgDjuTXgGDvGeTfhmzhcix2Ktw87Q8eJM/IbWW4FA6qyHMM7zE68rXoiVxkKIORv2dQc39lFcxg87VkNOtALu2PDE/Ys7gK+fZaLn4n0sRrtLODZynh2wUDelZHUVZ3Z2A/A3dVBn7gz1DP++0PpFTypWCCag4VNEXinZck84x1qBDwGeJxb66mdawkI7wIHZJeHk+LCXSPGHeDEF6EqyA3LGBk0Phj6tgs95cpCaml0/I9jzKRq0X0ohutJTooacOqwCrHrtUGP/THFDBpn1c7zjE2+OgrTXlVpdqjov8PBFytHXYonXJJpZP8efoznOCkUpn1TyUlU9/4lqy+p1SpDm232ZuGsDDdbDkkr4Vgz4NHffgei0LpCO5YPy1bn9m+mSzMsqASzhF6u0eJNzRFtEiuigy5CWFKVICefdeyW2MCOjACtmXWFnYp6VVMqbuoX9dzsgv9Au0LMwSrkEb5LPdR8YJZHGtwdpJD838yoP5s/MonaQxfKQEry9efMSGJ7gzOwAhyIz8+jcNfZ0OpdOooV2UNQQPxPNPH/4LSqdYuezwSTDDv41jyTMPfEEZ2YHOBSZmUfnrrnn8FWxt+tFDbFm5nUuir192qDETnBOWfxc+JF8M0+eu62P098PpHkLkxCDJqK75rMAAAAASUVORK5CYII=" title="a \sum_{i=1}^n x_i^2 + b \sum_{i=1}^n x_i = \sum_{i=1}^n (x_i y_i)"></embed></p>
+<p>Kita juga dapatkan:</p>
+<p><embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQsAAAAyBAMAAAC5eeOwAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAdqvvuzJEid0imWYQVM1Bf7+MAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAEfklEQVRYCc1XXYgbVRT+JjuZyexMNrtVVFaFWCkiPhjQKksLG6E+iAgBK5Zi2RGLxcq6AZFV18U8WEXch2DB7YtuFF+UgoMsWG1hRxSF9iFZtNS6VNMXpVQx+L9gGc+d/9lMnJkwIR643O+c850zJ3fu3HMD9CnKtbPH+wxNM0wuVBbTzNdvrr3Y0W9omnETKKWZDtvu7CvdDuFWta/A8KBsRQh3RFjLym0RjETubDURfWDkVweWOVHi6xKxB0XmrqK3srGOQ08sqGwgf/0zpjKoB4bnvVesITMuqOdfEYts4G0chQnC+YOxco1sBycgvvnFboGNutxG4QADg3lej6yFutTBSxvXKGIDbGBEQ/MRBnrL9G93MJk2DEPtzUrkeRDZmrJJIWMta6zUsWYqvdOs/W75pA+Ncm9WIs8+iJrSoZCmbo0Z4KKp9E7DG5rtPM1+QBqSw+fAEeQr31E2NnIVuWiC3tmVaffp3xLr097MMA8XZpQWbwCWL5zCBHnZkBZPWiCMbdvm/nacog4UHSV6lm6vQ2lE8yIY3PMPMIZoNDwip3o4EtErx0aQ9ehHatAQrT2Hprktfrniccc8GI1WiRIMyLZxKTouyDiC0RqzfGbUXceWH+faQ8FNZBVbfhffwqRfj4N3QewwXt5ou/T7XBQD3EUcoegnFip4zK/Hw3zb5H3wl0svAQcaYJ+MXybO1jH73pNbrs3SlXVaCorwZKaOGd1Tw9DodiZVv2ulYmo57/ysQWntxD1+EsBrmXa2tVd7OWiWp7Ab6JDxHZb5FgJzVEY9yIqhXbY4kkHpTJHaEKgt7Qx+AKvIVDn6mVrQnKmCXosTasZTDVQJ9YUeYj/Gmg7uIbmftpdmm9d+tQHtdIhFKoSJQ8MujKjANjIxEVj0HgodUfEHsMRsjtDyfq87StyZjjZLMs4nq9To5FW5sm23JmkT7IT4OWAkpYk81VvymwsqvvLrIbhrbwgt0G9iMla1ZjNpU+fHqQV4QotztSBI/yBoxjFkxq0y3L3Ba+6iefERaP/jsw2Lst1l/gQUsFLRAktdUn6UT8hLcj1ozuEpahdlN5aAUE5+fE0b9jHOtd1UNwLywougreqTwxf2n1o+f+jsFrOwSIsh2wtq09fPqb5AcDeXWeeJJ9/oLu91hia9zes6TODuac/M6x7uRg9BNfdVt6fbkp3ybJT1B0whd8Yz+VCI2azbRwnCh0llnSeOHFU9ltRAcVTD6MeeyYdCzMd97m6YoxfCOk8cec0hiQRmcZL2R2yRK/9J5WpgR1wc4asO6xMCkqPEmyPoE3fD6jzR2d51KKf/dFBaM195Flbnicxof63KG6tGKZKckDBJn4nVeSID57wu5L6dyKCYhE2sYMTsPJEBk++7okeSkxGyJeyzO0+ywHTZ2RoW7M6TbuKE2WpKGWbnSRiXMn15XYfZeeLktW7jytdxuAPn5Nmfzf+BvDXcGpyb1pDL0Ja+nJ+ffwFDLsO5aQ25DOdKNeQycmesl3JsuFvUvlIJT4ffuJIX9y9OKzMBB8QRIgAAAABJRU5ErkJggg==" title="\frac{\delta error}{\delta b} = -2 \sum_{i=1}^n (y_i - a x_i - b) = 0"></embed></p>
+<p>atau bisa ditulis sebagai:</p>
+<p><embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKYAAAAyBAMAAAAkUb0RAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAdlQyIrtmq82J70QQmd0a05NiAAAACXBIWXMAAA7EAAAOxAGVKw4bAAADiklEQVRYCe1XS0wTURS9badT2k4LYuJnQVJA2SGNkcS4oW78sWjdmLhiFgJ+UGowVlY0rjQubFiQEE0ggbAAExpMMKwYDVFjIBKjuMHQlRtJJP7Fz/N13rtvpp3OUFiqd9F77jnn3jfv9bVNAYx4eKdRM6qykbJ7atnWrH70R2xFe0GujPbbqp6EL2orOgjN0GOruqoCtpqTsA2GbWVf9EGrregg9ASvZO1kLzxR7TQnPqFcdZL/a//YCUyuj+djkhBie9dKHEmA6G3jtO2HRe7+zCipkyS46D63aLEVEzK6j/TxASaHl6i8WvjEwWHoNRlsYNsXLigrsWKLMomjoJFrB6G92GWtn5EYJ93WXc3+xga/hmgQQT4fFYua2SDJYXkXgch+YllHWRUqBZ41cyXw0C8BreD2h2IOv001XZATxbpeV5BISV4njZNBz3aJoQt68lUhX5BNb0QBrxduki4kg1kXI9jMQLZQxqrpGyIju6oPsGLlu0FOvZxejhNOsJnxumqo7eqw/EyESEb07V9kt+YUXGNc2PgEeSLN6jvhZDPPxwJz98dgb55+naKBt/e9+AQpkRE4SWV69FyUyD0c44IWTcUC2MxeCEzJOdgpaATxdY3DIL0bI9AAARUmONX9FW1gtIZSqRupFN3eBFRGQxm4bHg4kkkSOX9Sv3HxmJ7yrM90m67TuoFb9edU1qAJ6PtU4ub3RbgRwllXguIWcCWyjKugT8MiKP2EKizY3qUcfcQ4uNN5c8F5wk3hfK55q+QkBOBpRmVkSmiX5FU5Jip2nrlgGs5CCM1CBV9S4EqIR9VVCL6oX9J00pUW2vE9M/VAF2TBZs7UAuwAT78mXBzsMgh5YAiktFHDPs1UUEgXZMFmFopG5UabTtWAXzU0z6iBdSSlOTHPc+l0KGbwt2AUwo+N+kT+8M1hXtDMF2JpwlQnQyqEzhjEW4R+DswLombNYRW5DEBHNRZ69lKKxUWezQuiZs2nkZIXEYn8CtGC+Pgi45RDCa4qK9liH79ISms7GS7WnGp+keam29Yttln6C81DHILFZCWC2ETwi9HkqXkjQjPRG0GX6Hpj/z9hoyF/pe5W9W09wrtR7ibL6KtLlzus0OfUJ21xZsm+TrZuSY1JpV8d+uTw/CANbbMzHfuOscfY7Exw6hvY4kynvtUutvccm132q1PfUkwfMzPGctkzS/T9AdDsCx2syUSLAAAAAElFTkSuQmCC" title="a \sum_{i=1}^n x_i^2 + b n = \sum_{i=1}^n y_i"></embed></p>
+<hr />
+<p>Nah, kedua bentuk persamaan terakhir bisa saya tuliskan dalam bentuk matriks sebagai berikut:</p>
+<p><embed src="data:image/png;base64,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" title="\begin{bmatrix}
+n &amp; \sum_{i=1}^n x_i \\ 
+\sum_{i=1}^n x_i &amp; \sum_{i=1}^n x_i^2 
+\end{bmatrix} 
+\begin{bmatrix} b \\ a \end{bmatrix} = 
+\begin{bmatrix} \sum_{i=1}^n y_i \\ \sum_{i=1}^n (x_i y_i) \end{bmatrix}"></embed></p>
+<p>Oleh karena <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK8AAAAyBAMAAADYRJbbAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEHaJRFSZZjK7q+8i3c0sJicDAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAENElEQVRYCe1Wz4scRRR+0/OjZ2a7N63iBjTBQU0OHmTDuu7BQwZiCOSSubir4I/1EhGEbS+JhoTMJYcQ0FEPHjOeDCIkgpBAAjvgoqiY3QHBowPq2QR/u2pZ9V69V9W90/0XbB3qfe973/e6q7amegH0uPeJ5cTEnaPyyNGXd7LEFLvEkf5Z7UmSAeGe/mKG8JJil4iag3Zfkiy4CFeyhMtKXCwKOjMM8/FhuJanOC9xsaTdP77BOBev1D7u5ihOS1wsacEDKeNcHFQ+zDGSlrhEswt2dyCzA+vbN81YV0p1MwWYUVi5qSu/ZisAxS5Rnv+LYHRGDYREEDLxxVWrAVh5kjTFLunRUvzbmPtHSAKX/7BEZW1EKOq05xGVuKwHKuvSb5k5Gx9UI4vqqwSak5CWlXVVOlSWGfMT/3JeTRhRrKktJg4xqNIbQ8bV5irHOQOqapXzfDz8e56B/fbhGdejeVk9NczPv+V5zmdVjyFHuZ1914SrEpFxWym8Bd5OWibojyzyXPR+lqeAn526mmRIL3npPy8x8GnoWMZztUaWc+E4wrVfHFNb3jhlt1GTDTUvJVPZpxzhXObzc/S1Y+are2EV8GzRFyn2fnMXmu/HXWkG37vfXK4CzhUDNHsX028BKr0b8K5x78EWkfpEWnWad0Nwm7a5La+PFdEBONdtgADeTlJYqTXvwA1YAZgh2/m/nSEYOgwQKpdmKwDiess4HkNbdahb6xFT47Z34GZ7qODpqktNxa0FQFz7jfgndMTdYGCA/erPziNrpu5mEsAZSeEHgViRTANx6S616C50wiE8lLRM4MYfiT7cOpecDeMk+oCothbRwArCrxJixDWbwLlwHI7Ssf6jbfZ1gC9REkxIqedocWOxD7eheZ2ox3MVs5ZLKZLOFfTgs+ePPAvRBMKlwybAaZS8YF8BEzMt6c3EpK4f7g+9Fp32kHKuaEiaqnniQTDhHcM0bxHv5nFqG18aORKRPlm2se/CNvoo7IUf4ZYJ9Kivu+jxpldG9FbRpx6JUK/FPtN3fU6yxlkYNlLQoWEWBt8RrS9QBjricmOzNhzzNuq12Ma+q4ZqIzl9AIVvmLnFJjiFpDe9xzhctUivhUbWxawtAuavcjbn7gWiGgNbqqx1WcSx2MUKe2oqG2+qa8zZaM/avmOXt3MVKHGx9IT+t8EO2ROq1ZhXyrtXqVbs4r5w8KSMREgEgRROmqs2M4pdGdluYndgBWPluZ0bYm/f+/nY+Ypil6/SuP5ijnDpMxOHc6jEJUq8XyTzgbkHi0axC8yFb8YUif2STGtc4qJ2AOn4voWFhUNTGofxPbqykExrXOzivnjhF7yxXcS0xsxNWSd3xntfJ1MkS6ThJuwwscTFsngvbcU3TLg4fp22YstRjEpcLNEXvhm1pygybaK9fY9cH/ks4hIXaf8Hc9c/naeP7BAAAAAASUVORK5CYII=" title="\sum_{i=1}^n x_i, \sum_{i=1}^n x_i^2, \sum_{i=1}^n (x_i y_i)"></embed> bisa dihitung dari data, maka kita bisa tuliskan bentuk di atas menjadi bentuk <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADcAAAANBAMAAAD/FOu+AAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAmTJUdmYQ74nNq927RCLjefjKAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAyElEQVQYGWNgAAJGBSCBDpjOPwAL6Rugy4D41yGC/g4QGpX0AnNZ0xtQhSG8o2AqmXMBNsl/YEEHrgkMDKbGD1BUuBgXgPhMCowbGLgCuBqAzl4FAkAGA08A1wIgxcDKwPKBwZOBOQHIhoMYBi4HECeio+cDw1e4MIRRysCuAGSxGTDw/uP7hirJ949BHyTCwsDA94npAwNDApKdQL4PL1DSFKj5M8M+BtYHQA4cFLDNYGVgePUzgeHWz4AXxmFwCRDjorFiGAMAgJ8tmK0Tdy4AAAAASUVORK5CYII=" title="A c = d"></embed>. Jika matriks <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANBAMAAACAxflPAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAmTJUdmYQ74nNq927RCLjefjKAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAUUlEQVQIHWNgAAJGBSABBPoGENrfAUyzpjeA6WTOBWDagWsCiGZSYNwAolkZWD6A6IiOHhDNZsDA+w9IszAw8H0C0qZAoc8MDK9+JjDc+hkAABHmD+MmX1aKAAAAAElFTkSuQmCC" title="A"></embed> memiliki invers, artinya <strong>nilai a dan b bisa kita hitung</strong>.</p>
+
+</body>
+</html>
