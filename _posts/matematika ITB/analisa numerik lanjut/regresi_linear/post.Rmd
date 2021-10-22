@@ -11,6 +11,11 @@ options(digit = 3)
 
 library(dplyr)
 library(ggplot2)
+
+x = runif(10,2,9)
+y = 3 * x * runif(1,0,1) + 2 * runif(1,0,1)
+
+data = data.frame(x,y)
 ```
 
 Kita pasti sudah sering mendengar, melihat, bahkan membuat model regresi linear $y = ax + b$. Setidaknya saya pernah menulis tiga _posts_ terkait regresi linear:
@@ -84,4 +89,31 @@ n & \sum_{i=1}^n x_i \\
 
 Oleh karena $\sum_{i=1}^n x_i, \sum_{i=1}^n x_i^2, \sum_{i=1}^n (x_i y_i)$ bisa dihitung dari data, maka kita bisa tuliskan bentuk di atas menjadi bentuk $A c = d$. Jika matriks $A$ memiliki invers, artinya __nilai a dan b bisa kita hitung__.
 
+---
 
+Sekarang kita akan coba membuat persamaan regresi dari data tertentu berdasarkan persamaan di atas __tanpa menggunakan function__ `lm()` dari _base_-nya __R__.
+
+Misalkan saya punya data sebagai berikut:
+
+```{r,echo = FALSE}
+x
+y
+```
+
+Jika dibuat dalam bentuk _scatter plot_:
+
+```{r,echo=FALSE}
+data %>%
+  ggplot(aes(x,y)) +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "Scatter plot x dan y")
+
+
+```
+
+Untuk membuat persamaan regresinya, kita cukup hitung:
+
+- $\sum_{i=1}^n x_i$
+- $\sum_{i=1}^n x_i^2$
+- $\sum_{i=1}^n (x_i y_i)$
