@@ -157,3 +157,70 @@ dihitung dari data, maka kita bisa tuliskan bentuk di atas menjadi
 bentuk ![A c = d](https://latex.codecogs.com/png.latex?A%20c%20%3D%20d
 "A c = d"). Jika matriks ![A](https://latex.codecogs.com/png.latex?A
 "A") memiliki invers, artinya **nilai a dan b bisa kita hitung**.
+
+-----
+
+Sekarang kita akan coba membuat persamaan regresi dari data tertentu
+berdasarkan persamaan di atas **tanpa menggunakan function** `lm()` dari
+*base*-nya **R**.
+
+Misalkan saya punya data sebagai
+    berikut:
+
+    ##  [1] 3.915611 8.643532 6.620704 7.311138 2.342219 2.769477 6.920885 6.424778
+    ##  [9] 7.344196 7.975778
+
+    ##  [1]  9.119796 19.631007 15.133814 16.668801  5.621797  6.571686 15.801183
+    ##  [8] 14.698227 16.742295 18.146443
+
+Jika dibuat dalam bentuk *scatter plot*:
+
+![](post_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+Untuk membuat persamaan regresinya, kita cukup hitung:
+
+  - ![\\sum\_{i=1}^n x\_i
+    =](https://latex.codecogs.com/png.latex?%5Csum_%7Bi%3D1%7D%5En%20x_i%20%3D
+    "\\sum_{i=1}^n x_i =") 60.2683179
+  - ![\\sum\_{i=1}^n x\_i^2
+    =](https://latex.codecogs.com/png.latex?%5Csum_%7Bi%3D1%7D%5En%20x_i%5E2%20%3D
+    "\\sum_{i=1}^n x_i^2 =") 407.2117849
+  - ![\\sum\_{i=1}^n (x\_i y\_i)
+    =](https://latex.codecogs.com/png.latex?%5Csum_%7Bi%3D1%7D%5En%20%28x_i%20y_i%29%20%3D
+    "\\sum_{i=1}^n (x_i y_i) =") 930.3045426
+
+Lalu saya akan buat matriks berikut:
+
+    ##          [,1]      [,2]
+    ## [1,] 10.00000  60.26832
+    ## [2,] 60.26832 407.21178
+
+dan membuat *vector* berikut:
+
+    ## [1] 138.1350 930.3045
+
+Untuk mencari konstantanya, saya cukup lakukan
+![A^{-1}d](https://latex.codecogs.com/png.latex?A%5E%7B-1%7Dd
+"A^{-1}d"), yakni:
+
+``` r
+solve(A) %*% d
+```
+
+    ##           [,1]
+    ## [1,] 0.4145287
+    ## [2,] 2.2232205
+
+Mari kita bandingkan nilainya dengan *base* dari **R** sebagai berikut:
+
+``` r
+lm(y~x)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = y ~ x)
+    ## 
+    ## Coefficients:
+    ## (Intercept)            x  
+    ##      0.4145       2.2232

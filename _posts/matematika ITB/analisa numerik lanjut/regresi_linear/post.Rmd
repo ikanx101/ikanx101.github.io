@@ -109,11 +109,41 @@ data %>%
   theme_minimal() +
   labs(title = "Scatter plot x dan y")
 
-
+sum_xi = sum(x)
+sum_yi = sum(y)
+sum_xi_xi = sum(x^2)
+sum_xi_yi = sum(x*y)
+n = length(x)
 ```
 
 Untuk membuat persamaan regresinya, kita cukup hitung:
 
-- $\sum_{i=1}^n x_i$
-- $\sum_{i=1}^n x_i^2$
-- $\sum_{i=1}^n (x_i y_i)$
+- $\sum_{i=1}^n x_i =$ `r sum_xi`
+- $\sum_{i=1}^n x_i^2 =$ `r sum_xi_xi`
+- $\sum_{i=1}^n (x_i y_i) =$ `r sum_xi_yi`
+
+Lalu saya akan buat matriks berikut:
+
+```{r,echo=FALSE}
+A = matrix(c(n,sum_xi,sum_xi,sum_xi_xi),ncol = 2,byrow = T)
+A
+```
+
+dan membuat _vector_ berikut:
+
+```{r,echo=FALSE}
+d = c(sum_yi,sum_xi_yi)
+d
+```
+
+Untuk mencari konstantanya, saya cukup lakukan $A^{-1}d$, yakni:
+
+```{r}
+solve(A) %*% d
+``` 
+
+Mari kita bandingkan nilainya dengan _base_ dari __R__ sebagai berikut:
+
+```{r}
+lm(y~x)
+```
