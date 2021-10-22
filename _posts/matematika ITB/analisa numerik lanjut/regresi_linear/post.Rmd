@@ -25,4 +25,54 @@ Nah, kali ini saya akan menjelaskan bagaimana cara kita menentukan nilai $a$ dan
 
 ---
 
-Misalkan saya memiliki $n$ pasang data $(x_1,y_1),(x_2,y_2),..,(x_n,y_n)$.
+Misalkan saya memiliki $n$ pasang data $(x_1,y_1),(x_2,y_2),..,(x_n,y_n)$ yang akan saya buat menjadi persamaan $f(x) = y = ax+b$.
+
+Cita-cita saya adalah memiliki persamaan $f(x)$ yang __dekat__ dengan $y$ aslinya sehingga menghasilkan prediksi yang __akurat__.
+
+Misalkan saya definisikan _error_ sebagai:
+
+$$error = \sum_{i=1}^n d_i^2$$
+
+di mana $d_i$ adalah __jarak__ antara hasil prediksi $x_i$ terhadap nilai _real_ $y_i$.
+
+Saya bisa menuliskan:
+
+$$d_i = y_i - f(x_i)$$
+
+Kita substitusikan kembali nilai $d_i$ ke definisi _error_, sehingga:
+
+$$error = \sum_{i=1}^n ( y_i - f(x_i) )^2$$ 
+
+$$error = \sum_{i=1}^n ( y_i - (a x_i + b) )^2$$ 
+
+$$error = \sum_{i=1}^n ( y_i - a x_i - b )^2$$ 
+
+---
+
+Ingat kembali bahwa tujuan mulia saya adalah __meminimumkan error__. Untuk itu perlu nilai $a$ dan $b$ yang tepat. Oleh karena semua data $(x_i,y_i)$ diketahui, maka kita bisa melakukan turunan parsial terhadap $a$ dan $b$ yang memenuhi:
+
+$$\frac{\delta error}{\delta a} = 0$$
+
+$$\frac{\delta error}{\delta b} = 0$$
+
+Kita dapatkan:
+
+$$\frac{\delta error}{\delta a} = -2 \sum_{i=1}^n x_i (y_i - a x_i - b) = 0$$
+
+atau bisa ditulis sebagai: 
+
+$$a \sum_{i=1}^n x_i^2 + b \sum_{i=1}^n x_i = \sum_{i=1}^n (x_i y_i)$$
+
+Kita juga dapatkan:
+
+$$\frac{\delta error}{\delta b} = -2 \sum_{i=1}^n (y_i - a x_i - b) = 0$$
+
+atau bisa ditulis sebagai: 
+
+$$a \sum_{i=1}^n x_i^2 + b n = \sum_{i=1}^n y_i$$
+
+
+$$\begin{bmatrix}
+ & \\ 
+ & 
+\end{bmatrix}$$
