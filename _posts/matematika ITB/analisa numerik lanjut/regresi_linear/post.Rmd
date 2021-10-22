@@ -1,0 +1,28 @@
+---
+title: "Belajar Membuat Model Regresi Linear - part 1"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r,include = FALSE}
+rm(list=ls())
+options(digit = 3)
+
+library(dplyr)
+library(ggplot2)
+```
+
+Kita pasti sudah sering mendengar, melihat, bahkan membuat model regresi linear $y = ax + b$. Setidaknya saya pernah menulis tiga _posts_ terkait regresi linear:
+
+1. Bagaimana membuat model regresi linear di __R__ dan menguji asumsinya di [sini](https://ikanx101.com/blog/belajar-regresi/).
+1. Aplikasi regresi linear pada perhitungan _price elasticity_ di [sini](https://ikanx101.com/blog/blog-posting-regresi/).
+1. Menentukan apa yang berpengaruh terhadap kebahagiaan di suatu negara berdasarkan _World Happiness Index_ di [sini](https://ikanx101.com/blog/bahagia-survey/).
+
+> ___Tapi belum ada sama sekali tulisan yang menjelaskan bagaimana cara menentukan nilai a dan b pada persamaan regresi linear tersebut.___
+
+Nah, kali ini saya akan menjelaskan bagaimana cara kita menentukan nilai $a$ dan $b$ pada persamaan regresi $y = ax + b$.
+
+---
+
+Misalkan saya memiliki $n$ pasang data $(x_1,y_1),(x_2,y_2),..,(x_n,y_n)$.
