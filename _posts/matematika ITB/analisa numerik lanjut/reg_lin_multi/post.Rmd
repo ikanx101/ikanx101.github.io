@@ -102,3 +102,15 @@ Kita bandingkan dengan hasil _base_ __R__ sebagai berikut:
 ```{r}
 lm(y ~ x1 + x2 + x3)
 ```
+
+Bagaimana? Sama kan hasilnya?
+
+---
+
+## _What's Next?_
+
+Sebagaimana yang telah saya sampaikan pada tulisan sebelumnya, metode matriks seperti ini akan memudahkan kita saat membuat model-model regresi (baik linear atau tidak) yang tidak umum. Saya akan tunjukkan contoh lainnya di tulisan berikutnya.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
