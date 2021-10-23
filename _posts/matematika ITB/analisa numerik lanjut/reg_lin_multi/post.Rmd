@@ -6,6 +6,8 @@ output:
 ---
 
 ```{r,include=FALSE}
+library(dplyr)
+
 rm(list=ls())
 
 x1 = runif(10,0,10)
@@ -48,6 +50,33 @@ $$\begin{bmatrix}
 \begin{bmatrix} a \\ b \\ c \\ d \end{bmatrix} = 
 \begin{bmatrix} y_1 \\ y_2 \\ .. \\ y_{n-1} \\ y_n \end{bmatrix}$$
 
+Saya akan menuliskannya dalam bentuk matriks berikut ini:
 
+$$X_{n \times m+1} C_{m+1 \times 1} = Y_{m+1 \times 1}$$
+
+Jika pada kasus sebelumnya bentuk matriks yang terlibat adalah $2 \times 2$ sehingga kita bisa dengan mudah mencari _inverse_-nya. Kali ini bentuk matriksnya belum tentu _square_.
+
+Lantas bagaimana caranya?
+
+Saya akan lakukan _tweaks_ seperti ini:
+
+$$X^T X C = X^T Y$$
+
+Sehingga $C$ bisa didapatkan dengan cara:
+
+$$C = (X^T X)^{-1} X^T Y$$
+
+Mudah kan?
+
+---
+
+## Contoh Data
+
+Mari kita uji dengan data sebagai berikut:
+
+```{r,echo=FALSE}
+data %>% knitr::kable()
+
+```
 
 

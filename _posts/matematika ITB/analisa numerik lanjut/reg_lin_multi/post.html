@@ -621,6 +621,90 @@ body {
 \end{bmatrix} 
 \begin{bmatrix} a \\ b \\ c \\ d \end{bmatrix} = 
 \begin{bmatrix} y_1 \\ y_2 \\ .. \\ y_{n-1} \\ y_n \end{bmatrix}"></embed></p>
+<p>Saya akan menuliskannya dalam bentuk matriks berikut ini:</p>
+<p><embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMUAAAASBAMAAAAZLQdUAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEInvq1R2Irsy3ZlEZs19rnf+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAACQElEQVQ4EbVTvWvUYBj/veddYj5qg2CH3hKv6lAE3ToJ2h7IQcVDUISCHCKHbhHEwVLJH+AQOnWy6S4SRbjBwSB0s3iLCIIYXF20p5Yqgs+br/eS3FtcfIY8v48nvyf3Jgewue9WY3QBsmK3TvXuy0yhr44C4NUjIRSQsgfmFpQC+RCi9qSgTCaXSf442QLYLmoyD6htAeZXuZ87b7vQujkrgyXYZUnwTw7hSHApOuRiRmpi85olNdlPbtlSXxi1bweN6Qtisozozn8s7U9N/qgw9uQxuiv3uPOiTbUYzzx9f8Do9u/JJrsOTNslj4u8sp4wfj0TCgwccxOWdK27NG4K3LhBO4bEG0IDF3llPWH8Oi8goatRQpO+hk0eRMWA/EjfEH8I6Db1/BBS0eKTZBbrS07NEFCjJI46Bds4Qvzm9jMYDgsIDN7ZQBqnRDTeLYkDNLMdY+/jBzBzemXtCv2fwngHj4NKAbgHTO1jato7CQyaHNyGn+/AZ2CnLBp3g2wHBaRl0hc43FdcPd/B46BGwMbIw+NfPWygA9TPk4Bl5h9ttVvH4+NQnvedithGZQeb3/WgufVwlrVOLLYsns3jeM+qj7NAcwD0sdWgx0zPKrWLIntJayvvg0aVnm6tiN/B49SI9LQ65sWQBYaDDvPrO8mOB5lZEpugm4WZT6HuzWJ5mLwPH3Gc6gvbZZdgAAFczVbuxDvMufyDKooBTY6ZIuQw1tH34h2vzzlxHHXhlxA/q0pNFCtT8Y6q+l+Vv4CAnNPQB7z/AAAAAElFTkSuQmCC" title="X_{n \times m+1} C_{m+1 \times 1} = Y_{m+1 \times 1}"></embed></p>
+<p>Jika pada kasus sebelumnya bentuk matriks yang terlibat adalah <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAMBAMAAADi7eJ+AAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAdomZu1QiEGbdMu/NRKugN9EaAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAArElEQVQIHWNgEDIJYEACjMquDAxMCew/kMQY1BjqGxg4FzBYIgvOYmCewMDdwKAPFGQzYGBgvABk7GBg+gBS5AMi4hgYhEA0AwPLASDB9gvE5DBgVADRDAz5C4AETwOQYGBoFgZTDAwnQLQGhMM3AUIzNQBpDhABBM1QIztAnKsMHCAKZiZvAEMDA5ft3WCQINB2JRC9+O5VAwbu//8/A9lsD4CeA7lz////BgBHSh/vtu+OXAAAAABJRU5ErkJggg==" title="2 \times 2"></embed> sehingga kita bisa dengan mudah mencari <em>inverse</em>-nya. Kali ini bentuk matriksnya belum tentu <em>square</em>.</p>
+<p>Lantas bagaimana caranya?</p>
+<p>Saya akan lakukan <em>tweaks</em> seperti ini:</p>
+<p><embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHkAAAAQBAMAAADAL83oAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEInvq1R2Irsy3ZlEZs19rnf+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABtUlEQVQoFX2Su0vDUBTGv9RqTdvU0kHcjAiCgthBqCLio+LcydW4KChoQR0FRxexi+BkRUEUBP0P7OImGEHETXH3gQ98g+fcc5MUAx6455zv953k5iYBdKQ6Vy63PPFfvb1anQ75p1iFHaJhkKzUu5EQdpFDIUTDwEJNsTbARutLuvZ5CLEss8zAEMa700Dj8GTMCaaqrHkgdtwHJN4rROveYCwDFi2KuSKaqFgHQEeFQRDauiISfaQRly3jCXyQqMMCzbY6fgdtf6ZAkLQ1SiT5CqyLk1fz8ZJS0SzfynqjlBLbz2Jhn0EPDEeM8hhthGYR5usEC4fS31crlvHIg11pz43nSFr5c6bATpFSF98vFMq66Gev7LZoO8GP6ccxX73nycQIhy1SWdLG73iM4+RLqsrJ8SOqT1XEb8USGfnW2Czk/QF6k9EsqR8mhSrMrVgCI1tSsUSH0C39B67JV27Tsoo+VY22BKaOpBo2UjfSUs4A91RmaS0yrDq3tpgCDfrBFmiXD0G09SBwXaJPbSPpelCqZ4k6S6u68VzC5qcjzFzrhfmwS2KmbUqQlwOLSeawncsv0SlgNZG+01MAAAAASUVORK5CYII=" title="X^T X C = X^T Y"></embed></p>
+<p>Sehingga <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAANBAMAAABr8kJMAAAAKlBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADmU0mKAAAADXRSTlMAEHariSJm3UTNu1SZJkczIAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAFtJREFUCB1jYGBgVHZSCGJgYEhvYGCpYGBgKWRg4LjAwJAbABSbwMB4CUgxODCwXATRDAzsC8AUA68DlE4A0txAcRA/lYGBaQIDA+sGIHsKA0MbkGJgOqIENAkAnwkMb2vd5yMAAAAASUVORK5CYII=" title="C"></embed> bisa didapatkan dengan cara:</p>
+<p><embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJkAAAAVBAMAAACnAFEqAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEHariSJm3UTNu1SZ7zJ6vM+vAAAACXBIWXMAAA7EAAAOxAGVKw4bAAACQUlEQVQ4EYWTP2zTUBDGPzt2nNDKsVAmGBr+bAykgjWSqSq2QgQSs0FCjAQmFkQHhJA6ECSExNQsZWBp1IGlQ4NgbxAqA0LgFTqk/CkgShF3996zHdUuN9x397vv3bPsBNg/qmefXenssRzuJSjfkIzHi/t4inAcUbfaTVC+IRlzcTDpImygbzrbFG66bcxAc+vYTOOC8SltAvWP01h7E8AdsmXuWzCxO20NtI23aSYGd/09MPl7nsbX5uHc0jYlNuOTbRwiKfcowd6GRcVzrink2TQTQ2mLnBFNnBtAhZpMVLmeCuWFlRrcWN/hkNDg+OzsjNqmmRgqO8AmG6+3KdGTZ0IeoTTk8/BiSkBLVjt9adQ2zbyY2TtYDRLrKyWxsqpYYvF3jrBMcQJGKwHlSlMauJ2UKcP5QO52vihDNg+lud0mKbcuS+NtiKgJ7r7lmTBtGEVn2OD1OHO8PEVxmqsOJ6zzCROT21JtmZ5VM0HeY3HXQumySf2aKmuDDFz4I83rDIJmgpxfIrWIZEJKk/wuV5uloQH0Evstaej7J2GYAKcj4oUkV6U0yeKJG/k/DAAuYRRxl7kgYeKqDkTsLp3sc5m+Nz5TB56IgZMVokq+sW0JY46arAAeAfcEpOkhXdCkX2Js0EX6uH+pcXuUdBim2geBUvvV0bZxaD0Bf/kD/MWbuv+8G+PTz4b+8yiYMGnrd85p716ha/PjgH6C/GkBLTxUeE3BIsHuoGD6ooDvjxfyx+U4n/+HuvnzApya/wH904SPx0TK/AAAAABJRU5ErkJggg==" title="C = (X^T X)^{-1} X^T Y"></embed></p>
+<p>Mudah kan?</p>
+<hr />
+<h2 id="contoh-data">Contoh Data</h2>
+<p>Mari kita uji dengan data sebagai berikut:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">x1</th>
+<th align="right">x2</th>
+<th align="right">x3</th>
+<th align="right">y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">2.858129</td>
+<td align="right">6.562128</td>
+<td align="right">7.937261</td>
+<td align="right">3.0864408</td>
+</tr>
+<tr class="even">
+<td align="right">9.708492</td>
+<td align="right">5.821518</td>
+<td align="right">4.216646</td>
+<td align="right">12.6394032</td>
+</tr>
+<tr class="odd">
+<td align="right">4.604466</td>
+<td align="right">5.591855</td>
+<td align="right">6.080872</td>
+<td align="right">7.1563515</td>
+</tr>
+<tr class="even">
+<td align="right">4.871235</td>
+<td align="right">7.896336</td>
+<td align="right">4.502112</td>
+<td align="right">3.5494688</td>
+</tr>
+<tr class="odd">
+<td align="right">2.360323</td>
+<td align="right">6.833700</td>
+<td align="right">4.791829</td>
+<td align="right">1.3594765</td>
+</tr>
+<tr class="even">
+<td align="right">8.179789</td>
+<td align="right">5.948629</td>
+<td align="right">6.941546</td>
+<td align="right">10.9744725</td>
+</tr>
+<tr class="odd">
+<td align="right">5.450309</td>
+<td align="right">5.423869</td>
+<td align="right">6.062742</td>
+<td align="right">4.2036685</td>
+</tr>
+<tr class="even">
+<td align="right">7.686010</td>
+<td align="right">6.302933</td>
+<td align="right">5.228647</td>
+<td align="right">-0.0614269</td>
+</tr>
+<tr class="odd">
+<td align="right">8.981859</td>
+<td align="right">5.615117</td>
+<td align="right">3.125266</td>
+<td align="right">3.7140627</td>
+</tr>
+<tr class="even">
+<td align="right">6.387418</td>
+<td align="right">7.403743</td>
+<td align="right">4.305106</td>
+<td align="right">-3.2419350</td>
+</tr>
+</tbody>
+</table>
 
 </body>
 </html>
