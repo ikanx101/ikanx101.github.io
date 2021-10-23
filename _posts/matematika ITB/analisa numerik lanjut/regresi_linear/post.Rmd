@@ -19,9 +19,7 @@ y = round(y,1)
 data = data.frame(x,y)
 ```
 
-Kita pasti sudah sering mendengar, melihat, bahkan membuat model regresi linear $y = ax + b$. 
-
-Percaya atau tidak, biasanya metode _linear curve fitting_ yang satu ini adalah salah satu metode statistik yang sering ditanyakan oleh banyak rekan kerja. Saya juga pertama kali mengenal
+Kita pasti sudah sering mendengar, melihat, bahkan membuat model regresi linear $y = ax + b$. Bagi saya pribadi, metode _linear curve fitting_ yang satu ini adalah salah satu metode statistik yang sering ditanyakan oleh banyak rekan kerja. Pertama kali saya mengenal regresi linear adalah pada saat kuliah _Statistika Matematika_ pada tingkat 3 dulu di S1. 
 
 Setidaknya saya pernah menulis tiga _posts_ terkait regresi linear:
 
@@ -147,8 +145,34 @@ Untuk mencari konstantanya, saya cukup lakukan $A^{-1}d$, yakni:
 solve(A) %*% d
 ``` 
 
+```{r,include=FALSE}
+sol = solve(A) %*% d
+```
+
+Kita dapatkan formulanya sebagai berikut:
+
+y = `r sol[2]` x + `r sol[1]`
+
+Salah satu _insight_ yang bisa kita dapatkan adalah:
+
+> ___Ternyata masalah curve fitting yang sering dimasukkan ke dalam statistika justru diselesaikan secara aljabar.___
+
 Mari kita bandingkan nilainya dengan _base_ dari __R__ sebagai berikut:
 
 ```{r}
 lm(y~x)
 ```
+
+Terlihat jelas bahwa hasil antara __algoritma bikininan sendiri__ vs _base_ __R__ memiliki hasil yang serupa.
+
+---
+
+## _What's Next?_
+
+Lantas apa _sih_ gunanya membuat algoritma sendiri padahal di __R__ sudah ada _function_ untuk melakukan regresi?
+
+Hal ini akan berguna saat kita hendak __melakukan kustomisasi terhadap fungsi regresi yang kita buat__. Contohnya adalah saat kita hendak melakukan regresi linear multi peubah, regresi polinom, regresi eksponensial, dan lain sebagainya. Saya akan menjelaskannya pada _post_ berikutnya _yah_.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`

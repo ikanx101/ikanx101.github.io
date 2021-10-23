@@ -4,8 +4,12 @@ Belajar Membuat Model Regresi Linear - part 1
 Kita pasti sudah sering mendengar, melihat, bahkan membuat model regresi
 linear ![y = ax +
 b](https://latex.codecogs.com/png.latex?y%20%3D%20ax%20%2B%20b
-"y = ax + b"). Setidaknya saya pernah menulis tiga *posts* terkait
-regresi linear:
+"y = ax + b"). Bagi saya pribadi, metode *linear curve fitting* yang
+satu ini adalah salah satu metode statistik yang sering ditanyakan oleh
+banyak rekan kerja. Pertama kali saya mengenal regresi linear adalah
+pada saat kuliah *Statistika Matematika* pada tingkat 3 dulu di S1.
+
+Setidaknya saya pernah menulis tiga *posts* terkait regresi linear:
 
 1.  Bagaimana membuat model regresi linear di **R** dan menguji
     asumsinya di [sini](https://ikanx101.com/blog/belajar-regresi/).
@@ -164,14 +168,11 @@ Sekarang kita akan coba membuat persamaan regresi dari data tertentu
 berdasarkan persamaan di atas **tanpa menggunakan function** `lm()` dari
 *base*-nya **R**.
 
-Misalkan saya punya data sebagai
-    berikut:
+Misalkan saya punya data sebagai berikut:
 
-    ##  [1] 3.915611 8.643532 6.620704 7.311138 2.342219 2.769477 6.920885 6.424778
-    ##  [9] 7.344196 7.975778
+    ##  [1] 8.8 6.3 7.6 7.7 4.1 8.9 7.0 4.9 8.1 3.9
 
-    ##  [1]  9.119796 19.631007 15.133814 16.668801  5.621797  6.571686 15.801183
-    ##  [8] 14.698227 16.742295 18.146443
+    ##  [1] 42.2 31.3 37.0 37.4 21.7 42.6 34.4 25.2 39.1 20.9
 
 Jika dibuat dalam bentuk *scatter plot*:
 
@@ -181,23 +182,23 @@ Untuk membuat persamaan regresinya, kita cukup hitung:
 
   - ![\\sum\_{i=1}^n x\_i
     =](https://latex.codecogs.com/png.latex?%5Csum_%7Bi%3D1%7D%5En%20x_i%20%3D
-    "\\sum_{i=1}^n x_i =") 60.2683179
+    "\\sum_{i=1}^n x_i =") 67.3
   - ![\\sum\_{i=1}^n x\_i^2
     =](https://latex.codecogs.com/png.latex?%5Csum_%7Bi%3D1%7D%5En%20x_i%5E2%20%3D
-    "\\sum_{i=1}^n x_i^2 =") 407.2117849
+    "\\sum_{i=1}^n x_i^2 =") 484.03
   - ![\\sum\_{i=1}^n (x\_i y\_i)
     =](https://latex.codecogs.com/png.latex?%5Csum_%7Bi%3D1%7D%5En%20%28x_i%20y_i%29%20%3D
-    "\\sum_{i=1}^n (x_i y_i) =") 930.3045426
+    "\\sum_{i=1}^n (x_i y_i) =") 2368.34
 
 Lalu saya akan buat matriks berikut:
 
-    ##          [,1]      [,2]
-    ## [1,] 10.00000  60.26832
-    ## [2,] 60.26832 407.21178
+    ##      [,1]   [,2]
+    ## [1,] 10.0  67.30
+    ## [2,] 67.3 484.03
 
 dan membuat *vector* berikut:
 
-    ## [1] 138.1350 930.3045
+    ## [1]  331.80 2368.34
 
 Untuk mencari konstantanya, saya cukup lakukan
 ![A^{-1}d](https://latex.codecogs.com/png.latex?A%5E%7B-1%7Dd
@@ -207,9 +208,18 @@ Untuk mencari konstantanya, saya cukup lakukan
 solve(A) %*% d
 ```
 
-    ##           [,1]
-    ## [1,] 0.4145287
-    ## [2,] 2.2232205
+    ##          [,1]
+    ## [1,] 3.896569
+    ## [2,] 4.351178
+
+Kita dapatkan formulanya sebagai berikut:
+
+y = 4.3511784 x + 3.8965692
+
+Salah satu *insight* yang bisa kita dapatkan adalah:
+
+> ***Ternyata masalah curve fitting yang sering dimasukkan ke dalam
+> statistika justru diselesaikan secara aljabar.***
 
 Mari kita bandingkan nilainya dengan *base* dari **R** sebagai berikut:
 
@@ -223,4 +233,25 @@ lm(y~x)
     ## 
     ## Coefficients:
     ## (Intercept)            x  
-    ##      0.4145       2.2232
+    ##       3.897        4.351
+
+Terlihat jelas bahwa hasil antara **algoritma bikininan sendiri** vs
+*base* **R** memiliki hasil yang serupa.
+
+-----
+
+## *What’s Next?*
+
+Lantas apa *sih* gunanya membuat algoritma sendiri padahal di **R**
+sudah ada *function* untuk melakukan regresi?
+
+Hal ini akan berguna saat kita hendak **melakukan kustomisasi terhadap
+fungsi regresi yang kita buat**. Contohnya adalah saat kita hendak
+melakukan regresi linear multi peubah, regresi polinom, regresi
+eksponensial, dan lain sebagainya. Saya akan menjelaskannya pada *post*
+berikutnya *yah*.
+
+-----
+
+`if you find this article helpful, support this blog by clicking the
+ads.`
