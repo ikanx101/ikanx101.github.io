@@ -170,9 +170,9 @@ berdasarkan persamaan di atas **tanpa menggunakan function** `lm()` dari
 
 Misalkan saya punya data sebagai berikut:
 
-    ##  [1] 8.8 6.3 7.6 7.7 4.1 8.9 7.0 4.9 8.1 3.9
+    ##  [1] 6.9 7.6 3.9 7.4 5.1 2.6 8.3 5.3 8.2 6.4
 
-    ##  [1] 42.2 31.3 37.0 37.4 21.7 42.6 34.4 25.2 39.1 20.9
+    ##  [1]  0.9  1.2 -0.7  1.1 -0.1 -1.4  1.6  0.0  1.5  0.6
 
 Jika dibuat dalam bentuk *scatter plot*:
 
@@ -182,23 +182,23 @@ Untuk membuat persamaan regresinya, kita cukup hitung:
 
   - ![\\sum\_{i=1}^n x\_i
     =](https://latex.codecogs.com/png.latex?%5Csum_%7Bi%3D1%7D%5En%20x_i%20%3D
-    "\\sum_{i=1}^n x_i =") 67.3
+    "\\sum_{i=1}^n x_i =") 61.7
   - ![\\sum\_{i=1}^n x\_i^2
     =](https://latex.codecogs.com/png.latex?%5Csum_%7Bi%3D1%7D%5En%20x_i%5E2%20%3D
-    "\\sum_{i=1}^n x_i^2 =") 484.03
+    "\\sum_{i=1}^n x_i^2 =") 413.29
   - ![\\sum\_{i=1}^n (x\_i y\_i)
     =](https://latex.codecogs.com/png.latex?%5Csum_%7Bi%3D1%7D%5En%20%28x_i%20y_i%29%20%3D
-    "\\sum_{i=1}^n (x_i y_i) =") 2368.34
+    "\\sum_{i=1}^n (x_i y_i) =") 46.01
 
 Lalu saya akan buat matriks berikut:
 
     ##      [,1]   [,2]
-    ## [1,] 10.0  67.30
-    ## [2,] 67.3 484.03
+    ## [1,] 10.0  61.70
+    ## [2,] 61.7 413.29
 
 dan membuat *vector* berikut:
 
-    ## [1]  331.80 2368.34
+    ## [1]  4.70 46.01
 
 Untuk mencari konstantanya, saya cukup lakukan
 ![A^{-1}d](https://latex.codecogs.com/png.latex?A%5E%7B-1%7Dd
@@ -208,13 +208,13 @@ Untuk mencari konstantanya, saya cukup lakukan
 solve(A) %*% d
 ```
 
-    ##          [,1]
-    ## [1,] 3.896569
-    ## [2,] 4.351178
+    ##            [,1]
+    ## [1,] -2.7494678
+    ## [2,]  0.5217938
 
 Kita dapatkan formulanya sebagai berikut:
 
-y = 4.3511784 x + 3.8965692
+y = 0.5217938 x + -2.7494678
 
 Salah satu *insight* yang bisa kita dapatkan adalah:
 
@@ -233,7 +233,7 @@ lm(y~x)
     ## 
     ## Coefficients:
     ## (Intercept)            x  
-    ##       3.897        4.351
+    ##     -2.7495       0.5218
 
 Terlihat jelas bahwa hasil antara **algoritma bikininan sendiri** vs
 *base* **R** memiliki hasil yang serupa.
