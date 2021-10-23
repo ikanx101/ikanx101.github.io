@@ -170,9 +170,9 @@ berdasarkan persamaan di atas **tanpa menggunakan function** `lm()` dari
 
 Misalkan saya punya data sebagai berikut:
 
-    ##  [1] 6.9 7.6 3.9 7.4 5.1 2.6 8.3 5.3 8.2 6.4
+    ##  [1] 3.5 6.1 4.1 5.6 4.7 7.9 7.8 4.4 6.2 5.0
 
-    ##  [1]  0.9  1.2 -0.7  1.1 -0.1 -1.4  1.6  0.0  1.5  0.6
+    ##  [1] 3.5 2.2 3.2 2.5 2.9 1.3 1.3 3.1 2.2 2.8
 
 Jika dibuat dalam bentuk *scatter plot*:
 
@@ -182,23 +182,23 @@ Untuk membuat persamaan regresinya, kita cukup hitung:
 
   - ![\\sum\_{i=1}^n x\_i
     =](https://latex.codecogs.com/png.latex?%5Csum_%7Bi%3D1%7D%5En%20x_i%20%3D
-    "\\sum_{i=1}^n x_i =") 61.7
+    "\\sum_{i=1}^n x_i =") 55.3
   - ![\\sum\_{i=1}^n x\_i^2
     =](https://latex.codecogs.com/png.latex?%5Csum_%7Bi%3D1%7D%5En%20x_i%5E2%20%3D
-    "\\sum_{i=1}^n x_i^2 =") 413.29
+    "\\sum_{i=1}^n x_i^2 =") 325.77
   - ![\\sum\_{i=1}^n (x\_i y\_i)
     =](https://latex.codecogs.com/png.latex?%5Csum_%7Bi%3D1%7D%5En%20%28x_i%20y_i%29%20%3D
-    "\\sum_{i=1}^n (x_i y_i) =") 46.01
+    "\\sum_{i=1}^n (x_i y_i) =") 128.11
 
 Lalu saya akan buat matriks berikut:
 
     ##      [,1]   [,2]
-    ## [1,] 10.0  61.70
-    ## [2,] 61.7 413.29
+    ## [1,] 10.0  55.30
+    ## [2,] 55.3 325.77
 
 dan membuat *vector* berikut:
 
-    ## [1]  4.70 46.01
+    ## [1]  25.00 128.11
 
 Untuk mencari konstantanya, saya cukup lakukan
 ![A^{-1}d](https://latex.codecogs.com/png.latex?A%5E%7B-1%7Dd
@@ -209,12 +209,12 @@ solve(A) %*% d
 ```
 
     ##            [,1]
-    ## [1,] -2.7494678
-    ## [2,]  0.5217938
+    ## [1,]  5.3091879
+    ## [2,] -0.5079906
 
 Kita dapatkan formulanya sebagai berikut:
 
-y = 0.5217938 x + -2.7494678
+y = -0.5079906 x + 5.3091879
 
 Salah satu *insight* yang bisa kita dapatkan adalah:
 
@@ -233,7 +233,7 @@ lm(y~x)
     ## 
     ## Coefficients:
     ## (Intercept)            x  
-    ##     -2.7495       0.5218
+    ##       5.309       -0.508
 
 Terlihat jelas bahwa hasil antara **algoritma bikininan sendiri** vs
 *base* **R** memiliki hasil yang serupa.
