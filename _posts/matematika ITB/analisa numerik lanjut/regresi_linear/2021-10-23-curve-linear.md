@@ -1,5 +1,22 @@
-Belajar Membuat Model Regresi Linear - part 1
-================
+---
+date: 2021-10-23T10:25:00-04:00
+title: "Belajar Membuat Model Regresi Linear - part 1"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - Computational Science
+  - Sains Komputasi
+  - Matematika
+  - Kuliah
+  - ITB
+  - Analisa Numerik Lanjut
+  - Komputasi
+  - Aproksimasi
+  - Regresi Linear
+  - Curve Fitting
+---
 
 Kita pasti sudah sering mendengar, melihat, bahkan membuat model regresi
 linear ![y = ax +
@@ -176,7 +193,7 @@ Misalkan saya punya data sebagai berikut:
 
 Jika dibuat dalam bentuk *scatter plot*:
 
-![](post_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/analisa%20numerik%20lanjut/regresi_linear/post_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 Untuk membuat persamaan regresinya, kita cukup hitung:
 
