@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style type="text/css">
+@font-face {
+font-family: octicons-link;
+src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
+}
+body {
+-webkit-text-size-adjust: 100%;
+text-size-adjust: 100%;
+color: #333;
+font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+font-size: 16px;
+line-height: 1.6;
+word-wrap: break-word;
+}
+a {
+background-color: transparent;
+}
+a:active,
+a:hover {
+outline: 0;
+}
+strong {
+font-weight: bold;
+}
+h1 {
+font-size: 2em;
+margin: 0.67em 0;
+}
+img {
+border: 0;
+}
+hr {
+box-sizing: content-box;
+height: 0;
+}
+pre {
+overflow: auto;
+}
+code,
+kbd,
+pre {
+font-family: monospace, monospace;
+font-size: 1em;
+}
+input {
+color: inherit;
+font: inherit;
+margin: 0;
+}
+html input[disabled] {
+cursor: default;
+}
+input {
+line-height: normal;
+}
+input[type="checkbox"] {
+box-sizing: border-box;
+padding: 0;
+}
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+td,
+th {
+padding: 0;
+}
+* {
+box-sizing: border-box;
+}
+input {
+font: 13px / 1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+a {
+color: #4078c0;
+text-decoration: none;
+}
+a:hover,
+a:active {
+text-decoration: underline;
+}
+hr {
+height: 0;
+margin: 15px 0;
+overflow: hidden;
+background: transparent;
+border: 0;
+border-bottom: 1px solid #ddd;
+}
+hr:before {
+display: table;
+content: "";
+}
+hr:after {
+display: table;
+clear: both;
+content: "";
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 15px;
+margin-bottom: 15px;
+line-height: 1.1;
+}
+h1 {
+font-size: 30px;
+}
+h2 {
+font-size: 21px;
+}
+h3 {
+font-size: 16px;
+}
+h4 {
+font-size: 14px;
+}
+h5 {
+font-size: 12px;
+}
+h6 {
+font-size: 11px;
+}
+blockquote {
+margin: 0;
+}
+ul,
+ol {
+padding: 0;
+margin-top: 0;
+margin-bottom: 0;
+}
+ol ol,
+ul ol {
+list-style-type: lower-roman;
+}
+ul ul ol,
+ul ol ol,
+ol ul ol,
+ol ol ol {
+list-style-type: lower-alpha;
+}
+dd {
+margin-left: 0;
+}
+code {
+font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+font-size: 12px;
+}
+pre {
+margin-top: 0;
+margin-bottom: 0;
+font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+.select::-ms-expand {
+opacity: 0;
+}
+.octicon {
+font: normal normal normal 16px/1 octicons-link;
+display: inline-block;
+text-decoration: none;
+text-rendering: auto;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+.octicon-link:before {
+content: '\f05c';
+}
+.markdown-body:before {
+display: table;
+content: "";
+}
+.markdown-body:after {
+display: table;
+clear: both;
+content: "";
+}
+.markdown-body>*:first-child {
+margin-top: 0 !important;
+}
+.markdown-body>*:last-child {
+margin-bottom: 0 !important;
+}
+a:not([href]) {
+color: inherit;
+text-decoration: none;
+}
+.anchor {
+display: inline-block;
+padding-right: 2px;
+margin-left: -18px;
+}
+.anchor:focus {
+outline: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 1em;
+margin-bottom: 16px;
+font-weight: bold;
+line-height: 1.4;
+}
+h1 .octicon-link,
+h2 .octicon-link,
+h3 .octicon-link,
+h4 .octicon-link,
+h5 .octicon-link,
+h6 .octicon-link {
+color: #000;
+vertical-align: middle;
+visibility: hidden;
+}
+h1:hover .anchor,
+h2:hover .anchor,
+h3:hover .anchor,
+h4:hover .anchor,
+h5:hover .anchor,
+h6:hover .anchor {
+text-decoration: none;
+}
+h1:hover .anchor .octicon-link,
+h2:hover .anchor .octicon-link,
+h3:hover .anchor .octicon-link,
+h4:hover .anchor .octicon-link,
+h5:hover .anchor .octicon-link,
+h6:hover .anchor .octicon-link {
+visibility: visible;
+}
+h1 {
+padding-bottom: 0.3em;
+font-size: 2.25em;
+line-height: 1.2;
+border-bottom: 1px solid #eee;
+}
+h1 .anchor {
+line-height: 1;
+}
+h2 {
+padding-bottom: 0.3em;
+font-size: 1.75em;
+line-height: 1.225;
+border-bottom: 1px solid #eee;
+}
+h2 .anchor {
+line-height: 1;
+}
+h3 {
+font-size: 1.5em;
+line-height: 1.43;
+}
+h3 .anchor {
+line-height: 1.2;
+}
+h4 {
+font-size: 1.25em;
+}
+h4 .anchor {
+line-height: 1.2;
+}
+h5 {
+font-size: 1em;
+}
+h5 .anchor {
+line-height: 1.1;
+}
+h6 {
+font-size: 1em;
+color: #777;
+}
+h6 .anchor {
+line-height: 1.1;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table,
+pre {
+margin-top: 0;
+margin-bottom: 16px;
+}
+hr {
+height: 4px;
+padding: 0;
+margin: 16px 0;
+background-color: #e7e7e7;
+border: 0 none;
+}
+ul,
+ol {
+padding-left: 2em;
+}
+ul ul,
+ul ol,
+ol ol,
+ol ul {
+margin-top: 0;
+margin-bottom: 0;
+}
+li>p {
+margin-top: 16px;
+}
+dl {
+padding: 0;
+}
+dl dt {
+padding: 0;
+margin-top: 16px;
+font-size: 1em;
+font-style: italic;
+font-weight: bold;
+}
+dl dd {
+padding: 0 16px;
+margin-bottom: 16px;
+}
+blockquote {
+padding: 0 15px;
+color: #777;
+border-left: 4px solid #ddd;
+}
+blockquote>:first-child {
+margin-top: 0;
+}
+blockquote>:last-child {
+margin-bottom: 0;
+}
+table {
+display: block;
+width: 100%;
+overflow: auto;
+word-break: normal;
+word-break: keep-all;
+}
+table th {
+font-weight: bold;
+}
+table th,
+table td {
+padding: 6px 13px;
+border: 1px solid #ddd;
+}
+table tr {
+background-color: #fff;
+border-top: 1px solid #ccc;
+}
+table tr:nth-child(2n) {
+background-color: #f8f8f8;
+}
+img {
+max-width: 100%;
+box-sizing: content-box;
+background-color: #fff;
+}
+code {
+padding: 0;
+padding-top: 0.2em;
+padding-bottom: 0.2em;
+margin: 0;
+font-size: 85%;
+background-color: rgba(0,0,0,0.04);
+border-radius: 3px;
+}
+code:before,
+code:after {
+letter-spacing: -0.2em;
+content: "\00a0";
+}
+pre>code {
+padding: 0;
+margin: 0;
+font-size: 100%;
+word-break: normal;
+white-space: pre;
+background: transparent;
+border: 0;
+}
+.highlight {
+margin-bottom: 16px;
+}
+.highlight pre,
+pre {
+padding: 16px;
+overflow: auto;
+font-size: 85%;
+line-height: 1.45;
+background-color: #f7f7f7;
+border-radius: 3px;
+}
+.highlight pre {
+margin-bottom: 0;
+word-break: normal;
+}
+pre {
+word-wrap: normal;
+}
+pre code {
+display: inline;
+max-width: initial;
+padding: 0;
+margin: 0;
+overflow: initial;
+line-height: inherit;
+word-wrap: normal;
+background-color: transparent;
+border: 0;
+}
+pre code:before,
+pre code:after {
+content: normal;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font-size: 11px;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.pl-c {
+color: #969896;
+}
+.pl-c1,
+.pl-s .pl-v {
+color: #0086b3;
+}
+.pl-e,
+.pl-en {
+color: #795da3;
+}
+.pl-s .pl-s1,
+.pl-smi {
+color: #333;
+}
+.pl-ent {
+color: #63a35c;
+}
+.pl-k {
+color: #a71d5d;
+}
+.pl-pds,
+.pl-s,
+.pl-s .pl-pse .pl-s1,
+.pl-sr,
+.pl-sr .pl-cce,
+.pl-sr .pl-sra,
+.pl-sr .pl-sre {
+color: #183691;
+}
+.pl-v {
+color: #ed6a43;
+}
+.pl-id {
+color: #b52a1d;
+}
+.pl-ii {
+background-color: #b52a1d;
+color: #f8f8f8;
+}
+.pl-sr .pl-cce {
+color: #63a35c;
+font-weight: bold;
+}
+.pl-ml {
+color: #693a17;
+}
+.pl-mh,
+.pl-mh .pl-en,
+.pl-ms {
+color: #1d3e81;
+font-weight: bold;
+}
+.pl-mq {
+color: #008080;
+}
+.pl-mi {
+color: #333;
+font-style: italic;
+}
+.pl-mb {
+color: #333;
+font-weight: bold;
+}
+.pl-md {
+background-color: #ffecec;
+color: #bd2c00;
+}
+.pl-mi1 {
+background-color: #eaffea;
+color: #55a532;
+}
+.pl-mdr {
+color: #795da3;
+font-weight: bold;
+}
+.pl-mo {
+color: #1d3e81;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.task-list-item {
+list-style-type: none;
+}
+.task-list-item+.task-list-item {
+margin-top: 3px;
+}
+.task-list-item input {
+margin: 0 0.35em 0.25em -1.6em;
+vertical-align: middle;
+}
+:checked+.radio-label {
+z-index: 1;
+position: relative;
+border-color: #4078c0;
+}
+.sourceLine {
+display: inline-block;
+}
+code .kw { color: #000000; }
+code .dt { color: #ed6a43; }
+code .dv { color: #009999; }
+code .bn { color: #009999; }
+code .fl { color: #009999; }
+code .ch { color: #009999; }
+code .st { color: #183691; }
+code .co { color: #969896; }
+code .ot { color: #0086b3; }
+code .al { color: #a61717; }
+code .fu { color: #63a35c; }
+code .er { color: #a61717; background-color: #e3d2d2; }
+code .wa { color: #000000; }
+code .cn { color: #008080; }
+code .sc { color: #008080; }
+code .vs { color: #183691; }
+code .ss { color: #183691; }
+code .im { color: #000000; }
+code .va {color: #008080; }
+code .cf { color: #000000; }
+code .op { color: #000000; }
+code .bu { color: #000000; }
+code .ex { color: #000000; }
+code .pp { color: #999999; }
+code .at { color: #008080; }
+code .do { color: #969896; }
+code .an { color: #008080; }
+code .cv { color: #008080; }
+code .in { color: #008080; }
+</style>
+<style>
+body {
+  box-sizing: border-box;
+  min-width: 200px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 45px;
+  padding-top: 0px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1 id="belajar-membuat-model-regresi-linear---part-2-multivariat">Belajar Membuat Model Regresi Linear - part 2 (Multivariat)</h1>
+<p>Pada tulisan <a href="https://ikanx101.com/blog/curve-linear/">sebelumnya</a> saya telah menjelaskan bagaimana caranya membuat persamaan regresi linear sederhana dua peubah (<embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAIBAMAAAAy1HOFAAAALVBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAOrOgAAAADnRSTlMARFSZImYQMrvddqvNiR1MEkMAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAA1SURBVAgdY2AQMhE1Y2BXqAiYyMDFUJcQwMDAsBqIGRgOATEjyzOGBQyRrNNYHRh8VWTVGQC/jQgwYH9M7AAAAABJRU5ErkJggg==" title="x"></embed> dan <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAMBAMAAABCcoqQAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAMlSZEO+7dkSJq90iZs0qwsm8AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAATElEQVQIHWNgVGZgMmBwYhVgK2BokGdgFWBgmMUgz8DAsIOhjIGB5QtDOpD9gecjkLx58wOQZGA3YGDga2A9wMDAxWAL5PNeV2BgAACoTwyC43HGOwAAAABJRU5ErkJggg==" title="y"></embed>) <strong>dari nol</strong>. Sekarang kita akan “naik kelas” untuk membuat fungsi regresi linear multivariat. Apa maksudnya?</p>
+<blockquote>
+<p><em><strong>Regresi linear multivariat adalah suatu metode curve fitting yang melibatkan banyak peubah (minimal 3 peubah).</strong></em></p>
+</blockquote>
+<p>Misalkan saya memiliki <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAIBAMAAADdFhi7AAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAVHZmEKsyIkTvu92Zic2ZjesdAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAP0lEQVQIHWNgVHY2TWBgqMg0YFzAwCBgzcAUwMDAcJaBVQFIzWDgL2BgYP/AIMfBwMD8gOEsMwMDkwFDrggDAP0FCNipklNgAAAAAElFTkSuQmCC" title="n"></embed> buah data sebagai berikut: <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGIAAAATBAMAAACZ9cVZAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEHarRM1UZrsi790ymYmFLq+pAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABlElEQVQoFZWSvUvrUBjGf0nz0dR4yeTiEtTBwUH/Acmk0704OWdQVLBQXFTE0uviWq46iR93crXgH5BFEZfWSdwEwcFB2l3U95yT9nq39oXkvE+e55eTNxywYvovW0UL/efBakl6YhCCFUkvDES44FUGIn6kFOsDEc40JQHmHufve9x34ZQPd6PcCct4LThnCML0tnLVJf4TN+H+UJI7I6WsGEObI7BpRhVr1ThaeFV5m1QcdnyWynqbpEkpg79cK2dc/sCyalSJ+MOs6e1p+Y5CrMUzTVkbjCq1KJdsZkrENVumd1Oou5kWV0zKeq4md4IOcZcwgjcdSs4im2BM91aHPU24ETt+w68rIpghF1aDgwj/cifaxvoZKYN28C6RGnbK6dqvdf1V4QW5KGTcVQheDl8yGK4pg2q1Db48ldl0qTm8vGcqgNQIr+ZfGsNuQTGC33nqWNYu4SRyrHPCiYeflOEmpTocSOrEEM7rdi/E2edHj2azqo0CD5JUZ8NJDaLu39p/RG74G+L6mVKyV98l430BUbpblITdFYgAAAAASUVORK5CYII=" title="(x_1,x_2,x_3,y)"></embed>, lalu kita hendak membuat persamaan regresi berikut ini: <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAS0AAAATBAMAAAA3yka0AAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAdmZU3TIiRM0Qibvvq5mze/DLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAADcUlEQVRIDbVVTUgUYRh+dnZ3xtHddcRDQRTTJoYJsWlWUIiXCm8LXgIjhxAUwVwqKDrIQodCCAaKqJNLdozavHVbAhVv6yGIYEkKAg/BUiR4svf7mZlvJkc95Afu9z7P+8z7vN+736yAWKYlg122xC65g0glTgDZfRQ21/chUiT6V0dB+wlHN1XV8bPAIZWIi/viEjH8WAwfSxs1NXV5AiirRFzcEpeI8q4geiO8GcEelHIgUfco2vUmkLQVIjZsLcSmwomTAq6FWWilCCGhlANttiJIlolwFCI2NNTjxKooIY1WIpo9+2p3gifM13MlZAjf+XF7w6ONwYnT7r+g5lF8H1nHYIhAx4DDCdGX/vtMIVTV66uv3wkZyGMkOi9B4dnwUkC6MGpf9WxG0ospf+gBaFI+12CrApiFJbxXCfoasmUivHlpy1gNVZV9Ze1sJajpy7GIBhQ+UwQm6c5hzLXNi7wurPSWhr63Cjg/SPNbFYT4NNJNLKkEepGtcEIMgMBKqKrs6zCSbshAyLUq1oQx98I8lbrGyh2l+3+B1+Vvhm5JF/6a1LIWMCyzYmutU2fq+ohMiQ/0MR8ogT9K1Z+Nz08aX0j/iz1Dr54woPlLuc2OyV5J7oW7pHrGpA/pjwbHV0sB6TKdwANwWor0gMDyM1VKSIEg9E3IXywxgHkkm6GqYl76FpOrBkI+47BjEi+82JjYvTdIb3l9lWZc+q/TWmEVwIHeQVGN/vz7hXm3zVIJKnvEIMK7X+PIWqGqoi/m7oYMRF9jSFRLgRd9qdSliy5tWHNYX9MutKEut5um6AbAnHWhV5mpv9oxU/QBC2rmnMYJYZTC/aAq4+X9ugLtpm/AeCHP4EUlz3nmBX53EwVMnXswwL/H6zb0hYkFsvwEBCBXhWazKv7SXr3zYx7M9t/o4YEwMhasoCrjZV9T/T2BAeOl/PvAt+fCmLxgNimj11meFrtfBR7RFSw6PkhWtSG0uTLjbce8ILILo4CUt1b25fPcgFBEzr2Mp7ylD1I8TrvX1z26bx4wrFwF035FHjzCcpjw0Us/EgGrSsuMnIsbEB+Rc6/22SJ75Bb7oMv/phtJEULf3q74APlTwIbMyK2es8NEHGJVd1jcYAeee2l5njG8IdFvmCpVgcZPEGTznUF8YJGzd2V9b8l/U/wFU5ni0WfLrK4AAAAASUVORK5CYII=" title="f(x_1,x_2,x_3) = y = a + b x_1 + c x_2 + d x_3"></embed>.</p>
+<p>Bagaimana cara kita melakukannya?</p>
+<hr />
+<p>Pada tulisan sebelumnya, saya mendefinisikan <em>error</em> sebagai <strong>jarak</strong> antara nilai <em>real</em> dan nilai prediksi. Lantas bagaimana jika ada banyak peubah yang terlibat?</p>
+<p>Pada prinsipnya sama saja. Kita bisa menggunakan cara serupa. Namun saya akan menuliskannya dalam bentuk aljabar yang <strong>sudah pasti lebih mudah</strong>.</p>
+<p>Oke, perhatikan baik-baik.</p>
+<p>Misalkan saya memiliki <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAIBAMAAADdFhi7AAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAVHZmEKsyIkTvu92Zic2ZjesdAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAP0lEQVQIHWNgVHY2TWBgqMg0YFzAwCBgzcAUwMDAcJaBVQFIzWDgL2BgYP/AIMfBwMD8gOEsMwMDkwFDrggDAP0FCNipklNgAAAAAElFTkSuQmCC" title="n"></embed> buah data dengan <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAIBAMAAAACWGKkAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAZnYQqzJUIkTvzbvdmYlSEOKuAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAATklEQVQIHWNgVDQUCU5zZWCoiBRgW8aQzcCQIMPAeIBBhYGB4R4DiwLDJiBjBgNnAPN3Bgb2Dwz1DIwLGoCYQZqBV0GAgUmA4RkDxzMGAOaYDdTVr3cAAAAAAElFTkSuQmCC" title="m"></embed> buah peubah. Maka ekspektasi kita adalah:</p>
+<p><embed src="data:image/png;base64,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" title="\begin{bmatrix}
+1 &amp; x_1 &amp; x_2 &amp; .. &amp; x_n \\ 
+1 &amp; x_1 &amp; x_2 &amp; .. &amp; x_n \\ 
+.. &amp; .. &amp; .. &amp; .. &amp; .. \\ 
+1 &amp; x_1 &amp; x_2 &amp; .. &amp; x_n \\ 
+1 &amp; x_1 &amp; x_2 &amp; .. &amp; x_n 
+\end{bmatrix} 
+\begin{bmatrix} a \\ b \\ c \\ d \end{bmatrix} = 
+\begin{bmatrix} y_1 \\ y_2 \\ .. \\ y_{n-1} \\ y_n \end{bmatrix}"></embed></p>
+
+</body>
+</html>

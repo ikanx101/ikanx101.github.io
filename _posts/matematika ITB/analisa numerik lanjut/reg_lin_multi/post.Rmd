@@ -1,0 +1,53 @@
+---
+title: "Belajar Membuat Model Regresi Linear - part 2 (Multivariat)"
+output: 
+  github_document:
+   pandoc_args: --webtex
+---
+
+```{r,include=FALSE}
+rm(list=ls())
+
+x1 = runif(10,0,10)
+x2 = runif(10,5,9)
+x3 = runif(10,2,8)
+acak1 = runif(10,0,1)
+acak2 = runif(10,-1,1)
+acak3 = runif(10,-1,1)
+
+y = acak1 * x1 + acak2 * x2 + acak3 * x3
+
+data = data.frame(x1,x2,x3,y)
+```
+
+Pada tulisan [sebelumnya](https://ikanx101.com/blog/curve-linear/) saya telah menjelaskan bagaimana caranya membuat persamaan regresi linear sederhana dua peubah ($x$ dan $y$) __dari nol__. Sekarang kita akan "naik kelas" untuk membuat fungsi regresi linear multivariat. Apa maksudnya?
+
+> ___Regresi linear multivariat adalah suatu metode curve fitting yang melibatkan banyak peubah (minimal 3 peubah).___
+
+Misalkan saya memiliki $n$ buah data sebagai berikut: $(x_1,x_2,x_3,y)$, lalu kita hendak membuat persamaan regresi berikut ini: $f(x_1,x_2,x_3) = y = a + b x_1 + c x_2 + d x_3$.
+
+Bagaimana cara kita melakukannya?
+
+--- 
+
+Pada tulisan sebelumnya, saya mendefinisikan _error_ sebagai __jarak__ antara nilai _real_ dan nilai prediksi. Lantas bagaimana jika ada banyak peubah yang terlibat?
+
+Pada prinsipnya sama saja. Kita bisa menggunakan cara serupa. Namun saya akan menuliskannya dalam bentuk aljabar yang __sudah pasti lebih mudah__.
+
+Oke, perhatikan baik-baik.
+
+Misalkan saya memiliki $n$ buah data dengan $m$ buah peubah. Maka ekspektasi kita adalah:
+
+$$\begin{bmatrix}
+1 & x_1 & x_2 & .. & x_n \\ 
+1 & x_1 & x_2 & .. & x_n \\ 
+.. & .. & .. & .. & .. \\ 
+1 & x_1 & x_2 & .. & x_n \\ 
+1 & x_1 & x_2 & .. & x_n 
+\end{bmatrix} 
+\begin{bmatrix} a \\ b \\ c \\ d \end{bmatrix} = 
+\begin{bmatrix} y_1 \\ y_2 \\ .. \\ y_{n-1} \\ y_n \end{bmatrix}$$
+
+
+
+
