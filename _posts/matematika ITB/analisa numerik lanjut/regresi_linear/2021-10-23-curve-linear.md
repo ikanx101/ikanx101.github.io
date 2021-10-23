@@ -206,6 +206,9 @@ Untuk membuat persamaan regresinya, kita cukup hitung:
   - ![\\sum\_{i=1}^n (x\_i y\_i)
     =](https://latex.codecogs.com/png.latex?%5Csum_%7Bi%3D1%7D%5En%20%28x_i%20y_i%29%20%3D
     "\\sum_{i=1}^n (x_i y_i) =") 128.11
+  - ![\\sum\_{i=1}^n y\_i
+    =](https://latex.codecogs.com/png.latex?%5Csum_%7Bi%3D1%7D%5En%20y_i%20%3D
+    "\\sum_{i=1}^n y_i =") 25
 
 Lalu saya akan buat matriks berikut:
 
