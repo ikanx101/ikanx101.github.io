@@ -644,67 +644,106 @@ body {
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">2.858129</td>
-<td align="right">6.562128</td>
-<td align="right">7.937261</td>
-<td align="right">3.0864408</td>
+<td align="right">8.829674</td>
+<td align="right">6.181745</td>
+<td align="right">7.659825</td>
+<td align="right">0.4520123</td>
 </tr>
 <tr class="even">
-<td align="right">9.708492</td>
-<td align="right">5.821518</td>
-<td align="right">4.216646</td>
-<td align="right">12.6394032</td>
+<td align="right">2.443080</td>
+<td align="right">8.661206</td>
+<td align="right">7.884343</td>
+<td align="right">7.7828454</td>
 </tr>
 <tr class="odd">
-<td align="right">4.604466</td>
-<td align="right">5.591855</td>
-<td align="right">6.080872</td>
-<td align="right">7.1563515</td>
+<td align="right">3.857816</td>
+<td align="right">7.842289</td>
+<td align="right">3.418369</td>
+<td align="right">7.1217812</td>
 </tr>
 <tr class="even">
-<td align="right">4.871235</td>
-<td align="right">7.896336</td>
-<td align="right">4.502112</td>
-<td align="right">3.5494688</td>
+<td align="right">5.136328</td>
+<td align="right">8.015814</td>
+<td align="right">2.435919</td>
+<td align="right">6.1083784</td>
 </tr>
 <tr class="odd">
-<td align="right">2.360323</td>
-<td align="right">6.833700</td>
-<td align="right">4.791829</td>
-<td align="right">1.3594765</td>
+<td align="right">6.516253</td>
+<td align="right">5.808617</td>
+<td align="right">6.520327</td>
+<td align="right">10.0330661</td>
 </tr>
 <tr class="even">
-<td align="right">8.179789</td>
-<td align="right">5.948629</td>
-<td align="right">6.941546</td>
-<td align="right">10.9744725</td>
+<td align="right">6.135791</td>
+<td align="right">6.883319</td>
+<td align="right">2.056926</td>
+<td align="right">-0.9324824</td>
 </tr>
 <tr class="odd">
-<td align="right">5.450309</td>
-<td align="right">5.423869</td>
-<td align="right">6.062742</td>
-<td align="right">4.2036685</td>
+<td align="right">4.020639</td>
+<td align="right">5.725272</td>
+<td align="right">2.306214</td>
+<td align="right">-3.7245628</td>
 </tr>
 <tr class="even">
-<td align="right">7.686010</td>
-<td align="right">6.302933</td>
-<td align="right">5.228647</td>
-<td align="right">-0.0614269</td>
+<td align="right">4.488901</td>
+<td align="right">8.126881</td>
+<td align="right">4.527751</td>
+<td align="right">11.3047224</td>
 </tr>
 <tr class="odd">
-<td align="right">8.981859</td>
-<td align="right">5.615117</td>
-<td align="right">3.125266</td>
-<td align="right">3.7140627</td>
+<td align="right">2.803466</td>
+<td align="right">5.420912</td>
+<td align="right">5.729522</td>
+<td align="right">-3.6707495</td>
 </tr>
 <tr class="even">
-<td align="right">6.387418</td>
-<td align="right">7.403743</td>
-<td align="right">4.305106</td>
-<td align="right">-3.2419350</td>
+<td align="right">5.628086</td>
+<td align="right">6.837829</td>
+<td align="right">7.055573</td>
+<td align="right">7.5280985</td>
 </tr>
 </tbody>
 </table>
+<p>Pertama-tama kita akan buat matriks sebagai berikut:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">n =<span class="st"> </span><span class="kw">length</span>(x1)</a>
+<a class="sourceLine" id="cb1-2" title="2">x0 =<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span>,n)</a>
+<a class="sourceLine" id="cb1-3" title="3">X =<span class="st"> </span><span class="kw">cbind</span>(x0,x1,x2,x3)</a>
+<a class="sourceLine" id="cb1-4" title="4">t_X =<span class="st"> </span><span class="kw">t</span>(X)</a>
+<a class="sourceLine" id="cb1-5" title="5">Y =<span class="st"> </span>y</a>
+<a class="sourceLine" id="cb1-6" title="6"></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="co"># matriks X</span></a>
+<a class="sourceLine" id="cb1-8" title="8">X</a></code></pre></div>
+<pre><code>##       x0       x1       x2       x3
+##  [1,]  1 8.829674 6.181745 7.659825
+##  [2,]  1 2.443080 8.661206 7.884343
+##  [3,]  1 3.857816 7.842289 3.418369
+##  [4,]  1 5.136328 8.015814 2.435919
+##  [5,]  1 6.516253 5.808617 6.520327
+##  [6,]  1 6.135791 6.883319 2.056926
+##  [7,]  1 4.020639 5.725272 2.306214
+##  [8,]  1 4.488901 8.126881 4.527751
+##  [9,]  1 2.803467 5.420912 5.729522
+## [10,]  1 5.628086 6.837829 7.055573
+</code></pre>
+<p>Oke, kita akan cari nilai konstantanya sebagai berikut:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">solve</span>(t_X <span class="op">%*%</span><span class="st"> </span>X) <span class="op">%*%</span><span class="st"> </span>t_X <span class="op">%*%</span><span class="st"> </span>Y</a></code></pre></div>
+<pre><code>##           [,1]
+## x0 -25.9515908
+## x1   0.5097218
+## x2   3.4372744
+## x3   0.7500860
+</code></pre>
+<p>Kita bandingkan dengan hasil <em>base</em> <strong>R</strong> sebagai berikut:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x1 <span class="op">+</span><span class="st"> </span>x2 <span class="op">+</span><span class="st"> </span>x3)</a></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = y ~ x1 + x2 + x3)
+## 
+## Coefficients:
+## (Intercept)           x1           x2           x3  
+##    -25.9516       0.5097       3.4373       0.7501
+</code></pre>
 
 </body>
 </html>

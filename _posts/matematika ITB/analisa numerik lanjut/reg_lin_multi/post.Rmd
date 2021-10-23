@@ -76,7 +76,29 @@ Mari kita uji dengan data sebagai berikut:
 
 ```{r,echo=FALSE}
 data %>% knitr::kable()
-
 ```
 
+Pertama-tama kita akan buat matriks sebagai berikut:
 
+```{r}
+n = length(x1)
+x0 = rep(1,n)
+X = cbind(x0,x1,x2,x3)
+t_X = t(X)
+Y = y
+
+# matriks X
+X
+```
+
+Oke, kita akan cari nilai konstantanya sebagai berikut:
+
+```{r}
+solve(t_X %*% X) %*% t_X %*% Y
+```
+
+Kita bandingkan dengan hasil _base_ __R__ sebagai berikut:
+
+```{r}
+lm(y ~ x1 + x2 + x3)
+```
