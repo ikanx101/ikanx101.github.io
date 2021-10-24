@@ -101,6 +101,25 @@ Oke, kita akan cari nilai konstantanya sebagai berikut:
 solve(t_X %*% X) %*% t_X %*% Y
 ```
 
+```{r,include=FALSE}
+a_k = solve(t_X %*% X) %*% t_X %*% Y
+a_k = round(a_k,3)
+```
+
+Maka kita dapatkan persamaan sebagai berikut:
+
+y = `r a_k[1]` + (`r a_k[2]`) x + (`r a_k[3]`) x^2 + (`r a_k[4]` x^3)
+
+Mari kita prediksi nilai $y$ dan kita hitung _error_-nya.
+
+```{r,echo=FALSE}
+data %>%
+  mutate(prediksi_y = a_k[1] + a_k[2] * x + a_k[3] * x^2 + a_k[4] * x^3) %>%
+  mutate(error = y - prediksi_y,
+         error = round(error,3)) %>%
+  knitr::kable()
+```
+
 
 ---
 
