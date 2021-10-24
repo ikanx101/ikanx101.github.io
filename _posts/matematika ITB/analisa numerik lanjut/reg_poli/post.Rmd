@@ -110,13 +110,22 @@ y = `r a_k[1]` + (`r a_k[2]`) x + (`r a_k[3]`) x^2 + (`r a_k[4]` x^3)
 Mari kita prediksi nilai $y$ dan kita hitung _error_-nya.
 
 ```{r,echo=FALSE}
-data %>%
+data = 
+  data %>%
   mutate(prediksi_y = a_k[1] + a_k[2] * x + a_k[3] * x^2 + a_k[4] * x^3) %>%
   mutate(error = y - prediksi_y,
-         error = round(error,3)) %>%
-  knitr::kable()
-```
+         error = round(error,3)) 
 
+data %>%
+  knitr::kable()
+
+data %>%
+  ggplot() +
+  geom_line(aes(x,y),color = "steelblue") +
+  geom_line(aes(x,prediksi_y),color = "darkgreen") +
+  theme_minimal() +
+  labs(title = "Grafik y dan prediksi y")
+```
 
 ---
 
