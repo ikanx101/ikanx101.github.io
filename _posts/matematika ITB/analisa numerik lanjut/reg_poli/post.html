@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style type="text/css">
+@font-face {
+font-family: octicons-link;
+src: url(data:font/woff;charset=utf-8;base64,d09GRgABAAAAAAZwABAAAAAACFQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEU0lHAAAGaAAAAAgAAAAIAAAAAUdTVUIAAAZcAAAACgAAAAoAAQAAT1MvMgAAAyQAAABJAAAAYFYEU3RjbWFwAAADcAAAAEUAAACAAJThvmN2dCAAAATkAAAABAAAAAQAAAAAZnBnbQAAA7gAAACyAAABCUM+8IhnYXNwAAAGTAAAABAAAAAQABoAI2dseWYAAAFsAAABPAAAAZwcEq9taGVhZAAAAsgAAAA0AAAANgh4a91oaGVhAAADCAAAABoAAAAkCA8DRGhtdHgAAAL8AAAADAAAAAwGAACfbG9jYQAAAsAAAAAIAAAACABiATBtYXhwAAACqAAAABgAAAAgAA8ASm5hbWUAAAToAAABQgAAAlXu73sOcG9zdAAABiwAAAAeAAAAME3QpOBwcmVwAAAEbAAAAHYAAAB/aFGpk3jaTY6xa8JAGMW/O62BDi0tJLYQincXEypYIiGJjSgHniQ6umTsUEyLm5BV6NDBP8Tpts6F0v+k/0an2i+itHDw3v2+9+DBKTzsJNnWJNTgHEy4BgG3EMI9DCEDOGEXzDADU5hBKMIgNPZqoD3SilVaXZCER3/I7AtxEJLtzzuZfI+VVkprxTlXShWKb3TBecG11rwoNlmmn1P2WYcJczl32etSpKnziC7lQyWe1smVPy/Lt7Kc+0vWY/gAgIIEqAN9we0pwKXreiMasxvabDQMM4riO+qxM2ogwDGOZTXxwxDiycQIcoYFBLj5K3EIaSctAq2kTYiw+ymhce7vwM9jSqO8JyVd5RH9gyTt2+J/yUmYlIR0s04n6+7Vm1ozezUeLEaUjhaDSuXHwVRgvLJn1tQ7xiuVv/ocTRF42mNgZGBgYGbwZOBiAAFGJBIMAAizAFoAAABiAGIAznjaY2BkYGAA4in8zwXi+W2+MjCzMIDApSwvXzC97Z4Ig8N/BxYGZgcgl52BCSQKAA3jCV8CAABfAAAAAAQAAEB42mNgZGBg4f3vACQZQABIMjKgAmYAKEgBXgAAeNpjYGY6wTiBgZWBg2kmUxoDA4MPhGZMYzBi1AHygVLYQUCaawqDA4PChxhmh/8ODDEsvAwHgMKMIDnGL0x7gJQCAwMAJd4MFwAAAHjaY2BgYGaA4DAGRgYQkAHyGMF8NgYrIM3JIAGVYYDT+AEjAwuDFpBmA9KMDEwMCh9i/v8H8sH0/4dQc1iAmAkALaUKLgAAAHjaTY9LDsIgEIbtgqHUPpDi3gPoBVyRTmTddOmqTXThEXqrob2gQ1FjwpDvfwCBdmdXC5AVKFu3e5MfNFJ29KTQT48Ob9/lqYwOGZxeUelN2U2R6+cArgtCJpauW7UQBqnFkUsjAY/kOU1cP+DAgvxwn1chZDwUbd6CFimGXwzwF6tPbFIcjEl+vvmM/byA48e6tWrKArm4ZJlCbdsrxksL1AwWn/yBSJKpYbq8AXaaTb8AAHja28jAwOC00ZrBeQNDQOWO//sdBBgYGRiYWYAEELEwMTE4uzo5Zzo5b2BxdnFOcALxNjA6b2ByTswC8jYwg0VlNuoCTWAMqNzMzsoK1rEhNqByEyerg5PMJlYuVueETKcd/89uBpnpvIEVomeHLoMsAAe1Id4AAAAAAAB42oWQT07CQBTGv0JBhagk7HQzKxca2sJCE1hDt4QF+9JOS0nbaaYDCQfwCJ7Au3AHj+LO13FMmm6cl7785vven0kBjHCBhfpYuNa5Ph1c0e2Xu3jEvWG7UdPDLZ4N92nOm+EBXuAbHmIMSRMs+4aUEd4Nd3CHD8NdvOLTsA2GL8M9PODbcL+hD7C1xoaHeLJSEao0FEW14ckxC+TU8TxvsY6X0eLPmRhry2WVioLpkrbp84LLQPGI7c6sOiUzpWIWS5GzlSgUzzLBSikOPFTOXqly7rqx0Z1Q5BAIoZBSFihQYQOOBEdkCOgXTOHA07HAGjGWiIjaPZNW13/+lm6S9FT7rLHFJ6fQbkATOG1j2OFMucKJJsxIVfQORl+9Jyda6Sl1dUYhSCm1dyClfoeDve4qMYdLEbfqHf3O/AdDumsjAAB42mNgYoAAZQYjBmyAGYQZmdhL8zLdDEydARfoAqIAAAABAAMABwAKABMAB///AA8AAQAAAAAAAAAAAAAAAAABAAAAAA==) format('woff');
+}
+body {
+-webkit-text-size-adjust: 100%;
+text-size-adjust: 100%;
+color: #333;
+font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+font-size: 16px;
+line-height: 1.6;
+word-wrap: break-word;
+}
+a {
+background-color: transparent;
+}
+a:active,
+a:hover {
+outline: 0;
+}
+strong {
+font-weight: bold;
+}
+h1 {
+font-size: 2em;
+margin: 0.67em 0;
+}
+img {
+border: 0;
+}
+hr {
+box-sizing: content-box;
+height: 0;
+}
+pre {
+overflow: auto;
+}
+code,
+kbd,
+pre {
+font-family: monospace, monospace;
+font-size: 1em;
+}
+input {
+color: inherit;
+font: inherit;
+margin: 0;
+}
+html input[disabled] {
+cursor: default;
+}
+input {
+line-height: normal;
+}
+input[type="checkbox"] {
+box-sizing: border-box;
+padding: 0;
+}
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+td,
+th {
+padding: 0;
+}
+* {
+box-sizing: border-box;
+}
+input {
+font: 13px / 1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+a {
+color: #4078c0;
+text-decoration: none;
+}
+a:hover,
+a:active {
+text-decoration: underline;
+}
+hr {
+height: 0;
+margin: 15px 0;
+overflow: hidden;
+background: transparent;
+border: 0;
+border-bottom: 1px solid #ddd;
+}
+hr:before {
+display: table;
+content: "";
+}
+hr:after {
+display: table;
+clear: both;
+content: "";
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 15px;
+margin-bottom: 15px;
+line-height: 1.1;
+}
+h1 {
+font-size: 30px;
+}
+h2 {
+font-size: 21px;
+}
+h3 {
+font-size: 16px;
+}
+h4 {
+font-size: 14px;
+}
+h5 {
+font-size: 12px;
+}
+h6 {
+font-size: 11px;
+}
+blockquote {
+margin: 0;
+}
+ul,
+ol {
+padding: 0;
+margin-top: 0;
+margin-bottom: 0;
+}
+ol ol,
+ul ol {
+list-style-type: lower-roman;
+}
+ul ul ol,
+ul ol ol,
+ol ul ol,
+ol ol ol {
+list-style-type: lower-alpha;
+}
+dd {
+margin-left: 0;
+}
+code {
+font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+font-size: 12px;
+}
+pre {
+margin-top: 0;
+margin-bottom: 0;
+font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+.select::-ms-expand {
+opacity: 0;
+}
+.octicon {
+font: normal normal normal 16px/1 octicons-link;
+display: inline-block;
+text-decoration: none;
+text-rendering: auto;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+.octicon-link:before {
+content: '\f05c';
+}
+.markdown-body:before {
+display: table;
+content: "";
+}
+.markdown-body:after {
+display: table;
+clear: both;
+content: "";
+}
+.markdown-body>*:first-child {
+margin-top: 0 !important;
+}
+.markdown-body>*:last-child {
+margin-bottom: 0 !important;
+}
+a:not([href]) {
+color: inherit;
+text-decoration: none;
+}
+.anchor {
+display: inline-block;
+padding-right: 2px;
+margin-left: -18px;
+}
+.anchor:focus {
+outline: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 1em;
+margin-bottom: 16px;
+font-weight: bold;
+line-height: 1.4;
+}
+h1 .octicon-link,
+h2 .octicon-link,
+h3 .octicon-link,
+h4 .octicon-link,
+h5 .octicon-link,
+h6 .octicon-link {
+color: #000;
+vertical-align: middle;
+visibility: hidden;
+}
+h1:hover .anchor,
+h2:hover .anchor,
+h3:hover .anchor,
+h4:hover .anchor,
+h5:hover .anchor,
+h6:hover .anchor {
+text-decoration: none;
+}
+h1:hover .anchor .octicon-link,
+h2:hover .anchor .octicon-link,
+h3:hover .anchor .octicon-link,
+h4:hover .anchor .octicon-link,
+h5:hover .anchor .octicon-link,
+h6:hover .anchor .octicon-link {
+visibility: visible;
+}
+h1 {
+padding-bottom: 0.3em;
+font-size: 2.25em;
+line-height: 1.2;
+border-bottom: 1px solid #eee;
+}
+h1 .anchor {
+line-height: 1;
+}
+h2 {
+padding-bottom: 0.3em;
+font-size: 1.75em;
+line-height: 1.225;
+border-bottom: 1px solid #eee;
+}
+h2 .anchor {
+line-height: 1;
+}
+h3 {
+font-size: 1.5em;
+line-height: 1.43;
+}
+h3 .anchor {
+line-height: 1.2;
+}
+h4 {
+font-size: 1.25em;
+}
+h4 .anchor {
+line-height: 1.2;
+}
+h5 {
+font-size: 1em;
+}
+h5 .anchor {
+line-height: 1.1;
+}
+h6 {
+font-size: 1em;
+color: #777;
+}
+h6 .anchor {
+line-height: 1.1;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table,
+pre {
+margin-top: 0;
+margin-bottom: 16px;
+}
+hr {
+height: 4px;
+padding: 0;
+margin: 16px 0;
+background-color: #e7e7e7;
+border: 0 none;
+}
+ul,
+ol {
+padding-left: 2em;
+}
+ul ul,
+ul ol,
+ol ol,
+ol ul {
+margin-top: 0;
+margin-bottom: 0;
+}
+li>p {
+margin-top: 16px;
+}
+dl {
+padding: 0;
+}
+dl dt {
+padding: 0;
+margin-top: 16px;
+font-size: 1em;
+font-style: italic;
+font-weight: bold;
+}
+dl dd {
+padding: 0 16px;
+margin-bottom: 16px;
+}
+blockquote {
+padding: 0 15px;
+color: #777;
+border-left: 4px solid #ddd;
+}
+blockquote>:first-child {
+margin-top: 0;
+}
+blockquote>:last-child {
+margin-bottom: 0;
+}
+table {
+display: block;
+width: 100%;
+overflow: auto;
+word-break: normal;
+word-break: keep-all;
+}
+table th {
+font-weight: bold;
+}
+table th,
+table td {
+padding: 6px 13px;
+border: 1px solid #ddd;
+}
+table tr {
+background-color: #fff;
+border-top: 1px solid #ccc;
+}
+table tr:nth-child(2n) {
+background-color: #f8f8f8;
+}
+img {
+max-width: 100%;
+box-sizing: content-box;
+background-color: #fff;
+}
+code {
+padding: 0;
+padding-top: 0.2em;
+padding-bottom: 0.2em;
+margin: 0;
+font-size: 85%;
+background-color: rgba(0,0,0,0.04);
+border-radius: 3px;
+}
+code:before,
+code:after {
+letter-spacing: -0.2em;
+content: "\00a0";
+}
+pre>code {
+padding: 0;
+margin: 0;
+font-size: 100%;
+word-break: normal;
+white-space: pre;
+background: transparent;
+border: 0;
+}
+.highlight {
+margin-bottom: 16px;
+}
+.highlight pre,
+pre {
+padding: 16px;
+overflow: auto;
+font-size: 85%;
+line-height: 1.45;
+background-color: #f7f7f7;
+border-radius: 3px;
+}
+.highlight pre {
+margin-bottom: 0;
+word-break: normal;
+}
+pre {
+word-wrap: normal;
+}
+pre code {
+display: inline;
+max-width: initial;
+padding: 0;
+margin: 0;
+overflow: initial;
+line-height: inherit;
+word-wrap: normal;
+background-color: transparent;
+border: 0;
+}
+pre code:before,
+pre code:after {
+content: normal;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font-size: 11px;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.pl-c {
+color: #969896;
+}
+.pl-c1,
+.pl-s .pl-v {
+color: #0086b3;
+}
+.pl-e,
+.pl-en {
+color: #795da3;
+}
+.pl-s .pl-s1,
+.pl-smi {
+color: #333;
+}
+.pl-ent {
+color: #63a35c;
+}
+.pl-k {
+color: #a71d5d;
+}
+.pl-pds,
+.pl-s,
+.pl-s .pl-pse .pl-s1,
+.pl-sr,
+.pl-sr .pl-cce,
+.pl-sr .pl-sra,
+.pl-sr .pl-sre {
+color: #183691;
+}
+.pl-v {
+color: #ed6a43;
+}
+.pl-id {
+color: #b52a1d;
+}
+.pl-ii {
+background-color: #b52a1d;
+color: #f8f8f8;
+}
+.pl-sr .pl-cce {
+color: #63a35c;
+font-weight: bold;
+}
+.pl-ml {
+color: #693a17;
+}
+.pl-mh,
+.pl-mh .pl-en,
+.pl-ms {
+color: #1d3e81;
+font-weight: bold;
+}
+.pl-mq {
+color: #008080;
+}
+.pl-mi {
+color: #333;
+font-style: italic;
+}
+.pl-mb {
+color: #333;
+font-weight: bold;
+}
+.pl-md {
+background-color: #ffecec;
+color: #bd2c00;
+}
+.pl-mi1 {
+background-color: #eaffea;
+color: #55a532;
+}
+.pl-mdr {
+color: #795da3;
+font-weight: bold;
+}
+.pl-mo {
+color: #1d3e81;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.task-list-item {
+list-style-type: none;
+}
+.task-list-item+.task-list-item {
+margin-top: 3px;
+}
+.task-list-item input {
+margin: 0 0.35em 0.25em -1.6em;
+vertical-align: middle;
+}
+:checked+.radio-label {
+z-index: 1;
+position: relative;
+border-color: #4078c0;
+}
+.sourceLine {
+display: inline-block;
+}
+code .kw { color: #000000; }
+code .dt { color: #ed6a43; }
+code .dv { color: #009999; }
+code .bn { color: #009999; }
+code .fl { color: #009999; }
+code .ch { color: #009999; }
+code .st { color: #183691; }
+code .co { color: #969896; }
+code .ot { color: #0086b3; }
+code .al { color: #a61717; }
+code .fu { color: #63a35c; }
+code .er { color: #a61717; background-color: #e3d2d2; }
+code .wa { color: #000000; }
+code .cn { color: #008080; }
+code .sc { color: #008080; }
+code .vs { color: #183691; }
+code .ss { color: #183691; }
+code .im { color: #000000; }
+code .va {color: #008080; }
+code .cf { color: #000000; }
+code .op { color: #000000; }
+code .bu { color: #000000; }
+code .ex { color: #000000; }
+code .pp { color: #999999; }
+code .at { color: #008080; }
+code .do { color: #969896; }
+code .an { color: #008080; }
+code .cv { color: #008080; }
+code .in { color: #008080; }
+</style>
+<style>
+body {
+  box-sizing: border-box;
+  min-width: 200px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 45px;
+  padding-top: 0px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1 id="belajar-membuat-model-regresi-linear---part-3-polinomial">Belajar Membuat Model Regresi Linear - part 3 (Polinomial)</h1>
+<p>Pada tulisan <a href="https://ikanx101.com/blog/multi-linear/">sebelumnya</a> saya telah menjelaskan bagaimana caranya membuat persamaan regresi linear banyak peubah peubah (<embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHUAAAAQBAMAAADaEy1mAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMARFSZImYQMrvddqvNie8Nf0xcAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABV0lEQVQoFWNgQAaME5B5DIzHIVyuy00o4lg5LALIwizLv0O4VxjyA5AliGJD9U5nYEZ1EDGaoXqfMvB+wKpcyETUDCrBroymAqqXgYHjAIoM09LU6AIGBnaFioCJUIkkPqAAg/VuINgLFoLr9QdJIIBjXQBTAwMDF0N9QgCDKlhcwB8hDWbB9R5FlVCIZODaABJajRC/jGCCWTC9vAFoErYM3AtAQocQ4s8RTDALpjcUTZzhIQO/AwMDI8s3hgWsYAcwME0QACrC9C+jAgOqxSwfGHQYGRgiWaexOgRMY2DZxsDAewFVCcNHBgbvBAaGYkEhA5A8EHsngBisBxhsWRkYfFVk1RlYDjCwPwWG+SWgQgRgu/3nOkMd0Lj3//8bgOWfMNQ5gBhcAQy1alCFoLBgQmhCYSlAeXB5OAMiwZlKvl7mEAYGmPlQa2AU3Ba4PJwBU0KOXgCbOEn3CaHIxAAAAABJRU5ErkJggg==" title="x_i,i = 1,2,..,n"></embed> dan <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAMBAMAAABCcoqQAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAMlSZEO+7dkSJq90iZs0qwsm8AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAATElEQVQIHWNgVGZgMmBwYhVgK2BokGdgFWBgmMUgz8DAsIOhjIGB5QtDOpD9gecjkLx58wOQZGA3YGDga2A9wMDAxWAL5PNeV2BgAACoTwyC43HGOwAAAABJRU5ErkJggg==" title="y"></embed>) <strong>dari nol</strong>. Sekarang kita akan “naik kelas” lagi untuk membuat fungsi regresi polinomial untuk satu peubah. Apa maksudnya?</p>
+<blockquote>
+<p>Kita akan membuat fungsi curve fitting yang nonlinear.</p>
+</blockquote>
+<p>Misalkan saya memiliki <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAIBAMAAADdFhi7AAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAVHZmEKsyIkTvu92Zic2ZjesdAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAP0lEQVQIHWNgVHY2TWBgqMg0YFzAwCBgzcAUwMDAcJaBVQFIzWDgL2BgYP/AIMfBwMD8gOEsMwMDkwFDrggDAP0FCNipklNgAAAAAElFTkSuQmCC" title="n"></embed> buah pasang data sebagai berikut: <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAATBAMAAAAQbVIwAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEHarRM1UZrsi790ymYmFLq+pAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA6klEQVQYGV2QvUrDUBiGn8T8nVgkk0uXgA6O9Q466SZOzmeTgkLoKhT1CgLiqNTJudALyCK4RSdx9gbS3cH3y2TzDi/neZLzC0HJVkKjnS0FwYfE4UByKXE+lDEk1VDuebJ6KKMJudzJ9+mnfRpdk2ibJbsa+/dqbXI/b7ISOh4hpC36lacteQMvvNkvB1bKD616xdjgwkpZc6Re2kaR21CaCzbc9zIuuElXae2OhZ37BXdL6HmenV0xepVcLDpIK9xEYEmsQh0zK+DOQJGMp3kND4KnXoG3V/wS2OUikcVrtblVI0Az/sfBHwR0K361Pr7TAAAAAElFTkSuQmCC" title="(x,y)"></embed>, lalu kita hendak membuat persamaan regresi berikut ini: <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWgAAAAVBAMAAACZAGlNAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAdmZU3TIiRM0Qibvvq5mze/DLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAD2ElEQVRIDc1WTYgcRRT+une7e3rnZ2fZQ8CQ0K5BUUGGxFVBWHIJkttAIAQ2ZOcgrIhxByOIyi4LOUQCQouLJAfJkA3kInHMzdsgJJLbJLASAwtBQchBmItCTsl7r6q6a2aq15WISR1evfd9X716VdPdb4D/aRy8VrzRmwtpMfkUmbBe7RRu36vWC7mdiFgt83bSPAkXrPvdwvWtUrOQKyK8F4CqIuP7RaInxqc6hSnCmUJqjPjqqnqWnn8d2KPZg2Oq/wrYSAszxWvF3Oii5K+pBmNHloF1TZb0vJspLhI5S9hSaidX6wo5yo3GLAq61SZN4QCYSBigoY6h/H+yfrtA8ZID95otQR3cRNc/7OQcWnj1Cmsn1oFyiz0aUV/Nu7H/quhPUJecjkKieq3j5BxaVJury0B85XwbXP2ZPz56APRkuTHH7mPB+GqemW8ZwBRtIJWAWL2ZN3tcpNHC8mvfPHrUkcDBpXOvCGXWqYDsiFYqLOPbhKgymUl6WBqLyTvAgJDaNo8OHahxAz/YAImr6wTI0EUbSCcgSm92HXdFdyy4PtlWS3bFGelonnwDoNIE3gM8LKUJcCtbQk4UDHDDBvAqqp1gVv3SumiG4rezBCRXRdOH+R64EdaDh36WxOK4ETq4TGrnYVBXKPwlsifY28fmKJtsTPWpbHv8hEq7jDmC/ty+++X2PXIYmniLRZKAfqYv5GeqJPhZNUKvzyyNIQ7SCMc5JR3RKlA2EPdjshvsnWXTY5ONybbXzQJywr+xhFUsCqZuWiD+qXQCmtVtrrSCgWqEpYboxeQcpBGOc06tAqVCcbl8ehGj8CG/4D2Ksmcal9IyYTlA97432o+ThAGqaIG4aJ2ACFXYErxuG9QI2ytp/vfA4rgROjjJLSbXfvrcmQfWBsBtEpRSHPCP+i2EQxeLaaw08yTk9eLz/jV8IJh+phniolUCZtRmFVzoJNhI/cMH0hdlwQhHjdDFhb/idCr6PM/cdHPT2gDypnkNvP/GZ/N0e0mWnh3/8vdDMdYOnXp5+KYF4qJVAparzaLf539LsYVwc3kzP7nN1bouLriJky3Z1dIuUqJ8A8QDEoR9UdH3T51RRzTtz13jreJzcfVNiy/PtBGozSQyjdBQ+kAcZo3QwSnIyjMz9LJFX0u9P+qVp7MM4pzDzWGAo5J8Pegrbh3wXVt2MQ9MI8yQnMsaoYNTUK7FVvRLO9Nheq3JwYcaoZ5oj34tsUPlB7OdUTD6Ln9qbS40jdAGjW8aoYl3mrvxHYv2+ZtLr35DJl9OIK6Yudncfwa9ltQUPoOVjZf0GOFF/2JgrOTiAAAAAElFTkSuQmCC" title="f(x) = y = a_0 + a_1 x + a_2 x^2 + a_3 x^3 + .. + a_n x^n"></embed>.</p>
+<p>Bagaimana cara kita melakukannya?</p>
+<hr />
+<p>Pada tulisan sebelumnya, saya mendefinisikan <em>error</em> sebagai <strong>jarak</strong> antara nilai <em>real</em> dan nilai prediksi. Kali ini sama saja. Kita menggunakan definisi dan cara perhitungan yang sama.</p>
+<p>Misalkan saya memiliki <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAIBAMAAADdFhi7AAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAVHZmEKsyIkTvu92Zic2ZjesdAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAP0lEQVQIHWNgVHY2TWBgqMg0YFzAwCBgzcAUwMDAcJaBVQFIzWDgL2BgYP/AIMfBwMD8gOEsMwMDkwFDrggDAP0FCNipklNgAAAAAElFTkSuQmCC" title="n"></embed> buah data dengan <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAIBAMAAAACWGKkAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAZnYQqzJUIkTvzbvdmYlSEOKuAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAATklEQVQIHWNgVDQUCU5zZWCoiBRgW8aQzcCQIMPAeIBBhYGB4R4DiwLDJiBjBgNnAPN3Bgb2Dwz1DIwLGoCYQZqBV0GAgUmA4RkDxzMGAOaYDdTVr3cAAAAAAElFTkSuQmCC" title="m"></embed> banyak pangkat polinom. Maka ekspektasi kita adalah:</p>
+<p><embed src="data:image/png;base64,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" title="\begin{bmatrix}
+1 &amp; x &amp; x^2 &amp; .. &amp; x^n \\ 
+1 &amp; x &amp; x^2 &amp; .. &amp; x^n \\ 
+.. &amp; .. &amp; .. &amp; .. &amp; .. \\ 
+1 &amp; x &amp; x^2 &amp; .. &amp; x^n \\ 
+1 &amp; x &amp; x^2 &amp; .. &amp; x^n \\  
+\end{bmatrix} 
+\begin{bmatrix} a0 \\ a1 \\ a2 \\ .. \\ an \end{bmatrix} = 
+\begin{bmatrix} y_1 \\ y_2 \\ .. \\ y_n \end{bmatrix}"></embed></p>
+<p>Dengan prinsip yang sama dengan sebelumnya, saya akan tuliskan sebagai:</p>
+<p><embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHkAAAAQBAMAAADAL83oAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEInvq1R2Irsy3ZlEZs19rnf+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABtUlEQVQoFX2Su0vDUBTGv9RqTdvU0kHcjAiCgthBqCLio+LcydW4KChoQR0FRxexi+BkRUEUBP0P7OImGEHETXH3gQ98g+fcc5MUAx6455zv953k5iYBdKQ6Vy63PPFfvb1anQ75p1iFHaJhkKzUu5EQdpFDIUTDwEJNsTbARutLuvZ5CLEss8zAEMa700Dj8GTMCaaqrHkgdtwHJN4rROveYCwDFi2KuSKaqFgHQEeFQRDauiISfaQRly3jCXyQqMMCzbY6fgdtf6ZAkLQ1SiT5CqyLk1fz8ZJS0SzfynqjlBLbz2Jhn0EPDEeM8hhthGYR5usEC4fS31crlvHIg11pz43nSFr5c6bATpFSF98vFMq66Gev7LZoO8GP6ccxX73nycQIhy1SWdLG73iM4+RLqsrJ8SOqT1XEb8USGfnW2Czk/QF6k9EsqR8mhSrMrVgCI1tSsUSH0C39B67JV27Tsoo+VY22BKaOpBo2UjfSUs4A91RmaS0yrDq3tpgCDfrBFmiXD0G09SBwXaJPbSPpelCqZ4k6S6u68VzC5qcjzFzrhfmwS2KmbUqQlwOLSeawncsv0SlgNZG+01MAAAAASUVORK5CYII=" title="X^T X C = X^T Y"></embed></p>
+<p>Bentuk di atas adalah <strong>bentuk standar</strong> yang sama dengan penjelasan di regresi linear pada <em>post</em> sebelumnya. Saya akan menuliskannya dalam bentuk matriks berikut ini:</p>
+<p><embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMUAAAASBAMAAAAZLQdUAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEInvq1R2Irsy3ZlEZs19rnf+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAACQElEQVQ4EbVTvWvUYBj/veddYj5qg2CH3hKv6lAE3ToJ2h7IQcVDUISCHCKHbhHEwVLJH+AQOnWy6S4SRbjBwSB0s3iLCIIYXF20p5Yqgs+br/eS3FtcfIY8v48nvyf3Jgewue9WY3QBsmK3TvXuy0yhr44C4NUjIRSQsgfmFpQC+RCi9qSgTCaXSf442QLYLmoyD6htAeZXuZ87b7vQujkrgyXYZUnwTw7hSHApOuRiRmpi85olNdlPbtlSXxi1bweN6Qtisozozn8s7U9N/qgw9uQxuiv3uPOiTbUYzzx9f8Do9u/JJrsOTNslj4u8sp4wfj0TCgwccxOWdK27NG4K3LhBO4bEG0IDF3llPWH8Oi8goatRQpO+hk0eRMWA/EjfEH8I6Db1/BBS0eKTZBbrS07NEFCjJI46Bds4Qvzm9jMYDgsIDN7ZQBqnRDTeLYkDNLMdY+/jBzBzemXtCv2fwngHj4NKAbgHTO1jato7CQyaHNyGn+/AZ2CnLBp3g2wHBaRl0hc43FdcPd/B46BGwMbIw+NfPWygA9TPk4Bl5h9ttVvH4+NQnvedithGZQeb3/WgufVwlrVOLLYsns3jeM+qj7NAcwD0sdWgx0zPKrWLIntJayvvg0aVnm6tiN/B49SI9LQ65sWQBYaDDvPrO8mOB5lZEpugm4WZT6HuzWJ5mLwPH3Gc6gvbZZdgAAFczVbuxDvMufyDKooBTY6ZIuQw1tH34h2vzzlxHHXhlxA/q0pNFCtT8Y6q+l+Vv4CAnNPQB7z/AAAAAElFTkSuQmCC" title="X_{n \times m+1} C_{m+1 \times 1} = Y_{m+1 \times 1}"></embed></p>
+<p>Jika pada kasus sebelumnya bentuk matriks yang terlibat adalah <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAMBAMAAADi7eJ+AAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAdomZu1QiEGbdMu/NRKugN9EaAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAArElEQVQIHWNgEDIJYEACjMquDAxMCew/kMQY1BjqGxg4FzBYIgvOYmCewMDdwKAPFGQzYGBgvABk7GBg+gBS5AMi4hgYhEA0AwPLASDB9gvE5DBgVADRDAz5C4AETwOQYGBoFgZTDAwnQLQGhMM3AUIzNQBpDhABBM1QIztAnKsMHCAKZiZvAEMDA5ft3WCQINB2JRC9+O5VAwbu//8/A9lsD4CeA7lz////BgBHSh/vtu+OXAAAAABJRU5ErkJggg==" title="2 \times 2"></embed> sehingga kita bisa dengan mudah mencari <em>inverse</em>-nya. Kali ini bentuk matriksnya belum tentu <em>square</em>.</p>
+<p>Dengan menggunakan definisi <em>error</em> yang sama dengan sebelumnya:</p>
+<p><embed src="data:image/png;base64,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" title="error = \sum_{i=1}^n di^2 = \sum_{i=1}^n (y_i - f(x_{1i},x_{2i},x_{3i})^2)"></embed></p>
+<p>Lantas bagaimana caranya jika banyak sekali <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAIBAMAAADdFhi7AAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAVHZmEKsyIkTvu92Zic2ZjesdAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAP0lEQVQIHWNgVHY2TWBgqMg0YFzAwCBgzcAUwMDAcJaBVQFIzWDgL2BgYP/AIMfBwMD8gOEsMwMDkwFDrggDAP0FCNipklNgAAAAAElFTkSuQmCC" title="n"></embed> baris datanya?</p>
+<p>Saya akan lakukan <em>tweaks</em> seperti ini:</p>
+<p>Lalu <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAANBAMAAABr8kJMAAAAKlBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADmU0mKAAAADXRSTlMAEHariSJm3UTNu1SZJkczIAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAFtJREFUCB1jYGBgVHZSCGJgYEhvYGCpYGBgKWRg4LjAwJAbABSbwMB4CUgxODCwXATRDAzsC8AUA68DlE4A0txAcRA/lYGBaQIDA+sGIHsKA0MbkGJgOqIENAkAnwkMb2vd5yMAAAAASUVORK5CYII=" title="C"></embed> bisa didapatkan dengan cara:</p>
+<p><embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJkAAAAVBAMAAACnAFEqAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEHariSJm3UTNu1SZ7zJ6vM+vAAAACXBIWXMAAA7EAAAOxAGVKw4bAAACQUlEQVQ4EYWTP2zTUBDGPzt2nNDKsVAmGBr+bAykgjWSqSq2QgQSs0FCjAQmFkQHhJA6ECSExNQsZWBp1IGlQ4NgbxAqA0LgFTqk/CkgShF3996zHdUuN9x397vv3bPsBNg/qmefXenssRzuJSjfkIzHi/t4inAcUbfaTVC+IRlzcTDpImygbzrbFG66bcxAc+vYTOOC8SltAvWP01h7E8AdsmXuWzCxO20NtI23aSYGd/09MPl7nsbX5uHc0jYlNuOTbRwiKfcowd6GRcVzrink2TQTQ2mLnBFNnBtAhZpMVLmeCuWFlRrcWN/hkNDg+OzsjNqmmRgqO8AmG6+3KdGTZ0IeoTTk8/BiSkBLVjt9adQ2zbyY2TtYDRLrKyWxsqpYYvF3jrBMcQJGKwHlSlMauJ2UKcP5QO52vihDNg+lud0mKbcuS+NtiKgJ7r7lmTBtGEVn2OD1OHO8PEVxmqsOJ6zzCROT21JtmZ5VM0HeY3HXQumySf2aKmuDDFz4I83rDIJmgpxfIrWIZEJKk/wuV5uloQH0Evstaej7J2GYAKcj4oUkV6U0yeKJG/k/DAAuYRRxl7kgYeKqDkTsLp3sc5m+Nz5TB56IgZMVokq+sW0JY46arAAeAfcEpOkhXdCkX2Js0EX6uH+pcXuUdBim2geBUvvV0bZxaD0Bf/kD/MWbuv+8G+PTz4b+8yiYMGnrd85p716ha/PjgH6C/GkBLTxUeE3BIsHuoGD6ooDvjxfyx+U4n/+HuvnzApya/wH904SPx0TK/AAAAABJRU5ErkJggg==" title="C = (X^T X)^{-1} X^T Y"></embed></p>
+<p>Mudah kan?</p>
+<hr />
+<h2 id="contoh-data">Contoh Data</h2>
+<p>Mari kita uji dengan data sebagai berikut:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">x</th>
+<th align="right">y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0.3351502</td>
+<td align="right">0.2036132</td>
+</tr>
+<tr class="even">
+<td align="right">2.7272613</td>
+<td align="right">21.5726159</td>
+</tr>
+<tr class="odd">
+<td align="right">1.2506605</td>
+<td align="right">2.8272006</td>
+</tr>
+<tr class="even">
+<td align="right">4.8731393</td>
+<td align="right">78.4055491</td>
+</tr>
+<tr class="odd">
+<td align="right">4.9549792</td>
+<td align="right">111.5346550</td>
+</tr>
+<tr class="even">
+<td align="right">1.8568006</td>
+<td align="right">4.7785320</td>
+</tr>
+<tr class="odd">
+<td align="right">0.7190542</td>
+<td align="right">0.5214829</td>
+</tr>
+<tr class="even">
+<td align="right">4.1751332</td>
+<td align="right">23.7914419</td>
+</tr>
+<tr class="odd">
+<td align="right">1.0248584</td>
+<td align="right">1.8954666</td>
+</tr>
+<tr class="even">
+<td align="right">2.8593316</td>
+<td align="right">14.6924435</td>
+</tr>
+</tbody>
+</table>
+<p>dan saya akan membuat fungsi regresi polinm orde 3 berikut: <embed src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANIAAAAUBAMAAAAKBn7YAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAMlSZEO+7dkSJq90iZs0qwsm8AAAACXBIWXMAAA7EAAAOxAGVKw4bAAACa0lEQVRIDbVUPWgUQRR+e+5ml3MnHAqmEe8uAUWwOEIQDAaWIGglKW0C21kFTosIVkssQgrhSBer6yRbhBQpUm6XWN2CEj1O4bTTQk64RhB03pufncMd5ERfMfvN9703b4aZ/QD+WVT6Letala0lqza9cAL71iIPXlq16YUrcGYtCuGjVfsbYc9edNK2a9Mr7pG95t6f7imy1LplfLVGbKkGN8sqDO6dgU3IEnMm8aOQQJl2FQYlBSY1Tacg8a2dtuEWOAtQmfwP/MeXdTPZSVHBwunrCEW17yfNDKewdfv5Uu/nd8JlGvvQgVWvNoPvYjnlsY+pG3BAFTjIToq64GycT5CXq83k1SFOncal/BgBhk1L6uCJmxR5wGL+B85dEzPRiajVGKDtjBkJcrUzqHbQGnyoR7msV51I49ZQaC+grnLo6+XwAGLGC8+l6dc07QAQNT/kst/FnOX04Audfx28RFjDU+QxJjRhDUo7hk2RI8de5oyCrhPTVJwJKQiHnJltEC33Hf7guxTW8EnwOIrzkiasQWruGB6iru+pDn683XLWkJT3hFSCnZJeZL4v3n8zANiDIBxDmwr4IDoJjVtDoY3CbyqHvh7c7/RbodkJqZx3YoeD6D0lyXtacz8z4NYwYEcsU6uYGreGQuv3RyqHvsFic+Xu5JmQinincPd0t0ZJcrVn8xffALeGVzd2mnoRU+PWYGh+SycpEHSDmLB85Yh5pyLkakRIa9CioU1Yw2ziZTpJgyG+PR53NAPhYYHBjfREWYMmDA2tQUcVVjQuwNz1Aku0s579xiGhrKFMRGvQwd42NP6v4BfXI7ABe+M8UwAAAABJRU5ErkJggg==" title="y = a_0 + a_1 x + a_2 x^2 + a_3 x^3"></embed>.</p>
+<p>Pertama-tama kita akan buat matriks sebagai berikut:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">n =<span class="st"> </span><span class="kw">length</span>(x)</a>
+<a class="sourceLine" id="cb1-2" title="2">x0 =<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span>,n)</a>
+<a class="sourceLine" id="cb1-3" title="3">X =<span class="st"> </span><span class="kw">cbind</span>(x0,<span class="dt">x1 =</span> x,<span class="dt">x2 =</span> x<span class="op">^</span><span class="dv">2</span>,<span class="dt">x3 =</span> x<span class="op">^</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb1-4" title="4">t_X =<span class="st"> </span><span class="kw">t</span>(X)</a>
+<a class="sourceLine" id="cb1-5" title="5">Y =<span class="st"> </span>y</a>
+<a class="sourceLine" id="cb1-6" title="6"></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="co"># matriks X</span></a>
+<a class="sourceLine" id="cb1-8" title="8">X</a></code></pre></div>
+<pre><code>##       x0        x1         x2           x3
+##  [1,]  1 0.3351502  0.1123256   0.03764595
+##  [2,]  1 2.7272613  7.4379544  20.28524536
+##  [3,]  1 1.2506605  1.5641517   1.95622270
+##  [4,]  1 4.8731393 23.7474866 115.72481022
+##  [5,]  1 4.9549792 24.5518184 121.65374828
+##  [6,]  1 1.8568006  3.4477085   6.40170727
+##  [7,]  1 0.7190542  0.5170389   0.37177895
+##  [8,]  1 4.1751332 17.4317373  72.77982532
+##  [9,]  1 1.0248584  1.0503347   1.07644432
+## [10,]  1 2.8593316  8.1757771  23.37725755
+</code></pre>
+<p>Oke, kita akan cari nilai konstantanya sebagai berikut:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">solve</span>(t_X <span class="op">%*%</span><span class="st"> </span>X) <span class="op">%*%</span><span class="st"> </span>t_X <span class="op">%*%</span><span class="st"> </span>Y</a></code></pre></div>
+<pre><code>##          [,1]
+## x0 -19.304850
+## x1  45.572233
+## x2 -23.533086
+## x3   3.838491
+</code></pre>
+<hr />
+<h2 id="whats-next"><em>What’s Next?</em></h2>
+<p>Sebagaimana yang telah saya sampaikan pada tulisan sebelumnya, metode matriks seperti ini akan memudahkan kita saat membuat model-model regresi (baik linear atau tidak) yang tidak umum. Saya akan tunjukkan contoh lainnya di tulisan berikutnya.</p>
+<hr />
+<p><code>if you find this article helpful, support this blog by clicking the ads.</code></p>
+
+</body>
+</html>
