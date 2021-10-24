@@ -50,19 +50,26 @@ $$\begin{bmatrix}
 \begin{bmatrix} a \\ b \\ c \\ d \end{bmatrix} = 
 \begin{bmatrix} y_1 \\ y_2 \\ .. \\ y_{n-1} \\ y_n \end{bmatrix}$$
 
+
 Saya akan menuliskannya dalam bentuk matriks berikut ini:
 
 $$X_{n \times m+1} C_{m+1 \times 1} = Y_{m+1 \times 1}$$
 
 Jika pada kasus sebelumnya bentuk matriks yang terlibat adalah $2 \times 2$ sehingga kita bisa dengan mudah mencari _inverse_-nya. Kali ini bentuk matriksnya belum tentu _square_.
 
-Lantas bagaimana caranya?
+Dengan menggunakan definisi _error_ yang sama dengan sebelumnya:
+
+$$error = \sum_{i=1}^n di^2 = \sum_{i=1}^n (y_i - f(x_{1i},x_{2i},x_{3i})^2)$$
+
+Lantas bagaimana caranya jika banyak sekali $n$ baris datanya?
 
 Saya akan lakukan _tweaks_ seperti ini:
 
 $$X^T X C = X^T Y$$
 
-Sehingga $C$ bisa didapatkan dengan cara:
+Bentuk di atas adalah __bentuk standar__ yang sama dengan penjelasan di regresi linear pada _post_ sebelumnya.
+
+Lalu $C$ bisa didapatkan dengan cara:
 
 $$C = (X^T X)^{-1} X^T Y$$
 
