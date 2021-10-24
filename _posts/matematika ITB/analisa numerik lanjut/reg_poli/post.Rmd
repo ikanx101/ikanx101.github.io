@@ -1,0 +1,121 @@
+---
+title: "Belajar Membuat Model Regresi Linear - part 3 (Polinomial)"
+output: 
+  github_document:
+   pandoc_args: --webtex
+---
+
+```{r,include=FALSE}
+library(dplyr)
+
+rm(list=ls())
+
+x = runif(10,0,7)
+acak1 = runif(10,0,1)
+acak2 = runif(10,0,1)
+acak3 = runif(10,0,1)
+
+y = acak1 * x + acak2 * x^2 + acak3 * x^3
+
+data = data.frame(x,y)
+```
+
+Pada tulisan [sebelumnya](https://ikanx101.com/blog/multi-linear/) saya telah menjelaskan bagaimana caranya membuat persamaan regresi linear banyak peubah peubah ($x_i,i = 1,2,..,n$ dan $y$) __dari nol__. Sekarang kita akan "naik kelas" lagi untuk membuat fungsi regresi polinomial untuk satu peubah. Apa maksudnya?
+
+> Kita akan membuat fungsi curve fitting yang nonlinear.
+
+Misalkan saya memiliki $n$ buah pasang data sebagai berikut: $(x,y)$, lalu kita hendak membuat persamaan regresi berikut ini: $f(x) = y = a + b x + c x^2 + d x^3$.
+
+Bagaimana cara kita melakukannya?
+
+--- 
+
+Pada tulisan sebelumnya, saya mendefinisikan _error_ sebagai __jarak__ antara nilai _real_ dan nilai prediksi. Lantas bagaimana jika ada banyak peubah yang terlibat?
+
+Pada prinsipnya sama saja. Kita bisa menggunakan cara serupa. Namun saya akan menuliskannya dalam bentuk aljabar yang __sudah pasti lebih mudah__.
+
+Oke, perhatikan baik-baik.
+
+Misalkan saya memiliki $n$ buah data dengan $m$ buah peubah. Maka ekspektasi kita adalah:
+
+$$\begin{bmatrix}
+1 & x_1 & x_2 & .. & x_n \\ 
+1 & x_1 & x_2 & .. & x_n \\ 
+.. & .. & .. & .. & .. \\ 
+1 & x_1 & x_2 & .. & x_n \\ 
+1 & x_1 & x_2 & .. & x_n 
+\end{bmatrix} 
+\begin{bmatrix} a \\ b \\ c \\ d \end{bmatrix} = 
+\begin{bmatrix} y_1 \\ y_2 \\ .. \\ y_{n-1} \\ y_n \end{bmatrix}$$
+
+
+Saya akan menuliskannya dalam bentuk matriks berikut ini:
+
+$$X_{n \times m+1} C_{m+1 \times 1} = Y_{m+1 \times 1}$$
+
+Jika pada kasus sebelumnya bentuk matriks yang terlibat adalah $2 \times 2$ sehingga kita bisa dengan mudah mencari _inverse_-nya. Kali ini bentuk matriksnya belum tentu _square_.
+
+Dengan menggunakan definisi _error_ yang sama dengan sebelumnya:
+
+$$error = \sum_{i=1}^n di^2 = \sum_{i=1}^n (y_i - f(x_{1i},x_{2i},x_{3i})^2)$$
+
+Lantas bagaimana caranya jika banyak sekali $n$ baris datanya?
+
+Saya akan lakukan _tweaks_ seperti ini:
+
+$$X^T X C = X^T Y$$
+
+Bentuk di atas adalah __bentuk standar__ yang sama dengan penjelasan di regresi linear pada _post_ sebelumnya.
+
+Lalu $C$ bisa didapatkan dengan cara:
+
+$$C = (X^T X)^{-1} X^T Y$$
+
+Mudah kan?
+
+---
+
+## Contoh Data
+
+Mari kita uji dengan data sebagai berikut:
+
+```{r,echo=FALSE}
+data %>% knitr::kable()
+```
+
+Pertama-tama kita akan buat matriks sebagai berikut:
+
+```{r}
+n = length(x1)
+x0 = rep(1,n)
+X = cbind(x0,x1,x2,x3)
+t_X = t(X)
+Y = y
+
+# matriks X
+X
+```
+
+Oke, kita akan cari nilai konstantanya sebagai berikut:
+
+```{r}
+solve(t_X %*% X) %*% t_X %*% Y
+```
+
+Kita bandingkan dengan hasil _base_ __R__ sebagai berikut:
+
+```{r}
+lm(y ~ x1 + x2 + x3)
+```
+
+Bagaimana? Sama kan hasilnya?
+
+---
+
+## _What's Next?_
+
+Sebagaimana yang telah saya sampaikan pada tulisan sebelumnya, metode matriks seperti ini akan memudahkan kita saat membuat model-model regresi (baik linear atau tidak) yang tidak umum. Saya akan tunjukkan contoh lainnya di tulisan berikutnya.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
