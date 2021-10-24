@@ -117,9 +117,9 @@ Mari kita uji dengan data sebagai berikut:
 | 5.2412899 |  55.77129 |
 | 3.2658923 |  27.75798 |
 
-![]("https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika ITB/analisa numerik lanjut/reg_poli/post_files/figure-gfm/unnamed-chunk-2-1.png")<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/analisa%20numerik%20lanjut/reg_poli/post_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
-dan saya akan membuat fungsi regresi polinm orde 3 berikut: ![y = a\_0 +
+dan saya akan membuat fungsi regresi polinom orde 3 berikut: ![y = a\_0 +
 a\_1 x + a\_2 x^2 + a\_3
 x^3](https://latex.codecogs.com/png.latex?y%20%3D%20a_0%20%2B%20a_1%20x%20%2B%20a_2%20x%5E2%20%2B%20a_3%20x%5E3
 "y = a_0 + a_1 x + a_2 x^2 + a_3 x^3").
@@ -181,7 +181,7 @@ Mari kita prediksi nilai ![y](https://latex.codecogs.com/png.latex?y
 | 5.2412899 |  55.77129 |    61.45404 |  \-5.683 |
 | 3.2658923 |  27.75798 |    27.99596 |  \-0.238 |
 
-![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika ITB/analisa numerik lanjut/reg_poli/post_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/analisa%20numerik%20lanjut/reg_poli/post_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 -----
 
