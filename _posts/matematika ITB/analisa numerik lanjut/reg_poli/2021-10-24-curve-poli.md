@@ -117,7 +117,7 @@ Mari kita uji dengan data sebagai berikut:
 | 5.2412899 |  55.77129 |
 | 3.2658923 |  27.75798 |
 
-![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika ITB/analisa numerik lanjut/reg_poli/post_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![]("https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika ITB/analisa numerik lanjut/reg_poli/post_files/figure-gfm/unnamed-chunk-2-1.png")<!-- -->
 
 dan saya akan membuat fungsi regresi polinm orde 3 berikut: ![y = a\_0 +
 a\_1 x + a\_2 x^2 + a\_3
