@@ -1,5 +1,23 @@
-Belajar Membuat Model Regresi Linear - part 3 (Polinomial)
-================
+---
+date: 2021-10-24T16:46:00-04:00
+title: "Belajar Membuat Model Regresi Linear - part 3 (Polinomial)"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - Computational Science
+  - Sains Komputasi
+  - Matematika
+  - Kuliah
+  - ITB
+  - Analisa Numerik Lanjut
+  - Komputasi
+  - Aproksimasi
+  - Regresi Linear
+  - Curve Fitting
+  - Polinom
+---
 
 Pada tulisan [sebelumnya](https://ikanx101.com/blog/multi-linear/) saya
 telah menjelaskan bagaimana caranya membuat persamaan regresi linear
@@ -99,7 +117,7 @@ Mari kita uji dengan data sebagai berikut:
 | 5.2412899 |  55.77129 |
 | 3.2658923 |  27.75798 |
 
-![](post_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika ITB/analisa numerik lanjut/reg_poli/post_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
 dan saya akan membuat fungsi regresi polinm orde 3 berikut: ![y = a\_0 +
 a\_1 x + a\_2 x^2 + a\_3
@@ -163,7 +181,7 @@ Mari kita prediksi nilai ![y](https://latex.codecogs.com/png.latex?y
 | 5.2412899 |  55.77129 |    61.45404 |  \-5.683 |
 | 3.2658923 |  27.75798 |    27.99596 |  \-0.238 |
 
-![](post_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika ITB/analisa numerik lanjut/reg_poli/post_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 -----
 
