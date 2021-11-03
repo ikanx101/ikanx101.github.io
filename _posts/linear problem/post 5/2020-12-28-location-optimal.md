@@ -11,7 +11,7 @@ tags:
   - Linear Programming
   - Aljabar
   - Binary Linear Programming
-  - MILP
+  - Optimization Story
   - Mixed Integer Linear Programming
   - Location
   - Longlat

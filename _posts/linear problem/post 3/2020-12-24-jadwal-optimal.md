@@ -1,6 +1,6 @@
 ---
 date: 2020-12-24T14:25:00-04:00
-title: "Optimization Schedulling in R: Masalah Penjadwalan Tenaga Kesehatan di Rumah Sakit"
+title: "Optimization Story: Masalah Penjadwalan Tenaga Kesehatan di Rumah Sakit"
 categories:
   - Blog
 tags:
@@ -13,6 +13,7 @@ tags:
   - Simulasi
   - Binary Linear Programming
   - Montecarlo
+  - Optimization Story
 ---
 
 
