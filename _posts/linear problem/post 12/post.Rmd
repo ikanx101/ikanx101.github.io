@@ -59,3 +59,24 @@ $$x_{ij} = \left\{\begin{matrix}
 \end{matrix}\right.$$
 
 
+___Objective Functions___
+
+Tujuan kita adalah meminimalkan waktu lari keseluruhan tim.
+
+$$\min \sum_{j=1}^4 \sum_{i=1}^6 t_{ij} x_{ij}$$
+
+Dengan $T_{ij}$ adalah waktu lari pelari $i$ pada _fraction_ $j$.
+
+___Constraints___
+
+Kendala dari masalah ini adalah:
+
+Satu _fraction_ wajib diisi satu pelari:
+
+$$\sum_{i=1}^6 x_{ij} = 1, \forall j, 1 \leq j \leq 4$$
+
+Satu pelari harus berlari di satu _fraction_ atau tidak berlari sama sekali:
+
+$$sum_{j=1}^4 x_{ij} \leq 1, \forall i, 1 \leq i \leq 6$$
+
+---
