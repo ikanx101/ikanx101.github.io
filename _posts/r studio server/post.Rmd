@@ -1,0 +1,63 @@
+---
+title: "Menginstall R Studio Server di Google Colab"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+```
+
+> ___Ya! Anda tidak salah baca!___
+
+Sejak beralih ke [Ubuntu](https://ikanx101.com/blog/review-ubuntu/) saya terobsesi untuk mencari cara agar saya bisa selalu mengakses __R Studio__ menggunakan _gadget_ apapun di manapun. Mulai dari menggunakan [_Google Colab_](https://ikanx101.com/blog/google-colab/) dan _install_ __R Studio Server__ di [laptop](https://ikanx101.com/blog/rstudio-server/).
+
+Beberapa waktu yang lalu, saya tidak sengaja menemukan satu cara untuk memenuhi obsesi saya tersebut.
+
+_Google Colab_ secara _default_ berjalan di bahasa _Python_. Namun, jika kita menambahkan tanda seru `!` di awal baris _code_, maka _Google Colab_ bertindak layaknya Ubuntu CLI.
+
+Akibatnya apa? 
+
+> ___Kita bisa menginstall R Studio Server dalam virtual machine miliki Google!___
+
+Caranya cukup mudah:
+
+__STEP 1__ _Update_ dan _upgrade_ sistem Ubuntu.
+
+__STEP 2__ Buat _user_ baru di Ubuntu beserta _password_.
+
+__STEP 3__ _Download_ _installer_ __R Studio Server__ dengan perintah `wget`.
+
+__STEP 4__ _Install_ program _ssh forwarding_ dan aktifkan.
+
+__STEP 5__ Buka situs yang diberikan. Masukkan _user_ dan _password_ yang kita buat. Selamat menikmati __R Studio Server__.
+
+Berikut adalah `code`-nya, silakan _copy-paste-run_ di _Google Colab_:
+
+```
+# Add new user called "rstudio" and define password (here "password")
+!sudo useradd -m -s /bin/bash rstudio
+!echo rstudio:password | chpasswd
+
+# Install R and RStudio Server (Don't forget to update version to latest version)
+!apt-get update
+!apt-get install r-base
+!apt-get install libglpk-dev
+!apt-get install gdebi-core
+!wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.4.1103-amd64.deb
+!gdebi -n rstudio-server-1.4.1103-amd64.deb
+
+# Install localtunnel
+!npm install -g npm
+!npm install -g localtunnel
+
+# Run localtunnel to tunnel RStudio app port 8787 to the outside world. 
+# This command runs in the background.
+!lt --port 8787 
+ ```
+ 
+ Mudah kan?
+ 
+ ---
+ 
+ `if you find this article helpful, support this blog by cliking the ads.`

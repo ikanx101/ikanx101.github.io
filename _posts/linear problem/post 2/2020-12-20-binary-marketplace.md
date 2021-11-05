@@ -1,6 +1,6 @@
 ---
 date: 2020-12-20T19:00:00-04:00
-title: "Product Portofolio Management: Produk Mana Saja yang Harus Diberi Promo? Sebuah Cerita Optimasi di R"
+title: "Optimization Story: Product Portofolio Management"
 categories:
   - Blog
 tags:
@@ -13,6 +13,7 @@ tags:
   - Simulasi
   - Binary Linear Programming
   - Montecarlo
+  - Optimization Story
 ---
 
 ## Prolog
