@@ -38,6 +38,24 @@ data = data.frame(sprinter,waktu)
 colnames(data) = c("Pelari","Fraction 1","Fraction 2","Fraction 3","Fraction 4")
 ```
 
-```{r}
-data
+```{r,echo=FALSE}
+data %>% knitr::kable()
 ```
+
+> ___Hanya boleh satu pelari yang menempati satu fraction.___
+
+Bagaimana cara si pelatih menentukan pelari mana yang harus di-_assign_?
+
+---
+
+## Formulasi Masalah
+
+Oke, untuk menyelesaikannya kita akan buat terlebih dahulu formulasi matematikanya sebagai berikut.
+
+Misalkan saya definisikan $x_{ij}$ sebagai bilangan _binary_ $[0,1]$.
+
+$$x_{ij} = \left\{\begin{matrix}
+1, \text{ jika pelari i lari di fraction j} \\ 0, \text{ pelari i tidak dipilih pada fraction j} 
+\end{matrix}\right.$$
+
+
