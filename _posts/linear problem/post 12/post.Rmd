@@ -1,0 +1,43 @@
+---
+title: "Optimization Story: Sport Science - Menentukan Konfigurasi Pelari Estafet"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r,include=FALSE}
+library(dplyr)
+library(ompr)
+library(ompr.roi)
+library(ROI.plugin.glpk)
+```
+
+Salah satu kegunaan _artificial intelligence_ dan _data science_ di bidang olahraga adalah melakukan [prediksi](https://ikanx101.com/blog/prediksi-EPL/) terhadap suatu kejadian. Tapi ada satu _field_ lagi yang mungkin jarang orang ketahui, yakni: ___optimization___.
+
+Saya akan berikan contoh simpel penerapan _optimization_ di bidang olahraga, khususnya di cabang lari estafet.
+
+---
+
+## Masalah
+
+Seorang pelatih estafet hendak mendaftarkan timnya untuk mengikuti kompetisi di suatu waktu. Pelatih tersebut harus memilih __4 dari 6__ orang pelari anak didiknya. Untuk itu, dia melakukan beberapa kali simulasi dan mencatatkan waktunya sebagai berikut:
+
+
+```{r,include = FALSE}
+sprinter = paste0("Sprinter ",1:6)
+
+waktu = rbind(c(12.27,11.57,11.54,12.07),
+	      c(11.34,11.45,12.45,12.34),
+	      c(11.29,11.50,11.45,11.52),
+	      c(12.54,12.34,12.32,11.57),
+	      c(12.20,11.22,12.07,12.03),
+	      c(11.54,11.48,11.56,12.30)
+		)
+
+data = data.frame(sprinter,waktu)
+colnames(data) = c("Pelari","Fraction 1","Fraction 2","Fraction 3","Fraction 4")
+```
+
+```{r}
+data
+```
