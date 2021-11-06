@@ -120,7 +120,11 @@ hasil =
 		       verbose = T))
 ```
 
-```{r}
+```{r,echo=FALSE}
 hasil %>%
-  get_solution(x[i,j])
+  get_solution(x[i,j]) %>%
+  filter(value == 1) %>% 
+  rename("Pelari" = i,
+         "Fraction" = j) %>%
+  knitr::kable()
 ```
