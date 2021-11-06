@@ -129,9 +129,17 @@ bin_prog
     ## Model sense: minimize 
     ## Constraints: 10
 
-| variable | Pelari | Fraction | value |
-| :------- | -----: | -------: | ----: |
-| x        |      2 |        1 |     1 |
-| x        |      5 |        2 |     1 |
-| x        |      3 |        3 |     1 |
-| x        |      4 |        4 |     1 |
+Berikut adalah konfigurasi pelari yang harus diturunkan oleh sang
+pelatih:
+
+| Pelari | Fraction |
+| -----: | -------: |
+|      2 |        1 |
+|      5 |        2 |
+|      3 |        3 |
+|      4 |        4 |
+
+Diharapkan total waktu yang diraih adalah sebesar:
+
+    ## Status: optimal
+    ## Objective value: 45.58

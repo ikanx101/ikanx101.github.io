@@ -113,6 +113,8 @@ bin_prog =
 bin_prog 
 ```
 
+Berikut adalah konfigurasi pelari yang harus diturunkan oleh sang pelatih:
+
 ```{r,include = FALSE}
 hasil = 
   bin_prog %>%
@@ -126,5 +128,12 @@ hasil %>%
   filter(value == 1) %>% 
   rename("Pelari" = i,
          "Fraction" = j) %>%
+  select(-variable,-value) %>%
   knitr::kable()
+```
+
+Diharapkan total waktu yang diraih adalah sebesar:
+
+```{r,echo=FALSE}
+hasil
 ```
