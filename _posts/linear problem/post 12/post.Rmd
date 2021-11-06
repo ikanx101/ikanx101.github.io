@@ -118,7 +118,9 @@ hasil =
   bin_prog %>%
   solve_model(with_ROI(solver = "glpk",
 		       verbose = T))
+```
 
+```{r}
 hasil %>%
   get_solution(x[i,j])
 ```
