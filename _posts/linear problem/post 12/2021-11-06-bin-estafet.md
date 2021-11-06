@@ -1,6 +1,18 @@
-Optimization Story: Sport Science - Menentukan Konfigurasi Pelari
-Estafet
-================
+---
+date: 2021-10-08T22:12:00-04:00
+title: "Optimization Story: Sport Science - Menentukan Konfigurasi Pelari Estafet"
+categories:
+ - Blog
+tags:
+ - Artificial Intelligence
+ - Machine Learning
+ - R
+ - Modelling
+ - Binary Programming
+ - Sport Science
+ - Mixed Integer Linear Programming
+ - Optimization Story
+---
 
 Salah satu kegunaan *artificial intelligence* dan *data science* di
 bidang olahraga adalah melakukan
