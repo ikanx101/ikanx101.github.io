@@ -1,5 +1,5 @@
 ---
-date: 2021-10-08T22:12:00-04:00
+date: 2021-11-06T19:54:00-04:00
 title: "Optimization Story: Sport Science - Menentukan Konfigurasi Pelari Estafet"
 categories:
  - Blog
