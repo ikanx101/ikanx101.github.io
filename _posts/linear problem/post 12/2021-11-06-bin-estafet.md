@@ -75,8 +75,8 @@ Tujuan kita adalah meminimalkan waktu lari keseluruhan tim.
 x\_{ij}](https://latex.codecogs.com/png.latex?%5Cmin%20%5Csum_%7Bj%3D1%7D%5E4%20%5Csum_%7Bi%3D1%7D%5E6%20t_%7Bij%7D%20x_%7Bij%7D
 "\\min \\sum_{j=1}^4 \\sum_{i=1}^6 t_{ij} x_{ij}")  
 
-Dengan ![T\_{ij}](https://latex.codecogs.com/png.latex?T_%7Bij%7D
-"T_{ij}") adalah waktu lari pelari
+Dengan ![t\_{ij}](https://latex.codecogs.com/png.latex?t_%7Bij%7D
+"t_{ij}") adalah waktu lari pelari
 ![i](https://latex.codecogs.com/png.latex?i "i") pada *fraction*
 ![j](https://latex.codecogs.com/png.latex?j "j").
 
