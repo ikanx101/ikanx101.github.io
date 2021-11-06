@@ -137,3 +137,7 @@ Diharapkan total waktu yang diraih adalah sebesar:
 ```{r,echo=FALSE}
 hasil
 ```
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`

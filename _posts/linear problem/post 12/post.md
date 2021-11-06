@@ -143,3 +143,8 @@ Diharapkan total waktu yang diraih adalah sebesar:
 
     ## Status: optimal
     ## Objective value: 45.58
+
+-----
+
+`if you find this article helpful, support this blog by clicking the
+ads.`
