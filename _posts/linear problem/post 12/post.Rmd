@@ -77,6 +77,48 @@ $$\sum_{i=1}^6 x_{ij} = 1, \forall j, 1 \leq j \leq 4$$
 
 Satu pelari harus berlari di satu _fraction_ atau tidak berlari sama sekali:
 
-$$sum_{j=1}^4 x_{ij} \leq 1, \forall i, 1 \leq i \leq 6$$
+$$\sum_{j=1}^4 x_{ij} \leq 1, \forall i \in 1 \leq i \leq 6$$
 
 ---
+
+# _Solver_
+
+Mari kita selesaikan dengan `ompr` di __R__.
+
+```{r,message=FALSE,warning=FALSE}
+library(dplyr)
+library(ompr)
+library(ompr.roi)
+library(ROI.plugin.glpk)
+
+bin_prog = 
+  MIPModel() %>%
+  # menambah variabel
+  add_variable(x[i,j],
+	       i = 1:6,
+	       j = 1:4,
+	       type = "binary",
+	       lb = 0) %>%
+  # membuat objective function
+  set_objective(sum_expr(waktu[i,j]*x[i,j],
+			 i = 1:6,
+			 j = 1:4),
+		"min") %>%
+  # constraint 1
+  add_constraint(sum_expr(x[i,j],i = 1:6) == 1,
+		 j = 1:4) %>%
+  # constraint 2
+  add_constraint(sum_expr(x[i,j],j = 1:4) <= 1,
+		 i = 1:6) 
+bin_prog 
+```
+
+```{r,include = FALSE}
+hasil = 
+  bin_prog %>%
+  solve_model(with_ROI(solver = "glpk",
+		       verbose = T))
+
+hasil %>%
+  get_solution(x[i,j])
+```

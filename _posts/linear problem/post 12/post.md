@@ -83,8 +83,48 @@ Satu pelari harus berlari di satu *fraction* atau tidak berlari sama
 sekali:
 
   
-![sum\_{j=1}^4 x\_{ij} \\leq 1, \\forall i, 1 \\leq i
-\\leq 6](https://latex.codecogs.com/png.latex?sum_%7Bj%3D1%7D%5E4%20x_%7Bij%7D%20%5Cleq%201%2C%20%5Cforall%20i%2C%201%20%5Cleq%20i%20%5Cleq%206
-"sum_{j=1}^4 x_{ij} \\leq 1, \\forall i, 1 \\leq i \\leq 6")  
+![\\sum\_{j=1}^4 x\_{ij} \\leq 1, \\forall i \\in 1 \\leq i
+\\leq 6](https://latex.codecogs.com/png.latex?%5Csum_%7Bj%3D1%7D%5E4%20x_%7Bij%7D%20%5Cleq%201%2C%20%5Cforall%20i%20%5Cin%201%20%5Cleq%20i%20%5Cleq%206
+"\\sum_{j=1}^4 x_{ij} \\leq 1, \\forall i \\in 1 \\leq i \\leq 6")  
 
 -----
+
+# *Solver*
+
+Mari kita selesaikan dengan `ompr` di **R**.
+
+``` r
+library(dplyr)
+library(ompr)
+library(ompr.roi)
+library(ROI.plugin.glpk)
+
+bin_prog = 
+  MIPModel() %>%
+  # menambah variabel
+  add_variable(x[i,j],
+           i = 1:6,
+           j = 1:4,
+           type = "binary",
+           lb = 0) %>%
+  # membuat objective function
+  set_objective(sum_expr(waktu[i,j]*x[i,j],
+             i = 1:6,
+             j = 1:4),
+        "min") %>%
+  # constraint 1
+  add_constraint(sum_expr(x[i,j],i = 1:6) == 1,
+         j = 1:4) %>%
+  # constraint 2
+  add_constraint(sum_expr(x[i,j],j = 1:4) <= 1,
+         i = 1:6) 
+bin_prog 
+```
+
+    ## Mixed integer linear optimization problem
+    ## Variables:
+    ##   Continuous: 0 
+    ##   Integer: 0 
+    ##   Binary: 24 
+    ## Model sense: minimize 
+    ## Constraints: 10
