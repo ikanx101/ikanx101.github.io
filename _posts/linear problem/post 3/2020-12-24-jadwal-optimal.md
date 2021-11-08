@@ -12,7 +12,7 @@ tags:
   - Aljabar
   - Simulasi
   - Binary Linear Programming
-  - Montecarlo
+  - Monte Carlo
   - Optimization Story
 ---
 
