@@ -35,28 +35,88 @@ __STEP 5__ Buka situs yang diberikan. Masukkan _user_ dan _password_ yang kita b
 Berikut adalah `code`-nya, silakan _copy-paste-run_ di _Google Colab_:
 
 ```
-# Add new user called "rstudio" and define password (here "password")
+# saya berikan penjelasan setiap baris codesnya ya
+# dua baris ini adalah untuk membuat user di Linux
+# secara default saya buat sebagai berikut:
+  # user : rstudio
+  # pass : password
+# feel free untuk mengganti ATAU menambahkan multi user
+# ingatlah bahwa compute engine ini milik Google
+# jadi siapa tahu bisa dirun paralel untuk multi user
 !sudo useradd -m -s /bin/bash rstudio
 !echo rstudio:password | chpasswd
 
-# Install R and RStudio Server (Don't forget to update version to latest version)
+# melakukan update Linux
 !apt-get update
+
+# install R base (cli version)
 !apt-get install r-base
-!apt-get install libglpk-dev
+
+# install beberapa library Linux
+!apt-get install libglpk-dev # ini khusus untuk optimisasi
 !apt-get install gdebi-core
+
+# download installer R studio server dari situs resmi
 !wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.4.1103-amd64.deb
+
+# proses instalasi R studio server
 !gdebi -n rstudio-server-1.4.1103-amd64.deb
 
 # Install localtunnel
 !npm install -g npm
 !npm install -g localtunnel
 
-# Run localtunnel to tunnel RStudio app port 8787 to the outside world. 
-# This command runs in the background.
+# forward port 8787 ke public
 !lt --port 8787 
  ```
  
- Mudah kan?
+Proses ini berkisar antara 2-3 menit saja.
+
+Setelah prosesnya selesai, silakan buka alamat situs yang tertera. Klik `continue` dan masukkan _username_ dan _password_ yang telah kita tentukan.
+
+## Persiapan __R Studio Server__
+
+__R Studio Server__ sudah bisa digunakan. Beberapa _libraries_ standar seperti `dplyr` dan `ggplot2` sudah _pre-installed_ di dalam sistem.
+
+Jika kita ingin meng-_install_ _libraries_ lain, kita perlu melakukan konfigurasi _time zone_ dengan perintah sederhana sebagai berikut:
+
+### _Set Time Zone_
+
+_Copy-paste-run codes below:_
+
+```
+Sys.setenv(TZ = "GMT")
+```
+
+Pada _tab_ `Console`.
+
+Lantas bagaimana jika kita hendak bekerja dengan _file_ yang sudah kita miliki sebelumnya atau dengan _file_ berukuran besar?
+
+Kita bisa menggunakan _Github Repository_ untuk di-_clone_ ke dalam _environment_ __R__ kita.
+
+## _Config Git Global Setting_
+
+Untuk menghubungkan __R Studio Server__ dengan Github _repository_, kita perlu melakukan konfigurasi sebagai berikut:
+
+_Copy-paste-run codes below:_
+
+```
+system('git config --global user.name "yourname"')
+system('git config --global user.email "youremail@email.com"')
+```
+
+Pada _tab_ `Console`.
+
+### _Clone Github Repository_
+
+Sekarang kita akan _clone github repository_ ke dalam __R Studio__ _Environment_.
+
+Semua persiapan yang kita lakukan sudah selesai. Seharusnya hanya berjalan 5-10 menit saja. Selama _session_ __Google Colab__ tidak terputus, _R Studio Server_ bisa diandalkan.
+
+Pengalaman saya _run_ semalaman saat tidak ada eksekusi sama sekali, _session_-nya tidak terputus.
+
+
+> Mudah kan?
  
  ---
  
