@@ -17,6 +17,7 @@ tags:
   - Pi
   - Matematika
   - Lingkaran
+  - Monte Carlo
 ---
 
 Sepertinya sudah lama saya tidak menulis lagi karena *riweuh* di kantor
