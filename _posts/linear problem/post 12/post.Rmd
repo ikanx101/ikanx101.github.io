@@ -73,11 +73,11 @@ Kendala dari masalah ini adalah:
 
 Satu _fraction_ wajib diisi satu pelari:
 
-$$\sum_{i=1}^6 x_{ij} = 1, \forall j, 1 \leq j \leq 4$$
+$$\sum_{i=1}^6 x_{ij} = 1, \text{ untuk } 1 \leq j \leq 4$$
 
 Satu pelari harus berlari di satu _fraction_ atau tidak berlari sama sekali:
 
-$$\sum_{j=1}^4 x_{ij} \leq 1, \forall i \in 1 \leq i \leq 6$$
+$$\sum_{j=1}^4 x_{ij} \leq 1, \text{ untuk } 1 \leq i \leq 6$$
 
 ---
 
