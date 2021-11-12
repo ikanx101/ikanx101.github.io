@@ -1,0 +1,28 @@
+---
+title: "Optimization Story: Sport Science - Menentukan Konfigurasi Pelari Estafet dengan Simulasi Monte Carlo"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Tulisan ini masoh berhubungan dengan tulisan saya sebelumnya terkait penentuan [konfigurasi pelari estafet dalam suatu perlombaan](https://ikanx101.com/blog/bin-estafet/). 
+
+Saya menerima beberapa pesan dari rekan-rekan yang ingin belajar pemodelan matematika dan optimisasi tapi masih kesulitan dalam memformulasikan masalah _real_ ke dalam bahasa matematika untuk kemudian di-_solve_ dengan berbagai macam _optimization solver_. 
+
+Oleh karena itu saya mencoba menawarkan __cara lain__ dalam menyelesaikan masalah optimisasi seperti masalah konfigurasi pelari estafet sebelumnya.
+
+Pada tulisan [tahun lalu](https://ikanx101.com/blog/linear-r/), saya memberikan contoh bagaimana simulasi Monte Carlo bisa digunakan sebagai _solver_ masalah optimisasi.
+
+> Namun demikian, perlu ditekankan bahwa perlu ada simulasi berulang-ulang kali untuk memastikan solusi yang kita dapatkan adalah solusi yang paling optimal.
+
+---
+
+## Penyelesaian dengan Simulasi
+
+Tanpa membuat model matematis yang rumit, kita sebenarnya bisa menyelesaikan masalah di atas dengan cara membuat semua skenario urutan pelari yang mungkin.
+
+Jika dihitung, berarti ada: $6 \times 5 \times 4 \times 3$ = `r 6*5*4*3` kemungkinan urutan pelari.
