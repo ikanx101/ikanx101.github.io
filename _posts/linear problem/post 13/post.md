@@ -2,7 +2,7 @@ Optimization Story: Sport Science - Menentukan Konfigurasi Pelari
 Estafet dengan Simulasi Monte Carlo
 ================
 
-Tulisan ini masoh berhubungan dengan tulisan saya sebelumnya terkait
+Tulisan ini masih kelanjutan dari tulisan saya sebelumnya terkait
 penentuan [konfigurasi pelari estafet dalam suatu
 perlombaan](https://ikanx101.com/blog/bin-estafet/).
 
@@ -23,7 +23,7 @@ memberikan contoh bagaimana simulasi Monte Carlo bisa digunakan sebagai
 > berulang-ulang kali untuk memastikan solusi yang kita dapatkan adalah
 > solusi yang paling optimal.
 
-------------------------------------------------------------------------
+-----
 
 ## Penyelesaian dengan Simulasi
 
@@ -31,6 +31,9 @@ Tanpa membuat model matematis yang rumit, kita sebenarnya bisa
 menyelesaikan masalah di atas dengan cara membuat semua skenario urutan
 pelari yang mungkin.
 
-Jika dihitung, berarti ada:
-![6 \\times 5 \\times 4 \\times 3](https://latex.codecogs.com/png.latex?6%20%5Ctimes%205%20%5Ctimes%204%20%5Ctimes%203 "6 \times 5 \times 4 \times 3")
-= 360 kemungkinan urutan pelari.
+Jika dihitung, berarti ada: ![6 \\times 5 \\times 4
+\\times 3](https://latex.codecogs.com/png.latex?6%20%5Ctimes%205%20%5Ctimes%204%20%5Ctimes%203
+"6 \\times 5 \\times 4 \\times 3") = 360 kemungkinan urutan pelari.
+
+**TAPI** inti dari simulasi **bukanlah untuk membuat semua kemungkinan
+konfigurasi pelari**.

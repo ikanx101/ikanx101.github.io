@@ -9,7 +9,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Tulisan ini masoh berhubungan dengan tulisan saya sebelumnya terkait penentuan [konfigurasi pelari estafet dalam suatu perlombaan](https://ikanx101.com/blog/bin-estafet/). 
+Tulisan ini masih kelanjutan dari tulisan saya sebelumnya terkait penentuan [konfigurasi pelari estafet dalam suatu perlombaan](https://ikanx101.com/blog/bin-estafet/). 
 
 Saya menerima beberapa pesan dari rekan-rekan yang ingin belajar pemodelan matematika dan optimisasi tapi masih kesulitan dalam memformulasikan masalah _real_ ke dalam bahasa matematika untuk kemudian di-_solve_ dengan berbagai macam _optimization solver_. 
 
@@ -26,3 +26,6 @@ Pada tulisan [tahun lalu](https://ikanx101.com/blog/linear-r/), saya memberikan 
 Tanpa membuat model matematis yang rumit, kita sebenarnya bisa menyelesaikan masalah di atas dengan cara membuat semua skenario urutan pelari yang mungkin.
 
 Jika dihitung, berarti ada: $6 \times 5 \times 4 \times 3$ = `r 6*5*4*3` kemungkinan urutan pelari.
+
+__TAPI__ inti dari simulasi __bukanlah untuk membuat semua kemungkinan konfigurasi pelari__. 
+
