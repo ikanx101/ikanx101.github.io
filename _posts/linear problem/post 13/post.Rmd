@@ -23,9 +23,8 @@ Pada tulisan [tahun lalu](https://ikanx101.com/blog/linear-r/), saya memberikan 
 
 ## Penyelesaian dengan Simulasi
 
-Tanpa membuat model matematis yang rumit, kita sebenarnya bisa menyelesaikan masalah di atas dengan cara membuat semua skenario urutan pelari yang mungkin.
+Tanpa membuat model matematis yang rumit, kita sebenarnya bisa menyelesaikan masalah di atas dengan cara membuat simulasi urutan pelari yang mungkin. Cara ini sanhatbsederhana sehingga kita __tidak memerlukan__ ___library___ __tambahan apapun__.
 
 Jika dihitung, berarti ada: $6 \times 5 \times 4 \times 3$ = `r 6*5*4*3` kemungkinan urutan pelari.
 
-__TAPI__ inti dari simulasi __bukanlah untuk membuat semua kemungkinan konfigurasi pelari__. 
-
+__TAPI__ inti dari simulasi __bukanlah untuk membuat semua kemungkinan konfigurasi pelari__. Simulasi
