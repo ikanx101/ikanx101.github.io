@@ -7,6 +7,9 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+library(dplyr)
+library(ggplot2)
 ```
 
 Tulisan ini masih kelanjutan dari tulisan saya sebelumnya terkait penentuan [konfigurasi pelari estafet dalam suatu perlombaan](https://ikanx101.com/blog/bin-estafet/). 
@@ -23,8 +26,106 @@ Pada tulisan [tahun lalu](https://ikanx101.com/blog/linear-r/), saya memberikan 
 
 ## Penyelesaian dengan Simulasi
 
-Tanpa membuat model matematis yang rumit, kita sebenarnya bisa menyelesaikan masalah di atas dengan cara membuat simulasi urutan pelari yang mungkin. Cara ini sanhatbsederhana sehingga kita __tidak memerlukan__ ___library___ __tambahan apapun__.
+Tanpa membuat model matematis yang rumit, kita sebenarnya bisa menyelesaikan masalah di atas dengan cara membuat simulasi urutan pelari yang mungkin. Cara ini sangat sederhana sehingga kita __tidak memerlukan__ ___library___ __tambahan apapun__.
 
 Jika dihitung, berarti ada: $6 \times 5 \times 4 \times 3$ = `r 6*5*4*3` kemungkinan urutan pelari.
 
-__TAPI__ inti dari simulasi __bukanlah untuk membuat semua kemungkinan konfigurasi pelari__. Simulasi
+__TAPI__ inti dari simulasi __bukanlah untuk membuat semua kemungkinan konfigurasi pelari__ tapi untuk membuat urutan pelari secara _random_ dan mengevaluasi hasinya secara berulang kali.
+
+Berikut adalah _flow chart_ dari algoritmanya:
+
+```{r out.width="50%",echo=FALSE,fig.align='center',fig.retina=10}
+nomnoml::nomnoml("#direction: down,
+                 [<start> start] -> [define|n = 400|z* = 70|i = 1]
+                 [define] -> [<choice> i <= n]
+                 [<choice> i <= n] -> n [save|urutan pelari|z*]
+                 [save] -> [<end> end]
+                 
+                 [<choice> i <= n] -> y [random|urutan pelari]
+                 [random] -> [evaluasi|hitung z]
+                 [evaluasi] -> [<choice> z <= z*]
+                 
+                 [<choice> z <= z*] -> y [z* = z]
+                 [<choice> z <= z*] -> n [i = i + 1]
+                 [z* = z] -> [i = i + 1]
+                 [i = i + 1] -> [<choice> i <= n]
+                 
+                 ")
+
+data_hasil = data.frame(k = 0,
+                        z_new = 70)
+```
+
+
+Pada simulasi ini, saya akan buat batas iterasi sebanyak `50` kali. Lalu saya definisikan juga $z^* = 70$ sebagai bentuk _reinforce_ terhadap hasil simulasi. Jika hasil simulasi __berhasil__ mendapatkan nilai $z$ yag paling kecil, maka nilai $z^*$ akan di-_update_ nilainya menjadi $z$. Berikut adalah algoritmanya di __R__:
+
+```{r}
+waktu = rbind(c(12.27,11.57,11.54,12.07),
+              c(11.34,11.45,12.45,12.34),
+              c(11.29,11.50,11.45,11.52),
+              c(12.54,12.34,12.32,11.57),
+              c(12.20,11.22,12.07,12.03),
+              c(11.54,11.48,11.56,12.30)
+)
+
+n = 400
+z = 70
+
+for(k in 1:n){
+  # simulasi
+  runner = sample(1:6,4,replace = F)
+  tot_waktu = 0
+  for(i in 1:4){
+    temp = waktu[runner[i],i]
+    tot_waktu = temp + tot_waktu
+  }
+  
+  
+  
+  # save
+  if(tot_waktu < z){
+    hasil = list("konfigurasi pelari" = runner,
+                 "total waktu (dlm detik)" = tot_waktu)
+    z = tot_waktu
+  }
+  
+  data_hasil[k+1,] = list(k,z)
+  
+}
+```
+
+Berikut adalah hasil yang saya dapatkan:
+
+```{r,echo=FALSE}
+hasil
+```
+
+---
+
+Jika saya mencoba __semua kemungkinan yang ada__, saya memerlukan percobaan sebanyak `360` kali. 
+
+> Bagaimana dengan metode simulasi ini? 
+
+Mari kita lihat grafik berikut:
+
+```{r,echo=FALSE,fig.align='center',fig.retina=10}
+data_hasil %>% 
+  ggplot(aes(k,z_new)) +
+  geom_line(group = 1,color = "steelblue") +
+  theme_minimal() +
+  labs(title = "Berapa banyak iterasi yang dilakukan hingga hasilnya\nkonvergen kepada solusi terkecil?",
+       x = "Banyak iterasi",
+       y = "Nilai z*",
+       caption = "Simulasi dan Visualisasi\ndengan R\nikanx101.com")
+
+print_hasil = 
+  data_hasil %>% 
+  filter(z_new <= 45.59) %>% 
+  filter(k == min(k))
+```
+
+Terlihat bahwa pada iterasi ke `r print_hasil$k`, hasilnya sudah konvergen.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
