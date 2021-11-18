@@ -1,0 +1,46 @@
+---
+title: "Teknik Resampling dengan Metode Monte Carlo
+ouput: github_document
+---
+
+Beberapa hari ini, saya diminta melakukan _resampling_ dari suatu _large dataset_ agar proporsi strata yang ada menjadi sesuai dengan keinginan. Metode pertama yang langsung terlintas dalam pikiran saya adalah menggunakan metode simulasi Monte Carlo.
+
+> _Bingung yah maksudnya apa?_
+
+Oke, saya coba jelaskan dengan analogi sederhana berikut:
+
+### Analogi
+
+Di suatu toko buah, ada 4 jenis buah yang dijual yaitu: apel, jeruk, mangga, dan salak. Dari informasi _supplier_, diketahui:
+
+1. Sebanyak 35 buah dari total 100 buah apel berasa masam (belum matang).
+1. Sebanyak 25 buah dari total 55 buah jeruk berasa masam.
+1. Sebanyak 40 buah dari total 60 buah mangga berasa masam.
+1. Sebanyak 30 buah dari total 45 buah salak berasa masam.
+
+Setiap jenis buah ditempatkan di baknya masing-masing (terpisah) dan tidak bisa dibedakan secara kasat mata mana yang masam dan manis.
+
+Lalu seorang pelanggan datang dan mengambil:
+
+- 4 buah apel,
+- 8 buah jeruk,
+- 3 buah mangga,
+- 5 buah salak.
+
+> ___Berapa banyak buah masam yang bisa diperoleh pelanggan tersebut?___
+
+---
+
+Jika kita pikirkan kembali, ada tiga kemungkinan yang bisa terjadi. Yakni:
+
+1. Si pelanggan mengambil __semua buah masam__ (20 buah masam).
+1. Si pelanggan __tidak mengambil buah yang masam__ sama sekali (0 buah masam).
+1. Si pelanggan mengambil $1 \leq n \leq 19$ buah yang masam.
+
+Jadi masalah saya sekarang adalah menghitung kira-kira berapa buah masam yang punya peluang tinggi bisa diterima pelanggan (_expected value_).
+ 
+---
+
+Kira-kira seperti itu analogi dari kasus yang saya kerjakan.
+
+Menurut saya proses _resampling_
