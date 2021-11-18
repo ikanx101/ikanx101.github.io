@@ -1,0 +1,14 @@
+---
+title: "Mencoba Server Kampus untuk Pertama Kali"
+output: github_document
+---
+
+Pada minggu lalu, pertama kalinya saya diberikan akses untuk mencoba _server_ kampus. _Server_ tersebut merupakan _high performance computer_ yang berbasis `Linux Ubuntu 20 LTS`. Mirip dengan OS yang biasa saya pakai selama ini. Untuk mengaksesnya, digunakan `ssh` dengan _username_ dan _password_ yang telah ditentukan oleh _administrator_.
+
+Saya mencoba mengakses `ssh` menggunakan `Linux Debian Buster` yang saya _install_ di tablet Huawei menggunakan `userLand`.
+
+Berhubung masih dalam tahap coba-coba untuk persiapan praktikum _parallel computation_ menggunakan __Python__, saya belum berani untuk meng-_install_ __R__ dan __git__. 
+
+## _First Impression_ 
+
+Saya belum terlalu banyak yang bisa dikatakan karena belum coba untuk _run_ algoritma yang berat-berat. Rencananya saya akan coba melakukan simulasi Monte Carlo yang lumayan besar di sana. Tentunya setelah meminta izin untuk meng-_install_ __R__ dan __git__. 
