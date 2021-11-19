@@ -1,5 +1,5 @@
 ---
-title: "Teknik Resampling dengan Metode Monte Carlo
+title: "Teknik Resampling dengan Metode Monte Carlo"
 ouput: github_document
 ---
 
