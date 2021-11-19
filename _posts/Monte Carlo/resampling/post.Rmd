@@ -1,6 +1,6 @@
 ---
 title: "Teknik Resampling dengan Metode Monte Carlo"
-ouput: github_document
+output: github_document
 ---
 
 Beberapa hari ini, saya diminta melakukan _resampling_ dari suatu _large dataset_ agar proporsi strata yang ada menjadi sesuai dengan keinginan. Metode pertama yang langsung terlintas dalam pikiran saya adalah menggunakan metode simulasi Monte Carlo.
@@ -37,8 +37,29 @@ Jika kita pikirkan kembali, ada tiga kemungkinan yang bisa terjadi. Yakni:
 1. Si pelanggan __tidak mengambil buah yang masam__ sama sekali (0 buah masam).
 1. Si pelanggan mengambil $1 \leq n \leq 19$ buah yang masam.
 
-Jadi masalah saya sekarang adalah menghitung kira-kira berapa buah masam yang punya peluang tinggi bisa diterima pelanggan (_expected value_).
- 
+Jadi masalah saya sekarang adalah menghitung kira-kira berapa buah masam yang berpeluang tinggi bisa diterima pelanggan (_expected value_).
+
+Prinsip dari simulasi adalah dengan membuat seolah-olah ada banyak pelanggan datang, mengambil buah, lalu menghitung berapa banyak yang masam. Semua pelanggan akan direkap, rata-rata berapa banyak buah masam akan dihitung. Kira-kira begini ilustrasinya:
+
+```{r,echo=FALSE,fig.retina=10}
+nomnoml::nomnoml("
+                 [<actor> pelanggan] -> [toko]
+                 [toko] -> [evaluasi]
+                 [evaluasi] -> [<actor> pelanggan]
+                 
+                 [evaluasi|
+                  [<usecase> hitung\nn buah masam] -> [<usecase> rekap]]
+                 [toko|
+                  [<usecase> ambil 10 buah]]
+                 ")
+```
+
+Simulasi akan mengulang-ulang proses di atas hingga ribuan bahkan jutaan kali.
+
+> Kenapa sebegitu banyaknya pengulangan?
+
+Pernah mendengar istilah ___law of large number___?
+
 ---
 
 Kira-kira seperti itu analogi dari kasus yang saya kerjakan.
