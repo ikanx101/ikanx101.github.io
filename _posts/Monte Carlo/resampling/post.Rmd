@@ -3,6 +3,14 @@ title: "Teknik Resampling dengan Metode Monte Carlo"
 output: github_document
 ---
 
+```{r,include=FALSE}
+rm(list=ls())
+library(dplyr)
+library(ggplot2)
+load('bahan blog.rda')
+```
+
+
 Beberapa hari ini, saya diminta melakukan _resampling_ dari suatu _large dataset_ agar proporsi strata yang ada menjadi sesuai dengan keinginan. Metode pertama yang langsung terlintas dalam pikiran saya adalah menggunakan metode simulasi Monte Carlo.
 
 > _Bingung yah maksudnya apa?_
@@ -56,12 +64,28 @@ nomnoml::nomnoml("
 
 Simulasi akan mengulang-ulang proses di atas hingga ribuan bahkan jutaan kali.
 
-> Kenapa sebegitu banyaknya pengulangan?
+> Kenapa harus sebegitu banyaknya pengulangan?
 
-Pernah mendengar istilah ___law of large number___?
+Pernah mendengar istilah ___law of large number___? Semakin banyak kejadian pelanngan mengambil buah, kita bisa melihat sebenarnya __seberapa banyak buah masam__ yang bisa diambil oleh pelanggan.
+
+Saya membuat algoritma yang melakukan __50.000__ pengulangan sebagai berikut:
+
+```
+algo
+```
+
+Hasilnya didapatkan sebaran buah masam yang bisa diambil pelanggan sebagai berikut:
+
+```{r,echo=FALSE,fig.retina=10}
+
+```
+
+dari grafik sebaran di atas, terlihat bahwa _expected value_ buah masam yang diambil pelanggan adalah sebesar `r mean() %>% round(0)` buah. Jika saya ambil selang kepercayaan sebesar `95%`, pelanggan bisa mendapatkan buah masam sekitar x-x buah.
+
+
 
 ---
 
 Kira-kira seperti itu analogi dari kasus yang saya kerjakan.
 
-Menurut saya proses _resampling_
+`if you find this article helpful, support this blog by clicking the ads.`
