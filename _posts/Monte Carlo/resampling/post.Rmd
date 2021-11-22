@@ -71,18 +71,89 @@ Pernah mendengar istilah ___law of large number___? Semakin banyak kejadian pela
 Saya membuat algoritma yang melakukan __50.000__ pengulangan sebagai berikut:
 
 ```
-algo
+# probability
+p_apel = 35/100
+p_jeruk = 25/55
+p_mangga = 40/60
+p_salak = 15/75
+
+# yang diambil pelanggan
+n_apel = 4
+n_jeruk = 8
+n_mangga = 3
+n_salak = 5
+
+# simulasi
+busuk = c()
+n_simu = 50000
+# iterasi
+for(i in 1:n_simu){
+  apel = sample(c(1,0),n_apel,replace = T,prob = c(p_apel,1-p_apel))
+  jeruk = sample(c(1,0),n_jeruk,replace = T,prob = c(p_jeruk,1-p_jeruk))
+  mangga = sample(c(1,0),n_mangga,replace = T,prob = c(p_mangga,1-p_mangga))
+  salak = sample(c(1,0),n_salak,replace = T,prob = c(p_salak,1-p_salak))
+  buah_busuk = sum(apel,jeruk,mangga,salak)
+  busuk = c(buah_busuk,busuk)
+}
+# rekap hasl simulasi
+rekap_simulasi = data.frame(iter = 1:n_simu,busuk)
 ```
 
 Hasilnya didapatkan sebaran buah masam yang bisa diambil pelanggan sebagai berikut:
 
 ```{r,echo=FALSE,fig.retina=10}
+final_rekap = 
+  rekap_simulasi %>% 
+  group_by(busuk) %>% 
+  tally() %>% 
+  ungroup() %>% 
+  mutate(n = n / sum(n) * 100,
+         n = round(n,1)) 
 
+final_rekap %>% 
+  ggplot(aes(x = busuk,
+             y = n)) +
+  geom_col(fill = "steelblue",
+           color = "black",
+           size = 1.25,
+           width = .8) +
+  geom_label(aes(label = paste0(n,"%")),
+             size = 3) +
+  scale_x_continuous(breaks = 0:18) +
+  theme_minimal() +
+  labs(title = "Sebaran Berapa Banyak Buah Masam yang\nMungkin Diambil Pelanggan",
+       subtitle = "Hasil Simulasi Monte Carlo",
+       caption = "Simulasi dan Visualisasi\ndengan R\nikanx101.com",
+       x = "Banyak Buah Masam") +
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        plot.title = element_text(hjust = .5,size = 20),
+        plot.subtitle = element_text(hjust = .5,size = 15),
+        plot.caption = element_text(hjust = 0,size = 10))
 ```
 
-dari grafik sebaran di atas, terlihat bahwa _expected value_ buah masam yang diambil pelanggan adalah sebesar `r mean() %>% round(0)` buah. Jika saya ambil selang kepercayaan sebesar `95%`, pelanggan bisa mendapatkan buah masam sekitar x-x buah.
+dari grafik sebaran di atas, terlihat bahwa _expected value_ buah masam yang diambil pelanggan adalah sekitar `r mean(rekap_simulasi$mean) %>% round(0)` buah. Jika saya ambil selang kepercayaan sebesar `91%`, pelanggan bisa mendapatkan buah masam sekitar `5-11` buah.
 
+Sekarang kita lihat nilai _expected value_ buah masam dari simulasinya:
 
+```{r,echo=FALSE,fig.retina=10}
+rekap_simulasi %>% 
+  ggplot(aes(y = mean,
+             x = iter)) +
+  geom_point(size = .025,
+             color = "steelblue") +
+  theme_minimal() +
+  labs(title = "Expected Value Buah Masam",
+       subtitle = "Hasil Simulasi Monte Carlo",
+       caption = "Simulasi dan Visualisasi\ndengan R\nikanx101.com",
+       x = "Banyak Buah Masam") +
+  theme(axis.title.y = element_blank(),
+        plot.title = element_text(hjust = .5,size = 20),
+        plot.subtitle = element_text(hjust = .5,size = 15),
+        plot.caption = element_text(hjust = 0,size = 10))
+```
+
+Terlihat dari grafik di atas, _expected value_ buah masam yang didapatkan pelanggan adalah sekitar `8` buah.
 
 ---
 
