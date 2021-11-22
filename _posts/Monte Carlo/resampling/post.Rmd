@@ -16,7 +16,7 @@ Di suatu toko buah, ada 4 jenis buah yang dijual yaitu: apel, jeruk, mangga, dan
 1. Sebanyak 35 buah dari total 100 buah apel berasa masam (belum matang).
 1. Sebanyak 25 buah dari total 55 buah jeruk berasa masam.
 1. Sebanyak 40 buah dari total 60 buah mangga berasa masam.
-1. Sebanyak 30 buah dari total 45 buah salak berasa masam.
+1. Sebanyak 15 buah dari total 75 buah salak berasa masam.
 
 Setiap jenis buah ditempatkan di baknya masing-masing (terpisah) dan tidak bisa dibedakan secara kasat mata mana yang masam dan manis.
 
