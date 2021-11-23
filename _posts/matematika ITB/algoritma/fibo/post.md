@@ -41,7 +41,7 @@ Bagaimana cara menuliskan algoritmanya? Berikut adalah *pseudocode*-nya:
     STEP III:
      looping
       for(2 to n)
-        fibo = f[iter-1] + f[iter-2]
+        fibo = f[i-1] + f[i-2]
         f[iter] = fibo
     
     STEP IV:
