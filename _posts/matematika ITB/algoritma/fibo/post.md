@@ -41,7 +41,7 @@ Bagaimana cara menuliskan algoritmanya? Berikut adalah *pseudocode*-nya:
     STEP III:
      looping
       for(2 to n)
-        fibo = f[i-1] + f[i-2]
+        fibo = f[iter-1] + f[iter-2]
         f[iter] = fibo
     
     STEP IV:
@@ -58,7 +58,7 @@ fibo = function(n){
   f = c(0,1)
   iter = 3
   for(i in iter:(n+1)){
-    fi = f[iter-1] + f[iter-2]
+    fi = f[i-1] + f[i-2]
     f = c(f,fi)
     }
   return(f)
@@ -71,19 +71,19 @@ Mari kita coba *function* tersebut untuk berbagai macam nilai n.
 fibo(4)
 ```
 
-    ## [1] 0 1 1 1 1
+    ## [1] 0 1 1 2 3
 
 ``` r
 fibo(10)
 ```
 
-    ##  [1] 0 1 1 1 1 1 1 1 1 1 1
+    ##  [1]  0  1  1  2  3  5  8 13 21 34 55
 
 ``` r
 fibo(13)
 ```
 
-    ##  [1] 0 1 1 1 1 1 1 1 1 1 1 1 1 1
+    ##  [1]   0   1   1   2   3   5   8  13  21  34  55  89 144 233
 
 Mudah kan?
 
