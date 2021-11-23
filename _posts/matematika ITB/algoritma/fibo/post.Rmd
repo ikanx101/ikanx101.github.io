@@ -1,6 +1,8 @@
 ---
 title: "Belajar Membuat Algoritma Deret Fibonacci"
-output: github_document
+output: 
+  github_document:
+    pandoc_args: --webtex
 ---
 
 ```{r,include=FALSE}
@@ -18,3 +20,11 @@ $$F_1 = 1$$
 
 $$F_n = F_{n-1} + F_{n-2}$$
 
+---
+
+Misalkan saya ditugaskan untuk membuat deret Fibonacci ke-n. Bagaimana cara menuliskan algoritmanya? Berikut adalah _pseudocode_-nya:
+
+
+```
+
+```
