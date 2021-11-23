@@ -50,13 +50,14 @@ Bagaimana cara menuliskan algoritmanya? Berikut adalah *pseudocode*-nya:
 ## Membuat *Function* di **R**
 
 Sekarang saya akan buat *function* di **R** berdasarkan *pseudocode* di
-atas:
+atas. Namun perlu diperhatikan bahwa **R** memiliki *index* mulai dari 1
+bukan dari 0.
 
 ``` r
 fibo = function(n){
   f = c(0,1)
-  iter = 2
-  for(i in iter:n){
+  iter = 3
+  for(i in iter:(n+1)){
     fi = f[iter-1] + f[iter-2]
     f = c(f,fi)
     }
@@ -70,19 +71,19 @@ Mari kita coba *function* tersebut untuk berbagai macam nilai n.
 fibo(4)
 ```
 
-    ## [1] 0 1
+    ## [1] 0 1 1 1 1
 
 ``` r
 fibo(10)
 ```
 
-    ## [1] 0 1
+    ##  [1] 0 1 1 1 1 1 1 1 1 1 1
 
 ``` r
 fibo(13)
 ```
 
-    ## [1] 0 1
+    ##  [1] 0 1 1 1 1 1 1 1 1 1 1 1 1 1
 
 Mudah kan?
 
