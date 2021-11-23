@@ -138,6 +138,23 @@ terputus, *R Studio Server* bisa diandalkan.
 Pengalaman saya *run* semalaman saat tidak ada eksekusi sama sekali,
 *session*-nya tidak terputus.
 
+------------------------------------------------------------------------
+
+## *Updates!*
+
+Bagaimana mengakali agar *Google Colab Session* tidak mudah berakhir?
+
+> Kita bisa tambahkan *function* berikut ini di bagian `console` Google
+> Chrome:
+
+    function ClickConnect(){
+        console.log("Working")
+        document.querySelector("colab-connect-button").click()
+    }
+    setInterval(ClickConnect,60000)
+
+------------------------------------------------------------------------
+
 > Mudah kan?
 
 ------------------------------------------------------------------------

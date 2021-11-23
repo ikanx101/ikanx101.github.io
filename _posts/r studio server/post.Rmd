@@ -116,6 +116,24 @@ Semua persiapan yang kita lakukan sudah selesai. Seharusnya hanya berjalan 5-10 
 Pengalaman saya _run_ semalaman saat tidak ada eksekusi sama sekali, _session_-nya tidak terputus.
 
 
+---
+
+## _Updates!_
+
+Bagaimana mengakali agar _Google Colab Session_ tidak mudah berakhir?
+
+> Kita bisa tambahkan _function_ berikut ini di bagian `console` Google Chrome:
+
+```
+function ClickConnect(){
+    console.log("Working")
+    document.querySelector("colab-connect-button").click()
+}
+setInterval(ClickConnect,60000)
+```
+
+---
+
 > Mudah kan?
  
  ---
