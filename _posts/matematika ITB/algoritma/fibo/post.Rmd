@@ -22,9 +22,58 @@ $$F_n = F_{n-1} + F_{n-2}$$
 
 ---
 
-Misalkan saya ditugaskan untuk membuat deret Fibonacci ke-n. Bagaimana cara menuliskan algoritmanya? Berikut adalah _pseudocode_-nya:
+## Membuat Algoritma
+
+> ___Misalkan saya ditugaskan untuk membuat deret Fibonacci ke-n.___
+
+Bagaimana cara menuliskan algoritmanya? Berikut adalah _pseudocode_-nya:
 
 
 ```
+STEP I: 
+ define
+  f = (0,1)
 
+STEP II: 
+ input n  
+
+STEP III:
+ looping
+  for(2 to n)
+    fibo = f[iter-1] + f[iter-2]
+    f[iter] = fibo
+
+STEP IV:
+ print f
 ```
+
+## Membuat _Function_ di __R__
+
+Sekarang saya akan buat _function_ di __R__ berdasarkan _pseudocode_ di atas:
+
+
+```{r}
+fibo = function(n){
+  f = c(0,1)
+  iter = 2
+  for(i in iter:n){
+	fi = f[iter-1] + f[iter-2]
+	f = c(f,fi)
+	}
+  return(f)
+}
+```
+
+Mari kita coba _function_ tersebut untuk berbagai macam nilai n.
+
+```{r}
+fibo(4)
+fibo(10)
+fibo(13)
+```
+
+Mudah kan?
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`

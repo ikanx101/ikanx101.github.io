@@ -25,8 +25,68 @@ F\_{n-2}](https://latex.codecogs.com/png.latex?F_n%20%3D%20F_%7Bn-1%7D%20%2B%20F
 
 -----
 
-Misalkan saya ditugaskan untuk membuat deret Fibonacci ke-n. Bagaimana
-cara menuliskan algoritmanya? Berikut adalah *pseudocode*-nya:
+## Membuat Algoritma
 
-``` 
+> ***Misalkan saya ditugaskan untuk membuat deret Fibonacci ke-n.***
+
+Bagaimana cara menuliskan algoritmanya? Berikut adalah *pseudocode*-nya:
+
+    STEP I: 
+     define
+      f = (0,1)
+    
+    STEP II: 
+     input n  
+    
+    STEP III:
+     looping
+      for(2 to n)
+        fibo = f[iter-1] + f[iter-2]
+        f[iter] = fibo
+    
+    STEP IV:
+     print f
+
+## Membuat *Function* di **R**
+
+Sekarang saya akan buat *function* di **R** berdasarkan *pseudocode* di
+atas:
+
+``` r
+fibo = function(n){
+  f = c(0,1)
+  iter = 2
+  for(i in iter:n){
+    fi = f[iter-1] + f[iter-2]
+    f = c(f,fi)
+    }
+  return(f)
+}
 ```
+
+Mari kita coba *function* tersebut untuk berbagai macam nilai n.
+
+``` r
+fibo(4)
+```
+
+    ## [1] 0 1
+
+``` r
+fibo(10)
+```
+
+    ## [1] 0 1
+
+``` r
+fibo(13)
+```
+
+    ## [1] 0 1
+
+Mudah kan?
+
+-----
+
+`if you find this article helpful, support this blog by clicking the
+ads.`
