@@ -1,0 +1,45 @@
+---
+title: "Tutorial: Membandingkan Dua Data Kategorik dengan Uji Beda Proporsi"
+output: github_document
+---
+
+```{r,include=FALSE}
+rm(list=ls())
+library(dplyr)
+```
+
+# Pendahuluan
+
+Beberapa waktu yang lalu, saya sempat menjelaskan mengenai jenis-jenis data di tulisan berikut ini. Kalau kita perhatikan dengan seksama, uji hipotesis seperti _annova_, uji _t_, uji _z_, korelasi, dan regresi digunakan untuk menyelesaikan permasalahan dengan data bertipe numerik (kuantitatif).
+
+> Bagaimana jika data yang kita miliki adalah data kategorik (kualitatif)?
+
+Sebenarnya ada satu metode statistik yang jarang banget dibicarakan terkait data kategorik, yaitu __uji beda dua proporsi__.
+
+---
+
+## Aplikasinya di _Market Research_
+
+Bagi saya seorang _market researcher_, __uji beda dua proporsi__ adalah salah satu uji statistik yang __paling sering digunakan__. Hampir bisa dipastikan bahwa dalam satu _slide_ berisi grafik di _market research report_ berisi setidaknya satu pengujian beda dua proporsi. Biar _gak_ bingung, saya akan jelaskan dengan contoh sebagai berikut:
+
+### Contoh
+
+Suatu perusahaan FMCG hendak mengiklankan produknya di TV. Untuk mengetahui di stasiun TV mana mereka harus beriklan, mereka melakukan survey kepada _target market_-nya. Didapatkan data sebagai berikut:
+
+- 45 orang dari 100 orang _target market_ menonton stasiun TV ABC.
+- 60 orang dari 125 orang _target market_ menonton stasiun TV XYZ.
+
+Di manakah perusahaan tersebut harus beriklan?
+
+### Jawab
+
+Data di atas sejatinya adalah data berbentuk kategorik (berisi hanya jawaban `YA` atau `TIDAK`) untuk masing-masing stasiun TV.
+
+```{r,echo=FALSE}
+dbase = data.frame(stasiun = c(rep("ABC",2),rep("XYZ",2)),
+	           nonton = c(rep(c("Ya","Tidak"),2)),
+	           n = c(45,100-45,60,125-60)
+         	   )
+
+dbase %>% knitr::kable(align = "c")
+```
