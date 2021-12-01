@@ -15,7 +15,7 @@ digunakan untuk menyelesaikan permasalahan dengan data bertipe numerik
 Sebenarnya ada satu metode statistik yang jarang banget dibicarakan
 terkait data kategorik, yaitu **uji beda dua proporsi**.
 
------
+------------------------------------------------------------------------
 
 ## Aplikasinya di *Market Research*
 
@@ -31,19 +31,88 @@ Suatu perusahaan FMCG hendak mengiklankan produknya di TV. Untuk
 mengetahui di stasiun TV mana mereka harus beriklan, mereka melakukan
 survey kepada *target market*-nya. Didapatkan data sebagai berikut:
 
-  - 45 orang dari 100 orang *target market* menonton stasiun TV ABC.
-  - 60 orang dari 125 orang *target market* menonton stasiun TV XYZ.
+-   45 orang dari 100 orang *target market* menonton stasiun TV ABC.
+-   60 orang dari 125 orang *target market* menonton stasiun TV XYZ.
 
 Di manakah perusahaan tersebut harus beriklan?
 
 ### Jawab
 
 Data di atas sejatinya adalah data berbentuk kategorik (berisi hanya
-jawaban `YA` atau `TIDAK`) untuk masing-masing stasiun TV.
+jawaban `YA` atau `TIDAK`) untuk masing-masing stasiun TV. Berikut
+adalah datanya jika saya tuliskan dalam bentuk tabel.
 
-| stasiun | nonton | n  |
-| :-----: | :----: | :-: |
-|   ABC   |   Ya   | 45 |
-|   ABC   | Tidak  | 55 |
-|   XYZ   |   Ya   | 60 |
-|   XYZ   | Tidak  | 65 |
+| Stasiun TV | Tidak | Ya  |
+|:----------:|:-----:|:---:|
+|    ABC     |  55   | 45  |
+|    XYZ     |  65   | 60  |
+
+Jika kita hitung dalam bentuk persentase, kita bisa dapatkan grafik
+sebagai berikut:
+
+<img src="post_files/figure-gfm/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" />
+
+Secara persentase, stasiun `XYZ` ditonton oleh `48%` sedangkan stasiun
+ABC ditonton oleh `45%`. Sekilas kita bisa saja mengambil keputusan
+bahwa **perusahaan boleh memasang iklan di stasiun XYZ**. Namun apakah
+benar proses pengambilan keputusan tersebut secara statistik?
+
+> Persentase yang tinggi **belum cukup** untuk mengambil kesimpulan.
+> Kita harus cek terlebih dahulu apakah persentase tinggi tersebut
+> **signifikan** atau tidak.
+
+Untuk melakukannya, kita akan gunakan **uji beda dua proporsi** dengan
+langkah-langkah sebagai berikut:
+
+**STEP 1** Tentukan *H*<sub>0</sub> dan *H*<sub>1</sub>.
+
+*H*<sub>0</sub> : proporsi orang yang menonton stasiun TV ABC dan XYZ
+sama. *P*<sub>*A**B**C*</sub> = *P*<sub>*X**Y**Z*</sub>.
+
+*H*<sub>1</sub> : proporsi orang yang menonton stasiun TV ABC dan XYZ
+berbeda. *P*<sub>*A**B**C*</sub> ≠ *P*<sub>*X**Y**Z*</sub>.
+
+**STEP 2** Hitung statistik uji.
+
+Saya akan menghitung *p*<sub>*v**a**l**u**e*</sub> menggunakan *script*
+**R** sebagai berikut:
+
+``` r
+nonton = c(45,60)
+all_resp = c(100,125)
+prop.test(nonton,all_resp)
+```
+
+    ## 
+    ##  2-sample test for equality of proportions with continuity correction
+    ## 
+    ## data:  nonton out of all_resp
+    ## X-squared = 0.098437, df = 1, p-value = 0.7537
+    ## alternative hypothesis: two.sided
+    ## 95 percent confidence interval:
+    ##  -0.1700658  0.1100658
+    ## sample estimates:
+    ## prop 1 prop 2 
+    ##   0.45   0.48
+
+Saya dapatkan nilai *p*<sub>*v**a**l**u**e*</sub> = 0.7537.
+
+**STEP 3** Bandingkan *p*<sub>*v**a**l**u**e*</sub> dengan nilai
+*α* = 0.05.
+
+> Tolak *H*<sub>0</sub> jika *p*<sub>*v**a**l**u**e*</sub> &lt; *α*.
+
+Karena kita pada kasus ini *p*<sub>*v**a**l**u**e*</sub> &gt; *α*, maka
+*H*<sub>0</sub> **tidak ditolak**.
+
+**STEP 4** Kesimpulan:
+
+> Proporsi responden yang menonton stasiun TV ABC dan XYZ **sama**
+> (tidak berbeda signifikan).
+
+Artinya kita tidak bisa menyimpulkan stasiun TV mana yang lebih banyak
+ditonton oleh *target market*.
+
+------------------------------------------------------------------------
+
+`if you find this article helpful, support this blog by clicking the ads.`

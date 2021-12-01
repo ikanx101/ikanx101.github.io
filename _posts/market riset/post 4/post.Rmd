@@ -6,6 +6,8 @@ output: github_document
 ```{r,include=FALSE}
 rm(list=ls())
 library(dplyr)
+library(reshape2)
+library(ggplot2)
 ```
 
 # Pendahuluan
@@ -33,7 +35,7 @@ Di manakah perusahaan tersebut harus beriklan?
 
 ### Jawab
 
-Data di atas sejatinya adalah data berbentuk kategorik (berisi hanya jawaban `YA` atau `TIDAK`) untuk masing-masing stasiun TV.
+Data di atas sejatinya adalah data berbentuk kategorik (berisi hanya jawaban `YA` atau `TIDAK`) untuk masing-masing stasiun TV. Berikut adalah datanya jika saya tuliskan dalam bentuk tabel.
 
 ```{r,echo=FALSE}
 dbase = data.frame(stasiun = c(rep("ABC",2),rep("XYZ",2)),
@@ -41,5 +43,78 @@ dbase = data.frame(stasiun = c(rep("ABC",2),rep("XYZ",2)),
 	           n = c(45,100-45,60,125-60)
          	   )
 
-dbase %>% knitr::kable(align = "c")
+dbase %>% 
+  dcast(stasiun~nonton,
+        value.var = "n") %>% 
+  rename("Stasiun TV" = stasiun) %>% 
+  knitr::kable(align = "c")
 ```
+
+Jika kita hitung dalam bentuk persentase, kita bisa dapatkan grafik sebagai berikut:
+
+```{r,echo=FALSE,fig.align='center',fig.retina=8}
+dbase %>% 
+  group_by(stasiun) %>% 
+  mutate(persen = n/sum(n) * 100,
+         persen = round(persen,2),
+         label = paste0(persen,"%")) %>% 
+  ungroup() %>% 
+  ggplot(aes(x = stasiun,
+             y = persen,
+             fill = nonton)) +
+  geom_col(position = position_dodge(),
+           color = "black",
+           width = .7) +
+  scale_fill_manual(values = c("darkred","darkgreen")) +
+  geom_label(aes(label = label),
+             position = position_dodge(width = .6),
+             color = "white") +
+  labs(title = "Proporsi Nonton vs Tidak per Stasiun Televisi",
+       subtitle = "Berdasarkan data yang ada",
+       caption = "Grafik dengan R\nikanx101.com",
+       fill = "Keterangan",
+       x = "Stasiun",
+       y = "Persen") +
+  theme_minimal() +
+  theme(axis.text.y = element_blank())
+```
+
+Secara persentase, stasiun `XYZ` ditonton oleh `48%` sedangkan stasiun ABC ditonton oleh `45%`. Sekilas kita bisa saja mengambil keputusan bahwa __perusahaan boleh memasang iklan di stasiun XYZ__. Namun apakah benar proses pengambilan keputusan tersebut secara statistik?
+
+> Persentase yang tinggi __belum cukup__ untuk mengambil kesimpulan. Kita harus cek terlebih dahulu apakah persentase tinggi tersebut __signifikan__ atau tidak.
+
+Untuk melakukannya, kita akan gunakan __uji beda dua proporsi__ dengan langkah-langkah sebagai berikut:
+
+__STEP 1__ Tentukan $H_0$ dan $H_1$.
+
+$H_0$ : proporsi orang yang menonton stasiun TV ABC dan XYZ sama. $P_{ABC} = P_{XYZ}$.
+
+$H_1$ : proporsi orang yang menonton stasiun TV ABC dan XYZ berbeda. $P_{ABC} \neq P_{XYZ}$.
+
+__STEP 2__ Hitung statistik uji. 
+
+Saya akan menghitung $p_{value}$ menggunakan _script_ __R__ sebagai berikut:
+
+```{r}
+nonton = c(45,60)
+all_resp = c(100,125)
+prop.test(nonton,all_resp)
+```
+
+Saya dapatkan nilai $p_{value} = 0.7537$.
+
+__STEP 3__ Bandingkan $p_{value}$ dengan nilai $\alpha = 0.05$. 
+
+> Tolak $H_0$ jika $p_{value} < \alpha$.
+
+Karena kita pada kasus ini $p_{value} > \alpha$, maka $H_0$ __tidak ditolak__.
+
+__STEP 4__ Kesimpulan:
+
+> Proporsi responden yang menonton stasiun TV ABC dan XYZ __sama__ (tidak berbeda signifikan).
+
+Artinya kita tidak bisa menyimpulkan stasiun TV mana yang lebih banyak ditonton oleh _target market_.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
