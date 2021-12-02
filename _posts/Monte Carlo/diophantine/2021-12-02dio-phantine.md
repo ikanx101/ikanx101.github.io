@@ -37,7 +37,7 @@ Definisi:
 Untuk menyelesaikan persamaan-persamaan di atas dengan simulasi Monte
 Carlo, caranya sangat mudah. Berikut adalah *flowchart*-nya:
 
-<img src="dio_files/figure-gfm/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Monte%20Carlo/diophantine/dio_files/figure-gfm/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" />
 
 > Simpel kan?
 
@@ -179,3 +179,8 @@ solusi %>% distinct() %>% arrange(x)
     ## 26 40  2 29
     ## 27 43 14 20
     ## 28 44 22  5
+
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
