@@ -1,5 +1,19 @@
-Menyelesaikan Persamaan Diophantine Menggunakan Simulasi Monte Carlo
-================
+---
+date: 2021-12-02T12:35:00-04:00
+title: "Menyelesaikan Persamaan Diophantine Menggunakan Simulasi Monte Carlo"
+categories:
+  - Blogs
+tags:
+  - Machine Learning
+  - Artificial Intelligence
+  - R
+  - Simulation
+  - Monte Carlo
+  - Kalkulus
+  - Matematika
+  - Diophantine
+---
+
 
 Beberapa waktu lalu, di suatu mata kuliah, saya diberi tugas untuk
 menyelesaikan persamaan *diophantine* berikut ini:
