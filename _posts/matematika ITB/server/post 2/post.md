@@ -49,3 +49,69 @@ Pilih menu *virtual machine* lalu *create*.
 
 Kita bisa memilih spek *server* sesuai kebutuhan. Harga yang ditawarkan
 juga tergantung dari spek yang kita pilih.
+
+Pada *server* ini, saya memilih untuk menggunakan **Ubuntu 20 LTS**
+sebagai *operating system*-nya.
+
+### Langkah III
+
+Pada bagian ini, kita perlu melakukan beberapa *setting* tambahan di
+bagian:
+
+1.  ***Firewall***: ceklis koneksi `http` dan `https`.
+2.  ***ssh***: jika kalian hendak mengakses *server* menggunakan
+    *terminal* di komputer dengan `ssh`, maka kaliah harus membuat `ssh
+    keygen` terlebih dahulu di komputer. Caranya:
+
+Ketikkan pada *terminal*:
+
+    ssh-keygen -t rsa
+
+Lalu ketik:
+
+    cat ~/.ssh/id_rsa.pub
+
+*Copy paste* semua kode yang muncul ke bagian *key* `ssh` di *Google
+Cloud*.
+
+### Langkah IV
+
+Akses *server* dengan mengetik:
+
+    ssh ip.external
+
+di *terminal* komputer kita.
+
+Alamat `ip.external` *server* kita dapatkan dari info di *Google Cloud*.
+
+-----
+
+### Instalasi **R**
+
+Kita bisa meng-*install* **R** dengan mudah di *server* tersebut.
+
+Untuk memudahkan, silakan *copy paste* perintah berikut ini:
+
+    sudo su
+    apt-get update
+    apt-get upgrade
+    apt-get install build-essential
+    apt-get install zlib1g-dev
+    
+    apt update -qq
+    apt install --no-install-recommends software-properties-common dirmngr
+    wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+    add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/"
+    
+    apt install --no-install-recommends r-base
+
+Mudah kan? Semua proses ini hanya memakan waktu tidak kurang dari 10
+menit saja.
+
+*Oh iya*, jangan lupa untuk mematikan *server* saat tidak digunakan
+untuk menghindari *unwanted transaction billed into your credit card*.
+
+-----
+
+`if you find this article helpful, support this blog by clicking the
+ads.`
