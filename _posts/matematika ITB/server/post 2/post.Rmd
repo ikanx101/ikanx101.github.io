@@ -1,0 +1,11 @@
+---
+title: "Mencoba Linux dan R di Virtual Machine Google Cloud Console"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+
+```
+
