@@ -10,6 +10,18 @@ rm(list=ls())
 
 Beberapa waktu yang lalu, saya sempat bercerita tentang pengalaman saya mencoba [salah satu _server_ kampus](https://ikanx101.com/blog/server-kampus/). Beberapa hari setelah itu, saya kembali mencobanya untuk melakukan suatu _multiprocessing_ algoritma numerik dengan menanfaatkan semua _cores_ dari _CPU_-nya.
 
+Tercatat ada 24 _cores_ dengan ~29 GB RAM.
+
 ```{r out.width = "65%",echo=FALSE}
 knitr::include_graphics("gambar.jpg")
 ```
+
+---
+
+Bagi sebagian dari kita yang ingin membutuhkan _server_ untuk melakukan komputasi numerik atau untuk kebutuhan data sains, sebenarnya kita bisa dengan mudah __menyewanya__ hanya dengan bermodalkan akun ___Google___ saja.
+
+Bahkan teruntuk _user_ yang baru pertama kali mencoba, ___Google___ memberikan _free credit_ sebesar 300 USD untuk dipakai selama 9 bulan. Harga sewa _server_-nya pun bervariasi tergantung spek yang kita pilih. Harganya dimulai dari 30 USD per bulan. 
+
+Bagaimana cara menyewanya? 
+
+> Saya akan tunjukkan
