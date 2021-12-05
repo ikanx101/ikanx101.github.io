@@ -25,3 +25,21 @@ Bahkan teruntuk _user_ yang baru pertama kali mencoba, ___Google___ memberikan _
 Bagaimana cara menyewanya? 
 
 > Saya akan tunjukkan
+
+---
+
+### Langkah I
+
+Buka situs [___Google Cloud Console___](https://console.cloud.google.com). Aktifkan layanan menggunakan akun _Google_. Jika kamu baru pertama kali mengaksesnya, kamu akan mendapatkan _free credit_ sebesar `300 USD` selama 90 hari.
+
+Pada langkah pertama ini, _Google_ meminta kita untuk memasukkan nomor kartu kredit atau kartu debit. Langkah ini diperlukan _Google_ untuk memastikan legitimiasi transaksi kita. Jangan khawatir, _Google_ tidak akan melakukan _charge_ terhadap transaksi yang tidak kita lakukan.
+
+### Langkah II
+
+Pilih menu _virtual machine_ lalu _create_.
+
+```{r out.width = "65%",echo=FALSE}
+knitr::include_graphics("gambar2.jpg")
+```
+
+Kita bisa memilih spek _server_ sesuai kebutuhan. Harga yang ditawarkan juga tergantung dari spek yang kita pilih.
