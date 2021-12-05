@@ -6,6 +6,10 @@ output: github_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 rm(list=ls())
-
 ```
 
+Beberapa waktu yang lalu, saya sempat bercerita tentang pengalaman saya mencoba [salah satu _server_ kampus](https://ikanx101.com/blog/server-kampus/). Beberapa hari setelah itu, saya kembali mencobanya untuk melakukan suatu _multiprocessing_ algoritma numerik dengan menanfaatkan semua _cores_ dari _CPU_-nya.
+
+```{r out.width = "65%",echo=FALSE}
+knitr::include_graphics("gambar.jpg")
+```
