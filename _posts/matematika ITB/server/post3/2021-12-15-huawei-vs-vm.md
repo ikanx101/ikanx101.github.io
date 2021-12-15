@@ -1,6 +1,24 @@
-Membandingkan Runtime Integral Numerik Antara Prosesor Huawei dan Google
-Virtual Machine
-================
+---
+date: 2021-12-15T10:26:00-04:00
+title: "Membandingkan Runtime Integral Numerik Antara Prosesor Huawei dan Google Virtual Machine"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - R
+  - Server
+  - Linux
+  - ITB
+  - Matematika
+  - Google
+  - Virtual Machine
+  - Google Cloud
+  - Cloud Computing
+  - Numerik
+  - Algoritma
+---
+
 
 Pada *posting* [sebelumnya](https://ikanx101.com/blog/vm-cloud/), saya
 telah menginformasikan cara menyewa *virtual machine* di *Google Cloud*
