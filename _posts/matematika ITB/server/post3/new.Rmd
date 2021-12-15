@@ -100,5 +100,6 @@ Jika saya _run_ saya dapatkan hasil sebagai berikut:
 
 
 ```
-
+"Integral f(x) dx adalah: 2.3333335"
+Time difference of 1.37858 secs
 ```

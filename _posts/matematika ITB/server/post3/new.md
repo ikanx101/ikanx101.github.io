@@ -71,6 +71,61 @@ Berapa nilainya?
 Secara matematis, kita bisa menghitungnya dengan cara sebagai berikut:
 
   
-![\\int\_1^2 x^2 dx = \\frac{x^3}{x}
-|\_1^2](https://latex.codecogs.com/png.latex?%5Cint_1%5E2%20x%5E2%20dx%20%3D%20%5Cfrac%7Bx%5E3%7D%7Bx%7D%20%7C_1%5E2
-"\\int_1^2 x^2 dx = \\frac{x^3}{x} |_1^2")
+![\\int\_1^2 x^2 dx = \\frac{x^3}{3} |\_1^2 = \\frac{2^3}{3} -
+\\frac{1^3}{3}
+\\simeq 2.3333](https://latex.codecogs.com/png.latex?%5Cint_1%5E2%20x%5E2%20dx%20%3D%20%5Cfrac%7Bx%5E3%7D%7B3%7D%20%7C_1%5E2%20%3D%20%5Cfrac%7B2%5E3%7D%7B3%7D%20-%20%5Cfrac%7B1%5E3%7D%7B3%7D%20%5Csimeq%202.3333
+"\\int_1^2 x^2 dx = \\frac{x^3}{3} |_1^2 = \\frac{2^3}{3} - \\frac{1^3}{3} \\simeq 2.3333")  
+
+### Algoritma Numerik
+
+Ada berbagai macam algoritma numerik yang bisa digunakan untuk
+menyelesaikan masalah di atas, salah satunya adalah algoritma berikut:
+
+    mulai = Sys.time()
+    
+    n = 10^6
+    a = 1
+    b = 2
+    h = (b-a)/n
+    x = seq(a,b,h)
+    
+    f = function(x)x^2
+    
+    y = sapply(x,f)
+    int = mean(y)
+    
+    print(paste0("Integral f(x) dx adalah: ",int))
+    print(Sys.time()-mulai)
+
+Algoritma di atas adalah algoritma integral numerik dengan metode
+persegi. Saya menggunakan pendekatan *multi processing* di **R**. Hal
+ini terlihat dari:
+
+1.  Penggunaan `sapply()`,
+2.  Operasi *array*,
+3.  Tidak ada *looping* yang digunakan.
+
+Kelak saya akan membandingkan *runtime* antara dua mesin yang saya
+gunakan.
+
+### *Runtime* Huawei
+
+Berikut adalah spek Huawei T10s yang saya gunakan:
+
+    gambar huawei
+
+Jika saya *run* saya dapatkan hasil sebagai berikut:
+
+    "Integral f(x) dx adalah: 2.3333335"
+    Time difference of 10.74728 secs
+
+### *Runtime Google Virtual Machine*
+
+Berikut adalah spek *Google virtual machine* yang saya gunakan:
+
+    gambar vm
+
+Jika saya *run* saya dapatkan hasil sebagai berikut:
+
+    "Integral f(x) dx adalah: 2.3333335"
+    Time difference of 1.37858 secs
