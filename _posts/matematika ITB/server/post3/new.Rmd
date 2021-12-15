@@ -1,0 +1,12 @@
+---
+title: "Membandingkan Runtime Integral Numerik Antara Prosesor Huawei dan Google Virtual Machine"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r,include=FALSE}
+rm(list=ls())
+```
+
+Pada _posting_ sebelumnya, saya telah
