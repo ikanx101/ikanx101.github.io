@@ -112,7 +112,7 @@ gunakan.
 
 Berikut adalah spek Huawei T10s yang saya gunakan:
 
-    gambar huawei
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/server/post3/huawei.jpg)
 
 Jika saya *run* saya dapatkan hasil sebagai berikut:
 
@@ -123,9 +123,22 @@ Jika saya *run* saya dapatkan hasil sebagai berikut:
 
 Berikut adalah spek *Google virtual machine* yang saya gunakan:
 
-    gambar vm
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/server/post3/google.jpg)
 
 Jika saya *run* saya dapatkan hasil sebagai berikut:
 
     "Integral f(x) dx adalah: 2.3333335"
     Time difference of 1.37858 secs
+
+## Kesimpulan
+
+Ternyata terlihat dengan jelas bahwa *Google virtual machine* memiliki
+*runtime* hampir **10%** dari *runtime* Huawei T10s.
+
+Jika kalian membutuhkan *mobile server* yang bisa diandalkan, saya
+merekomendasikan *Google virtual machine*.
+
+-----
+
+`if you find this article helpful, support this blog by clicking the
+ads.`
