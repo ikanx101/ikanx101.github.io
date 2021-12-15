@@ -103,3 +103,13 @@ Jika saya _run_ saya dapatkan hasil sebagai berikut:
 "Integral f(x) dx adalah: 2.3333335"
 Time difference of 1.37858 secs
 ```
+
+## Kesimpulan
+
+Ternyata terlihat dengan jelas bahwa _Google virtual machine_ memiliki _runtime_ hampir __10%__ dari _runtime_ Huawei T10s.
+
+Jika kalian membutuhkan _mobile server_ yang bisa diandalkan, saya merekomendasikan _Google virtual machine_.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
