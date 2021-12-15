@@ -75,10 +75,7 @@ Kelak saya akan membandingkan _runtime_ antara dua mesin yang saya gunakan.
 
 Berikut adalah spek Huawei T10s yang saya gunakan:
 
-
-```
-gambar huawei
-```
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/server/post3/huawei.jpg)
 
 Jika saya _run_ saya dapatkan hasil sebagai berikut:
 
@@ -91,10 +88,7 @@ Time difference of 10.74728 secs
 
 Berikut adalah spek _Google virtual machine_ yang saya gunakan:
 
-
-```
-gambar vm
-```
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/server/post3/google.jpg)
 
 Jika saya _run_ saya dapatkan hasil sebagai berikut:
 
