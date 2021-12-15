@@ -9,4 +9,35 @@ output:
 rm(list=ls())
 ```
 
-Pada _posting_ sebelumnya, saya telah
+Pada _posting_ [sebelumnya](https://ikanx101.com/blog/vm-cloud/), saya telah menginformasikan cara menyewa _virtual machine_ di _Google Cloud_ untuk berbagai keperluan. Untuk kasus saya, saya menggunakannya sebagai _server_ untuk melakukan komputasi atau mengerjakan kerjaan kantor dengan bantuan __R__.
+
+Setelah pemakaian selama hampir dua minggu, saya sangat puas dengan performanya. Pada awalnya, saya mencoba untuk menyewa _server_ __e2__ dengan __2 core__ dan __2GB RAM__ saja. Namun karena _free trial credit_ masih banyak, saya jadi tergoda untuk _upgrade_ ke _server_ yang lebih tinggi. _FYI_, ternyata untuk _high performance compute nodes_ tidak tersedia di region Asia Tenggara. Jadi kalau kita hendak menyewa _server_ tersebut, kita hanya perlu mengganti _region_ ke Eropa atau Amerika atau Jepang (region Asia terdekat). Setelah mencoba berbagai macam spek _server_, terakhir ini saya sedang memakai _server_ dengan spek __4 core__ dan __16GB RAM__.
+
+Sebagai gambaran, saya sudah mencoba _virtual machine_ ini untuk:
+
+1. Melakukan _web scraping_. Percaya atau tidak, proses _web scraping_ dengan __VM__ jauh lebih cepat dibandingkan jika kita melakukannya di _local machine_. Saya menduga hal ini terjadi karena __transaksi__ yang terjadi dilakukan antara _cloud to cloud_.
+1. Mengerjakan kerjaan kantor, yakni melakukan _data carpentry_ dan membuat _report_ dengan __R Markdown__. Walaupun saya menggunakan __R__ versi __CLI__ tapi semuanya _alhamdulillah_ aman terkendali.
+1. Komputasi numerik. Saya melakukan uji coba untuk mengerjakan beberapa soal kuliah dengan beberapa algoritma numerik. _Runtime_ yang dihasilkan cukup cepat. Seberapa cepat? Tentunya tidak bisa dibandingkan dengan laptop kantor saya. Kenapa? Karena laptop kantor saya punya spek yang lumayan tinggi (Intel i7 18 Ghz, 8 core dan 15 GB RAM). Nah, _postingan_ kali ini saya akan membahas terkait ini.
+
+---
+
+## Komputasi Numerik
+
+Apa sih komputasi numerik?
+
+Secara simpel saya bisa definisikan komputasi numerik adalah proses perhitungan iteratif yang digunakan untuk mencari solusi dari suatu permasalah matematis dengan cara hampiran (aproksimasi). Jadi alih-alih menurunkan rumus di atas kertas, kita gunakan bantuan komputer untuk menghitungnya. Saya sudah pernah menuliskan beberapa contohnya di _postings_ sebelumnya.
+
+Sekarang saya akan memberikan contoh sederhana perhitungan komputasi numerik untuk menyelesaikan permasalahan integral sekaligus membandingkan _runtime_ algoritma tersebut saat dijalankan di _server Google_ dan tablet Huawei. Kenapa tablet Huawei? Sebagai mana yang saya sempat ceritakan di _posting_-an yang lalu, saya sekarang sedang rajin menggunakan tablet __Huawei T10s__ sebagai _daily driver_ untuk menyelesaikan studi S2.
+
+### Masalah Matematika
+
+Oke, permasalahan matematika yang akan saya selesaikan adalah sebagai berikut:
+
+$$\int_1^2 x^2 dx$$
+
+Berapa nilainya?
+
+Secara matematis, kita bisa menghitungnya dengan cara sebagai berikut:
+
+$$\int_1^2 x^2 dx = \frac{x^3}{x} |_1^2$$
+
