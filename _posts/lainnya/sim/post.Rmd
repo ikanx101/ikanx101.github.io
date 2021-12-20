@@ -3,7 +3,7 @@ title: "Pengalaman Perpanjang SIM di Polres Kota Bekasi pada Era Pandemi"
 output: github_document
 ---
 
-```{r}
+```{r,include = FALSE}
 rm(list=ls())
 ```
 
@@ -27,13 +27,13 @@ Sistem perpanjangan SIM di MPP dan Polres memiliki kesamaan:
 
 > __Setiap orang yang hendak memperpanjang SIM wajib mendaftar secara online terlebih dahulu.__
 
-Berdasarkan informasi tersebut, saya mencoba untuk mendaftar antrian di Mall Pelayanan Publik melalui situs [__mpp.bekasikota.go.is__](http://mpp.bekasikota.go.id). Pada hari H, ternyata saya salah alamat. Saya malah datang ke __Bekasi Juction__ di _ex_ Pasar Proyek. Ternyata kini MPP ada di __Bekasi Trade Center__ (BTC) di Jalan Joyo Martono dekat pintu tol Bekasi Timur.
+Berdasarkan informasi tersebut, saya mencoba untuk mendaftar antrian di Mall Pelayanan Publik melalui situs [__mpp.bekasikota.go.is__](http://mpp.bekasikota.go.id). Pada hari H, ternyata saya salah alamat. Saya malah datang ke __Bekasi Junction__ di _ex_ Pasar Proyek. Ternyata kini MPP ada di __Bekasi Trade Center__ (BTC) di Jalan Joyo Martono dekat pintu tol Bekasi Timur.
 
 Oleh karena gagal pada percobaan pertama, saya memutuskan untuk mendaftar antrian kembali di Polres Metro Bekasi Kota. Aturannya adalah kira bisa mendaftar H-2 sebelum hari kedatangan. Silakan mendaftar ke situs [berikut ini](https://antrian.polrestrobekasikota.com).
 
 Setelah itu, kita akan mendapatkan konfirmasi sebagai berikut:
 
-```{r,echo=FALSE}
+```{r out.height = "60%",echo=FALSE}
 knitr::include_graphics("antrian.jpg")
 ```
 
