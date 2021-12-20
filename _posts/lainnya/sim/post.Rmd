@@ -19,11 +19,22 @@ Nah, saat kondisi pandemi ini saya belum tahu bagaimana mekanisme terbarunya.
 
 _Alhamdulillah_, saat mendengarkan radio Dakta, saya mendapatkan informasi bahwa kini perpanjangan SIM di kota Bekasi bisa dilakukan di:
 
-1. Mall Pelayanan Publik (untuk pagi hari), dan
+1. Mall Pelayanan Publik (MPP, untuk pagi hari), dan
 1. Polres Metro Bekasi (untuk sore hingga malam hari).
+1. Pelayanan SIM Keliling di beberapa tempat di Kota Bekasi.
 
-Kedua tempat tersebut memiliki kesamaan:
+Sistem perpanjangan SIM di MPP dan Polres memiliki kesamaan:
 
 > __Setiap orang yang hendak memperpanjang SIM wajib mendaftar secara online terlebih dahulu.__
 
-Berdasarkan informasi tersebut, saya mencoba untuk mendaftar antrian di Mall Pelayanan Publik melalui situs [__mpp.bekasikota.go.is__](http://mpp.bekasikota.go.id)
+Berdasarkan informasi tersebut, saya mencoba untuk mendaftar antrian di Mall Pelayanan Publik melalui situs [__mpp.bekasikota.go.is__](http://mpp.bekasikota.go.id). Pada hari H, ternyata saya salah alamat. Saya malah datang ke __Bekasi Juction__ di _ex_ Pasar Proyek. Ternyata kini MPP ada di __Bekasi Trade Center__ (BTC) di Jalan Joyo Martono dekat pintu tol Bekasi Timur.
+
+Oleh karena gagal pada percobaan pertama, saya memutuskan untuk mendaftar antrian kembali di Polres Metro Bekasi Kota. Aturannya adalah kira bisa mendaftar H-2 sebelum hari kedatangan. Silakan mendaftar ke situs [berikut ini](https://antrian.polrestrobekasikota.com).
+
+Setelah itu, kita akan mendapatkan konfirmasi sebagai berikut:
+
+```{r,echo=FALSE}
+knitr::include_graphics("antrian.jpg")
+```
+
+
