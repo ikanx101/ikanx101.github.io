@@ -37,4 +37,39 @@ Setelah itu, kita akan mendapatkan konfirmasi sebagai berikut:
 knitr::include_graphics("antrian.jpg")
 ```
 
+Simpan baik-baik dan _print_ sebagai tanda bukti untuk diserahkan pada saat pemeriksaan kesehatan di Polres nanti. Sediakan juga dua fotokopi KTP untuk prosesnya nanti.
 
+Pada hari H, setibanya di Polres Metro Bekasi, segera masuk ke jalan di antara Polres dan Pengadilan. Tempat perpanjangan SIM ada di jalan tersebut.
+
+### __Langkah I__
+
+Setelah tiba, langkah pertama yang harus kita lakukan adalah __pemeriksaan kesehatan__. _Print_ bukti pendaftaran akan digunakan di sini. Antrian pemeriksaan disesuaikan dengan antrian pada pendaftaran _online_. _Oh iya_, siapkan uang pas `Rp35.000`, SIM lama, dan satu buah _fotocopy_ KTP.
+
+### __Langkah II__
+
+Setelah itu, segera masukin ruang utama perpanjangan SIM. Kita akan diberikan blanko form untuk kemudian diisi. Khusus perpanjangan SIM, pengisiannya sangat mudah dan cepat.
+
+### __Langkah III__
+
+Lakukan pembayaran asuransi sebesar `Rp50.000` dan biaya perpanjangan SIM sesuai dengan jenis SIM-nya. Serahkan blanko form tersebut di loket pembayaran. Kita juga diminta memberikan satu buah _fotocopy_ KTP di sini.
+
+### __Langkah IV__
+
+Tunggu antrian pengambilan foto dan perekaman sidik jari digital.
+
+### __Langkah V__
+
+Tunggu antrian pengambilan SIM yang sedang dicetak.
+
+---
+
+Prosesnya sangat mudah, simpel, dan cepat. 
+
+Saran saya:
+
+1. Gunakan baju yang sopan,
+1. Sedia uang pas.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
