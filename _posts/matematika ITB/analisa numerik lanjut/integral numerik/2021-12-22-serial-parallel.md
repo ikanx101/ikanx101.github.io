@@ -1,5 +1,5 @@
 ---
-date: 2021-12-23T13:06:00-04:00
+date: 2021-12-22T13:06:00-04:00
 title: "Menyelesaikan Integral Ganda Secara Numerik: Serial vs Parallel Processing"
 categories:
   - Blog
