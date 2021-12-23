@@ -132,7 +132,7 @@ int_dobel_serial = function(f,a,b,c,d,nx,ny){
 ### *Parallel Processing*
 
 Untuk melakukan *parallel processing*, saya akan mengubah dua *looping*
-yang `data.frame` dan melakukan operasi di sana. Saya akan memakai semua
+menjadi struktur `data.frame` dan melakukan operasi di sana. Saya akan memakai semua
 *cores* yang ada dengan *function* `parallel::mclapply()`.
 
 ``` r
