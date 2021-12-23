@@ -47,5 +47,8 @@ int_dobel_paralel = function(dummy){
   return(output)
 }
 
+print("Hasil Menggunakan Serial Processing:")
 int_dobel_serial(f,a,b,c,d,nx,ny)
+
+print("\n\nHasil Menggunakan Parallel Processing:")
 mclapply(100,int_dobel_paralel,mc.cores = numCores)
