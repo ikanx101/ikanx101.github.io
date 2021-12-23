@@ -1,50 +1,148 @@
 ---
-title: "Untitled"
-output: github_document
+title: "Menyelesaikan Integral Ganda Secara Numerik"
+output: 
+    github_document:
+        pandoc_args: --webtex
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-```
-
-```
 rm(list=ls())
-mulai = Sys.time()
+library(parallel)
 
-n = 10^6
-a = 1
+# sumber:
+# http://hplgit.github.io/prog4comp/doc/pub/._p4c-bootstrap-Matlab016.html
+```
+
+Pada tulisan sebelumnya, saya telah menuliskan bagaimana pendekatan numerik bisa digunakan untuk menyelesaikan perhitungan integral. Kita bisa menggunakan:
+
+1. Pendekatan simulasi [Monte Carlo](https://ikanx101.com/blog/integral-tentu/),
+1. Perhitungan metode [_mid point_](https://ikanx101.com/blog/huawei-vs-vm/), dan
+1. Perhitungan metode [_trapezoid_](https://ikanx101.com/blog/pi-trapezoid/).
+
+Kali ini saya akan coba menyelesaikan perhitungan integral ganda secara numerik dengan metode _mid point_.
+
+### Definisi
+
+Jika kita memiliki suatu permasalahan integral berikut ini:
+
+$$\int_a^b \int_c^d f(x,y) dy dx$$
+
+Pada suatu domain $[a,b] \times [c,d]$, kita bisa menyelesaikannya secara numerik dengan melakukan modifikasi perhitungan dikritisasi sebagai berikut:
+
+$$h_x h_y \sum_{i=0}^{n_x-1} \sum_{j=0}^{n_y-1} f(a + \frac{h_x}{2} + i h_x,c + \frac{h_y}{2} + j h_y)$$
+
+Di mana:
+
+1. $h_x$ adalah selang domain $x$ yang telah dibagi-bagi oleh banyaknya selang $n_x$.
+1. $h_y$ adalah selang domain $y$ yang telah dibagi-bagi oleh banyaknya selang $n_y$.
+
+---
+
+Secara teori, caranya cukup mudah. Kali ini saya akan coba membuat algoritmanya di __R__.
+
+---
+
+## SOAL
+
+Hitunglah:
+
+$$\int_0^2 \int_2^3 (2x + y) dy dx$$
+
+## JAWAB
+
+Secara eksak, kita bisa hitung bahwa soal di atas memiliki jawaban __9__.
+
+Dengan mengambil $n_x = n_y = 1000$, saya akan mencoba membuat algoritmanya di __R__. Spesial kali ini saya akan mencoba dua pendekatan, yakni dengan:
+
+1. _Serial processing_ dengan memanfaatkan _looping_, dan
+1. _Parallel processing_ dengan melakukan _multi processing_ pada operasi vektor (`apply()`) memanfaatkan `library(parallel)`. Kenapa harus melakukan _parallel processing_? Karena laptop yang saya gunakan punya _processor_ `Intel(R) Core(TM) i7-10610U CPU @ 1.80GHz` _8 cores_ yang saya rasa cukup mumpuni. 
+
+> ___Sayang banget kalau gak digeber semua core-nya___.
+
+
+Ini adalah _initial condition_ dari soal ini:
+
+```{r}
+# initial condition
+a = 0
 b = 2
-h = (b-a)/n
-x = seq(a,b,h)
+c = 2
+d = 3
+nx = 10^3
+ny = 10^3
+f = function(x,y){2*x + y}
 
-f = function(x)x^2
-
-y = sapply(x,f)
-int = mean(y)
-
-print(paste0("Integral f(x) dx adalah: ",int))
-print(Sys.time()-mulai)
+numCores = detectCores()
+fx = function(df){2*df[1] + df[2]}
 ```
 
+Berikut adalah algoritmanya di __R__:
 
+### _Serial Processing_
+
+```{r}
+int_dobel_serial = function(f,a,b,c,d,nx,ny){
+    mulai = Sys.time()
+    hx = (b - a)/nx
+    hy = (d - c)/ny
+    int = 0
+    for(i in 0:(nx-1)){
+        for(j in 0:(ny-1)){
+            xi = a + hx/2 + i*hx
+            yj = c + hy/2 + j*hy
+            int = int + hx*hy*f(xi, yj)
+        }
+    }
+    output = list("Integral f(x,y) dy dx adalah:" = int,
+                  "Runtime" = Sys.time()-mulai)
+    return(output)
+}
 ```
-function result = midpoint_double1(f, a, b, c, d, nx, ny)
-    hx = (b - a)/nx;
-    hy = (d - c)/ny;
-    I = 0;
-    for i = 0:(nx-1)
-        for j = 0:(ny-1)
-            xi = a + hx/2 + i*hx;
-            yj = c + hy/2 + j*hy;
-            I = I + hx*hy*f(xi, yj);
-        end
-    end
-    result = I;
-end
 
->> f = @(x, y) 2*x + y;
->>> midpoint_double1(f, 0, 2, 2, 3, 5, 5)
-9.0
+### _Parallel Processing_
 
+Untuk melakukan _parallel processing_, saya akan mengubah dua _looping_ yang `data.frame` dan melakukan operasi di sana. Saya akan memakai semua _cores_ yang ada dengan _function_ `parallel::mclapply()`.
+
+```{r}
+# paralel
+int_dobel_paralel = function(dummy){
+  mulai = Sys.time()
+  hx = (b - a)/nx
+  hy = (d - c)/ny
+  x = seq((a+hx/2),b,by = hx)
+  y = seq((c+hy/2),d,by = hy)
+  xy = expand.grid(x,y)
+  xy = as.data.frame(xy)
+  int = hx*hy*sum(fx(xy))
+  output = list("Integral f(x,y) dy dx adalah:" = int,
+                "Runtime" = Sys.time()-mulai)
+  return(output)
+}
 ```
 
+## _Momen of Truth_
+
+Sekarang mari kita coba kedua algoritma di atas. Berapa nilainya dan berapa lama _runtime_ algoritmanya:
+
+#### Serial
+
+```{r}
+int_dobel_serial(f,a,b,c,d,nx,ny)
+```
+
+#### Paralel
+
+```{r}
+mclapply(100,int_dobel_paralel,mc.cores = numCores)
+```
+
+---
+
+## KESIMPULAN
+
+_Obviously_ kita bisa melihat bahwa _parallel processing_ memiliki _runtime_ yang sangat cepat dibandingkan _serial processing_ (walaupun keduanya sama-sama cepat ~ memiliki waktu kurang dari 1 detik).
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
