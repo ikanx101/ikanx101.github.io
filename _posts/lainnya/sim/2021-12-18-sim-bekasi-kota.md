@@ -72,7 +72,7 @@ sini. Antrian pemeriksaan disesuaikan dengan antrian pada pendaftaran
 
 ### **Langkah II**
 
-Setelah itu, segera masukin ruang utama perpanjangan SIM. Kita akan
+Setelah itu, segera masuk ke ruang utama perpanjangan SIM. Kita akan
 diberikan blanko form untuk kemudian diisi. Khusus perpanjangan SIM,
 pengisiannya sangat mudah dan cepat.
 
