@@ -1,0 +1,51 @@
+---
+title: "Mengirim Pesan WhatsApp Secara Otomatis dengan Python"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+
+setwd("~/ikanx101 BLOG/_posts/python/pywhatkit")
+```
+
+Kali ini saya _posting_ sesuatu yang berbeda. Mulai hari ini, saya akan coba _posting_ juga beberapa hal terkait `Python` selain __R__. Tentunya saya hanya akan angkat beberapa _libraries_ `Python` yang tidak berkaitan dengan _data science_, statistika, dan matematika.
+
+---
+
+Pada saat bersantai melihat beberapa akun _Instagram_ yang membahas tentang _Python Codes_, ada satu _posting_ menarik tentang bagaimana ada satu _library_ di `Python` yang bisa digunakan untuk __mengirimkan pesan WhatsApp__ secara otomatis.
+
+Nama _library_-nya adalah `pywhatkit`. 
+
+Cara kerja `pywhatkit` cukup simpel, yakni:
+
+1. `pywhatkit` akan membuka _browser_ di komputer / laptop kita.
+1. _Browser_ tersebut akan membuka situs [_WhatsApp Web_](https://web.whatsapp.com/).
+1. Kemudian akan dikirim pesan ke nomor atau grup yang ada di _WhatsApp_ tersebut.
+
+> _Cukup simpel kan?_
+
+
+Proses _coding_-nya juga simpel, hanya dua baris sebagai berikut untuk mengirimkan pesan ke nomor tertentu:
+
+```
+import pywhatkit
+pywhatkit.sendwhatmsg("+6281xxxxx", "Uji coba apakah ini bisa digunakan", 12, 22)
+```
+
+Perintah di atas berfungsi untuk:
+
+- Mengirim pesan _WhatsApp_ ke nomor `6281xxxxx`.
+- Pesan yang dikirim adalah: `Uji coba apakah ini bisa digunakan`.
+- Pesan akan dikirimkan pada jam `12` menit ke `22`.
+
+---
+
+## Prasyarat
+
+Agar semua _code_ ini berjalan dengan lancar, dibutuhkan komputer atau laptop dengan _browser_ yang bisa membuka (dan sudah _login_) situs [_WhatsApp Web_](https://web.whatsapp.com/).
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
