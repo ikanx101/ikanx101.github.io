@@ -1,5 +1,5 @@
 ---
-date: 2022-01-10T13:47:00-04:00
+date: 2022-01-09T13:47:00-04:00
 title: "Mengirim Pesan WhatsApp Secara Otomatis dengan Python"
 categories:
   - Blog
