@@ -1,5 +1,5 @@
 ---
-title: "Pengalaman Memperpanjang SIM di Polres Kota Bekasi pada Era Pandemi"
+title: "Pengalaman Perpanjang SIM di Polres Kota Bekasi pada Era Pandemi"
 date: 2021-12-18T08:56:00-04:00
 categories:
   - Blog
