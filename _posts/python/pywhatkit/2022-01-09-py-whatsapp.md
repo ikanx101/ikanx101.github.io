@@ -4,8 +4,8 @@ title: "Mengirim Pesan WhatsApp Secara Otomatis dengan Python"
 categories:
   - Blog
 tags:
-  - Cloud Computing
-  - R
+  - Python
+  - WhatsApp
   - Machine Learning
   - Artificial Intelligence
 ---

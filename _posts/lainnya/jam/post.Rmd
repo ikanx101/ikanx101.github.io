@@ -1,0 +1,29 @@
+---
+title: "Membuat Program Jam Digital Menggunakan R"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Salah satu `program` yang biasa dibuat oleh para pemula yang baru belajar _coding_ adalah membuat jam digital dari bahasa pemrograman yang sedang dipelajari.
+
+Secara simpel, kita sebenarnya bisa membuat jam tersebut dengan prinsip `print()` atau mencetak waktu saat ini secara berkala (diberikan jeda `1` detik). Agar proses ini terus berlangsung tanpa henti, kita bisa gunakan _looping_ dengan perintah `while()`.
+
+Berikut adalah _code_-nya:
+
+```
+while(T){
+  new = Sys.time()
+  print(new)
+  Sys.sleep(1)
+  cat("\014")
+}
+```
+
+Silakan di-_run_ dengan __R__ versi _command line interface_ atau menggunakan __IDE R__ seperti __R Studio__.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
