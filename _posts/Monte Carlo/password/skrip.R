@@ -4,9 +4,9 @@ library(dplyr)
 
 set.seed(101)
 
-pin = 209210
-
-coba = 1:10^6
+pin = 193618
+max = 50 * 10^6
+coba = 1:max
 
 tebak_pin = function(dummy){
   tebak1 = sample(0:9,6,replace = T)
@@ -31,6 +31,11 @@ mulai = Sys.time()
 hasil = mclapply(coba,tebak_pin,mc.cores = numCores)
 
 sink("run.txt")
+cat("Simulasi sebanyak: ")
+cat(max)
+cat("\nPeluang PIN bisa ditembus: ")
 do.call(sum,hasil)/length(hasil) * 100 %>% round(3)
+cat("% \n")
 Sys.time() - mulai
 sink()
+print("DONE")

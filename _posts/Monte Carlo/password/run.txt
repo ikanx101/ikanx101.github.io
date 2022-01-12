@@ -1,8 +1,4 @@
-
-> do.call(sum,hasil)/length(hasil) * 100 %>% round(3)
-[1] 0
-
-> Sys.time() - mulai
-Time difference of 15.6757 secs
-
-> sink()
+Simulasi sebanyak: 5e+07
+Peluang PIN bisa ditembus: [1] 0.000272
+% 
+Time difference of 11.63766 mins
