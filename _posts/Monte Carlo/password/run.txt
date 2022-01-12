@@ -1,0 +1,8 @@
+
+> do.call(sum,hasil)/length(hasil) * 100 %>% round(3)
+[1] 0
+
+> Sys.time() - mulai
+Time difference of 15.6757 secs
+
+> sink()
