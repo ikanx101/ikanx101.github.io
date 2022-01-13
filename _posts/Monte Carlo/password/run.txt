@@ -1,3 +1,4 @@
-Simulasi sebanyak: 5e+07
+Simulasi sebanyak: 5e+07Berapa kali bisa tembus: 0
+
 Peluang PIN bisa ditembus: 0% 
-Time difference of 10.92645 mins
+Time difference of 11.06671 mins
