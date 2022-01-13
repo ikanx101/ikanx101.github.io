@@ -16,6 +16,7 @@ tebak_pin = function(dummy){
   tebak3 = sample(0:9,6,replace = T)
   tebak3 = paste(tebak3,collapse = "") %>% as.numeric()
   temp = (tebak1 == pin) + (tebak2 == pin) + (tebak3 == pin)
+  temp = ifelse(temp > 1,1,0)
   return(temp)
 }
 
