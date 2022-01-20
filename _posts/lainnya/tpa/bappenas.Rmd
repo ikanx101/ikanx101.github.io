@@ -1,0 +1,11 @@
+---
+title: "REVIEW: Ikut Tes Potensi Akademik Bappenas Secara Online"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+link = https://koperasi.bappenas.go.id/jadwal-tpa/
+
