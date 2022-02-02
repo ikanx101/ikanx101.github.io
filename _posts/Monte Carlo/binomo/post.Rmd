@@ -49,6 +49,8 @@ nomnoml::nomnoml("#direction: down
                  
                  [<choice> tebakan benar?] -> F [init_money = 0]
                  
+                 [init_money = init_money * 1.8] -> [i = i + 1]
+                 [init_money = 0] -> [i = i + 1]
                  ")
 ```
 
@@ -90,6 +92,36 @@ Jika dilihat dari simulasi di atas, sebenarnya _user_ "bisa menang" hingga menda
 Lantas berapa peluangnya kita bisa mencapai Rp `r round(max(data_final$uang)/1000000,2)` juta?
 
 Ternyata dari `4.000` kali simulasi, hanya sekali saja simulasi bisa mencapai nilai tersebut. Dan perlu saya ingatkan sekali lagi, setelah mencapai nilai tersebut pada saat _bid_ selanjutnya uang kita hangus!
+
+Sekarang saya akan tunjukkan pada langkah _bid_ ke berapa uang kita sudah hangus:
+
+```{r,echo=FALSE,fig.retina=7,fig.align='center'}
+data_final %>% 
+  filter(uang == 0) %>% 
+  group_by(idx) %>% 
+  tally() %>% 
+  ungroup() %>% 
+  mutate(persen = n / sum(n) * 100,
+         persen = round(persen,1),
+         label = paste0(persen,"%"),
+         idx = factor(idx)
+         ) %>% 
+  ggplot(aes(x = idx,y = persen,label = label)) +
+  geom_col(color = "black",fill = "darkred") +
+  geom_label() +
+  theme_minimal() +
+  labs(title = "Pada Bid ke Berapa Uang Kita akan Hangus Karena Salah Tebak?",
+       subtitle = "Peluang Berdasarkan Simulasi Monte Carlo 4.000 kali",
+       caption = "Simulasi dengan R\nikanx101.com",
+       x = "Langkah yang dilakukan (berapa kali bid)",
+       y = "Probability")
+```
+
+<br>
+
+Hampir separuh simulasi (`> 2000 kali kejadian`) memperlihatkan uang _user_ selalu habis pada _bid_ kedua! Artinya boro-boro mau untung, baru mulai saja sudah _zonk_.
+
+_Yakin masih mau kayak gini?_
 
 ## __Kesimpulan__
 
