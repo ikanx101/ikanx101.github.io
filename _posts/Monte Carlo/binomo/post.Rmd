@@ -32,9 +32,9 @@ Saya akan melakukan simulasi sebanyak `4.000` kali dengan modal awal `Rp100.000`
 
 _Flowchart_ simulasinya adalah sebagai berikut:
 
-```{r out.width="35%",echo=FALSE,fig.retina=7,fig.align='center'}
+```{r out.width="35%",echo=FALSE,fig.retina=8,fig.align='center'}
 nomnoml::nomnoml("#direction: down
-                 [<start>start] -> [<input>input|iter_max = 9.999|init_money = 100.000]
+                 [<start>start] -> [<input>input|iter_max = 4.000|init_money = 100.000]
                  [<input>input] -> [define|i = 1]
                  [define] -> [<choice> i <= iter_max]
                  
