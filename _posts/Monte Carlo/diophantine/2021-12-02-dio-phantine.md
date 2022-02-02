@@ -2,7 +2,7 @@
 date: 2021-12-02T12:35:00-04:00
 title: "Menyelesaikan Persamaan Diophantine Menggunakan Simulasi Monte Carlo"
 categories:
-  - Blogs
+  - Blog
 tags:
   - Machine Learning
   - Artificial Intelligence
