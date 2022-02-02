@@ -1,0 +1,96 @@
+---
+date: 2022-02-02T10:35:00-04:00
+title: "SIMULASI MONTE CARLO: Binary Option Bikin Untung atau Buntung?"
+categories:
+  - Blogs
+tags:
+  - Machine Learning
+  - Artificial Intelligence
+  - R
+  - Simulation
+  - Monte Carlo
+  - Binary Option
+  - Binomo
+  - Trading
+---
+
+Beberapa hari ini, *timeline* saya berseliweran topik terkait suatu
+layanan *trading* yang telah ditutup oleh **OJK** karena terindikasi
+judi atau penipuan. Setelah saya coba *Googling* sana-sini, saya temukan
+layanan *trading* ini sebenarnya hanya tempelan belaka. Hal yang terjadi
+justru berupa [*binary
+option*](https://money.kompas.com/read/2022/01/31/064141626/waspada-binary-option-judi-online-berkedok-trading-online?page=all).
+Yakni menaruh sejumlah uang, kemudian **menebak arah pergerakan suatu
+asset**: apakah naik atau turun? Jika tebakan benar, maka *user* akan
+mendapatkan keuntungan. Sebaliknya, uang bisa ludes seketika.
+
+> Melihat aturan tersebut saja, kita sudah bisa memastikan bahwa ini
+> bukanlah sebuah *trading* tapi murni judi.
+
+Oke lah jika kita tidak mau menggunakan istilah judi pada kasus ini,
+saya akan tunjukkan bahwa *“trading”* dengan cara ini pasti akan selalu
+merugikan *user*.
+
+------------------------------------------------------------------------
+
+Pada saat saya kuliah S1 dulu, saya mengambil mata kulian **Matematika
+Keuangan**. Salah satu materinya, kami diajarkan *how to always win*
+dalam transaksi pembelian *option* saham (baik *put* atau *call*).
+Tujuannya adalah untuk mencegah kondisi tersebut. Istilahnya adalah
+*arbitrage*. Bahasa simpelnya **bandar selalu menang**.
+
+Kembali ke kasus *binary option*, saya akan lakukan simulasi Monte Carlo
+untuk menunjukkan bahwa *user always lost* dalam bertransaksi dengan
+prinsip ini.
+
+> Simulasi ini juga akan membantah beberapa video *Youtuber* yang
+> memperlihatkan mereka bisa mendapatkan *profit* jutaan dari modal
+> minim.
+
+Saya mengambil contoh **Binomo** yang memberikan keuntungan `80%` jika
+tebakan kita benar. Sebaliknya, jika tebakan salah maka uang kita akan
+ludes seketika.
+
+Saya akan melakukan simulasi sebanyak `4.000` kali dengan modal awal
+`Rp100.000`. Asumsi yang saya pakai adalah setiap *user* tetap terus
+menebak selama uangnya masih ada. Kira-kira berapa *expected return*
+yang bisa kita dapatkan dari **Binomo** ?
+
+*Flowchart* simulasinya adalah sebagai berikut:
+
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Monte%20Carlo/binomo/post_files/figure-gfm/unnamed-chunk-1-1.png" width="50%" style="display: block; margin: auto;" />
+
+<br>
+
+Dari skema di atas, kita akan cek berapa hasil akhirnya?
+
+------------------------------------------------------------------------
+
+## Hasil Simulasi
+
+Berikut adalah grafik hasil simulasinya:
+
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Monte%20Carlo/binomo/post_files/figure-gfm/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" />
+
+Jika dilihat dari simulasi di atas, sebenarnya *user* “bisa menang”
+hingga mendapatkan Rp 64.27 juta. **TAPI** masalahnya *user* **tidak
+akan pernah tahu kapan harus berhenti** karena pada ujungnya *expected
+return* yang *user* dapatkan adalah **Rp 0** alias **NIHIL**.
+
+> Perhatikan saja ujung setiap garis di atas selalu menuju nilai **Rp
+> 0**.
+
+Lantas berapa peluangnya kita bisa mencapai Rp 64.27 juta?
+
+Ternyata dari `4.000` kali simulasi, hanya sekali saja simulasi bisa
+mencapai nilai tersebut. Dan perlu saya ingatkan sekali lagi, setelah
+mencapai nilai tersebut pada saat *bid* selanjutnya uang kita hangus!
+
+## **Kesimpulan**
+
+Waspadalah dalam berinvetasi. Jangan mudah tergiur oleh janji-janji
+manis para *influencer* atau *Youtuber*. Kita sebenarnya bisa dengan
+mudah melakukan simulasi untuk mengecek apakah *rules* investasi yang
+ada itu akan selalu merugikan salah satu pihak atau tidak.
+
+    if you find this article helpful, support this blog by clicking the ads.

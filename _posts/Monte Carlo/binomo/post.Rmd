@@ -1,0 +1,100 @@
+---
+title: "SIMULASI MONTE CARLO: Binary Option Bikin Untung atau Buntung?"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(scipen = 999)
+rm(list=ls())
+library(dplyr)
+library(ggplot2)
+load("simulasi.rda")
+```
+
+Beberapa hari ini, _timeline_ saya berseliweran topik terkait suatu layanan _trading_ yang telah ditutup oleh __OJK__ karena terindikasi judi atau penipuan. Setelah saya coba _Googling_ sana-sini, saya temukan layanan _trading_ ini sebenarnya hanya tempelan belaka. Hal yang terjadi justru berupa [_binary option_](https://money.kompas.com/read/2022/01/31/064141626/waspada-binary-option-judi-online-berkedok-trading-online?page=all). Yakni menaruh sejumlah uang, kemudian __menebak arah pergerakan suatu asset__: apakah naik atau turun? Jika tebakan benar, maka _user_ akan mendapatkan keuntungan. Sebaliknya, uang bisa ludes seketika.
+
+> Melihat aturan tersebut saja, kita sudah bisa memastikan bahwa ini bukanlah sebuah _trading_ tapi murni judi.
+
+Oke lah jika kita tidak mau menggunakan istilah judi pada kasus ini, saya akan tunjukkan bahwa _"trading"_ dengan cara ini pasti akan selalu merugikan _user_.
+
+---
+
+Pada saat saya kuliah S1 dulu, saya mengambil mata kulian __Matematika Keuangan__. Salah satu materinya, kami diajarkan _how to always win_ dalam transaksi pembelian _option_ saham (baik _put_ atau _call_). Tujuannya adalah untuk mencegah kondisi tersebut. Istilahnya adalah _arbitrage_. Bahasa simpelnya __bandar selalu menang__.
+
+Kembali ke kasus _binary option_, saya akan lakukan simulasi Monte Carlo untuk menunjukkan bahwa _user always lost_ dalam bertransaksi dengan prinsip ini. 
+
+> Simulasi ini juga akan membantah beberapa video _Youtuber_ yang memperlihatkan mereka bisa mendapatkan _profit_ jutaan dari modal minim.
+
+Saya mengambil contoh __Binomo__ yang memberikan keuntungan `80%` jika tebakan kita benar. Sebaliknya, jika tebakan salah maka uang kita akan ludes seketika.
+
+Saya akan melakukan simulasi sebanyak `4.000` kali dengan modal awal `Rp100.000`. Asumsi yang saya pakai adalah setiap _user_ tetap terus menebak selama uangnya masih ada. Kira-kira berapa _expected return_ yang bisa kita dapatkan dari __Binomo__ ?
+
+_Flowchart_ simulasinya adalah sebagai berikut:
+
+```{r out.width="50%",echo=FALSE,fig.retina=10,fig.align='center'}
+nomnoml::nomnoml("#direction: down
+                 [<start>start] -> [<input>input|iter_max = 9.999|init_money = 100.000]
+                 [<input>input] -> [define|i = 1]
+                 [define] -> [<choice> i <= iter_max]
+                 
+                 [<choice> i <= iter_max] -> F [<end>end]
+                 
+                 [<choice> i <= iter_max] -> T [<choice> _init_money > 0]
+                 
+                 [<choice> _init_money > 0] -> F [<end>end] 
+                 [<choice> _init_money > 0] -> T [<choice> tebakan benar?] 
+                 
+                 [<choice> tebakan benar?] -> T [init_money = init_money * 1.8]
+                 
+                 [<choice> tebakan benar?] -> F [init_money = 0]
+                 
+                 ")
+```
+
+<br>
+
+Dari skema di atas, kita akan cek berapa hasil akhirnya?
+
+---
+
+## Hasil Simulasi
+
+Berikut adalah grafik hasil simulasinya:
+
+```{r,echo=FALSE,fig.retina=10,fig.align='center'}
+data_final %>% 
+  mutate(exp = factor(exp),
+         idx = factor(idx)) %>% 
+  ggplot(aes(x = idx,
+             y = uang)) +
+  geom_line(aes(group = exp,color = exp)) +
+  annotate("label",
+           x = 11,
+           y = 63000000,
+           label = "~Rp 64 jt",
+           color = "darkgreen")+
+  theme_minimal() +
+  theme(legend.position = "none") +
+  labs(title = "Hasil Simulasi Binary Option",
+       subtitle = "Dengan aturan dari Binomo",
+       caption = "Simulasi dengan R\nikanx101.com",
+       y = "Uang user",
+       x = "Langkah yang dilakukan (berapa kali bid)")
+```
+
+Jika dilihat dari simulasi di atas, sebenarnya _user_ "bisa menang" hingga mendapatkan Rp `r round(max(data_final$uang)/1000000,2)` juta. __TAPI__ masalahnya _user_ __tidak akan pernah tahu kapan harus berhenti__ karena pada ujungnya _expected return_ yang _user_ dapatkan adalah __Rp 0__ alias __NIHIL__.
+
+> Perhatikan saja ujung setiap garis di atas selalu menuju nilai __Rp 0__.
+
+Lantas berapa peluangnya kita bisa mencapai Rp `r round(max(data_final$uang)/1000000,2)` juta?
+
+Ternyata dari `4.000` kali simulasi, hanya sekali saja simulasi bisa mencapai nilai tersebut. Dan perlu saya ingatkan sekali lagi, setelah mencapai nilai tersebut pada saat _bid_ selanjutnya uang kita hangus!
+
+## __Kesimpulan__
+
+Waspadalah dalam berinvetasi. Jangan mudah tergiur oleh janji-janji manis para _influencer_ atau _Youtuber_. Kita sebenarnya bisa dengan mudah melakukan simulasi untuk mengecek apakah _rules_ investasi yang ada itu akan selalu merugikan salah satu pihak atau tidak.
+
+```
+if you find this article helpful, support this blog by clicking the ads.
+```
