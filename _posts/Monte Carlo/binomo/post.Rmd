@@ -42,15 +42,14 @@ nomnoml::nomnoml("#direction: down
                  
                  [<choice> i <= iter_max] -> T [<choice> _init_money > 0]
                  
-                 [<choice> _init_money > 0] -> F [<end>end] 
+                 [<choice> _init_money > 0] -> F [i = i + 1]
                  [<choice> _init_money > 0] -> T [<choice> tebakan benar?] 
                  
                  [<choice> tebakan benar?] -> T [init_money = init_money * 1.8]
                  
                  [<choice> tebakan benar?] -> F [init_money = 0]
                  
-                 [init_money = init_money * 1.8] -> [i = i + 1]
-                 [init_money = 0] -> [i = i + 1]
+                 
                  ")
 ```
 
