@@ -1,6 +1,6 @@
 ---
-date: 2022-02-03T14:18:00-04:00
-title: "TUTORIAL WEB SCRAPING: Kapasitas IGD COVID Rumah Sakit di Bekasi"
+date: 2022-2-2T19:18:00-04:00
+title: "Tutorial Web Scrape Kapasitas IGD COVID Rumah Sakit"
 categories:
   - Blog
 tags:
