@@ -1,0 +1,90 @@
+---
+title: "TUTORIAL WEB SCRAPING: Kapasitas IGD COVID di Rumah Sakit Bekasi"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+waktu = Sys.time()
+```
+
+Tahun lalu, saya menuliskan bagaimana kita bisa mengambil data keterisian tempat tidur Rumah Sakit khusus pasien Covid dari [SIRANAP](https://ikanx101.com/blog/siranap/).
+
+Setelah saya coba cek pagi ini, ternyata ada perubahan dari versi SIRANAP yang sudah menjadi `SIRANAP 3.0`.
+
+Kali ini saya akan _share_ cara membuat algoritma di __R__ untuk melakukan _web scrape_ informasi IGD khusus COVID di Kota dan Kabupaten Bekasi. _Libraries_ yang saya gunakan adalah:
+
+1. `rvest` untuk melakukan `html parsing` dari halaman _web_.
+1. `dplyr` untuk _data carpentry_.
+1. `tidyr` untuk mengekstrak _numeric_ dari _string_.
+1. `stringr` untuk melakukan _text trimming_.
+
+Alurnya cukup mudah, yakni:
+
+```{r out.width="50%",echo=FALSE,warning=FALSE,message=FALSE,fig.retina=9,fig.align="center"}
+nomnoml::nomnoml("#direction: down
+                 [STEP 1] -> [STEP 2]
+
+                 [STEP 1|
+                  Scrape web SIRANAP]
+                 [STEP 2|
+                  Bebersih data]
+                 ")
+```
+
+Berikut adalah algoritmanya yang saya buat dalam bentuk _function_ di __R__
+
+```{r,message=FALSE,warning=FALSE}
+library(rvest)
+library(dplyr)
+library(stringr)
+library(tidyr)
+
+# function utk extract info rumah sakit
+extractorizer = function(url){
+  data = 
+    url %>% 
+    read_html() %>%                                                           # membaca html 
+    {tibble(
+      nama_RS = html_nodes(.,"h5") %>% html_text() %>% str_trim(),            # scrape nama rumah sakit
+      bed = html_nodes(.,".mb-1+ .mb-0") %>% html_text() %>% str_trim()       # scrape jumlah bed
+    )} %>% 
+    mutate(bed = extract_numeric(bed),                                        # ambil numeric dari teks bed
+           bed = ifelse(is.na(bed),0,bed)) %>%                                # mengubah kamar penuh jadi nol
+    arrange(desc(bed))                                                        # arrange descending dari bed
+  return(data)
+}
+
+```
+
+
+Sebagai _input_ dari _function_ ini adalah _url_ atau _link_. Saya akan gunakan dua _links_ dari Siranap, yakni _link_ RS di Kota Bekasi dan Kabupaten Bekasi.
+
+```{r,message=FALSE,warning=FALSE}
+url = c("https://yankes.kemkes.go.id/app/siranap/rumah_sakit?jenis=1&propinsi=32prop&kabkota=3275",
+        "https://yankes.kemkes.go.id/app/siranap/rumah_sakit?jenis=1&propinsi=32prop&kabkota=3216")
+```
+
+Jika kalian ingin mencoba untuk kota atau kabupaten lain, silakan ya.
+
+Berikut adalah proses scrapenya:
+
+```{r,message=FALSE,warning=FALSE}
+df_1 = extractorizer(url[1])
+df_2 = extractorizer(url[2])
+
+df_final = 
+  rbind(df_1,df_2) %>% 
+  arrange(desc(bed))
+```
+
+Berikut hasilnya:
+
+```{r,echo=FALSE}
+knitr::kable(df_final)
+```
+
+Mudah kan?
+---
+
+Catatan: _web scrape_ ini saya lakukan pada `r waktu`.
