@@ -1,6 +1,6 @@
 ---
 date: 2022-02-03T14:18:00-04:00
-title: "TUTORIAL WEB SCRAPING: Kapasitas IGD COVID di Rumah Sakit Bekasi"
+title: "TUTORIAL WEB SCRAPING: Kapasitas IGD COVID Rumah Sakit di Bekasi"
 categories:
   - Blog
 tags:
@@ -32,7 +32,7 @@ Bekasi. *Libraries* yang saya gunakan adalah:
 
 Alurnya cukup mudah, yakni:
 
-<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/web%20scraping/siranap/post_files/figure-gfm/unnamed-chunk-1-1.png" width="50%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/web%20scraping/siranap/post_files/figure-gfm/unnamed-chunk-1-1.png" width="40%" style="display: block; margin: auto;" />
 
 Berikut adalah algoritmanya yang saya buat dalam bentuk *function* di
 **R**
