@@ -149,7 +149,7 @@ rotasi_kan = function(x0,rot){
 
 Berikut adalah uji coba dengan titik sembarang berikut ini:
 
-```{r,fig.align="center",fig.retina = 10,fig.caption = "Uji Coba Rotasi I"}
+```{r,fig.align="center",fig.retina = 6,fig.caption = "Uji Coba Rotasi I"}
 # uji coba
 rot = 12 # berapa banyak rotasi
 x0 = rand_titik(0,10) # generate random titik
@@ -161,7 +161,7 @@ rotasi_kan(x0,rot)
 
 Uji coba kembali dengan titik sembarang lainnya berikut ini:
 
-```{r,fig.align="center",fig.retina = 10,fig.caption = "Uji Coba Rotasi II"}
+```{r,fig.align="center",fig.retina = 6,fig.caption = "Uji Coba Rotasi II"}
 # uji coba
 rot = 7 # berapa banyak rotasi
 x0 = rand_titik(0,10) # generate random titik
@@ -253,7 +253,7 @@ Berikutnya saya akan tunjukkan ilustrasi dari program ini.
 
 Saya akan uji coba untuk sembarang titik berikut ini:
 
-```{r,fig.align="center",fig.retina = 10,fig.caption = "Uji Coba Rotasi-Konstraksi I"}
+```{r,fig.align="center",fig.retina = 6,fig.caption = "Uji Coba Rotasi-Konstraksi I"}
 # uji coba
 rot = 40 # berapa banyak rotasi
 x0 = rand_titik(0,4) # generate random titik
@@ -265,7 +265,7 @@ rotasi_konstraksi_kan(x0,rot,r)
 
 Saya akan uji coba kembali untuk sembarang titik lainnya berikut ini:
 
-```{r,fig.align="center",fig.retina = 10,fig.caption = "Uji Coba Rotasi-Konstraksi II"}
+```{r,fig.align="center",fig.retina = 6,fig.caption = "Uji Coba Rotasi-Konstraksi II"}
 # uji coba
 rot = 6 # berapa banyak rotasi
 x0 = rand_titik(0,4) # generate random titik
@@ -368,7 +368,7 @@ Berikutnya saya akan tunjukkan ilustrasi dari program ini.
 
 Saya akan coba dengan sembarang titik berikut:
 
-```{r,fig.align="center",fig.retina = 10,fig.caption = "Uji Coba Rotasi-Konstraksi Terhadap x* I"}
+```{r,fig.align="center",fig.retina = 6,fig.caption = "Uji Coba Rotasi-Konstraksi Terhadap x* I"}
 # uji coba
 rot = 10 # berapa banyak rotasi
 x0 = rand_titik(0,4) # generate random titik
@@ -381,7 +381,7 @@ rotasi_konstraksi_pusat_kan(x0,rot,r,x_bintang)
 
 Saya akan coba kembali dengan sembarang titik lainnya:
 
-```{r,fig.align="center",fig.retina = 10,fig.caption = "Uji Coba Rotasi-Konstraksi Terhadap x* II"}
+```{r,fig.align="center",fig.retina = 6,fig.caption = "Uji Coba Rotasi-Konstraksi Terhadap x* II"}
 # uji coba
 rot = 45 # berapa banyak rotasi
 x0 = rand_titik(0,10) # generate random titik
