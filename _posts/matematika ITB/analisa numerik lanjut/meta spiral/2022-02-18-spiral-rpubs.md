@@ -1,5 +1,5 @@
 ---
-date: 2022-02-18T11:54:00-04:00
+date: 2022-02-17T12:02:00-04:00
 title: "Berkenalan dengan Spiral Dynamic Optimization Algorithm"
 categories:
   - Blog
