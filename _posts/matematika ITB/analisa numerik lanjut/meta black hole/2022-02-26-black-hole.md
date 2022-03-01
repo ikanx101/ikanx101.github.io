@@ -1,5 +1,5 @@
 ---
-date: 2022-02-25T14:24:00-04:00
+date: 2022-02-26T14:24:00-04:00
 title: "Berkenalan dengan Black Hole Optimization Algorithm"
 categories:
   - Blog
