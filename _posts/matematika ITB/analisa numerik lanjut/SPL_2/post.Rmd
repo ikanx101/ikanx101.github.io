@@ -93,7 +93,7 @@ y = c(20)
 z = c(30)
 
 # menentukan berapa iterasi maksimal
-max_iter = 17
+max_iter = 20
 
 # melakukan iterasi
 for(i in 2:max_iter){
@@ -102,5 +102,7 @@ for(i in 2:max_iter){
   z[i] = (15 + 2 * x[i-1] - y[i-1])/(5)
 }
 
-data.frame(id = 1:max_iter,x,y,z)
+data.frame(x,y,z)
 ```
+
+Terlihat bahwa semakin banyak iterasi dilakukan, nilai $x,y,z$ yang awalnya sembarang menjadi semakin konvergen menuju solusi.
