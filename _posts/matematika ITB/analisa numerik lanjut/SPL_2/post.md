@@ -180,3 +180,89 @@ data.frame(x,y,z)
 Terlihat bahwa semakin banyak iterasi dilakukan, nilai
 ![x,y,z](https://latex.codecogs.com/png.latex?x%2Cy%2Cz "x,y,z") yang
 awalnya sembarang menjadi semakin konvergen menuju solusi.
+
+## Metode *Meta Heuristic*
+
+Pada metode *meta heuristic* ini, saya akan gunakan *big bang - black
+hole optimization algorithm* yang saya pernah tuliskan sebelumnya.
+Tentunya dengan memodifikasi bentuk SPL menjadi:
+
+  
+![h\_1(x,y,z) = 4x - y + z
+- 7](https://latex.codecogs.com/png.latex?h_1%28x%2Cy%2Cz%29%20%3D%204x%20-%20y%20%2B%20z%20-%207
+"h_1(x,y,z) = 4x - y + z - 7")  
+
+  
+![h\_2(x,y,z) = 4x - 8y + z
++ 21](https://latex.codecogs.com/png.latex?h_2%28x%2Cy%2Cz%29%20%3D%204x%20-%208y%20%2B%20z%20%2B%2021
+"h_2(x,y,z) = 4x - 8y + z + 21")  
+
+  
+![h\_3(x,y,z) = -2x + y + 5z
+- 15](https://latex.codecogs.com/png.latex?h_3%28x%2Cy%2Cz%29%20%3D%20-2x%20%2B%20y%20%2B%205z%20-%2015
+"h_3(x,y,z) = -2x + y + 5z - 15")  
+
+menjadi masalah memaksimalkan fungsi berikut:
+
+  
+![F(x,y,z) = \\frac{1}{1 + \\sum\_{i=1}^3 \\alpha
+h\_i(x,y,z)^2}](https://latex.codecogs.com/png.latex?F%28x%2Cy%2Cz%29%20%3D%20%5Cfrac%7B1%7D%7B1%20%2B%20%5Csum_%7Bi%3D1%7D%5E3%20%5Calpha%20h_i%28x%2Cy%2Cz%29%5E2%7D
+"F(x,y,z) = \\frac{1}{1 + \\sum_{i=1}^3 \\alpha h_i(x,y,z)^2}")  
+
+dengan ![\\alpha](https://latex.codecogs.com/png.latex?%5Calpha
+"\\alpha") suatu nilai yang sangat besar.
+
+Berikut adalah algoritmanya:
+
+``` r
+# fungsi objective
+F = function(vec){
+  h1 = 4 * vec[1] - vec[2] + vec[3] - 7
+  h2 = 4 * vec[1] - 8 * vec[2] + vec[3] + 21
+  h3 = -2 * vec[1] + vec[2] + 5 * vec[3] - 15
+  alpha = 9999
+  F_total = 1 + alpha * h1^2 + alpha * h2^2 + alpha * h3^2
+  return(1 / F_total)
+}
+
+# definisi big bang function
+big_bang = function() runif(3,0,20)
+
+# definisi
+# berapa banyak bintang
+N = 20
+stars = vector("list",N)
+# rumah untuk F
+fxi = rep(0,N)
+# berapa banyak iterasi
+max_iter = 10
+
+# tahap I
+# membuat bintang
+for(i in 1:N){
+  stars[[i]] = big_bang()
+  fxi[i] = F(stars[[i]])
+}
+
+# tahap II
+# menentukan black hole
+n_bh = which.max(fxi)
+bh = stars[[n_bh]]
+f_bh = fxi[n_bh]
+
+# tahap III
+# iterasi Big Bang - BHO
+for(i in 1: max_iter){
+  # menghitung radius event horizon
+  r = f_bh / sum(fxi)
+
+  # memakan bintang berjarak kurang dari r
+  jarak = abs(fxi - f_bh)
+  n_luar = which(jarak >= r)
+
+  # stars yang masih ada
+  stars = stars[n_luar]
+
+
+}
+```
