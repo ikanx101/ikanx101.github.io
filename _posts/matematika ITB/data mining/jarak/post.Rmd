@@ -1,0 +1,28 @@
+---
+title: "Mencari Simmilarity dan Dissimilarity dari Data"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r,include=FALSE}
+rm(list=ls())
+library(dplyr)
+library(ggplot2)
+```
+
+Pada tahun lalu, saya pernah menulis tentang bagaimana menemukan persamaan dan perbedaan dari data [_phonebook_ agar kita bisa menemukan beberapa _entry_ ganda yang ada](https://ikanx101.com/blog/phone-book/). Pada tulisan tersebut, saya menggunakan algoritma yang berdasarkan _cosine simmilarity_.
+
+Kali ini saya akan membahas lebih detail apa yang disebut dengan __persamaan__ dan __pertaksamaan__.
+
+---
+
+## _Simmilarity Vs Dissimilarity_
+
+Prinsip sederhana yang digunakan untuk mengukur apakah dua data itu sama atau tidak adalah dengan mengukur __jarak__ antar kedua data tersebut.
+
+> Data $i$ dan $j$ disebut sama jika jarak antar keduanya $d(i,j) = 0$.
+
+Pada tulisan terdahulu, saya pernah membedah [berbagai macam tipe dan struktur data](https://ikanx101.com/blog/mengenal-data/). Masing-masing tipe dan struktur data mmemiliki cara perhitungan jaraknya tersendiri. Kita bahas satu-persatu berikut ini:
+
+### Data Numerik
