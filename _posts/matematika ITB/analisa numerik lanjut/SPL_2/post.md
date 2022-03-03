@@ -86,3 +86,90 @@ A_inv %*% b
     ## [1,]    2
     ## [2,]    4
     ## [3,]    3
+
+### Iterasi Jacobi
+
+Cara berikutnya adalah dengan membuat iterasi Jacobi berdasarkan formula
+per variabel ![x,y,z](https://latex.codecogs.com/png.latex?x%2Cy%2Cz
+"x,y,z"). Salah satu syarat agar bisa melakukan iterasi ini adalah
+dengan membuat bentuk dominan diagonal. Yakni, masing-masing variabel
+harus memiliki konstanta terbesar. Bentuk formulanya adalah sebagai
+berikut:
+
+  
+![x = \\frac{7 + y -
+z}{4}](https://latex.codecogs.com/png.latex?x%20%3D%20%5Cfrac%7B7%20%2B%20y%20-%20z%7D%7B4%7D
+"x = \\frac{7 + y - z}{4}")  
+
+  
+![y = \\frac{21 + 4x +
+z}{8}](https://latex.codecogs.com/png.latex?y%20%3D%20%5Cfrac%7B21%20%2B%204x%20%2B%20z%7D%7B8%7D
+"y = \\frac{21 + 4x + z}{8}")  
+
+  
+![z = \\frac{15 + 2x -
+y}{5}](https://latex.codecogs.com/png.latex?z%20%3D%20%5Cfrac%7B15%20%2B%202x%20-%20y%7D%7B5%7D
+"z = \\frac{15 + 2x - y}{5}")  
+
+Lantas bentuk iterasinya adalah sebagai berikut:
+
+  
+![x^{k+1} = \\frac{7 + y^k -
+z^k}{4}](https://latex.codecogs.com/png.latex?x%5E%7Bk%2B1%7D%20%3D%20%5Cfrac%7B7%20%2B%20y%5Ek%20-%20z%5Ek%7D%7B4%7D
+"x^{k+1} = \\frac{7 + y^k - z^k}{4}")  
+
+  
+![y^{k+1} = \\frac{21 + 4x^k +
+z^k}{8}](https://latex.codecogs.com/png.latex?y%5E%7Bk%2B1%7D%20%3D%20%5Cfrac%7B21%20%2B%204x%5Ek%20%2B%20z%5Ek%7D%7B8%7D
+"y^{k+1} = \\frac{21 + 4x^k + z^k}{8}")  
+
+  
+![z^{k+1} = \\frac{15 + 2x^k -
+y^k}{5}](https://latex.codecogs.com/png.latex?z%5E%7Bk%2B1%7D%20%3D%20%5Cfrac%7B15%20%2B%202x%5Ek%20-%20y%5Ek%7D%7B5%7D
+"z^{k+1} = \\frac{15 + 2x^k - y^k}{5}")  
+
+Dengan mengambil sebarang nilai
+![x,y,z](https://latex.codecogs.com/png.latex?x%2Cy%2Cz "x,y,z"),
+diharapkan iterasi Jacobi akan mengantarkan kita ke nilai solusinya.
+
+Misalkan kita gunakan nilai awal ![x\_0 = 10, y\_0 = 20, z\_0
+= 30](https://latex.codecogs.com/png.latex?x_0%20%3D%2010%2C%20y_0%20%3D%2020%2C%20z_0%20%3D%2030
+"x_0 = 10, y_0 = 20, z_0 = 30").
+
+``` r
+# set initial values
+x = c(10)
+y = c(20)
+z = c(30)
+
+# menentukan berapa iterasi maksimal
+max_iter = 17
+
+# melakukan iterasi
+for(i in 2:max_iter){
+  x[i] = (7 + y[i-1] - z[i-1])/(4)
+  y[i] = (21 + 4 * x[i-1] + z[i-1])/(8)
+  z[i] = 15 + 2 * x[i-1] - y[i-1]
+}
+
+data.frame(id = 1:max_iter,x,y,z)
+```
+
+    ##    id           x         y         z
+    ## 1   1 10.00000000 20.000000 30.000000
+    ## 2   2 -0.75000000 11.375000 15.000000
+    ## 3   3  0.84375000  4.125000  2.125000
+    ## 4   4  2.25000000  3.312500 12.562500
+    ## 5   5 -0.56250000  5.320312 16.187500
+    ## 6   6 -0.96679688  4.367188  8.554688
+    ## 7   7  0.70312500  3.210938  8.699219
+    ## 8   8  0.37792969  4.063965 13.195312
+    ## 9   9 -0.53283691  4.463379 11.691895
+    ## 10 10 -0.05712891  3.820068  9.470947
+    ## 11 11  0.33728027  3.780304 11.065674
+    ## 12 12 -0.07134247  4.176849 11.894257
+    ## 13 13 -0.17935181  4.076111 10.680466
+    ## 14 14  0.09891129  3.870382 10.565186
+    ## 15 15  0.07629919  3.995104 11.327440
+    ## 16 16 -0.08308411  4.079080 11.157495
+    ## 17 17 -0.01960373  3.978145 10.754752

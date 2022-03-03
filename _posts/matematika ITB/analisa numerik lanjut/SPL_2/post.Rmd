@@ -59,3 +59,48 @@ A_inv = solve(A)
 # solusi
 A_inv %*% b
 ```
+
+```{r,include=FALSE}
+rm(list=ls())
+```
+
+### Iterasi Jacobi
+
+Cara berikutnya adalah dengan membuat iterasi Jacobi berdasarkan formula per variabel $x,y,z$. Salah satu syarat agar bisa melakukan iterasi ini adalah dengan membuat bentuk dominan diagonal. Yakni, masing-masing variabel harus memiliki konstanta terbesar. Bentuk formulanya adalah sebagai berikut:
+
+$$x = \frac{7 + y - z}{4}$$
+
+$$y = \frac{21 + 4x + z}{8}$$
+
+$$z = \frac{15 + 2x - y}{5}$$
+
+Lantas bentuk iterasinya adalah sebagai berikut:
+
+$$x^{k+1} = \frac{7 + y^k - z^k}{4}$$
+
+$$y^{k+1} = \frac{21 + 4x^k + z^k}{8}$$
+
+$$z^{k+1} = \frac{15 + 2x^k - y^k}{5}$$
+
+Dengan mengambil sebarang nilai $x,y,z$, diharapkan iterasi Jacobi akan mengantarkan kita ke nilai solusinya.
+
+Misalkan kita gunakan nilai awal $x_0 = 10, y_0 = 20, z_0 = 30$.
+
+```{r,message = FALSE,warning = FALSE}
+# set initial values
+x = c(10)
+y = c(20)
+z = c(30)
+
+# menentukan berapa iterasi maksimal
+max_iter = 17
+
+# melakukan iterasi
+for(i in 2:max_iter){
+  x[i] = (7 + y[i-1] - z[i-1])/(4)
+  y[i] = (21 + 4 * x[i-1] + z[i-1])/(8)
+  z[i] = 15 + 2 * x[i-1] - y[i-1]
+}
+
+data.frame(id = 1:max_iter,x,y,z)
+```
