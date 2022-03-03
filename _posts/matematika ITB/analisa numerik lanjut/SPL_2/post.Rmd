@@ -99,7 +99,7 @@ max_iter = 17
 for(i in 2:max_iter){
   x[i] = (7 + y[i-1] - z[i-1])/(4)
   y[i] = (21 + 4 * x[i-1] + z[i-1])/(8)
-  z[i] = 15 + 2 * x[i-1] - y[i-1]
+  z[i] = (15 + 2 * x[i-1] - y[i-1])/(5)
 }
 
 data.frame(id = 1:max_iter,x,y,z)
