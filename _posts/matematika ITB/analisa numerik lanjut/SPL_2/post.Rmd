@@ -143,11 +143,11 @@ F = function(vec){
 }
 
 # definisi big bang function
-big_bang = function() runif(3,0,20)
+big_bang = function() runif(3,0,10)
 
 # definisi
 # berapa banyak bintang
-N = 800
+N = 900
 stars = vector("list",N)
 # rumah untuk F
 fxi = rep(0,N)
@@ -190,7 +190,7 @@ for(ikanx in 1: max_iter){
     }
 
   # gravity rate
-  g = runif(1,0,1.5)
+  g = runif(2,0,1.5)
 
   # proses penarikan bintang
   for(j in 1:N){
