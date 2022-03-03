@@ -252,7 +252,7 @@ f_bh = fxi[n_bh]
 
 # tahap III
 # iterasi Big Bang - BHO
-for(i in 1: max_iter){
+for(ikanx in 1: max_iter){
   # menghitung radius event horizon
   r = f_bh / sum(fxi)
 
@@ -263,6 +263,35 @@ for(i in 1: max_iter){
   # stars yang masih ada
   stars = stars[n_luar]
 
+  # jika jumlah stars < N, kita lakukan big bang lagi
+  n_stars = length(stars)
+  if(n_stars < N){
+    for(i in (n_stars + 1):N){
+    stars[[i]] = big_bang()
+    fxi[i] = F(stars[[i]])
+    }
+    }
 
+  # gravity rate
+  g = runif(1,0,1.5)
+
+  # proses penarikan bintang
+  for(j in 1:N){
+    xt = stars[[j]]
+    xt_new = bh + g * (xt - bh)
+    fxi[j] = F(xt_new)
+    stars[[j]] = xt_new
+  }
+
+  # mencari black hole lagi
+  n_bh = which.max(fxi)
+  bh = stars[[n_bh]]
+  f_bh = fxi[n_bh]
 }
+
+# menuliskan solusi
+n_sol = which.max(fxi)
+stars[[n_sol]]
 ```
+
+    ## [1] 1.104495 5.800734 9.848882
