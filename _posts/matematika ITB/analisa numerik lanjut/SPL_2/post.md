@@ -233,12 +233,12 @@ big_bang = function() runif(3,0,20)
 
 # definisi
 # berapa banyak bintang
-N = 200
+N = 500
 stars = vector("list",N)
 # rumah untuk F
 fxi = rep(0,N)
 # berapa banyak iterasi
-max_iter = 150
+max_iter = 200
 
 # tahap I
 # membuat bintang
@@ -297,7 +297,13 @@ n_sol = which.max(fxi)
 stars[[n_sol]]
 ```
 
-    ## [1] 0.2066318 3.7405812 5.4673454
+    ## [1] 1.850852 3.598657 2.673958
+
+``` r
+fxi[n_sol]
+```
+
+    ## [1] 1.175001e-05
 
 -----
 
