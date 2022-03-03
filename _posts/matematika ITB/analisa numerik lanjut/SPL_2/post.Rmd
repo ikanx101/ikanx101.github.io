@@ -44,6 +44,8 @@ Cara ini adalah cara yang paling populer diketahui oleh banyak orang. Suatu SPL 
 
 $$Ax = b$$
 
+Dikatakan memiliki solusi jika $A$ memiliki invers.
+
 Maka untuk mencari $x$ kita cukup mencari invers dari matriks $A$, sehingga:
 
 $$x = A^{-1}b$$
@@ -145,12 +147,12 @@ big_bang = function() runif(3,0,20)
 
 # definisi
 # berapa banyak bintang
-N = 20
+N = 200
 stars = vector("list",N)
 # rumah untuk F
 fxi = rep(0,N)
 # berapa banyak iterasi
-max_iter = 10
+max_iter = 150
 
 # tahap I
 # membuat bintang
@@ -208,3 +210,9 @@ for(ikanx in 1: max_iter){
 n_sol = which.max(fxi)
 stars[[n_sol]]
 ```
+
+---
+
+# ___Summary___
+
+Banyak cara bisa dilakukan untuk menyelesaikan SPL. Saya sendiri lebih suka menggunakan metode invers matriks karena lebih simpel. Tapi untuk kasus SPL dengan bentuk matriks yang lebih kompleks dan tidak bisa dibentuk menjadi dominan diagonal, penyelesaian dengan metode _meta heuristic_ akan sangat membantu sekali.

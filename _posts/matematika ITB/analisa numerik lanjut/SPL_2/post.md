@@ -60,6 +60,9 @@ sebagai berikut:
   
 ![Ax = b](https://latex.codecogs.com/png.latex?Ax%20%3D%20b "Ax = b")  
 
+Dikatakan memiliki solusi jika
+![A](https://latex.codecogs.com/png.latex?A "A") memiliki invers.
+
 Maka untuk mencari ![x](https://latex.codecogs.com/png.latex?x "x") kita
 cukup mencari invers dari matriks
 ![A](https://latex.codecogs.com/png.latex?A "A"), sehingga:
@@ -230,12 +233,12 @@ big_bang = function() runif(3,0,20)
 
 # definisi
 # berapa banyak bintang
-N = 20
+N = 200
 stars = vector("list",N)
 # rumah untuk F
 fxi = rep(0,N)
 # berapa banyak iterasi
-max_iter = 10
+max_iter = 150
 
 # tahap I
 # membuat bintang
@@ -294,4 +297,14 @@ n_sol = which.max(fxi)
 stars[[n_sol]]
 ```
 
-    ## [1] 1.104495 5.800734 9.848882
+    ## [1] 0.2066318 3.7405812 5.4673454
+
+-----
+
+# ***Summary***
+
+Banyak cara bisa dilakukan untuk menyelesaikan SPL. Saya sendiri lebih
+suka menggunakan metode invers matriks karena lebih simpel. Tapi untuk
+kasus SPL dengan bentuk matriks yang lebih kompleks dan tidak bisa
+dibentuk menjadi dominan diagonal, penyelesaian dengan metode *meta
+heuristic* akan sangat membantu sekali.
