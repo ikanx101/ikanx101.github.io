@@ -37,16 +37,20 @@ Berikut caranya:
 # memanggil library
 library(openxlsx)
 
+# create workbook
+wb = createWorkbook()
+
 # untuk sheet pertama kita cukup pangil data saja
+sh_1 = data
+sh = addWorksheet(wb,"Sheet 1")
+xl_write(sh_1,wb,sh)
 
 # pada sheet kedua, kita pecah dulu datanya
 sh_2 = split(data,data$am)
+sh = addWorksheet(wb,"Sheet 2")
+xl_write(sh_2,wb,sh)
 
-# kita buat dua sheet
-output = list("Sheet1" = data,   # isi data mtcars di sheet pertama
-	      "Sheet2" = sh_2)   # isi data pecah di sheet kedua
-
-write.xlsx(output,file = "hasil.xlsx")
+saveWorkbook(wb,file = "hasil.xlsx")
 ```
 
 Kita coba lihat dulu hasilnya bagaimana:
