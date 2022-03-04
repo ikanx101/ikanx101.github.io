@@ -1,1 +1,0 @@
-rmarkdown::render("post.Rmd")

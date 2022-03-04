@@ -11,7 +11,7 @@ Setiap hari saya menggunakan __R__ untuk melakukan pekerjaan sehari-hari untuk m
 
 Namun untuk rekan kantor lain, tentunya format data dalam bentuk _Ms. Excel_ `.xlsx` merupakan yang paling favorit dan umum digunakan. Oleh karena itu, saya memerlukan satu cara agar bisa meng-_export_ tabel (`data.frame()`) dari __R__ ke bentuk `.xlsx`.
 
-Tentunya ada berbagai _libraries_ yang bisa digunakan untuk itu. Namun _library_ yang paling sering saya gunakan adalah `openxlsx` karena:
+Tentunya ada berbagai _libraries_ yang bisa digunakan untuk itu. Namun _library_ yang paling sering saya gunakan adalah `openxlsx` yang saya kombinasikan dengan `expss` karena:
 
 1. Bebas dari `java`.
 1. Tidak perlu `ComClient`.
@@ -34,8 +34,9 @@ Saya hendak membuat satu file excel berisi dua _sheets_:
 Berikut caranya:
 
 ```{r,message=FALSE,warning=FALSE}
-# memanggil library
+# memanggil libraries
 library(openxlsx)
+library(expss)
 
 # create workbook
 wb = createWorkbook()
@@ -50,10 +51,23 @@ sh_2 = split(data,data$am)
 sh = addWorksheet(wb,"Sheet 2")
 xl_write(sh_2,wb,sh)
 
-saveWorkbook(wb,file = "hasil.xlsx")
+saveWorkbook(wb,file = "hasil.xlsx",overwrite = T)
 ```
 
 Kita coba lihat dulu hasilnya bagaimana:
 
 ## _Sheet_ Pertama
+
+```{r out.width="70%",echo=FALSE,fig.align='center'}
+knitr::include_graphics("s1.png")
+```
+
 ## _Sheet_ Kedua
+
+```{r out.width="70%",echo=FALSE,fig.align='center'}
+knitr::include_graphics("s2.png")
+```
+
+---
+
+Bagaimana mudah kan?
