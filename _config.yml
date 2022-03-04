@@ -26,6 +26,7 @@ markdown: kramdown
 remote_theme: mmistakes/minimal-mistakes
 
 words_per_minute: 80
+future: true
 
 # Outputting
 permalink: /:categories/:title/
