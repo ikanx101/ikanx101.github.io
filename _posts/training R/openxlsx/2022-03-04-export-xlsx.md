@@ -1,5 +1,5 @@
 ---
-date: 2022-03-04T09:15:00-04:00
+date: 2022-03-04T09:13:00-04:00
 title: "TUTORIAL R for DATA SCIENCE - part 11: Meng-export Tabel dari R ke Microsoft Excel"
 categories:
   - Blog
@@ -105,11 +105,11 @@ Kita coba lihat dulu hasilnya bagaimana:
 
 ## *Sheet* Pertama
 
-<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/training%20R/openxlsx/s1.png" width="70%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/training%20R/openxlsx/s1.png" width="40%" style="display: block; margin: auto;" />
 
 ## *Sheet* Kedua
 
-<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/training%20R/openxlsx/s2.png" width="70%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/training%20R/openxlsx/s2.png" width="40%" style="display: block; margin: auto;" />
 
 ------------------------------------------------------------------------
 
