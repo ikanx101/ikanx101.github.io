@@ -1,0 +1,55 @@
+---
+title: "TUTORIAL R: Meng-export Tabel dari R ke Microsoft Excel"
+output: github_document
+---
+
+```{r,include=FALSE}
+rm(list=ls())
+```
+
+Setiap hari saya menggunakan __R__ untuk melakukan pekerjaan sehari-hari untuk mengolah data _market research_. Untuk tim internal di _data science_, saya selalu meng-_encourage_ untuk menyimpan data dalam format `.rda` karena bisa mengakomodir berbagai macam tipe data (bahkan model _machine learning_ juga bisa disimpan di sana).
+
+Namun untuk rekan kantor lain, tentunya format data dalam bentuk _Ms. Excel_ `.xlsx` merupakan yang paling favorit dan umum digunakan. Oleh karena itu, saya memerlukan satu cara agar bisa meng-_export_ tabel (`data.frame()`) dari __R__ ke bentuk `.xlsx`.
+
+Tentunya ada berbagai _libraries_ yang bisa digunakan untuk itu. Namun _library_ yang paling sering saya gunakan adalah `openxlsx` karena:
+
+1. Bebas dari `java`.
+1. Tidak perlu `ComClient`.
+1. Bisa dijalankan dari _command prompt_.
+
+Lantas bagaimana caranya?
+
+Misalkan saya memiliki data `mtcars` seperti di bawah ini:
+
+```{r}
+data = mtcars
+data
+```
+
+Saya hendak membuat satu file excel berisi dua _sheets_:
+
+1. _Sheet_ pertama berisi tabel data `mtcars` secara utuh.
+1. _Sheet_ kedua berisi 2 tabel data `mtcars` yang saya sudah pisahkan berdasarkan variabel `am`.
+
+Berikut caranya:
+
+```{r,message=FALSE,warning=FALSE}
+# memanggil library
+library(openxlsx)
+
+# untuk sheet pertama kita cukup pangil data saja
+
+# pada sheet kedua, kita pecah dulu datanya
+sh_2 = split(data,data$am)
+
+# kita buat dua sheet
+output = list("Sheet1" = data,   # isi data mtcars di sheet pertama
+	      "Sheet2" = sh_2)   # isi data pecah di sheet kedua
+
+write.xlsx(output,file = "hasil.xlsx")
+```
+
+Kita coba lihat dulu hasilnya bagaimana:
+
+## _Sheet_ Pertama
+## _Sheet_ Kedua
