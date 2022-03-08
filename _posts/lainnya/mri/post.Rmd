@@ -1,0 +1,29 @@
+---
+title: "Mengapa Diperlukan Service Audit Research?"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Pada pertengahan tahun 2008, saya mulai bekerja di suatu perusahaan _market research_ ternama di Indonesia. Berbeda dengan perusahaan riset lainnya, perusahaan tempat saya bekerja tersebut fokus pada riset _mistery shopping_ perbankan. Setiap tahunnya, perusahaan ini bekerja sama dengan majalah __InfoBank__ mengeluarkan ___BSEM Awards___ (_Bank Service Excellent Monitoring_). Suatu penghargaan paling prestisius dan bergengsi tentang layanan perbankan yang diberikan kepada nasabahnya, seperti layanan _staff frontliner_ (_customer service_, _teller_, dan satpam) dan layanan non-staff (ATM, e-channel, dst).
+
+Awalnya saya agak bingung. Kenapa juga perbankan harus memperbaiki layanannya? Apa sih gunanya? Jangan – jangan mereka hanya buang – buang waktu, tenaga, dan uang untuk hanya sekedar memperbaiki layanan mereka. Pada saat kuliah, saya berpendapat:
+
+<br>
+
+> “Toh mau layanan bagus atau tidak, orang akan tetap ke bank juga kok…”
+
+<br>
+
+Setelah bekerja di sana, _mindset_ saya berubah. Bukan karena mata pencaharian saya waktu itu mengharuskan saya melakukan pengukuran layanan. Namun lebih karena data yang ada ternyata menunjukkan bahwa _service creates business_. 
+
+Apa sih maksudnya? 
+
+Setidaknya ada dua alasan kenapa perbankan harus meningkatkan layanannya:
+
+- Tanpa kita sadari semua bank kini memiliki produk yang (hampir) serupa. Misal, untuk produk tabungan anak. Mungkin dulu yang paling terkenal adalah BRITama Junio, tapi sekarang setidaknya sudah ada 9 bank lain yang memiliki produk tabungan anak dengan fitur dan benefit yang hampir serupa. Oleh karena itu, setiap bank tersebut harus memiliki ‘pembeda’. Lebih baik lagi jika mereka memiliki _service as their competitive advantage_.
+- _Customer service_ sebagai ujung tombak dalam pelayanan kepada nasabah memiliki andil besar dalam bisnis perbankan. Gak percaya? Data hasil survey _mistery shopping_ dan _customer satisfaction survey_ suatu bank syariah (kita sebut saja bank syariah XYZ) di tahun 2015 menunjukkan hal tersebut, yakni:
+    - Pada survey _mistery shopping_, didapatkan bahwa _selling skill customer service_ sangat rendah. Walaupun mereka memiliki sikap dan penampilan yang prima, namun mereka tidak memiliki kemampuan untuk membaca peluang _cross selling_ atau _upselling_ kepada nasabah baru atau _existing_. Masih belum paham? Misal, kamu mau buka rekening tabungan. Pada saat membuka rekening tabungan, _customer service_ akan memberikan _form_ untuk diisi. _Customer service_ yang ‘ahli’ akan bisa menangkap peluang ‘jualan’ produk lain dengan menanyakan anak kamu umur berapa? sudah sekolah atau belum? sudah punya tabungan anak atau belum? ATAU menangkap peluang untuk jualan produk tabungan haji, tabungan rencana, dll.
+    - Akibatnya, hasil survey kepuasan nasabah memperlihatkan _customer holding ratio_ Bank Syariah XYZ tersebut hanya berada di kisaran `1.1`. Artinya satu nasabah, hanya memiliki satu rekening saja. Dan ternyata, ada ~10% nasabah bank tersebut yang memiliki dana besar di bank lain tapi aktif bertransaksi di Bank XYZ. Sayang yah, padahal kan itu peluang besar bagi mereka.
