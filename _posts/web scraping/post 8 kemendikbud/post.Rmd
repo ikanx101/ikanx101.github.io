@@ -7,24 +7,83 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## GitHub Documents
+Sudah sering saya membahas bagaimana melakukan _web scraping_ dengan cara [_parsing_ `html` menggunakan __R__](https://ikanx101.com/tags/#web-scrap). Namun teknik ini tidak selalu bisa diandalkan untuk mengambil data dari situs yang dinamis. 
 
-This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
+Berdasarkan pengalaman saya, teknik _web scraping_ yang paling handal adalah dengan _mimicking browser_ seperti [menggunakan `chromote`](https://ikanx101.com/blog/webscrape-tutorial-2/). Namun permasalahan teknik ini adalah kerumitannya dalam hal penulisan skrip untuk _scraping_ suatu data tertentu dari tampilan _webpage_.
 
-## Including Code
+### Pertanyaannya:
 
-You can include R code in the document as follows:
+Lantas, apakah ada cara _web scraping_ yang handal (memanfaatkan teknik _mimicking browser_) sekaligus mudah penulisan skripnya (seperti _parsing_ `html`)?
 
-```{r cars}
-summary(cars)
+Jawabannya: __ADA__.
+
+Kita bisa mengawinkan keduanya memanfaatkan dua _libraries_ berikut ini: `RSelenium` dan `rvest`.
+
+## `RSelenium`
+
+`RSelenium` adalah salah satu _library_ _mimicking browser_ terbaik yang ada di __R__. Kita bisa memanfaatkan `RSelenium` untuk membuka suatu _webpage_ dinamis.
+
+## `rvest`
+
+Kemudian _webpage_ tersebut bisa kita _parsing_ menggunakan `rvest`. Sangat mudah.
+
+---
+
+## Contoh Penggunaan
+
+Sebagai contoh, saya akan melakukan _web scraping_ tabel data dinamis dari _webpage_ [Dapodik](https://dapo.kemdikbud.go.id/sp).
+
+Ada dua langkah yang saya lakukan:
+
+1. Membuka situs Dapodik menggunakan `RSelenium`.
+1. _Parsing_ `RSelenium` dengan `rvest`.
+
+Berikut skripnya:
+
+```
+# load libraries 
+library(dplyr)
+library(rvest)
+library(RSelenium)
+
+# ===============================================================================
+# memulai selenium
+driver = RSelenium::rsDriver(browser = "chrome",
+                             chromever = "99.0.4844.35" )
+remote_driver = driver[["client"]] 
+
+# url
+url = "https://dapo.kemdikbud.go.id/sp"
+
+# membuka url dengan selenium
+remote_driver$navigate(url)
+
+# parsing html dengan membaca selenium menggunakan rvest
+df = 
+  remote_driver$getPageSource()[[1]] %>% 
+  read_html() %>% 
+  html_table(fill = T)
 ```
 
-## Including Plots
+</break>
+</break>
+</break>
 
-You can also embed plots, for example:
+Berikut adalah hasil data mentahnya:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+load("bahan_blog.rda")
+library(dplyr)
+df
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+</break>
+</break>
+</break>
+
+Berikut adalah datanya setelah dibersihkan:
+
+```{r,echo=FALSE}
+df_1 %>% 
+  knitr::kable(align = "c")
+```
