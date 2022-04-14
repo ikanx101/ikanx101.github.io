@@ -30,7 +30,7 @@ Proses _webscraping_-nya sendiri memakan waktu sekitar `20` menit dan saya berha
 
 Pertama-tama, saya akan coba mencari tahu kategori _merchant_ apa saja yang ada di dekat rumah saya. Kategori ini adalah berdasarkan kategori yang ada pada halaman masing-masing _merchant_ pada GrabFood.
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=7}
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=4}
 data_final %>% 
   select(nama_resto,kategori_resto) %>% 
   distinct() %>% 
@@ -58,7 +58,7 @@ Ternyata _snack_, _beverages_, dan _chicken_ adalah tiga kategori yang mendomina
 
 Mari kita lihat sebaran _rating_ dari 3 kategori teratas tersebut.
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=8}
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=4}
 rating = 
   data_final %>% 
   select(nama_resto,kategori_resto,rating_resto) %>% 
@@ -99,7 +99,7 @@ Sekarang saya akan membandingkan harga dari setiap menu yang ada pada ketiga kat
 
 Ilustrasi: misalkan _merchant_ ABC memiliki 10 buah menu dengan harga yang berbeda-beda. Maka harga yang saya ambil sebagai harga final _merchant_ ABC adalah median harga dari 10 menu tersebut.
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=8}
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.retina=4}
 harga = 
   data_final %>% 
   select(nama_resto,kategori_resto,harga) %>% 
