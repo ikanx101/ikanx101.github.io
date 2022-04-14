@@ -33,7 +33,7 @@ Pertama-tama, saya akan coba mencari tahu kategori *merchant* apa saja
 yang ada di dekat rumah saya. Kategori ini adalah berdasarkan kategori
 yang ada pada halaman masing-masing *merchant* pada GrabFood.
 
-![](post_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/web%20scraping/post%209%20grabuburit/post_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
 Ternyata *snack*, *beverages*, dan *chicken* adalah tiga kategori yang
 mendominasi. Saya baru sadar, setelah dipikir-pikir lagi memang tempat
@@ -43,7 +43,7 @@ seperti rumah makan padang, soto, bakso, dan mie ayam.
 
 Mari kita lihat sebaran *rating* dari 3 kategori teratas tersebut.
 
-![](post_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/web%20scraping/post%209%20grabuburit/post_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
 Sebenarnya ketiga kategori tersebut mendapatkan *rating* yang bagus
 berdasarkan nilai *summary* yang ada. Tapi kalau saya boleh berpendapat,
@@ -60,7 +60,7 @@ Ilustrasi: misalkan *merchant* ABC memiliki 10 buah menu dengan harga
 yang berbeda-beda. Maka harga yang saya ambil sebagai harga final
 *merchant* ABC adalah median harga dari 10 menu tersebut.
 
-![](post_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/web%20scraping/post%209%20grabuburit/post_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 Jika dilihat sekilas, ketiga kategori ini berada pada level harga yang
 mirip. Tentunya jika ingin lebih pasti, kita perlu mengujinya dengan
