@@ -1,0 +1,142 @@
+---
+title: "Ngabuburit Sambil Web Scrape GrabFood di Sekitar Rumah"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+
+library(dplyr)
+library(tidyr)
+library(tidytext)
+library(ggplot2)
+library(igraph)
+library(ggraph)
+library(ggthemes)
+load("bahan_blog.rda")
+
+# bebersih
+data_final$kategori_resto = gsub("\\#","",data_final$kategori_resto)
+```
+
+Sore kemarin, sambil menunggu buka puasa, saya penasaran sudah sebanyak apa _merchant_ makanan dan minuman yang berada di sekitar rumah saya yang sudah ter-_listing_ di layanan __GrabFood__. Menggunakan teknik yang saya [tulis kemarin](https://ikanx101.com/blog/selenium-rvest/) saya akan coba mengambil sebanyak-banyaknya data _merchants_ dan melakukan analisa sederhana.
+
+Kira-kira, menu buka puasa apa yang ada di sekitar rumah saya?
+
+---
+
+Proses _webscraping_-nya sendiri memakan waktu sekitar `20` menit dan saya berhasil mendapatkan `251` buah data _merchants_ di sekitar rumah saya di Bekasi Timur. Saya mencarinya menggunakan fitur _nearby_ yang ada pada GrabFood.
+
+Pertama-tama, saya akan coba mencari tahu kategori _merchant_ apa saja yang ada di dekat rumah saya. Kategori ini adalah berdasarkan kategori yang ada pada halaman masing-masing _merchant_ pada GrabFood.
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+data_final %>% 
+  select(nama_resto,kategori_resto) %>% 
+  distinct() %>% 
+  separate_rows(kategori_resto,sep = ",") %>% 
+  group_by(kategori_resto) %>% 
+  tally(sort = T) %>% 
+  ungroup() %>% 
+  head(15) %>% 
+  ggplot(aes(x = reorder(kategori_resto,n),
+             y = n)) +
+  geom_col(color = "black",
+           fill = "darkgreen",
+           alpha = .25) +
+  geom_label(aes(label = n),size = 2.15) +
+  coord_flip() +
+  theme_fivethirtyeight() +
+  labs(title = "Kategori Merchant GrabFood di Sekitar Rumah",
+       subtitle = "Apa saja kategori merchant yang terbanyak?",
+       caption = "Top 15 Kategori\ndibuat menggunakan R\nikanx101.com") +
+  theme(axis.title = element_blank(),
+        axis.text.x = element_blank())
+```
+
+Ternyata _snack_, _beverages_, dan _chicken_ adalah tiga kategori yang mendominasi. Saya baru sadar, setelah dipikir-pikir lagi memang tempat nongkrong seperti kedai kopi dan cemilan sedang menjamur di sekitar rumah. Sekarang bahkan sudah menggeser tempat makan "tradisional" seperti rumah makan padang, soto, bakso, dan mie ayam.
+
+Mari kita lihat sebaran _rating_ dari 3 kategori teratas tersebut.
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+rating = 
+  data_final %>% 
+  select(nama_resto,kategori_resto,rating_resto) %>% 
+  distinct() %>% 
+  separate_rows(kategori_resto,sep = "\\,") %>% 
+  filter(grepl("snack|beverages|chicken",kategori_resto,ignore.case = T)) %>% 
+  filter(rating_resto > 0) 
+
+rating_summary = 
+  rating %>% 
+  group_by(kategori_resto) %>% 
+  summarise(mean = mean(rating_resto) %>% round(1),
+            median = median(rating_resto),
+            q1 = quantile(rating_resto,.25) %>% round(1)) %>% 
+  ungroup()
+
+rating %>% 
+  ggplot(aes(x = kategori_resto,
+             y = rating_resto)) +
+  geom_boxplot(color = "black",
+               fill = "darkgreen",
+               alpha = .25) +
+  geom_label(aes(x = kategori_resto,
+                 y = 3.5,
+                 label = paste0("Q1: ",q1,"\nMedian: ",median,"\nMean: ",mean)),
+             data = rating_summary
+             ) +
+  theme_fivethirtyeight() +
+  labs(title = "Sebaran Rating Merchant Pada Top 3 Kategori",
+       subtitle = "Kategori apa yang paling bagus?",
+       caption = "Top 3 Kategori\ndibuat menggunakan R\nikanx101.com") 
+```
+
+
+Sebenarnya ketiga kategori tersebut mendapatkan _rating_ yang bagus berdasarkan nilai _summary_ yang ada. Tapi kalau saya boleh berpendapat, saya rasa _beverages_ adalah kategori yang paling terbaik di antara ketiganya.
+
+Sekarang saya akan membandingkan harga dari setiap menu yang ada pada ketiga kategori tersebut. Agar perbandingan ini menjadi _fair_, saya hanya akan menggunakan satu harga per _merchant_. Harga yang saya gunakan adalah median harga dari semua menu yang ada pada setiap _merchant_.
+
+Ilustrasi: misalkan _merchant_ ABC memiliki 10 buah menu dengan harga yang berbeda-beda. Maka harga yang saya ambil sebagai harga final _merchant_ ABC adalah median harga dari 10 menu tersebut.
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+harga = 
+  data_final %>% 
+  select(nama_resto,kategori_resto,harga) %>% 
+  group_by(nama_resto,kategori_resto) %>%
+  summarise(harga = median(harga)) %>% 
+  ungroup() %>% 
+  separate_rows(kategori_resto,sep = "\\,") %>% 
+  filter(grepl("snack|beverages|chicken",kategori_resto,ignore.case = T))
+
+rating_summary = 
+  harga %>% 
+  group_by(kategori_resto) %>% 
+  summarise(mean = mean(harga) %>% round(1),
+            median = median(harga),
+            q1 = quantile(harga,.25) %>% round(1)) %>% 
+  ungroup()
+
+harga %>% 
+  ggplot(aes(x = kategori_resto,
+             y = harga)) +
+  geom_boxplot(color = "black",
+               fill = "darkgreen",
+               alpha = .25) +
+  geom_label(aes(x = kategori_resto,
+                 y = 60000,
+                 label = paste0("Q1: ",q1,"\nMedian: ",median,"\nMean: ",mean)),
+             data = rating_summary
+             ) +
+  theme_fivethirtyeight() +
+  labs(title = "Sebaran Harga Merchant Pada Top 3 Kategori",
+       subtitle = "Berapa tingkat harga dari masing-masing kategori?",
+       caption = "Top 3 Kategori\ndibuat menggunakan R\nikanx101.com") 
+```
+
+Jika dilihat sekilas, ketiga kategori ini berada pada level harga yang mirip. Tentunya jika ingin lebih pasti, kita perlu mengujinya dengan annova atau Kruskal-Wallis.
+
+Lantas saya jadi bertanya:
+
+> Apakah ketiga kategori ini menjadi populer dan menjamur karena harganya yang relatif masih masuk kantong kebanyakan kita-kita? Atau ada alasan lain?
+
