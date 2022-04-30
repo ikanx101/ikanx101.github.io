@@ -1,0 +1,46 @@
+---
+title: "Review Samsung Chromebook 4 untuk Data Science"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Tahun lalu, saya sempat membeli sebuah laptop [lokal murah untuk dijadikan alternatif _daily driver_ untuk bekerja](https://ikanx101.com/blog/laptop-chromium/). Setahun berselang, laptop tersebut sudah saya coba oprek maksimal dengan mengganti OS-nya ke [POP OS](https://ikanx101.com/blog/pop-os/). Sekarang, laptop tersebut sudah berpindah tangan ke saudara yang sedang mengerjakan skripsinya.
+
+Berhubung sedang ada _project_ besar di kantor dan kemungkinan adanya _side projects_ besar lain di kampus menanti dalam beberapa minggu ke depan, saya butuh satu _compute engine_ yang _portable_ dan _reliable_.
+
+Biasanya saya cukup mengandalkan laptop kantor dan [tablet Huawei](https://ikanx101.com/blog/huawei-vs-vm/) tapi kali ini saya butuh _compute engine_ yang berada di tengah-tengah keduanya.
+
+> Lebih tinggi daripada tablet Huawei tapi tidak se-dewa spek laptop kantor.
+
+Oke, sebagai gambaran berikut _jobdesc_ si laptop kantor dan tablet Huawei:
+
+## Laptop Kantor
+
+Saya dipinjami laptop kantor yang mumpuni, yakni _Dell Latitude_ dengan prosesor 8 _cores_ dan 16 GB RAM. Saya menggunakan __Ubuntu 20.04 LTS__ untuk melakukan _high performance computing_ untuk _project_ kantor. Selain itu saya bekali juga dengan _Selenium Driver_ dan __R Studio__ _Server_.
+
+Untuk keperluan _deep learning_, saya masih lebih suka menggunakan _Tensorflow_ langsung dari [_Google Colab_](colab.to/r).
+
+Salah satu kelemahan yang saya rasakan adalah pada dimensi dan berat laptopnya. Selain itu durasi baterainya juga menjadi hambatan yang penting.
+
+## Tablet Huawei
+
+Sementara tablet saya peruntukkan untuk menulis _notes_, _meeting online_, mengerjakan tugas kuliah dengan __R__ versi _command line interface_.
+
+Salah satu kelemahan yang yang saya rasakan adalah kemampuannya dalam melakukan _data carpentry_ yang rumit dan pembuatan model _machine learning_ atau _deep learning_ yang terlalu bergantung pada _cloud_.
+
+## _Gadget_ Ketiga
+
+_Gadget_ berikutnya harus bisa menyelesaikan permasalahan yang ada dari kedua _gadgets_ sebelumnya. Harus memiliki kemampuan komputasi yang mumpuni, _mobile_ dan ringkas, serta harus memiliki daya tahan baterai yang sangat baik.
+
+Pilihan saya jatuh pada __Samsung Chromebook 4__. Saya sudah pernah menggunakan _Chromium OS_, oleh karena itu saya rasa penggunaannya akan sama. Namun setelah seminggu saya mencobanya, saya rasakan perbedaan yang sangat besar antara _Chromium OS_ dan _Chrome OS_. Apa saja perbedaanya? Tentunya adalah ___full support dari layanan Google dan Android___. Konektivitas ke _smartphone_ Android sangat _smooth_ sekali.
+
+Selain itu versi Linux _Debian Buster_ yang ada lebih _reliable_ daripada versi di _Chromium OS_. 
+
+Menggunakan metode yang sama pada [tulisan saya sebelumnya](https://ikanx101.com/blog/laptop-chromium/), saya berhasil meng-_install_ __R__ versi `4.2.0` dan __R Studio__ versi `2022.02.01`.
+
+Pada sisi _hardware_, terlihat sekali _build quality_ dari Samsung. Konon _chromebook_ ini sudah _military grade_. Harganya juga relatif murah, "hanya" 2.4 juta saja plus ongkir _Gojek Instant_.
+
+Lantas bagaimana cara ketiga _gadgets_ ini terhubung? Saya menggunakan _github_ sebagai basisnya dan aplikasi _AnyDesk_ untuk bisa saling _remote_ dan _sharing files_.
