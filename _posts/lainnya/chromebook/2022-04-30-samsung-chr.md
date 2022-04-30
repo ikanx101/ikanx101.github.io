@@ -16,7 +16,6 @@ tags:
   - Ubuntu
 ---
 
-
 Tahun lalu, saya sempat membeli sebuah laptop [lokal murah untuk
 dijadikan alternatif *daily driver* untuk
 bekerja](https://ikanx101.com/blog/laptop-chromium/). Setahun berselang,
@@ -92,3 +91,16 @@ murah, “hanya” 2.4 juta saja plus ongkir *Gojek Instant*.
 Lantas bagaimana cara ketiga *gadgets* ini terhubung? Saya menggunakan
 *github* sebagai basisnya dan aplikasi *AnyDesk* untuk bisa saling
 *remote* dan *sharing files*.
+
+------------------------------------------------------------------------
+
+## Performa Chromebook 4
+
+Lantas bagaimana performanya? Karena berbasis Linux, sudah jelas dengan
+spek *hardware* yang terkesan biasa saja tapi performanya menjadi luar
+biasa. Untuk mengerjakan *project data science*, laptop ini sudah lebih
+dari cukup. Hanya saja dengan prosesor 2 *cores* kita tidak bisa
+menggunakan *parallel processing* yang terlalu tinggi.
+
+> Sama seperti yang pernah saya katakan sebelumnya: *data science* itu
+> tidak harus menggunakan laptop mahal.
