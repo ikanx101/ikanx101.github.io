@@ -1,0 +1,66 @@
+---
+title: "Updates Saat Rehat Ngeblog"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Sudah lama rasanya saya tidak nge-_blog_ dengan _proper_. Beberapa tulisan saya terakhir seperti kurang maksimal dan terkesan nangggung. Saya mohon maaf sebelumnya karena beberapa bulan ini (sejak sebelum _ramadhan_) aktivitas saya meroket dengan sangat amat tinggi. Baik di kantor, kuliah, dan ekstrakurikuler lainnya. _hehe_. Saya coba ceritakan satu-persatu _ya_.
+
+## Umrah
+
+_Alhamdulillah_, menjelang _ramadhan_ tahun ini saya dan istri akhirnya bisa melaksanakan ibadah umrah yang tertunda gara-gara pandemi. _Iya tertunda!_ Seharusnya kami berangkat pada Maret 2020 silam. _Qodarullah_ beberapa hari sebelum kami berangkat, Saudi menutup _border_-nya.
+
+Setelah lama menunggu, akhirnya kami bisa ibadah umrah kembali. _Alhamdulillah_ suasananya masih relatif sepi. Selain itu, Saudi sudah tidak mewajibkan adanya tes PCR dan karantina masuk.
+
+## Penelitian Kuliah
+
+Saya mengambil jurusan _Magister By Research_ (MBR) di ITB. Akibatnya pada semester II ini, sudah mulai _heavy_ bobot peneitian yang dilakukan. Baik bobot berupa materi penelitian dan waktu penelitiannya. Total ada 7 sks penelitian dalam seminggu. Tapi pada realitanya, waktu yang dijalankan lebih banyak. _hehe_.
+
+Ada 2 tema penelitian yang saya lakukan pada semester ini, yakni:
+
+1. Modifikasi agoritma _spiral optimization_ untuk memecahkan masalah optimisasi portofolio diskon produk pada salah satu _e-commerce_ di Indonesia.
+1. Lanjutan penelitian _thesis_ saya terkait optimisasi pada _supplier selection_.
+
+Selain itu, saya sedang asik-asiknya mengeksplor beberapa algoritma _meta-heuristic_ untuk menyelesaikan masalah numerik dan komputasi seperti:
+
+1. _Spiral dynamic_,
+1. _Black hole_,
+1. _Artificial bee colony_.
+
+## Ujian Akhir Semester
+
+ITB memang paling suka melihat mahasiswanya gelisah. _hehe_. 
+
+Bayangkan saja, di saat orang-orang libur lebaran dengan tenang, kami harus siap-siap ujian. Seminggu setelah lebaran, UAS menanti. Sebenarnya pada semester ini, saya hanya mengambil satu mata kuliah yang benar-benar ada __kuliah__-nya, yakni : _data mining in science_.
+
+Ternyata di luar dugaan, mata kuliah tersebut cukup sulit. Jika sekedar _ngoding_ untuk membuat _supervised learning_ dan _unsupervised learning_ tentu hal yang mudah. Tapi mata kuliah ini lebih _heavy_ terhadap konsep matematika yang ada di balik setiap model tersebut.
+
+Tugas akhir kuliah juga cukup menyulitkan. Jangan bayangkan saya bisa menggunakan _existing library_ di __R__ karena soalnya sangat _customize_ sehingga saya harus membuat _function_ tersendiri untuk menyelesaikan masalah _clustering_.
+
+## Mengajar
+
+Tercatat beberapa kali saya mengajar sebagai dosen tamu dalam 2-3 bulan silam untuk rekan-rekan mahasiswa matematika di berbagai Universitas. Ada dua hal yang biasanya saya _share_ kepada mereka, yakni:
+
+1. _Market research_,
+1. _Data science_.
+
+Saya selalu menghubungkan konsep-konsep matematika pada kedua materi di atas.
+
+## Eksplorasi Cara Kerja Baru
+
+Tidak terasa pandemi sepertinya hampir berlalu. Kantorpun sudah menerapkan _hybrid_ 3 WFO - 2 WFH dalam seminggu. Lantas saya pun berpikir, dengan ada _Chromebook_ saya akan mencoba cara kerja baru.
+
+> Laptop kantor _stay_ di rumah untuk tetap berjalan dan siap di-_remote working_ dari kantor via _chromebook_.
+
+Kenapa begitu? Beberapa pekerjaan kantor mengharusnya laptop tersebut melakukan proses tanpa henti. Oleh karena itu, ada baiknya laptop tersebut tetap di rumah mengerjakan kerjaannya sementara saya membawa laptop yang lebih kecil dan ringan. 
+
+Selain itu, saya juga mendapatkan 1 _dedicated_ PC lain di kantor untuk mengerjakan kerjaan yang lainnya.
+
+---
+
+Sepertinya demikian kesibukan saya selama rehat ini. Semoga aja bisa balik nulis yang lebih serius lagi dalam waktu dekat.
+
+Salam.
