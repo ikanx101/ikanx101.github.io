@@ -1,0 +1,90 @@
+---
+title: "Beberapa Function R terkait Utak-atik File dan Folder"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+```
+
+Beberapa hari ini saya sedang mengerjakan _project_ otomasi bareng dengan salah satu divisi lain di kantor. Berbeda dengan _data science projects_ yang lain, kali ini saya diminta untuk melakukan beberapa _data carpentry_ sederhana (_filtering_), _rename files_, dan menyimpan _files_ tersebut ke berbagai _folder_ yang ada.
+
+> Hal ini mirip dengan _data science projects_ saat awal-awal saya belajar __R__. 
+
+Tentunya saya menggunakan prinsip _tidy_ (` %>% `) untuk melakukan _data carpentry_ ini. Saya sudah seringkali membahasnya di beberapa tulisan blog saya sebelumnya. 
+
+Oleh karena itu, saya hendak membahas beberapa _functions_ lain yang saya gunakan dalam _project_ ini. Saya merasa _function_ ini akan sangat berguna bagi rekan-rekan yang bekerjanya mengutak-atik _files_ dan _folder_ sehari-hari.
+
+---
+
+## Mengambil Nama Semua _Files_ dalam Suatu _Folder_
+
+Misalkan kita memiliki suatu _folder_ tertentu (misal untuk kasus ini kita simpan dalam _object_ bernama `path`). Kita hendak menggunakan __R__ untuk mengambil nama semua _files_ yang ada pada folder tersebut. Maka kita bisa menggunakan _function_:
+
+```
+list.files(path)
+```
+
+Jika hendak mengambil keseluruhan _path_ dari _folder_ dalam nama _file_ tersebut, kita tinggal tambahkan parameter:
+
+```
+list.files(path,full.names = T)
+```
+
+Bagaimana jika kita hanya ingin mengambil _files_ ber-_extension_ tertentu dari _folder_ tersebut? Misalkan kita hendak mengambil _file_ berformat `.pdf` saja. Maka:
+
+```
+list.files(path,
+           pattern = "*.pdf",
+           full.names = T)
+
+```
+
+## Mengambil Nama Semua _Folder_ dalam Suatu _Folder_
+
+Adakalanya kita perlu untuk membaca nama-nama semua folder dalam satu _folder_ (atau dalam suatu _directory_ atau _drive_). Bagaimana caranya?
+
+Jika _main directory_ tersebut kita simpan dalam _object_ bernama `path`, maka:
+
+
+```
+list.dirs(path)
+```
+
+Sama dengan _function_ sebelumnya, jika kita hendak mengambil keseluruhan _path_ dari _folder_, kita perlu menambahkan:
+
+
+```
+list.dirs(path,
+          full.names = T)
+```
+
+## Menghapus _Files_ dari Suatu _Folder_ Tertentu
+
+Ternyata kita bisa _lho_ menghapus _files_ di suatu _folder_ dengan mudahnya di __R__. Misalkan kita sudah melakukan _set working directory_ di _folder_ tertentu. Untuk menghapus _files_ pada _directory_ tersebut:
+
+```
+unlink(nama_files)
+```
+
+Jika _single file_, cukup isikan nama satu _file_ saja. 
+
+Misal:
+
+```
+nama_file = "laporan.pdf"
+unlink(nama_file)
+
+```
+
+Sedangkan jika yang ingin dihapus adalah _multiple files_, maka berikut caranya:
+
+```
+nama_files = c("laporan 1.pdf",
+               "laporan 2.pdf",
+               "laporan 3.pdf")
+unlink(nama_files)
+
+```
+
