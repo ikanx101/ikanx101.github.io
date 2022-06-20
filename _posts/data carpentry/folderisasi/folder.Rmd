@@ -88,3 +88,43 @@ unlink(nama_files)
 
 ```
 
+
+## Melakukan _Rename File_
+
+Salah satu tujuan utama _project_ otomasi yang saya lakukan ini adalah melakukan proses _renaming files_ yang banyak sekali. Untuk itu, _function_ di __R__-nya cukup mudah, yakni:
+
+```
+file.rename("nama file lama", "nama file baru")
+```
+
+
+Tentunya kita bisa menggunakan _looping_ atau _parallel_ seperti `sapply()` pada prosesnya.
+
+## _Copying Files_
+
+Kita juga bisa mengkopi beberapa _files_ dari suatu _path_ tertentu ke _path_ yang lain sebagai berikut:
+
+```
+file.copy(from = "list files", to = "nama folder")
+```
+
+
+## _Compress Files_ dengan _Zip_
+
+__R__ juga mampu untuk mengkompres beberapa _files_ sekaligus menjadi satu _file_ berformat `.zip` atau `.tar`. Caranya cukup mudah yakni:
+
+
+```
+zip(files = "list nama file", zipfile = "nama.zip")
+```
+
+## Menggabungkan Beberapa Dokumen `.pdf`
+
+Terakhir, salah satu _function_ pamungkas yang saya gunakan adalah _function_ untuk menggabungkan beberapa _files_ `.pdf` menjadi satu _file_ saja. Kita perlu meng-_install_ `library(qpdf)`.
+
+
+```
+pdf_combine(input = "list files", output = "nama.zip")
+```
+
+
