@@ -18,6 +18,14 @@ Oleh karena itu, saya hendak membahas beberapa _functions_ lain yang saya gunaka
 
 ---
 
+## Membuat _Folder_
+
+__R__ bisa digunakan untuk membuat suatu _folder_. Caranya juga mudah, yakni:
+
+```
+dir create("nama folder")
+```
+
 ## Mengambil Nama Semua _Files_ dalam Suatu _Folder_
 
 Misalkan kita memiliki suatu _folder_ tertentu (misal untuk kasus ini kita simpan dalam _object_ bernama `path`). Kita hendak menggunakan __R__ untuk mengambil nama semua _files_ yang ada pada folder tersebut. Maka kita bisa menggunakan _function_:
@@ -126,5 +134,9 @@ Terakhir, salah satu _function_ pamungkas yang saya gunakan adalah _function_ un
 ```
 pdf_combine(input = "list files", output = "nama.zip")
 ```
+
+---
+
+Kira-kira demikianlah beberapa _functions_ yang bisa digunakan dalam urusan _management files_. Semoga bermanfaat.
 
 
