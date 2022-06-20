@@ -1,5 +1,14 @@
-Beberapa Function R terkait Utak-atik File dan Folder
-================
+---
+date: 2022-6-21T5:30:00-04:00
+title: "Beberapa Function R terkait Utak-atik File dan Folder"
+categories:
+  - Blog
+tags:
+  - Machine Learning
+  - Artificial Intelligence
+  - R
+  - Data Carpentry
+---
 
 Beberapa hari ini saya sedang mengerjakan *project* otomasi bareng
 dengan salah satu divisi lain di kantor. Berbeda dengan *data science
