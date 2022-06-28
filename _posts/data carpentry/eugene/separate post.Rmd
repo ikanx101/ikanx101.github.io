@@ -87,7 +87,7 @@ df %>%
 
 Sekarang dari tabulasi frekuensi di atas, kita bisa membuat visualisasi seperti ini:
 
-```{r,message=FALSE,warning=FALSE,fig.retina=4,fig.align='center'}
+```{r,message=FALSE,warning=FALSE,fig.retina=3,fig.align='center'}
 df %>% 
   separate_rows(stasiun_tv,
                 sep = ";") %>% 

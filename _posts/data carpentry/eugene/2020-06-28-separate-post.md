@@ -1,5 +1,5 @@
 ---
-date: 2020-10-28T9:30:00-04:00
+date: 2020-06-28T9:30:00-04:00
 title: "Mengolah Data Survey Pertanyaan Multiple Responses dengan Tidyverse"
 categories:
   - Blog
@@ -158,7 +158,7 @@ df %>%
         axis.text.x = element_blank())
 ```
 
-<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/data%20carpentry/eugene/separate-post_files/figure-gfm/unnamed-chunk-6-1.png" width="500" style="display: block; margin: auto;" />
+<img src="separate-post_files/figure-gfm/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" />
 
 ------------------------------------------------------------------------
 
