@@ -1,5 +1,5 @@
 ---
-date: 2020-06-28T9:30:00-04:00
+date: 2022-06-28T9:30:00-04:00
 title: "Mengolah Data Survey Pertanyaan Multiple Responses dengan Tidyverse"
 categories:
   - Blog
