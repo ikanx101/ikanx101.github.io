@@ -1,0 +1,120 @@
+---
+title: "Mengolah Data Survey Pertanyaan Multiple Responses dengan Tidyverse"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+library(dplyr)
+library(ggplot2)
+```
+
+Sudah 5 tahun terakhir saya sudah meninggalkan `SPSS` dan menggunakan __R__ untuk mengolah data hasil survey. Salah satu hal yang paling menarik saat mengolah data survey adalah saat menghadapi jawaban dari pertanyaan _multiple responses_.
+
+Maksudnya _multiple responses_ seperti apa?
+
+> __Pertanyaan yang bisa dijawab dengan lebih dari satu jawaban.__
+
+Contohnya apa?
+
+Misalkan:
+
+> _Sebutkan stasiun TV nasional yang biasa Anda tonton sehari-hari?_
+
+Masing-masing responden bisa menjawab lebih dari satu jawaban tergantung dari pengalaman masing-masing respondennya.
+
+---
+
+Berikut adalah contoh datanya:
+
+```{r,echo=FALSE}
+df = data.frame(
+  id = 1:10,
+  stasiun_tv = c("NET;RCTI;SCTV",  #1
+                 "NET;SCTV",       #2
+                 "INDOSIAR;NET",   #3
+                 "INDOSIAR;METRO", #4
+                 "METRO",          #5
+                 "NET;KOMPAS",     #6
+                 "TV ONE;KOMPAS",  #7
+                 "NET;TV ONE;KOMPAS;RCTI", #8
+                 "KOMPAS;SCTV",    #9
+                 "NET;SCTV;KOMPAS") #10
+)
+
+df %>% knitr::kable(align = "c")
+```
+
+Jika diperhatikan, jawaban dari responden dicatat dengan cara menuliskan jawaban dengan dipisahkan dengan _semicolon_ (`;`).
+
+Lantas bagaimana cara mengolahnya? Kita akan gunakan salah satu _function_ dari `library(tidyr)`, yakni `separate_rows()` untuk mengubah data tersebut menjadi tabular ke bawah.
+
+Bagaimana caranya?
+
+Misalkan datanya saya simpan dengan nama `df`:
+
+```{r}
+df
+```
+
+Selanjutnya saya akan panggil dua _libraries_ berikut:
+
+```{r,message=FALSE,warning=FALSE}
+library(dplyr)
+library(tidyr)
+```
+
+Selanjutnya untuk mengubah menjadi data tabular, prosesnya cukup mudah, yakni:
+
+
+```{r,message=FALSE,warning=FALSE}
+df %>% 
+  separate_rows(stasiun_tv,
+                sep = ";")
+```
+
+Selanjutnya, kita bisa menghitung tabulasi frekuensinya sebagai berikut:
+
+```{r,message=FALSE,warning=FALSE}
+df %>% 
+  separate_rows(stasiun_tv,
+                sep = ";") %>% 
+  group_by(stasiun_tv) %>% 
+  tally(sort = T) %>% 
+  ungroup()
+```
+
+Sekarang dari tabulasi frekuensi di atas, kita bisa membuat visualisasi seperti ini:
+
+```{r,message=FALSE,warning=FALSE,fig.retina=4,fig.align='center'}
+df %>% 
+  separate_rows(stasiun_tv,
+                sep = ";") %>% 
+  group_by(stasiun_tv) %>% 
+  tally(sort = T) %>% 
+  ungroup() %>% 
+  rowwise() %>% 
+  mutate(persen = n*10,
+         label = paste0(persen,"%")) %>% 
+  ungroup() %>% 
+  ggplot(aes(x = reorder(stasiun_tv,n),
+             y = n)) +
+  geom_col(color = "black",
+           fill = "steelblue",
+           width = .7) +
+  geom_label(aes(label = label)) +
+  coord_flip() +
+  labs(title = "Stasiun TV yang Biasa Ditonton Responden",
+       subtitle = "Data ini hanya sebagai contoh saja",
+       caption = "Tabulasi dan Visualisasi dengan R\nikanx101.com") +
+  theme_get() +
+  theme(axis.title = element_blank(),
+        axis.text.x = element_blank())
+
+```
+
+---
+
+Semoga membantu _ya_.
+
