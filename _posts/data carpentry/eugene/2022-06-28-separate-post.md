@@ -158,7 +158,7 @@ df %>%
         axis.text.x = element_blank())
 ```
 
-<img src="separate-post_files/figure-gfm/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/data%20carpentry/eugene/separate-post_files/figure-gfm/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" />
 
 ------------------------------------------------------------------------
 
