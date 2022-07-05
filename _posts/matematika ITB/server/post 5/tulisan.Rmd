@@ -5,26 +5,88 @@ output: github_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
 ```
 
-## GitHub Documents
+Kali ini saya hendak melakukan sesuatu yang baru yakni mencoba meng-_install_ __R Studio Server__ di _Google Virtual Machine_ yang sudah saya sewa sebelumnya. Salah satu _benefit_ yang saya inginkan adalah _memiliki server R Studio sendiri yang bisa diakses di manapun dan kapanpun_. Selain itu, _server_ ini bisa dijadikan _tools_ untuk _training data science_.
 
-This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
+Ternyata langkah-langkahnya sangat mudah dan cepat. Setelah saya sadari kembali, ternyata langkah-langkahnya merupakan rangkuman dari 4 tulisan saya yang sebelumnya.
 
-## Including Code
+Bagaimana caranya? _Cekidot!_
 
-You can include R code in the document as follows:
+---
 
-```{r cars}
-summary(cars)
+## Langkah I
+
+Langkah pertama yang harus dilakukan adalah menyewa _Google Virtual Machine_ sesuai dengan kebutuhan dan melakukan instalasi __R__ versi terbaru.
+
+Langkah-langkah detailnya bisa dicek di [tulisan berikut ini](https://ikanx101.com/blog/vm-cloud/).
+
+Pada langkah ini, ingat baik-baik nama _instances_ dari VM yang kita buat. 
+
+Proses ini memakan waktu 5-10 menit.
+
+## Langkah II
+
+Setelah berhasil meng-_install_ __R__ versi CLI, saatnya kita mengunduh dan meng-_install_ _R Studio Server_.
+
+Langkah yang perlu dilakukan adalah gabungan dari [tulisan ini](https://ikanx101.com/blog/rstudio-server/) dan [tulisan itu](https://ikanx101.com/blog/r-server-colab/).
+
+Ketikkan perintah berikut ini di _command line_ SSH VM kita:
+
+```
+# saya berikan penjelasan setiap baris codesnya ya
+# dua baris ini adalah untuk membuat user di Linux
+# secara default saya buat sebagai berikut:
+  # user : rstudio
+  # pass : password
+# feel free untuk mengganti ATAU menambahkan multi user
+# ingatlah bahwa compute engine ini milik Google
+# jadi siapa tahu bisa dirun paralel untuk multi user
+sudo useradd -m -s /bin/bash rstudio
+sudo echo rstudio:password | chpasswd
+
+# melakukan update Linux
+sudo apt-get update
+
+# install beberapa library Linux
+sudo apt-get install libglpk-dev # ini khusus untuk optimisasi
+sudo apt-get install gdebi-core # untuk instalasi menggunakan Gdebi
+
+# download installer R studio server dari situs resmi
+wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.4.1103-amd64.deb
+
+# proses instalasi R studio server
+sudo gdebi -n rstudio-server-1.4.1103-amd64.deb
 ```
 
-## Including Plots
+Prosesnya memakan waktu 3-5 menit saja.
 
-You can also embed plots, for example:
+## Langkah III
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+Langkah terakhir yang perlu kita lakukan yakni _setting firewall_ agar _IP public_ __port 8787__ dari VM kita bisa diakses. Caranya kita bisa gunakan _cloud shell_. Cara membuka _cloud shell_ bisa dibaca di [tulisan saya yang ini](https://ikanx101.com/blog/cloud-shell/).
+
+Ketikkan perintah ini di _cloud shell_:
+
+```
+# set firewall rules
+gcloud compute firewall-rules create allow-rstudio-server \
+    --allow tcp:8787 \
+    --target-tags rstudio-server
+    
+# meng-apply firewall rules ke VM kita
+# masukkan nama instances dari langkah I
+gcloud compute instances add-tags [INSTANCE_NAME] --tags rstudio-server
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+---
+
+## SELAMAT!
+
+Jika sudah selesai, artinya R Studio Server kita bisa langsung dipakai. Caranya cukup membuka _IP public_ __port 8787__ di _browser_ _gadget_ manapun. Misalkan:
+
+`101.0.0.0:8787`
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads`
