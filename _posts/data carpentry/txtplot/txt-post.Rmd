@@ -1,0 +1,87 @@
+---
+title: "Membuat Visualisasi Data Klasik dengan library(txtplot) di R"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+
+library(dplyr)
+```
+
+Di berbagai tulisan di blog ini, saya telah memberikan gambaran bagaimana visualisasi data bisa dilakukan di __R__ menggunakan `library(ggplot2)`. Sebenarnya `ggplot2` bukanlah satu-satunya _library_ yang bisa digunakan untuk melakukan visualisasi data. Kita bisa menggunakan `base` dari __R__ untuk melakukan `plot()` terhadap data atau `plotly` untuk membuat visualisasi dinamis.
+
+Namun demikian, ada satu _library_ visualisasi data yang menarik bagi saya. Saya telah menggunakannya beberapa kali pada __R__ versi _command line interface_ di [tablet Huawei](https://ikanx101.com/blog/huawei-vs-vm/) karena _library_ ini bersifat klasik atau retro.
+
+Alih-alih visualisasi modern, tapi _library_ ini menggunakan teks sebagai alat membentuk grafik.
+
+> Bayangkan kalian membuat grafik dengan notepad. Nah, seperti itu kira-kira gambarannya.
+
+Apa saja grafik yang bisa dibuat? Bagaimana caranya? _Cekidot_.
+
+---
+
+## Data yang Digunakan Sebagai Contoh
+
+Pada tulisan ini, saya akan gunakan data kasus Covid-19 yang saya _scrape_ dari situs [worldometers](https://www.worldometers.info/coronavirus/). Saya hanya akan gunakan data 20 negara teratas saja.
+
+```{r,echo=FALSE}
+load("cov.rda")
+
+df %>% knitr::kable(align = "c")
+```
+
+## _Scatterplot_
+
+Pertama-tama saya akan buat _scatterplot_ dari `total_cases` dan `total_recovered`. Caranya cukup mudah:
+
+```{r,warning=FALSE,message=FALSE}
+# memanggil library
+library(txtplot)
+
+txtplot(df$total_cases,          # sumbu x
+        df$total_recovered,      # sumbu y
+        xlab = "Cases",    # memberikan label x axis
+        ylab = "Recovered" # memberikan label y axis
+        )
+```
+
+
+## _Density plot_
+
+Berikutnya saya akan membuat _density plot_ dari data `total_cases`.
+
+```{r,warning=FALSE,message=FALSE}
+txtdensity(df$total_cases)
+```
+
+## _Boxplot_
+
+Berikutnya saya akan membuat _boxplot_ dari data `total_cases` dan `total_recovered`.
+
+```{r,warning=FALSE,message=FALSE}
+txtboxplot(df$total_recovered,
+           df$total_cases)
+```
+
+
+## _Barchart_
+
+`txtplot` juga bisa digunakan untuk membuat _barchart_. Namun untuk itu, _input_ dari _function_ ini harus berupa _vector_ bertipe _factor_. Misalkan saya hendak membuat _barchart_ dari `total_recovered` berikut:
+
+```{r}
+# dalam ratusan ribu
+tr = round(df$total_recovered / 100000,
+           0)
+# membuat dalam bentuk factor
+bar = rep(df$country_other,tr) %>% factor()
+
+# membuat plot
+txtbarchart(bar,
+            ylab = "Recovered")
+```
+
+---
+
+Bagaimana? Mudah kan?
