@@ -1,0 +1,52 @@
+---
+title: "REVIEW: Tes ELPT ITB Secara Online"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Selain [tes potensi akademik Bappenas](https://ikanx101.com/blog/tpa-bappenas/), salah satu poin persyaratan pendaftaran program magister ITB yang belum saya penuhi adalah tes bahasa Inggris ELPT dari ITB.
+
+Sejak pandemi, tes ELPT ini dilakukan secara _online_. Pendaftarannya juga dilakukan secara online berdasarkan informasi yang disebarkan di akun Instagram resmi [__PSDM_ITB__](https://www.instagram.com/psdm_itb/?hl=en). Setiap awal bulan, PSDM ITB membuka pendaftaran tes untuk beberapa _slot_ waktu tes.
+
+Yang menjadi tantangan bagi calon pendaftar adalah slot tersebut selalu _sold out_ dalam hitungan jam sejak dibuka.
+
+> Saya sendiri sudah gagal mendaftar selama 3 bulan berturut-turut.
+
+_Alhamdulillah_, dari sekolah pasca sarjana (SPS ITB) membuka pendaftaran ELPT khusus bagi mahasiswa S2 angkatan saya. Akhirnya penantian tersebut terbayar sudah.
+
+Berbeda dengan ELPT yang di bulan Juli 2022 sudah dilakukan secara _offline_, ELPT versi SPS ini masih dilakukan secara _online_ (tapi pengambilan sertifikatnya harus secara _offline_).
+
+Apa saja yang harus dipersiapkan? Bagaimana pelaksanaan tesnya?
+
+---
+
+## Hal yang Perlu Dipersiapkan
+
+ELPT ini hanya memerlukan _gadget_ berkoneksi internet dan aplikasi ___Zoom___. Cukup mudah kan?
+
+Pastikan koneksi internet kita baik. Lalu untuk tempat pelaksanaan, saya sarankan peserta tes harus berada di ruangan yang nyaman dan aman dari gangguan orang lain. Sebisa mungkin hanya kita saja di ruangan tersebut.
+
+## Pelaksanaan Tes
+
+Tes dibagi menjadi tiga bagian:
+
+1. _Listening_; Kita akan diperdengarkan beberapa _conversation_ (baik singkat dan panjang) untuk kemudian ditanya beberapa soal terkait. Pada bagian inilah koneksi menentukan prestasi.
+1. _Structure_; Pada bagian ini kemampuan _grammar_ kita diuji.
+1. _Reading_; Kita akan mendapatkan beberapa bacaan dan soal yang diberikan tentunya menguji kemampuan kita dalam mengambil intisari dan maksud dari bacaan tersebut.
+
+---
+
+## Persiapan
+
+Bagi saya pribadi, saya tidak melakukan persiapan khusus. Paling beberapa hari sebelum tes, saya membiasakan menonton serial asing dengan bahasa Inggris (dan atau _subtitle_ Inggris juga).
+
+Saya cukup _pede_ karena dulu pernah bekerja di perusahaan _multinasyenel_ yang mengharuskan menulis dan berinteraksi dengan bahasa Inggris.
+
+---
+
+## Pengambilan Hasil
+
+Hasil tes bisa diambil langsung 5 hari kerja setelah tes berlangsung di gedung CADL ITB. Lokasinya ada di dekat SBM (dulu gedung ini adalah GSG ITB). Kita cukup masuk ke lobi dan menemui petugas informasi di sana.
