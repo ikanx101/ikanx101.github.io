@@ -1,0 +1,47 @@
+---
+title: "Membuat Blog dengan R Studio dan Github Pages"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Bulan Agustus ini menandai 3 tahun saya menggunakan alamat `ikanx101.com` sebagai alamat _web_ blog saya. 
+
+Dulu saya menggunakan _platform_ __Wordpress__ sebagai tempat saya menulis [_blog_ yang lama](passingthroughresearcher.wordpress.com). Menulis _blog_ pada saat itu cukup rumit karena saya harus meng-_export_ beberapa visualisasi data menjadi format `.png` atau `.jpg` lalu meng-_upload_-nya ke _Wordpress_. Selain itu cara saya membagi skrip juga kurang memuaskan.
+
+Setelah saya mengetahui bahwa _Github_ memiliki satu fitur bernama _Github Pages_ yang memungkinkan setiap _user_ membuat _webpage_ sendiri secara gratis, saya akhirnya mencoba untuk memakainya.
+
+Ternyata ada banyak keunggulan (dan tentunya kelemahan) dari _Github Pages_ ini. Salah satunya adalah saya harus belajar tentang _Github Markdown_ dan bagaimana proses _backbone_ dalam hosting dan mengubah _markdown_ menjadi _website_.
+
+## Pelajaran Pertama: _Github Pages_
+
+Untuk membuat _Github Pages_ sangatlah mudah. Kita cukup membuat akun _Github_ lalu membuat _repository_ bernama `username.github.io`. Pada _repository_ tersebut, kita cukup membuat `index.html` layaknya kita memiliki _server_ `Apache` sendiri. 
+
+_Nah_, saya tidak memulainya dari _blank_ sama sekali. Saya cukup mencari berbagai _Github Repositories_ lain yang memiliki _template_ _blog_ terbaik. Biasanya basisnya adalah `Jekyll`. Kita tinggal meng-_clone_ _repository_ tersebut dan mengubahnya sesuai dengan keinginan kita saja.
+
+## Pelajaran Kedua: _Github Markdown_
+
+Salah satu _repository_ yang saya pilih sebagai _template blog_ saya mengharuskan penulisan dilakukan dalam format _Github Markdown_. 
+
+Untuk itu, saya menulis _blog_ menggunakan __R Studio__, yakni dengan memanfaatkan _R Markdown_ yang kemudian di-_render_ menjadi _Github Markdown_. 
+
+Tulis, lalu _knit_ (alias _render_), _commit_, dan _push_ maka tulisan saya sudah _live_. Sesimpel itu.
+
+## Pelajaran Ketiga: Menggunakan Alamat _Custom Domain_
+
+Secara _default_, alamat _Github Pages_ kita adalah `username.github.io`. Namun kita bisa mengubahnya dengan cara membeli alamat / domain. Saya sendiri membelinya dengan cukup murah dari salah satu _provider_ lokal. Hanya sekitar Rp150 ribu per tahun.
+
+Setelah itu, saya cukup mem-_forward_ alamat _default_ _Github Pages_ saya ke alamat domain yang telah saya beli tersebut. 
+
+Untuk melakukan ini tidak rumit. Cukup _copy paste_ beberapa baris kode dari _provider_ ke _Github_ saja. Namun pastikan terlebih dahulu bahwa _provider_ yang kita tuju _support_ untuk _forwarding github pages_.
+
+## Pelajaran Keempat: _Google Adsense_
+
+Dalam 2-3 bulan pertama saya menggunakan _Github Pages_, ternyata jumlah _viewers_-nya sudah cukup lumayan. Iseng saya coba daftarkan _blog_ saya ini ke _Google Adsense_. Alhamdulillah, dalam hitungan jam permohonan _blog_ saya diterima.
+
+Untuk memasukkan kode _Adsense_ ke dalam _Github Pages_ juga tidak rumit. Kita perlu menambahkan beberapa skrip ke dalam _repository_ kita tersebut.
+
+---
+
