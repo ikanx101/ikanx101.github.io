@@ -37,7 +37,13 @@ Setelah itu, saya cukup mem-_forward_ alamat _default_ _Github Pages_ saya ke al
 
 Untuk melakukan ini tidak rumit. Cukup _copy paste_ beberapa baris kode dari _provider_ ke _Github_ saja. Namun pastikan terlebih dahulu bahwa _provider_ yang kita tuju _support_ untuk _forwarding github pages_.
 
-## Pelajaran Keempat: _Google Adsense_
+## Pelajaran Keempat: _Google Analytics_
+
+Salah satu kelebihan yang saya tidak temukan di _Wordpress_ adalah integrasi _Github Pages_ ke dalam _Google Analytics_. 
+
+_Template_ `Jekyll` yang saya pilih _support_ _Google Analytics_. Saya cukup meng-_copy-paste_ ID _Google Analytics_ ke dalam _repository_ saja.
+
+## Pelajaran Kelima: _Google Adsense_
 
 Dalam 2-3 bulan pertama saya menggunakan _Github Pages_, ternyata jumlah _viewers_-nya sudah cukup lumayan. Iseng saya coba daftarkan _blog_ saya ini ke _Google Adsense_. Alhamdulillah, dalam hitungan jam permohonan _blog_ saya diterima.
 
@@ -45,3 +51,4 @@ Untuk memasukkan kode _Adsense_ ke dalam _Github Pages_ juga tidak rumit. Kita p
 
 ---
 
+Catatan: Tulisan ini dibuat menggunakan R Studio Server yang saya _install_ di [_Google Cloud Virtual Machine_](https://ikanx101.com/blog/google-rstudio/).
