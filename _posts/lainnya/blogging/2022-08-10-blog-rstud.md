@@ -6,6 +6,10 @@ categories:
 tags:
   - Blog
   - Github
+  - Github Pages
+  - Google
+  - Google Adsense
+  - Google Analytics
 ---
 
 Bulan Agustus ini menandai 3 tahun saya menggunakan alamat
