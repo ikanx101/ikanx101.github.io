@@ -1,10 +1,11 @@
 ---
 title: "Membuat Blog dengan R Studio dan Github Pages"
-date: 2022-08-10T07:30:00-04:00
+date: 2022-08-10T07:34:00-04:00
 categories:
   - Blog
 tags:
   - Blog
+  - Github
 ---
 
 Bulan Agustus ini menandai 3 tahun saya menggunakan alamat
