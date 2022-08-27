@@ -3,4 +3,16 @@ title: "Review ngrok untuk RStudio Server"
 output: github_documents
 ---
 
-Jika rekan-rekan mengikuti tulisan saya d blog ini, saya telah menceritakan bagaimana saya meng-_install_ R Studio Server ke dalam
+Jika rekan-rekan mengikuti tulisan saya d blog ini, saya telah menceritakan bagaimana saya meng-_install_ R Studio Server ke dalam laptop Ubuntu OS. Awalnya saya melakukan hal tersebut agar saya memiliki satu dedicated server untuk R Studio yang bisa saya gunakan di intranet rumah. Mengingat rumah saya waktu itu sangat luas. _hehehe_. 
+
+Seiring dengan meredanya pandemi, kebutuhan akan R Studio yang bisa digunakan di mana saja menggunakan perangkat yang lebih ringkas pun meningkat. 
+
+Di blog ini juga, saya telah bercerita:
+
+- Bagaimana menggunakan R Studio Cloud (_web based_), 
+- Bagaimana meng-_install_ R Studio Server di Google Colab, 
+- Bagaimana meng-_install_ R Studio Server di _virtual machine_ Google Cloud. 
+
+Seakan masih ingin mencari alternatif lain yang gratis dan _reliable_, saya sekarang ingin menginformasikan sekaligus me-_review_ cara penggunaan suatu _software_ bernama __ngrok__ agar R Studio Server dalam laptop Ubuntu OS saya bisa digunakan dari luar intranet rumah.
+
+Fungsi utama dari __ngrok__ adalah melakukan IP _forwarding_ dari intranet ke luar. Sehingga semua server atau aplikasi dalam _local_ intranet kita bisa akses dari liar tanpa harus _setting_ DNS dan IP publik. Cara penggunaannya juga sangat mudah.
