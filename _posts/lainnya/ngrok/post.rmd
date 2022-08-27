@@ -1,6 +1,6 @@
 ---
 title: "Review ngrok untuk RStudio Server" 
-output: github_documents
+output: github_document
 ---
 
 Jika rekan-rekan mengikuti tulisan saya d blog ini, saya telah menceritakan bagaimana saya meng-_install_ R Studio Server ke dalam laptop Ubuntu OS. Awalnya saya melakukan hal tersebut agar saya memiliki satu dedicated server untuk R Studio yang bisa saya gunakan di intranet rumah. Mengingat rumah saya waktu itu sangat luas. _hehehe_. 
@@ -16,3 +16,37 @@ Di blog ini juga, saya telah bercerita:
 Seakan masih ingin mencari alternatif lain yang gratis dan _reliable_, saya sekarang ingin menginformasikan sekaligus me-_review_ cara penggunaan suatu _software_ bernama __ngrok__ agar R Studio Server dalam laptop Ubuntu OS saya bisa digunakan dari luar intranet rumah.
 
 Fungsi utama dari __ngrok__ adalah melakukan IP _forwarding_ dari intranet ke luar. Sehingga semua server atau aplikasi dalam _local_ intranet kita bisa akses dari liar tanpa harus _setting_ DNS dan IP publik. Cara penggunaannya juga sangat mudah.
+
+## Instalasi __ngrok__
+
+Untuk melakukan instalasinya di Ubuntu, cukup _run_ perintah berikut pada _terminal_:
+
+```
+sudo snap install ngrok
+```
+
+maka proses instalasi akan segera dijalankan. 
+
+Setelah itu navigasikan _browser_ ke situs __ngrok__. Kita hanya perlu mendaftar (gratis) untuk mendapatkan `authtoken`. 
+
+Prosesnya juga mudah, cukup ikuti perintah dari situsnya tersebut. 
+
+## _Forwarding_ R Studio Server
+
+Secara _default_ R Studio Server berjalan di port 8787. Kita bisa mengaksesnya langsung via _browser_ dengan alamat `localhost:8787`.
+
+Kita hanya perlu mengetikkan perintah berikut ini di _terminal_:
+
+```
+ngrok http localhost:8787
+
+```
+
+Setelah itu, kita tinggal tunggu prosesnya. Tidak lama, dalam waktu kurang dari 10 detik, __ngrok__ akan memberikan alamat situs hasil _forwarding_ tersebut. 
+
+Proses telah selesai. Untuk mencobanya, kita tinggal mengakses alamat situs tersebut menggunakan _gadget_ lainnya. 
+
+
+
+
+
