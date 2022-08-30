@@ -1,3 +1,5 @@
+sudo apt install libcurl4-openssl-dev libssl-dev libxml2-dev
+
 # update indices
 sudo apt update -qq
 # install two helper packages we need
