@@ -1,0 +1,42 @@
+---
+title: "Penelitian Thesis di Magister Sains Komputasi"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+Tidak terasa, saya sudah melalui satu tahun perkuliahan di magister sains komputasi ITB. Pada tahun final ini, saya harus dengan segera menyelesaikan topik penelitian agar bisa di-_submit_ di jurnal ilmiah bereputasi internasyenel.
+
+Kali ini saya mau bercerita mengenai topik penelitian yang saya lakukan dalam setahun terakhir ini.
+
+---
+
+## Optimisasi pada _Supply Chain Management_
+
+Hal yang menarik adalah, walaupun saya _market researcher_ tapi saya malah mengerjakan penelitian yang berhubungan dengan _supply chain management_ di pabrik. Tidak semua lini SCM yang saya kerjakan tapi hanya pada _production planning_ yakni proses _supplier selection_, _raw material purchase_, dan _matching_ antara _raw material_ dan _finished goods_. 
+
+Saya coba ceritakan ya...
+
+### Masalah
+
+Setiap perusahaan bisa menggunakan dua strategi terkait pemenuhan bahan baku, yakni:
+
+1. _Single sourcing_; yakni hanya memiliki satu pemasok bahan baku saja. Proses produksi bisa terganggu jika pasokan dari _supplier_ terganggu.
+1. _Multiple sourcing_; yakni memiliki lebih dari satu pemasok bahan baku. Hal yang krusial adalah memastikan kualitas bahan baku dari berbagai _suppliers_ masih sesuai dengan standar yang dibutuhkan.
+
+Jadi untuk memproduksi produknya, perusahaan saya menggunakan strategi _multiple sourcing_ untuk beberapa bahan baku utama. Masing-masing _supplier_ memiliki harga, _delivery time_, dan perjanjian kerja sama yang berbeda-beda.
+
+Jadi masalahnya adalah bagaimana menentukan jumlah _raw material_ yang harus dibeli dari masing-masing _supplier_ lalu memasangkannya kepada _finished goods_ sesuai dengan kebutuhannya di setiap periode tertentu.
+
+### Sains Komputasi
+
+Lantas di mana letak __sains komputasi__-nya?
+
+Untuk menyelesaikan masalah optimisasi tersebut, maka diperlukan model komputasi (algoritma atau _computer codes_) agar masalah tersebut bisa diselesaikan dengan cepat dan tepat.
+
+---
+
+Terdengar simpel _yah_, tapi saya bisa pastikan masalah ini cukup kompleks untuk dimodelkan dalam persamaan matematis - optimisasi.
