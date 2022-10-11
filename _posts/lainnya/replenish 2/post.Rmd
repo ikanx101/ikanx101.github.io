@@ -1,0 +1,181 @@
+---
+title: "Membuat Algoritma untuk Simulasi Automatic Replenishment"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r,include = FALSE}
+rm(list=ls())
+options(scipen = 99)
+
+setwd("/mnt/chromeos/removable/Workstation/ikanx101.github.io/_posts/lainnya/replenish 2/")
+
+```
+
+Beberapa bulan silam, saya sempat menuliskan tentang bagaimana konsep [_automatic replenishment_ di suatu gudang _distributor_ barang tertentu](https://ikanx101.com/blog/auto-replenish/). Kali ini saya hendak menuliskan algoritma yang bisa digunakan untuk melakukan simulasi _automatic replenishment_ di suatu depot pengisian galon air isi ulang. Seperti biasa, saya menggunakan __R__ untuk menulis algoritma dan kemudian melakukan simulasi.
+
+---
+
+Suatu ketika, di salah satu depot pengisian galon air isi ulang, proses bisnis yang terjadi adalah sebagai berikut:
+
+1. Depot tersebut menjual air isi ulang untuk galon-galon kosong dari konsumen.
+1. Pengiriman bahan baku (air murni) dilakukan menggunakan satu truk tangki yang __harus terisi dengan penuh__ dalam sekali pengiriman (misal: kapasitas tanki = 700 liter). _Lead time_ pengiriman bervariasi selama 1-2 hari dari hari pemesanan. Pemesanan dan pengiriman bisa dilakukan hari apa saja.
+1. Pemesanan baru dilakukan jika __stok air di tangki depot sudah kurang dari__ ___safety stock___ yang ditetapkan perusahaan. Cara perusahaan menghitung ___safety stock___ adalah: $ss = 2 \times \sigma D$. Dimana $\sigma D$ adalah standar deviasi dari _demand_ selama 30 hari ke depan.
+1. _Demand_ selama 30 hari ke depan disimulasikan menggunakan data historikal pada bulan-bulan sebelumnya.
+1. Untuk melakukan pengiriman, biaya yang keluar adalah tetap sebesar `Rp500.000`.
+1. Kapasitas tangki penampungan air di depot tersebut sangat besar sehingga kita bisa abaikan faktor ini.
+1. Kualitas air yang tertampung dalam tangki depot akan menurun seiringnya waktu. Diperkirakan biaya yang timbul akibat penurunan kualitas air ini adalah `Rp1.500` per liter air. (Kelak kita akan sebut biaya ini sebagai _carrying cost_).
+1. Jika ada pelanggan datang untuk membeli air namun persediaan air habis. Maka akan dihitung sebagai _loss sales_. Besarannya adalah sebesar `Rp5.000` per liter air. (Kelak besaran ini akan dihitung sebagai biaya yang dinamakan _shortage cost_).
+1. Saldo air di tangki depot pada hari `1` adalah sebesar 10 liter air.
+1. Jika _demand_ pada hari tersebut lebih besar dari stok air di depot, maka depot hanya bisa memenuhi _demand_ sebagian saja (tergantung stok air). Sisa _demand_ yang tidak terpenuhi akan menjadi _loss sales_.
+
+---
+
+Sekarang kita akan membuat algoritmanya.
+
+__Pendefinisian beberapa parameter__
+
+```
+leadtime_min = 1
+leadtime_max = 2
+carrying_cost_per_unit = 1500
+ordering_cost = 500000
+stock_out_cost = 500000
+```
+
+___Generate random number___ __untuk__ ___demand___
+
+Untuk kasus ini saya gunakan random number berdistribusi normal. Pada _real condition_ kita bisa dengan mudah melakukan _generate number_ berdasarkan data historikal yang ada.
+
+```
+D = runif(30,0,5) * 10 
+D = round(D,0)
+```
+
+__Menghitung__ ___safety stock___
+
+```
+sigmaL = sd(D)
+ss = 2 * sigmaL
+```
+
+### Simulasi pada hari 1
+
+Pada hari pertama ini, saya akan coba hitung:
+
+1. Berapa banyak _order_ yang bisa dipenuhi (_fullfilled_).
+1. Stok di akhir hari (_ending stock_).
+1. Apakah ada _loss sales_? (_stock outage_).
+1. Apakah perlu melakukan pemesanan air dari _supplier_? (_place order_).
+1. Jika iya, kapan pesanan tersebut sampai? (_order arrive at days ..._)
+
+```
+# initial condition
+days = 1:30
+begin_stok = c(10)
+order_recv = c(0)
+avail_stock = c(0)
+demand = D
+full_filled = rep(NA,30)
+ending_stock = rep(NA,30)
+stock_outage = rep(NA,30)
+place_order = rep(NA,30)
+lead_time = rep(NA,30)
+order_arrive_at = rep(NA,30)
+i = 1
+
+# ===========================
+# perhitungan
+# perhitungan demand berapa yang bisa dipenuhi
+# asumsi bisa dipenuhi sebagian
+full_filled[i] = ifelse(avail_stock[i] < demand[i],
+                        avail_stock[i],
+                        demand[i])
+# perhitungan ending stok
+ending_stock[i] = avail_stock[i] - full_filled[i]                     
+# outage atau tidak
+stock_outage[i] = demand[i] - full_filled[i]
+# perlu pesan lagi atau tidak?
+place_order[i] = ifelse(ending_stock[i] <= ss,
+                        1,
+                        0)
+# lead time pengiriman
+lead_time[i] = sample(leadtime_min:leadtime_max,1)
+# order akan datang kapan
+order_arrive_at[i] = ifelse(place_order[i] == 1,
+                            i + lead_time[i],
+                            0)
+```
+
+### Simulasi pada hari 2
+
+Pada hari kedua ini, algoritma yang dilakukan sama dengan algoritma pada hari pertama. Perbedaannya ada pada variabel `order`. Jika dijadwalkan air datang hari ini, maka akan masuk sejumlah air masuk ke dalam depot.
+
+```
+i = 2
+# stok hari i adalah stok hari i-1
+begin_stok[i] = ending_stock[i-1]
+
+# jika order arrive, maka order sama dengan eoq
+if(i == order_arrive_at[i-1]){order_recv[i] = eoq}
+if(i != order_arrive_at[i-1]){order_recv[i] = 0}
+```
+
+### Simulasi pada hari 3 hingga 30
+
+Modifikasi hanya dilakukan pada variabel `order`. Jika pada hari `1` didapatkan kondisi _leadtime_ pengiriman `2` hari (maka air akan datang pada hari ke `3`), maka pada hari ke `2` kita tidak boleh meminta pengiriman lagi (harus bersabar hingga esok air datang).
+
+```
+for i in 3 to 30
+
+# stok hari i adalah stok hari i-1
+begin_stok[i] = ending_stock[i-1]
+
+# jika order arrive, maka order sama dengan eoq
+if(i == order_arrive_at[i-1] | i == order_arrive_at[i-2]){order_recv[i] = eoq}
+else{order_recv[i] = 0}
+```
+
+---
+
+# Hasil Simulasi
+
+Jika algoritma simulasi di atas di-_run_ sekali, maka hasilnya adalah sebagai berikut:
+
+```{r,echo=FALSE}
+rm(list=ls())
+
+load("sim_1.rda")
+
+df %>% knitr::kable()
+
+cat(pesan)
+```
+
+Jika kita _run_ sekali lagi, maka hasilnya adalah sebagai berikut:
+
+```{r,echo=FALSE}
+rm(list=ls())
+
+load("sim_2.rda")
+
+df %>% knitr::kable()
+
+cat(pesan)
+```
+
+Jika kita _run_ berulang-ulang sebanyak-banyaknya (inilah salah satu kelebihan melakukan simulasi menggunakan _coding_ seperti __R__ atau Python), maka akan kita dapatkan _expected total cost_ berada di kisaran Rp16 - Rp17 juta.
+
+# Perbandingan dengan Hitungan Teoritis
+
+Dari berbagai literatur terkait optimisasi _automatic replenishment_, saya mendapatkan suatu istilah _economic order quantity_ (EOQ), yakni suatu nilai pemesanan bahan baku yang bisa meminimalkan semua biaya yang timbul (_ordering cost_ dan _carrying cost_). Secara teoritis, cara menghitung EOQ adalah sebagai berikut:
+
+$$eoq = \sqrt{ \frac{2 \times D \times C_0}{C_h}}$$
+        
+Di mana:
+        # D = demand 
+        # C0 = ordering cost
+        # Ch = carrying cost
+
+# Hasil Optimal dari Simulasi
