@@ -174,8 +174,9 @@ Dari berbagai literatur terkait optimisasi _automatic replenishment_, saya menda
 $$eoq = \sqrt{ \frac{2 \times D \times C_0}{C_h}}$$
         
 Di mana:
-        # D = demand 
-        # C0 = ordering cost
-        # Ch = carrying cost
+
+- _D_ : _demand_ pada 30 hari.
+- $C_0$ : _ordering cost_.
+- $C_h$ : _carrying cost_.
 
 # Hasil Optimal dari Simulasi
