@@ -179,4 +179,16 @@ Di mana:
 - $C_0$ : _ordering cost_.
 - $C_h$ : _carrying cost_.
 
+Jika kita melakukan simulasi kembali dengan nilai EOQ sesuai dengan teoritis, maka kita dapatkan:
+
+```{r,echo=FALSE}
+rm(list=ls())
+
+load("sim_3.rda")
+
+df %>% knitr::kable()
+
+cat(pesan)
+```
+
 # Hasil Optimal dari Simulasi
