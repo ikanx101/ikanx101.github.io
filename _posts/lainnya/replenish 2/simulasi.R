@@ -36,6 +36,7 @@ library(ggplot2)
         # membuat simulasi dari model di atas untuk berbagai nilai.
 
 # parameter yang dibutuhkan
+CSL = 95/100
 leadtime_min = 1
 leadtime_max = 2
 carrying_cost_per_unit = 1500
@@ -52,7 +53,7 @@ sigmaL = sd(D)
 # salah satu modifikasinya adalah dengan mengubah ss dengan menggunakan range alih2 standar deviasi
 # sigmaL = diff(range(D))
 
-nomrs_inv = 2
+nomrs_inv = qnorm(CSL)
 ss = nomrs_inv * sigmaL
 # rop = dL + ss
 dL = mean(D)
@@ -66,14 +67,14 @@ eoq = sqrt(2 * Dx * C0 / Ch)
 eoq = round(eoq,0)
 
 # summary
-rop
+rop 
 eoq = 200
 ss
 
 
 # kita mulai simulasinya
 days = 1:30
-begin_stok = c(10)
+begin_stok = c(20)
 order_recv = c(0)
 avail_stock = c(0)
 demand = D
@@ -88,6 +89,9 @@ order_arrive_at = rep(NA,30)
 # untuk hari 1
 i = 1
 
+# hitung saldo sekarang
+avail_stock[i] = begin_stok[i] + order_recv[i]
+    
 # perhitungan demand berapa yang bisa dipenuhi
 # asumsi bisa dipenuhi sebagian
 full_filled[i] = ifelse(avail_stock[i] < demand[i],
@@ -98,7 +102,7 @@ ending_stock[i] = avail_stock[i] - full_filled[i]
 # outage atau tidak
 stock_outage[i] = demand[i] - full_filled[i]
 # perlu pesan lagi atau tidak?
-place_order[i] = ifelse(ending_stock[i] <= ss,
+place_order[i] = ifelse(ending_stock[i] <= rop,
                         1,
                         0)
 # lead time pengiriman
@@ -128,7 +132,7 @@ for(i in 2:2){
     # outage atau tidak
     stock_outage[i] = demand[i] - full_filled[i]
     # perlu pesan lagi atau tidak?
-    place_order[i] = ifelse(ending_stock[i] <= ss,
+    place_order[i] = ifelse(ending_stock[i] <= rop,
                             1,
                             0)
     # lead time pengiriman
@@ -161,7 +165,7 @@ for(i in 3:30){
     # outage atau tidak
     stock_outage[i] = demand[i] - full_filled[i]
     # perlu pesan lagi atau tidak?
-    place_order[i] = ifelse(ending_stock[i] <= ss,
+    place_order[i] = ifelse(ending_stock[i] <= rop,
                             1,
                             0)
     # lead time pengiriman
@@ -200,8 +204,8 @@ df =
 cost_semua = sum(df$total_cost) / 1000000
 cost_semua = round(cost_semua,3)
 pesan = paste0("Total cost yang dikeluarkan saat EOQ = ",eoq," adalah: Rp",cost_semua," juta",
-               "\nSafety stock hasil perhitungan = ",round(ss,0))
+               "\nReorder Point hasil perhitungan = ",round(rop,0))
 cat(pesan)
-# View(df)
+View(df)
 
-# save(pesan,df,file = "sim_4.rda")
+save(pesan,df,file = "sim_5.rda")
