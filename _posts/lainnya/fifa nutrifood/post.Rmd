@@ -21,7 +21,7 @@ Hal ini tentu merupakan hal yang baru pertama kali dilakukan sepanjang sejarah.
 
 Tak menunggu waktu lama, saya coba _scrape_ data temperatur bulanan di Qatar dari situs [_weatherspark_](https://weatherspark.com/y/150272/Average-Weather-in-Qatar-Year-Round).
 
-```{r,echo=FALSE,fig.retina=4}
+```{r,echo=FALSE,fig.retina=2}
 load("qatar.rda")
 
 df_temperatur %>%
@@ -43,7 +43,7 @@ Saya pernah mendengar suatu mitos dalam Piala Dunia bahwa negara Eropa lebih ser
 
 Untuk mengkonfirmasi kebenarannya, saya _scrape_ data mengenai pertandingan final setiap Piala Dunia sejak tahun `1954`.
 
-```{r,echo=FALSE,fig.retina=4}
+```{r,echo=FALSE,fig.retina=2}
 rm(list=ls())
 
 load("clean_data.rda")
@@ -83,7 +83,7 @@ df_pertandingan_final %>%
 
 Salah satu hal lain yang ingin saya cek adalah _attendance_ penonton pada pertandingan final. Sudah kita ketahui bersama, bahwa setiap stadiun _venue_ pertandingan final Piala Dunia adalah stadiun terbaik pada negara penyelenggara pada masanya. Tentunya hal ini juga merupakan salah satu daya tarik sendiri bagi para penonton.
 
-```{r,echo=FALSE,fig.retina=4}
+```{r,echo=FALSE,fig.retina=2}
 df_pertandingan_final %>%
   mutate(year = as.numeric(year),
          year = factor(year),
@@ -109,7 +109,7 @@ Jika kita asumsikan bahwa kapasitas stadiun selalu penuh pada pertandingan final
 
 Salah satu mitos lain yang sering diperdebatkan adalah timnas negara mana yang terbaik? Eropa atau Amerika (Latin)? Mari kita jawab dengan data sebagai berikut:
 
-```{r,echo=FALSE,fig.retina=4}
+```{r,echo=FALSE,fig.retina=2}
 df_finalis  = 
   df_finalis %>%
   rename(benua = confederation) %>%
@@ -150,7 +150,7 @@ Menarik _yah_... Ternyata walau negara Eropa lebih sering mengirimkan wakilnya u
 
 Sekarang saya akan coba bahas sekilas tentang 32 negara yang lolos ke Piala Dunia. Selain Qatar, tentu ada 31 negara lainnya. Jerman adalah negara pertama yang berhasil lolos karena menjuarai grup J (pada 11 Oktober 2021). Sedangkan Costa Rica adalah negara akhir yang berhasil lolos setelah menang pada laga _play-off_ (pada 14 Juni 2022).
 
-```{r,echo=FALSE,fig.retina=4}
+```{r,echo=FALSE,fig.retina=2}
 df_negara_terkualifikasi = df_negara_terkualifikasi[-1,]
 
 df_negara_terkualifikasi %>%
@@ -179,7 +179,7 @@ Dari 32 negara tersebut, berikut beberapa fakta menarik:
 
 Sekarang kita akan bahas sekilas tentang top skor pada Piala Dunia. Berikut adalah `top 10` _goal scorer_ di Piala Dunia:
 
-```{r,echo=FALSE,fig.retina=4}
+```{r,echo=FALSE,fig.retina=2}
 df_top_skor %>%
   head(10) %>%
   ggplot(aes(y = goalsscored,x = reorder(player,goalsscored))) +
@@ -196,7 +196,7 @@ df_top_skor %>%
 
 Walaupun mereka adalah top skor, namun untuk mengetahui ketajaman _goal scorer_ kita perlu melihat rasio gol per pertandingan sebagai berikut:
 
-```{r,echo=FALSE,fig.retina=4}
+```{r,echo=FALSE,fig.retina=2}
 df_top_skor %>%
   arrange(desc(goalpermatch)) %>%
   head(10) %>%
