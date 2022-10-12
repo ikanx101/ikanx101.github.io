@@ -399,8 +399,7 @@ dengan teoritis, maka kita dapatkan:
 Dari sekali simulasi, kita dapatkan nilai EOQ yang lebih rendah tapi
 nilai ROP yang lebih tinggi. Jika simulasi ini dilakukan berulang-ulang
 kali sebanyak-banyaknya, kita dapatkan *expected* EOQ berada di kisaran
-620 - 670 liter air dengan *expected total cost* berada di kisaran Rp15
-- Rp16 juta.
+620 - 670 liter air dengan *expected total cost* berada di kisaran Rp15 - Rp16 juta.
 
 > **Total cost yang dihasilkan relatif lebih rendah dibandingkan kondisi
 > saat ini dimana EOQ diwajibkan sebesar 700 liter**
