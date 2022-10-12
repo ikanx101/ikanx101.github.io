@@ -1,0 +1,122 @@
+---
+title: "Oprek Data Terkait Piala Dunia 2022"
+output: github_document
+---
+
+```{r,include=FALSE}
+rm(list=ls())
+
+setwd("/mnt/chromeos/removable/Workstation/ikanx101.github.io/_posts/lainnya/fifa nutrifood/")
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+```
+
+Beberapa minggu lalu, saya berbincang dengan rekan kerja saya terkait dunia sepakbola luar negeri (bukan terkait musibah di Kanjuruhan _yah_). Ternyata saya baru sadar bahwa Piala Dunia Qatar akan diselenggarakan dalam waktu dekat. Berbeda dengan penyelenggaraan Piala Dunia sebelumnya yang selalu dilakukan pada musim panas jeda kompetisi (sekitar Juli - Agustus). Karena alasan iklim di Qatar, maka waktu pelaksanaan diundur menjadi bulan November.
+
+Hal ini tentu merupakan hal yang baru pertama kali dilakukan sepanjang sejarah.
+
+> Lantas saya berpikir, apakah iklim atau cuaca berpengaruh terhadap kompetisi atau tidak?
+
+Tak menunggu waktu lama, saya coba _scrape_ data temperatur bulanan di Qatar dari situs [_weatherspark_](https://weatherspark.com/y/150272/Average-Weather-in-Qatar-Year-Round).
+
+```{r,echo=FALSE,fig.retina=10}
+load("qatar.rda")
+
+df_temperatur %>%
+  ggplot(aes(x = bulan,y = value,group = temp,color = temp)) +
+  geom_line(size = 1.1) +
+  geom_label(aes(label = label),size = 2.5) +
+  scale_color_manual(values = c("#34363b","darkred","steelblue")) +
+  labs(title = "Suhu Rata-rata, Tertinggi, dan Terendah di Qatar",
+       subtitle = "Berdasarkan data historikal di weatherspark.com",
+       caption = "Scrape dan Visualisasi menggunakan R\nikanx101.com",
+       color = "Keterangan") +
+  theme_minimal() +
+  theme(axis.title = element_blank())
+```
+
+Kita bisa melihat bahwa musim panas di Qatar benar-benar panas sehingga bisa jadi akan mengganggu permainan beberapa timnas sepakbola yang tidak terbiasa dengan suhu panas seperti negara-negara dari Eropa.
+
+Saya pernah mendengar suatu mitos dalam Piala Dunia bahwa negara Eropa lebih sering menang jika bermain di benua Eropa. Sedangkan negara-negara non Eropa (Amerika Latin) lebih sering menang jika bermain di luar benua Eropa. Salah satu alasannya adalah karena faktor cuaca atau iklim atau suhu saat bermain.
+
+Untuk mengkonfirmasi kebenarannya, saya _scrape_ data mengenai pertandingan final setiap Piala Dunia sejak tahun `1954`.
+
+```{r,echo=FALSE,fig.retina=10}
+rm(list=ls())
+
+load("clean_data.rda")
+
+df_pertandingan_final %>%
+  group_by(winner,lokasi) %>%
+  tally() %>%
+  ungroup() %>%
+  mutate(persen = n/sum(n) * 100,
+         persen = round(persen,1),
+         label = paste0(persen,"%")) %>%
+  ggplot(aes(x = lokasi,y = winner,fill = persen)) +
+  geom_tile() +
+  geom_label(aes(label = label)) +
+  scale_fill_gradient(low = "darkred",high = "steelblue") +
+  theme_minimal() +
+  labs(title = "Crosstabulasi Pemenang vs Venue",
+       subtitle = "base: Data Pertandingan Final Piala Dunia",
+       caption = "Scrape dan Visualisasi menggunakan R\nikanx101.com",
+       x = "Lokasi Venue",
+       y = "Pemenang") +
+  theme(legend.position = "none")
+```
+
+Terlihat dengan jelas bahwa mitos tersebut benar adanya. Anomali hanya terjadi pada tiga pertandingan final berikut:
+
+```{r,echo=FALSE}
+df_pertandingan_final %>%
+  filter((winner == "Amerika" & lokasi == "Eropa") |
+         (winner == "Eropa" & lokasi == "Non Eropa")
+        ) %>%
+  select(-refs,-winner,-lokasi) %>%
+  knitr::kable()
+```
+
+---
+
+Salah satu hal lain yang ingin saya cek adalah _attendance_ penonton pada pertandingan final. Sudah kita ketahui bersama, bahwa setiap stadiun _venue_ pertandingan final Piala Dunia adalah stadiun terbaik pada negara penyelenggara pada masanya. Tentunya hal ini juga merupakan salah satu daya tarik sendiri bagi para penonton.
+
+```{r,echo=FALSE,fig.retina=10}
+df_pertandingan_final %>%
+  mutate(year = as.numeric(year),
+         year = factor(year),
+         attendance = gsub("\\,","",attendance),
+         attendance = as.numeric(attendance),
+         label = attendance / 1000,
+         label = round(label,2),
+         label = paste0(label," rb")
+        ) %>%
+  ggplot(aes(x = year,y = attendance)) +
+  geom_line(group = 1,size = 1.15,color = "steelblue") +
+  geom_label(aes(label = label),size = 2.5) +
+  theme_minimal() +
+  labs(title = "Banyaknya Penonton Pada Pertandingan Final Piala Dunia",
+       subtitle = "Base: Data pertandingan final",
+       caption = "Scrape dan Visualisasi menggunakan R\nikanx101.com",
+       x = "Tahun Pelaksanaan",
+       y = "Attendance") +
+  theme(axis.text.y = element_blank())
+```
+
+Jika kita asumsikan bahwa kapasitas stadiun selalu penuh pada pertandingan final setiap tahunnya, sepertinya semakin modern zaman, kapasitas stadiun sepertinya sudah semakin terbatas. Tidak lagi dibuat sangat besar hingga menampung ratusan ribu orang. Saya duga keamanan menjadi salah satu alasannya.
+
+Salah satu mitos lain yang sering diperdebatkan adalah timnas negara mana yang terbaik? Eropa atau Amerika (Latin)? Mari kita jawab dengan data sebagai berikut:
+
+```{r,echo=FALSE,fig.retina=10}
+df_finalis  = 
+  df_finalis %>%
+  rename(benua = confederation) %>%
+  select(benua,appearances,winners) %>%
+  mutate(success_rate = winners / appearances * 100,
+         success_rate = round(success_rate,2),
+         label = paste0(success_rate,"%")
+        )
+
+```
