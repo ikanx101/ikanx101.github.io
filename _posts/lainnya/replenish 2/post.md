@@ -301,4 +301,57 @@ teoritis, maka kita dapatkan:
     ## Total cost yang dikeluarkan saat EOQ = 677 adalah: Rp15.236 juta
     ## Safety stock hasil perhitungan = 28
 
+Jika simulasi dilakukan berulang-ulang kali sebanyak-banyaknya, kita
+dapatkan *expected* EOQ berada di kisaran 620 - 670 liter air dengan
+*expected total cost* berada di kisaran Rp15 - Rp16 juta.
+
+> **Lebih rendah dibandingkan kondisi saat ini dimana EOQ diwajibkan
+> sebesar 700 liter**
+
 # Hasil Optimal dari Simulasi
+
+Salah satu pertanyaan yang muncul di benak saya adalah, apakah EOQ yang
+dihasilkan di atas sudah optimal? Salah satu *concern* saya adalah jika
+EOQ yang digunakan bernilai besar, salah satu konsekuensinya adalah
+*carrying cost*-nya juga meledak.
+
+Lantas, saya mencoba melakukan simulasi dengan mencoba nilai EOQ = 200.
+Begini hasil simulasinya:
+
+| days | begin\_stok | order\_recv | avail\_stock | demand | full\_filled | ending\_stock | stock\_outage | place\_order | lead\_time | order\_arrive\_at | carrying\_cost | ordering\_cost | stock\_outage\_cost | total\_cost |
+| ---: | ----------: | ----------: | -----------: | -----: | -----------: | ------------: | ------------: | -----------: | ---------: | ----------------: | -------------: | -------------: | ------------------: | ----------: |
+|    1 |          10 |           0 |            0 |      8 |            0 |             0 |             8 |            1 |          2 |                 3 |              0 |         500000 |               40000 |      540000 |
+|    2 |           0 |           0 |            0 |     43 |            0 |             0 |            43 |            1 |          2 |                 0 |              0 |              0 |              215000 |      215000 |
+|    3 |           0 |         200 |          200 |     22 |           22 |           178 |             0 |            0 |          2 |                 0 |         267000 |              0 |                   0 |      267000 |
+|    4 |         178 |           0 |          178 |      2 |            2 |           176 |             0 |            0 |          1 |                 0 |         264000 |              0 |                   0 |      264000 |
+|    5 |         176 |           0 |          176 |     27 |           27 |           149 |             0 |            0 |          2 |                 0 |         223500 |              0 |                   0 |      223500 |
+|    6 |         149 |           0 |          149 |     11 |           11 |           138 |             0 |            0 |          1 |                 0 |         207000 |              0 |                   0 |      207000 |
+|    7 |         138 |           0 |          138 |      6 |            6 |           132 |             0 |            0 |          1 |                 0 |         198000 |              0 |                   0 |      198000 |
+|    8 |         132 |           0 |          132 |     16 |           16 |           116 |             0 |            0 |          1 |                 0 |         174000 |              0 |                   0 |      174000 |
+|    9 |         116 |           0 |          116 |     32 |           32 |            84 |             0 |            0 |          2 |                 0 |         126000 |              0 |                   0 |      126000 |
+|   10 |          84 |           0 |           84 |     44 |           44 |            40 |             0 |            0 |          1 |                 0 |          60000 |              0 |                   0 |       60000 |
+|   11 |          40 |           0 |           40 |     19 |           19 |            21 |             0 |            1 |          2 |                13 |          31500 |         500000 |                   0 |      531500 |
+|   12 |          21 |           0 |           21 |     18 |           18 |             3 |             0 |            1 |          1 |                 0 |           4500 |              0 |                   0 |        4500 |
+|   13 |           3 |         200 |          203 |     21 |           21 |           182 |             0 |            0 |          1 |                 0 |         273000 |              0 |                   0 |      273000 |
+|   14 |         182 |           0 |          182 |     35 |           35 |           147 |             0 |            0 |          2 |                 0 |         220500 |              0 |                   0 |      220500 |
+|   15 |         147 |           0 |          147 |     27 |           27 |           120 |             0 |            0 |          2 |                 0 |         180000 |              0 |                   0 |      180000 |
+|   16 |         120 |           0 |          120 |     14 |           14 |           106 |             0 |            0 |          1 |                 0 |         159000 |              0 |                   0 |      159000 |
+|   17 |         106 |           0 |          106 |      2 |            2 |           104 |             0 |            0 |          2 |                 0 |         156000 |              0 |                   0 |      156000 |
+|   18 |         104 |           0 |          104 |     21 |           21 |            83 |             0 |            0 |          1 |                 0 |         124500 |              0 |                   0 |      124500 |
+|   19 |          83 |           0 |           83 |     28 |           28 |            55 |             0 |            0 |          1 |                 0 |          82500 |              0 |                   0 |       82500 |
+|   20 |          55 |           0 |           55 |     48 |           48 |             7 |             0 |            1 |          1 |                21 |          10500 |         500000 |                   0 |      510500 |
+|   21 |           7 |         200 |          207 |     24 |           24 |           183 |             0 |            0 |          1 |                 0 |         274500 |              0 |                   0 |      274500 |
+|   22 |         183 |           0 |          183 |     47 |           47 |           136 |             0 |            0 |          1 |                 0 |         204000 |              0 |                   0 |      204000 |
+|   23 |         136 |           0 |          136 |     14 |           14 |           122 |             0 |            0 |          2 |                 0 |         183000 |              0 |                   0 |      183000 |
+|   24 |         122 |           0 |          122 |     19 |           19 |           103 |             0 |            0 |          1 |                 0 |         154500 |              0 |                   0 |      154500 |
+|   25 |         103 |           0 |          103 |     38 |           38 |            65 |             0 |            0 |          1 |                 0 |          97500 |              0 |                   0 |       97500 |
+|   26 |          65 |           0 |           65 |      4 |            4 |            61 |             0 |            0 |          1 |                 0 |          91500 |              0 |                   0 |       91500 |
+|   27 |          61 |           0 |           61 |      1 |            1 |            60 |             0 |            0 |          2 |                 0 |          90000 |              0 |                   0 |       90000 |
+|   28 |          60 |           0 |           60 |     16 |           16 |            44 |             0 |            0 |          2 |                 0 |          66000 |              0 |                   0 |       66000 |
+|   29 |          44 |           0 |           44 |     40 |           40 |             4 |             0 |            1 |          2 |                31 |           6000 |         500000 |                   0 |      506000 |
+|   30 |           4 |           0 |            4 |      7 |            4 |             0 |             3 |            1 |          2 |                 0 |              0 |              0 |               15000 |       15000 |
+
+    ## Total cost yang dikeluarkan saat EOQ = 200 adalah: Rp6.198 juta
+    ## Safety stock hasil perhitungan = 28
+
+Secara mengejutkan *total cost* yang dihasilkan jauh lebih menurun\!

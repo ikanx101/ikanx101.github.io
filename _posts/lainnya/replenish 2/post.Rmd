@@ -179,6 +179,9 @@ Di mana:
 - $C_0$ : _ordering cost_.
 - $C_h$ : _carrying cost_.
 
+masukin ROP yang ternyata itu adalah safety stock penentuan harus order lagi atau tidak
+
+
 Jika kita melakukan simulasi kembali dengan nilai EOQ sesuai dengan teoritis, maka kita dapatkan:
 
 ```{r,echo=FALSE}
@@ -191,4 +194,36 @@ df %>% knitr::kable()
 cat(pesan)
 ```
 
+Jika simulasi dilakukan berulang-ulang kali sebanyak-banyaknya, kita dapatkan _expected_ EOQ berada di kisaran 620 - 670 liter air dengan _expected total cost_ berada di kisaran Rp15 - Rp16 juta.
+
+> __Lebih rendah dibandingkan kondisi saat ini dimana EOQ diwajibkan sebesar 700 liter__
+
 # Hasil Optimal dari Simulasi
+
+Salah satu pertanyaan yang muncul di benak saya adalah, apakah EOQ yang dihasilkan di atas sudah optimal? Salah satu _concern_ saya adalah jika EOQ yang digunakan bernilai besar, salah satu konsekuensinya adalah _carrying cost_-nya juga meledak.
+
+Lantas, saya mencoba melakukan simulasi dengan mencoba nilai EOQ = 200. Begini hasil simulasinya:
+
+```{r,echo=FALSE}
+rm(list=ls())
+
+load("sim_4.rda")
+
+df %>% knitr::kable()
+
+cat(pesan)
+```
+
+Secara mengejutkan _total cost_ yang dihasilkan jauh lebih menurun! 
+
+Dari simulasi di atas, kita dapatkan bahwa _carrying cost_ menurun jauh tapi _ordering cost_ dan _stock outage cost_ meningkat. Secara _overall total cost_ menurun. 
+
+Saat saya melakukan simulasi ini berulang kali, saya dapatkan _expected total cost_ sebesar Rp6 - Rp7 juta.
+
+---
+
+# Kesimpulan
+
+Nilai EOQ = 200 belum tentu merupakan solusi yang paling optimal karena saya hanya melakukan coba-coba saja. Jika mau menemukan solusi yang optimal berdasarkan algoritma simulasi ini, saya bisa memanfaatkan [algoritma spiral](https://ikanx101.com/blog/spiral-rpubs/).
+
+Jika kita lihat, _reorder point_ (disingkat __ROP__, yaitu waktu depot memesan air bahan baku) cukup beragam tergantung EOQ yang digunakan. Walaupun secara teoritis __ROP__ bisa dihitung dengan cara:

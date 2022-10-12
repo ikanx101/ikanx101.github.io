@@ -67,7 +67,7 @@ eoq = round(eoq,0)
 
 # summary
 rop
-eoq
+eoq = 200
 ss
 
 
@@ -204,4 +204,4 @@ pesan = paste0("Total cost yang dikeluarkan saat EOQ = ",eoq," adalah: Rp",cost_
 cat(pesan)
 # View(df)
 
-save(pesan,df,file = "sim_3.rda")
+# save(pesan,df,file = "sim_4.rda")
