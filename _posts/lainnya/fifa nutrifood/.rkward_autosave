@@ -1,0 +1,217 @@
+---
+title: "Oprek Data Terkait Piala Dunia 2022"
+output: github_document
+---
+
+```{r,include=FALSE}
+rm(list=ls())
+
+setwd("/mnt/chromeos/removable/Workstation/ikanx101.github.io/_posts/lainnya/fifa nutrifood/")
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+```
+
+Beberapa minggu lalu, saya berbincang dengan rekan kerja saya terkait dunia sepakbola luar negeri (bukan terkait musibah di Kanjuruhan _yah_). Ternyata saya baru sadar bahwa Piala Dunia Qatar akan diselenggarakan dalam waktu dekat. Berbeda dengan penyelenggaraan Piala Dunia sebelumnya yang selalu dilakukan pada musim panas jeda kompetisi (sekitar Juli - Agustus). Karena alasan iklim di Qatar, maka waktu pelaksanaan diundur menjadi bulan November.
+
+Hal ini tentu merupakan hal yang baru pertama kali dilakukan sepanjang sejarah.
+
+> Lantas saya berpikir, apakah iklim atau cuaca berpengaruh terhadap kompetisi atau tidak?
+
+Tak menunggu waktu lama, saya coba _scrape_ data temperatur bulanan di Qatar dari situs [_weatherspark_](https://weatherspark.com/y/150272/Average-Weather-in-Qatar-Year-Round).
+
+```{r,echo=FALSE,fig.retina=2}
+load("qatar.rda")
+
+df_temperatur %>%
+  ggplot(aes(x = bulan,y = value,group = temp,color = temp)) +
+  geom_line(size = 1.1) +
+  geom_label(aes(label = label),size = 2.5) +
+  scale_color_manual(values = c("#34363b","darkred","steelblue")) +
+  labs(title = "Suhu Rata-rata, Tertinggi, dan Terendah di Qatar",
+       subtitle = "Berdasarkan data historikal di weatherspark.com",
+       caption = "Scrape dan Visualisasi menggunakan R\nikanx101.com",
+       color = "Keterangan") +
+  theme_minimal() +
+  theme(axis.title = element_blank())
+```
+
+Kita bisa melihat bahwa musim panas di Qatar benar-benar panas sehingga bisa jadi akan mengganggu permainan beberapa timnas sepakbola yang tidak terbiasa dengan suhu panas seperti negara-negara dari Eropa.
+
+Saya pernah mendengar suatu mitos dalam Piala Dunia bahwa negara Eropa lebih sering menang jika bermain di benua Eropa. Sedangkan negara-negara non Eropa (Amerika Latin) lebih sering menang jika bermain di luar benua Eropa. Salah satu alasannya adalah karena faktor cuaca atau iklim atau suhu saat bermain.
+
+Untuk mengkonfirmasi kebenarannya, saya _scrape_ data mengenai pertandingan final setiap Piala Dunia sejak tahun `1954`.
+
+```{r,echo=FALSE,fig.retina=2}
+rm(list=ls())
+
+load("clean_data.rda")
+
+df_pertandingan_final %>%
+  group_by(winner,lokasi) %>%
+  tally() %>%
+  ungroup() %>%
+  mutate(persen = n/sum(n) * 100,
+         persen = round(persen,1),
+         label = paste0(persen,"%")) %>%
+  ggplot(aes(x = lokasi,y = winner,fill = persen)) +
+  geom_tile() +
+  geom_label(aes(label = label)) +
+  scale_fill_gradient(low = "darkred",high = "steelblue") +
+  theme_minimal() +
+  labs(title = "Crosstabulasi Pemenang vs Venue",
+       subtitle = "base: Data Pertandingan Final Piala Dunia",
+       caption = "Scrape dan Visualisasi menggunakan R\nikanx101.com",
+       x = "Lokasi Venue",
+       y = "Pemenang") +
+  theme(legend.position = "none")
+```
+
+Terlihat dengan jelas bahwa mitos tersebut benar adanya. Anomali hanya terjadi pada tiga pertandingan final berikut:
+
+```{r,echo=FALSE}
+df_pertandingan_final %>%
+  filter((winner == "Amerika" & lokasi == "Eropa") |
+         (winner == "Eropa" & lokasi == "Non Eropa")
+        ) %>%
+  select(-refs,-winner,-lokasi) %>%
+  knitr::kable()
+```
+
+---
+
+Salah satu hal lain yang ingin saya cek adalah _attendance_ penonton pada pertandingan final. Sudah kita ketahui bersama, bahwa setiap stadiun _venue_ pertandingan final Piala Dunia adalah stadiun terbaik pada negara penyelenggara pada masanya. Tentunya hal ini juga merupakan salah satu daya tarik sendiri bagi para penonton.
+
+```{r,echo=FALSE,fig.retina=2}
+df_pertandingan_final %>%
+  mutate(year = as.numeric(year),
+         year = factor(year),
+         attendance = gsub("\\,","",attendance),
+         attendance = as.numeric(attendance),
+         label = attendance / 1000,
+         label = round(label,2),
+         label = paste0(label," rb")
+        ) %>%
+  ggplot(aes(x = year,y = attendance)) +
+  geom_line(group = 1,size = 1.15,color = "steelblue") +
+  geom_label(aes(label = label),size = 2.5) +
+  theme_minimal() +
+  labs(title = "Banyaknya Penonton Pada Pertandingan Final Piala Dunia",
+       subtitle = "Base: Data pertandingan final",
+       caption = "Scrape dan Visualisasi menggunakan R\nikanx101.com",
+       x = "Tahun Pelaksanaan",
+       y = "Attendance") +
+  theme(axis.text.y = element_blank())
+```
+
+Jika kita asumsikan bahwa kapasitas stadiun selalu penuh pada pertandingan final setiap tahunnya, sepertinya semakin modern zaman, kapasitas stadiun sepertinya sudah semakin terbatas. Tidak lagi dibuat sangat besar hingga menampung ratusan ribu orang. Saya duga keamanan menjadi salah satu alasannya.
+
+Salah satu mitos lain yang sering diperdebatkan adalah timnas negara mana yang terbaik? Eropa atau Amerika (Latin)? Mari kita jawab dengan data sebagai berikut:
+
+```{r,echo=FALSE,fig.retina=2}
+df_finalis  = 
+  df_finalis %>%
+  rename(benua = confederation) %>%
+  select(benua,appearances,winners) %>%
+  mutate(success_rate = winners / appearances * 100,
+         success_rate = round(success_rate,2),
+         label = paste0(success_rate,"%")
+        )
+        
+df_finalis %>%
+  ggplot(aes(x = benua,y = appearances)) +
+  geom_col(fill = "steelblue",color = "black",alpha = .5) +
+  geom_label(aes(label = appearances),size = 3) +
+  theme_minimal() +
+  labs(title = "Berapa Kali Negara Benua ... Masuk Final Piala Dunia?",
+       subtitle = "Base: Data pertandingan final",
+       caption = "Scrape dan Visualisasi menggunakan R\nikanx101.com",
+       x = "Tahun Pelaksanaan",
+       y = "Attendance") +
+  theme(axis.text.y = element_blank(),
+        axis.title = element_blank())
+        
+df_finalis %>%
+  ggplot(aes(x = benua,y = success_rate)) +
+  geom_col(fill = "darkgreen",color = "black",alpha = .5) +
+  geom_label(aes(label = label),size = 3) +
+  theme_minimal() +
+  labs(title = "Success Rate Negara Benua ... Menang Pada Final Piala Dunia?",
+       subtitle = "Dari sekian kali bertanding di final Piala Dunia, Berapa persen kemenangan bagi negara ...?\nBase: Data pertandingan final",
+       caption = "Scrape dan Visualisasi menggunakan R\nikanx101.com",
+       x = "Tahun Pelaksanaan",
+       y = "Attendance") +
+  theme(axis.text.y = element_blank(),
+        axis.title = element_blank())
+```
+
+Menarik _yah_... Ternyata walau negara Eropa lebih sering mengirimkan wakilnya untuk berlaga di final, tapi _success rate_ negara Amerika Latin relatif lebih tinggi.
+
+Sekarang saya akan coba bahas sekilas tentang 32 negara yang lolos ke Piala Dunia. Selain Qatar, tentu ada 31 negara lainnya. Jerman adalah negara pertama yang berhasil lolos karena menjuarai grup J (pada 11 Oktober 2021). Sedangkan Costa Rica adalah negara akhir yang berhasil lolos setelah menang pada laga _play-off_ (pada 14 Juni 2022).
+
+```{r,echo=FALSE,fig.retina=2}
+df_negara_terkualifikasi = df_negara_terkualifikasi[-1,]
+
+df_negara_terkualifikasi %>%
+  mutate(tanggal = as.Date(date_ofqualification,"%d %B %Y"),
+         dummy = 1,
+         cum = cumsum(dummy)) %>%
+  ggplot(aes(x = tanggal,y = cum)) +
+  geom_line(group = 1,size = 1.25,color = "steelblue") +
+  geom_label(aes(label = cum),size = 1.25) +
+  labs(title = "Timeline Penambahan Negara Peserta Piala Dunia Qatar 2022",
+       subtitle = "Base: Data qualifikasi Piala Dunia",
+       caption = "Scrape dan Visualisasi menggunakan R\nikanx101.com",
+       x = "Tanggal",
+       y = "Banyaknya Negara") +
+  theme_minimal() +
+  theme(axis.text.y = element_blank())
+```
+
+Dari 32 negara tersebut, berikut beberapa fakta menarik:
+
+1. Brazil dan Jerman menjadi dua negara yang paling sering masuk ke Piala Dunia (Brazil 22 kali. Jerman 20 kali).
+1. Canada dan Wales menjadi dua negara yang paling jarang masuk ke Piala Dunia (keduanya sama-sama baru dua kali lolos).
+1. Khusus bagi Wales, terakhir kali Wales masuk ke Piala Dunia adalah pada tahun 1958.
+1. Korea Selatan menjadi negara Asia yang sudah masuk putaran Piala Dunia 10 kali secara beruntun. Berbeda tipis dengan Spanyol yang masuk 12 kali secara beruntun dan Argentina 13 kali secara beruntun. Sedangkan Jepang 7 kali beruntun.
+1. Belanda, Korea Selatan, dan USA sama-sama pernah lolos Piala Dunia sebanyak 11 kali.
+
+Sekarang kita akan bahas sekilas tentang top skor pada Piala Dunia. Berikut adalah `top 10` _goal scorer_ di Piala Dunia:
+
+```{r,echo=FALSE,fig.retina=2}
+df_top_skor %>%
+  head(10) %>%
+  ggplot(aes(y = goalsscored,x = reorder(player,goalsscored))) +
+  geom_col(fill = "steelblue",color = "black",alpha = .5) +
+  geom_label(aes(label = goalsscored),size = 3) +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "Top 10 Goal Scorer Piala Dunia",
+       subtitle = "Base: Data Piala Dunia",
+       caption = "Scrape dan Visualisasi menggunakan R\nikanx101.com") +
+  theme(axis.text.x = element_blank(),
+        axis.title = element_blank())
+```
+
+Walaupun mereka adalah top skor, namun untuk mengetahui ketajaman _goal scorer_ kita perlu melihat rasio gol per pertandingan sebagai berikut:
+
+```{r,echo=FALSE,fig.retina=2}
+df_top_skor %>%
+  arrange(desc(goalpermatch)) %>%
+  head(10) %>%
+  ggplot(aes(y = goalpermatch,x = reorder(player,goalpermatch))) +
+  geom_col(fill = "steelblue",color = "black",alpha = .5) +
+  geom_label(aes(label = goalpermatch),size = 3) +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "Top 10 Goal Scorer dengan Rasio Goal per Match Tinggi di Piala Dunia",
+       subtitle = "Base: Data Piala Dunia",
+       caption = "Scrape dan Visualisasi menggunakan R\nikanx101.com") +
+  theme(axis.text.x = element_blank(),
+        axis.title = element_blank())
+```
+
+---
+
+Sudah dulu _deh_ segitu dulu _yah_...
