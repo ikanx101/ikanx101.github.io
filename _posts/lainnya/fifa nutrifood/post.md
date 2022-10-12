@@ -36,11 +36,74 @@ pertandingan final setiap Piala Dunia sejak tahun `1954`.
 
 <img src="post_files/figure-gfm/unnamed-chunk-3-1.png" width="672" />
 
-Terlihat dengan jelas bahwa mitos tersebut benar adanya. Anomali terjadi
-pada tiga pertandingan final berikut:
+Terlihat dengan jelas bahwa mitos tersebut benar adanya. Anomali hanya
+terjadi pada tiga pertandingan final berikut:
 
 | year | winners | score\_2     | runners\_up | venue            | location                   | attendance |
 | :--- | :------ | :----------- | :---------- | :--------------- | :------------------------- | :--------- |
 | 1958 | Brazil  | 5–2          | Sweden      | Råsunda Stadium  | Solna (Stockholm), Sweden  | 51,800     |
 | 2010 | Spain   | 1–0 (a.e.t.) | Netherlands | Soccer City      | Johannesburg, South Africa | 84,490     |
 | 2014 | Germany | 1–0 (a.e.t.) | Argentina   | Maracanã Stadium | Rio de Janeiro, Brazil     | 74,738     |
+
+-----
+
+Salah satu hal lain yang ingin saya cek adalah *attendance* penonton
+pada pertandingan final. Sudah kita ketahui bersama, bahwa setiap
+stadiun *venue* pertandingan final Piala Dunia adalah stadiun terbaik
+pada negara penyelenggara pada masanya. Tentunya hal ini juga merupakan
+salah satu daya tarik sendiri bagi para penonton.
+
+<img src="post_files/figure-gfm/unnamed-chunk-5-1.png" width="672" />
+
+Jika kita asumsikan bahwa kapasitas stadiun selalu penuh pada
+pertandingan final setiap tahunnya, sepertinya semakin modern zaman,
+kapasitas stadiun sepertinya sudah semakin terbatas. Tidak lagi dibuat
+sangat besar hingga menampung ratusan ribu orang. Saya duga keamanan
+menjadi salah satu alasannya.
+
+Salah satu mitos lain yang sering diperdebatkan adalah timnas negara
+mana yang terbaik? Eropa atau Amerika (Latin)? Mari kita jawab dengan
+data sebagai berikut:
+
+<img src="post_files/figure-gfm/unnamed-chunk-6-1.png" width="672" /><img src="post_files/figure-gfm/unnamed-chunk-6-2.png" width="672" />
+
+Menarik *yah*… Ternyata walau negara Eropa lebih sering mengirimkan
+wakilnya untuk berlaga di final, tapi *success rate* negara Amerika
+Latin relatif lebih tinggi.
+
+Sekarang saya akan coba bahas sekilas tentang 32 negara yang lolos ke
+Piala Dunia. Selain Qatar, tentu ada 31 negara lainnya. Jerman adalah
+negara pertama yang berhasil lolos karena menjuarai grup J (pada 11
+Oktober 2021). Sedangkan Costa Rica adalah negara akhir yang berhasil
+lolos setelah menang pada laga *play-off* (pada 14 Juni 2022).
+
+<img src="post_files/figure-gfm/unnamed-chunk-7-1.png" width="672" />
+
+Dari 32 negara tersebut, berikut beberapa fakta menarik:
+
+1.  Brazil dan Jerman menjadi dua negara yang paling sering masuk ke
+    Piala Dunia (Brazil 22 kali. Jerman 20 kali).
+2.  Canada dan Wales menjadi dua negara yang paling jarang masuk ke
+    Piala Dunia (keduanya sama-sama baru dua kali lolos).
+3.  Khusus bagi Wales, terakhir kali Wales masuk ke Piala Dunia adalah
+    pada tahun 1958.
+4.  Korea Selatan menjadi negara Asia yang sudah masuk putaran Piala
+    Dunia 10 kali secara beruntun. Berbeda tipis dengan Spanyol yang
+    masuk 12 kali secara beruntun dan Argentina 13 kali secara beruntun.
+    Sedangkan Jepang 7 kali beruntun.
+5.  Belanda, Korea Selatan, dan USA sama-sama pernah lolos Piala Dunia
+    sebanyak 11 kali.
+
+Sekarang kita akan bahas sekilas tentang top skor pada Piala Dunia.
+Berikut adalah `top 10` *goal scorer* di Piala Dunia:
+
+<img src="post_files/figure-gfm/unnamed-chunk-8-1.png" width="672" />
+
+Walaupun mereka adalah top skor, namun untuk mengetahui ketajaman *goal
+scorer* kita perlu melihat rasio gol per pertandingan sebagai berikut:
+
+<img src="post_files/figure-gfm/unnamed-chunk-9-1.png" width="672" />
+
+-----
+
+Sudah dulu *deh* segitu dulu *yah*…
