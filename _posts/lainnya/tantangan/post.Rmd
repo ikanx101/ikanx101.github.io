@@ -1,0 +1,36 @@
+---
+title: "Tantangan Terberat Seorang Data Scientist"
+output: github_document
+---
+
+
+Sebagai seorang _data scientist_, _project data science_ yang saya kerjakan sehari-hari di kantor sebenarnya mirip seperti mengerjakan penelitian. Alurnya seperti ini:
+
+```{r,echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/ikanx101/belajaR/master/Bukan%20Infografis/puzzles/Timeline%20Survey/proses%20riset.png")
+```
+
+Dari sekian banyak tahapan yang ada pada _flow_ di atas, ada tiga tahapan kritis yang menurut saya merupakan tantangan yang sering saya temui. Apa saja?
+
+1. Formulasi masalah,
+1. _Design research_,
+1. Analisa data.
+
+Saya pernah menulis tentang hal ini di [sini](https://ikanx101.com/blog/tujuan/).
+
+Selain 3 tahap kritis tersebut, saya merasa ada satu lagi tantangan yang sering saya hadapi. Bahkan menurut saya, ini adalah tantangan terberat. Apa itu?
+
+> Meyakinkan _decision maker_ untuk mau mengambil keputusan berdasarkan model atau analisa yang sudah dibuat.
+
+Oleh karena itu, _lesson learned_ yang bisa saya _share_ adalah sebagai berikut:
+
+1. _Communication_ dan _confidence_ sama pentingnya dengan _creativity_ dan _coding_. Seringkali saya temukan banyak _data scientist_ yang terlalu berfokus pada kemampuan teknis terkait permodelan dan algoritma. Namun jarang yang memiliki kemampuan komunikasi yang baik sehingga bisa mempengaruhi orang lain dan meninggalkan _impact_ positif bagi organisasi. Oleh karena itu, kita juga harus terus belajar mengembangkan kedua aspek ini.
+1. Tidak semua _advance analysis_ itu _impactful_. Ketika masih muda, saya seringkali menggunakan _advance analysis_ untuk menyelesaikan _project_ di kantor. Walaupun _project_-nya selesai, saya merasa _effort_ yang dilakukan tidak berbanding dengan _impact_ atau _action_ yang bisa dilakukan. Seringkali saya menemukan beberapa analisa sederhana (baik di _descriptive analysis_ atau _predictive analysis_) justru memiliki _impact_ yang lebih baik karena mudah dipahami secara umum dan bisa dikonversi langsung menjadi _action_ dan strategi bisnis. 
+
+Pernah saya berdiskusi dengan senior saya, seorang _data scientist_ di perbankan. Beliau mengamini kedua poin di atas. Bahkan menurutnya _simplicity is the key_ saat berurusan dengan bisnis praktis.
+
+_Any comments?_
+
+--- 
+
+`if you find this article helpful, support this blog by clicking the ads`
