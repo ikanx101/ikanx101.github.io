@@ -1,0 +1,43 @@
+---
+title: "Untitled"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Sudah beberapa bulan ini saya biasa menggunakan [_Chromebook_ untuk _daily driver_](https://ikanx101.com/blog/samsung-chr/) karena laptop komputer saya gunakan untuk _run_ beberapa algoritma __R__ yang memakan sumber daya lebih.
+
+Awalnya saya meng-_install_ __R Studio__ pada _Chromebook_ tersebut. Namun setelah saya rasakan, entah kenapa __R Studio__ seperti memakai RAM dan ROM yang relatif besar. Oleh karena itu, saya mencoba-coba dua alternatif __R__ _GUI_ (_graphical user interface_), yakni:
+
+1. [Rkward](https://rkward.kde.org/).
+1. [Visual Studio Code](https://code.visualstudio.com/).
+
+Khusus bagi Rkward, saya pernah menuliskan bagaimana [meng-_install_ dan menggunakannya di Tablet Android]
+(https://ikanx101.com/blog/rkward-debian/). Proses instalasinya relatif sama dan mudah karena saya cukup men-_download_ file instalasi berekstensi `.deb` dari situs tersebut dan meng-_install_-nya dengan perintah `sudo gdebi nama_file.deb`.
+
+Setelah saya coba selama beberapa minggu terakhir, saya masih penasaran ingin mencoba satu GUI lain, yakni Visual Studio Code. 
+
+VS Code ini adalah _software_ buatan Microsoft yang bisa digunakan untuk berbagai jenis bahasa pemrograman seperti __R__, Python, C/C++, Golang, dst.
+
+Untuk melakukan instalasinya juga sama mudahnya. Kita cukup men-_download installer_ berekstensi `.deb` dari situsnya dan meng-_install_-nya dengan perintah `sudo gdebi nama_file.deb`. Setelah itu, kita juga perlu meng-_install_ _libraries_ berikut ini di __R__:
+
+1. `library(languageserver)`.
+1. `library(httpgd)`.
+
+Lalu kita perlu meng-_install_ ekstensi di VS Code agar bisa menjalankan __R__, yakni __R extension for Visual Studio Code__.
+
+Oh iya, ada satu _software_ lain yang harus di-_install_ di linux, yaitu `radian`. Cukup jalankan perintah `sudo apt install radian`.
+
+Langkah-langkahnya bisa dilihat juga di [_link_ berikut ini](https://code.visualstudio.com/docs/languages/r).
+
+Mudah kan?
+
+---
+
+Selama pemakaian beberapa minggu ini, saya cukup puas dengan performa dan fitur-fitur yang ada. Terutama _browser files_ yang lebih enak dilihat dan integrasinya dengan Github secara otomatis (untuk keperluan _commit_, _pull_, dan _push_).
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads`
