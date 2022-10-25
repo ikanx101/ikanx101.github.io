@@ -1,0 +1,41 @@
+---
+title: "Mencari Tahu Versi Chrome Webdriver Saat Menggunakan Selenium"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r,include=FALSE}
+rm(list=ls())
+
+library(dplyr)
+```
+
+Di berbagai tulisan saya sebelumnya [terkait _web scraping_](https://ikanx101.com/blog/selenium-rvest/), saya telah menjelaskan bagaimana `library(RSelenium)` bisa digunakan untuk mengekstrak berbagai informasi yang ada di suatu situs _web_.
+
+Salah satu _browser_ yang bisa digunakan pada `RSelenium` adalah _Google Chrome_. Salah satu masalah saat menggunakan _Google Chrome_ di `RSelenium` adalah me-_matching_-kan dua versi _Google Chrome_, yakni:
+
+1. Versi _Google Chrome_ yang ter-_install_ di komputer.
+1. Versi _Google Chrome webdriver_ yang akan digunakan di `RSelenium`.
+
+Pada saat pertama kali saya mencoba `RSelenium`, pemilihan versi _Google Chrome webdriver_ saya lakukan dengan cara _trial and error_. Biasanya saya akan menuliskan sembarang versi _Google Chrome webdriver_ di _codes_ saya. Jika terjadi _error_, `RSelenium` akan memberikan saran beberapa versi _Google Chrome webdriver_ yang bisa digunakan.
+
+Tapi ada cara lain yang lebih cepat dan pasti untuk memasangkan kedua versi _Chrome_ tersebut. Berikut adalah tabel panduannya:
+
+```{r,echo=FALSE}
+data.frame(default = c(107,106,105),
+           web = c("107.0.5304.18","106.0.5249.61","105.0.5195.52")) %>% 
+  rename("Chrome yang terinstall di komputer" = default,
+         "Chrome Webdriver" = web) %>% 
+  knitr::kable(align = "c")
+```
+
+Kita cukup mengetahui versi _Chrome_ yang ter-_install_ di komputer kita dan mengembalikannya ke tabel panduan di atas.
+
+_Update_ terkait panduan ini bisa dilihat di [_link_ berikut ini](https://chromedriver.chromium.org/downloads).
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads`
