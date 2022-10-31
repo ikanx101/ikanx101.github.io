@@ -1,0 +1,45 @@
+---
+title: "Hubungan Machine Learning dan Deep Learning"
+output: github_document
+---
+
+```{r setup, include = FALSE}
+setwd("/root/ikanx101.github.io/_posts/lainnya/ML vs DL")
+```
+
+Dalam setiap kesempatan, saya sering mengatakan bahwa _artificial intelligence_ adalah suatu _umbrella terms_ bagi _applied science_ yang digaungkan sejak tahun 1950-an. Istilah lainnya yang tidak kalah keren adalah _machine learning_ dan _deep learning_. Walaupun baru terdengar heboh beberapa tahun belakangan, tapi kedua istilah tersebut sudah sama tua-nya dengan istilah __AI__.
+
+Istilah _machine learning_ pertama kali disebutkan tahun 1959 oleh salah seorang karyawan IBM bernama Arthur Samuel. Sedangkan istilah _deep learning_ pertama disebutkan dalam buku _Principles of Neurodynamics: Perceptrons and the Theory of Brain Mechanisms_ yang dipublikasikan pada tahun 1962 oleh _Cornell Aeronautical Laboratory, Inc., Cornell University_.
+
+Hal ini mematahkan pendapat beberapa orang yang menyatakan bahwa _deep learning_ itu adalah _parent terms_ bagi _machine learning_.
+
+> Lantas apa perbedaan antara keduanya?
+
+_Machine learning_ adalah beberapa metode atau algoritma yang sering dikaitkan dengan masalah prediksi / klasifikasi. Walaupun pada kenyataannya beberapa kasus optimisasi dan _data mining_ bisa diselesaikan menggunakan algoritma _machine learning_. 
+
+Sedangkan _deep learning_ adalah pengembangan algoritma _machine learning_ yang mengandalkan metode _neural network_ (jaringan syaraf). Jadi perbedaan mencoloknya adalah pada basis metode perhitungannya yang menggunakan _neural network_.
+
+Oleh karena itu, _deep learning_ sangat banyak digunakan untuk menyelesaikan masalah-masalah yang berkaitan dengan gambar seperti _image recognition_, _object detection_, dan _visual art processing_. 
+
+Beberapa tulisan yang pernah saya buat sebelumnya adalah:
+
+1. 
+https://ikanx101.com/blog/ndsc-2020/
+
+https://ikanx101.com/blog/deep-nutrisari/
+
+https://ikanx101.com/blog/carmudi-ai/
+
+https://ikanx101.com/blog/deep-ortu/
+
+https://ikanx101.com/blog/diabet-ai/
+
+https://ikanx101.com/blog/EMA-FIFA/
+
+Selain itu, penggunaannya pada data suara juga terus dikembangkan.
+
+Hal ini dimungkinkan karena metode berbasis _neural network_ memiliki _input_ berupa matriks (matriks dalam aljabar). Sebagaimana kita tahu, bahwa setiap _image_ berekstensi `.jpg` atau `.png` itu bisa dibaca dalam bentuk matriks.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads`
