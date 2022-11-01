@@ -124,7 +124,7 @@ Setelah itu kita akan diberikan alamat `url` _unique_ tempat kita akan mengakses
 
 Setelah kita buka `url` pada _web browser_, akan terlihat tampilan sebagai berikut:
 
-```
+```{r out.width="60%",echo=FALSE}
 gambar
 ```
 
