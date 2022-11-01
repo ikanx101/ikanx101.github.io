@@ -21,20 +21,14 @@ Sedangkan _deep learning_ adalah pengembangan algoritma _machine learning_ yang 
 
 Oleh karena itu, _deep learning_ sangat banyak digunakan untuk menyelesaikan masalah-masalah yang berkaitan dengan gambar seperti _image recognition_, _object detection_, dan _visual art processing_. 
 
-Beberapa tulisan yang pernah saya buat sebelumnya adalah:
+Beberapa tulisan yang pernah saya buat sebelumnya terkait _deep learning_ antara lain:
 
-1. 
-https://ikanx101.com/blog/ndsc-2020/
-
-https://ikanx101.com/blog/deep-nutrisari/
-
-https://ikanx101.com/blog/carmudi-ai/
-
-https://ikanx101.com/blog/deep-ortu/
-
-https://ikanx101.com/blog/diabet-ai/
-
-https://ikanx101.com/blog/EMA-FIFA/
+1. [Kompetisi Shopee](https://ikanx101.com/blog/ndsc-2020/),
+1. [Kemasan minuman jeruk](https://ikanx101.com/blog/deep-nutrisari/),
+1. _Data mining_ berupa [eksplorasi analisis model harga mobil](https://ikanx101.com/blog/carmudi-ai/)
+1. [_Image recognition_](https://ikanx101.com/blog/deep-ortu/) antara orang tua dan anak,
+1. _Data mining_ berupa [eksplorasi analisis model diabetes](https://ikanx101.com/blog/diabet-ai/),
+1. _Data mining_ berupa [eksplorasi analisis model harga pemain bola](https://ikanx101.com/blog/EMA-FIFA/).
 
 Selain itu, penggunaannya pada data suara juga terus dikembangkan.
 
