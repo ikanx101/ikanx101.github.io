@@ -24,7 +24,7 @@ Saya sudah beberapa kali menulis tentang _R Studio Server_, seperti:
 
 Namun, salah satu kelemahan bagi _R Studio Server_ adalah kita harus memiliki _IP public_ agar _R Studio Server_ bisa diakses dari _gadget_ apapun dengan jaringan manapun. Jika tidak punya _IP public_, kita bisa mengakalinya dengan menggunakan bantuan [_pagekite_](https://ikanx101.com/blog/page-kite/) atau [_ngrok_](https://ikanx101.com/blog/ngrok-io/).
 
-Di sinilah letak keunggulan ___VS Code Server___. Secara otomatis, ___VS Code Server___ akan melakukan _ssh tunneling_ sehingga walaupun tanpa _IP public_ ___VS Code Server___ tetap bisa diakses oleh _gadget_ manapun dengan jaringan apapun. Asal laptop atau VPS tempat kita meng-_install_ terkoneksi internet.
+Di sinilah letak keunggulan ___VS Code Server___. Secara otomatis, ___VS Code Server___ akan melakukan _ssh tunneling_ sehingga walaupun tanpa _IP public_ ___VS Code Server___ tetap bisa diakses oleh _gadget_ manapun dengan jaringan apapun. Asal laptop atau VPS tempat kita meng-_install_ terkoneksi internet. Selain itu kita tidak perlu diribetkan oleh _setting firewall_ di _Google Cloud_ yang rumit.
 
 Prasyarat mutlak yang wajib dipenuhi adalah keberadaan akun Github.
 
@@ -90,9 +90,6 @@ rm(list=ls())
 
 Proses ini mungkin akan memakan waktu yang relatif cukup lama (maksimum 30 - 45 menit). Oleh karena itu, kita bisa tinggal tidur saja. Tapi _setting_ ini cukup dilakukan sekali saja.
 
-```{r out.width="60%",echo=FALSE}
-
-```
 
 ### Langkah III
 
@@ -113,7 +110,7 @@ code-server
 Jika berhasil, kita akan disuruh menjawab beberapa baris pertanyaan dan melakukan otentifikasi ke akun Github seperti ini:
 
 ```{r out.width="60%",echo=FALSE}
-
+knitr::include_graphics("Screenshot 2022-11-01 20.24.36.png")
 ```
 
 Setelah itu kita akan diberikan alamat `url` _unique_ tempat kita akan mengakses ___VS Code Server___.
@@ -123,7 +120,18 @@ Setelah itu kita akan diberikan alamat `url` _unique_ tempat kita akan mengakses
 Setelah kita buka `url` pada _web browser_, akan terlihat tampilan sebagai berikut:
 
 ```{r out.width="60%",echo=FALSE}
-gambar
+knitr::include_graphics("Screenshot 2022-11-01 20.26.54.png")
 ```
 
 Kita tunggu saja proses instalasinya hingga selesai. Maksimum memakan waktu sekitar 15-30 menit.
+
+
+Oh iya, langkah terakhir adalah dengan meng-_install_ ekstensi __R__ pada _VS Code Server_ berikut:
+
+```{r out.width="60%",echo=FALSE}
+knitr::include_graphics("Screenshot 2022-11-01 20.34.44.png")
+```
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads`
