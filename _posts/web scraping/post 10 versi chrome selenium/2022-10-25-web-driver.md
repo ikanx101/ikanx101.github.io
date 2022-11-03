@@ -37,9 +37,9 @@ versi *Chrome* tersebut. Berikut adalah tabel panduannya:
 
 | Chrome yang terinstall di komputer | Chrome Webdriver |
 |:----------------------------------:|:----------------:|
-|                107                 |  107.0.5304.18   |
+|                107                 |  107.0.5304.62   |
 |                106                 |  106.0.5249.61   |
-|                105                 |  105.0.5195.52   |
+|                108                 |  108.0.5359.22   |
 
 Kita cukup mengetahui versi *Chrome* yang ter-*install* di komputer kita
 dan mengembalikannya ke tabel panduan di atas.
