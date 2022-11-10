@@ -1,0 +1,62 @@
+---
+title: "Menentukan Apakah Suatu Data Fluktuatif atau Tidak?"
+output: 
+    github_document:
+        pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### Pada pagi hari ini:
+
+_Salesperson_ : _"Mas, bagaimana ya caranya agar saya bisa menentukan suatu data itu fluktuatif atau tidak?"_
+
+_Saya_ : _"Fluktuatif yang kamu maksud itu variability?"_
+
+_Salesperson_ : _"Bukan tentang sebaran data."_
+
+_Saya_ : _"Lantas bagaimana maksudnya?"_
+
+_Salesperson_ : _"Misalkan saya punya data A dengan rata-rata = 100 dan standar deviasi juga 100. Lalu saya punya data B dengan rata-rata 1000 tapi standar deviasinya juga 100. Data A kan seharusnya lebih fluktuatif yah dibanding data B?"_
+
+_Saya_ : _"Ooh, saya mengerti maksudnya. Jadi begini....."_
+
+---
+
+Begitu kira-kira percakapan antara saya dan salah seorang rekan kerja yang berasal dari divisi _sales_. Sebuah pertanyaan sederhana menurut saya namun sangat bermanfaat dan _strategic_ bagi dirinya. 
+
+Untuk menyelesaikan permasalahan tersebut, mari kita lihat terlebih dahulu dua konsep sederhana dalam statistika yakni:
+
+1. Pemusatan data (_centrality_) dan
+1. Sebaran data (_variability_).
+
+Sesuai dengan namanya, _centrality_ adalah suatu pengukuran untuk menentukan dimana data tersebut berpusat (atau berkumpul). Kita bisa menghitung 3 _metrics_ pada _centrality_, yakni _mean_, median, dan modus. 
+
+_Variability_ adalah suatu pengukuran yang menentukan seberapa data tersebar. Ada beberapa _metric_ yang bisa dihitung seperti: variansi, standar deviasi, dan _range_.
+
+Masalah yang ditemui oleh rekan saya itu adalah:
+
+> Bagaimana menentukan suatu data itu fluktuatif atau tidak?
+
+Jika saya hanya mengandalkan _variability_, bisa jadi saya akan kehilangan informasi yang sangat penting karena _variability_ semata hanya menandakan seberapa data tersebut tersebar. Oleh karena itu saya harus menyandingkannya dengan di mana data tersebut terpusat.
+
+Sebagai contoh, saya akan gunakan data $A$ dan $B$ ilustrasi yang diberikan teman saya berikut ini:
+
+### Ilustrasi
+
+Misalkan data $A$ berdistribusi normal dengan $\mu = 100, \sigma = 100$. Sedangkan data $B$ berdistribusi normal dengan $\mu = 1000, \sigma = 100$.
+
+Keduanya punya _variability_ yang sama, tapi secara fluktuatif, data $A$ lebih berfluktuatif. Saya akan lakukan simulasi sederhana dan memberikan gambaran _plot_-nya sebagai berikut:
+
+
+```{r,echo=FALSE}
+n = 50
+A = rnorm(n,mean = 100, sd = 100)
+B = rnorm(n,mean = 1000, sd = 100)
+
+
+```
+
+
