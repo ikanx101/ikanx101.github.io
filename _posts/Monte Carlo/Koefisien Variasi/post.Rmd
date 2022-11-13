@@ -106,6 +106,8 @@ plt4 =
        y = "Daily sales",
        title = "Line Chart Data Produk B") +
   theme_minimal()
+
+ggarrange(plt3,plt4,ncol = 2)
 ```
 
 

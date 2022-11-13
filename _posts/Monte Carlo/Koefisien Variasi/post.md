@@ -75,3 +75,5 @@ sebenarnya produk ![A](https://latex.codecogs.com/png.latex?A "A") lebih
 berfluktuatif. Dari *density plot* di atas mungkin tidak semua orang
 bisa melihatnya. Tapi kalau data yang sama di atas saya ubah bentuknya
 menjadi *linechart* seperti ini:
+
+![](post_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
