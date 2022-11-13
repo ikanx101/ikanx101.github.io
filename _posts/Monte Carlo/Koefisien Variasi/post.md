@@ -68,20 +68,10 @@ berdistribusi normal dengan
 Jika saya gambarkan dalam bentuk *density plot*, kita dapatkan bentuk
 seperti ini:
 
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
-
 ![](post_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
-Keduanya punya *variability* yang sama, tapi secara fluktuatif, data
-![A](https://latex.codecogs.com/png.latex?A "A") lebih berfluktuatif.
-Saya akan lakukan simulasi sederhana dan memberikan gambaran *plot*-nya
-sebagai berikut:
+Keduanya punya *variability* yang sama, tapi secara fluktuatif
+sebenarnya produk ![A](https://latex.codecogs.com/png.latex?A "A") lebih
+berfluktuatif. Dari *density plot* di atas mungkin tidak semua orang
+bisa melihatnya. Tapi kalau data yang sama di atas saya ubah bentuknya
+menjadi *linechart* seperti ini:
