@@ -46,17 +46,46 @@ Sebagai contoh, saya akan gunakan data $A$ dan $B$ ilustrasi yang diberikan tema
 
 ### Ilustrasi
 
-Misalkan data $A$ berdistribusi normal dengan $\mu = 100, \sigma = 100$. Sedangkan data $B$ berdistribusi normal dengan $\mu = 1000, \sigma = 100$.
+Misalkan data _sales_ harian produk $A$ selama 2 bulan berdistribusi normal dengan $\mu = 100, \sigma = 100$. Sedangkan data _sales_ harian produk $B$ selama 2 bulan berdistribusi normal dengan $\mu = 1000, \sigma = 100$.
+
+Jika saya gambarkan dalam bentuk _density plot_, kita dapatkan bentuk seperti ini:
+
+```{r,echo=FALSE}
+rm(list=ls())
+
+library(dplyr)
+library(ggplot2)
+library(ggpubr)
+
+n = 60
+A = rnorm(n,mean = 100,sd = 100)
+B = rnorm(n,mean = 1000,sd = 100)
+
+df = data.frame(id = 1:n,
+                A,B)
+plt1 = 
+  df %>%
+  ggplot(aes(x = A)) +
+  geom_density() +
+  labs(title = "Density Plot Data Produk A") +
+  theme_minimal() +
+  theme(axis.text = element_blank(),
+        axis.title = element_blank())
+
+plt2 = 
+  df %>%
+  ggplot(aes(x = B)) +
+  geom_density() +
+  labs(title = "Density Plot Data Produk B") +
+  theme_minimal() +
+  theme(axis.text = element_blank(),
+        axis.title = element_blank())
+
+ggarrange(plt1,plt2,ncol = 2)
+```
 
 Keduanya punya _variability_ yang sama, tapi secara fluktuatif, data $A$ lebih berfluktuatif. Saya akan lakukan simulasi sederhana dan memberikan gambaran _plot_-nya sebagai berikut:
 
 
-```{r,echo=FALSE}
-n = 50
-A = rnorm(n,mean = 100, sd = 100)
-B = rnorm(n,mean = 1000, sd = 100)
-
-
-```
 
 
