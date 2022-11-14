@@ -19,7 +19,7 @@ _Salesperson_ : _"Bukan tentang sebaran data."_
 
 _Saya_ : _"Lantas bagaimana maksudnya?"_
 
-_Salesperson_ : _"Misalkan saya punya data A dengan rata-rata = 100 dan standar deviasi juga 100. Lalu saya punya data B dengan rata-rata 1000 tapi standar deviasinya juga 100. Data A kan seharusnya lebih fluktuatif yah dibanding data B?"_
+_Salesperson_ : _"Misalkan saya punya data _sales_ harian selama 2 bulan. Produk A rata-ratanya 100 _pcs_ dan standar deviasinya juga 70 _pcs_. Lalu produk B dengan rata-rata 500 _pcs_ dan standar deviasinya juga 70 _pcs_. Produk A kan seharusnya lebih fluktuatif yah dibanding produk B?"_
 
 _Saya_ : _"Ooh, saya mengerti maksudnya. Jadi begini....."_
 
@@ -40,7 +40,7 @@ Masalah yang ditemui oleh rekan saya itu adalah:
 
 > Bagaimana menentukan suatu data itu fluktuatif atau tidak?
 
-Jika saya hanya mengandalkan _variability_, bisa jadi saya akan kehilangan informasi yang sangat penting karena _variability_ semata hanya menandakan seberapa data tersebut tersebar. Oleh karena itu saya harus menyandingkannya dengan di mana data tersebut terpusat.
+Awalnya saya menjawab hanya dengan mengandalkan _variability_. Namun setelah saya pikirkan kembali, saya akan kehilangan informasi yang sangat penting jika semata hanya mengandalkan _variability_. Oleh karena itu saya harus menyandingkannya dengan di mana data tersebut terpusat.
 
 Sebagai contoh, saya akan gunakan data $A$ dan $B$ ilustrasi yang diberikan teman saya berikut ini:
 
@@ -58,8 +58,8 @@ library(ggplot2)
 library(ggpubr)
 
 n = 60
-A = rnorm(n,mean = 100,sd = 100)
-B = rnorm(n,mean = 1000,sd = 100)
+A = rnorm(n,mean = 100,sd = 70)
+B = rnorm(n,mean = 500,sd = 70)
 
 df = data.frame(id = 1:n,
                 A,B)

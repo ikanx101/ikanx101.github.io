@@ -12,10 +12,11 @@ suatu data itu fluktuatif atau tidak?”*
 
 *Saya* : *“Lantas bagaimana maksudnya?”*
 
-*Salesperson* : *“Misalkan saya punya data A dengan rata-rata = 100 dan
-standar deviasi juga 100. Lalu saya punya data B dengan rata-rata 1000
-tapi standar deviasinya juga 100. Data A kan seharusnya lebih fluktuatif
-yah dibanding data B?”*
+*Salesperson* : *“Misalkan saya punya data *sales* harian selama 2
+bulan. Produk A rata-ratanya 100 *pcs* dan standar deviasinya juga 70
+*pcs*. Lalu produk B dengan rata-rata 500 *pcs* dan standar deviasinya
+juga 70 *pcs*. Produk A kan seharusnya lebih fluktuatif yah dibanding
+produk B?”*
 
 *Saya* : *“Ooh, saya mengerti maksudnya. Jadi begini…..”*
 
@@ -44,10 +45,10 @@ Masalah yang ditemui oleh rekan saya itu adalah:
 
 > Bagaimana menentukan suatu data itu fluktuatif atau tidak?
 
-Jika saya hanya mengandalkan *variability*, bisa jadi saya akan
-kehilangan informasi yang sangat penting karena *variability* semata
-hanya menandakan seberapa data tersebut tersebar. Oleh karena itu saya
-harus menyandingkannya dengan di mana data tersebut terpusat.
+Awalnya saya menjawab hanya dengan mengandalkan *variability*. Namun
+setelah saya pikirkan kembali, saya akan kehilangan informasi yang
+sangat penting jika semata hanya mengandalkan *variability*. Oleh karena
+itu saya harus menyandingkannya dengan di mana data tersebut terpusat.
 
 Sebagai contoh, saya akan gunakan data
 ![A](https://latex.codecogs.com/png.latex?A "A") dan
