@@ -25,7 +25,9 @@ _Saya_ : _"Ooh, saya mengerti maksudnya. Jadi begini....."_
 
 ---
 
-Begitu kira-kira percakapan antara saya dan salah seorang rekan kerja yang berasal dari divisi _sales_. Untuk menyelesaikan permasalahan tersebut, mari kita lihat terlebih dahulu dua konsep sederhana dalam statistika yakni:
+Begitu kira-kira percakapan antara saya dan salah seorang rekan kerja yang berasal dari divisi _sales_. Sebuah pertanyaan yang tidak mudah, pikir saya.
+
+Untuk menyelesaikan permasalahan tersebut, mari kita lihat terlebih dahulu dua konsep sederhana dalam statistika yakni:
 
 1. Pemusatan data (_centrality_) dan
 1. Sebaran data (_variability_).
@@ -40,14 +42,14 @@ Masalah yang ditemui oleh rekan saya itu adalah:
 
 Awalnya saya menjawab hanya dengan mengandalkan _variability_. Namun setelah saya pikirkan kembali, saya akan kehilangan informasi yang sangat penting jika semata hanya mengandalkan _variability_. Oleh karena itu saya harus menyandingkannya dengan di mana data tersebut terpusat.
 
-Sebagai contoh, saya akan gunakan data $A$ dan $B$ ilustrasi yang diberikan teman saya berikut ini:
+Sebagai contoh, saya akan gunakan data _sales_ produk _A_ dan _B_ ilustrasi yang diberikan teman saya berikut ini:
 
 ### Ilustrasi
 
 Misalkan saya memiliki data _sales_ harian dua produk selama 2 bulan berdistribusi normal:
 
-1. Produk $A$: $\mu = 150, \sigma = 100$. 
-1. Produk $B$: $\mu = 1000, \sigma = 100$.
+1. Produk _A_: $\mu = 150, \sigma = 100$. 
+1. Produk _B_: $\mu = 1000, \sigma = 100$.
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 rm(list=ls())
@@ -91,7 +93,9 @@ plt2 =
 ggarrange(plt1,plt2,ncol = 2)
 ```
 
-Terlihat dari _plot_ di atas, keduanya punya _variability_ yang sama. Lantas bagaimana saya menentukan mana yang lebih fluktuatif? Kalau saya buatkan dalam bentuk _linechart_ sebagai berikut apakah sudah lebih terlihat? 
+Terlihat dari _plot_ di atas, keduanya punya _variability_ yang sama. Jika hanya bermodalkan informasi tersebut, saya hanya akan mengatakan bahwa kedua produk tersebut memiliki fluktuasi yang sama.
+
+Namun saat saya melihat kembali data tersebut dalam bentuk _linechart_ sebagai berikut:
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 plt3 = 
@@ -117,7 +121,7 @@ plt4 =
 ggarrange(plt3,plt4,ncol = 2)
 ```
 
-Masih belum terlihat juga ya? Oke kalau saya modifikasi kembali menjadi bentuk seperti ini:
+Saya kembai berpikir, jangan-jangan keduanya tidak berfluktuasi dengan tingkat yang sama. Kenapa? Pada produk _A_ kita dapati bahwa nilai _sales_-nya bergerak naik dan turun secara "ekstrim". Sedangkan produk _B_, walaupun bergerak naik dan turun dalam _range_ yang sama dengan produk _A_, tapi rata-rata _sales_-nya masih "aman".
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 plt3 = 
@@ -129,7 +133,7 @@ plt3 =
        y = "Daily sales",
        title = "Line Chart Data Produk A") +
   theme_minimal() +
-  ylim(-20,1200)
+  ylim(-100,1200)
 
 plt4 = 
   df %>% 
@@ -140,7 +144,7 @@ plt4 =
        y = "Daily sales",
        title = "Line Chart Data Produk B") +
   theme_minimal() +
-  ylim(-20,1200)
+  ylim(-100,1200)
 
 ggarrange(plt3,plt4,ncol = 2)
 ```

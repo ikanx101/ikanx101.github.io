@@ -23,9 +23,11 @@ produk B?”*
 ------------------------------------------------------------------------
 
 Begitu kira-kira percakapan antara saya dan salah seorang rekan kerja
-yang berasal dari divisi *sales*. Untuk menyelesaikan permasalahan
-tersebut, mari kita lihat terlebih dahulu dua konsep sederhana dalam
-statistika yakni:
+yang berasal dari divisi *sales*. Sebuah pertanyaan yang tidak mudah,
+pikir saya.
+
+Untuk menyelesaikan permasalahan tersebut, mari kita lihat terlebih
+dahulu dua konsep sederhana dalam statistika yakni:
 
 1.  Pemusatan data (*centrality*) dan
 2.  Sebaran data (*variability*).
@@ -63,68 +65,68 @@ berdistribusi normal:
 2.  Produk ![B](https://latex.codecogs.com/png.latex?B "B"):
     ![\mu = 1000, \sigma = 100](https://latex.codecogs.com/png.latex?%5Cmu%20%3D%201000%2C%20%5Csigma%20%3D%20100 "\mu = 1000, \sigma = 100").
 
-| hari_ke |      A |      B |
-|--------:|-------:|-------:|
-|       1 |  256.4 |  946.3 |
-|       2 |  196.3 |  988.5 |
-|       3 |   57.3 |  928.5 |
-|       4 |  269.3 |  715.1 |
-|       5 |  124.3 |  981.2 |
-|       6 |   71.1 | 1075.9 |
-|       7 |  170.0 | 1022.5 |
-|       8 |  -61.9 | 1122.0 |
-|       9 |  -36.3 | 1089.1 |
-|      10 |  230.2 | 1121.6 |
-|      11 |  148.2 |  993.0 |
-|      12 |  -76.9 |  885.4 |
-|      13 |  118.2 |  986.2 |
-|      14 |  251.1 | 1104.3 |
-|      15 |   55.5 | 1017.3 |
-|      16 |  139.6 | 1147.7 |
-|      17 |  111.8 |  943.7 |
-|      18 |   31.4 | 1067.5 |
-|      19 |   82.8 |  866.5 |
-|      20 |  197.9 |  968.1 |
-|      21 |  119.4 |  878.3 |
-|      22 |   71.3 |  959.9 |
-|      23 |  240.6 |  742.9 |
-|      24 |  129.1 | 1079.4 |
-|      25 |  -46.5 | 1096.3 |
-|      26 |   22.5 |  981.8 |
-|      27 |  200.4 | 1043.9 |
-|      28 |   81.3 | 1082.7 |
-|      29 |  149.8 |  973.1 |
-|      30 |   -2.4 |  877.6 |
-|      31 |  194.0 |  772.5 |
-|      32 |  182.8 |  858.9 |
-|      33 |  340.3 | 1166.9 |
-|      34 |  320.3 |  910.2 |
-|      35 |  167.9 |  955.7 |
-|      36 |  306.4 |  926.9 |
-|      37 |  -33.7 | 1007.5 |
-|      38 |   71.8 |  946.9 |
-|      39 |  167.9 | 1125.4 |
-|      40 |  122.0 | 1361.3 |
-|      41 |  282.8 |  862.4 |
-|      42 |  153.1 |  954.2 |
-|      43 |  124.3 |  897.7 |
-|      44 |  145.4 | 1087.9 |
-|      45 |    4.0 | 1014.4 |
-|      46 |   72.4 |  907.8 |
-|      47 |  249.0 | 1177.9 |
-|      48 |  -45.2 | 1029.0 |
-|      49 |   73.2 | 1063.5 |
-|      50 |  175.1 |  905.8 |
-|      51 |  105.1 |  992.1 |
-|      52 |  248.1 |  933.4 |
-|      53 |   62.5 |  915.5 |
-|      54 |  172.2 | 1106.1 |
-|      55 | -128.2 |  859.1 |
-|      56 |   91.4 |  988.3 |
-|      57 |   74.2 |  995.5 |
-|      58 |   52.1 | 1093.7 |
-|      59 |  223.5 | 1126.5 |
-|      60 |  185.6 | 1036.2 |
+| hari_ke |     A |      B |
+|--------:|------:|-------:|
+|       1 |  75.2 |  998.7 |
+|       2 | -37.4 | 1108.1 |
+|       3 | 148.0 |  902.0 |
+|       4 | 274.3 |  919.1 |
+|       5 | 137.7 |  931.8 |
+|       6 |  74.5 |  934.4 |
+|       7 | 221.1 |  958.5 |
+|       8 | 167.1 | 1036.9 |
+|       9 | -27.2 |  952.2 |
+|      10 | 113.0 |  879.5 |
+|      11 | 197.4 |  897.8 |
+|      12 | 204.6 |  901.6 |
+|      13 | 187.6 |  963.5 |
+|      14 | 246.4 | 1097.6 |
+|      15 |  -7.3 |  860.9 |
+|      16 | 311.9 | 1093.9 |
+|      17 | 113.5 |  991.1 |
+|      18 |  41.8 |  977.6 |
+|      19 | 431.1 | 1063.2 |
+|      20 | 312.6 | 1068.6 |
+|      21 | 127.1 |  847.5 |
+|      22 | 315.9 | 1164.0 |
+|      23 |  44.6 |  958.6 |
+|      24 |  86.2 |  979.0 |
+|      25 |  73.5 |  924.3 |
+|      26 | 127.1 | 1055.4 |
+|      27 | 339.5 |  910.1 |
+|      28 | 160.3 | 1237.7 |
+|      29 |  59.1 |  968.2 |
+|      30 |  80.6 | 1069.9 |
+|      31 | 208.2 | 1060.9 |
+|      32 |  72.7 |  965.4 |
+|      33 | 114.3 |  988.0 |
+|      34 | 270.9 |  996.5 |
+|      35 | 147.4 |  978.4 |
+|      36 | 199.4 |  810.7 |
+|      37 | 168.0 | 1037.4 |
+|      38 | 231.7 | 1070.7 |
+|      39 | 236.6 |  767.1 |
+|      40 | 137.4 | 1026.3 |
+|      41 | 268.4 | 1129.2 |
+|      42 | 166.0 | 1029.9 |
+|      43 | 192.3 | 1056.6 |
+|      44 | 198.7 |  860.2 |
+|      45 | 296.8 |  955.6 |
+|      46 |  80.6 | 1002.3 |
+|      47 | 161.5 | 1000.9 |
+|      48 | 285.0 |  984.7 |
+|      49 | 195.4 | 1117.0 |
+|      50 | 181.2 | 1036.8 |
+|      51 | 100.2 | 1038.1 |
+|      52 |  62.8 |  924.5 |
+|      53 | 138.7 | 1017.8 |
+|      54 | 258.5 | 1011.0 |
+|      55 |  44.5 | 1097.3 |
+|      56 |  48.0 |  962.1 |
+|      57 | 237.0 |  929.6 |
+|      58 | 170.7 |  941.5 |
+|      59 | 216.5 | 1056.0 |
+|      60 | 262.2 |  989.6 |
 
 Jika saya gambarkan dalam bentuk *density plot*, kita dapatkan bentuk
 seperti ini:
@@ -132,13 +134,21 @@ seperti ini:
 ![](post_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
 Terlihat dari *plot* di atas, keduanya punya *variability* yang sama.
-Lantas bagaimana saya menentukan mana yang lebih fluktuatif? Kalau saya
-buatkan dalam bentuk *linechart* sebagai berikut apakah sudah lebih
-terlihat?
+Jika hanya bermodalkan informasi tersebut, saya hanya akan mengatakan
+bahwa kedua produk tersebut memiliki fluktuasi yang sama.
+
+Namun saat saya melihat kembali data tersebut dalam bentuk *linechart*
+sebagai berikut:
 
 ![](post_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
-Masih belum terlihat juga ya? Oke kalau saya modifikasi kembali menjadi
-bentuk seperti ini:
+Saya kembai berpikir, jangan-jangan keduanya tidak berfluktuasi dengan
+tingkat yang sama. Kenapa? Pada produk
+![A](https://latex.codecogs.com/png.latex?A "A") kita dapati bahwa nilai
+*sales*-nya bergerak naik dan turun secara “ekstrim”. Sedangkan produk
+![B](https://latex.codecogs.com/png.latex?B "B"), walaupun bergerak naik
+dan turun dalam *range* yang sama dengan produk
+![A](https://latex.codecogs.com/png.latex?A "A"), tapi rata-rata
+*sales*-nya masih “aman”.
 
 ![](post_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
