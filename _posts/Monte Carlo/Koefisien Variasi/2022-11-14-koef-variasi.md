@@ -185,7 +185,7 @@ Formulanya adalah sebagai berikut:
 
 ![kv = \frac{\sigma}{\mu} \times 100 \\%](https://latex.codecogs.com/png.latex?kv%20%3D%20%5Cfrac%7B%5Csigma%7D%7B%5Cmu%7D%20%5Ctimes%20100%20%5C%25 "kv = \frac{\sigma}{\mu} \times 100 \%")
 
-Semakin kecil rasio koefisien variasi, maka kita bisa sbeut bahwa data
+Semakin kecil rasio koefisien variasi, maka kita bisa simpulkan bahwa data
 semakin homogen. Sementara sebaliknya, semakin besar nilai rasionya maka
 data akan semakin heterogen.
 
