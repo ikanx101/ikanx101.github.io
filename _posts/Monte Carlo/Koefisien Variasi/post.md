@@ -57,14 +57,13 @@ diberikan teman saya berikut ini:
 
 ### Ilustrasi
 
-Misalkan data *sales* harian produk
-![A](https://latex.codecogs.com/png.latex?A "A") selama 2 bulan
-berdistribusi normal dengan
-![\mu = 100, \sigma = 100](https://latex.codecogs.com/png.latex?%5Cmu%20%3D%20100%2C%20%5Csigma%20%3D%20100 "\mu = 100, \sigma = 100").
-Sedangkan data *sales* harian produk
-![B](https://latex.codecogs.com/png.latex?B "B") selama 2 bulan
-berdistribusi normal dengan
-![\mu = 1000, \sigma = 100](https://latex.codecogs.com/png.latex?%5Cmu%20%3D%201000%2C%20%5Csigma%20%3D%20100 "\mu = 1000, \sigma = 100").
+Misalkan saya memiliki data *sales* harian dua produk selama 2 bulan
+berdistribusi normal:
+
+1.  Produk ![A](https://latex.codecogs.com/png.latex?A "A"):
+    ![\mu = 100 dan \sigma = 70](https://latex.codecogs.com/png.latex?%5Cmu%20%3D%20100%20dan%20%5Csigma%20%3D%2070 "\mu = 100 dan \sigma = 70").
+2.  Produk ![B](https://latex.codecogs.com/png.latex?B "B"):
+    ![\mu = 500 dan \sigma = 70](https://latex.codecogs.com/png.latex?%5Cmu%20%3D%20500%20dan%20%5Csigma%20%3D%2070 "\mu = 500 dan \sigma = 70").
 
 Jika saya gambarkan dalam bentuk *density plot*, kita dapatkan bentuk
 seperti ini:

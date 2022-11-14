@@ -46,7 +46,10 @@ Sebagai contoh, saya akan gunakan data $A$ dan $B$ ilustrasi yang diberikan tema
 
 ### Ilustrasi
 
-Misalkan data _sales_ harian produk $A$ selama 2 bulan berdistribusi normal dengan $\mu = 100, \sigma = 100$. Sedangkan data _sales_ harian produk $B$ selama 2 bulan berdistribusi normal dengan $\mu = 1000, \sigma = 100$.
+Misalkan saya memiliki data _sales_ harian dua produk selama 2 bulan berdistribusi normal:
+
+1. Produk $A$: $\mu = 100 dan \sigma = 70$. 
+1. Produk $B$: $\mu = 500 dan \sigma = 70$.
 
 Jika saya gambarkan dalam bentuk _density plot_, kita dapatkan bentuk seperti ini:
 
