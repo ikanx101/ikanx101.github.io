@@ -50,83 +50,81 @@ setelah saya pikirkan kembali, saya akan kehilangan informasi yang
 sangat penting jika semata hanya mengandalkan *variability*. Oleh karena
 itu saya harus menyandingkannya dengan di mana data tersebut terpusat.
 
-Sebagai contoh, saya akan gunakan data
-![A](https://latex.codecogs.com/png.latex?A "A") dan
-![B](https://latex.codecogs.com/png.latex?B "B") ilustrasi yang
-diberikan teman saya berikut ini:
+Sebagai contoh, saya akan gunakan data *sales* produk *A* dan *B*
+ilustrasi yang diberikan teman saya berikut ini:
 
 ### Ilustrasi
 
 Misalkan saya memiliki data *sales* harian dua produk selama 2 bulan
 berdistribusi normal:
 
-1.  Produk ![A](https://latex.codecogs.com/png.latex?A "A"):
+1.  Produk *A*:
     ![\mu = 150, \sigma = 100](https://latex.codecogs.com/png.latex?%5Cmu%20%3D%20150%2C%20%5Csigma%20%3D%20100 "\mu = 150, \sigma = 100").
-2.  Produk ![B](https://latex.codecogs.com/png.latex?B "B"):
+2.  Produk *B*:
     ![\mu = 1000, \sigma = 100](https://latex.codecogs.com/png.latex?%5Cmu%20%3D%201000%2C%20%5Csigma%20%3D%20100 "\mu = 1000, \sigma = 100").
 
 | hari_ke |     A |      B |
 |--------:|------:|-------:|
-|       1 |  75.2 |  998.7 |
-|       2 | -37.4 | 1108.1 |
-|       3 | 148.0 |  902.0 |
-|       4 | 274.3 |  919.1 |
-|       5 | 137.7 |  931.8 |
-|       6 |  74.5 |  934.4 |
-|       7 | 221.1 |  958.5 |
-|       8 | 167.1 | 1036.9 |
-|       9 | -27.2 |  952.2 |
-|      10 | 113.0 |  879.5 |
-|      11 | 197.4 |  897.8 |
-|      12 | 204.6 |  901.6 |
-|      13 | 187.6 |  963.5 |
-|      14 | 246.4 | 1097.6 |
-|      15 |  -7.3 |  860.9 |
-|      16 | 311.9 | 1093.9 |
-|      17 | 113.5 |  991.1 |
-|      18 |  41.8 |  977.6 |
-|      19 | 431.1 | 1063.2 |
-|      20 | 312.6 | 1068.6 |
-|      21 | 127.1 |  847.5 |
-|      22 | 315.9 | 1164.0 |
-|      23 |  44.6 |  958.6 |
-|      24 |  86.2 |  979.0 |
-|      25 |  73.5 |  924.3 |
-|      26 | 127.1 | 1055.4 |
-|      27 | 339.5 |  910.1 |
-|      28 | 160.3 | 1237.7 |
-|      29 |  59.1 |  968.2 |
-|      30 |  80.6 | 1069.9 |
-|      31 | 208.2 | 1060.9 |
-|      32 |  72.7 |  965.4 |
-|      33 | 114.3 |  988.0 |
-|      34 | 270.9 |  996.5 |
-|      35 | 147.4 |  978.4 |
-|      36 | 199.4 |  810.7 |
-|      37 | 168.0 | 1037.4 |
-|      38 | 231.7 | 1070.7 |
-|      39 | 236.6 |  767.1 |
-|      40 | 137.4 | 1026.3 |
-|      41 | 268.4 | 1129.2 |
-|      42 | 166.0 | 1029.9 |
-|      43 | 192.3 | 1056.6 |
-|      44 | 198.7 |  860.2 |
-|      45 | 296.8 |  955.6 |
-|      46 |  80.6 | 1002.3 |
-|      47 | 161.5 | 1000.9 |
-|      48 | 285.0 |  984.7 |
-|      49 | 195.4 | 1117.0 |
-|      50 | 181.2 | 1036.8 |
-|      51 | 100.2 | 1038.1 |
-|      52 |  62.8 |  924.5 |
-|      53 | 138.7 | 1017.8 |
-|      54 | 258.5 | 1011.0 |
-|      55 |  44.5 | 1097.3 |
-|      56 |  48.0 |  962.1 |
-|      57 | 237.0 |  929.6 |
-|      58 | 170.7 |  941.5 |
-|      59 | 216.5 | 1056.0 |
-|      60 | 262.2 |  989.6 |
+|       1 | 164.9 | 1088.2 |
+|       2 |  36.7 | 1098.5 |
+|       3 | 146.7 |  784.8 |
+|       4 | 257.8 |  996.7 |
+|       5 | -14.2 |  996.7 |
+|       6 | 111.8 | 1198.5 |
+|       7 | 148.0 | 1008.4 |
+|       8 | 277.3 | 1111.6 |
+|       9 | 132.6 | 1040.2 |
+|      10 | -56.6 |  914.1 |
+|      11 | 127.7 | 1085.8 |
+|      12 | 164.8 |  805.6 |
+|      13 |  87.8 |  931.8 |
+|      14 | 177.0 |  949.4 |
+|      15 | 215.9 |  810.0 |
+|      16 | 104.5 |  888.7 |
+|      17 | 253.9 |  980.5 |
+|      18 |  21.0 | 1038.0 |
+|      19 |  79.2 |  976.7 |
+|      20 |  55.0 | 1146.7 |
+|      21 | 209.8 | 1033.8 |
+|      22 | 183.3 |  953.5 |
+|      23 | 224.8 |  942.3 |
+|      24 | 127.4 | 1084.1 |
+|      25 | 173.9 | 1140.1 |
+|      26 | 192.5 |  959.3 |
+|      27 | 185.7 | 1066.1 |
+|      28 |  52.2 | 1042.8 |
+|      29 | 179.5 | 1109.3 |
+|      30 | 218.7 |  945.1 |
+|      31 |  17.0 |  994.6 |
+|      32 |  99.1 |  961.8 |
+|      33 |  29.7 | 1016.8 |
+|      34 |  95.5 |  910.2 |
+|      35 |  95.4 |  840.3 |
+|      36 |  35.8 | 1069.9 |
+|      37 | 176.3 | 1102.1 |
+|      38 | -24.3 | 1163.5 |
+|      39 | 126.5 |  792.3 |
+|      40 | 151.6 | 1002.6 |
+|      41 |  85.0 | 1001.2 |
+|      42 | 151.2 | 1165.1 |
+|      43 |  25.6 |  868.0 |
+|      44 | 130.2 |  984.8 |
+|      45 | 239.1 | 1124.8 |
+|      46 | 316.0 |  993.5 |
+|      47 | 111.6 | 1069.1 |
+|      48 |   4.8 | 1052.8 |
+|      49 | 322.1 | 1085.1 |
+|      50 | 218.9 |  765.7 |
+|      51 |  12.4 |  946.3 |
+|      52 |  94.1 |  998.7 |
+|      53 | 179.6 | 1035.1 |
+|      54 | -15.6 |  987.4 |
+|      55 | 119.1 |  947.9 |
+|      56 | 180.7 | 1025.3 |
+|      57 |  18.2 |  846.9 |
+|      58 | 163.7 | 1069.4 |
+|      59 | 245.5 |  970.2 |
+|      60 | 330.3 |  814.2 |
 
 Jika saya gambarkan dalam bentuk *density plot*, kita dapatkan bentuk
 seperti ini:
@@ -143,12 +141,27 @@ sebagai berikut:
 ![](post_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 Saya kembai berpikir, jangan-jangan keduanya tidak berfluktuasi dengan
-tingkat yang sama. Kenapa? Pada produk
-![A](https://latex.codecogs.com/png.latex?A "A") kita dapati bahwa nilai
+tingkat yang sama. Kenapa? Pada produk *A* kita dapati bahwa nilai
 *sales*-nya bergerak naik dan turun secara “ekstrim”. Sedangkan produk
-![B](https://latex.codecogs.com/png.latex?B "B"), walaupun bergerak naik
-dan turun dalam *range* yang sama dengan produk
-![A](https://latex.codecogs.com/png.latex?A "A"), tapi rata-rata
-*sales*-nya masih “aman”.
+*B*, walaupun bergerak naik dan turun dalam *range* yang sama dengan
+produk *A*, tapi rata-rata *sales*-nya masih “aman”.
 
 ![](post_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
+## Koefisien Variasi
+
+Beberapa saat kemudian, saya mulai mengingat kembali salah satu rasio
+yang biasa digunakan dalam statistika yang berguna untuk melihat sebaran
+data dari rata-rata hitungnya. Rasio tersebut disebut sebagai
+**koefisien variasi**.
+
+Formulanya adalah sebagai berikut:
+
+![kv = \frac{\sigma}{\mu} \times 100 \\%](https://latex.codecogs.com/png.latex?kv%20%3D%20%5Cfrac%7B%5Csigma%7D%7B%5Cmu%7D%20%5Ctimes%20100%20%5C%25 "kv = \frac{\sigma}{\mu} \times 100 \%")
+
+Semakin kecil rasio koefisien variasi, maka kita bisa sbeut bahwa data
+semakin homogen. Sementara sebaliknya, semakin besar nilai rasionya maka
+data akan semakin heterogen.
+
+Kembali ke masalah rekan saya ini, sepertinya bisa diselesaikan dengan
+menghitung koefisien variasi.

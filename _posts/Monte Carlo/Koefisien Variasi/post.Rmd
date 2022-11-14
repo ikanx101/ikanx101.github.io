@@ -149,3 +149,15 @@ plt4 =
 ggarrange(plt3,plt4,ncol = 2)
 ```
 
+## Koefisien Variasi
+
+Beberapa saat kemudian, saya mulai mengingat kembali salah satu rasio yang biasa digunakan dalam statistika yang berguna untuk melihat sebaran data dari rata-rata hitungnya. Rasio tersebut disebut sebagai __koefisien variasi__.
+
+Formulanya adalah sebagai berikut:
+
+$$kv = \frac{\sigma}{\mu} \times 100 \%$$
+
+Semakin kecil rasio koefisien variasi, maka kita bisa sbeut bahwa data semakin homogen. Sementara sebaliknya, semakin besar nilai rasionya maka data akan semakin heterogen.
+
+Kembali ke masalah rekan saya ini, sepertinya bisa diselesaikan dengan menghitung koefisien variasi.
+
