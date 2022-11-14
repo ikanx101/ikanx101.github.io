@@ -19,7 +19,7 @@ _Salesperson_ : _"Bukan tentang sebaran data."_
 
 _Saya_ : _"Lantas bagaimana maksudnya?"_
 
-_Salesperson_ : _"Misalkan saya punya data _sales_ harian selama 2 bulan. Produk A rata-ratanya 100 _pcs_ dan standar deviasinya juga 70 _pcs_. Lalu produk B dengan rata-rata 500 _pcs_ dan standar deviasinya juga 70 _pcs_. Produk A kan seharusnya lebih fluktuatif yah dibanding produk B?"_
+_Salesperson_ : _"Misalkan saya punya data _sales_ harian selama 2 bulan. Produk A rata-ratanya 150 _pcs_ dan standar deviasinya juga 100 _pcs_. Lalu produk B dengan rata-rata 600 _pcs_ dan standar deviasinya juga 100 _pcs_. Produk A kan seharusnya lebih fluktuatif yah dibanding produk B?"_
 
 _Saya_ : _"Ooh, saya mengerti maksudnya. Jadi begini....."_
 
@@ -48,10 +48,8 @@ Sebagai contoh, saya akan gunakan data $A$ dan $B$ ilustrasi yang diberikan tema
 
 Misalkan saya memiliki data _sales_ harian dua produk selama 2 bulan berdistribusi normal:
 
-1. Produk $A$: $\mu = 100 dan \sigma = 70$. 
-1. Produk $B$: $\mu = 500 dan \sigma = 70$.
-
-Jika saya gambarkan dalam bentuk _density plot_, kita dapatkan bentuk seperti ini:
+1. Produk $A$: $\mu = 150, \sigma = 100$. 
+1. Produk $B$: $\mu = 600, \sigma = 100$.
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 rm(list=ls())
@@ -61,11 +59,19 @@ library(ggplot2)
 library(ggpubr)
 
 n = 60
-A = rnorm(n,mean = 100,sd = 70)
-B = rnorm(n,mean = 500,sd = 70)
+A = rnorm(n,mean = 150,sd = 100)
+B = rnorm(n,mean = 600,sd = 100)
 
 df = data.frame(id = 1:n,
-                A,B)
+                A = round(A,1),
+                B = round(B,1))
+
+df %>% rename("hari_ke" = id) %>% knitr::kable()
+```
+
+Jika saya gambarkan dalam bentuk _density plot_, kita dapatkan bentuk seperti ini:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
 plt1 = 
   df %>%
   ggplot(aes(x = A)) +
@@ -87,7 +93,7 @@ plt2 =
 ggarrange(plt1,plt2,ncol = 2)
 ```
 
-Keduanya punya _variability_ yang sama, tapi secara fluktuatif sebenarnya produk $A$ lebih berfluktuatif. Dari _density plot_ di atas mungkin tidak semua orang bisa melihatnya. Tapi kalau data yang sama di atas saya ubah bentuknya menjadi _linechart_ seperti ini:
+Terlihat dari _plot_ di atas, keduanya punya _variability_ yang sama. Lantas bagaimana saya menentukan mana yang lebih fluktuatif? Kalau saya buatkan dalam bentuk _linechart_ sebagai berikut apakah sudah lebih terlihat? 
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 plt3 = 
@@ -113,5 +119,31 @@ plt4 =
 ggarrange(plt3,plt4,ncol = 2)
 ```
 
+Masih belum terlihat juga ya? Oke kalau saya modifikasi kembali menjadi bentuk seperti ini:
 
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+plt3 = 
+  df %>% 
+  ggplot(aes(x = id,
+             y = A)) +
+  geom_line(group = 1,color = "darkred") +
+  labs(x = "Hari",
+       y = "Daily sales",
+       title = "Line Chart Data Produk A") +
+  theme_minimal() +
+  ylim(0,800)
+
+plt4 = 
+  df %>% 
+  ggplot(aes(x = id,
+             y = B)) +
+  geom_line(group = 1,color = "darkgreen") +
+  labs(x = "Hari",
+       y = "Daily sales",
+       title = "Line Chart Data Produk B") +
+  theme_minimal() +
+  ylim(0,800)
+
+ggarrange(plt3,plt4,ncol = 2)
+```
 
