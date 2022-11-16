@@ -32,16 +32,109 @@ Sekarang saya akan tunjukkan cara mengaktifkan _Codespaces_ agar bisa menggunaka
 
 ### Langkah ke-1
 
+Buka halaman depan Github dengan akun kita:
+
 ```{r,echo=FALSE}
-knitr::include_graphics("nomnoml.png")
+knitr::include_graphics("tahap_1.png")
 ```
 
 ### Langkah ke-2
+
+Buka _tab_ _Codespaces_ sebagai berikut:
+
+```{r,echo=FALSE}
+knitr::include_graphics("tahap_2.png")
+```
+
 ### Langkah ke-3
+
+Pilih _create new codespaces_ dan pilih _repository_ yang hendak kita gunakan:
+
+```{r,echo=FALSE}
+knitr::include_graphics("tahap_3.png")
+```
+
 ### Langkah ke-4
+
+Pada _machine type_, kita bisa memilih 2 spek mesin yakni:
+
+1. __2 Cores dan 4 GB RAM__.
+1. __4 Cores dan 8 GB RAM__.
+
+Secara _default_, pilihan mesin yang digunakan adalah __2 cores__. Jika kita memilih spek yang lebih tinggi, waktu _free runtime_ akan lebih cepat habis.
+
+```{r,echo=FALSE}
+knitr::include_graphics("tahap_4.png")
+```
+
 ### Langkah ke-5
+
+Jika berhasil, maka halaman akan berpindah ke halaman muka __Visual Studio Code__ seperti ini:
+
+```{r,echo=FALSE}
+knitr::include_graphics("tahap_5.png")
+```
+
 ### Langkah ke-6
+
+Sekarang kita perlu meng-_install_ __R__ ke dalam __Visual Studio Code__ tersebut. Caranya sangat mudah, yakni memanfaatkan _container_ yang sudah dibuat oleh para _developer_ baik hati di luar sana.
+
+Buka ___Manage___ yang berupa simbol roda gerigi di pojok kiri bawah. Lalu pilih ___Command Palette___.
+
+```{r,echo=FALSE}
+knitr::include_graphics("tahap_6.png")
+```
+
 ### Langkah ke-7
+
+Ketik dan pilih ___Codespaces: Add Dev Container Configuration Files___.
+
+```{r,echo=FALSE}
+knitr::include_graphics("tahap_7.png")
+```
+
 ### Langkah ke-8
+
+Ketik dan pilih bahasa __R__. Kita bisa pilih __R__ dengan _pre-installed_ `library(tidyverse)` dengan berbagai versi yang ada.
+
+```{r,echo=FALSE}
+knitr::include_graphics("tahap_8.png")
+```
+
 ### Langkah ke-9
+
+Jika sudah, lalu klik __OK__ tanpa menambah _configuration files_ yang lain.
+
+```{r,echo=FALSE}
+knitr::include_graphics("tahap_9.png")
+```
+
 ### Langkah ke-10
+
+Jika berhasil, _Codespaces_ akan melakukan _reload_ dengan _setting_ terbaru. Ditunggu saja prosesnya sekitar 5-10 detik.
+
+```{r,echo=FALSE}
+knitr::include_graphics("tahap_10.png")
+```
+
+### Langkah ke-11
+
+Jika sudah selesai, kita akan kembali ke halaman muka __Visual Studio Code__ dengan ada tambahan _folder_ `.devcontainer` pada _repository_ kita. 
+
+Kita bisa mengecek apakah __R__ sudah ter-_install_ di __Visual Studio Code__ kita dengan mengetikkan __R__ di `Terminal` dan _enter_. Hasilnya seperti ini:
+
+```{r,echo=FALSE}
+knitr::include_graphics("tahap_11.png")
+```
+
+Kita bisa lihat bahwa sudah ter-_install_ __R__ versi terbaru `4.2.2`.
+
+---
+
+Proses _setting_ dan instalasi di atas cukup dilakukan sekali saja seumur hidup. Seterusnya, _Codespaces_ bisa langsung digunakan setiap kali dibutuhkan denga mengakses halaman _Github Codespaces_. 
+
+Untuk mengetahui sejauh mana pemakaian kita, kita cukup masuk ke dalam _Settings_ di Github, lalu pilih _tab_ _billing and plans_.
+
+```{r,echo=FALSE}
+knitr::include_graphics("bilings.png")
+```
