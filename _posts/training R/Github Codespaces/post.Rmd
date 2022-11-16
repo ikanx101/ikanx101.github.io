@@ -3,6 +3,11 @@ title: "TUTORIAL: Mengaktifkan Github Codespaces untuk Menggunakan R secara Clou
 output: github_document
 ---
 
+
+```{r,include=FALSE}
+setwd("/workspaces/ikanx101.github.io/_posts/training R/Github Codespaces")
+```
+
 Beberapa waktu yang lalu, saya sempat menuliskan tutorial tentang bagaimana meng-_install_ `VS Code Server` di __Google Cloud Service__. Tak lama setelah itu, saya mendapati info bahwa _Github_ memiliki layanan _Codespaces_ (layanan _cloud computing_ mirip dengan _virtual private server_ / VPS) yang bisa diakses oleh para penggunanya secara gratis selama 60 jam dalam sebulan.
 
 Hal ini tentu kabar yang menggembirakan mengingat dalam beberapa minggu ini laptop saya sedang dipakai untuk mengerjakan suatu algoritma yang harus berjalan selama 7 hari non stop. Jadi saya perlu VPS atau layanan _cloud_ yang _reliable_.
@@ -136,5 +141,9 @@ Proses _setting_ dan instalasi di atas cukup dilakukan sekali saja seumur hidup.
 Untuk mengetahui sejauh mana pemakaian kita, kita cukup masuk ke dalam _Settings_ di Github, lalu pilih _tab_ _billing and plans_.
 
 ```{r,echo=FALSE}
-knitr::include_graphics("bilings.png")
+knitr::include_graphics("billings.png")
 ```
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads`
