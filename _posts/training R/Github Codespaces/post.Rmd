@@ -1,0 +1,8 @@
+---
+title: "TUTORIAL: Mengaktifkan Github Codespaces untuk Menggunakan R secara Cloud dengan VS Code"
+output: github_document
+---
+
+Beberapa waktu yang lalu, saya sempat menuliskan tutorial tentang bagaimana meng-_install_ `VS Code Server` di __Google Cloud Service__. Tak lama setelah itu, saya mendapati info bahwa _Github_ memiliki layanan _Codespaces_ (layanan _cloud computing_ mirip dengan _virtual private server_ / VPS) yang bisa diakses oleh para penggunanya secara gratis selama 60 jam dalam sebulan.
+
+Hal ini tentu meggemb
