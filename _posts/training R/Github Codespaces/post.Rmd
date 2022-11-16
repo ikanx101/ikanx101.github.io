@@ -5,4 +5,43 @@ output: github_document
 
 Beberapa waktu yang lalu, saya sempat menuliskan tutorial tentang bagaimana meng-_install_ `VS Code Server` di __Google Cloud Service__. Tak lama setelah itu, saya mendapati info bahwa _Github_ memiliki layanan _Codespaces_ (layanan _cloud computing_ mirip dengan _virtual private server_ / VPS) yang bisa diakses oleh para penggunanya secara gratis selama 60 jam dalam sebulan.
 
-Hal ini tentu meggemb
+Hal ini tentu kabar yang menggembirakan mengingat dalam beberapa minggu ini laptop saya sedang dipakai untuk mengerjakan suatu algoritma yang harus berjalan selama 7 hari non stop. Jadi saya perlu VPS atau layanan _cloud_ yang _reliable_.
+
+Walau saya sekarang [menyewa VPS di _Google Cloud_](https://ikanx101.com/blog/vscode-google-cloud/), saya tetap membutuhkan layanan _cloud_ lain yang gratis. _Hehe_.
+
+Jadi _Github_ _Codespaces_ bisa digunakan sebagai VPS berbasis __Visual Studio Code__ untuk berbagai bahasa pemrograman. 
+
+> Ilustrasinya adalah seperti kita memiliki __Visual Studio Code Server__ sendiri yang bekerja di _Github Repository_. 
+
+Cara kerjanya adalah sebagai berikut:
+
+```{r,echo=FALSE}
+knitr::include_graphics("nomnoml.png")
+```
+
+Syarat yang harus dipenuhi untuk mengakses layanan ini adalah:
+
+1. Kita harus sudah memiliki akun Github.
+1. Kita sudah memiliki _repository_ (sebagai contoh pada tulisan ini agar lebih mudah saya menggunakan _repository_ yang sudah pernah saya buat. Jika belum punya _repository_, kita bisa membuatnya langsung di _Codespaces_).
+
+Sekarang saya akan tunjukkan cara mengaktifkan _Codespaces_ agar bisa menggunakan bahasa __R__.
+
+---
+
+## Cara Mengaktifkan _Codespaces_ untuk __R__
+
+### Langkah ke-1
+
+```{r,echo=FALSE}
+knitr::include_graphics("nomnoml.png")
+```
+
+### Langkah ke-2
+### Langkah ke-3
+### Langkah ke-4
+### Langkah ke-5
+### Langkah ke-6
+### Langkah ke-7
+### Langkah ke-8
+### Langkah ke-9
+### Langkah ke-10
