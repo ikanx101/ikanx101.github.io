@@ -60,7 +60,7 @@ df_2 = data.frame(id,harga = round(murah_tdk,0)) %>%
        mutate(persen = cumsum(n))
 
 ggplot() +
-    geom_line(aes(x = harga,y = persen,group = 1,color = "red"),
+    geom_line(aes(x = harga,y = persen,group = 1,color = "#953131"),
               data = df_1) +
     geom_line(aes(x = harga,y = persen,group = 1,color = "darkred"),
               data = df_2) 
