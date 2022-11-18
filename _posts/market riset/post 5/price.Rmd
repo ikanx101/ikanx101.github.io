@@ -59,9 +59,26 @@ df_2 = data.frame(id,harga = round(murah_tdk,0)) %>%
        arrange(harga) %>%
        mutate(persen = cumsum(n))
 
+df_3 = data.frame(id,harga = round(mahal_beli,0)) %>% 
+       group_by(harga) %>% 
+       tally() %>%
+       arrange(harga) %>%
+       mutate(persen = cumsum(n))
+
+df_4 = data.frame(id,harga = round(mahal_tdk,0)) %>% 
+       group_by(harga) %>% 
+       tally() %>%
+       arrange(harga) %>%
+       mutate(persen = cumsum(n))
+
 ggplot() +
-    geom_line(aes(x = harga,y = persen,group = 1,color = "#953131"),
+    geom_line(aes(x = harga,y = persen,group = 1),color = "darkgreen",
               data = df_1) +
-    geom_line(aes(x = harga,y = persen,group = 1,color = "darkred"),
-              data = df_2) 
+    geom_line(aes(x = harga,y = persen,group = 1),color = "darkred",
+              data = df_2) +
+    geom_line(aes(x = harga,y = persen,group = 1),color = "#a0e11f",
+              data = df_3) +
+    geom_line(aes(x = harga,y = persen,group = 1),color = "#142a9a",
+              data = df_4)
+
 ```
