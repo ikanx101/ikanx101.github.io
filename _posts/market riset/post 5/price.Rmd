@@ -37,6 +37,23 @@ Setelah membaca dan melihat dengan detail, responden kemudian akan ditanyakan 4 
 
 Dari jawaban yang diberikan oleh responden, kita akan menghitung _cummulative percentage_ dari keempat pertanyaan tersebut. Setelah itu, kita akan membuat _plot_-nya seperti berikut ini:
 
-```{r,ech0=FALSE}
-murah_beli = rnorms()
+```{r,echo=FALSE}
+setwd("/workspaces/ikanx101.github.io/_posts/market riset/post 5")
+
+n_all = 100
+id = 1:n
+murah_beli = rnorm(n_all,mean = 100,sd = 20)
+murah_tdk = rnorm(n_all,mean = 80,sd = 10) 
+mahal_beli = rnorm(n_all,mean = 120,sd = 15)
+mahal_tdk = rnorm(n_all,mean = 150,sd = 10) 
+
+df_1 = data.frame(id,harga = round(murah_beli,0)) %>% 
+       group_by(harga) %>% 
+       tally() %>%
+       arrange(harga) %>%
+       mutate(persen = cumsum(n))
+
+ggplot() +
+    geom_line(aes(x = harga,y = persen,group = 1,color = "darkred"),
+              data = df_1) 
 ```
