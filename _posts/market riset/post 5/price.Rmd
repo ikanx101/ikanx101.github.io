@@ -1,0 +1,35 @@
+---
+title: "Perbedaan Price Sensitivity dan Price Elasticity dalam Market Research"
+output: github_document
+---
+
+```{r,include = FALSE}
+rm(list=ls())
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+```
+
+Setidaknya saya sudah menuliskan dua tulisan terkait _study price elasticity_, pertama tentang [konsep perhitungannya](https://ikanx101.com/blog/blog-posting-regresi/) dan [limitasinya](https://ikanx101.com/blog/price_elas_lagi/). Biasanya _price elasticity_ itu dilakukan pada bidang _sales research_ karena data primer yang dibutuhkan itu merupakan data _sales qty_ saat suatu produk berada pada tingkat harga tertentu.
+
+Tujuan utama _price elasticity_ adalah menentukan suatu indeks elastisitas yang bisa memprediksi kenaikan / penurunan _sales qty_ saat harga suatu produk berubah. Dari indeks tersebut, kita juga bisa menentukan harga optimal yang bisa memaksimalkan omset.
+
+Dalam dunia _market research_, salah satu studi terkait harga yang paling sering dilakukan adalah _price sensitivity_. Studi ini bisa dilakukan pada:
+
+1. Pengembangan produk baru yang belum _launching_ di pasaran.
+1. Evaluasi terhadap produk _existing_ yang ada di pasaran.
+
+Tujuan utama dari _price sensitivity_ ini adalah __menentukan harga terbaik berdasarkan persepsi konsumen__.
+
+Sebagai contoh, misalkan suatu _project market research_ sedang mensurvey _market acceptance_ untuk suatu produk minuman _brand_ ___A___ yang belum beredar di pasaran. Produk minuman ___A___ ini memiliki fitur dan klaim sebagai berikut:
+
+> Minuman _brand_ ___A___ adalah minuman kopi kekinian rasa durian yang enak. Minuman ini rendah lemak, rendah gula, tinggi multivitamin, dan mengandung isotonik. Minuman ini cocok untuk menemani dan menunjang aktivitas kamu sehari-hari.
+
+Responden akan diberikan informasi fitur dan klaim di atas termasuk juga rancangan (_prototype_) kemasan produk minuman ___A___.
+
+Setelah membaca dan melihat dengan detail, responden kemudian akan ditanyakan 4 _set_ pertanyaan, yaitu:
+
+- Berapa tingkat harga yang __termurah__ sehingga Anda mau bayarkan untuk membeli produk ___A___?
+- Berapa tingkat harga yang __termurah__ tetapi saking murahnya Anda tidak mau membeli produk ___A___? (Karena Anda akan _concern_ terhadap kualitas produk dengan harga semurah itu)
+- Berapa tingkat harga yang __termahal__ tapi Anda masih mau bayarkan untuk membeli produk ___A___?
