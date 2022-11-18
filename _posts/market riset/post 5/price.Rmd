@@ -42,10 +42,10 @@ setwd("/workspaces/ikanx101.github.io/_posts/market riset/post 5")
 
 n_all = 100
 id = 1:n_all
-murah_beli = rnorm(n_all,mean = 100,sd = 20)
-murah_tdk = rnorm(n_all,mean = 80,sd = 10) 
-mahal_beli = rnorm(n_all,mean = 120,sd = 15)
-mahal_tdk = rnorm(n_all,mean = 150,sd = 10) 
+murah_beli = rnorm(n_all,mean = 100,sd = 10)
+murah_tdk = rnorm(n_all,mean = 90,sd = 10) 
+mahal_beli = rnorm(n_all,mean = 115,sd = 10)
+mahal_tdk = rnorm(n_all,mean = 130,sd = 10) 
 
 df_1 = data.frame(id,harga = round(murah_beli,0)) %>% 
        group_by(harga) %>% 
@@ -63,22 +63,30 @@ df_3 = data.frame(id,harga = round(mahal_beli,0)) %>%
        group_by(harga) %>% 
        tally() %>%
        arrange(harga) %>%
-       mutate(persen = cumsum(n))
+       mutate(persen = 100 - cumsum(n))
 
 df_4 = data.frame(id,harga = round(mahal_tdk,0)) %>% 
        group_by(harga) %>% 
        tally() %>%
        arrange(harga) %>%
-       mutate(persen = cumsum(n))
+       mutate(persen = 100 - cumsum(n))
 
 ggplot() +
     geom_line(aes(x = harga,y = persen,group = 1),color = "darkgreen",
               data = df_1) +
     geom_line(aes(x = harga,y = persen,group = 1),color = "darkred",
               data = df_2) +
-    geom_line(aes(x = harga,y = persen,group = 1),color = "#a0e11f",
+    geom_line(aes(x = harga,y = persen,group = 1),color = "#e4f004",
               data = df_3) +
     geom_line(aes(x = harga,y = persen,group = 1),color = "#142a9a",
-              data = df_4)
+              data = df_4) +
+    theme_classic()
 
 ```
+
+Jika kita lihat plot di atas, warna:
+
+1. Hijau menandakan jawaban responden terhadap murah beli 
+1. Merah mura tidak 
+1. Kuning mahal beli 
+1. Biru mahal tidak 

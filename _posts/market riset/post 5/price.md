@@ -55,3 +55,10 @@ Dari jawaban yang diberikan oleh responden, kita akan menghitung
 kita akan membuat *plot*-nya seperti berikut ini:
 
 ![](price_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+
+Jika kita lihat plot di atas, warna:
+
+1.  Hijau menandakan jawaban responden terhadap murah beli
+2.  Merah mura tidak
+3.  Kuning mahal beli
+4.  Biru mahal tidak
