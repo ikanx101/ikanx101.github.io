@@ -33,3 +33,10 @@ Setelah membaca dan melihat dengan detail, responden kemudian akan ditanyakan 4 
 - Berapa tingkat harga yang __termurah__ sehingga Anda mau bayarkan untuk membeli produk ___A___?
 - Berapa tingkat harga yang __termurah__ tetapi saking murahnya Anda tidak mau membeli produk ___A___? (Karena Anda akan _concern_ terhadap kualitas produk dengan harga semurah itu)
 - Berapa tingkat harga yang __termahal__ tapi Anda masih mau bayarkan untuk membeli produk ___A___?
+- Berapa tingkat harga yang __termahal__  sehingga Anda tidak mau membeli produk __A__?
+
+Dari jawaban yang diberikan oleh responden, kita akan menghitung _cummulative percentage_ dari keempat pertanyaan tersebut. Setelah itu, kita akan membuat _plot_-nya seperti berikut ini:
+
+```{r,ech0=FALSE}
+murah_beli = rnorms()
+```
