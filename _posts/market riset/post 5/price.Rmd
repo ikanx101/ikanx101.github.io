@@ -53,7 +53,15 @@ df_1 = data.frame(id,harga = round(murah_beli,0)) %>%
        arrange(harga) %>%
        mutate(persen = cumsum(n))
 
+df_2 = data.frame(id,harga = round(murah_tdk,0)) %>% 
+       group_by(harga) %>% 
+       tally() %>%
+       arrange(harga) %>%
+       mutate(persen = cumsum(n))
+
 ggplot() +
+    geom_line(aes(x = harga,y = persen,group = 1,color = "red"),
+              data = df_1) +
     geom_line(aes(x = harga,y = persen,group = 1,color = "darkred"),
-              data = df_1) 
+              data = df_2) 
 ```
