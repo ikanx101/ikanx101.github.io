@@ -41,7 +41,7 @@ Dari jawaban yang diberikan oleh responden, kita akan menghitung _cummulative pe
 setwd("/workspaces/ikanx101.github.io/_posts/market riset/post 5")
 
 n_all = 100
-id = 1:n
+id = 1:n_all
 murah_beli = rnorm(n_all,mean = 100,sd = 20)
 murah_tdk = rnorm(n_all,mean = 80,sd = 10) 
 mahal_beli = rnorm(n_all,mean = 120,sd = 15)
