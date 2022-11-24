@@ -93,3 +93,16 @@ Jika kita lihat _linechart_ di atas, warna:
 1. Kuning menandakan jawaban responden terhadap tingkat harga termahal tapi mereka masih mau membeli produk.
 1. Biru menandakan jawaban responden terhadap tingkat harga termahal sehingga mereka tidak mau membeli produk.
 
+Dari informasi di atas, kita bisa menyimpulkan beberapa hal seperti:
+
+1. Harga optimal adalah titik harga perpotongan antara garis hijau dan kuning.
+1. Area atau _range_ harga yang masih bisa diterima oleh konsumen adalah area antara:
+       - Perpotongan garis Merah dan Kuning.
+       - Perpotongan garis Hijau dan Biru.
+
+
+Perlu saya tekankan sekali lagi bahwa _price sensitivity_ adalah mutlak berdasarkan persepsi dari konsumen, sehingga ada kemungkinan hasil risetnya akan bertolak belakang dengan kondisi _real_ yang ada di lapangan pasca survey dilakukan. Oleh karena itu, kita bisa siasati dengan melakukan metode survey yang _proper_ dan menginfomasikan secara detail fitur produk kepada konsumen.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads`
