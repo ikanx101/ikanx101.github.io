@@ -1,5 +1,18 @@
-Perbedaan Price Sensitivity dan Price Elasticity dalam Market Research
-================
+---
+date: 2022-11-24T13:10:27-04:00
+title: "Perbedaan Price Elasticity dan Price Sensitivity dalam Market Research"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - R
+  - Market Research
+  - Riset Pasar
+  - Price Elasticity
+  - Price Sensitivity
+  - Harga
+  - Survey
+---
 
 Setidaknya saya sudah menuliskan dua tulisan terkait *study price
 elasticity*, pertama tentang [konsep
