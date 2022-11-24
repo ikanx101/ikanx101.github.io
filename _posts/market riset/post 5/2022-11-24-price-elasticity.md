@@ -74,7 +74,7 @@ Dari jawaban yang diberikan oleh responden, kita akan menghitung
 *cummulative percentage* dari keempat pertanyaan tersebut. Setelah itu,
 kita akan membuat *plot*-nya seperti berikut ini:
 
-![](price_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/market%20riset/post%205/price_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
 Jika kita lihat *linechart* di atas, warna:
 
