@@ -50,15 +50,45 @@ ditanyakan 4 *set* pertanyaan, yaitu:
 - Berapa tingkat harga yang **termahal** sehingga Anda tidak mau membeli
   produk **A**?
 
+Perlu diperhatikan bahwa responden tidak diwajibkan pernah mencicipi
+produk yang dirisetkan. Kita cukup mendapatkan jawaban berdasarkan
+persepsi responden. Tapi jika responden pernah mencicipi produk yang
+disurvey, jawabannya tentu lebih baik. Oleh karena itu, biasanya akan
+ada variabel *marker* sebagai penanda responden mana saja yang pernah
+dan tidak pernah agar saat analisa bisa di-*cross*.
+
 Dari jawaban yang diberikan oleh responden, kita akan menghitung
 *cummulative percentage* dari keempat pertanyaan tersebut. Setelah itu,
 kita akan membuat *plot*-nya seperti berikut ini:
 
 ![](price_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
-Jika kita lihat plot di atas, warna:
+Jika kita lihat *linechart* di atas, warna:
 
-1.  Hijau menandakan jawaban responden terhadap murah beli
-2.  Merah mura tidak
-3.  Kuning mahal beli
-4.  Biru mahal tidak
+1.  Hijau menandakan jawaban responden terhadap tingkat harga termurah
+    sehingga membeli produk.
+2.  Merah menandakan jawaban responden terhadap tingkat harga termurah
+    tapi akibatnya mereka tidak mau membeli produk.
+3.  Kuning menandakan jawaban responden terhadap tingkat harga termahal
+    tapi mereka masih mau membeli produk.
+4.  Biru menandakan jawaban responden terhadap tingkat harga termahal
+    sehingga mereka tidak mau membeli produk.
+
+Dari informasi di atas, kita bisa menyimpulkan beberapa hal seperti:
+
+1.  Harga optimal adalah titik harga perpotongan antara garis hijau dan
+    kuning.
+2.  Area atau *range* harga yang masih bisa diterima oleh konsumen
+    adalah area antara: - Perpotongan garis Merah dan Kuning. -
+    Perpotongan garis Hijau dan Biru.
+
+Perlu saya tekankan sekali lagi bahwa *price sensitivity* adalah mutlak
+berdasarkan persepsi dari konsumen, sehingga ada kemungkinan hasil
+risetnya akan bertolak belakang dengan kondisi *real* yang ada di
+lapangan pasca survey dilakukan. Oleh karena itu, kita bisa siasati
+dengan melakukan metode survey yang *proper* dan menginfomasikan secara
+detail fitur produk kepada konsumen.
+
+------------------------------------------------------------------------
+
+`if you find this article helpful, support this blog by clicking the ads`
