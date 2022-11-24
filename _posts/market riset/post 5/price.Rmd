@@ -35,6 +35,8 @@ Setelah membaca dan melihat dengan detail, responden kemudian akan ditanyakan 4 
 - Berapa tingkat harga yang __termahal__ tapi Anda masih mau bayarkan untuk membeli produk ___A___?
 - Berapa tingkat harga yang __termahal__  sehingga Anda tidak mau membeli produk __A__?
 
+Perlu diperhatikan bahwa responden tidak diwajibkan pernah mencicipi produk yang dirisetkan. Kita cukup mendapatkan jawaban berdasarkan persepsi responden. Tapi jika responden pernah mencicipi produk yang disurvey, jawabannya tentu lebih baik. Oleh karena itu, biasanya akan ada variabel _marker_ sebagai penanda responden mana saja yang pernah dan tidak pernah agar saat analisa bisa di-_cross_.
+
 Dari jawaban yang diberikan oleh responden, kita akan menghitung _cummulative percentage_ dari keempat pertanyaan tersebut. Setelah itu, kita akan membuat _plot_-nya seperti berikut ini:
 
 ```{r,echo=FALSE}
@@ -84,9 +86,10 @@ ggplot() +
 
 ```
 
-Jika kita lihat plot di atas, warna:
+Jika kita lihat _linechart_ di atas, warna:
 
-1. Hijau menandakan jawaban responden terhadap murah beli 
-1. Merah mura tidak 
-1. Kuning mahal beli 
-1. Biru mahal tidak 
+1. Hijau menandakan jawaban responden terhadap tingkat harga termurah sehingga membeli produk.
+1. Merah menandakan jawaban responden terhadap tingkat harga termurah tapi akibatnya mereka tidak mau membeli produk.
+1. Kuning menandakan jawaban responden terhadap tingkat harga termahal tapi mereka masih mau membeli produk.
+1. Biru menandakan jawaban responden terhadap tingkat harga termahal sehingga mereka tidak mau membeli produk.
+
