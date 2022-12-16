@@ -1,0 +1,102 @@
+---
+title: "Menjadi Creator dan Dewan Juri Kompetisi Big Data Challenge"
+output: github_document
+---
+
+Dalam beberapa hari belakangan ini, sosial media teman-teman saya diwarnai oleh komentar mereka saat mencoba layanan chat pintar (baca: __AI__) dari [_OpenAI_](https://beta.openai.com/).
+
+Setelah mencobanya, saya cukup terkesan dengan kemampuan __AI__ tersebut memproses perintah yang kita masukkan.
+
+Lantas terbersit pertanyaan di benak saya:
+
+> _Bagaimana saya bisa meng-eksploitasi kepintaran OpenAI ini untuk kepentingan pribadi? ATAU Bagaimana agar OpenAI ini bisa diakses secara otomatis?
+
+Selama ini, untuk mencoba kepintaran _OpenAI_, kita perlu membuka situsnya terlebih dahulu lalu mengetik perintah. Lantas bagaimana jika saya mau membuat hal tersebut menjadi otomatis jika hal yang ingin saya perintahkan ada banyak?
+
+Jawabannya adalah dengan mengintegrasikan _OpenAI_ dengan __R__. Caranya ternyata sangat mudah. Cukup meminta `API` _key_ dari _OpenAI_ dan menggunakan `library(openai)` untuk berkomunikasi, saya sudah bisa membuat perintah melalui __R__.
+
+```{r,include=FALSE}
+KEY = "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"
+Sys.setenv(
+    OPENAI_API_KEY = KEY
+)
+```
+
+Sebagai contoh, jika saya hendak membuat beberapa _images_ dari beberapa deskripsi berikut:
+
+```{r}
+deskripsi = c("ultraman eating pizza",
+              "batman play chess with messi",
+              "soccer match in blizzard")
+```
+
+Saya bisa langsung men-_generate_ semuanya dengan cara membuat _custom function_ berikut:
+
+```{r}
+library(openai)
+
+image_open_AI = function(perintah) {
+    hasil = create_image(perintah)
+    url = hasil$data$url
+    return(url)
+}
+```
+
+Lalu saya eksekusi:
+
+```{r}
+gambar = sapply(deskripsi,image_open_AI)
+```
+
+```{r out.width="40%",echo=FALSE,fig.retina=4}
+knitr::include_graphics(gambar[1])
+```
+
+```{r out.width="40%",echo=FALSE,fig.retina=4}
+knitr::include_graphics(gambar[2])
+```
+
+```{r out.width="40%",echo=FALSE,fig.retina=4}
+knitr::include_graphics(gambar[3])
+```
+
+Lanjut, misalkan saya punya perintah sebagai berikut:
+
+```{r}
+perintah = c("Cari long lat dari PT Nutrifood Indonesia",
+             "A two-column spreadsheet of countries with highest vaccine ratio for covid 19")
+```
+
+Saya buat _custom function_ berikut:
+
+```{r,echo=FALSE}
+hasil_open_ai = function(perintah){
+    hasil = 
+    create_completion(
+    model = "text-davinci-003",
+    prompt = perintah,
+    temperature=0.9,
+    max_tokens=60,
+    top_p=1,
+    frequency_penalty=0,
+    presence_penalty=0
+    )
+    hasil$choices %>% .$text %>% strsplit(split = "\n") %>% unlist() %>% .[-1:-2]
+}
+
+```
+
+
+Lalu saya eksekusi:
+
+```{r}
+sapply(perintah,hasil_open_ai)
+```
+
+## _Remarks_
+
+Dari hasil di atas, kita bisa cek bahwa hasil _geocode_ _OpenAI_ masih belum akurat.
+
+---
+
+`if you find this post helpful, support this blog by clicking the ads`
