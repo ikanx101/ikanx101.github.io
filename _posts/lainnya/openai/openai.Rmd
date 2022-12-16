@@ -16,7 +16,7 @@ Selama ini, untuk mencoba kepintaran _OpenAI_, kita perlu membuka situsnya terle
 Jawabannya adalah dengan mengintegrasikan _OpenAI_ dengan __R__. Caranya ternyata sangat mudah. Cukup meminta `API` _key_ dari _OpenAI_ dan menggunakan `library(openai)` untuk berkomunikasi, saya sudah bisa membuat perintah melalui __R__.
 
 ```{r,include=FALSE}
-KEY = "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"
+KEY = "xxx"
 Sys.setenv(
     OPENAI_API_KEY = KEY
 )
