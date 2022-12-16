@@ -1,0 +1,39 @@
+---
+title: "Belajar Stepwise Regresi Linear Menggunakan R"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r,include=FALSE}
+library(dplyr)
+rm(list=ls())
+data = mtcars %>% select(-vs,-am,-gear,-carb)
+```
+
+Sepertinya tak henti-hentinya saya menulis artikel terkait [regresi linear](https://ikanx101.com/tags/#regresi-linear). Pembahasannya tiada ujungnya. Selalu ada hal baru atau kasus baru yang menarik untuk dibahas. Padahal metode regresi ini relatif sangat "tradisional" (alias jadul). Tulisan ini terinspirasi dari kasus yang dibahas di komunitas __R Indo__.
+
+Kali ini saya akan membahas topik terkait _stepwise linear regression_. Apa itu? Adakalanya kita hendak memprediksi satu variabel dari satu atau beberapa variabel yang ada dalam data. Namun kita tidak tahu, variabel mana yang membuat model regresi yang paling akurat. Oleh karena itu, kita harus mencoba satu-persatu kemungkinan kombinasi variabel untuk dijadikan model lalu kita hitung akurasinya untuk kemudian dibandingkan.
+
+Sebagai contoh, misalkan saya memiliki data sebagai berikut:
+
+```{r}
+data
+```
+
+Saya hendak memprediksi `mpg` dari variabel lainnya. Oleh karena itu saya perlu membuat model regresi dengan kombinasi variabel tertentu sehingga modelnya akurat.
+
+Alih-alih mencobanya satu-persatu, saya akan menggunakan bantuan `library(olsrr)` untuk membuat semua kemungkinan model dari data tersebut. Caranya cukup mudah, yakni:
+
+```{r}
+model = lm(mpg ~ ., data = data)
+
+olsrr::ols_step_all_possible(model) %>% as_tibble() %>% arrange(desc(rsquare)) %>% head(15)
+
+```
+
+Kita dapatkan ada 63 model yang terbentuk. Dari semua model tersebut, kita bisa pilih model yang menghasilkan $R^2$ tertinggi sebagai model final kita.
+
+---
+
+`if you find this post useful, support this blog by clicking the ads`

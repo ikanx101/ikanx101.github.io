@@ -1,5 +1,5 @@
 
-install.packages(olsrr)
+install.packages("olsrr")
 
 library(tidyverse)
 model <- lm(Ozone ~ ., data = airquality)
