@@ -1,5 +1,5 @@
 ---
-title: "Menjadi Creator dan Dewan Juri Kompetisi Big Data Challenge"
+title: "Mengintegrasikan OpenAI ke Dalam R"
 output: github_document
 ---
 
