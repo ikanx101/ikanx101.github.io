@@ -1,0 +1,62 @@
+---
+title: "Membuat Model Regresi Linear dengan Spiral Dynamic Optimization Algorithm"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+setwd("~/Ikanx 101 Blog/_posts/matematika ITB/analisa numerik lanjut/spiral regresi")
+
+load("bahan.rda")
+```
+
+Sepertinya tidak ada habisnya saya mengupas regresi linear. Mulai dari cara membuat modelnya dengan [fungsi _base_ di __R__](https://ikanx101.com/blog/belajar-regresi/) hingga cara membuat modelnya [dengan pendekatan aljabar](https://ikanx101.com/blog/curve-linear/).
+
+Kali ini saya akan membuat model regresi dengan cara lain, yakni dengan memanfaatkan prinsip _optimization_. Saya akan membuat model regresi linear yang meminimumkan nilai __MAE__ (_mean absolute error_).
+
+Misalkan saya memiliki data sebagai berikut:
+
+```{r,echo=FALSE}
+df
+```
+
+Jika saya hendak membuat persamaan regresi linear dari data di atas seperti ini:
+
+$$mpg = \alpha \space disp + \beta \space hp + \gamma$$
+Menggunakan _base_ di __R__, saya cukup menuliskan skrip sebagai berikut:
+
+```{r}
+model_reg = lm(mpg ~.,data = df)
+model_reg
+
+```
+
+
+Kita dapatkan model persamaannya. Lalu jika saya hitung nilai MAE-nya, saya dapatkan nilainya sebesar:
+
+```{r}
+MAE_hit(c(-0.03035,-0.02484,30.73590))
+```
+
+Apakah kita bisa mendapatkan persamaan yang menghasilkan MAE lebih kecil? Jawabannya bisa dengan SDOA. Saya memvideokan prosesnya di _channel_ Youtube saya berikut [ini](https://youtu.be/FOyRxNT8T3w).
+
+Hasilnya adalah saya mendapatkan persamaan yang memiliki MAE lebih kecil.
+
+$$mpg = -0.03263072 \space disp - 0.01928762 \space hp + 29.75566125$$
+
+```{r}
+MAE_hit(center)
+```
+
+---
+
+Ternyata SDOA bisa diandalkan untuk membuat model regresi. Jika Anda hendak mengganti MAE dengan _metric_ lain, silakan saja.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
