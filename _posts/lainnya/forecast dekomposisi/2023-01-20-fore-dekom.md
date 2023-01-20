@@ -1,5 +1,5 @@
 ---
-title: "Membuat Forecast yang Menghemat 8 Miliar dalam 3 Bulan"
+title: "Membuat Forecast Sales yang Menghemat 8 Miliar Rupiah!"
 date: 2023-01-20T14:41:00-04:00
 categories:
   - Blog
@@ -54,4 +54,69 @@ Bagi rekan-rekan yang belum tahu, prinsip dari _time series decomposition_ adala
 1. _Seasonal_,
 1. _Random noise_.
 
-<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/price%20elasticity/post%201/post_files/figure-gfm/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/lainnya/forecast%20dekomposisi/decomposition.png" width="500" style="display: block; margin: auto;" />
+
+Sumber gambar: [https://otexts.com/fpp2/stl.html#ref-Cleveland1990](https://otexts.com/fpp2/stl.html#ref-Cleveland1990)
+
+---
+
+## _Workflow_
+
+Jadi cara kerja algoritma saya adalah sebagai berikut:
+
+```
+STEP 1
+  Mengubah data jualan harian menjadi jualan bulanan.
+  Cek sebaran data.
+  Apakah ada pencilan?
+    Jika Ada 
+      Ganti dengan median
+    Jika Tidak ada
+      Lanjut
+
+STEP 2
+  Mengecek apakah data produk stasioner atau bukan.
+  Jika stasioner
+    Lanjut
+  Jika tidak stasioner
+    Hitung lag
+    Gunakan lag untuk membuat time series baru (transformasi)
+
+STEP 3
+  Lakukan dekomposisi.
+  Ambil nilai trend.
+  Nilai forecast = mean(trend 6 bulan terakhir)
+  Bandingkan nilai forecast dengan rata-rata sales 3 bulan terakhir
+  Persentase selisih > 50%
+    Jika Ya
+      Apakah ada pencilan?
+        Jika Ada 
+            Ganti dengan median
+        Jika Tidak ada
+            Cek nilai max atau min data
+      Ulangi STEP 3
+    Jika tidak
+        Lanjut
+
+STEP 4
+  Lakukan untuk semua produk
+```
+
+Sederhana bukan?
+
+Mungkin kalian bertanya-tanya, kenapa saya harus menghilangkan pencilan atau bahkan nilai max atau min (walau bukan pencilan). Karena setelah dilakukan pre-analisis, ada beberapa kejadian pada saat pandemi di mana nilai _sales_ produk-produk menjadi sangat amat tinggi akibat adanya _special transaction order_ dari lembaga-lembaga tertentu.
+
+---
+
+## Hasil Akhir dan Implikasi
+
+Setelah algoritma ini dijalankan secara resmi pada Q4 2022, kami melakukan _review_ pada Januari 2023 ini. Hasilnya cukup menggembirakan:
+
+1. _Service level_ tetap terjaga di atas 92%. Artinya, hampir semua barang _ready_ di gudang _provider_ saat ada tarikan _sales_ konsumen. 
+1. Penghematan biaya _overstock_ di gudang sebesar Rp 8 Miliar lebih! Ternyata setelah ditelaah, angka _forecast_ hasil algoritma kami bisa menekan banyaknya stok yang ada di gudang. Jika selama ini tim biasa membanjiri gudang dengan banyak barang sehingga biaya penyimpanan menjadi besar, kini barang yang disimpan sudah lebih "sedikit" namun tetap terjaga.
+
+---
+
+Sebuah perjalanan panjang yang luar biasa.
+
+_Next_-nya kami hendak mencari faktor penyebab sebagian kecil produk-produk yang memiliki _service level_ di bawah 90%.
