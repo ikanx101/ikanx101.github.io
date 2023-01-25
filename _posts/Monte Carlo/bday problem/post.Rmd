@@ -1,0 +1,76 @@
+---
+title: "Membuktikan Birthday Problem dengan Parallel Computing di R"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/Ikanx 101 Blog/_posts/Monte Carlo/bday problem")
+```
+
+Pagi ini saat saya membuka sosmed, saya mendapatkan notifikasi bahwa ada 2 orang rekan kantor saya yang berulang tahun hari ini. Walaupun berbeda tahun lahir, tapi tanggal dan bulannya _exactly_ sama.
+
+## _Birthday Problem_
+
+> Jika kita kumpulkan 30 orang secara acak dalam satu ruangan, ada peluang `70%` ditemukan minimal sepasang orang yang memiliki tanggal dan bulan lahir yang sama.
+
+Pernyataan di atas adalah _birthday problem_. Bagaimana cara saya membuktikan hal tersebut?
+
+## Pembuktian dengan __R__
+
+Saya akan membuat simulasi Monte Carlo untuk men-_generate_ kondisi 30 orang _random_ yang dikumpulkan dan melihat apakah ada minimal dua orang yang memiliki tanggal dan bulan lahir yang sama.
+
+Karena PC yang saya gunakan memiliki 12 _cores_, saya akan gunakan 10 _cores_ untuk melakukan _parallel processing_ dengan `library(parallel)`.
+
+Berikut adalah skrip yang saya gunakan:
+
+```
+library(parallel)
+n_cores = 10
+
+# kita akan set jumlah orang terlebih dahulu
+n_orang = 30
+
+# kita akan set jumlah hari dalam setahun
+n_hari = 365
+
+# kita akan set mau seberapa banyak simulasi montecarlo dilakukan
+# karena cores saya ada 10, saya akan lakukan 900.000 kali simulasi
+n_simulasi = 900000
+
+
+# kita akan buat function simulasi terlebih dahulu
+simu_lasi = function(dummy){
+  # generate tanggal lahir dari 30 orang
+  tgl = sample(n_hari,n_orang,replace = T)
+  # kita akan cek apakah ada tanggal yang sama?
+  # caranya dengan mengecek apakah ada yang duplikat
+  # saat ada yang duplikat, maka akan saya berikan nilai 1
+  # jika tidak ada duplikat, saya berikan nilai 0
+  cek = unique(tgl)
+  output = ifelse(length(cek) < n_orang,1,0)
+  return(output)
+}
+
+# sekarang saatnya kita simulasikan
+id_sim = 1:n_simulasi
+
+# pakai parallel computing
+hasil = mcmapply(simu_lasi,id_sim,mc.cores = n_cores)
+
+# cepet yah selesainya
+# kita akan hitung ada berapa nilai 1 dari n_simulasi
+sum(hasil) / n_simulasi * 100
+```
+
+Hasilnya adalah:
+
+> Peluang ada minimal sepasang orang yang punya tanggal dan bulan lahir yang sama adalah sekitar `70.5%`.
+
+---
+
+Proses saya melakukan simulasi di __R__ bisa dilihat di _channel_ Youtube saya berikut [ini](https://youtu.be/W3lAoSHIL3I).
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
