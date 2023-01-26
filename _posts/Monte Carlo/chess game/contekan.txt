@@ -1,0 +1,41 @@
+rm(list = ls())
+
+match_result = function(dummy){
+  # initial
+  skor_a  = 0
+  skor_b  = 0
+  n_match = 0
+  # proses match
+  while(n_match < 12){
+    # pertandingan
+    match = sample(c("a","d","b"),1,prob = c(.2,.65,.15))
+    # rekap nilai
+    if(match == "a"){skor_a = skor_a + 1}
+    if(match == "b"){skor_b = skor_b + 1}
+    if(match == "d"){skor_a = skor_a + .5
+                     skor_b = skor_b + .5}
+    n_match = n_match + 1
+    # print(paste("match",n_match))
+    # print(paste("skor a",skor_a))
+    # print(paste("skor b",skor_b))
+    
+    if(skor_a >= 6.5) break
+    if(skor_b >= 6.5) break
+  }
+  if(skor_a >= 6.5){output = "a"}
+  if(skor_b >= 6.5){output = "b"}
+  if(skor_a < 6.5 & skor_b < 6.5){output = "none"}
+  return(output)
+}
+
+library(parallel)
+
+n_sim = 2000
+
+id_sim = 1:n_sim
+
+numcore = detectCores()
+
+hasil = mcmapply(match_result,id_sim,mc.cores = numcore)
+
+prop.table(table(hasil))
