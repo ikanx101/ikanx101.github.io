@@ -20,7 +20,39 @@ Pernyataan di atas adalah _birthday problem_. Bagaimana cara saya membuktikan ha
 
 Saya akan membuat simulasi Monte Carlo untuk men-_generate_ kondisi 30 orang _random_ yang dikumpulkan dan melihat apakah ada minimal dua orang yang memiliki tanggal dan bulan lahir yang sama.
 
-Karena PC yang saya gunakan memiliki 12 _cores_, saya akan gunakan 10 _cores_ untuk melakukan _parallel processing_ dengan `library(parallel)`.
+Saya akan coba melakukan deduksi untuk satu buah kelompok, kemudian nanti akan saya simulasikan untuk banyak kelompok.
+
+### Langkah I
+
+Pertama-tama, saya akan buatkan skrip untuk men-_generate_ tanggal lahir dari kelompok berisi 30 orang:
+
+```{r}
+n_hari  = 365
+n_orang = 30
+tgl = sample(n_hari,n_orang,replace = T)
+tgl
+```
+
+### Langkah II
+
+Selanjutnya saya akan mengecek, apakah ada minimal dua tanggal yang _duplicate_ atau tidak. Caranya adalah dengan menghitung ada berapa banyak _unique values_ dari variabel `tgl` yang di-_generate_.
+
+Jika banyak _unique values_ kurang dari 30, artinya ada minimal dua orang yang memiliki tanggal lahir yang sama. 
+
+- Jika __sama__, akan saya berikan nilai __1__. 
+- Jika __tidak sama__, saya akan berikan nilai __0__.
+
+```{r}
+cek = unique(tgl)
+output = ifelse(length(cek) < n_orang,1,0)
+output
+```
+
+### _Parallel Processing_: Simulasi 900.000 Kali
+
+Dari dua langkah di atas, saya akan lakukan simulasi sebanyak 900.000 kali dengan prinsip _parallel processing_ karena PC yang saya gunakan memiliki 12 _cores_. 
+
+Alih-alih menggunakan semuanya, saya hanya gunakan 10 _cores_ saja untuk melakukan _parallel processing_ dengan `library(parallel)`.
 
 Berikut adalah skrip yang saya gunakan:
 
