@@ -1,0 +1,103 @@
+---
+title: "Menghitung Nilai e Menggunakan Simulasi Monte Carlo dan Parallel Computing di R"
+output: 
+  github_document:
+        pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Bagi rekan-rekan yang dulu pernah mengambil mata kuliah kalkulus, pasti sudah familiar dengan satu bilangan istimewa pada matematik yang dinotasikan sebagai _e_. Bilangan _e_ disebut dengan __bilangan Euler__ yang memiliki banyak keunikan sama halnya dengan bilangan _pi_ dan beberapa bilangan unik lainnya.
+
+Berapa sih nilai _e_? Dengan __R__, nilai _e_ bisa dilihat dengan cara sebagai berikut:
+
+```{r}
+exp(1)
+```
+
+
+Bagaimana bilangan tersebut diperoleh?
+
+Saat saya sedang _browsing_ kemarin, saya menemukan salah satu _tweet_ menarik yang menyatakan:
+
+> Jika kita mengambil n bilangan acak dari [0,1] sehingga jumlah n bilangan acak tersebut lebih dari 1, maka expected nilai n tersebut akan bernilai e.
+
+Bingung dengan pernyataan di atas?
+
+Oke, misalkan begini:
+
+Saya membuat beberapa bilangan acak dari selang [0,1]:
+
+$$X_i,i = 1,2,..,n$$
+
+Simpan nilai $n$ terkecil sehingga $\sum_{i=1}^n X_i > 1$.
+
+Nilai $n$ tersebut jika kita simpan, lalu kita lakukan berulang kali dan rata-ratakan, nilainya menjadi nilai _e_.
+
+__Menarik yah__.
+
+Mari kita coba dengan __R__.
+
+Pertama-tama, kita lakukan _random number generation_ terlebih dahulu dan buat agar berhenti saat $\sum_{i=1}^n X_i > 1$.
+
+```{r}
+# definisi random number
+rand_number = c()
+i           = 1
+  
+while(sum(rand_number) < 1){
+    # kita akan generate random number [0,1]
+    rand_number[i] = runif(1)
+    i              = i + 1
+  }
+```
+
+
+Sekarang saya akan buat _function_ dari kondisi di atas, dan lakukan simulasi berulang kali:
+
+```
+trial_simulasi = function(dummy){
+  # definisi random number
+  rand_number = c()
+  i           = 1
+  
+  while(sum(rand_number) < 1){
+    # kita akan generate random number [0,1]
+    rand_number[i] = runif(1)
+    i              = i + 1
+  }
+  
+  # sekarang kita akan lihat butuh berapa i agar sum(rand_number) melebihi 1
+  length(rand_number)
+  }
+
+
+# kita akan coba simulasi
+n_simulasi = 1:16000
+
+# kita simulasikan 8000 x
+
+library(parallel)
+numcore = 8
+
+# kita akan mulai simulasinya
+hasil = mcmapply(trial_simulasi,n_simulasi,mc.cores = numcore)
+
+# kita akan hitung nilai expected alias mean nya
+mean(hasil)
+```
+
+
+Saya dapatkan hasil sebagai berikut:
+
+- Nilai `exp(1)` dari __R__ adalah sebesar $2.718282$.
+- Nilai rata-rata dari `hasil` adalah sebesar $2.713812$.
+- _Absolute error_ dari simulasi saya adalah sebesar $0.004469328$.
+
+Lumayan akurat _lah yah_.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
