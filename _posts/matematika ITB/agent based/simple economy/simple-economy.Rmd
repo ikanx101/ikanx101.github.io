@@ -1,0 +1,133 @@
+---
+title: "Agent Based Modelling: Simulasi Model Ekonomi Sederhana"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+rm(list=ls())
+```
+
+Pada semester ini, saya akhirnya mengambil mata kuliah bernama _Agent Based Modelling_ (permodelan berbasis agen). 
+
+Sebagai informasi, di jurusan Sains Komputasi ITB ada dua kuliah __utama__ terkait _modelling_, yakni:
+
+1. _Agent based modelling_, dan
+1. _Particle based modelling_.
+
+Karena _pinisirin_, saya akhirnya mengambil salah satu di antara keduanya.
+
+---
+
+## Belajar apa?
+
+> Kuliah ini belajar apa ya?
+
+Jika pada kuliah di S1, saya biasa belajar memodelkan __suatu sistem__ menggunakan formula matematis. Jadi yang saya modelkan ada __sistem__-nya.
+
+Sebagai contoh, pada Maret 2020 lalu saya sempat membuat [model penyebaran COVID dengan pendekatan SIR](https://ikanx101.com/blog/sir-covid/).
+
+Nah, pada __ABM__ yang dimodelkan bukanlah sistemnya, tapi _agent_ yang berada pada sistem. Sebagai contoh, jika pada kasus COVID di atas, yang dimodelkan adalah individu-individu yang berada di sistem dan bagaimana mereka berperilaku dan berinteraksi.
+
+> Seru kan yah...!
+
+---
+
+## Contoh dalam Ekonomi
+
+Beralih dari contoh COVID, saya akan berikan satu contoh sederhana model __ABM__ di bidang ekonomi. Model ini biasa disebut dengan _simple economy model_. 
+
+Begini ceritanya:
+
+> Misalkan dalam suatu area, ada 500 orang yang diberi modal (atau "kekayaan") yang sama (misalkan uang sebesar 100$). Dalam setiap unit waktu, setiap orang tersebut akan memberikan uangnya ke orang lain secara _random_. Jumlah total uang yang ada adalah tetap, sehingga jika ada pemain yang uangnya sudah habis, pemain tersebut baru akan memiliki uang kembali saat ada pemain lain yang memberikan uangnya kepada pemain tersebut.
+
+Pertanyaannya:
+
+> _By the end of the time_, bagaimana penyebaran kekayaan dalam area tersebut?
+
+---
+
+### Menebak Hasilnya
+
+Saat mendengarkan cerita di atas, yang terlintas dalam pikiran saya adalah ada dua kemungkinan penyebaran kekayaaan di area tersebut, yakni:
+
+1. __Kemungkinan pertama__: kekayaan akan tersebar merata. ATAU
+1. __Kemungkinan kedua__: kekayaan akan tersebar mengikuti distribusi normal (berbentuk _bell curve_). _Konon katanya (hampir) semua data alamiah di dunia ini terdistribusi normal kan?_
+
+---
+
+### Hasil Simulasi
+
+Biar _gak_ makin _pinisirin_, saya coba _run_ modelnya.
+
+#### Kondisi Awal (t=0)
+
+```{r out.height="60%",echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/ikanx101/209_ITB/main/Semester%20IV/Agent%20Based%20Modelling/Tugas/Tugas%201/wealth%20awal.png")
+```
+
+Pada kondisi awal (t=0), semua orang memiliki uang yang sama. Saya akan _run_ hingga waktu tertentu.
+
+#### Kondisi Saat t=182
+
+```{r out.height="60%",echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/ikanx101/209_ITB/main/Semester%20IV/Agent%20Based%20Modelling/Tugas/Tugas%201/wealth%20182.png")
+```
+
+Terlihat bahwa kekayaan sudah terdistribusi secara normal. Mayoritas orang masih memiliki uang di kisaran 100 USD. Ada beberapa orang yang "miskin" dan "kaya", namun jumlahnya masih sedikit.
+
+Saya akan _run_ lagi hingga waktu tertentu.
+
+#### Kondisi Saat t=1117
+
+```{r out.height="60%",echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/ikanx101/209_ITB/main/Semester%20IV/Agent%20Based%20Modelling/Tugas/Tugas%201/wealth%201117.png")
+```
+
+Terlihat bahwa "kekayaan" masih terdistribusi normal. Namun kalau dilihat grafik yang paling bawah:
+
+> Kekayaan orang-orang yang termasuk `top 10%`, memiliki tren kenaikan.Sedangkan kekayaan orang-orang yang termasuk `bottom 50%` memiliki tren penurunan.
+
+Saya akan lanjut _run_ lagi.
+
+#### Kondisi Saat t=16347
+
+```{r out.height="60%",echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/ikanx101/209_ITB/main/Semester%20IV/Agent%20Based%20Modelling/Tugas/Tugas%201/wealth%2016347.png")
+```
+
+
+Saat saya lanjutkan simulasi modelnya, terlihat bahwa "kekayaan" sudah tidak berdistribusi normal. Kekayaan orang-orang yang `top 10%` juga sudah melebihi "orang-orang kebanyakan" (`bottom 50%`).
+
+> Menarik yah... 
+
+Sekarang saya coba lanjut _run_ lagi hingga waktu yang lebih besar.
+
+#### Kondisi Saat t Besar Sekali
+
+```{r out.height="60%",echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/ikanx101/209_ITB/main/Semester%20IV/Agent%20Based%20Modelling/Tugas/Tugas%201/wealth%20akhir.png")
+```
+
+Ternyata saat waktunya dilanjutkan, kita dapatkan hasil yang menarik.
+
+> Akan ada segilintir orang-orang __tajir melintir__ yang kekayaannya melebihi kebanyakan orang jika digabung.
+
+Dugaan saya, jika dilanjutkan terus bentuk distribusi kekayaannya akan berdistribusi pareto.
+
+---
+
+## Epilog
+
+Simulasi ini memberikan pemahaman baru kepada saya terkait perilaku ekonomi dalam model _simple economy_. 
+
+> Menurut kamu _relate_ dengan kondisi _real_ _gak_?
+
+Beberapa saat lalu saya merekam proses simulasi dan menyimpannya di [_channel_ __Youtube__ saya berikut ini](https://youtu.be/-CiJsVwYeCI).
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
