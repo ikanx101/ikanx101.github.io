@@ -9,6 +9,7 @@ output:
 rm(list=ls())
 library(dplyr)
 library(ggplot2)
+library(tidyr)
 ```
 
 Pada tahun lalu, saya pernah menulis tentang bagaimana menemukan persamaan dan perbedaan dari data [_phonebook_ agar kita bisa menemukan beberapa _entry_ ganda yang ada](https://ikanx101.com/blog/phone-book/). Pada tulisan tersebut, saya menggunakan algoritma yang berdasarkan _cosine simmilarity_.
@@ -26,3 +27,139 @@ Prinsip sederhana yang digunakan untuk mengukur apakah dua data itu sama atau ti
 Pada tulisan terdahulu, saya pernah membedah [berbagai macam tipe dan struktur data](https://ikanx101.com/blog/mengenal-data/). Masing-masing tipe dan struktur data mmemiliki cara perhitungan jaraknya tersendiri. Kita bahas satu-persatu berikut ini:
 
 ### Data Numerik
+
+Misalkan saya punya dua titik numerik sebagai berikut:
+
+$$p_1 = (1,1) \text{ dan } p_2 = (3,3)$$
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+ggplot() +
+  geom_point(aes(x = 1,y = 1),size = 2) +
+  geom_point(aes(x = 3,y = 3),size = 2) +
+  geom_label(aes(x = 1,y = .75,label = "A"),size = 3) +
+  geom_label(aes(x = 3,y = 2.75,label = "B"),size = 3) +
+  ylim(0,5) +
+  xlim(0,5) +
+  labs(title    = "Misalkan ada dua titik",
+       subtitle = "Berapa jarak antara titik A dan B?")
+```
+
+Untuk data numerik, ada beberapa perhitungan jarak seperti:
+
+#### _Euclidean distance_
+
+Yakni jarak terpendek antara dua titik. Cara perhitungannya adalah dengan menggunakan rumus _Phytagoras_.
+
+$$d(p_1,p_2) = \sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2}$$
+
+Dari dua titik di atas kita hitung jaraknya sebagai berikut:
+
+$$
+\begin{matrix}
+d(p_1,p_2) & = & \sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2} \\
+ & = & \sqrt{(1 - 3)^2 + (1 - 3)^2} \\
+ & = & \sqrt{8} \\
+ & \approx & 2.828427
+\end{matrix}$$
+
+#### _Manhattan distance_
+
+Yakni jarak total yang dimiliki dari masing-masing dimensinya. Misalkan dari dua titik di atas, kita akan menghitung jarak di masing-masing sumbu $x$ dan sumbu $y$-nya.
+
+$$d(p_1,p_2) = |x_1 - x_2| + |y_1 - y_2|$$
+
+Dari dua titik di atas kita hitung jaraknya sebagai berikut:
+
+$$\begin{matrix}
+d(p_1,p_2) & = & |x_1 - x_2| + |y_1 - y_2| \\
+ & = & |1-3| + |1-3| \\
+ & = & 2 + 2 \\
+ & = & 4
+\end{matrix}$$
+
+#### _Chebyshev distance_
+
+Yakni jarak terjauh dari dua titik berdasarkan masing-masing dimensinya. Kita hanya akan cari nilai jarak terjauh dari sumbu $x$ atau sumbu $y$.
+
+$$d(p_1,p_2) = \max{|(x_1 - x_2)|,|(y_1 - y_2)|}$$
+
+Pada kasus ini, jarak baik di sumbu $x$ dan $y$ adalah sama-sama $2$.
+
+---
+
+Selain ketiga metode di atas, ada berbagai macam cara perhitungan jarak lain yang bisa digunakan.
+
+---
+
+### Data Kategorik
+
+Jika pada bagian di atas, kita telah membahas perhitungan jarak pada data numerik. Bagaimana jika kita memiliki data kategorik? Hal yang sama bisa juga digunakan untuk data non-numerik seperti data teks.
+
+Misalkan, saya hendak mencari jarak dari data berikut ini:
+
+```{r,echo=FALSE}
+rm(list = ls())
+
+df = data.frame(orang = 1:2,
+                hobi  = c("masak,nonton","masak,otomotif"))
+
+df %>% knitr::kable()
+```
+
+Seberapa mirip kedua orang tersebut? Bagaimana mengukur jarak mereka?
+
+Kita ubah terlebih dahulu kedua data tersebut menjadi bentuk kategorik dan _binary_. Setelah itu, kita bisa mengukur jarak antara keduanya.
+
+Ubah datanya dalam bentuk seperti ini:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+df_new = 
+  df %>% 
+  separate_rows(hobi,sep = ",") %>% 
+  reshape2::dcast(orang~hobi,fun.aggregate = length)
+df_new %>% knitr::kable()
+```
+
+
+Setelah itu, kita bisa ukur dengan beberapa cara perhitungan jarak. 
+
+```{r}
+# dataset yang digunakan
+df_new
+
+# kita simpan dulu beberapa variabel penting
+hobi_1 = df_new$masak[2] - df_new$masak[1]
+hobi_2 = df_new$nonton[2] - df_new$nonton[1]
+hobi_3 = df_new$otomotif[2] - df_new$otomotif[1]
+```
+
+#### _Euclidean distance_
+
+```{r}
+jarak_ecl = sqrt(hobi_1^2 + hobi_2^2 + hobi_3^2)
+jarak_ecl
+```
+
+#### _Manhattan distance_
+
+```{r}
+jarak_man = hobi_1 + hobi_2 + hobi_3
+jarak_man
+```
+
+#### _Chebyshev distance_
+
+```{r}
+jarak_che = max(hobi_1,hobi_2,hobi_3)
+jarak_che
+```
+
+---
+
+Kelak perhitungan jarak ini adalah __kunci__ untuk menentukan seberapa mirip atau tidak mirip sepasang data.
+
+Bagaimana mudah kan?
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
