@@ -1,5 +1,20 @@
-Mencari Simmilarity dan Dissimilarity dari Data
-================
+---
+date: 2023-03-13T13:45:00-04:00
+title: "Mencari Simmilarity dan Dissimilarity dari Data"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - Computational Science
+  - Sains Komputasi
+  - Matematika
+  - Jarak
+  - Similarity
+  - Euclidean
+  - Manhattan
+  - Chebishev
+---
 
 Pada tahun lalu, saya pernah menulis tentang bagaimana menemukan
 persamaan dan perbedaan dari data [*phonebook* agar kita bisa menemukan
@@ -33,7 +48,7 @@ Misalkan saya punya dua titik numerik sebagai berikut:
 
 ![p_1 = (1,1) \text{ dan } p_2 = (3,3)](https://latex.codecogs.com/png.latex?p_1%20%3D%20%281%2C1%29%20%5Ctext%7B%20dan%20%7D%20p_2%20%3D%20%283%2C3%29 "p_1 = (1,1) \text{ dan } p_2 = (3,3)")
 
-![](post_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/data%20mining/jarak/post_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
 Untuk data numerik, ada beberapa perhitungan jarak seperti:
 
