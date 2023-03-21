@@ -43,7 +43,11 @@ kita bisa menggunakannya.
 > Server** di *local* dengan `ssh` secara kontinu.
 
 Kali ini saya akan tunjukan caranya dengan memanfaatkan VPS dari situs
-[*Digital Ocean*](https://cloud.digitalocean.com/). *Yuk* disimak.
+[*Digital Ocean*](https://cloud.digitalocean.com/).
+
+Saya akan membuat __RStudio Server__ di `localhost:8888` saya bisa diakses melalui IP publiknya VPS.
+
+*Yuk* disimak.
 
 ------------------------------------------------------------------------
 
@@ -98,6 +102,9 @@ Jika sudah selesai, kita bisa akses `143.198.200.181:8888` di *browser*
 dengan menggunakan *gadget* apapun.
 
 <img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/lainnya/reverse%20tunnel/langkah%203.png" width="60%" style="display: block; margin: auto;" />
+
+Jika __RStudio Server__ kalian berjalan di _port_ lain, silakan disesuaikan saja.
+
 
 ------------------------------------------------------------------------
 
