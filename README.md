@@ -4,4 +4,4 @@ Selamat menikmati [ikanx101.com](https://ikanx101.com/)
 
 _to do list_:
 
-Pemenang EURO
+Belum tau mau nulis apa
