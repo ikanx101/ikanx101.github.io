@@ -1,0 +1,79 @@
+---
+title: "Ramadhan 2023 dalam Pencarian Google"
+output: github_document
+---
+
+
+```{r,include=FALSE}
+rm(list=ls())
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+setwd("/home/ikanx101/ikanx101.github.io/_posts/lainnya/ramadhan 2023")
+```
+
+_Assalamu alaikum_ rekan-rekan semua. Alhamdulillah sudah hari kedua di bulan Ramadhan di tahun 2023 ini. Semoga kita diberikan kelancaran dalam berpuasa dan beribadah lainnya di bulan ini hingga selesai ya. _Aamiin_.
+
+Saya jadi ingat, sebulan lalu ketika menonton Kompas TV, saya melihat iklan Marjan yang mengambil tema mirip film _Aquaman_. 
+
+> Salah satu indikator datangnya bulan puasa adalah kemunculan iklan Marjan di TV.
+
+Seolah-olah iklan tersebut memicu efek domino sehingga harga barang-barang kebutuhan pokok menjelang Ramadhan ikut bergerak naik. _hehe_.
+
+Kali ini saya ingin melihat apa saja yang dicari _netizen_ di Google terkait Ramadhan tahun ini. Untuk melakukannya, saya mengambil data dari _Google Trends_ region Indonesia selama 7 hari terakhir.
+
+---
+
+# Penelusuran `Ramadhan`
+
+Mari kita lihat bagaimana tren penelusuran _keyword_ `ramadhan` di Indonesia:
+
+```{r,echo=FALSE,fig.align="center",fig.retina=4}
+df = 
+  read.csv("/home/ikanx101/ikanx101.github.io/_posts/lainnya/ramadhan 2023/multiTimeline.csv",
+  skip = 1) %>% 
+  janitor::clean_names()
+
+df %>% 
+  separate(time,
+           into = c("tgl","jam"),
+           sep = "T") %>%
+  group_by(tgl) %>%
+  summarise(value = mean(ramadhan_indonesia)) %>% 
+  ungroup() %>%
+  ggplot(aes(x = tgl, y = value)) + 
+  geom_line(group = 1,color = "darkgreen") +
+  geom_point(shape = 3,size = 2) +
+  theme_minimal() +
+  labs(title    = "Tren Pencarian Ramadhan di Google dalam 7 Hari Terakhir",
+       subtitle = "sumber: Google Trends",
+       caption  = "Scraped and Visualized\nusing R\nikanx101.com", 
+       x        = "Tanggal",
+       y        = "Interest over time") +
+  theme(axis.text.y = element_blank())
+```
+
+Terlihat bahwa pencarian tertinggi _netizen_ adalah pada saat mendekati awal penentuan Ramadhan. Apa saja _related entities_ dan _related queries_ dari _keyword_ ini?
+
+```{r,echo=FALSE,fig.align="center",fig.retina=4}
+rm(list=ls())
+
+df = 
+  read.csv("/home/ikanx101/ikanx101.github.io/_posts/lainnya/ramadhan 2023/relatedEntities.csv") %>%
+  janitor::clean_names()
+
+df %>%
+  ggplot(aes(x = reorder(key,score),y = score)) +
+  geom_col(color = "black",fill = "lightblue") + 
+  geom_label(aes(label = score)) +
+  coord_flip() +
+  theme_minimal() +
+  labs(title    = "Related Entities",
+       subtitle = "sumber: Google Trends",
+       caption  = "Scraped and Visualized\nusing R\nikanx101.com") +
+  theme(axis.title = element_blank(),
+        axis.text.x = element_blank())
+```
+
+# Penelusuran `Puasa`
