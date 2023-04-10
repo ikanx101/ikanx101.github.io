@@ -45,10 +45,10 @@ plt
 <img src="https://raw.githubusercontent.com/ikanx101/Live-Session-Nutrifood-R/master/LEFO%20Market%20Research/LEFO%20MR%202023/Unsupervised/Readme_files/figure-gfm/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" />
 
 Jika melihat langsung data di atas, kita sudah bisa pastikan bahwa ada
-$k = 4$ buah *cluster*.
+`k = 4` buah *cluster*.
 
 > Namun bagaimana jika kita gunakan *elbow method* dan *silhouette
-> method* untuk menentukan berapa banyaknya $k$?
+> method* untuk menentukan berapa banyaknya `k`?
 
 ### *Elbow Method*
 
@@ -70,10 +70,10 @@ plot(siluet)
 
 ### Kesimpulan Sementara
 
-Penentuan $k$ menggunakan *elbow* dan *silhouette method* bisa
+Penentuan `k` menggunakan *elbow* dan *silhouette method* bisa
 berpotensi *miss leading*.
 
-#### Jika $k=5$
+#### Jika `k=5`
 
 ``` r
 # k-means clustering
@@ -113,7 +113,7 @@ plt
 
 ![](https://raw.githubusercontent.com/ikanx101/Live-Session-Nutrifood-R/master/LEFO%20Market%20Research/LEFO%20MR%202023/Unsupervised/Readme_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
-#### Jika $k=6$
+#### Jika `k=6`
 
 ``` r
 # k-means clustering
@@ -156,7 +156,7 @@ plt
 
 ### Jawaban yang Benar
 
-Seharusnya $k=4$.
+Seharusnya `k=4`.
 
 ``` r
 # k-means clustering
@@ -195,7 +195,7 @@ plt
 
 ![](https://raw.githubusercontent.com/ikanx101/Live-Session-Nutrifood-R/master/LEFO%20Market%20Research/LEFO%20MR%202023/Unsupervised/Readme_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
-> Lantas bagaimana jika kita tidak bisa menentukan banyaknya $k$ secara
+> Lantas bagaimana jika kita tidak bisa menentukan banyaknya `k` secara
 > visual dan hanya bisa mengandalkan *elbow* dan *silhouette method*?
 
 ## Contoh Kasus II
@@ -218,10 +218,10 @@ plt
 <img src="https://raw.githubusercontent.com/ikanx101/Live-Session-Nutrifood-R/master/LEFO%20Market%20Research/LEFO%20MR%202023/Unsupervised/Readme_files/figure-gfm/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" />
 
 Jika melihat langsung data di atas, kita sudah bisa pastikan bahwa ada
-$k = 2$ buah *cluster*.
+`k = 2` buah *cluster*.
 
 > Namun bagaimana jika kita gunakan *elbow method* dan *silhouette
-> method* untuk menentukan berapa banyaknya $k$?
+> method* untuk menentukan berapa banyaknya `k`?
 
 ### *Elbow Method*
 
@@ -241,7 +241,7 @@ plot(siluet)
 
 ![](https://raw.githubusercontent.com/ikanx101/Live-Session-Nutrifood-R/master/LEFO%20Market%20Research/LEFO%20MR%202023/Unsupervised/Readme_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
-Kedua metode tersebut konklusif menyatakan $k=2$, sehingga:
+Kedua metode tersebut konklusif menyatakan `k=2`, sehingga:
 
 ``` r
 # k-means clustering
