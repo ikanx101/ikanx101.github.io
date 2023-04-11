@@ -1,0 +1,489 @@
+---
+title: "Tutorial Clustering Analysis Menggunakan R"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/ikanx101.github.io/_posts/matematika ITB/clustering")
+```
+
+```{r,include=FALSE}
+rm(list=ls())
+
+# libraries
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(factoextra)
+library(fpc)
+library(dbscan)
+```
+
+
+Dalam beberapa kesempatan, saya pernah menuliskan beberapa penerapan _unsupervised machine learning_, yakni _clustering analysis_. Kali ini saya akan berikan beberapa _showcases_ penerapan metode _clustering_ dengan __R__. Setidaknya ada tiga metode _clustering_ yang terkenal dan biasa digunakan, yakni:
+
+1. _K-means clustering_,
+1. _Hierarchical clustering_, dan
+1. _DBScan clustering_.
+
+Mari kita bahas satu-persatu.
+
+# _K-Means Clustering_
+
+_K-means clustering_ adalah metode _clustering_ yang paling terkenal di antara metode _clustering_ yang lainnya. Metode ini paling cocok digunakan untuk tipe data yang berbentuk _centroid_ atau terkumpul di suatu titik tertentu. 
+
+Algoritma pengerjaannya cukup sederhana, yakni:
+
+1. Kita harus menentukan terlebih dahulu berapa banyak _cluster_ (menentukan nilai $k$).
+1. Penentuan nilai $k$ bisa dilakukan dengan cara:
+    - Melihat secara visual grafik yang muncul.
+    - Menggunakan _elbow method_ atau _silhouette method_.
+1. Hitung _k-means clustering_ dengan nilai $k$ yang telah diketahui.
+
+Misalkan saya memiliki kasus-kasus sebagai berikut:
+
+## Contoh Kasus I
+
+```{r,fig.align='center',fig.retina=4}
+# import data
+df = read.csv("~/Live-Session-Nutrifood-R/LEFO Market Research/LEFO MR 2023/Unsupervised/k means/compact disks.csv") %>% 
+     janitor::clean_names() %>%
+     select(-x) %>%
+     rename(x = x_2)
+
+# kita bikin visualisasinya terlebih dahulu
+plt = 
+  df %>%
+  ggplot(aes(x,y)) +
+  geom_point() + 
+  coord_equal()
+plt 
+
+```
+
+Jika melihat langsung data di atas, kita sudah bisa pastikan bahwa ada $k = 4$ buah _cluster_.
+
+> Namun bagaimana jika kita gunakan _elbow method_ dan _silhouette method_ untuk menentukan berapa banyaknya $k$?
+
+### _Elbow Method_
+
+```{r}
+elbow = fviz_nbclust(df, kmeans, method = "wss")
+plot(elbow)
+```
+
+### _Silhouette Method_
+
+```{r}
+siluet = fviz_nbclust(df, kmeans, method = "silhouette")
+plot(siluet)
+```
+
+### Kesimpulan Sementara
+
+Kita bisa melihat bahwa nilai $k$ hasil _elbow method_ dan _silhouette method_ tidak sama dengan 4. Hasil ini berpotensi menjadi _miss leading_. Akan saya berikan visualnya dengan berbagai nilai $k$ yang kita sudah ketahui dari analisa sebelumnya.
+
+#### Jika $k=5$
+
+```{r}
+# k-means clustering
+final = kmeans(df, 5, nstart = 25)
+
+# center dari masing-masing cluster
+final$centers
+
+# save hasil cluster ke data awal
+data_kmeans = df
+data_kmeans$cluster = final$cluster
+
+# berapa banyak isi dari cluster
+table(data_kmeans$cluster)
+
+plt = 
+  data_kmeans %>%
+  ggplot(aes(x,y)) +
+  geom_point(aes(color = as.factor(cluster))) +
+  coord_equal()
+plt
+
+```
+
+#### Jika $k=6$
+
+```{r}
+# k-means clustering
+final = kmeans(df, 6, nstart = 25)
+
+# center dari masing-masing cluster
+final$centers
+
+# save hasil cluster ke data awal
+data_kmeans = df
+data_kmeans$cluster = final$cluster
+
+# berapa banyak isi dari cluster
+table(data_kmeans$cluster)
+
+plt = 
+  data_kmeans %>%
+  ggplot(aes(x,y)) +
+  geom_point(aes(color = as.factor(cluster))) +
+  coord_equal()
+plt
+
+```
+
+Mari kita bandingkan dengan __jawaban yang benar__.
+
+### Jawaban yang Benar
+
+Seharusnya $k=4$.
+
+```{r}
+# k-means clustering
+final = kmeans(df, 4, nstart = 25)
+
+# center dari masing-masing cluster
+final$centers
+
+# save hasil cluster ke data awal
+data_kmeans = df
+data_kmeans$cluster = final$cluster
+
+# berapa banyak isi dari cluster
+table(data_kmeans$cluster)
+
+plt = 
+  data_kmeans %>%
+  ggplot(aes(x,y)) +
+  geom_point(aes(color = as.factor(cluster))) +
+  coord_equal()
+plt
+
+```
+
+
+> Lantas bagaimana jika kita tidak bisa menentukan banyaknya $k$ secara visual dan hanya bisa mengandalkan _elbow_ dan _silhouette method_?
+
+__Sabar, saya akan menjawabnya pada tulisan selanjutnya__.
+
+```{r,include=FALSE}
+rm(list=ls())
+```
+
+## Contoh Kasus II
+
+Kita akan beralih ke contoh selanjutnya seperti ini:
+
+```{r,fig.align='center',fig.retina=4}
+# import data
+df = read.csv("~/Live-Session-Nutrifood-R/LEFO Market Research/LEFO MR 2023/Unsupervised/k means/dual disks.csv") %>% 
+     janitor::clean_names() %>%
+     select(-x) %>%
+     rename(x = x_2)
+
+# kita bikin visualisasinya terlebih dahulu
+plt = 
+  df %>%
+  ggplot(aes(x,y)) +
+  geom_point() +
+  coord_equal()
+plt
+
+```
+
+Jika melihat langsung data di atas, kita sudah bisa pastikan bahwa ada $k = 2$ buah _cluster_.
+
+> Namun bagaimana jika kita gunakan _elbow method_ dan _silhouette method_ untuk menentukan berapa banyaknya $k$?
+
+### _Elbow Method_
+
+```{r}
+elbow = fviz_nbclust(df, kmeans, method = "wss")
+plot(elbow)
+```
+
+### _Silhouette Method_
+
+```{r}
+siluet = fviz_nbclust(df, kmeans, method = "silhouette")
+plot(siluet)
+```
+
+Kedua metode tersebut konklusif menyatakan $k=2$. Hal ini juga sama dengan temuan secara visual. Kita akan masukkan nilai $k$ ke algoritma dan buat visualisasinya kembali:
+
+```{r,fig.align='center',fig.retina=4}
+# k-means clustering
+final = kmeans(df, 2, nstart = 25)
+
+# center dari masing-masing cluster
+final$centers
+
+# save hasil cluster ke data awal
+data_kmeans = df
+data_kmeans$cluster = final$cluster
+
+# berapa banyak isi dari cluster
+table(data_kmeans$cluster)
+
+plt = 
+  data_kmeans %>%
+  ggplot(aes(x,y)) +
+  geom_point(aes(color = as.factor(cluster))) +
+  coord_equal()
+plt
+```
+
+Terlihat bahwa ada beberapa titik data yang _overlap_ masuk ke _cluster_ lainnya. Hal ini seharusnya tidak boleh terjadi. Sehingga bisa kita simpulkan sementara bahwa __tidak semua bentuk data yang__ ___centroid___ __bisa digunakan__ ___k-means clustering___.
+
+---
+
+# _Hierarchical Clustering_
+
+Metode _clustering_ selanjutnya adalah _hierarchical clustering_. Algoritmanya sederhana, yakni:
+
+1. Dari sekumpulan data yang ada, hitung jarak antar titik data.
+1. Buat _cluster_ dari dua titik yang memiliki jarak terdekat tersebut.
+1. Hitung kembali jarak antar titik data dengan _cluster_ yang terbentuk dijadikan satu kesatuan titik.
+1. Ulangi langkahnya hingga semua titik berhasil dikelompokkan.
+
+Hal yang krusial pada metode ini adalah penentuan jarak suatu _cluster_ dengan titik (atau _cluster_ lainnya). Kita bisa pilih apakah akan menggunakan metode:
+
+1. _Single link_,
+1. _Max_,
+1. _Average_, dll.
+
+Misalkan saya punya contoh sebagai berikut:
+
+## Contoh I
+
+```{r,fig.align='center',fig.retina=4}
+rm(list=ls())
+df = read.csv("~/Live-Session-Nutrifood-R/LEFO Market Research/LEFO MR 2023/Unsupervised/hierarchical/donat.csv") %>% 
+     janitor::clean_names() %>%
+     select(x_2,y) %>%
+     rename(x = x_2)
+
+# membuat grafik
+plt = 
+  df %>%
+  ggplot(aes(x,y)) +
+  geom_point() +
+  coord_equal()
+plt
+
+# Finding distance matrix
+distance_mat = dist(df, method = 'euclidean')
+```
+
+Secara visual, kita bisa simpulkan ada 3 buah cluster yang ada pada data di atas. Metode perhitungan mana yang bisa memberikan hasil yang terbaik?
+
+Mari kita lihat satu-persatu:
+
+### _Single Link_
+
+Perhitungan dengan metode _single link_.
+
+```{r,fig.align='center',fig.retina=4}
+# Fitting Hierarchical clustering Model
+set.seed(240)  # Setting seed
+Hierar_cl = hclust(distance_mat, method = "single")
+
+plot(Hierar_cl)
+
+# Pemecahan menjadi 3 cluster
+fit = cutree(Hierar_cl, k = 3)
+table(fit)
+plot(Hierar_cl)
+rect.hclust(Hierar_cl, k = 3, border = "red")
+
+# save hasil cluster ke data awal
+data_hc = df
+data_hc$cluster = fit
+
+# berapa banyak isi dari cluster
+hie_plot = 
+  data_hc %>%
+  ggplot(aes(x,y,color = as.factor(cluster))) +
+  geom_point() +
+  coord_equal()
+hie_plot
+
+```
+
+### _Max / Complete Link_
+
+Perhitungan dengan _max_ atau _complete link_.
+
+```{r,fig.align='center',fig.retina=4}
+# Fitting Hierarchical clustering Model
+set.seed(240)  # Setting seed
+Hierar_cl = hclust(distance_mat, method = "complete")
+
+plot(Hierar_cl)
+
+# Pemecahan menjadi 3 cluster
+fit = cutree(Hierar_cl, k = 6)
+table(fit)
+plot(Hierar_cl)
+rect.hclust(Hierar_cl, k = 6, border = "red")
+
+# save hasil cluster ke data awal
+data_hc = df
+data_hc$cluster = fit
+
+# berapa banyak isi dari cluster
+hie_plot = 
+  data_hc %>%
+  ggplot(aes(x,y,color = as.factor(cluster))) +
+  geom_point() +
+  coord_equal()
+hie_plot
+
+```
+
+### _Average Link_
+
+Perhitungan dengan _average link_.
+
+```{r,fig.align='center',fig.retina=4}
+# Fitting Hierarchical clustering Model
+set.seed(240)  # Setting seed
+Hierar_cl = hclust(distance_mat, method = "average")
+
+plot(Hierar_cl)
+
+# Pemecahan menjadi 3 cluster
+fit = cutree(Hierar_cl, k = 4)
+table(fit)
+plot(Hierar_cl)
+rect.hclust(Hierar_cl, k = 4, border = "red")
+
+# save hasil cluster ke data awal
+data_hc = df
+data_hc$cluster = fit
+
+# berapa banyak isi dari cluster
+hie_plot = 
+  data_hc %>%
+  ggplot(aes(x,y,color = as.factor(cluster))) +
+  geom_point() +
+  coord_equal()
+hie_plot
+
+```
+
+### Kesimpulan
+
+Untuk kasus ini, perhitungan dengan metode _single link_ menghasilkan hasil _cluster_ yang terbaik.
+
+## Contoh II
+
+Mari kita lihat kasus berikut seperti ini:
+
+```{r,fig.align='center',fig.retina=4}
+rm(list=ls())
+df = read.csv("~/Live-Session-Nutrifood-R/LEFO Market Research/LEFO MR 2023/Unsupervised/hierarchical/hi.csv") %>% 
+     janitor::clean_names() %>%
+     select(x_2,y) %>%
+     rename(x = x_2)
+
+# membuat grafik
+plt = 
+  df %>%
+  ggplot(aes(x,y)) +
+  geom_point() +
+  coord_equal()
+plt
+
+# Finding distance matrix
+distance_mat = dist(df, method = 'euclidean')
+```
+
+Pada kasus ini, terlihat ada dua buah _cluster_. Saya pun langsung hanya akan menggunakan metode _single link_ pada perhitungannya.
+
+### _Single Link_
+
+```{r,fig.align='center',fig.retina=4}
+# Fitting Hierarchical clustering Model
+set.seed(240)  # Setting seed
+Hierar_cl = hclust(distance_mat, method = "single")
+
+plot(Hierar_cl)
+
+# Pemecahan menjadi 2 cluster
+fit = cutree(Hierar_cl, k = 2)
+table(fit)
+plot(Hierar_cl)
+rect.hclust(Hierar_cl, k = 2, border = "red")
+
+# save hasil cluster ke data awal
+data_hc = df
+data_hc$cluster = fit
+
+# berapa banyak isi dari cluster
+hie_plot = 
+  data_hc %>%
+  ggplot(aes(x,y,color = as.factor(cluster))) +
+  geom_point() +
+  coord_equal()
+hie_plot
+
+```
+
+---
+
+# _DBScan_
+
+Metode _clustering_ yang terakhir ini merupakan metode perhitungan _density based_. Sangat berguna untuk data yang memiliki _noise_. Misalkan saya memiliki contoh sebagai berikut:
+
+## Contoh I
+
+```{r,fig.align='center',fig.retina=4}
+rm(list=ls())
+
+# ambil data
+df = read.csv("~/Live-Session-Nutrifood-R/LEFO Market Research/LEFO MR 2023/Unsupervised/dbscan/donat density.csv") %>%
+     janitor::clean_names() %>% 
+     select(-x) %>% rename(x = x_2)
+
+df |>
+  ggplot(aes(x,y)) +
+  geom_point() +
+  coord_equal()
+
+```
+
+Bagaimana agar kita bisa mendapatkan _cluster_ yang terbaik? Langkah pertama adalah menentukan `h` yang teroptimal saat grafik `NN distance`-nya meningkat tinggi.
+
+```{r,fig.align='center',fig.retina=4}
+dbscan::kNNdistplot(df, k = 30)
+abline(h = .25, lty = 2, col = "red")
+```
+
+Kita akan pilih `h = .25`.
+
+```{r,fig.align='center',fig.retina=4}
+# membuat clustering DBScan
+# set sed agar reproducible
+set.seed(20921004)
+Dbscan_cl = dbscan(df, eps = 0.25, minPts = 5)
+
+# menambahkan cluster ke dalam dataset
+df$cluster_new = Dbscan_cl$cluster
+
+df |>
+  ggplot(aes(x,y)) +
+  geom_point(aes(color = as.factor(cluster_new)),
+             size = 2) +
+  coord_equal()
+
+```
+
+
+
+
+
