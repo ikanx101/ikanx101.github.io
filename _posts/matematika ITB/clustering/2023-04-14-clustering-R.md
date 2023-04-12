@@ -619,9 +619,11 @@ df |>
 
 <img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/clustering/Readme_files/figure-gfm/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" />
 
-Bagaimana agar kita bisa mendapatkan *cluster* yang terbaik? Langkah
-pertama adalah menentukan `h` yang teroptimal saat grafik
-`NN distance`-nya meningkat tinggi.
+Bagaimana agar kita bisa mendapatkan *cluster* yang terbaik? 
+
+Langkah pertama adalah mendefinisikan terlebih dahulu `k` _Nearest Neighbor_ untuk membantu kita menentukan standar _density_ suatu _cluster_. Berikutnya adalah menentukan `h` yang teroptimal saat grafik `NN distance`-nya meningkat tinggi.
+
+Sebaga contoh, saya akan ambil nilai `30` sebagai patokan _nearest neighbor_. 
 
 ``` r
 dbscan::kNNdistplot(df, k = 30)
