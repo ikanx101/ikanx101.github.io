@@ -1,0 +1,45 @@
+---
+title: "Untitled"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Dulu saat memulai petualangan di dunia data sains, saya _gak_ peduli dengan aspek _hardware_ sama sekali. Kenapa? Karena tim IT kantor saya tentunya akan memberikan saya komputer dengan spek sesuai kebutuhan.
+
+Nah, sepanjang perjalanan, akhirnya saya mulai rewel dengan aspek _hardware_. Apalagi saat Windows udh mulai tidak _friendly_ dengan kebutuhan kerja saya. 
+
+> Lho kok hardware tp yg disalahin Windows? 
+
+Ibarat kata, bekerja di data sains dengan `Windows` seperti bekerja dengan satu tangan terikat (ini berdasarkan pglaman saya ya).
+
+Jadi ini adalah contoh bahwa _hardware_ itu trnyata bukan _root-cause_ nya, tapi justru OS adalah _root-cause_ nya.
+
+Maka dari itu, sejak pandemi saya hijrah pakai linux-based laptop, yakni Ubuntu atau ChromeOS. Seketika performanya meningkat. Core CPU nya "bisa naik dobel" dan kemampuan untuk _parallel processing_ bisa digunakan (ini setau saya baik `Py` atau `R` memang hanya bisa di Linux ya). Catatan: _parallel_ selain butuh OS yang _support_ juga butuh paradigma _ngoding_ yang berbeda dg kebiasaan selama ini.
+
+Lalu timbul tantangan baru di akhir tahun lalu. Saya punya _mega-project_ untuk melakukan _webscraping_ terhadap banyak data publik. Untuk menyelesaikannya tepat waktu, saya tidak mungkin hanya mengandalkan satu laptop saja. Menurut perhitungan, dibutuhkan minimal 5 laptop/PC yang jalan bareng selama 24 jam.
+
+Setelah dapat PC pinjaman, muncul masalah baru. Apa itu? Saya harus ketemu dg Windows lagi. Masalahnya adalah beberapa PC tiba-tiba dengan anehnya tidak "_support_" ini itu. Makin puyeng karena masalah ini tidak ditemukan di mayoritas PC lainnya.
+
+Lantas saya berpikir:
+> "Bagaimana caranya agar R Studio yg ada di laptop Ubuntu saya bisa di-copy-paste di PC2 Windows ini?"
+
+Karena saya menganggap R Studio _setting_-an saya adalah yg "terbaik".
+
+Lalu berkenalanlah saya dengan suatu _software_ bernama DOCKER. 
+
+Cara kerjanya sederhana, yakni dengan meng-_contain_ R Studio di Ubuntu saya sehingga bisa di-docking di PC lain (apapun OSnya). Alhamdulillah, masalah saya bisa selesai dg baik. Buat yg mw tau proses meng-contain-nya, bisa cek di [tulisan saya ini](https://ikanx101.com/blog/docker-r/).
+
+Lantas apa lagi kelebihan Docker ini?
+
+Jadi, saat laptop saya sedang dipakai _webscraping_, tentu saya tidak mau mengganggu proses pada laptop tersebut. Jadi saya coba eksperimen untuk kerja pakai Tablet (android atau iPad). 
+
+Nah, tablet berjalan di struktur ARM sehingga tidak mungkin juga saya meng-_install_ R di sana. Jadi kita bisa gunakan _cloud computing_. Bisa pakai Google Cloud atau Digital Ocean.
+
+Berikut ini saya coba buat [video](https://youtu.be/MBvd2D5Xp8c), bagaimana dalam waktu 2 menit saja saya "_hosting_" R Studio docker saya di layanan Google Cloud Run. Tidak perlu memikirkan spek servernya, karena Google sendiri yang akan menentukan yang terbaik sesuai dengan kebutuhan.
+
+Cukup 2 menit dan R Studio settingan Ubuntu saya sudah bisa dijalankan secara _cloud_.
+
+Sekarang saya bisa gunakan R Studio di mana aja, pakai gadget apa aja (asal ada browser dan koneksi internet). Berbekal cloud computing, bisa jadi ke depannya tidak perlu komputer spek dewa untuk melakukan komputasi yang berat yah. Cukup sewa dan pakai saja.
