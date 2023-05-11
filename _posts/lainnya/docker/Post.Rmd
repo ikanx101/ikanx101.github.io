@@ -1,0 +1,16 @@
+---
+title: "Kenapa Harus Men-Dockerize Computing Environment?"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Sudah hampir sebulan saya menuliskan tentang [bagaimana cara _run_ _container_ __R__ di __Google Cloud Run__](https://ikanx101.com/blog/docker-cloud-run/). Sampai saat ini, saya sangat puas dengan performanya dan kepraktisannya. Saya tidak perlu menyalakan dan mematikan _cloud server_, langsung pakai saja. Bayarnya juga _per-usage_.
+
+Salah satu keunggulan yang selalu saya tekankan adalah saya bisa memiliki _computing environment_ setara laptop kantor saya yang bisa diakses melalui _iPad_ / tablet Android dari mana saja.
+
+Jadi, kalau kalian ingin merasakannya, silakan buat _container_ __R Studio__ sendiri lalu simpan di _docker cloud_.
+
+Mudah kok.
