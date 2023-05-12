@@ -56,7 +56,7 @@ ambil_komen = function(dummy){
 temp = vector("list",3)
 for(i in 1:3){
     buka_situs(urls[i])
-    temp[[1]] = ambil_komen(101040)
+    temp[[i]] = ambil_komen(101040)
     print(i)
 }
 
