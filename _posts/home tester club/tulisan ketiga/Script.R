@@ -34,5 +34,25 @@ df =
   unnest_tokens("words",komen) |>
   filter(!words %in% stop)
 
-df
+matriks = 
+  df |>
+  group_by(resp_id,words) |>
+  tally() |>
+  ungroup() |>
+  reshape2::dcast(resp_id ~ words,
+                  value.var = "n",fun.aggregate = sum)
+
+save(df,matriks,file = "all related.rda")
 # ==============================================
+
+
+
+
+
+
+
+
+
+
+
+
