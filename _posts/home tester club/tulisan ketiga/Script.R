@@ -30,10 +30,9 @@ df =
   filter(filt > 0) |>
   mutate(komen = gsub("[[:punct:]]|\\n|\\r|\\t"," ",komen),
          komen = stringr::str_trim(komen)) |>
-  select(-filt)
-
-df |>
+  select(-filt) |>
   unnest_tokens("words",komen) |>
   filter(!words %in% stop)
-  
+
+df
 # ==============================================
