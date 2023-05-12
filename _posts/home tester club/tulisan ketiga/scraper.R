@@ -1,8 +1,7 @@
 rm(list=ls())
 
 # =============================================================================
-setwd("/home/ikanx101/ikanx101.github.io/_posts/home tester club/tulisan ketiga")
-
+setwd("~/ikanx101.github.io/_posts/home tester club/tulisan ketiga")
 library(dplyr)
 library(tidyr)
 library(RSelenium)
