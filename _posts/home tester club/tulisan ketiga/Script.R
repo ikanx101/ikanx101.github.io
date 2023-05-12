@@ -66,14 +66,29 @@ hasil = mclapply(temp,ambil_teratas,mc.cores = num_cores)
 matriks = 
   do.call(rbind,hasil) |>
   reshape2::dcast(resp_id ~ words,
-                  value.var = "n",fun.aggregate = sum)
+                  value.var = "n",fun.aggregate = sum) |>
+  select(-resp_id)
 
 matriks
 
 library(factoextra)
 
-dist(matriks,method = "euclidean")
+elbow = fviz_nbclust(matriks, kmeans, method = "wss")
+elbow = fviz_nbclust(matriks, kmeans, method = "silhouette")
 
+
+# png("elbow.png")
+plot(elbow)
+# dev.off()
+
+final = kmeans(matriks, 7, nstart = 25)
+
+# center dari masing-masing cluster
+final$centers
+
+
+
+# ini pengingat saja ya kalau mw bahas cosine dari sudut pandang teks
 library(stringdist)
 library(stringr)
 
@@ -88,10 +103,6 @@ sim_matrix = round(matriks,3)
 sim_matrix[lower.tri(sim_matrix)] = 0
 diag(sim_matrix) = 0
 
-elbow = fviz_nbclust(matriks, kmeans, method = "wss")
-# png("elbow.png")
-plot(elbow)
-# dev.off()
 
 
 
