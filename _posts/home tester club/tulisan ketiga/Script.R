@@ -28,7 +28,8 @@ df =
   mutate(komen = stringr::str_trim(komen),
          filt  = stringr::str_length(komen)) |>
   filter(filt > 0) |>
-  mutate(komen = gsub("[[:punct:]]|\\n|\\r|\\t","",komen)) |>
+  mutate(komen = gsub("[[:punct:]]|\\n|\\r|\\t"," ",komen),
+         komen = stringr::str_trim(komen)) |>
   select(-filt)
 
 df |>
