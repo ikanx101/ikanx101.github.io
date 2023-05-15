@@ -22,10 +22,9 @@ df$resp_id = 1:nrow(df)
 
 # kita ambil stopwords
 stop = readLines("https://raw.githubusercontent.com/ikanx101/ID-Stopwords/master/id.stopwords.02.01.2016.txt")
-stop = c(stop,"yang","saya","aku","ini","untuk","sedang","lagi","karena",
-         "ingin","tapi","yg","yang","ga","nggak","gak")
+stop = c(stop,"190ml","880kkal")
 
-# kita pecah perkalimat ya
+# kita pecah per responden ya
 df = 
   df |>
   mutate(komen = tolower(komen),
@@ -42,6 +41,27 @@ raw =
   summarise(komen = paste(words,collapse = " ")) |>
   ungroup()
 
+# kita buat grafik bigram dulu
+bigram_plot = 
+  raw |>
+  unnest_tokens("bigrams",komen,token = "ngrams",n = 2) |>
+  group_by(bigrams)|>
+  tally(sort = T) |>
+  ungroup() |>
+  head(20) |>
+  separate(bigrams,into = c("from","to"),sep = " ") %>% 
+  graph_from_data_frame() %>% 
+  ggraph(layout = 'fr') +
+  geom_edge_bend(aes(edge_alpha=n),
+                 show.legend = F,
+                 color='darkred') +
+  geom_node_point(size=1,color='steelblue') +
+  geom_node_text(aes(label=name),alpha=0.4,size=3,repel = T) +
+  theme_void()
+
+bigram_plot
+
+
 # kita pecah per id dulu
 temp = 
   df |>
@@ -49,6 +69,9 @@ temp =
   tally() |>
   ungroup() |>
   group_split(resp_id)
+
+# ==============================================
+
 
 # kita ambil function untuk ambil 10 teratas
 ambil_teratas = function(list){
@@ -110,24 +133,7 @@ diag(sim_matrix) = 0
 
 
 
-# ==============================================
-# kita buat grafik bigram dulu
-bigram_plot = 
-  raw |>
-  unnest_tokens("bigrams",komen,token = "ngrams",n = 2) |>
-  group_by(bigrams)|>
-  tally(sort = T) |>
-  ungroup() |>
-  head(30) |>
-  separate(bigrams,into = c("from","to"),sep = " ") %>% 
-  graph_from_data_frame() %>% 
-  ggraph(layout = 'fr') +
-  geom_edge_bend(aes(edge_alpha=n),
-                 show.legend = F,
-                 color='darkred') +
-  geom_node_point(size=1,color='steelblue') +
-  geom_node_text(aes(label=name),alpha=0.4,size=3,repel = T) +
-  theme_void()
+
 
 
 save(bigram_plot,raw,df,matriks,file = "all related.rda")
