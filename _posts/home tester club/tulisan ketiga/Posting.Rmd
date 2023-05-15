@@ -1,0 +1,38 @@
+---
+title: "Text Clustering dengan R: Case Study Komentar Netizen Terhadap Produk Susu Oat"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+setwd("~/ikanx101.github.io/_posts/home tester club/tulisan ketiga")
+
+rm(list=ls())
+```
+
+Ternyata setelah saya lihat kembali _blog_ saya ini, sudah lama saya tidak menuliskan tentang _text analysis_. Semua tulisan saya terkait _text analysis_ bisa dibaca di [_link_ berikut ini](https://ikanx101.com/tags/#text-analysis).
+
+_Nah_, kali ini saya akan mencoba satu hal baru yang sebenarnya sudah lama dipendam yakni _text clustering_ dengan metode _clustering_ yang sudah saya bahas di [tulisan ini](https://ikanx101.com/blog/clustering-R/).
+
+> Ya betul, saya akan mengaplikasikan metode clustering pada data berupa teks!
+
+Jadi, metode _clustering_ atau pengelompokkan juga bisa diaplikasikan menggunakan teknik _unsupervised learning_ ini. Tujuannya jelas, yakni: __mengelompokan data teks menjadi beberapa kelompok yang homogen__.
+
+Buat rekan-rekan yang sudah terbiasa melakukan _text analysis_, biasanya untuk melakukan pengelompokan data teks, analisa yang digunakan adalah LDA (_Latent Dirichlet Allocation_). Saya pernah menggunakannya untuk [mengelompokan komen-komen netizen](https://ikanx101.com/blog/blog-posting-sunyi/) pada suatu _web series_ di __Youtube__.
+
+Berbeda dengan LDA, prinsip yang digunakan saat ini adalah _clustering_ yang menurut saya lebih intuitif dan mudah untuk diikuti.
+
+Saya mulai _yah_.
+
+---
+
+
+
+
+
+
+
+
+
+
