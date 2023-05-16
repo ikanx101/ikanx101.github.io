@@ -286,8 +286,8 @@ do.call(rbind,key_final) |>
 Dari kedua *clusters* yang terbentuk terlihat ada 5 *keywords* per
 *cluster* yang membedakan satu sama lain.
 
-1.  Cluster 1: menjalani, menahan, efektif, membantu, dan program.
-2.  Cluster 2: enak, pas, bikin, oat, dan banget.
+1.  Cluster 1: susu, enak, diet, enek, dan manis.
+2.  Cluster 2: kekentalan, vanilla, rasa, oat, dan hambar.
 
 Dari 45 *reviews*, ternyata ada `44` *reviews* masuk ke dalam *cluster*
 1 dan hanya `1` *review* masuk ke dalam *cluster* 2.
@@ -397,6 +397,9 @@ do.call(rbind,key_final) |>
 Terlihat bahwa masing-masing *cluster* memiliki *keywords* yang
 berbeda-beda.
 
+1.  Cluster 1: ingin, dairy, favorit, dan susu.
+2.  Cluster 2: kekentalan, khawatir, vanilla, rasa, dan hambar.
+
 Saya akan buat grafik validasinya seperti pada bagian sebelumnya:
 
 ``` r
@@ -488,6 +491,12 @@ do.call(rbind,key_final) |>
 ```
 
 <img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/home%20tester%20club/tulisan%20ketiga/Posting_files/figure-gfm/unnamed-chunk-13-1.png" width="672" />
+
+Dari kedua *clusters* yang terbentuk terlihat ada 5 *keywords* per
+*cluster* yang membedakan satu sama lain.
+
+1.  Cluster 1: khawatir, ingin, dairy, rasa, dan hambar.
+2.  Cluster 2: rasa, kekentalan, vanilla, dan manis.
 
 Sebagai validasi, saya buat grafik yang serupa dengan bagian sebelumnya.
 
