@@ -521,10 +521,11 @@ Terlihat juga tidak ada pola yang jelas.
 
 # Kesimpulan
 
-- Dari beberapa metode di atas, cluster yang terbentuk sepertinya
+- Dari beberapa metode di atas, _clusters_ yang terbentuk sepertinya
   memiliki kesamaan *keywords*.
 - Hipotesis: *review* yang ada kurang panjang sehingga `tf-idf` yang
-  dihasilkan kurang memberikan hasil yang konklusif.
+  dihasilkan __kurang memberikan hasil yang konklusif__.
+- Hipotesis: _review_ yang ada memang hanya berisi topik-topik yang sejenis sehingga hasil _clustering_ di atas __sudah benar adanya__.
 
 ------------------------------------------------------------------------
 
