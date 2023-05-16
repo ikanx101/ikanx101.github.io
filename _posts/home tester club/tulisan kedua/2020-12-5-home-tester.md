@@ -12,7 +12,7 @@ tags:
   - Konsumen
   - Review Konsumen
   - Research
-  - RVest
+  - Rvest
 ---
 
 

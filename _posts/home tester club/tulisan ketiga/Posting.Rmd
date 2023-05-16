@@ -37,9 +37,9 @@ _Nah_, kali ini saya akan mencoba satu hal baru yang sebenarnya sudah lama dipen
 
 Jadi, metode _clustering_ atau pengelompokkan juga bisa diaplikasikan menggunakan teknik _unsupervised learning_ ini. Tujuannya jelas, yakni: __mengelompokan data teks menjadi beberapa kelompok yang homogen__.
 
-Buat rekan-rekan yang sudah terbiasa melakukan _text analysis_, biasanya untuk melakukan pengelompokan data teks, analisa yang digunakan adalah LDA (_Latent Dirichlet Allocation_). Saya pernah menggunakannya untuk [mengelompokan komen-komen netizen](https://ikanx101.com/blog/blog-posting-sunyi/) pada suatu _web series_ di __Youtube__.
+Buat rekan-rekan yang sudah terbiasa melakukan _text analysis_, biasanya untuk melakukan pengelompokan data teks, analisa yang digunakan adalah __LDA__ (_Latent Dirichlet Allocation_). Saya pernah menggunakannya untuk [mengelompokan komen-komen netizen](https://ikanx101.com/blog/blog-posting-sunyi/) pada suatu _web series_ di __Youtube__.
 
-Berbeda dengan LDA, prinsip yang digunakan saat ini adalah _clustering_ yang menurut saya lebih intuitif dan mudah untuk diikuti.
+Berbeda dengan __LDA__, prinsip yang digunakan saat ini adalah _clustering_ yang menurut saya lebih intuitif dan mudah untuk diikuti.
 
 Saya mulai _yah_.
 
@@ -52,7 +52,7 @@ Dulu, saya pernah juga [menganalisa _review_ produk-produk lain dari situs terse
 Saya mendapatkan `45` buah _reviews_. Berikut adalah sampel _review_-nya:
 
 ```{r,echo=FALSE}
-head(df)
+head(df) %>% knitr::kable()
 ```
 
 ### _Workflow_ Analisis
@@ -68,6 +68,8 @@ Untuk melakukan ketiga proses di atas, saya menggunakan `library(tidytext)` dari
 > Kenapa harus _bigrams_? Kenapa bukan _wordcloud_?
 
 Bagi saya, _bigrams_ menawarkan konteks dibanding kata semata. Maka harusnya saya bisa memilih kata-kata mana saja yang benar-benar tak bermakna untuk dibuang.
+
+### Tahap Pengerjaan I
 
 Sekarang saya akan buat langkah 1-3 serta _bigrams_ sebagai berikut:
 
@@ -102,7 +104,7 @@ bigram_plot =
   group_by(bigrams)|>
   tally(sort = T) |>
   ungroup() |>
-  head(30) |>
+  head(50) |>
   separate(bigrams,into = c("from","to"),sep = " ") %>% 
   graph_from_data_frame() %>% 
   ggraph(layout = 'fr') +
@@ -134,7 +136,9 @@ df$resp_id = 1:nrow(df)
 
 # kita ambil stopwords
 stop = readLines("https://raw.githubusercontent.com/ikanx101/ID-Stopwords/master/id.stopwords.02.01.2016.txt")
-stop = c(stop,"but","190ml","aja","880kkal","80kkal","abis")
+stop = c(stop,"but","190ml","aja","880kkal","80kkal","abis",
+         "sih","ajasi","karna","karena","dnegan","dgn","dg",
+         "untuk","utk","semoga","non","klu")
 
 # kita lakukan langkah 1-2
 df = 
@@ -147,7 +151,29 @@ df =
          komen = stringr::str_trim(komen)) |>
   unnest_tokens("words",komen) |>
   # remove stopwords
-  filter(!words %in% stop)
+  filter(!words %in% stop) |>
+  mutate(words = gsub("oatnya|oats","oat",words),
+         words = gsub("bgt","banget",words),
+         words = gsub("bangett","banget",words),
+         words = gsub("bener|benar ","benar",words),
+         words = gsub("eneg","enek",words),
+         words = gsub("tetep","tetap",words),
+         words = gsub("manisnya","manis",words),
+         words = gsub("baunya","bau",words),
+         words = gsub("cobain","coba",words),
+         words = gsub("asa","rasa",words,fixed = T),
+         words = gsub("kosan","kost",words),
+         words = gsub("pengganti","alternatif",words),
+         words = gsub("ngurangin","kurang",words),
+         words = gsub("tastenya","taste",words),
+         words = gsub("banyakk","banyak",words),
+         words = gsub("kalorinya","kalori",words),
+         words = gsub("kemrasan","kemasan",words),
+         words = gsub("berrasa|perrasa","rasa",words),
+         words = gsub("labelnya","label",words),
+         words = gsub("sehat2","sehat",words),
+         words = gsub("pingin","ingin",words)
+         )
 
 # mengembalikan ke bentuk awal
 raw = 
@@ -163,7 +189,7 @@ bigram_plot =
   group_by(bigrams)|>
   tally(sort = T) |>
   ungroup() |>
-  head(30) |>
+  head(50) |>
   separate(bigrams,into = c("from","to"),sep = " ") %>% 
   graph_from_data_frame() %>% 
   ggraph(layout = 'fr') +
@@ -178,18 +204,338 @@ bigram_plot
 
 ```
 
+Karena _reviews_ yang ada berbahasa Indonesia, saya sengaja tidak melakukan _stemming_ kata menjadi kata dasar. Kenapa?
+
+> Saya belum menemukan _library_ yang tepat dan baik untuk melakukan _stemming_ Bahasa Indonesia.
+
+Jika rekan-rekan memiliki saran terkait ini, _let me know_ _yah_.
+
+### Tahap Pengerjaan II
+
+Sekarang kita masuk ke tahap berikutnya, yakni kita akan mencari `tf-idf`. Untuk melakukannya saya akan gunakan _library_ di __R__ yang terkait dengan __NLP__, yakni `library(tm)`. Kelak `tf-idf` akan dijadikan basis pembuatan _cluster_.
+
+Oke, mungkin ada yang bertanya-tanya:
+
+> Apa itu `tf-idf`?
+
+`tf-idf` adalah singkatan dari _term frequency - inverse document frequency_. 
+
+- _Term-frequency_ adalah perhitungan frekuensi dari kata-kata per dokumen. Analoginya adalah kita mencari kata-kata yang __populer__ dari suatu dokumen.
+- _Inverse document frequency_ adalah perhitungan frekuensi dari kata-kata dari semua himpunan dokumen. Analoginya adalah kita mencari kata-kata yang ___unique___ dari suatu dokumen. Diharapkan kata-kata ini menjadi pembeda antara satu dokumen dengan dokumen lainnya.
+
+`tf-idf` sendiri adalah perhitungan skor yang melibatkan kedua perhitungan di atas. Di __R__, perhitungan ini sudah otomatis menggunakan `library(tm)`.
+
+```{r,warning=FALSE,message=FALSE}
+library(tm)
+
+# membuat corpus terlebih dahulu
+corpus_clean = Corpus(VectorSource(raw$komen))
+# membuat document term matrix
+tdm          = DocumentTermMatrix(corpus_clean)
+# membuat tf-idf
+tdm_tfidf    = weightTfIdf(tdm)
+
+# kita filter hanya fitur-fitur yang penting saja
+tdm_tfidf    = removeSparseTerms(tdm_tfidf,.9999)
+
+# sedangkan ini kita buat dalam bentuk matriks
+# output dari skrip ini adalah data frame sebagai input untuk
+# algoritma k-means cluster
+tfidf_matrix = as.matrix(tdm_tfidf)
+# output dari skrip ini sebagai input untuk algoritma 
+# hierarchical cluster perhitungan jarak dengan metode cosine
+dist_matrix  = proxy::dist(tfidf_matrix,method = "cosine")
+```
+
+---
+
+### Tahap Pengerjaan III: _Clustering Analysis_
+
+Pengerjaan _clustering_ untuk data teks yang sudah kita ubah sama halnya dengan data numerik pada umumnya. Tutorialnya bisa rekan-rekan lihat di [tulisan saya sebelumnya](https://ikanx101.com/blog/clustering-R/).
+
+#### __k-means__ ___clustering___
+
+Pertama-tama, kita akan lakukan teknik k-means _clustering_. Langkah awal yang harus dilakukan adalah menentukan nilai `k` dengan beberapa metode, seperti _elbow_ dan _silhouette_.
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,fig.retina=4}
+library(factoextra)
+
+# metode elbow
+elbow = fviz_nbclust(tfidf_matrix,
+                     kmeans, method = "wss")
+plot(elbow)
+
+# metode silhouette
+silu  = fviz_nbclust(tfidf_matrix, 
+                     kmeans, method = "silhouette")
+plot(silu)
+```
+
+Terlihat dari metode di atas, kita akan ambil nilai `k = 2`. Maka dari itu, kita akan _run_ algoritmanya sebagai berikut:
+
+```{r,message=FALSE,warning=FALSE,fig.retina=4}
+# run algoritma
+final  = kmeans(tfidf_matrix,2,nstart = 25)
+
+# ==================================================
+# mengambil keywords dari masing-masing cluster
+
+# mengubah ke data frame
+result = 
+  final$centers |> 
+  as.data.frame()
+
+# memisalkan per cluster
+result = 
+  result |>
+  mutate(id = 1:nrow(result)) |>
+  reshape2::melt(id.var = "id") %>% 
+  group_split(id)
+
+# function ambil keywords
+ambil_keywords = function(list){
+  list |>
+    arrange(desc(value)) |>
+    head(5)
+}
+
+# mengambil keywords dengan parallel processing
+library(parallel)
+num_cores = detectCores()
+key_final = mclapply(result,ambil_keywords,
+                     mc.cores = num_cores) 
+
+do.call(rbind,key_final) |>
+  ggplot(aes(x = reorder(variable,id),y = value,
+             fill = as.factor(id))) +
+  geom_col(color = "black") +
+  coord_flip() +
+  labs(title    = "Cluster Centers",
+       subtitle = "Keywords masing-masing cluster dengan metode k-means",
+       caption  = "dibuat dengan R\nikanx101.com",
+       y        = "Nilai pusat cluster",
+       x        = "Keywords",
+       fill     = "Cluster") +
+  scale_fill_manual(values = c("darkgreen","steelblue")) +
+  theme_minimal() +
+  theme(axis.text.x = element_blank())
+```
+
+Dari kedua _clusters_ yang terbentuk terlihat ada 5 _keywords_ per _cluster_ yang membedakan satu sama lain.
+
+1. Cluster 1: menjalani, menahan, efektif, membantu, dan program.
+1. Cluster 2: enak, pas, bikin, oat, dan banget.
+
+Dari 45 _reviews_, ternyata ada `44` _reviews_ masuk ke dalam _cluster_ 1 dan hanya `1` _review_ masuk ke dalam _cluster_ 2.
+
+> Terlihat bahwa k-means bisa jadi tidak terlalu konklusif dalam mengelompokan data _reviews_ ini.
+
+Hipotesis saya, hal ini terjadi karena _review_ yang ada terlalu pendek (1-3 kalimat saja). Sedangkan metode k-means akan lebih _ngefek_ jika data teks per `id` banyak (berupa paragraf atau tulisan panjang).
+
+Saya akan buat grafik untuk validasi sebagai berikut:
+
+```{r,message=FALSE,warning=FALSE,fig.retina=4}
+# membuat data frame dengan menambahkan hasil cluster
+validasi_k_means = 
+  tfidf_matrix |>
+  as.data.frame() |>
+  mutate(cluster = final$cluster) |>
+  arrange(cluster) |>
+  select(-cluster)
+
+# membuat matriks jarak
+validasi_matrix  = proxy::dist(validasi_k_means,
+                               method = "cosine",
+                               diag   = T,
+                               upper  = T)
+
+# membuat grafik dari matriks jarak
+df = reshape2::melt(as.matrix(validasi_matrix), 
+                    varnames = c("row", "col"))
+df |> 
+  ggplot(aes(x = row,y = col)) + 
+  geom_tile(aes(fill = value)) +
+  theme_void()
+```
+
+Secara grafik, (_personally_) tidak terlihat hasil _clustering_ yang baik.
+
+#### ___hierarchical clustering___
+
+Sekarang kita akan gunakan teknik _hierarchical clustering_ dengan pendekatan perhitungan jarak antar _cluster_ dengan metode `ward.D2`.
+
+Berikut adalah dendogram hasil _run_ algoritma-nya:
+
+```{r,message=FALSE,warning=FALSE,fig.retina=4}
+set.seed(240)  # Setting seed
+
+# perhitungan cluster
+clus_hie = hclust(dist_matrix,method = "ward.D2")
+plot(clus_hie)
+rect.hclust(clus_hie, k = 2, border = "red")
+
+# kita simpan clusternya
+fit = cutree(clus_hie, k = 2)
+```
+
+Terlihat ada `2` _clusters_ besar yang terbentuk. Kita akan ambil _keywords_ dari kedua _clusters_ tersebut:
+
+```{r,message=FALSE,warning=FALSE,fig.retina=4}
+# membuat data frame dengan menambahkan hasil cluster
+result_hie = 
+  tfidf_matrix |>
+  as.data.frame() |>
+  mutate(cluster = fit)
+
+# memisalkan per cluster
+result_hie_per_cluster = 
+  result_hie |>
+  reshape2::melt(id.var = "cluster") |>
+  group_split(cluster)
+
+# mengambil keywords dengan parallel processing
+key_final = mclapply(result_hie_per_cluster,ambil_keywords,
+                     mc.cores = num_cores) 
+
+do.call(rbind,key_final) |>
+  group_by(cluster,variable) |>
+  summarise(value = mean(value)) |>
+  ungroup() |>
+  ggplot(aes(x = reorder(variable,cluster),y = value,
+             fill = as.factor(cluster))) +
+  geom_col(color = "black") +
+  coord_flip() +
+  labs(title    = "Cluster Centers",
+       subtitle = "Keywords masing-masing cluster dengan metode hierarki",
+       caption  = "dibuat dengan R\nikanx101.com",
+       y        = "Nilai pusat cluster",
+       x        = "Keywords",
+       fill     = "Cluster") +
+  #scale_fill_manual(values = c("darkgreen","steelblue")) +
+  theme_minimal() +
+  theme(axis.text.x = element_blank())
+```
+
+Terlihat bahwa masing-masing _cluster_ memiliki _keywords_ yang berbeda-beda.
+
+Saya akan buat grafik validasinya seperti pada bagian sebelumnya:
+
+```{r,message=FALSE,warning=FALSE,fig.retina=4}
+validasi_hie = 
+  result_hie |> 
+  arrange(cluster) |> 
+  select(-cluster)
+
+# membuat matriks jarak
+validasi_matrix  = proxy::dist(validasi_hie,
+                               method = "cosine",
+                               diag   = T,
+                               upper  = T)
+
+# membuat grafik dari matriks jarak
+df = reshape2::melt(as.matrix(validasi_matrix), 
+                    varnames = c("row", "col"))
+df |> 
+  ggplot(aes(x = row,y = col)) + 
+  geom_tile(aes(fill = value)) +
+  theme_void()
+```
+
+#### ___DBScan clustering___
+
+Metode _clustering_ terakhir yang hendak saya coba adalah _DBScan_ alias _density-based_. Penjelasannya, bisa dilihat di [tulisan saya sebelumnya](https://ikanx101.com/blog/clustering-R/#dbscan).
+
+```{r,message=FALSE,warning=FALSE,fig.retina=4}
+library(fpc)
+library(dbscan)
+
+# membuat data frame
+df = 
+  tfidf_matrix |>
+  as.data.frame() 
+
+# menentukan nilai cut-off h
+dbscan::kNNdistplot(df, k = 30)
+abline(h = 1.98, lty = 2, col = "red")
+```
+
+Setelah menemukan nilai `h`, kita run algoritmanya:
+
+```{r,message=FALSE,warning=FALSE,fig.retina=4}
+# melakukan clustering
+Dbscan_cl  = dbscan(df, eps = 1.98, minPts = 5)
+df$cluster = Dbscan_cl$cluster
+```
+
+Sekarang saya cari _keywords_ untuk masing-masing _cluster_.
+
+```{r,message=FALSE,warning=FALSE,fig.retina=4}
+# membuat data frame hasil
+result_dbs = df
+
+# memisalkan per cluster
+result_dbs_per_cluster = 
+  result_dbs |>
+  reshape2::melt(id.var = "cluster") |>
+  group_split(cluster)
+
+# mengambil keywords dengan parallel processing
+key_final = mclapply(result_dbs_per_cluster,ambil_keywords,
+                     mc.cores = num_cores) 
+
+do.call(rbind,key_final) |>
+  group_by(cluster,variable) |>
+  summarise(value = mean(value)) |>
+  ungroup() |>
+  ggplot(aes(x = reorder(variable,cluster),y = value,
+             fill = as.factor(cluster))) +
+  geom_col(color = "black") +
+  coord_flip() +
+  labs(title    = "Cluster Centers",
+       subtitle = "Keywords masing-masing cluster dengan metode density-based",
+       caption  = "dibuat dengan R\nikanx101.com",
+       y        = "Nilai pusat cluster",
+       x        = "Keywords",
+       fill     = "Cluster") +
+  #scale_fill_manual(values = c("darkgreen","steelblue")) +
+  theme_minimal() +
+  theme(axis.text.x = element_blank())
+```
+
+Sebagai validasi, saya buat grafik yang serupa dengan bagian sebelumnya.
+
+```{r,message=FALSE,warning=FALSE,fig.retina=4}
+# menyiapkan data untuk visualisasi
+validasi_dbs = 
+  df |> 
+  arrange(cluster) |> 
+  select(-cluster)
+
+# membuat matriks jarak
+validasi_matrix  = proxy::dist(validasi_dbs,
+                               method = "cosine",
+                               diag   = T,
+                               upper  = T)
+
+# membuat grafik dari matriks jarak
+df = reshape2::melt(as.matrix(validasi_matrix), 
+                    varnames = c("row", "col"))
+df |> 
+  ggplot(aes(x = row,y = col)) + 
+  geom_tile(aes(fill = value)) +
+  theme_void()
+```
+
+Terlihat juga tidak ada pola yang jelas.
+
+---
+
+# Kesimpulan
+
+- Dari beberapa metode di atas, cluster yang terbentuk sepertinya memiliki kesamaan _keywords_.
+- Hipotesis: _review_ yang ada kurang panjang sehingga `tf-idf` yang dihasilkan kurang memberikan hasil yang konklusif.
 
 
+---
 
-
-
-
-
-
-
-
-
-
-
-
-
+`if you find this article helpful, support this blog by clicking the ads.`
