@@ -81,7 +81,7 @@ Dari ekspresi tersebut, kita bisa membagi-bagi masalah optimisasi tergantung dar
 
 Masalah optimisasi bisa dibagi dua menjadi dua kategori berdasarkan tipe _variables_ yang terlibat^[Optimization problem. https://en.wikipedia.org/wiki/Optimization_problem], yakni:
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center',fig.cap="Optimisasi Berdasarkan Jenis Variabel"}
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center',fig.cap="Optimisasi Berdasarkan Jenis Variabel",fig.retina=4}
 nomnoml::nomnoml("#direction: down
                  [Optimisasi] -> [Diskrit]
                  [Optimisasi] -> [Kontinu]
@@ -107,7 +107,7 @@ nomnoml::nomnoml("#direction: down
 
 Selain itu, kita juga bisa membagi masalah optimisasi berdasarkan __kepastian nilai__ ___variable___ __dan parameter__ yang dihadapi sebagai berikut:
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center',fig.cap="Optimisasi Berdasarkan Kepastian Nilai"}
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center',fig.cap="Optimisasi Berdasarkan Kepastian Nilai",fig.retina=4}
 nomnoml::nomnoml("#direction: down
                  [Optimisasi] -> [Uncertainty]
                  [Optimisasi] -> [Certain|Deterministic]
