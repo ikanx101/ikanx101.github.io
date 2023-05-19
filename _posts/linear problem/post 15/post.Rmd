@@ -9,6 +9,9 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 
 setwd("~/ikanx101.github.io/_posts/linear problem/post 15")
+
+library(dplyr)
+library(tidyr)
 ```
 
 # JENIS OPTIMISASI
@@ -45,7 +48,7 @@ Sebagai contoh, variabel yang merupakan bilangan bulat adalah banyak orang.
 
 ### Contoh _Integer Programming_
 
-#### Jadwal Kebutuhan Tenaga Kesehatan {-}
+#### Jadwal Kebutuhan Tenaga Kesehatan
 
 Suatu rumah sakit membutuhkan tenaga kesehatan setiap harinya dengan spesifikasi berikut:
 
@@ -165,7 +168,7 @@ _MILP_ secara eksak bisa diselesaikan dengan metode _simplex_ dengan dikombinasi
 
 ### Contoh _MILP_
 
-#### Pemilihan dan Penentuan Item Produksi {-}
+#### Pemilihan dan Penentuan Item Produksi
 
 Suatu pabrik makanan dan minuman berencana untuk membuat tiga produk baru yang bisa diproduksi di dua _plants_ yang berbeda.
 
