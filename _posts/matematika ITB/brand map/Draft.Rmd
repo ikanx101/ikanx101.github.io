@@ -1,0 +1,49 @@
+---
+title: "Mengenal Brand Map / Perceptual Map dalam Market Research"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+rm(list=ls())
+setwd("~/ikanx101.github.io/_posts/matematika ITB/brand map")
+
+rm(list=ls())
+
+library(dplyr)
+library(tidyr)
+
+df = mtcars |> mutate(merek = row.names(mtcars)) |> 
+     select(merek,mpg,disp,hp,wt,qsec) |>
+     separate(merek,
+              into = c("merek","dummy"),
+              sep  = " ") |>
+     group_by(merek) |>
+     summarise_all(mean) |>
+     ungroup() |>
+     select(-dummy) |>
+     as.data.frame()
+
+```
+
+
+```{r}
+row.names(df) = df$merek
+df$merek      = NULL
+df
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
