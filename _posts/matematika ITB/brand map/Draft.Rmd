@@ -51,6 +51,19 @@ Berikut adalah grafik 2D pasangan antar variabel:
 pairs(df)
 ```
 
+> Apa perbedaan PCA dengan cluster analysis?
+
+Sekilas keduanya memiliki kemiripan, namun sejatinya ada perbedaan besar dari tujuan utama analisa, yakni:
+
+1. _Cluster analysis_ mengelompokkan responden berdasarkan respon yang diberikan. Maka data yang digunakan adalah _raw data_ hasil respon.
+1. _PCA_ memetakan _brand_ dan persepsi. Maka data yang digunakan adalah tabulasi akhir _brand_ dan persepsi.
+
+Jadi terlihat jelas perbedaannya ya.
+
+---
+
+Berdasarkan data tabulasi di atas
+
 ```{r}
 library(factoextra)
 
