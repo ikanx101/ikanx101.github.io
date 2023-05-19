@@ -31,13 +31,15 @@ Di dunia _market research_, ada satu metode analisa yang disebut dengan _brand m
 
 Secara mudah, analisa tersebut bisa membantu _market researcher_ untuk memetakan _brand_ dan persepsi dalam satu grafik yang sama. Peta _brand_ dan _perception_ tersebut dibuat berdasarkan prinsip _dimension reduction_ dengan titik lokasi yang relatif satu sama lain.
 
+Sebagai contoh, misalkan saya memiliki data tabulasi hasil survey sebagai berikut:
 
-
-```{r}
+```{r,echo=FALSE}
 row.names(df) = df$merek
 df$merek      = NULL
-df
+df |> knitr::kable()
 ```
+
+Tabulasi di atas menunjukkan berapa "nilai" masing-masing merek `mobil` terhadap masing-masing `persepsi`.
 
 ```{r}
 library(factoextra)
