@@ -66,13 +66,20 @@ Berdasarkan data tabulasi di atas, saya akan membuat _brand map_-nya dengan __R_
 
 Langkah yang dilakukan juga cukup sederhana, pertama-tama:
 
-```{r}
+```{r, warning=FALSE,message=FALSE}
+# panggil library
+# jangan lupa untuk menginstallnya terlebih dahulu
 library(factoextra)
 
-res.pca <- prcomp(df, scale = TRUE)
+# membuat pca dengan melakukan scaling terlebih dahulu
+res.pca = prcomp(df, scale = TRUE)
+
 fviz_eig(res.pca)
 ```
 
+Jika diperhatikan, ada skrip perintah untuk melakukan _scaling_. Hal ini diperlukan karena masing-masing variabel atau dimensi memiliki rentang nilai atau satuan yang berbeda-beda. Maka dari itu, _scaling_ berguna untuk mengeliminir bias yang terjadi.
+
+Grafik yang dikeluarkan dari skrip di atas menunjukan bahwa dari 
 
 ```{r}
 fviz_pca_ind(res.pca,
