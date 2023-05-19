@@ -39,7 +39,17 @@ df$merek      = NULL
 df |> knitr::kable()
 ```
 
-Tabulasi di atas menunjukkan berapa "nilai" masing-masing merek `mobil` terhadap masing-masing `persepsi`.
+Tabulasi di atas menunjukkan berapa "nilai" masing-masing merek `mobil` terhadap masing-masing `persepsi`. Analisa _brand map_ bisa membantu untuk memetakan _brand_ mana saja yang dekat dengan _brand_ lain atau suatu persepsi secara relatif.
+
+Cara kerjanya adalah dengan memanfaatkan prinsip _dimension reduction_, yakni mengecilkan banyaknya dimensi atau variabel yang terlibat dengan mencari vektor eigen (pembangun) secara aljabar.
+
+Sebagai contoh di atas, kita ketahui ada lima variabel (dimensi) yang terlibat. Sayangnya kita hanya mampu membuat grafik 2D - 3D saja. Selebihnya, kita tidak bisa menggambarkannya. Namun secara aljabar, "barang" n-dimensi itu ada wujudnya.
+
+Berikut adalah grafik 2D pasangan antar variabel:
+
+```{r,echo=FALSE}
+pairs(df)
+```
 
 ```{r}
 library(factoextra)
