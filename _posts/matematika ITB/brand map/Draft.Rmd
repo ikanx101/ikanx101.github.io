@@ -101,6 +101,7 @@ fviz_pca_var(res.pca,
              )
 ```
 
+1. 
 
 ```{r}
 fviz_pca_biplot(res.pca, repel = TRUE,
