@@ -62,7 +62,9 @@ Jadi terlihat jelas perbedaannya ya.
 
 ---
 
-Berdasarkan data tabulasi di atas
+Berdasarkan data tabulasi di atas, saya akan membuat _brand map_-nya dengan __R__. _Library_ yang saya gunakan adalah 'factoextra', _library_ yang sama dengan _cluster analysis_.
+
+Langkah yang dilakukan juga cukup sederhana, pertama-tama:
 
 ```{r}
 library(factoextra)
