@@ -27,6 +27,11 @@ df = mtcars |> mutate(merek = row.names(mtcars)) |>
 
 ```
 
+Di dunia _market research_, ada satu metode analisa yang disebut dengan _brand map_ atau _perceptual map_. Analisa tersebut di ilmu matematika disebut dengan _principal component analysis_ (__PCA__).
+
+Secara mudah, analisa tersebut bisa membantu _market researcher_ untuk memetakan _brand_ dan persepsi dalam satu grafik yang sama. Peta _brand_ dan _perception_ tersebut dibuat berdasarkan prinsip _dimension reduction_ dengan titik lokasi yang relatif satu sama lain.
+
+
 
 ```{r}
 row.names(df) = df$merek
