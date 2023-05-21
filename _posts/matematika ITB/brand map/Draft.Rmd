@@ -85,14 +85,26 @@ Grafik yang dikeluarkan dari skrip di atas menunjukan bahwa dari 5 variabel yang
 
 Selanjutnya, saya membuat _brand map_ sebagai berikut:
 
-```{r}
+### _Individual Map_
+
+> _Graph of individuals: individuals with a similar profile are grouped together._
+
+```{r,warning=FALSE,message=FALSE}
 # per brand only - brand map
 fviz_pca_ind(res.pca,
              col.ind = "cos2", # Color by the quality of representation
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
              repel = TRUE     # Avoid text overlapping
              )
+```
 
+Kita bisa lihat bahwa beberapa merek mobil yang memiliki nilai "persepsi" yang mirip saling berdekatan.
+
+### _Graph of Variables_
+
+> _Positive correlated variables point to the same side of the plot. Negative correlated variables point to opposite sides of the graph._
+
+```{r,warning=FALSE,message=FALSE}
 # per variable only - brand map
 fviz_pca_var(res.pca,
              col.var = "contrib", # Color by contributions to the PC
@@ -101,7 +113,9 @@ fviz_pca_var(res.pca,
              )
 ```
 
-1. 
+### _Biplot_
+
+> _Biplot: maps of individuals and variables._
 
 ```{r}
 fviz_pca_biplot(res.pca, repel = TRUE,
@@ -110,8 +124,4 @@ fviz_pca_biplot(res.pca, repel = TRUE,
                 )
 ```
 
-
-
-
-
-
+Grafik di atas menggabungkan dua grafik sebelumnya. Kita bisa lihat posisi relatif antara merek dan persepsi yang ada di survey.
