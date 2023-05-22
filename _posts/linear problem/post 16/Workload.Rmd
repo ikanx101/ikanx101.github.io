@@ -1,0 +1,22 @@
+---
+title: "Untitled"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+rm(list=ls())
+
+library(dplyr)
+library(ompr)
+library(ompr.roi)
+library(ROI.plugin.glpk)
+```
+
+# Masalah
+
+Dalam suatu _workcenter_, terdapat beberapa orang pekerja yang bekerja selama 5 hari kerja dalam seminggu. Jam kerja per harinya adalah selama 7 jam saja. Dalam seminggu, ada banyak _request_ pekerjaan yang masuk ke dalam _workcenter_ tersebut.
+
