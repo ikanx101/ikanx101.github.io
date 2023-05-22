@@ -22,9 +22,10 @@ load("soal.rda")
 bin_prog = 
   MIPModel() %>%
   # menambah variabel
-  add_variable(x[i,j],
-               i = 1:6,
+  add_variable(x[i,j,k],
+               i = 1:4,
                j = 1:4,
+               k = 1:30,
                type = "binary",
                lb = 0) %>%
   # membuat objective function

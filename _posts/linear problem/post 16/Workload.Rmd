@@ -65,7 +65,22 @@ Saya definisikan indeks sebagai berikut:
 - $j = 1,..,4$ sebagai hari.
 - $k = 1,..,30$ sebagai _request_.
 
-Misalkan $x_{ijk}$
+Misalkan $x_{ijk}$ _binary_:
+
+- $x_{ijk} = 1$, jika pekerja $i$ pada hari $j$ mengerjakan $k$.
+- $x_{ijk} = 0$, lainnya.
+
+## Parameter
+
+Dari informasi yang ada, parameter yang terlibat:
+
+- $T = 7$ merupakan jam kerja maksimum.
+- $T_{max} = 9$ merupakan jam kerja lembur yang diperbolehkan 2 kali seminggu.
+
+## _Constraints_
+
+
+
 
 
 
