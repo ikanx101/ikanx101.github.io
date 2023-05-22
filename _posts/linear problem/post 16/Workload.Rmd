@@ -57,8 +57,15 @@ Bagaimana membangun modelnya? Mari kita mulai.
 
 _Oh iya_, berhubung rekan saya tidak memerlukan jadwal detail per jam, maka saya akan buat model yang simpel (_output_-nya tetap bisa menunjukkan siapa mengerjakan apa di hari ke berapa).
 
+## _Decision Variable_
 
+Saya definisikan indeks sebagai berikut:
 
+- $i = 1,..,4$ sebagai pekerja.
+- $j = 1,..,4$ sebagai hari.
+- $k = 1,..,30$ sebagai _request_.
+
+Misalkan $x_{ijk}$
 
 
 
