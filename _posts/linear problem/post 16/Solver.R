@@ -19,6 +19,9 @@ load("soal.rda")
 # kegiatan  : k = 1:30
 # kita definisikan x[i,j,k] binary
 
+# kita simpan dulu vektor waktu
+t = df_req$waktu_kerja
+
 bin_prog = 
   MIPModel() %>%
   # menambah variabel
@@ -29,10 +32,11 @@ bin_prog =
                type = "binary",
                lb = 0) %>%
   # membuat objective function
-  set_objective(sum_expr(waktu[i,j]*x[i,j],
-                         i = 1:6,
-                         j = 1:4),
-                "min") %>%
+  set_objective(sum_expr(x[i,j,k] * t[k],
+                         i = 1:4,
+                         j = 1:4,
+                         k = 1:30),
+                "min") 
   # constraint 1
   add_constraint(sum_expr(x[i,j],i = 1:6) == 1,
                  j = 1:4) %>%
@@ -49,4 +53,4 @@ hasil =
 
 
 hasil %>%
-  get_solution(x[i,j])
+  get_solution(x[i,j,k])

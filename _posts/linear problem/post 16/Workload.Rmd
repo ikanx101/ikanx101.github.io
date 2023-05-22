@@ -76,10 +76,15 @@ Dari informasi yang ada, parameter yang terlibat:
 
 - $T = 7$ merupakan jam kerja maksimum.
 - $T_{max} = 9$ merupakan jam kerja lembur yang diperbolehkan 2 kali seminggu.
+- $t_k$ merupakan waktu kerja kegiatan $k$.
 
 ## _Constraints_
 
+## _Objective Function_
 
+Meminimumkan jam kerja _team member_.
+
+$$\min \sum{x_{ijk} \times t_k}$$
 
 
 

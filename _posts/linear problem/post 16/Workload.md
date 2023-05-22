@@ -100,3 +100,30 @@ Saya definisikan indeks sebagai berikut:
 
 Misalkan
 ![x\_{ijk}](https://latex.codecogs.com/png.latex?x_%7Bijk%7D "x_{ijk}")
+*binary*:
+
+- ![x\_{ijk} = 1](https://latex.codecogs.com/png.latex?x_%7Bijk%7D%20%3D%201 "x_{ijk} = 1"),
+  jika pekerja ![i](https://latex.codecogs.com/png.latex?i "i") pada
+  hari ![j](https://latex.codecogs.com/png.latex?j "j") mengerjakan
+  ![k](https://latex.codecogs.com/png.latex?k "k").
+- ![x\_{ijk} = 0](https://latex.codecogs.com/png.latex?x_%7Bijk%7D%20%3D%200 "x_{ijk} = 0"),
+  lainnya.
+
+## Parameter
+
+Dari informasi yang ada, parameter yang terlibat:
+
+- ![T = 7](https://latex.codecogs.com/png.latex?T%20%3D%207 "T = 7")
+  merupakan jam kerja maksimum.
+- ![T\_{max} = 9](https://latex.codecogs.com/png.latex?T_%7Bmax%7D%20%3D%209 "T_{max} = 9")
+  merupakan jam kerja lembur yang diperbolehkan 2 kali seminggu.
+- ![t_k](https://latex.codecogs.com/png.latex?t_k "t_k") merupakan waktu
+  kerja kegiatan ![k](https://latex.codecogs.com/png.latex?k "k").
+
+## *Constraints*
+
+## *Objective Function*
+
+Meminimumkan jam kerja *team member*.
+
+![\min \sum{x\_{ijk} \times t_k}](https://latex.codecogs.com/png.latex?%5Cmin%20%5Csum%7Bx_%7Bijk%7D%20%5Ctimes%20t_k%7D "\min \sum{x_{ijk} \times t_k}")
