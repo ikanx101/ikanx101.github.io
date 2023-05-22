@@ -1,0 +1,30 @@
+---
+title: "Pentingnya Kita Memahami Cara Kerja Algoritma di R (atau Python)"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+setwd("~/ikanx101.github.io/_posts/training R/4c")
+```
+
+Dulu ketika pertama kali belajar __R__ dan _Python_, hal yang saya lakukan adalah membuat "kamus" sendiri terkait semua perintah dan algoritma yang akan sering saya gunakan dalam pekerjaan saya di _market research_ dan data sains. Saking bersemangatnya, saya menuliskan "kamus" tersebut di salah satu _binder_. Setelah itu baru saya tulis ulang "kamus" tersebut di _Google Keep_ agar lebih mudah bagi saya untuk mencarinya dengan fitur _search_ yang ada.
+
+Selain menuliskan algoritmanya, salah satu bagian penting dari "kamus" tersebut adalah menuliskan cara kerja dari algoritma tersebut.
+
+> Sebenarnya tidak harus menuliskan cara kerja yang detail karena bisa jadi kita belum terlalu paham seperti apa.
+
+Oleh karena itu, minimal saya menuliskan __tiga bagian penting__ dari masing-masing algoritma tersebut. Apa itu?
+
+1. _Input_,
+    - Saya menaruh banyak catatan penting pada bagian ini. _Input_ suatu algoritma sangatlah penting karena menentukan apakah algoritma yang telah kita tulis bisa berjalan dengan sempurna atau tidak.
+    - Sebagai contoh, untuk membuat model _machine learning_ berbasis `caret`, diperlukan _input_ berupa `data.frame`. Sedangkan jika kita membuat model _deep learning_ di `keras` dan `tensorflow`, kita memerlukan input berupa `matrix`.
+    - Beberapa algoritma lain bahkan memiliki input berupa `list` atau `vector` biasa.
+1. _Process_,
+    - Mengenai _process_, sebaiknya kita memahami proses matematis atau statistika yang berjalan.
+    - Seandainya tidak (atau tidak mau. _hehe_) sebaiknya kita paham tujuan dari algoritma ini apa.
+    - Dengan demikian kita bisa memadu-madankan dengan tujuan dari analisa kita ini apa.
+    - Contoh sederhana: misal kita hendak menentukan dari produk `A`, `B` dan `C` mana yang memiliki rata-rata penjualan harian terbesar. Maka kita tidak akan memilih analisa _Annova_. Lebih baik kita menggunakan analisa _t-test_ dengan menghitung signifikansi dari semua pasang sampel yang ada.
+1. _Output_.
+  - Pada bagian ini, kita sebaiknya paham apa barang yang dihasilkan dari algoritma ini.
