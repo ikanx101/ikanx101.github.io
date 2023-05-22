@@ -1,5 +1,20 @@
-Mengenal Brand Map / Perceptual Map dalam Market Research
-================
+---
+date: 2023-05-22T07:54:00-04:00
+title: "Mengenal Brand Map / Perceptual Map dalam Market Research"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - Matematika
+  - Perceptual Map
+  - Brand Map
+  - Dimension Reduction
+  - Principal Component Analysis
+  - Market Research
+  - Survey
+---
+
 
 Di dunia *market research*, ada satu metode analisa yang disebut dengan
 *brand map* atau *perceptual map*. Analisa tersebut di ilmu matematika
