@@ -27,4 +27,8 @@ Oleh karena itu, minimal saya menuliskan __tiga bagian penting__ dari masing-mas
     - Dengan demikian kita bisa memadu-madankan dengan tujuan dari analisa kita ini apa.
     - Contoh sederhana: misal kita hendak menentukan dari produk `A`, `B` dan `C` mana yang memiliki rata-rata penjualan harian terbesar. Maka kita tidak akan memilih analisa _Annova_. Lebih baik kita menggunakan analisa _t-test_ dengan menghitung signifikansi dari semua pasang sampel yang ada.
 1. _Output_.
-  - Pada bagian ini, kita sebaiknya paham apa barang yang dihasilkan dari algoritma ini.
+    - Pada bagian ini, kita sebaiknya paham apa barang yang dihasilkan dari algoritma ini, dalam hal:
+        - Tipe data yang dihasilkan, apakah berbentuk `list`, `vector`, `matrix`, atau `data.frame`.
+        - Cara membaca atau menginterpretasikan hasil algoritma.
+        
+Semoga tips dan trik di atas bisa berguna buat rekan-rekan semua.
