@@ -122,6 +122,23 @@ Dari informasi yang ada, parameter yang terlibat:
 
 ## *Constraints*
 
+Kita akan turunkan formula untuk *constraints* dari aturan kerja yang
+ada.
+
+**Pertama** Setiap *request* yang muncul hanya boleh dikerjakan oleh
+satu orang *team member* saja.
+
+![\forall k \sum\_{ij} x\_{ijk} = 1](https://latex.codecogs.com/png.latex?%5Cforall%20k%20%5Csum_%7Bij%7D%20x_%7Bijk%7D%20%3D%201 "\forall k \sum_{ij} x_{ijk} = 1")
+
+1.  *Team member* diperbolehkan lembur maksimum 2 jam perhari. Namun
+    hanya diperbolehkan seminggu maksimum 2 kali lembur.
+2.  Pekerjaan harus diselesaikan pada hari itu (tidak boleh terputus
+    atau ganti hari).
+3.  Pekerjaan yang memakan waktu
+    ![\geq](https://latex.codecogs.com/png.latex?%5Cgeq "\geq") 4 jam
+    sebisa mungkin disebar merata (tidak boleh hanya dikerjakan oleh
+    orang yang itu-itu saja).
+
 ## *Objective Function*
 
 Meminimumkan jam kerja *team member*.

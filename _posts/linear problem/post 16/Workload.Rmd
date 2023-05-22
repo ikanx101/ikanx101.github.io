@@ -80,6 +80,18 @@ Dari informasi yang ada, parameter yang terlibat:
 
 ## _Constraints_
 
+Kita akan turunkan formula untuk _constraints_ dari aturan kerja yang ada.
+
+__Pertama__ Setiap _request_ yang muncul hanya boleh dikerjakan oleh satu orang _team member_ saja.
+
+$$\forall k \sum_{ij} x_{ijk} = 1$$
+
+
+1. _Team member_ diperbolehkan lembur maksimum 2 jam perhari. Namun hanya diperbolehkan seminggu maksimum 2 kali lembur.
+1. Pekerjaan harus diselesaikan pada hari itu (tidak boleh terputus atau ganti hari).
+1. Pekerjaan yang memakan waktu $\geq$ 4 jam sebisa mungkin disebar merata (tidak boleh hanya dikerjakan oleh orang yang itu-itu saja).
+
+
 ## _Objective Function_
 
 Meminimumkan jam kerja _team member_.

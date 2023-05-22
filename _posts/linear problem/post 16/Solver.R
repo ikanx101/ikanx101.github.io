@@ -30,16 +30,18 @@ bin_prog =
                j = 1:4,
                k = 1:30,
                type = "binary",
-               lb = 0) %>%
+               lb = 0) |>
   # membuat objective function
   set_objective(sum_expr(x[i,j,k] * t[k],
                          i = 1:4,
                          j = 1:4,
                          k = 1:30),
-                "min") 
+                "min") |>
   # constraint 1
-  add_constraint(sum_expr(x[i,j],i = 1:6) == 1,
-                 j = 1:4) %>%
+  add_constraint(sum_expr(x[i,j,k],
+                          i = 1:4,
+                          j = 1:4) == 1,
+                 k = 1:30) 
   # constraint 2
   add_constraint(sum_expr(x[i,j],j = 1:4) <= 1,
                  i = 1:6) 
