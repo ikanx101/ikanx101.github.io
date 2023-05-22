@@ -34,3 +34,29 @@ df_req = data.frame(kegiatan    = paste("kegiatan",1:10),
 
 df_req |> knitr::kable()
 ```
+
+
+Bagaimana caranya menyusun jadwal yang baik untuk masing-masing _team member_?
+
+---
+
+Tentunya sebelum kita mencoba membuat model dan menyelesaikan masalah ini, kita perlu tahu terlebih dahulu apa saja aturan kerja yang ada di _workcenter_ rekan saya tersebut.
+
+Berikut adalah beberapa aturan kerja yang berhasil saya korek:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
