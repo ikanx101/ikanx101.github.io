@@ -38,15 +38,17 @@ bin_prog =
                          k = 1:30),
                 "min") |>
   # constraint 1
+  add_constraint(sum_expr(x[i,j,k] * t[k],
+                          k = 1:30) <= 7,
+                 i = 1:4,
+                 j = 1:4) |>
+  # constraint 2
   add_constraint(sum_expr(x[i,j,k],
                           i = 1:4,
                           j = 1:4) == 1,
                  k = 1:30) 
-  # constraint 2
-  add_constraint(sum_expr(x[i,j],j = 1:4) <= 1,
-                 i = 1:6) 
+  
 bin_prog 
-
 
 hasil = 
   bin_prog %>%
@@ -55,4 +57,7 @@ hasil =
 
 
 hasil %>%
-  get_solution(x[i,j,k])
+  get_solution(x[i,j,k]) %>%
+  filter(value == 1) %>%
+  cbind(t) %>% 
+  arrange(i,j,k)

@@ -82,7 +82,11 @@ Dari informasi yang ada, parameter yang terlibat:
 
 Kita akan turunkan formula untuk _constraints_ dari aturan kerja yang ada.
 
-__Pertama__ Setiap _request_ yang muncul hanya boleh dikerjakan oleh satu orang _team member_ saja.
+__Pertama__ Maksimum jam kerja harian adalah 7 jam saja.
+
+$$forall j \sum_{ik} x_{ijk} \times t_k \leq 7$$
+
+__Kedua__ Setiap _request_ yang muncul hanya boleh dikerjakan oleh satu orang _team member_ saja.
 
 $$\forall k \sum_{ij} x_{ijk} = 1$$
 
