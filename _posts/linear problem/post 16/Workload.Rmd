@@ -16,7 +16,21 @@ library(ompr.roi)
 library(ROI.plugin.glpk)
 ```
 
+Suatu hari, saya dihubungi oleh seorang rekan yang kerjanya nun jauh di sana. Saya diminta menyelesaikan masalah yang dia hadapi sehari-hari sebagai _leader_ di tempatnya bekerja.
+
+Permasalahan ini adalah tipikal permasalahan rutin yang selalu dihadapi olehnya secara mingguan. Oleh karena dilakukan secara manual, lama-lama prosesnya jadi mengganggu pekerjaannya yang lain. 
+
+Apa masalahnya? _Cekidot_.
+
 # Masalah
 
 Dalam suatu _workcenter_, terdapat beberapa orang pekerja yang bekerja selama 5 hari kerja dalam seminggu. Jam kerja per harinya adalah selama 7 jam saja. Dalam seminggu, ada banyak _request_ pekerjaan yang masuk ke dalam _workcenter_ tersebut.
 
+Contoh _request_-nya sebagai berikut:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+df_req = data.frame(kegiatan    = paste("kegiatan",1:10),
+                    waktu_kerja = sample(8,10,replace = T))
+
+df_req |> knitr::kable()
+```
