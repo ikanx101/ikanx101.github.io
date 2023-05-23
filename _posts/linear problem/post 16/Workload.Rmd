@@ -11,12 +11,10 @@ knitr::opts_chunk$set(echo = TRUE)
 rm(list=ls())
 
 library(dplyr)
-library(ompr)
-library(ompr.roi)
-library(ROI.plugin.glpk)
 library(tidyr)
 
-load("soal.rda")
+load("soal 2.rda")
+load("solusi.rda")
 ```
 
 Suatu hari, saya dihubungi oleh seorang rekan yang kerjanya nun jauh di sana. Saya diminta menyelesaikan masalah yang dia hadapi sehari-hari sebagai _leader_ di tempatnya bekerja.
@@ -47,7 +45,7 @@ Tentunya sebelum kita mencoba membuat model dan menyelesaikan masalah ini, kita 
 Berikut adalah beberapa aturan kerja yang berhasil saya korek:
 
 1. Setiap _request_ yang muncul hanya boleh dikerjakan oleh satu orang _team member_ saja.
-1. _Team member_ diperbolehkan lembur maksimum 2 jam perhari. Namun hanya diperbolehkan seminggu maksimum 2 kali lembur.
+1. _Team member_ diperbolehkan lembur maksimum 2 jam perhari. Namun hanya diperbolehkan seminggu sekali saja.
 1. Pekerjaan harus diselesaikan pada hari itu (tidak boleh terputus atau ganti hari).
 1. Pekerjaan yang memakan waktu $\geq$ 4 jam sebisa mungkin disebar merata (tidak boleh hanya dikerjakan oleh orang yang itu-itu saja).
 
@@ -75,44 +73,71 @@ Misalkan $x_{ijk}$ _binary_:
 Dari informasi yang ada, parameter yang terlibat:
 
 - $T = 7$ merupakan jam kerja maksimum.
-- $T_{max} = 9$ merupakan jam kerja lembur yang diperbolehkan 2 kali seminggu.
+- $T_{max} = 9$ merupakan jam kerja lembur yang diperbolehkan 1 kali seminggu.
 - $t_k$ merupakan waktu kerja kegiatan $k$.
 
 ## _Constraints_
 
 Kita akan turunkan formula untuk _constraints_ dari aturan kerja yang ada.
 
-__Pertama__ Maksimum jam kerja harian adalah 7 jam saja.
+__Pertama__ Untuk setiap orang, untuk setiap hari, maksimum jam kerja harian adalah 7 jam saja. Namun perlu diperhatikan bahwa seseorang diperbolehkan lembur sekali seminggu.
 
-$$\forall i, \forall j \sum_{k} x_{ijk} \times t_k \leq 7$$
+Untuk mengakalinya:
 
-__Kedua__ Setiap _request_ yang muncul hanya boleh dikerjakan oleh satu orang _team member_ saja.
+- Kita akan pilih salah satu hari untuk lembur, misal saya notasikan $\hat{j} \in j$.
+- Hari "biasa" saya notasikan sebagai $\bar{j} \in j$.
+
+Setelah saya bertanya kembali kepada rekan saya tersebut, ternyata untuk pemodelan ini, saya bisa dengan mudahnya memilih nilai $\hat{j}$ karena urutan $j$ nya menjadi __tidak masalah__.
+
+$$\forall i, \forall \bar{j} \sum_{k} x_{ijk} \times t_k \leq 7$$
+
+$$\forall i, \forall \hat{j} \sum_{k} x_{ijk} \times t_k \leq 9$$
+
+Namun perlu diperhatikan bahwa lembur diperlukan jika _team member_ tidak bisa menyelesaikan semua pekerjaan yang ada di _slot_ hari lain. Saya akan masukkan ini ke dalam _objective function_.
+
+__Kedua__ Untuk setiap pekerjaan hanya boleh dikerjakan oleh satu orang _team member_ saja.
 
 $$\forall k \sum_{ij} x_{ijk} = 1$$
 
+__Ketiga__ Pekerjaan yang memakan waktu $\geq$ 4 jam sebisa mungkin disebar merata (tidak boleh hanya dikerjakan oleh orang yang itu-itu saja).
 
-1. _Team member_ diperbolehkan lembur maksimum 2 jam perhari. Namun hanya diperbolehkan seminggu maksimum 2 kali lembur.
-1. Pekerjaan harus diselesaikan pada hari itu (tidak boleh terputus atau ganti hari).
-1. Pekerjaan yang memakan waktu $\geq$ 4 jam sebisa mungkin disebar merata (tidak boleh hanya dikerjakan oleh orang yang itu-itu saja).
+Dari data pekerjaan, kita bisa notasikan $\hat{k}$ sebagai pekerjaan yang memiliki `waktu_kerja` $\geq 4$ sebagai berikut:
 
+```{r,include=FALSE}
+df_req %>% filter(waktu_kerja >= 4) %>% row_number()
+```
+
+$$\forall \hat{k} \sum_{ij} x_{ijk} \times t_k \geq 0$$
 
 ## _Objective Function_
 
 Meminimumkan jam kerja _team member_.
 
-$$\min \sum{x_{ijk} \times t_k}$$
+$$\min \sum{(x_{ijk} \times t_k) - 7}$$
+
+---
+
+# Solusi
+
+Sekarang kita lihat solusi yang dihasilkan:
+
+```{r,echo=FALSE}
+hasil_final %>% 
+  select(-variable,-value) %>% 
+  rename(orang       = i,
+         hari        = j,
+         pekerjaan   = k,
+         waktu_kerja = t) %>% 
+  knitr::kable()
+```
 
 
+Kita lihat rekapannya sebagai berikut:
 
+```{r,echo=FALSE}
+rekap %>% knitr::kable()
+```
 
+Terlihat bahwa tidak ada aturan yang dilanggar. Namun kita lihat pada _team member_ `4` di hari `3`, total jam yang dihasilkan berada di bawah 7 jam. Apakah memungkinkan jika kita paksakan agar menjadi `7` jam?
 
-
-
-
-
-
-
-
-
-
-
+Kira-kira, mana yang bisa kita modifikasi?
