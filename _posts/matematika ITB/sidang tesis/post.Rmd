@@ -1,0 +1,30 @@
+---
+title: "Pengalaman Seminar Proposal dan Sidang Tesis di Sains Komputasi ITB"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+_Alhamdulillah_, ternyata sudah pas dua tahun sejak saya _post_ tulisan tentang [__"saya kuliah lagi"__](https://ikanx101.com/blog/kuliah-lagi/). Pada minggu lalu, saya mengakhiri masa-masa _riweuh_ akhir perkuliahan dengan melaksanakan seminar proposal dan sidang tesis di ITB. 
+
+Begini ceritanya:
+
+---
+
+## Pertengahan Mei 2023
+
+Sebenarnya, SKS terkait __proposal tesis__ sudah saya ambil pada semester III lalu. Sedangkan penelitian tesisnya sendiri sudah "selesai" pada semester lalu pula. Bahkan penelitiannya sudah dituliskan dalam bentuk jurnal yang sedang di-_submit_ ke salah satu anak _publisher_ `Elsevier`. Namun karena satu dan lain hal, pelaksanaan seminarnya sendiri tertunda hingga semester IV sekarang. Oleh karena itu, tidak ingin menunda lebih lama lagi, saya coba menjadwalkan seminar tersebut pada awal bulan Juni. 
+
+Pertama-tama saya hubungin atasan saya di kantor dan beberapa rekan kerja untuk izin dan menginformasikan mengenai perkiraan jadwal seminar. Hal ini perlu untuk mengatur _workload_ saya dan tim agar __pas__. _hehe_
+
+Berikutnya saya coba hubungi para dosen pembimbing dan dosen penguji. Sebagai informasi, dosen penguji untuk seminar proposal tesis cukup satu orang __doktor__ saja. _Alhamdulillah_, di ITB sudah tidak ada perkuliahan lagi pada bulan Juni sehingga saya bisa "memaksakan" tanggal yang saya sudah rencanakan kepada beliau-beliau tersebut.
+
+Didapatlah kesepakatan bahwa pada Senin, 5 Juni 2023 pukul 09.00 saya akan menyelenggarakan seminar proposal tesis. Selanjutnya saya coba hubungi tim tata usaha Magister Sains Komputasi untuk menyiapkan ruangan dan dokumen-dokumen yang dibutuhkan.
+
+Setelah itu, saya coba buat materi presentasinya secara perlahan dan seksama. Berhubung isinya hanya proposal, maka saya sampaikan latar belakang dari topik permasalahan yang diangkat ke dalam tesis.
+
+## 5 Juni 2023
+
+Saya berangkat ke Bandung dari Bekasi dengan travel selepas shubuh. Sampai di kampus jam 07.00 pagi.
