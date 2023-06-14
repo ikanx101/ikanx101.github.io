@@ -1,0 +1,28 @@
+---
+title: "Jadi Creator Big Data Challenge (lagi)"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+Kalau rekan-rekan ingat, di tahun lalu saya diminta oleh FMIPA ITB untuk menjadi [_creator_ kompetisi _BIG DATA CHALLENGE_ (BDC)](https://ikanx101.com/blog/satria-data/) level ITB guna menjaring mahasiswa yang akan berlaga di kompetisi Satria Data Nasional.
+
+
+Belum genap setahun, ternyata Kemendikbud memajukan jadwal kompetisi SATRIA DATA 2023. Akibatnya, saya diminta secara mendadak untuk menjadi _creator_ kompetisi BDC ITB 2023. Berbeda dengan tahun lalu yang soalnya saya kurasikan dengan perlahan (tahun lalu soalnya tentang membuat prediksi harga mobil dari data yang saya _scrape_ di situs Carmudi), kali ini saya membuat soal dengan lebih cepat. _Request_ resmi sampai ke saya pada tanggal 30 Mei jam 07.00 pagi, sedangkan jam 13.00 siang kompetisinya sudah saya _hosting_ di Kaggle. _Wkwkwk_
+
+> Memang secepat itu prosesnya.
+
+Kenapa bisa cepat? 
+
+Karena saya pakai data _public_ yang real. Biasanya, kalau data dari kasus real lebih bisa dimodelkan dbandingkan data sintetis (alias buatan). Tahun ini, saya gunakan data _match stat_ di English Premier League musim 2017-2018 dan 2018-2019. Tantangannya adalah membuat prediksi "win" vs "not win".
+
+Tahun ini animo pesertanya lebih tinggi dibanding tahun sebelumnya. Total ada `30` tim dengan peserta `86` orang mahasiswa. Dari 30 tim tersebut, hanya akan dipilih _top 20 teams_ untuk mewakili ITB ke kompetisi nasional.
+
+Kompetisi di ITB sendiri hanya berjalan kurang dari `3 x 24 jam` saja. Dimulai pada Selasa siang, diakhiri pada Kamis sore. Setiap tim hanya diperbolehkan _submit_ jawaban maksimum 2 kali per hari. Namun karena jalannya pertandingan sangat seru, pada hari terakhir kompetisi (Kamis kemarin) saya naikkan batas submisinya menjadi 4 kali.
+
+Betul saja, sama seperti tahun lalu, tim _ranking_ 1 muncul tiba-tiba menyalip tim-tim yang lain dengan akurasi prediksi `> 90%` sedangkan tim lainnya memiliki akurasi mentok di angka _under_ `82%`.
+
+Buat rekan-rekan yang mau mencoba kompetisinya, silakan _join_ untuk _late submission_ di _link_ [berikut](https://www.kaggle.com/t/074b8ae44eaa4b309febaea8ba083ec9).
