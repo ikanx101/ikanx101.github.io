@@ -1,0 +1,107 @@
+---
+title: "Tutorial: Merapikan Format Nomor Induk Karyawan dengan R"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(dplyr)
+
+data = data.frame(nik  = c(sample(800:10^4,10),
+                           sample(10^4:10^5,7),
+                           sample(10^5:10^7,8)),
+                  nama = randomNames::randomNames(25,which.names = "first"))
+
+kureng = rep(0,10-stringr::str_length(data$nik[1]))
+kureng = paste(kureng,collapse = "")
+contoh = data$nik[1]
+stb    = paste0(kureng,contoh)
+
+
+```
+
+Suatu sore, saya ditelepon oleh salah seorang teman saya. Dia mengatakan memiliki masalah terkait data pegawai sebagai berikut:
+
+```{r,echo=FALSE}
+data %>% knitr::kable()
+```
+
+Teman saya berujar bahwa secara sistem kepegawaian, `nik` seharusnya memiliki 10 _digits_. Sebagai contoh `nik` __`r data$nik[1]`__ seharusnya dituliskan __`r stb`__.
+
+Penulisan `nik` pada data di atas terjadi karena `nik` dituliskan sebagai `numeric` di Ms. Excel sehingga _digit_ __0__-nya hilang.
+
+Lantas bagaimana agar kita bisa menambahkan __0__ sesuai dengan kebutuhan hingga 10 _digits_ dengan mudah dan cepat dengan __R__?
+
+---
+
+# Langkah 1
+
+Kita ambil contoh satu _dummy_ `nik` sebagi berikut:
+
+```{r,message=FALSE,warning=FALSE}
+nik = 1234
+nik
+```
+
+# Langkah 2
+
+Kita ubah `nik` menjadi `character`.
+
+```{r,message=FALSE,warning=FALSE}
+nik = as.character(nik)
+nik
+```
+
+# Langkah 3
+
+Kita hitung ada berapa _digits_ dari `nik` tersebut. Lalu kita tambahkan __0__ kekurangannya.
+
+```{r,message=FALSE,warning=FALSE}
+digit_nik    = stringr::str_length(nik)
+digit_kurang = 10 - digit_nik
+
+kurang       = rep(0,digit_kurang)
+kurang       = paste(kurang,collapse = "")
+kurang
+```
+
+# Langkah 4
+
+Sekarang kita tambahkan kekurangan __0__ ke `nik` awalnya.
+
+```{r,message=FALSE,warning=FALSE}
+nik_baru = paste0(kurang,nik)
+nik_baru
+```
+
+---
+
+# _Function_ Akhir
+
+Dari langkah-langkah yang telah disebutkan di atas, kita akan membuat _function_ untuk melakukan transformasi seperti di atas.
+
+```{r,message=FALSE,warning=FALSE}
+ubah_nik = function(nik){
+  nik = as.character(nik)
+  
+  digit_nik    = stringr::str_length(nik)
+  digit_kurang = 10 - digit_nik
+
+  kurang       = rep(0,digit_kurang)
+  kurang       = paste(kurang,collapse = "")
+
+  nik_baru = paste0(kurang,nik)
+  return(nik_baru)
+}
+```
+
+Sekarang kita _run_ untuk semua datanya.
+
+```{r,message=FALSE,warning=FALSE}
+data %>% 
+  mutate(nik_transformed = sapply(nik,ubah_nik)) 
+```
+
+
+
