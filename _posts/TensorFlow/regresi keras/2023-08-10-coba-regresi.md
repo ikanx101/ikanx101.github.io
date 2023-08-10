@@ -395,3 +395,8 @@ sebelumnya:
 ------------------------------------------------------------------------
 
 `if you find this article helpful, support this blog by clicking the ads.`
+
+Video dari tulisan ini saya _post_ di _Youtube_ saya berikut ini:
+
+1. [Part 1](https://youtu.be/8UJCQ2E0s0o)
+1. [Part 2](https://youtu.be/hn47o_s5Rck)
