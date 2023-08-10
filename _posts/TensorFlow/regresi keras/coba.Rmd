@@ -1,0 +1,375 @@
+---
+title: "Belajar Regresi dengan Deep Learning menggunakan TensorFlow di Google Colab"
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Tulisan ini saya ambil langsung dari materi _training_ yang saya bawakan di kantor dalam rangkaian ___Workshop Deep Learning with TensorFlow using Google Colab___.
+
+---
+
+### Pendahuluan: __TensorFlow di Google Colab__
+
+`TensorFlow` adalah salah satu _open source tools_ buatan Google untuk membuat model _deep learning_. Basisnya `TensorFlow` adalah `Python.` Keunggulannya:
+
+1. Tidak perlu di-_install_ (bisa menjalankan via _cloud_).
+1. Modelnya bisa di-_transfer_ dan dipakai di _computing environment_ lainnya. Model bisa disimpan dalam suatu _object_ dan dimasukkan ke dalam mesin _Google Cloud_.
+1. Tersedia dalam bahasa __R__ atau __Python__.
+
+Kelemahan:
+
+1. Instalasi di Windows mungkin akan lebih rumit.
+1. Saat ada _version update_, beberapa skrip __mungkin akan berubah__.
+
+Untuk bisa menggunakan `TensorFlow`, kita harus meng-_install_ `library(keras)` pada `Google Colab`. Selain itu, jika diperlukan kita juga meng-_install_ `library(caret)` yang berguna untuk melakukan beberapa _pre-processing_ ala _machine learning_ di __R__.
+
+Dalam beberapa kasus, kita perlu melakukan "sedikit" _pre-processing_ sebelum kita melatih modelnya.
+
+Pada kasus regresi ini, saya tidak akan menggunakan `library(caret)`.
+
+Secara garis besar, alur kerjanya meliputi:
+
+1. _Input_,
+    - Berupa matriks untuk _predictors_ dan matriks untuk _target_.
+1. _Process_,
+    - Berapa banyak _layer_, _nodes_, dan _activation function_.
+    - Berapa banyak _epoch_, _learning rate_, dan _validation split_.
+1. _Output_.
+    - Berupa _tensor object_ bertipe _vector_ yang berisi:
+        1. Probabilitas untuk klasifikasi, dan
+        1. _Value_ untuk regresi dan _forecast time series_.
+
+
+Mari kita mulai:
+
+## Regresi Menggunakan _Deep Learning_
+
+Apakah kalian ingat saat _learning forum_ terdahulu, saya pernah menginformasikan bahwa _deep learning_ adalah _artificial neural network_ di mana setiap _nodes_-nya berisi operasi regresi linear. Sehingga semakin besar dan banyak _neural network_ yang terlibat, maka _ANN_ menjadi sebuah `mega mesin regresi linear`.
+
+Kali ini kita akan membuat model regresi linear menggunakan _deep learning_.
+
+### Soal
+
+Dari data yang diberikan, buatlah model yang bisa menyerupai $y = f(x), x = [-2,\pi]$ sebagai berikut:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+rm(list=ls())
+
+library(dplyr)
+library(ggplot2)
+library(keras)
+library(tensorflow)
+
+
+# fungsi untuk menggambar
+gambar_fx = function(f,a,b,delta){
+  temp = data.frame(
+    x = seq(a,b,by = delta)
+  ) %>%
+    mutate(y = f(x)) %>%
+    filter(!is.nan(y))
+  subtitle = paste0("Pada selang [",a,",",b,"]")
+  caption = "Digambar dengan R\nikanx101.com"
+  temp %>%
+    ggplot(aes(x,y)) +
+    geom_line(color = "steelblue") +
+    theme_minimal() +
+    labs(title = "Grafik f(x)",
+         subtitle = subtitle,
+         caption = caption)
+
+}
+
+# ini f(x)
+f = function(x){sin(x) * cos(x) + sin(5^(-x))}
+
+# ini selang
+a = -2
+b = pi
+delta = 0.0001
+
+# ini gambarnya
+gambar_fx(f,a,b,delta)
+
+# kita akan buat regresi dari data ini:
+df = data.frame(x = seq(a,b,by = delta))
+df = df %>% mutate(y = sapply(x,f))
+```
+
+
+Namun sebelum kita membuat model _deep learning_, apakah kita bisa mendapatkan $f(x)$ menggunakan regresi linear atau polinomial biasa?
+
+Kita coba terlebih dahulu ya.
+
+```{r,warning=FALSE,message=FALSE}
+# membuat model regresi linear
+lin_model   = lm(y ~ x,data = df)
+pred_y1     = predict(lin_model,df)
+
+# membuat model regresi polinom
+# derajat 26
+poli_model  = lm(y ~ polym(x,degree = 26),data = df)
+pred_y2     = predict(poli_model,df)
+
+# menggabungkan
+df_hasil    = df |> mutate(y_linear = pred_y1,y_polinom = pred_y2)
+
+# membuat plot y = f(x)
+df_hasil |>
+  ggplot() +
+  # plot fungsi soal
+  geom_line(aes(x = x,y = y),group = 1,color = "blue") +
+  # plot pendekatan dengan regresi linear
+  geom_line(aes(x = x,y = y_linear),group = 1,color = "red") +
+  # plot regresi polinom dengan derajat 26
+  geom_line(aes(x = x,y = y_polinom),group = 1,color = "darkred")
+```
+
+Terlihat bahwa model dengan polinom derajat 26 bisa mendekati $f(x)$ dengan lebih baik. Perhatikan nilai _mean absolute error_ berikut ini:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+# menghitung mean absolute error
+df_hasil |>
+  mutate(error_linear = abs(y - y_linear),
+         error_poli   = abs(y - y_polinom)) |>
+  summarise(mae_linear = mean(error_linear),
+            mae_poli   = mean(error_poli))
+```
+
+Apakah mungkin kita melakukan modifikasi data tertentu sehingga hasil regresi polinomnya menjadi lebih akurat? 
+
+Jawabannya __tentu saja__. Saya akan buat data _dummy_ sebagai berikut:
+
+```{r,message=FALSE,warning=FALSE}
+# kita modifikasi terlebih dahulu
+df_modif =
+  df |>
+  mutate(x1 = x^2,
+         x2 = x^3,
+         x3 = x^4,
+         x4 = sin(x),
+         x5 = cos(x),
+         x6 = exp(x))
+
+# kita intip datanya
+head(df_modif,5)
+```
+
+Sekarang kita akan buat model polinom derajat 15 sebagai berikut:
+
+```{r,message=FALSE,warning=FALSE}
+# membuat model regresi polinom
+# derajat 15
+poli_model2 = lm(y ~ poly(x,15) + poly(x1,15) + poly(x2,15) + poly(x3,15) +
+                     poly(x4,15) + poly(x5,15) + poly(x6,15),data = df_modif)
+pred_modif  = predict(poli_model2,df_modif)
+
+# menggabungkan hasil modif ke df_hasil
+df_hasil    = df_hasil |> mutate(y_modif = pred_modif)
+
+# membuat plot y = f(x)
+df_hasil |>
+  ggplot() +
+  # plot fungsi awal dari soal warna biru
+  geom_line(aes(x = x,y = y),group = 1,color = "blue",linewidth = 5,alpha = .5) +
+  # plot hasil regresi polinom dengan data modifikasi
+  geom_line(aes(x = x,y = y_modif),group = 1,color = "black")
+```
+
+Secara visual kita bisa melihat bahwa garis hitam bisa mendekati garis biru dengan baik. Sekarang kita akan hitung kembali nilai _mean absolute error_ dari hasil model modifikasi tersebut.
+
+```{r,message=FALSE,warning=FALSE}
+# menghitung mean absolute error
+df_hasil |>
+  mutate(error_linear = abs(y - y_linear),
+         error_poli   = abs(y - y_polinom),
+         error_modif  = abs(y - y_modif)) |>
+  summarise(mae_linear = mean(error_linear),
+            mae_poli   = mean(error_poli),
+            mae_modif  = mean(error_modif))
+```
+
+_Mean absolute error_ dari model dengan data modifikasi memiliki nilai terkecil (akurasi terbaik).
+
+---
+
+> Sekarang bagaimana menyelesaikan soal ini dengan _deep learning_? 
+
+### Membuat Model _Deep Learning_
+
+Proses-prosesnya adalah sebagai berikut:
+
+1. Pisahkan _predictors_ dan _target_.
+1. Ubah keduanya menjadi tipe matriks.
+1. Buat modelnya (_layers_, _nodes_, _activation function_, _optimizers_, _epochs_, _etc_.)
+1. _Train_ dan _validation_.
+
+```{r,message=FALSE,warning=FALSE}
+# deep learning
+# langkah 1 dan 2
+predictors = df |> pull(x) |> as.matrix()
+target     = df |> pull(y) |> as.matrix()
+
+# tahap 3
+# buat model
+model = keras_model_sequential() %>%
+  layer_dense(units = 86, activation="relu", input_shape = ncol(predictors)) %>%
+  layer_dense(units = 21, activation = "relu") %>%
+  layer_dense(units = 12, activation = "relu") %>%
+  layer_dense(units = 7,  activation = "relu") %>%
+  layer_dense(units = 1,  activation = "linear")
+
+# optimizer
+model %>% compile(
+  loss = "mse",
+  optimizer =  "adam",
+  metrics = list("mean_absolute_error")
+)
+
+# summary model
+model %>% summary()
+
+# proses train dengan 100 epoch
+model %>% keras::fit(predictors, target, epochs = 100,verbose = 0)
+
+# tahap 4
+# proses validasi dengan menghitung nilai mean absolute error
+scores = model %>% evaluate(predictors, target, verbose = 0)
+print(scores)
+```
+
+Kita dapatkan bahwa model dengan _deep learning_ bisa memiliki _mean obsolute error_ yang relatif kecil (hampir sama dengan hasil model dengan data yang dimodifikasi).
+
+Kita buat _plot_-nya sebagai berikut:
+
+```{r,warning=FALSE,message=FALSE}
+# kita buat prediksinya
+y_deep = model %>% predict(predictors)
+
+# menggabungkan hasil deep learning ke df_hasil
+df_hasil    = df_hasil |> mutate(y_deep = y_deep)
+
+# membuat plot y = f(x)
+df_hasil |>
+  ggplot() +
+  # plot awal fungsi dari soal
+  geom_line(aes(x = x,y = y),group = 1,color = "blue",linewidth = 5,alpha = .5) +
+  # plot hasil prediksi dari model deep learning
+  geom_line(aes(x = x,y = y_deep),group = 1,color = "black")
+```
+
+Pertanyaannya lagi:
+
+> Bagaimana jika kita memasukkan data dari `df_modif` ?
+
+Apakah akurasi model yang didapatkan bisa lebih bagus lagi?
+
+```{r,message=FALSE,warning=FALSE}
+# deep learning
+# langkah 1 dan 2
+predictors = df_modif |> select(-y) |> as.matrix()
+target     = df_modif |> pull(y) |> as.matrix()
+
+# tahap 3
+# buat model
+model_modif = keras_model_sequential() %>%
+  layer_dense(units = 86, activation="relu", input_shape = ncol(predictors)) %>%
+  layer_dense(units = 21, activation = "relu") %>%
+  layer_dense(units = 12, activation = "relu") %>%
+  layer_dense(units = 7,  activation = "relu") %>%
+  layer_dense(units = 1,  activation = "linear")
+
+# optimizer
+model_modif %>% compile(
+  loss = "mse",
+  optimizer =  "adam",
+  metrics = list("mean_absolute_error")
+)
+
+# summary model
+model_modif %>% summary()
+
+# proses train
+model_modif %>% keras::fit(predictors, target, epochs = 100,verbose = 0)
+
+# tahap 4
+# proses validasi
+scores = model_modif %>% evaluate(predictors, target, verbose = 0)
+print(scores)
+```
+
+Ternyata kita dapatkan hasil yang lebih baik.
+
+Kita buat _plot_-nya kembali:
+
+```{r,message=FALSE,warning=FALSE}
+# kita buat prediksinya
+y_deep_modif = model_modif %>% predict(predictors)
+
+# menggabungkan hasil deep learning ke df_hasil
+df_hasil    = df_hasil |> mutate(y_deep_2 = y_deep_modif)
+
+# membuat plot y = f(x)
+df_hasil |>
+  ggplot() +
+  # plot awal fungsi dari soal
+  geom_line(aes(x = x,y = y),group = 1,color = "blue",linewidth = 5,alpha = .5) +
+  # plot hasil prediksi dari model deep learning dengan data modifikasi
+  geom_line(aes(x = x,y = y_deep_2),group = 1,color = "black")
+```
+
+---
+
+Apakah regresi dengan _deep learning_ tidak memiliki kelemahan? 
+
+Walaupun regresi dengan _deep learning_ sangat baik menghampiri nilai aslinya, ada satu hal yang perlu kita perhatikan, yakni:
+
+> Model yang terbentuk hanya bisa digunakan pada _domain_ (atau _defined range_) si _predictors_ saja.
+
+Ilustrasi:
+
+Berikut adalah nilai dari $f(x)$ dari soal di atas untuk $x = [2,5]$. 
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+# ini adalah fungsi soalnya
+f = function(x){sin(x) * cos(x) + sin(5^(-x))}
+
+# ini x yang baru
+x_new = seq(2,5,by = 0.05)
+# membuat data frame baru
+df_new = data.frame(x = x_new) |> mutate(y = sapply(x,f))
+
+# kita buat prediksi dari model polinom
+pred_modif   = predict(poli_model,df_new)
+df_new       = df_new |> mutate(y_poli = pred_modif)
+
+# kita buat model prediksi dari deep learning (yang pertama)
+# kita buat prediksinya
+y_deep       = model %>% predict(as.matrix(x_new))
+df_new       = df_new |> mutate(y_deep = y_deep)
+
+# membuat plot y = f(x) asli
+df_new |>
+  ggplot() +
+  geom_line(aes(x = x,y = y),group = 1,color = "blue",linewidth = 5,alpha = .5) +
+  labs(title = "f(x) di [2,5]")
+```
+
+Kita akan hampiri nilai $f(x)$ menggunakan model _deep learning_ yang telah kita buat pada bagian sebelumnya:
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+df_new |>
+  ggplot() +
+  geom_line(aes(x = x,y = y),group = 1,color = "blue",linewidth = 5,alpha = .5) +
+  geom_line(aes(x = x,y = y_deep),group = 1,color = "red") +
+  labs(title = "f(x) vs model deep learning")
+```
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
