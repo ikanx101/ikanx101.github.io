@@ -1,0 +1,103 @@
+---
+title: "Tutorial Instalasi LimeSurvey ke VPS Digital Ocean"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Proses instalasi.
+
+```
+sudo apt update
+sudo apt upgrade
+```
+
+```
+sudo apt-get install apache2 mariadb-server -y
+```
+
+```
+sudo apt-get install software-properties-common
+sudo add-apt-repository ppa:ondrej/php -y
+```
+
+```
+sudo apt-get update -y
+sudo apt-get install php7.2 php7.2-cli php7.2-common php7.2-mbstring php7.2-xml php7.2-mysql php7.2-gd php7.2-zip php7.2-ldap php7.2-imap unzip wget curl
+```
+
+
+```
+sudo systemctl start apache2
+sudo systemctl enable apache2
+sudo systemctl start mysql
+sudo systemctl enable mysql
+```
+
+```
+sudo mysql_secure_installation
+```
+
+
+```
+Enter current password for root (enter for none):
+    Set root password? [Y/n]: N
+    Remove anonymous users? [Y/n]: Y
+    Disallow root login remotely? [Y/n]: Y
+    Remove test database and access to it? [Y/n]:  Y
+    Reload privilege tables now? [Y/n]:  Y
+```
+
+
+```
+mysql -u root -p
+```
+
+```
+MariaDB [(none)]>CREATE DATABASE limesurvey_db;
+MariaDB [(none)]>GRANT ALL PRIVILEGES ON limesurvey_db.* TO 'limesurvey_user'@'localhost' IDENTIFIED BY 'password';
+MariaDB [(none)]>FLUSH PRIVILEGES;
+MariaDB [(none)]>\q
+```
+
+
+```
+wget https://download.limesurvey.org/latest-stable-release/limesurvey3.14.3+180809.tar.gz
+```
+
+```
+unzip nama lime suryey
+```
+
+```
+sudo cp -r limesurvey /var/www/html/
+sudo chown www-data:www-data -R /var/www/html/limesurvey
+```
+
+
+```
+sudo nano /etc/apache2/sites-available/limesurvey.conf
+```
+
+```
+<VirtualHost *:80>
+ServerAdmin admin@example.com
+DocumentRoot /var/www/html/limesurvey/
+ServerName # ganti ip address
+<Directory /var/www/html/limesurvey/>
+Options FollowSymLinks
+AllowOverride All
+</Directory>
+ErrorLog /var/log/apache2/lime-error_log
+CustomLog /var/log/apache2/lime-access_log common
+</VirtualHost>
+```
+
+
+```
+sudo a2ensite limesurvey
+sudo systemctl restart apache2
+```
+
