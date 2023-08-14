@@ -1,0 +1,220 @@
+---
+title: "Belajar Klasifikasi dengan Deep Learning menggunakan TensorFlow di Google Colab"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Saat piala dunia tahun lalu, saya sempat menuliskan bagaimana [saya mengambil data dan melakukan prediksi pemenang piala dunia di Qatar](https://ikanx101.com/blog/pil-dun/). Saat itu, saya membuat model prediksi berbasis _machine learning_ "biasa".
+
+Nah, kali ini saya ingin membuat model prediksi berbasis _deep learning_ menggunakan TensorFlow di Google Colab. Model ini akan memprediksi `win` vs `not win` dari data statistik pertandingan piala dunia Qatar 2022.
+
+Bagaimana caranya? _Cekidot!_
+
+---
+
+## Tahap I
+
+Sama dengan membuat model regresi dengan _deep learning_ pada [tulisan saya sebelumnya](https://ikanx101.com/blog/coba-regresi/). Tahapan yang dilakukan adalah sama, yakni mengubah data _train_ dan target menjadi matriks. Harap diperhatikan bahwa semua variabel dalam data _train_ harusnya bertipe numerik.
+
+Syukurnya, data statistik di piala dunia yang lalu adalah numerik.
+
+Berikut adalah tahapan pengambilan datanya:
+
+```{r,message=FALSE,warning=FALSE}
+# dimulai dari hati yang bersih
+rm(list=ls())
+
+# memanggil semua libraries yang diperlukan
+library(dplyr)
+library(tidyr)
+library(caret)
+library(keras)
+library(tensorflow)
+
+# kita akan ambil datanya
+urls = "https://raw.githubusercontent.com/ikanx101/Live-Session-Nutrifood-R/master/Kaggle%20Data/WC%20Qatar%202022/rekapan%20all/data%20WC.csv"
+
+# mengambil data dan menghilangkan id dan negara
+df   = read.csv(urls) |> select(-X,-negara) |>
+                         # mengubah win vs not win
+                         mutate(status = ifelse(status == "win",1,0))
+
+# kita intip datanya kembali
+head(df,5)
+```
+
+Mari kita pisahkan target dari data awalnya. Pemisahan ini saya lakukan karena hendak melakukan _pre-processing_ pada data. Jadi jangan sampai si variabel target malah ikutan ter-_pre-processed_ ya.
+
+```{r,message=FALSE,warning=FALSE}
+# sekarang kita akan buat input utk tensorflow
+# jadi sebelum dipisah kita akan pre-process dulu
+
+# kita save dulu variabel targetnya
+target = df$status
+
+# lalu kita hilangkan dari data awalnya
+df     = df |> select(-status)
+```
+
+## Tahap II
+
+Kali ini data yang ada akan saya _pre-process_ terlebih dahulu dengan `library caret`. _Pre-processing_ yang dilakukan cukup sederhana, yakni me-_rescale_ data dengan metode _scale_. Di `caret` sendiri ada beberapa metode _rescaling_ yang bisa digunakan, seperti _center_, _range_, dll.
+
+```{r,message=FALSE,warning=FALSE}
+# tahapan preprocessing
+preProcess_range_model = preProcess(df, method='scale')
+df                     = predict(preProcess_range_model, newdata = df) # variabel targetnya hilang di sini
+
+# kita kembalikan variabel target ke dalam data
+df$status              = target
+```
+
+
+## Tahap III
+
+Pada tahap ini, saya akan pisahkan data _train_ dan _test_. Untuk itu, saya perlu cek terlebih dahulu, apakah ada _imbalance_ atau tidak.
+
+```{r,message=FALSE,warning=FALSE}
+# kita lihat apakah data yang ada imbalance atau tidak
+table(df$status)
+```
+
+Ternyata kita dapatkan data yang ada _imbalance_. Oleh sebab itu, saya akan bangun data _train_ dengan komposisi variabel target yang _balance_. Pada kasus ini, saya akan pilih `28 x 2` baris data sebagai _train_.
+
+```{r,message=FALSE,warning=FALSE}
+# pemisahan data berdasarkan targetnya
+df_0 = df |> filter(status == 0)
+df_1 = df |> filter(status == 1)
+
+# kita akan acak id nya
+# jangan lupa set seed dulu
+set.seed(123)
+id_0 = sample(nrow(df_0),28,replace = F)
+id_1 = sample(nrow(df_1),28,replace = F)
+
+# data train
+train_0 = df_0[id_0,]
+train_1 = df_1[id_1,]
+train   = rbind(train_1,train_0)
+
+# kita cek kembali balance dari train
+table(train$status)
+```
+
+Setelah _balance_, sisa data yang tidak terpakai akan menjadi data _test_ berikut:
+
+```{r,message=FALSE,warning=FALSE}
+# sekarang kita akan buat test data
+test_0 = df_0[-id_0,]
+test_1 = df_1[-id_1,]
+test   = rbind(test_0,test_1)
+
+# kita cek kembali balance dari test
+table(test$status)
+```
+
+## Tahap IV
+
+Sekarang kita akan ubah data _train_, _test_, serta target menjadi matriks.
+
+```{r,message=FALSE,warning=FALSE}
+# kita ubah targetnya ke bentuk matriks
+train_label_raw   = train$status
+train_label_clean = to_categorical(train_label_raw)
+train_matrix      = as.matrix(train[-ncol(train)])
+
+# test
+test_label_raw    = test$status
+test_label_clean  = to_categorical(test_label_raw)
+test_matrix       = as.matrix(test[-ncol(train)])
+```
+
+## Tahap V
+
+Sekarang kita akan buat model _deep learning_ menggunakan `keras`. Berikut adalah skripnya:
+
+```{r,message=FALSE,warning=FALSE}
+# membuat modelnya
+model = keras_model_sequential()
+# menentukan 
+  # berapa banyak layer
+  # berapa banyak nodes
+  # activation function-nya apa
+model %>%
+  layer_dense(units       = 100,activation = 'sigmoid',
+              input_shape = c(ncol(train_matrix))) %>%
+  layer_dense(units       = 86, activation = 'sigmoid') %>%
+  layer_dense(units       = 21, activation = 'sigmoid') %>%
+  layer_dense(units       = 12, activation = 'softmax') %>%
+  layer_dense(units       = 2, activation = 'softmax')
+
+# summary modelnya
+summary(model)
+```
+
+Kita buat _optimizer_-nya:
+
+```{r,message=FALSE,warning=FALSE}
+model %>% compile(
+  loss='binary_crossentropy',
+  optimizer='adam',
+  metrics=c('accuracy')
+)
+```
+
+## Tahap VI
+
+Kita _train_ modelnya sebagai berikut:
+
+```{r,message=FALSE,warning=FALSE}
+fitModel =
+  model %>%
+  fit(train_matrix,
+      train_label_clean,
+      epochs           = 90,
+      batch_size       = 15,
+      validation_split = 0.1)
+
+plot(fitModel)
+```
+
+Di atas, saya buat _epochs_-nya sebanyak 90 kali.
+
+## Tahap VII
+
+Kita lihat evaluasinya, berikut adalah akurasi dengan _train_ dan _test_.
+
+```{r,message=FALSE,warning=FALSE}
+# evaluasi dengan train
+model %>% evaluate(train_matrix, train_label_clean, verbose = 0)
+
+# evaluasi dengan test
+model %>% evaluate(test_matrix, test_label_clean, verbose = 0)
+```
+
+## Tahap VIII
+
+Sekarang kita buat _confusion matrix_ dari data _train_ dan data _test_ sebagai berikut:
+
+```{r,message=FALSE,warning=FALSE}
+# confusion matrix
+# train dataset
+pred_train = predict(model, train_matrix) %>% k_argmax() %>% as.vector()
+table(pred_train,train_label_raw)
+mean(train_label_raw == pred_train)
+
+# confusion matrix
+# test dataset
+pred_test = predict(model, test_matrix) %>% k_argmax() %>% as.vector()
+table(pred_test,test_label_raw)
+mean(test_label_raw == pred_test)
+```
+
+Ternyata walau data yang kita gunakan untuk membuat model sedikit, hasilnya lumayan bagus.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
