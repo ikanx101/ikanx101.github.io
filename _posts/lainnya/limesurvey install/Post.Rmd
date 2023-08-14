@@ -7,20 +7,31 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Proses instalasi.
+Sebagai seorang _market researcher_, terkadang saya memerlukan _online survey tools_ yang _reliable_. Ada banyak pilihan, mulai dari yang gratis seperti _Google Form_ hingga _Zoho Form_, _Survey Monkey_, dan _Jotform_. Beberapa tahun yang lalu, salah seorang rekan kerja saya mengenalkan suatu _online tool_ bernama [__Lime Survey__](https://community.limesurvey.org/downloads/). Seketika saya jatuh cinta terhadap _online survey tools_ yang satu ini. 
+
+> Semua fitur _pro_ yang dibutuhkan _market researcher_ ada di sana. 
+
+Lime Survey ini bersifat _open source_, kita cukup memerlukan _server_ saja.
+
+Kali ini saya akan memberikan tutorial untuk meng-_install_ Lime Survey ke _virtual machine_ yang saya sewa di [__Digital Ocean__](https://cloud.digitalocean.com/).
+
+Berikut caranya:
 
 # Tahap I
 
-Update dan upgrade system Linux di VPS.
+Kita _create droplet_ terlebih dahulu. Saya merekomendasikan _VM_ dengan OS Ubuntu 20 spek minimal 1 CPU, 2 GB Ram. Setelah itu, silakan buka _terminal_ dan lakukan perintah sebagai berikut:
 
 ```
+# update dan upgrade system Linux di VM
 sudo apt update
 sudo apt upgrade -y
 ```
 
+
 # Tahap II
 
-Install apache dan mariadb server
+Kita lakukan instalasi _apache_ dan _mariadb server_:
+
 
 ```
 sudo apt-get install apache2 mariadb-server -y
@@ -28,14 +39,14 @@ sudo apt-get install apache2 mariadb-server -y
 
 # Tahap III
 
-Persiapan install php, yakni install GPG-key dan repository php.
+Kita akan _install_ `PHP`, pertama-tama kita install `GPG-key` dan _repository_ yang dibutuhkan.
 
 ```
 sudo apt-get install software-properties-common -y
 sudo add-apt-repository ppa:ondrej/php -y
 ```
 
-Lalu kita install php versi terbaru.
+Lalu kita _install_ PHP. Pada tutorial ini, saya install `PHP` versi `7.2`. Perhatikan bahwa versi PHP yang dibutuhkan harus sesuai dengan _minimum requirement_ yang dibutuhkan oleh versi Lime Survey.
 
 ```
 sudo apt-get update -y
@@ -44,7 +55,7 @@ sudo apt-get install php7.2 php7.2-cli php7.2-common php7.2-mbstring php7.2-xml 
 
 # Tahap IV
 
-Start dan enable apache dan mysql.
+_Start_ dan _enable_ _apache_ lalu _mysql_.
 
 ```
 sudo systemctl start apache2
@@ -55,12 +66,13 @@ sudo systemctl enable mysql
 
 # Tahap V
 
-Konfigurasi databse untuk limesurvey.
+Konfigurasi _database_ untuk Lime Survey. Kita mulai dulu _mysql_ dengan perintah sebagai berikut:
 
 ```
 sudo mysql_secure_installation
 ```
 
+Selanjutnya akan ada beberapa _form_ yang harus diisi. Berikut adalah isiannya:
 
 ```
 Enter current password for root (enter for none):
@@ -71,10 +83,19 @@ Enter current password for root (enter for none):
     Reload privilege tables now? [Y/n]:  Y
 ```
 
+Sekarang kita akan masuk ke _mariadb_ dengan perintah sebagai berikut:
 
 ```
 mysql -u root -p
 ```
+
+Sekarang kita akan masukkan perintah sebagai berikut untuk membuat _database_. Saya akan membuat _database_ dengan informasi sebagai berikut:
+
+1. Nama _database_: `limesurvey_db`.
+1. Nama _user database_: `limesurvey_user`.
+1. Nama _password database_: `password`.
+
+Berikut perintahnya:
 
 ```
 MariaDB [(none)]>CREATE DATABASE limesurvey_db;
@@ -85,11 +106,15 @@ MariaDB [(none)]>\q
 
 # Tahap VI
 
-Download dan install limesurvey
+Berikutnya kita akan _download_ dan _install_ Lime Survey. Saya akan mengunduh Lime Survey versi `5.6`. _Link_ ini silakan di-_update_ sesuai dengan kebutuhan dari situs [__Lime Survey__](https://community.limesurvey.org/downloads/).
+
+Kita gunakan perintah `wget`:
 
 ```
 wget https://download.limesurvey.org/latest-5.x/limesurvey5.6.33+230808.zip
 ```
+
+Karena prosesnya _cloud to cloud_, proses _download_ ini sangat cepat. Lalu kita _unzip_ _downloaded file_-nya.
 
 ```
 unzip # nama lime suryey
@@ -97,26 +122,28 @@ unzip # nama lime suryey
 
 # Tahap VII
 
-Kita pindahkan folder limesurvey yang telah di-unzip ke folder index apache.
+Kita pindahkan _folder_ Lime Survey yang telah di-_unzip_ ke _folder_ _index_ `html` milik _apache_.
 
 ```
 sudo cp -r limesurvey /var/www/html/
 sudo chown www-data:www-data -R /var/www/html/limesurvey
 ```
 
-# tahap VIII
+# Tahap VIII
 
-Konfigurasi apache
+Pada tahap ini, kita akan melakukan konfigurasi _apache_. Kita gunakan `nano` sebagai _text editor_.
 
 ```
 sudo nano /etc/apache2/sites-available/limesurvey.conf
 ```
 
+Silakan _copy-paste_ perintah berikut:
+
 ```
 <VirtualHost *:80>
 ServerAdmin admin@example.com
 DocumentRoot /var/www/html/limesurvey/
-ServerName http://165.227.184.250
+ServerName http:// # nama ip
 <Directory /var/www/html/limesurvey/>
 Options FollowSymLinks
 AllowOverride All
@@ -126,9 +153,23 @@ CustomLog /var/log/apache2/lime-access_log common
 </VirtualHost>
 ```
 
+Jangan lupa untuk mengganti __nama IP address__ yang diberikan _Digital Ocean_ ke dalam skrip tersebut.
+
+# Tahap IX
+
+_Restart_ _apache_ dengan perintah sebagai berikut:
 
 ```
 sudo a2ensite limesurvey
 sudo systemctl restart apache2
 ```
 
+---
+
+Proses dari _terminal_ sudah selesai. Sekarang kita buka __IP address__ di _browser_ Anda dan selesaikan proses instalasinya.
+
+Pada suatu proses, jangan lupa untuk memasukkan detail nama _database_ dari tahap V.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
