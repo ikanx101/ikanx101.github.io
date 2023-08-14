@@ -9,25 +9,42 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Proses instalasi.
 
+# Tahap I
+
+Update dan upgrade system Linux di VPS.
+
 ```
 sudo apt update
-sudo apt upgrade
+sudo apt upgrade -y
 ```
+
+# Tahap II
+
+Install apache dan mariadb server
 
 ```
 sudo apt-get install apache2 mariadb-server -y
 ```
 
+# Tahap III
+
+Persiapan install php, yakni install GPG-key dan repository php.
+
 ```
-sudo apt-get install software-properties-common
+sudo apt-get install software-properties-common -y
 sudo add-apt-repository ppa:ondrej/php -y
 ```
 
+Lalu kita install php versi terbaru.
+
 ```
 sudo apt-get update -y
-sudo apt install php8.1 unzip wget curl
+sudo apt-get install php7.2 php7.2-cli php7.2-common php7.2-mbstring php7.2-xml php7.2-mysql php7.2-gd php7.2-zip php7.2-ldap php7.2-imap unzip wget curl -y
 ```
 
+# Tahap IV
+
+Start dan enable apache dan mysql.
 
 ```
 sudo systemctl start apache2
@@ -35,6 +52,10 @@ sudo systemctl enable apache2
 sudo systemctl start mysql
 sudo systemctl enable mysql
 ```
+
+# Tahap V
+
+Konfigurasi databse untuk limesurvey.
 
 ```
 sudo mysql_secure_installation
@@ -62,6 +83,9 @@ MariaDB [(none)]>FLUSH PRIVILEGES;
 MariaDB [(none)]>\q
 ```
 
+# Tahap VI
+
+Download dan install limesurvey
 
 ```
 wget https://download.limesurvey.org/latest-5.x/limesurvey5.6.33+230808.zip
@@ -71,11 +95,18 @@ wget https://download.limesurvey.org/latest-5.x/limesurvey5.6.33+230808.zip
 unzip # nama lime suryey
 ```
 
+# Tahap VII
+
+Kita pindahkan folder limesurvey yang telah di-unzip ke folder index apache.
+
 ```
 sudo cp -r limesurvey /var/www/html/
 sudo chown www-data:www-data -R /var/www/html/limesurvey
 ```
 
+# tahap VIII
+
+Konfigurasi apache
 
 ```
 sudo nano /etc/apache2/sites-available/limesurvey.conf
@@ -85,7 +116,7 @@ sudo nano /etc/apache2/sites-available/limesurvey.conf
 <VirtualHost *:80>
 ServerAdmin admin@example.com
 DocumentRoot /var/www/html/limesurvey/
-ServerName # ganti ip address
+ServerName http://165.227.184.250
 <Directory /var/www/html/limesurvey/>
 Options FollowSymLinks
 AllowOverride All
