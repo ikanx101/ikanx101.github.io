@@ -89,6 +89,20 @@ menggunakan regresi linear atau polinomial biasa?
 Kita coba terlebih dahulu ya.
 
 ``` r
+# dimulai dari nol
+rm(list=ls())
+
+# kita panggil libraries
+library(dplyr)
+library(ggplot2)
+library(caret)
+library(keras)
+library(tensorflow)
+
+# ambil data
+link = "https://raw.githubusercontent.com/ikanx101/Live-Session-Nutrifood-R/master/LEFO%20Market%20Research/LEFO%20MR%202023/Keras/regresi/soal_regresi.csv"
+df   = read.csv(link)
+
 # membuat model regresi linear
 lin_model   = lm(y ~ x,data = df)
 pred_y1     = predict(lin_model,df)
