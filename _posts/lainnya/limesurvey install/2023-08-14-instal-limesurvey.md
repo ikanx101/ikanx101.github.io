@@ -172,6 +172,10 @@ di *browser* Anda dan selesaikan proses instalasinya.
 Pada suatu proses, jangan lupa untuk memasukkan detail nama *database*
 dari tahap V.
 
+Proses detail instalasinya saya videokan dan saya simpan di _link_ [_Youtube_ ini](https://youtu.be/iC_wKbU5CY0?si=E5Zi59_Vdqt1JhIF).
+
+Semoga bermanfaat _yah_...
+
 ------------------------------------------------------------------------
 
 `if you find this article helpful, support this blog by clicking the ads.`
