@@ -1,0 +1,342 @@
+---
+title: "Belajar Time Series Forecasting dengan Deep Learning menggunakan TensorFlow di Google Colab"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("/home/ikanx101/ikanx101.github.io/_posts/TensorFlow/time series keras")
+```
+
+Pada beberapa tulisan sebelumnya, saya telah memberikan dua tutorial melakukan [regresi](https://ikanx101.com/blog/coba-regresi/) dan [klasifikasi](https://ikanx101.com/blog/klasifikasi-qatar/) dengan _deep learning_ (alias ANN). Pada tulisan kali ini, saya hendak memberikan tutorial untuk melakukan _time series forecasting_ menggunakan _deep learning_.
+
+Ternyata setelah saya cek, saya belum pernah menuliskan hal teknis terkait _time series_ di blog saya sama sekali. Satu-satunya tulisan saya terkait _time series_ adalah _sharing_ pengalaman saya membuat metode _forecast_ "baru" yang bisa menghemat _inventory cost_ [senilai Rp 8 miliar](https://ikanx101.com/blog/fore-dekom/).
+
+Bagi rekan-rekan yang belum mengetahui apa itu _time series_, rekan-rekan silakan _Googling_ terkait hal tersebut _ya_.
+
+Pada tulisan ini, saya akan menggunakan salah satu data omset bulanan asli yang saya dapatkan dari rekan kuliah saya. Data omset bulanan tersebut bisa dipandang sebagai data _time series_. Saya akan mencoba membuat model _forecast_ dari data tersebut dengan metode _long-short-term memory_ (`lstm`) di ANN.
+
+Berikut adalah tutorialnya:
+
+---
+
+# TAHAP I
+
+Saya ambil data yang diperlukan sebagai berikut:
+
+```{r,message=FALSE,warning=FALSE}
+# dimulai dari hati yang bersih
+rm(list=ls())
+
+# memanggil semua libraries yang diperlukan
+library(dplyr)
+library(tidyr)
+library(caret)
+library(keras)
+library(tensorflow)
+
+load("data.rda")
+```
+
+```{r,include=FALSE}
+df$omset = df$omset/10^9
+df_print = df |> select(-timeline)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+df_print %>% knitr::kable()
+```
+
+Saya memiliki `53` baris data omset bulanan mulai dari Januari 2019 hingga Mei 2023.
+
+# TAHAP II
+
+Saya akan gunakan prinsip `6 + 1`, yakni data omset `6` bulan berurutan untuk mem-_forecast_ omset sebulan ke depannya.
+
+Untuk itu, saya perlu membuat _training_ dan _target_ data yang sesuai. 
+
+```{r,message=FALSE,warning=FALSE}
+# saya bikin 6 bulan untuk prediksi 1 bulan
+n_bulan = 6
+n_data  = nrow(df)
+n_ding  = n_data - n_bulan
+
+# membuat data input untuk training
+input = data.frame(x1 = 0,
+                   x2 = 0,
+                   x3 = 0,
+                   x4 = 0,
+                   x5 = 0,
+                   x6 = 0)
+target = rep(0,n_ding)
+
+# mulai iterasi untuk membuat data training
+for(i in 1:n_ding){
+  save      = df$omset[i:(i + n_bulan - 1)] %>% t() %>% list()
+  input[i,] = save[[1]]
+  target[i] = df$omset[i + n_bulan]
+}
+
+# berikut adalah tampilan hasilnya
+head(input,5)
+head(target,5)
+```
+
+```{r,include=FALSE}
+# ini untuk keperluan x awal
+x_awal = input %>% as.matrix()
+y_awal = target 
+```
+
+# TAHAP III
+
+Oleh karena data yang digunakan relatif sedikit, saya akan coba melakukan _data augmentation_ dengan prinsip sederhana:
+
+1. _Upsampling_ dari data yang ada.
+1. Buat _random noise_ dari data tersebut.
+
+```{r,message=FALSE,warning=FALSE}
+# function untuk random noise
+acak = function(n){
+  n + runif(1,min = -3,max = 3)
+}
+
+# berapa banyak upsampling yang akan dilakuka
+n_aug = 700
+
+# ambil id acak untuk upsampling
+id_acak = sample(nrow(input),
+                 n_aug,
+                 replace = T) %>% sort()
+
+# augment input
+input_2  =
+  input %>% 
+  mutate_all(acak)
+
+# augment target
+target_2 = sapply(target,acak)
+
+# saya ambil yang acak id saja
+input_2  = input_2[id_acak,]
+target_2 = target_2[id_acak]
+
+# gabung all untuk training
+input    = rbind(input,input_2)
+target   = c(target,target_2)
+```
+
+# TAHAP IV
+
+Saya ubah _training_ dan _target_ data menjadi bentuk matriks untuk membuat model _deep learning_ di __TensorFlow__.
+
+```{r,message=FALSE,warning=FALSE}
+x = input %>% as.matrix()
+y = target %>% as.matrix()
+```
+
+# TAHAP V
+
+Saya buat model _keras sequential_ dengan skrip sebagai berikut:
+
+```{r,message=FALSE,warning=FALSE}  
+model = 
+  keras_model_sequential() %>% 
+  layer_lstm(units  = 300, activation = "linear", input_shape = c(ncol(x),1)) %>% 
+  layer_dense(units = 1,   activation = "linear") %>%
+  layer_activation("linear")
+
+model %>% compile(
+  loss      = "mae",
+  optimizer = "rmsprop", 
+  metrics   = list("mean_absolute_error")
+)
+
+model %>% summary()
+```
+
+Perhatikan bahwa saya menggunakan `layer_lstm` pada kali ini. Berbeda dengan kasus regresi dan klasifikasi yang telah saya tulis sebelumnya. Perhatikan juga bahwa parameter yang saya gunakan untuk mengukur akurasi dari _forecast_ model adalah _mean absolute error_ (MAE). 
+
+Setelah itu, saya _train_ modelnya dengan `500` _epochs_.
+
+```{r,message=FALSE,warning=FALSE}  
+fitmodel = 
+  model %>% keras::fit(x, y, 
+                       epochs  = 400,
+                       verbose = 0,
+                       validation_split = 0.15)
+
+plot(fitmodel)
+```
+
+Saya lihat seberapa akurat model saya dengan melihat nilai MAE-nya:
+
+```{r,message=FALSE,warning=FALSE}  
+scores = model %>% evaluate(x, y, verbose = 0)
+scores
+```
+
+# TAHAP VI
+
+Model sudah selesai dibuat. Sekarang saya akan coba lakukan _plot_ nilai omset asli dengan nilai omset hasil _forecast_ untuk keseluruhan _training_ data:
+
+```{r,message=FALSE,warning=FALSE,echo=FALSE,fig.retina=4,fig.width=10}  
+# prediksi
+y_pred = model %>% predict(x_awal)
+# masukin ke df
+df$y_pred = c(rep(NA,n_bulan),
+              y_pred)
+
+plt_1 = 
+  df %>% 
+  ggplot() +
+  geom_line(aes(x = timeline,
+                y = omset),
+            color = "blue",
+            alpha = .4,
+            group = 1) +
+  geom_line(aes(x = timeline,
+                y = y_pred),
+            color = "red",
+            alpha = .3,
+            group = 1) +
+  theme_minimal() +
+  labs(x = "Timeline",
+       y = "Omset",
+       title = "Nilai Forecast vs Realisasi Omset",
+       subtitle = "Biru = realisasi omset dan Merah = forecast omset") +
+  scale_x_discrete(guide = guide_axis(n.dodge = 6))
+
+plt_2 = 
+  df %>% 
+  filter(!is.na(y_pred)) %>% 
+  ggplot(aes(x = omset,
+             y  = y_pred)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  theme_minimal() +
+  labs(x = "Realisasi Omset",
+       y = "Forecast Omset",
+       title = "Nilai Forecast vs Realisasi Omset",
+       subtitle = "Perhitungan korelasi antara kedua nilai tersebut")
+
+ggpubr::ggarrange(plt_1,plt_2,ncol = 2)
+```
+
+Berikut adalah nilai korelasinya:
+
+```{r,message=FALSE,warning=FALSE,echo=FALSE,fig.retina=7}  
+cor(df$omset[(n_bulan+1):nrow(df)],
+    df$y_pred[(n_bulan+1):nrow(df)])
+```
+
+Ternyata kita bisa mendapatkan hasil akurasi yang lumayan.
+
+---
+
+# _BONUS PART_
+
+Sekarang saya akan buat _forecast_ dengan cara yang berbeda. Saya akan mencoba melakukan _forecast_ untuk omset tahun 2023, namun caranya adalah dengan:
+
+1. _Forecast_ bulan Januari 2023 berasal dari data _input_ bulan 7-12 2022.
+1. _Forecast_ bulan Februari 2023 berasal dari data _input_ bulan 8-12 2022 dan Januari 2023.
+1. _Forecast_ bulan Maret 2023 berasal dari data _input_ bulan 9-12 2022, Januari, dan Februari 2023.
+1. _Forecast_ bulan April 2023 berasal dari data _input_ bulan 10-12 2022, Januari, Februari, dan Maret 2023.
+1. _Forecast_ bulan Mei 2023 berasal dari data _input_ bulan 11-12 2022, Januari, Februari, Maret, dan April 2023.
+
+Berikut adalah skrip algoritmanya:
+
+```{r,message=FALSE,warning=FALSE,echo=TRUE,fig.retina=4,fig.width=10}  
+# kita ambil 6 bulan akhir taun 2022
+uji_coba = 
+  df %>% 
+  filter(tahun == 2022) %>% 
+  tail(n_bulan)
+
+# ini adalah omset 2023
+omset_2023 = 
+  df %>% 
+  filter(tahun == 2023)
+
+# kita buat dulu
+input_new    = uji_coba$omset %>% t() %>% as.matrix()
+
+# buat rumah dulu
+hasil_new    = rep(0,nrow(omset_2023))
+
+# bulan januari
+y_pred       = model %>% predict(input_new)
+hasil_new[1] = y_pred
+
+# bulan februari
+input_new    = c(uji_coba$omset[2:6],hasil_new[1]) %>% t() %>% as.matrix()
+y_pred       = model %>% predict(input_new)
+hasil_new[2] = y_pred
+
+# bulan maret
+input_new    = c(uji_coba$omset[3:6],hasil_new[1:2]) %>% t() %>% as.matrix()
+y_pred       = model %>% predict(input_new)
+hasil_new[3] = y_pred
+
+# bulan april
+input_new    = c(uji_coba$omset[4:6],hasil_new[1:3]) %>% t() %>% as.matrix()
+y_pred       = model %>% predict(input_new)
+hasil_new[4] = y_pred
+
+# bulan may
+input_new    = c(uji_coba$omset[5:6],hasil_new[1:4]) %>% t() %>% as.matrix()
+y_pred       = model %>% predict(input_new)
+hasil_new[5] = y_pred
+
+# kita gabung kembali
+omset_2023 = 
+  omset_2023 %>% 
+  mutate(y_pred = hasil_new)
+```
+
+Berikut adalah grafik hasil _forecast_ versus realisasi omset di tahun 2023:
+
+```{r,message=FALSE,warning=FALSE,echo=FALSE,fig.retina=4,fig.width=10}  
+plt_1 =
+  omset_2023 %>% 
+  ggplot() +
+  geom_line(aes(x = timeline,
+                y = omset),
+            color = "blue",
+            alpha = .4,
+            group = 1) +
+  geom_line(aes(x = timeline,
+                y = y_pred),
+            color = "red",
+            alpha = .3,
+            group = 1) +
+  theme_minimal() +
+  labs(x = "Timeline",
+       y = "Omset",
+       title = "Nilai Forecast vs Realisasi Omset",
+       subtitle = "Biru = realisasi omset dan Merah = forecast omset")
+
+plt_2 = 
+  omset_2023 %>% 
+  filter(!is.na(y_pred)) %>% 
+  ggplot(aes(x = omset,
+             y  = y_pred)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  theme_minimal() +
+  labs(x = "Realisasi Omset",
+       y = "Forecast Omset",
+       title = "Nilai Forecast vs Realisasi Omset",
+       subtitle = "Perhitungan korelasi antara kedua nilai tersebut")
+
+ggpubr::ggarrange(plt_1,plt_2,ncol = 2)
+cor(omset_2023$omset,
+    omset_2023$y_pred)
+```
+
+---
+
+_Remarks_
+
+Untuk meningkatkan akurasi, kita bisa melakukan beberapa _hyperparameter tuning_ dan atau _data augmentation_ yang lebih baik.
