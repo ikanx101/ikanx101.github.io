@@ -1,0 +1,114 @@
+---
+title: "Sentiment Analysis: Komentar Netizen Terhadap Produk Susu Oat"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/ikanx101.github.io/_posts/home tester club/Tulisan kelima")
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+rm(list=ls())
+load("output.rda")
+
+outputs$score = round(outputs$score*100,4)
+```
+
+Dari persiapan yang telah saya [lakukan sebelumnya](https://ikanx101.com/blog/install-huggingface/), sekarang saya lakukan _sentiment analysis_ untuk komentar-komentar _netizen_ terkait produk susu _oat_ yang sudah [saya ambil sebelumnya](https://ikanx101.com/blog/clustering-oat/).
+
+Berikut adalah data komentar yang digunakan:
+
+```{r,echo=FALSE}
+outputs$komen
+```
+
+Jika kita lihat sekilas, komentar netizen pertama memiliki sentimen yang __negatif__. Oke, nanti akan kita lihat apakah model LLM yang saya gunakan benar-benar akan menghasilkan hasil yang sama-sama negatif untuk komentar pertama? _Cekidot!_
+
+---
+
+Model yang saya gunakan bernama `indonesia bert sentiment analysis` yang dibuat oleh _user_ bernama `mdhugol`. Dokumentasi dan cara menggunakan model tersebut bisa dilihat di [_link_ berikut ini](https://huggingface.co/mdhugol/indonesia-bert-sentiment-classification).
+
+Perlu saya informasikan bahwa model ini memerlukan _Pytorch_ dan berjalan di _local computer_ (data hanya ada di laptop saya saja).
+
+---
+
+# Hasil _Sentiment Analysis_
+
+Setelah di-_run_, berikut adalah hasilnya:
+
+```{r,echo=FALSE,fig.align='center',fig.retina=6}
+outputs %>% 
+  group_by(label) %>% 
+  tally() %>% 
+  ungroup() %>% 
+  mutate(persen       = n / sum(n) * 100,
+         persen       = round(persen,1),
+         label_persen = paste0(label,"\n",persen,"%\nn = ",n)) %>% 
+  ggplot(aes(x = label,
+             y = persen)) +
+  geom_col(color = "black",
+           fill  = "steelblue") +
+  geom_label(aes(label = label_persen),
+             size      = 2.5,
+             alpha     = .35,
+             color     = "white") +
+  labs(title    = "Hasil Sentiment Analysis Komentar Oat Drink",
+       subtitle = "Base: 45 komentar review netizen",
+       x        = "Sentimen",
+       y        = "Persen") +
+  theme_dark() +
+  theme(axis.text.y = element_blank()) +
+  ylim(0,100) +
+  coord_polar(theta = "y")
+```
+
+Ternyata kita dapatkan ada __tiga komentar yang mendapatkan sentimen negatif__ dan __mayoritas komentar mendapatkan sentimen positif__.
+
+---
+
+# Sentimen Negatif
+
+Berikut ini adalah tabel detail hasilnya:
+
+```{r,echo=FALSE}
+outputs %>% 
+  filter(label == "Negative") %>% 
+  select(komen,label,score) %>% 
+  arrange(desc(score)) %>%
+  rename(Komentar    = komen,
+         Sentimen    = label,
+         Probability = score) %>% 
+  knitr::kable(row.names = NA,
+               align     = "c")
+```
+
+# Sentimen Positif
+
+Berikut ini adalah tabel detail 15 komentar teratas hasilnya:
+
+```{r,echo=FALSE}
+positip = 
+  outputs %>% 
+  filter(label == "Positive") %>% 
+  select(komen,label,score) %>% 
+  arrange(desc(score)) %>% 
+  rename(Komentar    = komen,
+         Sentimen    = label,
+         Probability = score)
+
+positip %>%
+  head(15) %>% 
+  knitr::kable(row.names = NA,
+               align     = "c")
+
+
+```
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
