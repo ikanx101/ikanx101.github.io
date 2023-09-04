@@ -94,7 +94,7 @@ berjalan di *local computer* (data hanya ada di laptop saya saja).
 
 Setelah di-*run*, berikut adalah hasilnya:
 
-<img src="post_files/figure-gfm/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/home%20tester%20club/Tulisan%20kelima/post_files/figure-gfm/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" />
 
 Ternyata kita dapatkan ada **tiga komentar yang mendapatkan sentimen
 negatif** dan **mayoritas komentar mendapatkan sentimen positif**.
