@@ -1,5 +1,23 @@
-Sentiment Analysis: Komentar Netizen Terhadap Produk Susu Oat
-================
+---
+date: 2023-09-04T12:41:00-04:00
+title: "Sentiment Analysis: Komentar Netizen Terhadap Produk Susu Oat"
+categories:
+  - Blog
+tags:
+  - Machine Learning
+  - Artificial Intelligence
+  - Home Tester
+  - Market Research
+  - Konsumen
+  - Review Konsumen
+  - Text Analysis
+  - R Studio
+  - Python
+  - Deep Learning
+  - Tropicana Slim
+  - Oat Drink
+---
+
 
 Dari persiapan yang telah saya [lakukan
 sebelumnya](https://ikanx101.com/blog/install-huggingface/), sekarang
