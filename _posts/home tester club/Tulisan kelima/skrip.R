@@ -1,6 +1,6 @@
 rm(list=ls())
 
-setwd("~/ikanx101.github.io/_posts/home tester club/tulisan keempat")
+setwd("~/ikanx101.github.io/_posts/home tester club/tulisan kelima")
 
 load("hasil komen.rda")
 

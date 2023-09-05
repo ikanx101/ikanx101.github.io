@@ -1,0 +1,198 @@
+---
+title: "Mencoba LLM Huggingface: Zero-Shot Classification"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+rm(list=ls())
+library(dplyr)
+```
+
+Pada tulisan sebelumnya, saya telah menuliskan hasil [_sentiment analysis_](https://ikanx101.com/blog/sentimen-llm/) menggunakan _pre-trained model_ yang di-_listing_ di situs __Huggingface__. Secara pribadi, saya relatif puas dengan hasil model tersebut.
+
+Kali ini, saya akan mencoba satu _large language model_ pada _Huggingface_ bernama [___Zero-Shot Classification___](https://huggingface.co/tasks/zero-shot-classification). Jika pada tulisan sebelumnya saya membuat algoritmanya menggunakan bahasa __R__, kali ini mau tidak mau saya harus membuat algoritmanya dengan bahasa _Python_ karena saya masih belum berhasil membuatnya di __R__. Sebagaimana tulisan sebelumnya, proses "perhitungannya" sendiri dilakukan secara _local_ karena modelnya sendiri diunduh ke laptop saya sendiri.
+
+Apa yang dimaksud dengan __Zero-Shot Classification__?
+
+> _Zero-shot text classification is a task in natural language processing where a model is trained on a set of labeled examples but is then able to classify new examples from previously unseen classes._
+
+Jadi kita bisa melakukan klasifikasi tanpa harus melakukan proses _model training_ menggunakan "kalimat" dan "label" yang kita inginkan.
+
+Sebagai contoh, saya akan gunakan kalimat berikut ini:
+
+> __iPhone 15 series diprediksi akan meluncur dengan port USB-C menggantikan port Lightning. Dengan perubahan ini, Apple pun akan terpaksa menjilat ludahnya sendiri.__
+
+Dengan pilihan label berikut ini:
+
+```{r,echo=FALSE}
+data.frame(No = 1:3,
+           Label = c("Smartphone","Teknologi","Berita")) %>% 
+  knitr::kable()
+```
+
+Algoritma atau skripnya sendiri relatif sangat simpel, yakni dengan memanggil `transformers` dari __Huggingface__ lalu memasukkan _text_ dan _candidate labels_.
+
+Hasilnya bagaimana? Berikut adalah hasilnya:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+df = readLines("result.txt")
+df = df %>% strsplit(split = "\\:")
+
+input = df[[1]][2] %>% stringr::str_trim()
+input = gsub(", 'labels'","",input)
+
+# soal
+data.frame(Teks = input) %>% knitr::kable()
+
+labels = df[[1]][3]
+score  = df[[1]][4]
+
+
+labels = 
+  labels %>% 
+  strsplit(split = "\\,") %>% 
+  unlist() %>% .[1:3] %>% 
+  gsub("[[:punct:]]","",.) %>% 
+  stringr::str_trim()
+
+score = 
+  score %>% 
+  strsplit(split = "\\,") %>% 
+  unlist() %>% .[1:3] %>% 
+  gsub("\\]|\\[|\\}","",.) %>% 
+  stringr::str_trim() %>% 
+  as.numeric()
+
+data.frame(id = 1:3,
+           Label = labels,
+           Probability = score) %>% 
+  knitr::kable()
+```
+
+Hasilnya cukup memuaskan _yah_.
+
+---
+
+# Eksperimen dengan Kalimat Lainnya
+
+Sekarang kita akan melakukan eksperimen dengan beberapa kalimat lainnya dengan label yang bermacam-macam.
+
+## Eksperimen I
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+rm(list=ls())
+df = readLines("result 1.txt")
+df = df %>% strsplit(split = "\\:")
+
+input = df[[1]][2] %>% stringr::str_trim()
+input = gsub(", 'labels'","",input)
+
+# soal
+data.frame(Teks = input) %>% knitr::kable()
+
+labels = df[[1]][3]
+score  = df[[1]][4]
+
+
+labels = 
+  labels %>% 
+  strsplit(split = "\\,") %>% 
+  unlist() %>% .[1:5] %>% 
+  gsub("[[:punct:]]","",.) %>% 
+  stringr::str_trim()
+
+score = 
+  score %>% 
+  strsplit(split = "\\,") %>% 
+  unlist() %>% .[1:5] %>% 
+  gsub("\\]|\\[|\\}","",.) %>% 
+  stringr::str_trim() %>% 
+  as.numeric()
+
+data.frame(id = 1:5,
+           Label = labels,
+           Probability = score) %>% 
+  knitr::kable()
+```
+
+## Eksperimen II
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+rm(list=ls())
+df = readLines("result 2.txt")
+df = df %>% strsplit(split = "\\:")
+
+input = df[[1]][2] %>% stringr::str_trim()
+input = gsub(", 'labels'","",input)
+
+# soal
+data.frame(Teks = input) %>% knitr::kable()
+
+labels = df[[1]][3]
+score  = df[[1]][4]
+
+
+labels = 
+  labels %>% 
+  strsplit(split = "\\,") %>% 
+  unlist() %>% .[1:4] %>% 
+  gsub("[[:punct:]]","",.) %>% 
+  stringr::str_trim()
+
+score = 
+  score %>% 
+  strsplit(split = "\\,") %>% 
+  unlist() %>% .[1:4] %>% 
+  gsub("\\]|\\[|\\}","",.) %>% 
+  stringr::str_trim() %>% 
+  as.numeric()
+
+data.frame(id = 1:4,
+           Label = labels,
+           Probability = score) %>% 
+  knitr::kable()
+```
+
+## Eksperimen III
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+rm(list=ls())
+df = readLines("result 3.txt")
+df = df %>% strsplit(split = "\\:")
+
+input = df[[1]][2] %>% stringr::str_trim()
+input = gsub(", 'labels'","",input)
+
+# soal
+data.frame(Teks = input) %>% knitr::kable()
+
+labels = df[[1]][3]
+score  = df[[1]][4]
+
+
+labels = 
+  labels %>% 
+  strsplit(split = "\\,") %>% 
+  unlist() %>% .[1:3] %>% 
+  gsub("[[:punct:]]","",.) %>% 
+  stringr::str_trim()
+
+score = 
+  score %>% 
+  strsplit(split = "\\,") %>% 
+  unlist() %>% .[1:3] %>% 
+  gsub("\\]|\\[|\\}","",.) %>% 
+  stringr::str_trim() %>% 
+  as.numeric()
+
+data.frame(id = 1:3,
+           Label = labels,
+           Probability = score) %>% 
+  knitr::kable()
+```
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`

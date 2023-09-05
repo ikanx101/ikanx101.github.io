@@ -1,0 +1,1 @@
+{'sequence': 'iPhone 15 series diprediksi akan meluncur dengan port USB-C menggantikan port Lightning. Dengan perubahan ini, Apple pun akan terpaksa menjilat ludahnya sendiri.', 'labels': ['smartphone', 'teknologi', 'berita'], 'scores': [0.9227989315986633, 0.042226292192935944, 0.034974753856658936]}

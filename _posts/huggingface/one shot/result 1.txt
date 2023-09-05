@@ -1,0 +1,1 @@
+{'sequence': 'I have a problem with my laptop that needs to be resolved asap!!', 'labels': ['urgent', 'computer', 'not urgent', 'tablet', 'phone'], 'scores': [0.5521957278251648, 0.4420826733112335, 0.0026916186325252056, 0.0015924384351819754, 0.0014375088503584266]}
