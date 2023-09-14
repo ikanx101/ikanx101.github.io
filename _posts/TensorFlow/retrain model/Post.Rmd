@@ -1,0 +1,44 @@
+---
+title: "Sharing Best Practice Membuat Model Deep Learning dari Data Imbalance"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Beberapa minggu ini, saya diberikan tugas untuk mengeksplorasi data gelombang otak yang diambil dari alat _electroencephalogram_ (EEG) dari beberapa orang setelah diberikan stimulus tertentu. Data ini terdiri dari banyak kolom berisi nilai numerik gelombang otak dari masing-masing sensor di alat EEG.
+
+Hal yang langsung terlintas di pikiran saya adalah:
+
+> _Apakah mungkin saya mencari gelombang otak mana yang terpengaruh untuk stimulus tertentu?_
+
+Berdasarkan pertanyaan tersebut, maka saya berniat untuk membuat model _deep learning_ dengan `Tensorflow` di __R__.
+
+Salah satu permasalahan yang saya temukan adalah data stimulus yang ternyata _imbalance_. Dari sekitar `600`-an baris data, saya memiliki `150`-an baris dengan stimulus `1` dan `450`-an baris dengan stimulus `0`.
+
+Lantas bagaimana saya bisa mendapatkan model yang baik (ditandai oleh akurasi yang baik)?
+
+---
+
+Tentu ada beberapa teknik yang bisa dilakukan. Salah satunya dengan melakukan _data augmentation_. Namun setelah saya pikirkan kembali, saya ingin mencoba hal lain dengan memanfaatkan salah satu _benefit_ dari _deep learning_. Apa itu? Kapabilitas model yang bisa dilatih ulang secara terus menerus.
+
+Maka pada langkah awal membuat model, saya membuat _train data_ yang _balance_ antara stimulus `0` dan `1`. Setelah divalidasi dengan data _train_ dan _test_, akurasinya sudah tentu __tidak baik__. Tercatat, akurasinya hanya berada di kisaran `60%-65%`.
+
+Namun jangan sedih dulu, karena kita akan melakukan tahapan berikutnya dengan melakukan latih ulang. Pada tahap berikutnya, saya membuat _train data_ kedua dengan stimulus yang mulai _imbalance_. Jika sebelumnya saya paksakan agar `50-50`, kali ini saya buat mulai bergeser ke `45-55`. 
+
+_Oh iya_, saya juga tidak mendefinisikan `set.seed()` di angka tertentu agar pembuatan _train data_ menjadi selalu _random_.
+
+> _Hasilnya akurasinya menjadi naik sedikit ke kisaran_ `67%`.
+
+Proses ini diulang terus dengan membuat _train data_ yang _imbalance_. Jangan terburu-buru untuk membuat proporsinya menjaid mirip dengan data aslinya. Kita harus perlahan-lahan membuat _train data_-nya.
+
+Sebagai contoh, pada tahap selanjutnya, saya coba ubah proporsinya menjadi `43-57`.
+
+Setelah di-iterasi perlahan sebanyak 12 kali, saya mendapatkan model yang lebih baik. Akurasinya sekarang berada di angka `87%`. Sebuah nilai yang memuaskan untuk saya pribadi. Saya akan_stop_ sampai sini agar tidak terjadi _overfit_ kelak.
+
+---
+
+Dari model yang ada, saya baru akan membuat _exploratory model analysis_ menggunakan `DALEX`. Semoga bermanfaat.
+
+`if you find this article helpful, support this blog by clicking the ads.`
