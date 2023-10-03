@@ -89,8 +89,8 @@ berikut ini:
 
 Sekarang kita masukkan nama `kota` dan `kecamatan` ke *object* `data`:
 
-    df$kota      = kota
-    df$kecamatan = kecamatan
+    data$kota      = kota
+    data$kecamatan = kecamatan
 
 Berikut adalah hasil akhirnya:
 
