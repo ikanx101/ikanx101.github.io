@@ -1,0 +1,101 @@
+---
+title: "Mencari Nama Kota/Kabupaten dan Kecamatan dari Data Titik Longlat"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+rm(list=ls())
+setwd("~/ikanx101.github.io/_posts/geo marketing")
+
+library(dplyr)
+library(ggplot2)
+
+load("bahan post.rda")
+df        = df %>% filter(grepl("jakarta",kota,ignore.case = T))
+random_id = sample(1:nrow(df),15)
+data      = df[random_id,] %>% select(nama,lat,lon)
+data_fin  = df[random_id,] %>% select(nama,lat,lon,kecamatan,kota)
+```
+
+Pada tahun ini, salah satu _project_ besar yang kami kerjakan di kantor adalah terkait _geo marketing_. Jika rekan-rekan tahu, saya sudah pernah menulis beberapa tulisan terkait [bagaimana mengambil data _geolocation_ dan _geocoding_ dari Google Maps](https://ikanx101.com/tags/#geolocation). Nah, _project geomarketing_ yang kami lakukan adalah untuk mengutilisasi data _geolocation_ dan _geocoding_ lebih lanjut.
+
+Salah satu tahapan _pre-processing_ yang biasa dilakukan adalah menemukan nama `kecamatan`, `kota`/`kabupaten`, dan `provinsi` dari data `longitude` dan `latitude`. Oleh karena data `longitude` dan `latitude` yang saya miliki banyak, maka mencari _manual_ dengan cara _searching_ di _Google Maps_ bukanlah pilihan yang bijaksana. Saya harus bisa melakukannya secara otomatis dan cepat dengan __R__. 
+
+Setidaknya ada dua cara yang saya bisa lakukan:
+
+1. Menggunakan __API__ dari _Google Maps_. Saya pernah menuliskannya di [_blog_ saya yang lama](https://passingthroughresearcher.wordpress.com/2018/09/24/geocoding-with-r-and-google-geocoding-api/).
+1. Menggunakan data _raster_ yang tersedia.
+
+Pada tulisan ini, saya akan menggunakan cara kedua karena lebih cepat dan gratis. Bagaimana caranya?
+
+---
+
+## Data yang Digunakan
+
+Saya memiliki data lokasi __koperasi__ sebagai berikut:
+
+```{r}
+data %>% knitr::kable()
+```
+
+
+```{r,include = FALSE}
+#get_googlemap("Jakarta", zoom = 12, maptype = "satellite") %>% ggmap()
+library(leaflet)
+library(htmlwidgets)
+library(webshot)
+
+m = 
+  leaflet(data) %>%
+  addTiles() %>%
+  addCircleMarkers(lng = ~lon,
+                   lat = ~lat)
+
+## save html to png
+saveWidget(m, "temp.html", selfcontained = FALSE)
+webshot("temp.html", file = "Rplot.png",vwidth = 800, vheight = 400)
+```
+
+Berikut adalah visualisasi petanya:
+
+```{r out.width="80%",echo=FALSE,fig.align='center'}
+knitr::include_graphics("Rplot.png")
+```
+
+Sekarang saya akan cari nama kecamatan dan nama kotanya dengan skrip berikut ini:
+
+```
+### Getting the Indonesia shapefile
+indo_data = getData('GADM', country = 'Indonesia', level = 3, type = "sp")
+
+### Extracting the attributes from the shapefile for the given points
+city_names = extract(indo_data,                 # shapefile data indo
+                     data[, c("lon", "lat")])   # mengambil data longlat dari data kita ke shapefile
+
+### nama kota
+kota       = city_names$NAME_2
+
+### nama kecamatan
+kecamatan  = city_names$NAME_3
+```
+
+Sekarang kita masukkan nama `kota` dan `kecamatan` ke _object_ `data`:
+
+```
+df$kota      = kota
+df$kecamatan = kecamatan
+```
+
+Berikut adalah hasil akhirnya:
+
+```{r,echo=FALSE}
+data_fin %>% knitr::kable()
+```
+
+Prosesnya cukup mudah dan cepat. Hasilnya juga _reliable_.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
