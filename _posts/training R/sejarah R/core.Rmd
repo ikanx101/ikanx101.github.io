@@ -1,0 +1,39 @@
+---
+title: "R Core Team: Tim Pengembang Bahasa Pemrograman R"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+__R core team__ adalah tim pengembang yang bertanggung jawab atas pengembangan inti bahasa pemrograman R. Tim ini terdiri dari para ahli statistik, pemrograman, dan data science dari berbagai latar belakang dan wilayah.
+
+Tugas __R core team__ adalah sebagai berikut:
+
+- Mengembangkan dan memelihara inti bahasa pemrograman R. Inti R adalah kumpulan kode yang menyediakan dasar untuk semua fungsi dan fitur R. R core team bertanggung jawab untuk memastikan bahwa inti R tetap berfungsi dengan baik dan mengikuti standar bahasa pemrograman R.
+- Menerbitkan versi baru R secara teratur. R core team bekerja secara berkelanjutan untuk meningkatkan R. Mereka menerbitkan versi baru R secara teratur untuk menambahkan fitur baru, memperbaiki _bug_, dan meningkatkan kinerja.
+- Menyediakan dukungan untuk pengguna R. R core team menyediakan berbagai sumber daya untuk membantu pengguna R, termasuk dokumentasi, forum, dan saluran bantuan.
+- Menjaga kompatibilitas R dengan versi sebelumnya. __R core team__ bekerja untuk memastikan bahwa versi baru R tetap kompatibel dengan versi sebelumnya. Ini memungkinkan pengguna untuk terus menggunakan kode mereka yang sudah ada saat R diperbarui.
+
+Cara kerja __R core team__ adalah sebagai berikut:
+
+- __R core team__ bekerja dengan cara yang kolaboratif dan terbuka. Mereka menggunakan sistem kontrol versi Git untuk mengelola kode sumber R. Semua orang dapat berkontribusi pada pengembangan R dengan mengajukan perubahan ke sistem kontrol versi.
+- __R core team__ bertemu secara rutin untuk membahas perkembangan terbaru dan merencanakan pekerjaan masa depan. Mereka juga mengadakan konferensi tahunan R user conference untuk mendiskusikan perkembangan R dan berbagi ide.
+- Komitmen __R core team__ adalah untuk mengembangkan R menjadi bahasa pemrograman yang kuat dan serbaguna untuk analisis data. Mereka terus bekerja untuk meningkatkan kinerja, stabilitas, dan kegunaan R.
+
+Contoh kontribusi __R core team__ meliputi:
+
+- `Dirk Eddelbuettel` mengembangkan `Rcpp`, sebuah pustaka yang memungkinkan R untuk mengakses fungsi C++. Hal ini memungkinkan R untuk memanfaatkan kinerja dan fitur-fitur dari bahasa pemrograman C++.
+- `Hadley Wickham` mengembangkan `ggplot2`, sebuah pustaka visualisasi data untuk R. `ggplot2` adalah salah satu pustaka visualisasi data paling populer di dunia.
+- `John Chambers` adalah salah satu pencipta bahasa pemrograman S, yang merupakan pendahulu R. Chambers adalah seorang pionir dalam bidang statistika komputer.
+
+Perubahan spesifik yang dilakukan meliputi:
+
+- Penggunaan istilah teknis yang lebih tepat, seperti "inti bahasa pemrograman", "versi baru", "kompatibilitas", dan "penerimaan".
+- Penggunaan struktur kalimat yang lebih formal, seperti "Tim ini terdiri dari para ahli statistik, pemrograman, dan _data science_ dari berbagai latar belakang dan wilayah."
+- Penggunaan tata bahasa dan ejaan yang benar.
+- Penambahkan informasi tentang tanggung jawab __R core team__.
+- Penjelasan tentang cara kerja __R core team__.
+- Penjelasan tentang komitmen __R core team__.
+- Penambahkan contoh kontribusi __R core team__.
