@@ -1,0 +1,60 @@
+---
+title: "UPDATE! Best Practice Menjalankan R Studio Server dengan Docker di Digital Ocean"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Oleh karena sesuatu hal, hari ini saya harus bekerja secara WFH tanpa menggunakan laptop karena tertinggal di kantor. Bermodalkan _iPad 9th_, saya harus bisa menyelesaikan beberapa pekerjaan _scripting_ dan analisa menggunakan __R Studio__. 
+
+Jika rekan-rekan pernah membaca [_blog_ saya yang ini](https://ikanx101.com/blog/docker-r/), hari ini saya berencana untuk menggunakan __R Studio Server__ yang sudah saya _Dockerized_.
+
+Walaupun saya pernah menggunakan _dockerized_ __R Studio Server__ di [__Google Cloud Run__](https://ikanx101.com/blog/docker-cloud-run/) tapi saya lebih suka menggunakan __Digital Ocean__.
+
+Bagaimana caranya?
+
+---
+
+## Langkah I
+
+Pada _dashboard_ __Docker__, buat _droplet_ dengan memilih `Docker` sebagai aplikasi utama pada _tab_ `Marketplace`.
+
+Saya akan gunakan _password_ sebagai proses otentifikasi.
+
+## Langkah II
+
+Pada iPad, saya akan _install_ aplikasi bernama `Termius` sebagai alat untuk melakukan `ssh` ke _droplet_ yang telah saya buat.
+
+Setelah berhasil ter-_install_, kita buka tab `ssh` dan melakukan koneksi `ssh`.
+
+```
+ssh root@nama.ip.address
+```
+
+Masukkan _password_ yang telah kita buat sebelumnya.
+
+## Langkah III
+
+Kita lakukan _pull_ dan _run_ _Docker container_ sebagai berikut:
+
+```
+# melakukan pull request dari Docker server
+docker pull ikanx101/r-custom:latest
+
+# run container
+docker run --rm -p 8888:8787 -d \
+           -e USER=ikanx101 \
+           -e PASSWORD=ikanx101 \
+           -e USERID=1001 \
+           -e GROUPID=1001 \
+           ikanx101/r-custom:latest \
+sleep infinity
+```
+
+_Script_ di atas akan memastikan _Docker container_ tersebut tetap berjalan walau proses `ssh`-nya terhenti. Jadi aman dari masalah konektivitas.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
