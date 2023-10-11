@@ -9,6 +9,7 @@ tags:
   - R
   - Machine Learning
   - Artificial Intelligence
+  - Data Viz
 ---
 
 
