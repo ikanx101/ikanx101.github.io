@@ -1,6 +1,6 @@
 ---
 date: 2023-09-04T12:41:00-04:00
-title: "Sentiment Analysis: Komentar Netizen Terhadap Produk Susu Oat"
+title: "Mencoba LLM Huggingface: Sentiment Analysis dari Komentar Netizen Terhadap Produk Susu Oat"
 categories:
   - Blog
 tags:
