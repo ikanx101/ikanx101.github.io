@@ -7,6 +7,20 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Setidaknya sudah ada empat artikel yang sudah saya tulis terkait Large Language Model yang saya dapatkan dari situs Huggingface. Salah satu artikel yang menarik dan bermanfaat bagi saya adalah LLM untuk merangkum data berupa teks atau tulisan.
+
+Kali ini saya akan melakukan hal serupa, yakni mencoba LLM dari Huggingface terkait summarization alias merangkum. Bedanya dengan artikel sebelumnya adalah:
+
+> Saya akan merangkum teks berupa percakapan.
+
+Tentu ini adalah hal yang menarik karena kalimat yang digunakan dalam percakapan tentu berbeda dengan kalimat pada tulisan.
+
+Pertanyaannya:
+
+> Apakah LLM bisa merangkum percakapan dengan baik?
+
+Mari kita coba.
+
 # Kasus I
 
 ```
