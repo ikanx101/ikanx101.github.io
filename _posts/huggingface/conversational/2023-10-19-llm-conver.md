@@ -40,7 +40,7 @@ Mari kita coba!
 ## Model yang Digunakan
 
 Saya menggunakan LLM bernama
-(bart-conversation-summarizer)\[<https://huggingface.co/Azma-AI/bart-conversation-summarizer>\]
+[bart-conversation-summarizer](https://huggingface.co/Azma-AI/bart-conversation-summarizer)
 buatan maestro luar negeri tentunya. LLM ini dilatih menggunakan
 *dataset* berbahasa Inggris, jadi untuk percobaanpun saya akan gunakan
 percakapan dalam bahasa Inggris.
