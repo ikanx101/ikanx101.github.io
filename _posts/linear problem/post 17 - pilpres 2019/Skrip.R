@@ -52,6 +52,20 @@ jkw_persen = 100 - prb_persen
 # kita definisikan x[i] binary
 
 
+
+x = c(1,1,rep(0,756))
+
+temp = 
+  df_kpu |>
+  mutate(pilih = x) |>
+  filter(pilih == 1) |>
+  group_by(kecamatan) |>
+  tally() |>
+  ungroup()
+
+
+temp
+
 bin_prog = 
   MIPModel() %>%
   # menambah variabel
