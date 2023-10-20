@@ -24,7 +24,17 @@ ambil_file = function(nama_file){
     data.frame(tps = teks) |>
     separate(tps,
              sep  = "\\t",
-             into = c("tps","jkw","prb"))
+             into = c("tps","jkw","prb")) |>
+    mutate(kecamatan = nama_file,
+           kecamatan = gsub(".txt","",kecamatan)) |>
+    mutate(jkw = as.numeric(jkw),
+           prb = as.numeric(prb))
   return(df)
 }
 
+# kita save dulu
+temp = mclapply(nama_files,ambil_file,mc.cores = n_core)
+# kita gabung dulu
+df_kpu = do.call(rbind,temp)
+
+df_kpu
