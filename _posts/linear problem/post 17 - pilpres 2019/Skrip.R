@@ -79,7 +79,7 @@ bin_prog =
                type = "continuous",
                lb = 0) |>
   # constraint 1 hanya punya max 50 orang
-  add_constraint(sum_expr(x[i],i = 1:758) <= 50) |>
+  add_constraint(sum_expr(x[i],i = 1:758) <= 40) |>
   # add constraint 2 sebagai definisi jokowi
   add_constraint(jkw_p[i] == df_kpu$jkw[i] * x[i],
                  i = 1:758) |>
@@ -93,10 +93,21 @@ bin_prog =
                  k = 1) |>
   add_constraint(bagi_p[k] == sum_expr(jkw_p[i],i = 1:758),
                  k = 1) |>
+  add_constraint(pembagi[k] - bagi_p[k] <= 10,
+                 k = 1) |>
+  add_constraint(pembagi[k] - bagi_p[k] >= -10,
+                 k = 1) |>
+  add_constraint(bagi_p[k] - pembagi[k] <= 10,
+                 k = 1) |>
+  add_constraint(bagi_p[k] - pembagi[k] >= -10,
+                 k = 1) |>
+  set_objective(sum_expr(x[i],
+                         i = 1:758),
+                "max")
   # membuat objective function
-  set_objective(sum_expr(pembagi[k] - bagi_p[k],
-                         k = 1),
-                "min") 
+  #set_objective(sum_expr(pembagi[k] - bagi_p[k],
+  #                       k = 1),
+  #              "min") 
   
 
   
@@ -123,7 +134,10 @@ temp =
 persen  = temp$jkw / sum(temp$jkw,temp$prb)
 persen
 selisih = abs(persen - jkw_persen)
-selisih
+selisih * 100
+jkw_persen
 
+solusi = df_kpu[hasil_final$i,]
 
-
+save(df_kpu,solusi,jkw_persen,prb_persen,
+     file = "bahan blog - solusi terbatas.rda")
