@@ -51,20 +51,22 @@ jkw_persen = 100 - prb_persen
 # i = 1:788 - binary menandakan apakah TPS tersebut dipilih atau tidak
 # kita definisikan x[i] binary
 
+# x = sample(c(0,1),758,replace = T)
 
+ob_function = function(x){
+  temp = 
+    df_kpu |>
+    mutate(pilih = x) |>
+    filter(pilih == 1) |>
+    summarise(jkw = sum(jkw),
+              prb = sum(prb))
+  
+  persen  = temp$jkw / sum(temp$jkw,temp$prb) * 100
+  persen  = round(persen,2)
+  selisih = abs(persen - jkw_persen)
+  return(selisih)
+}
 
-x = c(1,1,rep(0,756))
-
-temp = 
-  df_kpu |>
-  mutate(pilih = x) |>
-  filter(pilih == 1) |>
-  group_by(kecamatan) |>
-  tally() |>
-  ungroup()
-
-
-temp
 
 bin_prog = 
   MIPModel() %>%
@@ -73,13 +75,27 @@ bin_prog =
                i = 1:758,
                type = "binary",
                lb = 0) |>
-  # membuat objective function
-  set_objective(sum_expr(x[i],
-                         i = 1:758) + 10,
-                "min") |>
+  add_variable(jkw_p[i],
+               i = 1:758,
+               type = "continuous",
+               lb = 0) |>
+  add_variable(prb_p[i],
+               i = 1:758,
+               type = "continuous",
+               lb = 0) |>
   # constraint 1 hanya punya max 50 orang
-  add_constraint(sum_expr(x[i]) <= 50,
-                 i = 1:758)
+  add_constraint(sum_expr(x[i],i = 1:758) <= 50) |>
+  # add constraint 2 sebagai definisi jokowi
+  add_constraint(jkw_p[i] == df_kpu$jkw[i] * x[i],
+                 i = 1:758) |>
+  # add constraint 3 sebagai definisi prabowo
+  add_constraint(prb_p[i] == df_kpu$prb[i] * x[i],
+                 i = 1:758) |>
+  # membuat objective function
+  set_objective(sum_expr(,
+                         i = 1:758),
+                "max") 
+  
 
   
 bin_prog 
@@ -88,15 +104,14 @@ hasil =
   bin_prog %>%
   solve_model(with_ROI(solver = "glpk",
                        verbose = T))
-
+hasil
 
 hasil_final = 
   hasil %>%
-  get_solution(x[i])
-  
-hasil
+  get_solution(x[i]) |>
+  filter(value > 0)
 
-
+hasil_final
 
 
 
