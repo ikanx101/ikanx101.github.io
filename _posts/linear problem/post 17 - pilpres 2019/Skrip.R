@@ -45,28 +45,11 @@ df_kpu = do.call(rbind,temp)
 
 # target
 prb_persen = 44.68
-jkw_persen = 100 - prb_persen
+jkw_persen = (100 - prb_persen) / 100
 
 # decision variable
 # i = 1:788 - binary menandakan apakah TPS tersebut dipilih atau tidak
 # kita definisikan x[i] binary
-
-# x = sample(c(0,1),758,replace = T)
-
-ob_function = function(x){
-  temp = 
-    df_kpu |>
-    mutate(pilih = x) |>
-    filter(pilih == 1) |>
-    summarise(jkw = sum(jkw),
-              prb = sum(prb))
-  
-  persen  = temp$jkw / sum(temp$jkw,temp$prb) * 100
-  persen  = round(persen,2)
-  selisih = abs(persen - jkw_persen)
-  return(selisih)
-}
-
 
 bin_prog = 
   MIPModel() %>%
@@ -83,6 +66,18 @@ bin_prog =
                i = 1:758,
                type = "continuous",
                lb = 0) |>
+  add_variable(tot_p[i],
+               i = 1:758,
+               type = "continuous",
+               lb = 0) |>
+  add_variable(pembagi[k],
+               k = 1,
+               type = "continuous",
+               lb = 0) |>
+  add_variable(bagi_p[k],
+               k = 1,
+               type = "continuous",
+               lb = 0) |>
   # constraint 1 hanya punya max 50 orang
   add_constraint(sum_expr(x[i],i = 1:758) <= 50) |>
   # add constraint 2 sebagai definisi jokowi
@@ -91,10 +86,17 @@ bin_prog =
   # add constraint 3 sebagai definisi prabowo
   add_constraint(prb_p[i] == df_kpu$prb[i] * x[i],
                  i = 1:758) |>
+  # add constraint 3 sebagai definisi total
+  add_constraint(tot_p[i] == jkw_p[i] + prb_p[i],
+                 i = 1:758) |>
+  add_constraint(pembagi[k] == sum_expr(tot_p[i],i = 1:758) * jkw_persen,
+                 k = 1) |>
+  add_constraint(bagi_p[k] == sum_expr(jkw_p[i],i = 1:758),
+                 k = 1) |>
   # membuat objective function
-  set_objective(sum_expr(,
-                         i = 1:758),
-                "max") 
+  set_objective(sum_expr(pembagi[k] - bagi_p[k],
+                         k = 1),
+                "min") 
   
 
   
@@ -113,9 +115,15 @@ hasil_final =
 
 hasil_final
 
-
-
-
+temp = 
+  df_kpu[hasil_final$i,] |>
+  summarise(jkw = sum(jkw),
+            prb = sum(prb))
+    
+persen  = temp$jkw / sum(temp$jkw,temp$prb)
+persen
+selisih = abs(persen - jkw_persen)
+selisih
 
 
 
