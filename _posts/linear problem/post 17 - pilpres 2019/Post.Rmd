@@ -1,0 +1,84 @@
+---
+title: "Untitled"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Menentukan Sample Quick Count PEMILU di Bekasi Timur
+
+Sejak _quick count_ pertama kali digunakan pada Pemilu 2004, saya menjadi penasaran bagaimana cara mereka bekerja. _Qodarullah_, saat kuliah di Matematika ITB saya dipertemukan dengan seorang dosen yang membantu pengembangan metodologi _quick count_ tersebut dengan tingkat kesalahan yang sangat amat kecil.
+
+Saat mendengarkan pemaparan beliau, ternyata persiapannya sangat rumit ya. 
+
+Di pekerjaan saya di bidang _market research_, dikenal ada salah satu metode _sampling_ yang disebut dengan _stratified sampling_. Kurang lebih penentuan berapa banyak dan daerah mana saja yang dijadikan sampel perhitungan _quick count_ sama dengan penerapan _stratified sampling_ tersebut.
+
+Pada Pemilu 2019 lalu, salah seorang rekan saya yang menjadi simpatisan partai politik tertentu berdiskusi tentang proses perekapan __formulir C1__ yang dimiliki oleh saksi-saksi Parpol di TPS. Setelah berdiskusi dengannya, muncul pertanyaan di benak saya:
+
+> Apakah bisa saya melakukan _quick count_ hanya di Bekasi namun hasilnya sangat akurat mendekati proporsi angka nasional?
+
+Berhubung waktu itu belum punya ilmu yang cukup, pertanyaan ini saya selalu simpan di _notes_ pribadi saya.
+
+Saat kuliah magister Sains Komputasi beberapa tahun belakangan ini, saya cukup ngoprek tentang topik bernama __optimisasi matematika__. Setelah saya lihat kembali pertanyaan simpanan tersebut, saya berpikir bahwa proses penyelesaian pertanyaan ini harusnya bisa diselesaikan dengan membuat model optimisasi.
+
+Bagaimana caranya? Oke, kita mulai prosesnya perlahan:
+
+—-
+
+_Golden standard_ untuk menghitung dan menentukan sampel untuk _quick count_ adalah dengan menggunakan _stratified sampling_. Namun berhubung saya tidak cukup waktu, tenaga, dan modal, saya tidak mungkin mencari data tentang kependudukan dan preferensi pemilih untuk menentukan strata populasi di Bekasi. 
+
+Oleh karena itu saya akan menggunakan suatu pendekatan lain, yakni menentukan area atau TPS mana yang harus dijadikan sampel _quick count_ dari data Pilpres hasil Pemilu 2019. Saya berhipotesis, dari sekian banyak TPS yang ada (populasi TPS di Bekasi), pasti ada sekumpulan TPS yang kalau di-agregatkan proporsinya akan mendekati proporsi nasional. Tentu asumsinya adalah tidak ada perubahan demografi pemilih di TPS tersebut ya.
+
+Untuk itu saya melakukan _web scraping_ data hasil Pemilu 2019 dari situs KPU Nasional. Berikut adalah data yang saya dapatkan:
+
+Grafik-grafik.
+
+Terlihat di Bekasi Timur ada 758 buah TPS dari empat area: Margahayu, Aren Jaya, Bekasi Jaya, dan Duren Jaya. Kelak saya akan menentukan dari 758 TPS ini, cukup memilih `n` buah TPS saja maka hasil proporsi suara totalnya akan mendekati proporsi suara Nasional. Seru yah… hehe.
+
+Bagaimana caranya?
+
+Tentu dengan membuat model _Binary Linear Programming_. Sama persis dengan masalah [portofolio diskon produk](link ke blog).
+
+Berikut adalah contoh 50 baris data TPS dari 758 baris data TPS yang berhasil saya ambil:
+
+Saya definisikan $x_[i], i = 1,2,…,758$ sebagai bilangan biner, dimana 1 berarti TPS tersebut saya pilih sebagai sampel _quick count_ dan 0 berarti TPS tersebut tidak dipilih.
+
+Tentu ada batasan dari masalah saya:
+
+Tentu saya menginginkan TPS yang saya sampel harus sesedikit mungkin karena keterbatasan sumber daya.
+Tentu saya menginginkan _error_ yang terjadi sekecil-kecilnya.
+
+Dari rumusan di atas, maka masalah saya sekarang adalah menentukan nilai dari $x[i]$. 
+
+—-
+
+Algoritma Komputasi
+
+Untuk menyelesaikan masalah di atas, saya membuat algoritma menggunakan `library(ompr)` di __R__. Saya membuat dua skenario:
+
+Jika saya tidak membatasi berapa banyak sampel yang harus diambil dan hanya mengejar akurasi tertinggi (_error_ terkecil).
+Jika saya hanya membatasi 30 TPS saja yang harus diambil dengan akurasi yang tinggi juga.
+
+Bagaimana hasilnya? Cekidot:
+
+—-
+
+## Skenario I
+
+Hasil skenario I mengharuskan saya mengambil __n buah TPS__ sebagai sampel _quick count_ saya. Dari semua TPS tersebut saya dapatkan hasil sebagai berikut:
+
+Grafik.
+
+## Skenario II
+
+Dari __30 buah TPS__ terpilih, berikut adalah hasilnya:
+
+Grafik.
+
+—-
+
+## _Summary_
+
+Dari pemaparan di atas, ternyata optimisasi bisa saya gunakan untuk mencari TPS mana saja yang perlu saya ambil sehingga proporsinya bisa mendekati proporsi hasil akhir nasional.
