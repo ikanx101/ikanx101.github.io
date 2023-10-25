@@ -70,7 +70,13 @@ tersebut ya.
 Untuk itu saya melakukan *web scraping* data hasil Pemilu 2019 dari
 situs KPU Nasional. Berikut adalah data yang saya dapatkan:
 
-<img src=https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/linear%20problem/post%2017%20-%20pilpres%202019/Post_files/figure-gfm/unnamed-chunk-1-1.png" style="display: block; margin: auto;" /><img src=https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/linear%20problem/post%2017%20-%20pilpres%202019/Post_files/figure-gfm/unnamed-chunk-1-2.png" style="display: block; margin: auto;" /><img src=https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/linear%20problem/post%2017%20-%20pilpres%202019/Post_files/figure-gfm/unnamed-chunk-1-3.png" style="display: block; margin: auto;" /><img src=https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/linear%20problem/post%2017%20-%20pilpres%202019/Post_files/figure-gfm/unnamed-chunk-1-4.png" style="display: block; margin: auto;" />
+<img src=https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/linear%20problem/post%2017%20-%20pilpres%202019/Post_files/figure-gfm/unnamed-chunk-1-1.png" style="display: block; margin: auto;" />
+
+<img src=https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/linear%20problem/post%2017%20-%20pilpres%202019/Post_files/figure-gfm/unnamed-chunk-1-2.png" style="display: block; margin: auto;" />
+
+<img src=https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/linear%20problem/post%2017%20-%20pilpres%202019/Post_files/figure-gfm/unnamed-chunk-1-3.png" style="display: block; margin: auto;" />
+
+<img src=https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/linear%20problem/post%2017%20-%20pilpres%202019/Post_files/figure-gfm/unnamed-chunk-1-4.png" style="display: block; margin: auto;" />
 
 Terlihat di Bekasi Timur:
 
