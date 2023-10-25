@@ -1,13 +1,14 @@
 ---
-title: "Untitled"
-output: github_document
+title: "Menentukan Sample Quick Count PEMILU di Bekasi Timur"
+output: 
+  github_document:
+    pandoc_args: --webtex
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Menentukan Sample Quick Count PEMILU di Bekasi Timur
 
 Sejak _quick count_ pertama kali digunakan pada Pemilu 2004, saya menjadi penasaran bagaimana cara mereka bekerja. _Qodarullah_, saat kuliah di Matematika ITB saya dipertemukan dengan seorang dosen yang membantu pengembangan metodologi _quick count_ tersebut dengan tingkat kesalahan yang sangat amat kecil.
 
@@ -33,51 +34,205 @@ Oleh karena itu saya akan menggunakan suatu pendekatan lain, yakni menentukan ar
 
 Untuk itu saya melakukan _web scraping_ data hasil Pemilu 2019 dari situs KPU Nasional. Berikut adalah data yang saya dapatkan:
 
-Grafik-grafik.
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center'}
+rm(list=ls())
 
-Terlihat di Bekasi Timur ada 758 buah TPS dari empat area: Margahayu, Aren Jaya, Bekasi Jaya, dan Duren Jaya. Kelak saya akan menentukan dari 758 TPS ini, cukup memilih `n` buah TPS saja maka hasil proporsi suara totalnya akan mendekati proporsi suara Nasional. Seru yah… hehe.
+library(dplyr)
+library(ggplot2)
+library(rayshader)
+options("cores"=5)
+
+load("bahan blog - solusi terbaik.rda")
+
+data.frame(ket = c("Jokowi - Ma'ruf","Prabowo - Sandi"),
+           per = c(jkw_persen * 100,prb_persen)) |>
+  ggplot(aes(x = ket,y = per)) +
+  geom_col(aes(fill = ket),color = "black") +
+  scale_fill_manual(values = c("steelblue","darkgreen")) +
+  geom_label(aes(label = paste0(per,"%")),size = 2) +
+  coord_polar(theta = "y") +
+  ylim(0,100) +
+  theme_void() +
+  labs(fill = "Hasil KPU 2019\nProporsi Nasional\nPasangan Capres")
+
+plt_1 =
+  df_kpu |>
+  group_by(kecamatan) |>
+  tally() |>
+  ungroup() |>
+  ggplot(aes(x = kecamatan,
+             y = n)) +
+  geom_col(color = "black",fill = "steelblue") +
+  geom_label(aes(label = paste(n,"TPS")),size = 2.5) +
+  labs(title = "Berapa banyak TPS di Bekasi Timur?",
+       subtitle = "sumber data: situs kpu.go.id",
+       x = "Kecamatan") +
+  theme_minimal() +
+  theme(axis.text.y = element_blank(),
+        axis.title.y = element_blank())
+
+plt_1
+
+df_kpu |>
+  reshape2::melt(id.vars = c("tps","kecamatan")) |>
+  mutate(variable = ifelse(variable == "jkw", "Jokowi - Ma'ruf",
+                           "Prabowo - Sandi")) |>
+  ggplot(aes(x = variable,y = value)) +
+  geom_boxplot(aes(color = variable)) +
+  scale_color_manual(values = c("steelblue","darkgreen")) +
+  facet_wrap(~kecamatan,ncol = 2) +
+  labs(title = "Sebaran Banyaknya Pemilih Capres\ndi TPS Masing-Masing Wilayah",
+       subtitle = "sumber data: situs kpu.go.id",
+       y = "Banyak pemilih") +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        legend.position = "none")
+
+df_kpu |>
+  reshape2::melt(id.vars = c("tps","kecamatan")) |>
+  mutate(variable = ifelse(variable == "jkw", "Jokowi - Ma'ruf",
+                           "Prabowo - Sandi")) |>
+  group_by(kecamatan,variable) |>
+  summarise(n = sum(value)) |>
+  ungroup() |>
+  group_by(kecamatan) |>
+  mutate(persen = n / sum(n) * 100,
+         label  = round(persen),
+         label  = paste0(label,"%")) |>
+  ungroup() |>
+  ggplot(aes(x = kecamatan,
+             y = persen,
+             fill = variable)) +
+  geom_col(color = "black") +
+  scale_fill_manual(values = c("steelblue","darkgreen")) +
+  geom_label(aes(label = label),size = 2,position = "stack") +
+  labs(title = "Proporsi Pemilih Capres di Bekasi Timur",
+       subtitle = "sumber data: situs kpu.go.id",
+       x = "Kecamatan",
+       fill = "Pasangan Capres") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        axis.text.y = element_blank(),
+        axis.title.y = element_blank())
+  
+```
+
+Terlihat di Bekasi Timur:
+
+- Ada 758 buah TPS dari empat area: Margahayu, Aren Jaya, Bekasi Jaya, dan Duren Jaya. 
+- Secara nasional proporsi pemilih "Jokowi - Ma'ruf" lebih tinggi namun di empat area di Bekasi Timur pasangan "Prabowo Sandi" memiliki proporsi pemilih yang lebih tinggi.
+
+Tujuan saya adalah:
+
+> __Menentukan dari 758 TPS ini, berapa banyak TPS yang perlu diambil agar hasil proporsi suara totalnya akan mendekati proporsi suara Nasional.__
+
+_Seru yah… hehe_
 
 Bagaimana caranya?
 
-Tentu dengan membuat model _Binary Linear Programming_. Sama persis dengan masalah [portofolio diskon produk](link ke blog).
+Tentu dengan membuat model _Binary Linear Programming_. Sama persis dengan masalah [portofolio diskon produk](https://ikanx101.com/blog/binary-marketplace/).
 
 Berikut adalah contoh 50 baris data TPS dari 758 baris data TPS yang berhasil saya ambil:
 
-Saya definisikan $x_[i], i = 1,2,…,758$ sebagai bilangan biner, dimana 1 berarti TPS tersebut saya pilih sebagai sampel _quick count_ dan 0 berarti TPS tersebut tidak dipilih.
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center'}
+sample_id = sample(758,50,replace = F) |> sort()
+
+df_kpu[sample_id,] |> 
+  rename(TPS = tps,
+         "Jokowi - Ma'ruf" = jkw,
+         "Prabowo - Sandi" = prb,
+         Kecamatan = kecamatan) |>
+  knitr::kable()
+```
+
+Saya definisikan $x_i$ dengan $i = 1,2,..,758$ sebagai bilangan biner:
+
+- Dimana __1__ berarti TPS tersebut saya pilih sebagai sampel _quick count_ dan 
+- Nilai __0__ berarti TPS tersebut tidak dipilih.
 
 Tentu ada batasan dari masalah saya:
 
-Tentu saya menginginkan TPS yang saya sampel harus sesedikit mungkin karena keterbatasan sumber daya.
-Tentu saya menginginkan _error_ yang terjadi sekecil-kecilnya.
+- Tentu saya menginginkan TPS yang saya sampel harus sesedikit mungkin karena keterbatasan sumber daya.
+- Tentu saya menginginkan _error_ yang terjadi sekecil-kecilnya.
 
-Dari rumusan di atas, maka masalah saya sekarang adalah menentukan nilai dari $x[i]$. 
+Dari rumusan di atas, maka masalah saya sekarang adalah menentukan nilai dari $x_i$. 
 
-—-
+---
 
-Algoritma Komputasi
+## Algoritma Komputasi
 
 Untuk menyelesaikan masalah di atas, saya membuat algoritma menggunakan `library(ompr)` di __R__. Saya membuat dua skenario:
 
-Jika saya tidak membatasi berapa banyak sampel yang harus diambil dan hanya mengejar akurasi tertinggi (_error_ terkecil).
-Jika saya hanya membatasi 30 TPS saja yang harus diambil dengan akurasi yang tinggi juga.
+- __Skenario I__: Jika saya __tidak membatasi berapa banyak TPS__ yang harus diambil dan hanya mengejar akurasi tertinggi (_error_ terkecil).
+- __Skenario II__: Jika saya __hanya membatasi 40 TPS saja__ yang harus diambil dengan akurasi yang tinggi juga.
 
 Bagaimana hasilnya? Cekidot:
 
-—-
+---
 
 ## Skenario I
 
 Hasil skenario I mengharuskan saya mengambil __n buah TPS__ sebagai sampel _quick count_ saya. Dari semua TPS tersebut saya dapatkan hasil sebagai berikut:
 
-Grafik.
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center'}
+solusi |>
+  reshape2::melt(id.vars = c("tps","kecamatan")) |>
+  mutate(variable = ifelse(variable == "jkw", "Jokowi - Ma'ruf",
+                           "Prabowo - Sandi")) |>
+  group_by(variable) |>
+  summarise(n = sum(value)) |>
+  ungroup() |>
+  mutate(persen = n / sum(n) * 100,
+         persen = round(persen,3),
+         label = paste0(persen,"%")) |>
+  ggplot(aes(x = variable,y = persen)) +
+  geom_col(aes(fill = variable),color = "black") +
+  scale_fill_manual(values = c("steelblue","darkgreen")) +
+  geom_label(aes(label = label),size = 2) +
+  coord_polar(theta = "y") +
+  ylim(0,100) +
+  theme_void() +
+  labs(fill = "375 TPS Terpilih\ndi Area Bekasi Timur\nPasangan Capres")
+```
+
+Pada skenario I ini, model mengharuskan saya __memilih 375 TPS tertentu__ sebagai target _quick count_. Hasilnya bisa dilihat bahwa _error_ yang dihasilkan sanga kecil (proporsi TPS terpilih sangat mendekati proporsi nasional).
+
+Jika rekan-rekan penasaran __375 TPS__ tersebut apa saja dan di mana, silakan _DM_ saya saja ya.
 
 ## Skenario II
 
-Dari __30 buah TPS__ terpilih, berikut adalah hasilnya:
+Sekarang kita beralih ke skenario II, yakni hanya memilih __40 TPS__. Berikut adalah hasilnya:
 
-Grafik.
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.align='center'}
+rm(list=ls())
 
-—-
+load("bahan blog - solusi terbatas.rda")
+
+solusi |>
+  reshape2::melt(id.vars = c("tps","kecamatan")) |>
+  mutate(variable = ifelse(variable == "jkw", "Jokowi - Ma'ruf",
+                           "Prabowo - Sandi")) |>
+  group_by(variable) |>
+  summarise(n = sum(value)) |>
+  ungroup() |>
+  mutate(persen = n / sum(n) * 100,
+         persen = round(persen,3),
+         label = paste0(persen,"%")) |>
+  ggplot(aes(x = variable,y = persen)) +
+  geom_col(aes(fill = variable),color = "black") +
+  scale_fill_manual(values = c("steelblue","darkgreen")) +
+  geom_label(aes(label = label),size = 2) +
+  coord_polar(theta = "y") +
+  ylim(0,100) +
+  theme_void() +
+  labs(fill = "40 TPS Terpilih\ndi Area Bekasi Timur\nPasangan Capres")
+```
+
+Saya dapatkan __40 TPS__ yang memiliki proporsi agregat yang memiliki _error_ yang kecil (walau tidak sekecil skenario I). 
+
+Jika rekan-rekan penasaran juga dengan mana saja __40 TPS__ ini, silakan _DM_ ke saya ya.
+
+---
 
 ## _Summary_
 
