@@ -74,6 +74,20 @@ Kita lakukan *pull* dan *run* *Docker container* sebagai berikut:
 berjalan walau proses `ssh`-nya terhenti. Jadi aman dari masalah
 konektivitas.
 
+
+## Langkah IV
+
+Jika dibutuhkan untuk _web scraping_ menggunakan `RSelenium`, saya gunakan _Docker_ berikut:
+
+    # docker pull dan run dari server
+    docker run -d -p 4445:4444 selenium/standalone-firefox:4.8.0-20230123
+
+    # skrip di R nya
+    remote_driver = remoteDriver(remoteServerAddr = ip.address, 
+                                 port             = 4445L, 
+                                 browserName      = "firefox")
+
+
 ------------------------------------------------------------------------
 
 `if you find this article helpful, support this blog by clicking the ads.`
