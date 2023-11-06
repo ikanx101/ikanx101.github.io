@@ -1,3 +1,4 @@
+# ==============================================================================
 rm(list=ls())
 
 # libraries
@@ -6,11 +7,15 @@ library(tidyr)
 library(tidytext)
 
 setwd("~/ikanx101.github.io/_posts/web scraping/palestina/scraper")
+# ==============================================================================
 
+
+# ==============================================================================
 # ambil stopwords
 stop = readLines("https://raw.githubusercontent.com/stopwords-iso/stopwords-id/master/stopwords-id.txt")
 
 # kita list dulu kata-kata yang terafiliasi dengan konflik palestina
+kata_konflik = c("palestina","gaza","israel","yahudi","zionis","hamas")
 
 # ambil semua data
 load("detikcom.rda")
@@ -36,6 +41,15 @@ bersihkan = function(input){
     summarise(judul = paste(words,collapse = " ")) %>% 
     ungroup() %>% 
     distinct()
+  # ambil berita palestina only
+  id_palestin = 
+    output |>
+    unnest_tokens("words",judul) |>
+    filter(words %in% kata_konflik) |>
+    pull(id) |>
+    unique()
+  output = output |> filter(id %in% id_palestin)
+  
   return(output)
 }
 
@@ -43,29 +57,26 @@ bersihkan = function(input){
 df_detik  = bersihkan(df_detik)
 df_kompas = bersihkan(df_kompas)
 df_cnn    = bersihkan(df_cnn)
+# ==============================================================================
 
+detik_wc = 
+  df_detik |>
+  unnest_tokens("words",judul) |>
+  group_by(words) |>
+  count(sort = T) |>
+  ungroup() |>
+  rename(freq = n)
 
+detik_wc
 
-
-dia_wc = 
-  pre_data %>% 
-  filter(produk == "Diabetasol") %>% 
-  unnest_tokens("words",komen) %>% 
-  group_by(words) %>% 
-  count(sort = T) %>% 
-  ungroup() %>% 
-  rename(word = words,
-         freq = n)
-
-png("dia cloud.png",width = 900,height = 750,res = 150)
-wordcloud::wordcloud(words = dia_wc$word, 
-                     freq = dia_wc$freq, 
-                     min.freq = 0,
-                     max.words=150, 
+png("detik cloud.png",width = 900,height = 750,res = 150)
+wordcloud::wordcloud(words = detik_wc$words, 
+                     freq  = detik_wc$freq, 
+                     min.freq. = 0,
+                     max.words =150, 
                      use.r.layout=FALSE,
                      random.order=FALSE,
-                     rot.per = .25,
-                     colors=brewer.pal(5, "Dark2"))
+                     rot.per = .25)
 dev.off()
 
 
