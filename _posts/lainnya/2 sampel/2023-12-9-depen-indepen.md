@@ -9,7 +9,7 @@ tags:
   - Hipotesis Testing
   - Statistika
   - Matematika
-  ---
+---
 
 Perbedaan uji *mean* dua sampel independen dan dependen terletak pada
 sifat hubungan antara sampel yang diuji. Sampel independen adalah sampel
