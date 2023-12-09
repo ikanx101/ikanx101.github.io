@@ -1,5 +1,5 @@
 ---
-date: 2023-12-09T17:00:00-04:00
+date: 2023-12-9T10:05:00-04:00
 title: "Perbedaan Uji Mean Dua Sampel Independen dan Dependen"
 categories:
   - Blog
