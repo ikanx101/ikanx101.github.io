@@ -1,5 +1,5 @@
 ---
-date: 2023-12-8T10:05:00-04:00
+date: 2023-12-9T12:05:00-04:00
 title: "Akhirnya Algoritma Scraper Saya Dipakai (Lagi)"
 categories:
   - Blog
