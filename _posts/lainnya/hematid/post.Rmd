@@ -1,0 +1,25 @@
+---
+title: "Akhirnya Algoritma Scraper Saya Dipakai (Lagi)"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Pada tahun 2019 lalu, saya sempat [bercerita bagaimana saya membantu tim _sales_ di kantor untuk mempercepat proses perekapan aktivitas promosi di berbagai _outlet retail_ dengan cara melakukan _web scraping_](https://ikanx101.com/blog/blog-promo-hemat-id/) dari situs __hemat.id__.
+
+Namanya juga usaha dan teknologi "baru" pada zamannya, algoritma yang saya buat hanya bertahan beberapa hari saja dan langsung masuk _folder archive_-nya mereka.
+
+Beberapa hari yang lalu, ternyata kabar gembira datang dari salah seorang rekan kantor bahwa algoritma tersebut hendak digunakan kembali. 
+
+> _Ada kebutuhan mendesak_.
+
+Katanya.
+
+---
+
+Setelah saya cek kembali, ternyata struktur _web_-nya __hemat.id__ sudah berubah jauh sehingga algoritmanya harus ditulis ulang dari nol. Namun karena sejak 2019 hingga saat ini saya telah bekali-kali mengerjakan _project_ _web scraping_, saya rasakan betul proses penulisan algoritma saya sudah berbeda jauh dengan algoritma yang saya buat di 2019.
+
+Semoga algoritma ini bisa mendapatkan data yang berguna untuk bisnis di kantor.
+
