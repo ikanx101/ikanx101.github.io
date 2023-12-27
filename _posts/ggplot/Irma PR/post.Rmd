@@ -1,0 +1,113 @@
+---
+title: "Tutorial ggplot2: Membuat Grafik Cross Tabulasi"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/ikanx101.github.io/_posts/ggplot/Irma PR")
+
+rm(list=ls())
+
+library(dplyr)
+library(ggplot2)
+```
+
+Beberapa waktu yang lalu, salah seorang rekan saya yang sedang menempuh studi _Master Overseas_ di bidang MBA yang bersinggungan dengan data menghubungi saya untuk berdiskusi. Salah satu tugas kuliahnya adalah membuat model prediksi dari data _HR Employee Attrition_. _Dataset_-nya bisa rekan-rekan dapatkan di situs _Kaggle_ karena merupakan data yang lazim digunakan di berbagai universitas sebagai bahan pembahasan.
+
+Singkat cerita, tidak ada masalah yang berarti bagi rekan saya tersebut dalam membuat model prediksinya. 
+
+> _Jujurly_, memang membuat model prediksi berbasis _machine learning_ dengan __R__ atau __Py__ memang tidak terlalu sulit.
+
+Namun ada satu ganjalan yang rekan saya hadapi yakni membuat visualisasi dari cross tabulasi data tersebut. 
+
+> Visualisasi data jauh justru lebih menantang dibandingkan membuat model prediksi berbasis _machine learning_!
+
+Menurut Saya.
+
+---
+
+## Crosstabulasi
+
+Berikut adalah data crosstabulasi yang dimaksud:
+
+```{r,echo=FALSE}
+df = read.csv("WA_Fn-UseC_-HR-Employee-Attrition.csv") %>% janitor::clean_names()
+
+df %>% 
+  group_by(job_role,attrition) %>% 
+  tally() %>% 
+  ungroup() %>% 
+  group_by(job_role) %>% 
+  mutate(persen = n / sum(n) * 100,
+         persen = round(persen,2),
+         label  = paste0(persen,"%")) %>% 
+  mutate(n = ifelse(attrition == "No",-n,n),
+         persen = ifelse(attrition == "No",-persen,persen)) %>% 
+  reshape2::dcast(job_role ~ attrition,value.var = "label") %>% 
+  rename(`Attrition: Yes` = Yes,
+         `Attrition: No` = No) %>% 
+  knitr::kable()
+```
+
+Agar data tersebut bisa dijadikan grafik dengan `ggplot2`, kita ubah dulu bentuknya menjadi sebagai berikut:
+
+```{r,echo=FALSE}
+cross = 
+  df %>% 
+  group_by(job_role,attrition) %>% 
+  tally() %>% 
+  ungroup() %>% 
+  group_by(job_role) %>% 
+  mutate(persen = n / sum(n) * 100,
+         persen = round(persen,2),
+         label  = paste0(persen,"%")) %>% 
+  mutate(n = ifelse(attrition == "No",-n,n),
+         persen = ifelse(attrition == "No",-persen,persen)) %>% 
+  select(-n)
+
+cross %>% knitr::kable()
+```
+
+Jika diperhatikan bentuk `data.frame`-nya menjadi _tabular_. Saya asumsikan kalian bisa mengubah bentuk `data.frame` tersebut. Perhatikan bahwa variabel `persen` saya buat berlawanan tanda (positif dan negatif) agar bisa disandingkan sedemikian rupa pada grafiknya kelak per `job_role`.
+
+Untuk membuat visualisasi dan mengubah bentuk tabular saya menggunakan `library(dplyr)` dan `library(ggplot2)`.
+
+Berikut adalah skrip yang sudah saya beri komentar untuk membuat visualisasinya:
+
+```{r,message=FALSE,warning=FALSE,fig.align='center',fig.retina=4}
+# kita panggil data cross tabulasi tabularnya
+cross %>% 
+  # kita buat object ggplotnya
+  # definisikan axis x dan y-nya apa
+  ggplot(aes(x = job_role,
+             y = persen)) +
+  # kita buat grafik dalam bentuk bar
+  # definisikan warna garis dan warna isi bar-nya 
+  geom_col(color = "black",
+           aes(fill = attrition)) +
+  # kita putar axis x dan y-nya
+  coord_flip() +
+  # berikan label pada masing-masing bar
+  geom_label(aes(label = label)) +
+  # kita pilih theme minimal
+  # silakan ganti theme sesuai dengan keinginan
+  theme_minimal() +
+  # berikan title untuk masing-masing object pada grafik
+  labs(title = "Attrition by Job Role",
+       subtitle = "Data source: Kaggle.com",
+       caption = "Created using R\nikanx101.com",
+       y = "Job Role",
+       x = "Percentage",
+       fill = "Attrition types") +
+  # kita hapus tulisan di axis x
+  theme(axis.text.x = element_blank()) +
+  # kita perluas range agar tidak ada label yang terpotong
+  ylim(-110,50)
+```
+
+Sekian, mudah kan?
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
