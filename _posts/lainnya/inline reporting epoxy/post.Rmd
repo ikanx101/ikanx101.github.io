@@ -1,0 +1,75 @@
+---
+title: "Tutorial R: Inline Reporting dengan library(epoxy)"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+setwd("~/ikanx101.github.io/_posts/lainnya/inline reporting epoxy")
+
+library(dplyr)
+library(epoxy)
+library(parallel)
+n_core = 5
+
+df = mtcars
+
+df$nama = row.names(mtcars)
+df = df %>% relocate(nama,.before = mpg)
+row.names(df) = NULL
+
+# ambil nama mobil
+nama_mobil = function(x){
+  strsplit(x,split = " ") %>% unlist() %>% .[1]
+}
+
+df$merek = mclapply(df$nama,nama_mobil) %>% unlist()
+
+df =
+  df %>% 
+  relocate(merek,.after = nama)
+
+df
+```
+
+
+Salah satu kelebihan __R__ dalam membuat _report_ adalah _coding_-nya. _Lho, kok bisa?_
+
+> _Coding_ ini memungkinkan kita membuat _report_ lebih cepat daripada biasanya karena lebih _reproducible_!
+
+Sebagai contoh, kita bisa membuat kalimat yang berisi informasi yang "masih bisa berubah-ubah" karena datanya dinamis. Jadi tidak harus menuliskan perubahannya, cukup _coding_-nya saja dan isi kalimatnya akan berubah juga mengikuti datanya.
+
+Salah satu 
+
+
+```{r}
+df
+```
+
+
+```{r}
+n_cars = nrow(df)
+mean_mpg = mean(df$mpg) %>% round(2)
+sd_hp = sd(df$hp)
+```
+
+```
+# ```{epoxy}
+# Data ini memiliki {n_cars} baris. Rata-rata dari variabel *miles per gallon* adalah {mean_mpg}
+# ```
+```
+
+```{epoxy}
+Data ini memiliki {n_cars} baris. Rata-rata dari variabel *miles per gallon* adalah {mean_mpg}
+```
+
+
+Kemampuan repeat
+
+```{epoxy .data = df}
+1. nama mobil ini adalah {nama} memiliki silinder sebanyak {cyl}
+
+```
+
+
