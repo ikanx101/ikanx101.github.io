@@ -1,5 +1,5 @@
 ---
-title: "Tutorial R: Inline Reporting dengan library(epoxy)"
+title: "Tutorial R: <i>Inline Reporting</i> dengan library(epoxy)"
 output: github_document
 ---
 
@@ -40,36 +40,119 @@ Salah satu kelebihan __R__ dalam membuat _report_ adalah _coding_-nya. _Lho, kok
 
 Sebagai contoh, kita bisa membuat kalimat yang berisi informasi yang "masih bisa berubah-ubah" karena datanya dinamis. Jadi tidak harus menuliskan perubahannya, cukup _coding_-nya saja dan isi kalimatnya akan berubah juga mengikuti datanya.
 
-Salah satu 
+---
 
+# Contoh Kasus
+
+## Data yang Digunakan
+
+Sebagai contoh di _blog_ ini, saya akan memiliki data sebagai berikut:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+df %>% knitr::kable()
+```
+
+## _Summary_ dari Data
+
+Dari data di atas, saya akan buat beberapa _summary_ sebagai berikut:
+
+```{r,message=FALSE,warning=FALSE}
+df_sum_all = 
+  df %>% 
+  summarise(banyak_data  = length(nama),
+            banyak_merek = length(unique(merek)),
+            mean_mpg     = mean(mpg) %>% round(2),
+            range_hp     = max(hp) - min(hp)
+            )
+
+df_sum_all %>% knitr::kable()
+```
+
+Dari data _summary_ di atas, jika saya hendak membuat satu paragraf kesimpulan menggunakan __R__, biasanya saya menuliskannya sebagai berikut:
+
+---
 
 ```{r}
-df
+# Data tersebut memiliki `r df_sum_all$banyak_data` baris, 
+
+# berisi `r df_sum_all$banyak_merek` buah merek mobil. 
+
+# Rata-rata konsumsi bahan bakarnya semua mobil tersebut adalah `r df_sum_all$mean_mpg` mean per gallon. 
+
+# Rentang horse power dari semua mobil tersebut adalah `r df_sum_all$range_hp`.
 ```
 
+Hasilnya sebagai berikut:
+
+> Data tersebut memiliki `r df_sum_all$banyak_data` baris, berisi `r df_sum_all$banyak_merek` buah merek mobil. Rata-rata konsumsi bahan bakarnya semua mobil tersebut adalah `r df_sum_all$mean_mpg` _mean per gallon_. Rentang _horse power_ dari semua mobil tersebut adalah `r df_sum_all$range_hp`.
+
+---
+
+Untuk menghasilkan tulisan seperti di atas, kita bisa menggunakan `library(epoxy)` sebagai berikut: 
 
 ```{r}
-n_cars = nrow(df)
-mean_mpg = mean(df$mpg) %>% round(2)
-sd_hp = sd(df$hp)
-```
 
-```
-# ```{epoxy}
-# Data ini memiliki {n_cars} baris. Rata-rata dari variabel *miles per gallon* adalah {mean_mpg}
+# ```{epoxy .data = df_sum_all}
+
+# Data tersebut memiliki {banyak_data} baris, 
+
+# berisi {banyak_merek} buah merek mobil. 
+
+# Rata-rata konsumsi bahan bakarnya semua mobil tersebut adalah {mean_mpg} *mean per gallon*. 
+
+# Rentang *horse power* dari semua mobil tersebut adalah {range_hp}.
+
 # ```
-```
-
-```{epoxy}
-Data ini memiliki {n_cars} baris. Rata-rata dari variabel *miles per gallon* adalah {mean_mpg}
-```
-
-
-Kemampuan repeat
-
-```{epoxy .data = df}
-1. nama mobil ini adalah {nama} memiliki silinder sebanyak {cyl}
 
 ```
 
+Hasilnya sebagai berikut:
 
+```{epoxy .data = df_sum_all}
+Data tersebut memiliki {banyak_data} baris, berisi {banyak_merek} buah merek mobil. Rata-rata konsumsi bahan bakarnya semua mobil tersebut adalah {mean_mpg} *mean per gallon*. Rentang *horse power* dari semua mobil tersebut adalah {range_hp}.
+```
+
+
+---
+
+## _Another Advantages_
+
+Salah satu kelebihan `epoxy` adalah dalam hal repetisinya. Misal saya memiliki data _summary_ sebagai berikut:
+
+
+```{r,message=FALSE,warning=FALSE}
+df_sum = 
+  df %>% 
+  group_by(merek) %>% 
+  summarise(banyak_data  = length(nama),
+            mean_mpg     = mean(mpg) %>% round(2)
+            ) %>% 
+  ungroup() %>% 
+  filter(banyak_data > 1)
+
+df_sum %>% knitr::kable()
+```
+
+Jika saya buat skrip `epoxy`-nya berikut:
+
+```{r}
+
+# ```{epoxy .data = df_sum}
+# 1. Merek mobil {merek} berisi {banyak_data} baris data dengan rata-rata konsumsi bahan 
+# bakar sebesar {mean_mpg} *miles per gallon*.
+# ```
+
+```
+
+Hasilnya berikut:
+
+```{epoxy .data = df_sum}
+1. Merek mobil {merek} berisi {banyak_data} baris data dengan rata-rata konsumsi bahan bakar sebesar {mean_mpg} *miles per gallon*.
+```
+
+
+Semoga berguna!
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
