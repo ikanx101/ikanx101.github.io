@@ -68,11 +68,11 @@ Kita lakukan *pull* dan *run* *Docker container* sebagai berikut:
                -e PASSWORD=ikanx101 \
                -e USERID=1001 \
                -e GROUPID=1001 \
-               ikanx101/r-custom:latest 
+               -v ~:/home/ikanx101 ikanx101/r-custom:latest 
 
 *Script* di atas akan memastikan *Docker container* tersebut tetap
 berjalan walau proses `ssh`-nya terhenti. Jadi aman dari masalah
-konektivitas.
+konektivitas. Selain itu, *Docker* akan memiliki akses ke *home directory* saya.
 
 
 ## Langkah IV
