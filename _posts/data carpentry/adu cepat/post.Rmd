@@ -1,0 +1,173 @@
+---
+title: "Adu Cepat Skrip Data Manipulation di R"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Di suatu Senin, masuk satu _chat_ di laptop dari salah seorang rekan kerja yang berasal dari divisi _e-commerce_. Sudah setahun ini, beliau dan timnya selalu menggunakan __R__ untuk melakukan _data carpentry_ (_data manipulation_ - _data preparation_) memanfaatkan prinsip _tidy_ (` %>% `) dari `library(dplyr)`.
+
+> _Mas, saya ke tempatmu ya. Ada yang mau saya tanyakan tentang skrip R. Ini mau run dulu sebentar, nanti kalau sudah selesai, saya ke sana._
+
+Begitu isi _chat_-nya pada pukul jam 1 siang tepat.
+
+Setengah jam kemudian beliau datang ke tempat kerja saya dan mulai berdiskusi.
+
+---
+
+Ternyata, rekan kerja saya tersebut sedang mengolah banyak _dataset_ berukuran jumbo (jutaan baris) dengan _tidy_. Butuh waktu sekitar 30 menit untuk mengeksekusi skripnya hingga selesai.
+
+> _Lama banget nih..._
+
+Begitu pikir saya.
+
+Salah satu dugaan saya adalah karena rekan kerja saya menggunakan _Windows OS_ di laptopnya sehingga __R__-nya seolah-olah [bekerja dengan tangan terikat](https://ikanx101.com/blog/review-ubuntu/).
+
+Sampai akhirnya saya coba lihat dengan detail proses komputasi yang terjadi. Saya dapatkan proses _running_ tersebut memakan RAM yang sangat besar. 
+
+> _Wajar saja butuh waktu lama... Tapi apa ada alternatif lain yang bisa lebih cepat dan lebih hemat RAM?_
+
+Pertanyaan dalam kepala ini cukup mengganggu dan membuat saya gusar. _Qodarullah_, tak lama setelah berdiskusi dengan rekan kerja saya, grup _telegram_ __R-Indo__ sedang membahas tema yang serupa.
+
+---
+
+## Prinsip _Ngoding_ _Data Carpentry_ di __R__
+
+Setidaknya ada dua _mazhab_ besar dalam membuat skrip _data carpentry_ di __R__, yakni:
+
+1. _tidy_, yakni memanfaatkan _pipe_ (` %>% `). Saya pribadi selalu mengajak rekan-rekan di kantor untuk menggunakan prinsip _tidy_ agar lebih mudah untuk saling _cross check_.
+1. _data.table_, yakni dengan formula bertingkat.
+
+Usut punya usut, ternyata _data.table_ memberikan kemampuan komputasi yang lebih cepat. Selain itu, muncul satu _framework_ baru bernama ___polars___ yang memiliki kemampuan komputasi (secara teori) lebih cepat lagi.
+
+Lantas bagaimana? Apaka saya harus mengubah cara _ngoding_ yang sudah terbiasa selama ini?
+
+> ___Tentu tidak!___
+
+Terima kasih kepada para maestro _data scientist_ di luar sana yang telah mengembangkan `library(dtplyr)` dan `library(tidypolars)` yang berfungsi untuk menggunakan _framework_ `data.table` dan `polars` dengan gaya _ngoding_ ala `tidy`.
+
+- `dtplyr` bisa dilihat di [sini.](https://dtplyr.tidyverse.org/)
+- `tidypolars` bisa dilihat di [sini.](https://github.com/etiennebacher/tidypolars)
+
+---
+
+Pada bagian ini, saya akan coba melakukan tiga simulasi untuk membandingkan kemampuan komputasi mengolah data 10 juta baris dengan:
+
+1. Skrip `dplyr`,
+1. Skrip `dtplyr`, dan
+1. Skrip `tidypolars`.
+
+
+Berikut adalah data _dummy_ yang saya gunakan:
+
+```
+# membuat data frame
+n_generate = 10^7
+df_input = data.frame(
+    grup  = sample(LETTERS[1:6], 
+                   n_generate, 
+                   replace = TRUE),
+    nilai = rnorm(n_generate)
+  )
+```
+
+Berikut adalah skrip versi `dplyr`:
+
+```
+# definisikan proses dengan dplyr
+proses_dplyr <- function(data) {
+  data %>%
+    group_by(grup) %>%
+    summarize(
+      rata_rata = mean(nilai)
+    ) %>% 
+    ungroup()
+}
+```
+
+Berikut adalah skrip versi `dtplyr`:
+
+```
+# definisikan proses dengan dtplyr
+proses_dtplyr <- function(data) {
+  data |>
+    dtplyr::lazy_dt() |> 
+    group_by(grup) |>
+    summarise(
+      rata_rata = mean(nilai)
+    ) %>% 
+    ungroup() 
+}
+```
+
+Berikut adalah skrip versi `tidypolars`:
+
+```
+# definisikan proses dengan tidypolars
+proses_tidypolars <- function(data) {
+  data |>
+    as_polars_df() |> 
+    group_by(grup) |>
+    summarise(
+      rata_rata = mean(nilai)
+    ) %>% 
+    ungroup() 
+}
+```
+
+Berikut adalah simulasi yang saya lakukan:
+
+```
+bench::mark(
+  proses_dplyr(df_input),
+  proses_tidypolars(df_input),
+  proses_dtplyr(df_input),
+  iterations = 5,
+  check = F,
+)
+```
+
+Hasilnya adalah sebagai berikut:
+
+```{r,include=FALSE,message=FALSE,warning=FALSE}
+library(dplyr)
+library(epoxy)
+
+rm(list=ls())
+
+hasil = data.frame(
+  koding = c("dtplyr","dplyr","tidypolars"),
+  median = c("46.2 milisec","455.7 milisec","738.7 milisec"),
+  total  = c("264.73 milisec","1.42 sec","3.74 sec"),
+  memo   = c("153 MB","239 MB","116 KB")
+)
+
+hasil %>% knitr::kable()
+```
+
+```{epoxy .data = hasil}
+- *Function* yang menggunakan prinsip `{koding}` memiliki *total runtime* selama {total} dan *memory allocation* sebesar {memo}. Dari lima kali percobaan, waktu median untuk sekali *runtime processing* adalah sebesar {median}.
+```
+
+## Kesimpulan
+
+Prinsip `dtplyr` memberikan waktu tercepat dengan konsumsi _memory_ yang lebih kecil dibandingkan `dplyr` sedangkan `tidypolars` walau memiliki waktu yang paling lama tapi memiliki konsumsi _memory_ yang paling irit.
+
+
+---
+
+## _Action Plan_
+
+Dari hasil di atas, setidaknya ada beberapa _action plan_ yang hendak saya lakukan ke tim di kantor:
+
+1. Untuk pengolahan data yang kecil: tetap menggunakan `dplyr` dan tidak diwajibkan untuk mengubah ke `dtplyr` atau `tidypolars`.
+1. Untuk pengolahan data yang jumbo, harus memetakan _cases_ kapan menggunakan:
+    - Komputasi yang lebih irit _memory_ dengan `tidypolars`.
+    - Komputasi yang lebih cepat dengan konsumsi _memory_ yang masih bisa diterima (`dtplyr`).
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
+

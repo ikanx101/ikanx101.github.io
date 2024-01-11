@@ -1,10 +1,11 @@
 rm(list=ls())
+setwd("~/ikanx101.github.io/_posts/data carpentry/adu cepat")
 
 library(bench)
 library(dplyr)
 library(tidypolars)
 library(parallel)
-n_core = 2
+n_core = detectCores()
 
 # Create Dataframe
 n_generate = 10^7
@@ -113,6 +114,6 @@ bench_result <- bench::mark(
   #memory = F
 )
 
-bench_result |> arrange(total_time)# |> select(-memory)
+bench_result |> arrange(total_time) |> select(-memory)# %>% as.data.frame()
 
 save(bench_result,file = "bench.rda")
