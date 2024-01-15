@@ -1,0 +1,34 @@
+---
+title: "Tahun Baru, Linux OS Baru"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Saat awal pandemi di 2019, saya pertama kali meng-_install_ dan mencoba [OS Ubuntu sebagai _daily driver_](https://ikanx101.com/blog/review-ubuntu/). Setelah itu saya resmi jatuh hati dengan OS Linux. Dua tahun berselang, saya coba _install_ __Pop OS__ di [_secondary laptop_](https://ikanx101.com/blog/pop-os/) dan saya puas dengan performanya.
+
+---
+
+Beberapa hari yang lalu, muncul notifikasi masuk yang menginformasikan bahwa laptop saya mengalami _low disk space_. Saya baru ingat bahwa saat meng-_install_ OS Ubuntu dulu, saya hanya menggunakan 90 GB dari total 500 GB di _harddisk_.
+
+Oleh karena itu, alih-alih melakukan berbagai upaya pembersihan, saya lebih suka untuk meng-_install_ ulang OS di laptop saya ini. Pilihan pertama jatuh ke OS Ubuntu versi 22 LTS. Karena Ubuntu yang saya pakai sekarang ini masih versi 20 LTS. Namun apa daya, _USB bootable_-nya sempat _error_ sehingga saya menggunakan _USB bootable_ POP OS yang saya persiapkan sebagai cadangan.
+
+> _Toh basisnya sama-sama Ubuntu 22 juga._
+
+Pikir saya.
+
+Setelah proses instalasi yang sangat cepat (tak sampai 10 menit), laptop saya sudah bisa dipakai. Sekarang, saya akan membuat laptop saya lebih _clean_ lagi dengan tidak meng-_install_ __R__ dan __Posit__ langsung ke dalam _system_. Lantas bagaimana? Saya menggunakan __Docker__.
+
+Jadi ada tiga program yang esensial, yakni:
+
+1. Git.
+1. Docker.
+1. Google Chrome.
+
+Ketiga program esensial ini sudah cukup untuk saya bekerja.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
