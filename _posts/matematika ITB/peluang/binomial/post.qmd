@@ -1,0 +1,44 @@
+---
+title: "Menghitung Peluang Menggunakan Distribusi Binomial"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: true
+    toc-depth: 4
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+Beberapa minggu yang lalu, saya sempat mengikuti diskusi antara tim _sales_ dan tim _digital marketing_ dari perusahaan lain (bukan perusahaan tempat saya bekerja saat ini _yah_). Salah satu bahasan dari diskusi tersebut adalah bagaimana tim _sales_ (dengan segala keterbatasannya) bisa membuktikan klaim dari tim _digital marketing_. Lantas apa klaimnya?
+
+Tim _digital marketing_ mengklaim:
+
+> Sebanyak 70% pembeli produk mereka di _modern outlet_ diakibatkan oleh iklan yang mereka buat.
+
+Oleh karena tim _sales_ tidak memiliki sumber daya untuk melakukan _market research_, mereka hanya mampu mengerahkan _sales promotion girl_ untuk melakukan survey singkat di beberapa _modern outlet_ di suatu _time window_ tertentu.
+
+---
+
+
+
+
+$$P(x) = \begin{pmatrix}
+n\\ 
+x
+\end{pmatrix} p^x (1-p)^{n-x}$$
+Dimana:
+
+1. $\begin{pmatrix} n\\ x \end{pmatrix}$ merupakan kombinasi terjadinya _event_ $x$ dari $n$ total kejadian.
+
+
+
+```{r}
+dbinom(1, size = 5, prob = 3 / 10) 
+help(dbinom)
+```
