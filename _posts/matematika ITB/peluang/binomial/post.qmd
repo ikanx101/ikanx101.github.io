@@ -34,16 +34,17 @@ Tim *sales* melakukan survey singkat dari sepuluh *modern outlet*. Tim SPG akan 
 ```{r}
 #| include: false
 
+rm(list=ls())
+
 library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(parallel)
 library(janitor)
-library(epoxy)
 
-rm(list=ls())
+n_core = detectCores()
 
-prop_pop = .5
+prop_pop = .4
 
 # fungsi bikin survey
 bikin_data = function(n_sample){
@@ -56,11 +57,18 @@ bikin_data = function(n_sample){
 
 # fungsi rapi-rapi
 ubah_data_frame = function(tes){
-  tes |> 
-  tabyl() |>
-  filter(tes == 1) |>
-  select(n,percent) |>
-  mutate(percent = percent * 100)
+  temp = 
+    tes |> 
+    tabyl() |>
+    filter(tes == 1) |>
+    select(n,percent) |>
+    mutate(percent = percent * 100)
+  
+  if(nrow(temp) == 0){
+    temp = data.frame(n = 0,percent = 0)
+  }
+  
+  return(temp)
 }
 
 # kita buat hasil surveynya
@@ -88,6 +96,8 @@ Berikut adalah data yang didapatkan tim *sales*:
 #| fig-align: center
 #| fig-dpi: 350
 
+marker = sum(hasil_survey$n)
+
 hasil_survey |>
   mutate(modern_outlet = factor(modern_outlet,
                                 levels = paste0("Outlet ke-",
@@ -95,17 +105,18 @@ hasil_survey |>
   ggplot(aes(x = modern_outlet,
              y = percent)) +
   geom_col(color = "black",
-           fill  = "steelblue") +
-  geom_label(aes(label = paste0(percent,"%")),size = 2) +
+           fill  = "#7e9c9e") +
+  geom_label(aes(label = paste0(percent,"%")),size = 2.25) +
   coord_flip() +
   ggthemes::theme_economist_white() +
   labs(title = "Hasil Survey Tim Sales",
        subtitle = "Base: Lima responden per outlet",
        y = "Persentase responden yang membeli produk karena\niklan digital marketing") +
-  theme(axis.title.y = element_blank())
+  theme(axis.title.y = element_blank()) +
+  ylim(0,100)
 ```
 
-> Rata-rata persentasenya adalah `r mean(hasil_survey$percent)`%.
+> Rata-rata persentasenya adalah `r mean(hasil_survey$percent)`%. Secara total kita dapatkan `r marker` orang yang membeli produk karena iklan dari total `50` orang responden.
 
 ## Pertanyaannya
 
@@ -115,13 +126,13 @@ Bagaimana menentukan benar/tidaknya klaim tim *digital marketing* dari data sead
 
 ## Penyelesaian
 
-Mendapatkan *business question* seperti itu membuat saya berpikir bagaimana penyelesaiannya. Sempat saya berpikir untuk menggunakan prinsip simulasi Monte Carlo seperti [tulisan saya terkait COVID dulu](https://ikanx101.com/blog/rapid-pabrik/). Namun kali ini saya akan mencoba menyelesaikannya dengan cara yang lebih eksak.
+Mendapatkan *business question* seperti itu membuat saya berpikir berulang kali bagaimana penyelesaiannya. Sempat saya berpikir untuk menggunakan prinsip simulasi Monte Carlo seperti [tulisan saya terkait COVID dulu](https://ikanx101.com/blog/rapid-pabrik/). Namun kali ini saya akan mencoba menyelesaikannya dengan cara yang lebih eksak.
 
 ## Distribusi Binomial
 
-Pikiran saya terbang jauh saat saya sedang kuliah **analisa data** saat S1 dulu ke materi **distribusi binomial**. Distribusi binomial adalah distribusi peluang dari variabel diskrit yang biasa digunakan untuk menyelesaikan masalah-masalah yang bisa dikategorikan sebagai `success` atau `not success`.
+Pikiran saya terbang jauh saat saya sedang kuliah **analisa data** dulu pada materi **distribusi binomial**. Distribusi binomial adalah distribusi peluang dari variabel diskrit; biasa digunakan untuk menyelesaikan masalah-masalah yang bisa dikategorikan sebagai ___success___ atau ___not success___ yang saling bebas. Setiap hasil percobaan memiliki probabilitas $p$. 
 
-Secara matematis, peluang bisa dihitung dari formula berikut:
+Distribusi ini sering kali digunakan untuk memodelkan jumlah keberhasilan pada jumlah sampel $n$ dari jumlah populasi $N$. Secara matematis, peluang bisa dihitung dari formula berikut:
 
 $$P(x) = \begin{pmatrix}
 n\\ 
@@ -130,12 +141,87 @@ x
 
 Dimana:
 
-$\begin{pmatrix} n\\ x \end{pmatrix}$ merupakan kombinasi terjadinya *event* $x$ dari $n$ total kejadian.
+- $\begin{pmatrix} n\\ x \end{pmatrix}$ merupakan kombinasi terjadinya *event* $x$ kali dari $n$ total kejadian.
+- $p$ menandakan proporsi *success* pada populasi.
 
-$p$ menandakan proporsi *success* pada populasi.
-
+Pada kasus yang saya hadapi, bisa saya definisikan $p = 0.7$ dan $x$ = `r marker`. Jika saya buat grafik distribusi kumulatif-nya:
 
 ```{r}
-dbinom(1, size = 5, prob = 3 / 10) 
-help(dbinom)
+kumulatif_binom = function(x){
+  pbinom(x,size = 50,prob = 7/10)
+}
+
+n_resp = 1:50
+prob   = mclapply(n_resp,kumulatif_binom,mc.cores = n_core) %>% unlist()
+
+pesan  = paste0("Peluang mendapatkan\nresponden <= ",marker,"\n",
+                round(100*prob[marker],1),
+                "%")
+
+data.frame(n_resp,prob) %>% 
+  ggplot(aes(x = n_resp,
+             y = prob)) +
+  geom_line(group = 1,
+            color = "#7e9c9e") +
+  geom_point(size = .5) +
+  geom_vline(xintercept = marker,color = "red",alpha = .4) +
+  annotate("label",x = marker,y = .5, label = pesan,size = 2.5,color = "red") +
+  ggthemes::theme_economist_white() +
+  labs(title = "Grafik Peluang Kumulatif dari Distribusi Binomial",
+       subtitle = "p = 0.7",
+       y = "Peluang Kumulatif",
+       x = "Banyak Responden yang Membeli Karena Iklan") +
+  theme(axis.title.y = element_blank())
 ```
+
+Kita bisa dapatkan bahwa peluang kita mendapatkan `r marker` orang responden yang membeli karena iklan adalah sebesar `r round(100*prob[marker],1)`%. Sebuah angka yang sangat kecil.
+
+### Kesimpulan Sementara
+
+Dari dua hal:
+
+1. Besaran persentase rata-rata responden yang membeli produk karena iklan adalah sebesar `r mean(hasil_survey$percent)`%. Besaran persentase ini masih lebih kecil dari proporsi klaim tim _digital marketing_ (70%).
+1. Peluang mendapatkan `r marker` orang responden (dari total 50 orang) yang membeli karena iklan sangat kecil.
+
+Kita bisa mengindikasikan bahwa terjadi __overklaim__ yang dilakukan tim _digital marketing_. 
+
+Latas berapa angka proporsi sebenarnya?
+
+Menggunakan formula distribusi normal, kita bisa melakukan perhitungan sebagai berikut:
+
+$$P(x) = \begin{pmatrix}
+n\\ 
+x
+\end{pmatrix} p^x (1-p)^{n-x}$$
+
+dengan $n$ = `r marker` dan $x = 50$, kita akan mencari suatu nilai $p$ yang memungkinkan.
+
+Berikut adalah grafiknya:
+
+```{r}
+kumulatif_binom_modif = function(x){
+  pbinom(marker,size = 50,prob = x)
+}
+
+peluang = seq(0,1,by = .01)
+prob    = mclapply(peluang,kumulatif_binom_modif,mc.cores = n_core) %>% unlist() 
+
+pesan  = paste0("Besaran peluang saat x = ",marker," jika nilai p nya berubah-ubah")
+
+data.frame(peluang,prob) %>% 
+  ggplot(aes(x = peluang,
+             y = prob)) +
+  geom_line(group = 1,
+            color = "#7e9c9e") +
+  geom_point(size = .5) +
+  ggthemes::theme_economist_white() +
+  labs(title = "Grafik Peluang Kumulatif dari Distribusi Binomial",
+       subtitle = pesan,
+       y = "Peluang Kumulatif",
+       x = "Proporsi (p)") +
+  geom_point(x = .39, y = .5042809,color = "red")
+```
+
+
+
+
