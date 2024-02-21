@@ -1,5 +1,5 @@
 ---
-date: 2022-02-21T08:53:00-04:00
+date: 2024-02-21T08:53:00-04:00
 title: "Menyelesaikan Masalah Bisnis Terkait Peluang Menggunakan Distribusi Binomial"
 categories:
   - Blog
