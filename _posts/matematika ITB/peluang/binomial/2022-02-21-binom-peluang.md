@@ -1,14 +1,17 @@
-# Menghitung Peluang Menggunakan Distribusi Binomial
-
-
-- [Pendahuluan](#pendahuluan)
-- [Pertanyaannya](#pertanyaannya)
-- [Penyelesaian](#penyelesaian)
-- [Distribusi Binomial](#distribusi-binomial)
-  - [Kesimpulan Sementara](#kesimpulan-sementara)
-  - [Menentukan ![p](https://latex.codecogs.com/svg.latex?p "p") yang
-    Lebih Tepat](#menentukan-p-yang-lebih-tepat)
-- [Kesimpulan](#kesimpulan)
+---
+date: 2022-02-21T08:53:00-04:00
+title: "Menyelesaikan Masalah Bisnis Terkait Peluang Menggunakan Distribusi Binomial"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - Binomial
+  - Statistika
+  - Matematika
+  - Sales
+  - Digital Marketing
+---
 
 ## Pendahuluan
 
@@ -46,7 +49,7 @@ sepuluh buah *modern outlet* (**lima responden** per *modern outlet*).
 
 Berikut adalah data yang didapatkan tim *sales*:
 
-<img src="post_files/figure-commonmark/unnamed-chunk-2-1.png"
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/peluang/binomial/post_files/figure-commonmark/unnamed-chunk-2-1.png"
 data-fig-align="center" />
 
 > Rata-rata persentasenya adalah 42%. Secara total kita dapatkan 21
@@ -106,7 +109,7 @@ Pada kasus yang saya hadapi, bisa saya definisikan
 dan ![x](https://latex.codecogs.com/svg.latex?x "x") = 21. Jika saya
 buat grafik distribusi kumulatif-nya:
 
-![](post_files/figure-commonmark/unnamed-chunk-3-1.png)
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/peluang/binomial/post_files/figure-commonmark/unnamed-chunk-3-1.png)
 
 Kita bisa dapatkan bahwa peluang kita mendapatkan 21 orang responden
 yang membeli karena iklan adalah sebesar 0%. Sebuah angka yang sangat
@@ -147,7 +150,7 @@ kita akan mencari suatu nilai
 
 Berikut adalah grafiknya:
 
-![](post_files/figure-commonmark/unnamed-chunk-4-1.png)
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/matematika%20ITB/peluang/binomial/post_files/figure-commonmark/unnamed-chunk-4-1.png)
 
 Dari grafik di atas, kita bisa hitung bahwa nilai
 ![p](https://latex.codecogs.com/svg.latex?p "p") maksimum agar kita bisa
