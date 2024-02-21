@@ -44,7 +44,7 @@ library(janitor)
 
 n_core = detectCores()
 
-prop_pop = .4
+prop_pop = .35
 
 # fungsi bikin survey
 bikin_data = function(n_sample){
@@ -187,6 +187,8 @@ Kita bisa mengindikasikan bahwa terjadi __overklaim__ yang dilakukan tim _digita
 
 Latas berapa angka proporsi sebenarnya?
 
+### Menentukan $p$ yang Lebih Tepat
+
 Menggunakan formula distribusi normal, kita bisa melakukan perhitungan sebagai berikut:
 
 $$P(x) = \begin{pmatrix}
@@ -208,20 +210,31 @@ prob    = mclapply(peluang,kumulatif_binom_modif,mc.cores = n_core) %>% unlist()
 
 pesan  = paste0("Besaran peluang saat x = ",marker," jika nilai p nya berubah-ubah")
 
-data.frame(peluang,prob) %>% 
+hasil_final = 
+  data.frame(peluang,prob) %>% 
+  mutate(warna = ifelse(prob >= .5,1,0)) 
+
+hasil_final %>% 
   ggplot(aes(x = peluang,
              y = prob)) +
   geom_line(group = 1,
             color = "#7e9c9e") +
-  geom_point(size = .5) +
+  geom_point(size = .75,aes(color = factor(warna))) +
+  scale_color_manual(values = c("red","darkgreen")) +
   ggthemes::theme_economist_white() +
   labs(title = "Grafik Peluang Kumulatif dari Distribusi Binomial",
        subtitle = pesan,
        y = "Peluang Kumulatif",
        x = "Proporsi (p)") +
-  geom_point(x = .39, y = .5042809,color = "red")
+  theme(legend.position = "none")
 ```
 
+Dari grafik di atas, kita bisa hitung bahwa nilai $p$ maksimum agar kita bisa mendapatkan `r marker` orang responden yang membeli karena iklan digital adalah sebesar: `r hasil_final$peluang[hasil_final$warna == 1] %>% max()`
 
+## Kesimpulan
 
+Dari uraian di atas, tim _sales_ bisa memberikan koreksi terhadap klaim yang dibuat oleh tim _digital marketing_ sehingga iklan digital yang dibuat bisa di-_re-fine tuning_ agar lebih baik lagi.
 
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
