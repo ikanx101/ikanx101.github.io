@@ -1,0 +1,23 @@
+---
+title: "Refleksi Karir: Langkanya Ucapan Terima Kasih"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: false
+    toc-depth: 4
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+Beberapa hari yang lalu, salah satu obrolan dengan seseorang membuat saya merefleksikan ingatan terhadap perjalanan karir saya sebagai _market researcher_. Setelah dipikir-pikir, sejak 2008 hingga saat ini ada berbagai cerita (yang menurut saya) menarik untuk dibagikan.
+
+Pada tulisan permulaan ini, saya akan _share_ satu cerita saat saya bekerja di perusahaan yang pertama, yakni di salah satu _pioneer market research firm_ di bidang _mistery shopping_ perbankan di Jakarta Selatan.
+
+---
+
