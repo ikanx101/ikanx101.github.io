@@ -17,7 +17,7 @@ Pada tulisan pertama ini, saya akan bercerita mengenai salah satu pengalaman say
 
 Alkisah, setelah saya lulus _probation_ sebagai _market research executive_ di perusahaan tersebut, saya mulai dipercaya untuk memegang satu _project_ secara penuh. Walaupun tetap didampingi oleh seorang _supervisor_ (atasan saya) tapi saya memegang kendali di belakang kemudi _project_ tersebut. _Project_-nya adalah melakukan _mistery shopping_ layanan perbankan untuk salah satu bank BUMN terbesar di Indonesia.
 
-Salah satu tantangan terbesar yang harus saya hadapi saat itu adalah me-_manage_ suatu _project_ skala nasional. Pada saat itu, _fieldwork_ berjalan tidak hanya di kota-kota besar di Indonesia tapi sampai ke kota pelosok (maklum saat itu bank tersebut identik dengan bank pedesaan. Kalian tahu kan ya? Hehe).
+Salah satu tantangan terbesar yang harus saya hadapi saat itu adalah me- _manage_ suatu _project_ skala nasional. Pada saat itu, _fieldwork_ berjalan tidak hanya di kota-kota besar di Indonesia tapi sampai ke kota pelosok (maklum saat itu bank tersebut identik dengan bank pedesaan. Kalian tahu kan ya? Hehe).
 
 Saya yang kuliahnya di MIPA dan tidak terlalu banyak berhubungan dengan banyak orang harus belajar keluar dari _boundaries_. Perlahan saya mencoba menjadi _people person_ agar bisa diterima oleh bagian lain dalam perusahaan tersebut. Oh iya, sebagai _market research executive_ saya berhubungan erat dengan tiga bagian lain, yaitu:
 
