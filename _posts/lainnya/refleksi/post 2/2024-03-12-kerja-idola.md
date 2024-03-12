@@ -33,6 +33,8 @@ Bagaimana saya menyikapinya saat itu? Saya akui sempat muncul rasa kecewa dan it
 
 > Sewajarnya saja Kang. -begitu kata beliau.
 
+Setelah itu, saya berdamai dengan diri saya sendiri dengan cara mengkalibrasi ekspektasi yang saya miliki. Salah satu cara yang saya lakukan adalah dengan memindahkan __rasa idola yang tak logis__ menjadi _respect_. 
+
 ------------------------------------------------------------------------
 
 Dari pengalaman saya tersebut, saya menjadi berhati-hati saat ada calon _team member_ yang hendak _join_ dengan alasan __hendak bekerja dan belajar dari Mas Ikang__.
