@@ -1,0 +1,30 @@
+---
+title: "Optimization Story: Memilah Peserta Training dengan Algoritma Spiral"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: true
+    toc-depth: 4
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+Pada saat pandemi lalu, saya sempat membuat [model sederhana untuk memilah peserta _training_ sesuai dengan pilihan tanggal yang mereka inginkan](https://ikanx101.com/blog/training-jadwal/). Beberapa saat lalu, saya memiliki masalah untuk memilah peserta _training_ tapi berbeda dalam hal _constraints_-nya. Kali ini saya harus memilah peserta _training_ berdasarkan _workcenter_ dan jabatan.
+
+```{r}
+#| include: false
+#| echo: false
+
+rm(list=ls())
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+```
