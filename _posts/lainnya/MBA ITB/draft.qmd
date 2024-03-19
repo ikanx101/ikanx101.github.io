@@ -1,0 +1,18 @@
+---
+title: "Menjadi Guest Lecture di Kelas MBA ITB Jakarta"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: false
+    toc-depth: 4
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+Hari Ahad lalu, saya dikontak oleh salah seorang kolega di komunitas __R Indo__ (yang sekarang juga menjadi dosen di MBA ITB Jakarta). Beliau bertanya apakah saya bisa menjadi _guest lecture_ di salah satu kelas yang diampunya.
