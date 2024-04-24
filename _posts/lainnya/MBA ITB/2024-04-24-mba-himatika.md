@@ -36,11 +36,10 @@ Saya menyiapkan materi dengan judul: ***How Artificial Intelligence
 Transform Market Research***. *Outline* dari materi ini adalah sebagai
 berikut:
 
-Latar Belakang: dampak digitalisasi, kenapa *analytics* penting? Apa itu
-*analytics*? *Artificial intelligence*: arti sesungguhnya, apa saja yang
-termasuk ke dalam *artificial intelligence*? Peran *market research*
-dalam bisnis. Contoh sepuluh studi kasus *real* peran *artificial
-intelligence* dalam mengubah *market research*.
+- Latar Belakang: dampak digitalisasi, kenapa *analytics* penting? Apa itu *analytics*? 
+- *Artificial intelligence*: arti sesungguhnya, apa saja yang termasuk ke dalam *artificial intelligence*? 
+- Peran *market research* dalam bisnis. 
+- Contoh sepuluh studi kasus *real* peran *artificial intelligence* dalam mengubah *market research*.
 
 Betul dugaan saya. pada sesi diskusi, pertanyaan-pertanyaan teman-teman
 mahasiswa benar-benar tajam dan *on point*. Beberapa pertanyaan
@@ -55,8 +54,9 @@ alt="Dokumentasi Sharing" />
 
 Menjelang Idul Fitri, saya dikontak oleh salah seorang mahasiswa
 Matematika ITB sebagai perwakilan dari Himpunan Mahasiswa Matematika
-(Himatika). Mereka meminta saya untuk menjadi pembicara di *event* MCF
-2024. Awalnya saya diminta untuk mengisi materi secara *offline* di
+(Himatika). Mereka meminta saya untuk menjadi pembicara di *event* MCF 2024. 
+
+Awalnya saya diminta untuk mengisi materi secara *offline* di
 kampus namun setelah berdiskusi kembali dengan panitia, mereka
 memutuskan saya untuk mengisi materi pada *event webinar* karena
 kesesuaian topik yang telah direncanakan sebelumnya oleh panitia.
