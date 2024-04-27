@@ -132,7 +132,7 @@ Latas berapa angka proporsi sebenarnya?
 
 ### Menentukan ![p](https://latex.codecogs.com/svg.latex?p "p") yang Lebih Tepat
 
-Menggunakan formula distribusi normal, kita bisa melakukan perhitungan
+Menggunakan formula distribusi binomial, kita bisa melakukan perhitungan
 sebagai berikut:
 
 ![P(x) = \begin{pmatrix}
