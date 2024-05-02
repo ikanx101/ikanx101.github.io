@@ -1,0 +1,15 @@
+{
+  "hash": "26351b1a87ec2b1c832224fbb5420baf",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Install Windows 10 di Ubuntu 22 LTS!\"\nformat: \n  gfm:\n    html-math-method: webtex\n    toc: false\n    toc-depth: 4\n    fig-dpi: 500\n    fig-width: 8\n    fig-height: 4.5\neditor: visual\nexecute:\n  echo: false\n  warning: false\n  error: false\n---\n\n\n\n\n\n\n__Iya! Kalian tidak salah baca!__\n\n> Jika biasanya kebanyakan orang-orang di luar sana menggunakan Windows lalu meng-_install_ Linux di Virtual Box, saya justru kebalikannya!\n\nSaya sudah nyaman sekali dengan Linux Ubuntu (beserta turunannya seperti [Pop OS](https://ikanx101.com/blog/pop-24/)). Oleh karena _job desc_ saya sementara ini dialihkan kembali ke _market research_, maka saya membutuhkan Windows untuk menjalankan _software market research_ bernama __Dobloo__.\n\nKali ini saya mau _share_ _best practice_ untuk meng-_install_ __Windows 10__ di Ubuntu 22 LTS (atau Linux distro apapun). Untuk melakukan hal ini, saya menggunakan _software_ __Oracle Virtual Box__.\n\nBerikut adalah langkah-langkahnya:\n\n## Tahap I\n\n_Install_ terlebih dahulu _software_ __Oracle Virtual Box__. Kita bisa dapatkan di situs resminya di [_link_ berikut ini](https://www.virtualbox.org/wiki/Downloads).\n\nOleh karena saya menggunakan Ubuntu 22 LTS, tentu saya sesuaikan versi _software_-nya.\n\n## Tahap II\n\n_Download_ _file_ `iso` dari __Windows 10__ di [_link_ berikut ini](https://www.microsoft.com/en-us/software-download/windows10ISO).\n\n\n\n::: {.cell layout-align=\"center\"}\n::: {.cell-output-display}\n![](pic1.jpeg){fig-align='center' width=60%}\n:::\n:::\n\n\n\nKita cukup memilih versi Windows _multi-edition_.\n\n## Tahap III\n\nSetelah kita melakukan kedua tahapan sebelumnya, kita tinggal membuat _virtual machine_ berisi _file_ `iso` di atas.\n\n\n\n::: {.cell layout-align=\"center\"}\n::: {.cell-output-display}\n![](pic2.png){fig-align='center' width=60%}\n:::\n\n::: {.cell-output-display}\n![](pic3.jpeg){fig-align='center' width=60%}\n:::\n:::\n\n\n\nKita bisa memberikan _check_ pada opsi _skip unattended installation_.\n\n## Tahap IV\n\nSetelah itu, kita cukup menunggu proses instalasi Windows selesai.\n\n## Tahap V\n\nBerikut adalah hasilnya, yakni _Virtual Machine_ dengan Windows 10 yang sudah terinstal.\n\n\n\n\n::: {.cell layout-align=\"center\"}\n::: {.cell-output-display}\n![](pic4.png){fig-align='center' width=60%}\n:::\n\n::: {.cell-output-display}\n![](pic5.png){fig-align='center' width=60%}\n:::\n\n::: {.cell-output-display}\n![](pic6.png){fig-align='center' width=60%}\n:::\n\n::: {.cell-output-display}\n![](pic7.png){fig-align='center' width=60%}\n:::\n:::\n\n\n\n---\n\n`if you find this article helpful, support this blog by clicking the ads.`\n\n\n\n\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": null,
+    "postProcess": false
+  }
+}

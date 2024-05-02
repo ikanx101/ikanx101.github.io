@@ -1,0 +1,94 @@
+---
+title: "Install Windows 10 di Ubuntu 22 LTS!"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: false
+    toc-depth: 4
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+```{r}
+#| include: false
+
+setwd("~/ikanx101.github.io/_posts/lainnya/virtual windows")
+```
+
+
+__Iya! Kalian tidak salah baca!__
+
+> Jika biasanya kebanyakan orang-orang di luar sana menggunakan Windows lalu meng-_install_ Linux di Virtual Box, saya justru kebalikannya!
+
+Saya sudah nyaman sekali dengan Linux Ubuntu (beserta turunannya seperti [Pop OS](https://ikanx101.com/blog/pop-24/)). Oleh karena _job desc_ saya sementara ini dialihkan kembali ke _market research_, maka saya membutuhkan Windows untuk menjalankan _software market research_ bernama __Dobloo__.
+
+Kali ini saya mau _share_ _best practice_ untuk meng-_install_ __Windows 10__ di Ubuntu 22 LTS (atau Linux distro apapun). Untuk melakukan hal ini, saya menggunakan _software_ __Oracle Virtual Box__.
+
+Berikut adalah langkah-langkahnya:
+
+## Tahap I
+
+_Install_ terlebih dahulu _software_ __Oracle Virtual Box__. Kita bisa dapatkan di situs resminya di [_link_ berikut ini](https://www.virtualbox.org/wiki/Downloads).
+
+Oleh karena saya menggunakan Ubuntu 22 LTS, tentu saya sesuaikan versi _software_-nya.
+
+## Tahap II
+
+_Download_ _file_ `iso` dari __Windows 10__ di [_link_ berikut ini](https://www.microsoft.com/en-us/software-download/windows10ISO).
+
+```{r out.width="60%"}
+#| echo: false
+#| fig-align: "center"
+
+knitr::include_graphics("pic1.jpeg")
+```
+
+Kita cukup memilih versi Windows _multi-edition_.
+
+## Tahap III
+
+Setelah kita melakukan kedua tahapan sebelumnya, kita tinggal membuat _virtual machine_ berisi _file_ `iso` di atas.
+
+```{r out.width="60%"}
+#| echo: false
+#| fig-align: "center"
+
+knitr::include_graphics("pic2.png")
+knitr::include_graphics("pic3.jpeg")
+```
+
+Kita bisa memberikan _check_ pada opsi _skip unattended installation_.
+
+## Tahap IV
+
+Setelah itu, kita cukup menunggu proses instalasi Windows selesai.
+
+## Tahap V
+
+Berikut adalah hasilnya, yakni _Virtual Machine_ dengan Windows 10 yang sudah terinstal.
+
+
+```{r out.width="60%"}
+#| echo: false
+#| fig-align: "center"
+
+knitr::include_graphics("pic4.png")
+knitr::include_graphics("pic5.png")
+knitr::include_graphics("pic6.png")
+knitr::include_graphics("pic7.png")
+```
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
+
+
+
