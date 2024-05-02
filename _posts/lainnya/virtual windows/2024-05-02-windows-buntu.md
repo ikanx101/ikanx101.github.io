@@ -44,7 +44,7 @@ Oleh karena saya menggunakan Ubuntu 22 LTS, tentu saya sesuaikan versi
 *Download* *file* `iso` dari **Windows 10** di [*link* berikut
 ini](https://www.microsoft.com/en-us/software-download/windows10ISO).
 
-<img src="pic1.jpeg" style="width:60.0%" data-fig-align="center" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/lainnya/virtual%20windows/pic1.jpeg" style="width:60.0%" data-fig-align="center" />
 
 Kita cukup memilih versi Windows *multi-edition*.
 
@@ -53,9 +53,9 @@ Kita cukup memilih versi Windows *multi-edition*.
 Setelah kita melakukan kedua tahapan sebelumnya, kita tinggal membuat
 *virtual machine* berisi *file* `iso` di atas.
 
-<img src="pic2.png" style="width:60.0%" data-fig-align="center" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/lainnya/virtual%20windows/pic2.png" style="width:60.0%" data-fig-align="center" />
 
-<img src="pic3.jpeg" style="width:60.0%" data-fig-align="center" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/lainnya/virtual%20windows/pic3.jpeg" style="width:60.0%" data-fig-align="center" />
 
 Kita bisa memberikan *check* pada opsi *skip unattended installation*.
 
@@ -68,13 +68,13 @@ Setelah itu, kita cukup menunggu proses instalasi Windows selesai.
 Berikut adalah hasilnya, yakni *Virtual Machine* dengan Windows 10 yang
 sudah terinstal.
 
-<img src="pic4.png" style="width:60.0%" data-fig-align="center" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/lainnya/virtual%20windows/pic4.png" style="width:60.0%" data-fig-align="center" />
 
-<img src="pic5.png" style="width:60.0%" data-fig-align="center" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/lainnya/virtual%20windows/pic5.png" style="width:60.0%" data-fig-align="center" />
 
-<img src="pic6.png" style="width:60.0%" data-fig-align="center" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/lainnya/virtual%20windows/pic6.png" style="width:60.0%" data-fig-align="center" />
 
-<img src="pic7.png" style="width:60.0%" data-fig-align="center" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/lainnya/virtual%20windows/pic7.png" style="width:60.0%" data-fig-align="center" />
 
 ------------------------------------------------------------------------
 
