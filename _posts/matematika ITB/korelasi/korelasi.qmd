@@ -1,0 +1,162 @@
+---
+title: "Pengaruh Cuaca terhadap Market Otomotif di Indonesia (Baca Sampai Selesai)"
+format: 
+  gfm:
+    html-math-method: webtex
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+    fig-align: center
+editor: visual
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+```{r}
+rm(list=ls())
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+```
+
+Di siang hari yang panas, saya tetiba berpikir:
+
+> Kalau suasana panas seperti ini, paling enak kalau bepergian naik mobil dibandingkan motor. _Bisa pakai AC, lebih adem_. __Begitu pikir saya__.
+
+Setelah dipikirkan kembali, jangan-jangan cuaca bisa mempengaruhi banyaknya unit mobil yang terjual. Jika begitu, saya bisa membuat model _machine learning_ sederhana untuk membuktikan dugaan tersebut.
+
+Langsung saja saya mencari __artikel terpercaya__ yang bisa saya gunakan sebagai basis logikanya. Caranya adalah dengan bertanya ke __Gemini Bard Google__. Begini katanya:
+
+```{r out.width="60%"}
+#| echo: false
+#| warning: false
+#| message: false
+
+knitr::include_graphics("Screenshot from 2024-05-30 08-41-45.png")
+```
+
+Lalu segera saya cari data utama seperti:
+
+1. Rata-rata suhu tahunan di Indonesia.
+1. Total unit mobil terjual di Indonesia.
+
+Berikut adalah data suhu yang saya dapatkan dari berbagai macam sumber:
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+df_suhu = data.frame(
+  tahun = 2015:2022,
+  suhu  = c(26.6,26.9,26.8,26.8,26.9,27,27,27)
+)
+
+df_suhu %>% 
+  rename(Tahun = tahun,
+         "Suhu Rata-rata Tahunan (°C)" = suhu) %>% 
+  knitr::kable(align = "c")
+```
+
+Berikut adalah data unit mobil terjual yang saya dapatkan dari berbagai macam sumber:
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+df_mobil = data.frame(
+  tahun = 2015:2022,
+  sales = c(1028000,1009000,1079000,1151000,1030000,532407,887200,915159)
+)
+
+df_mobil %>% 
+  rename(Tahun = tahun,
+         "Unit Mobil Terjual" = sales) %>% 
+  knitr::kable(align = "c")
+```
+
+Pertama-tama, saya akan buat _scatterplot_ berikut ini:
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-dpi: 450
+
+df_model = merge(df_suhu,df_mobil) 
+
+df_model %>% 
+  ggplot(aes(x = suhu,
+             y = sales)) +
+  geom_point() +
+  theme_classic() +
+  labs(x = "Suhu",
+       y = "Unit mobil terjual")
+```
+
+Jika dilihat sekilas, sepertinya saya bisa membuat model _machine learning_ yang punya akurasi bagus. Untuk itu, saya akan membuat model regresi polinomial.
+
+```{r}
+model =  lm(sales ~ poly(suhu, 4, raw = TRUE), 
+            data = df_model)
+summary(model)
+
+print("R square: ")
+MLmetrics::R2_Score(model$fitted.values,df_model$sales)
+
+print("MAPE: ")
+MLmetrics::MAPE(model$fitted.values,df_model$sales)
+```
+
+Model polinomial orde 4 menghasilkan $R^2 = 0.6281415$ dengan $MAPE = 0.1024251$. 
+
+Saya buat grafik untuk mengecek _fitted values_ dengan data _real_ dari _scatterplot_ sebelumnya:
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-dpi: 450
+
+df_pred = data.frame(suhu = seq(26.5,27,by = .0005))
+
+predictions   = model %>% predict(df_pred)
+df_pred$sales = predictions
+
+ggplot() +
+  geom_point(aes(x = suhu,
+                 y = sales),
+             data = df_pred,
+             color = "darkred",
+             alpha = .1,
+             size = .5) +
+  geom_point(aes(x = suhu,
+                 y = sales),
+             data = df_model) +
+  theme_classic() +
+  labs(x = "Suhu",
+       y = "Unit mobil terjual",
+       title = "Real vs Fitted Values",
+       subtitle = "Merah - fitted values\nHitam - real values")
+```
+
+Saya cukup puas dengan performa model _machine learning_ yang dibuat tersebut. 
+
+> ___Ternyata semakin panas suhu yang terjadi di Indonesia, semakin menurun unit mobil terjual.___
+
+## _Epilog_
+
+Cerita di atas adalah __cerita rekaan atau karangan__ saja _yah_. Saya terinspirasi dari kisah nyata yang saya dengar belum lama ini. 
+
+Dari proses berpikir, pencarian artikel, pengumpulan data, hingga pembuatan model dan pengambilan kesimpulan menurut saya ada beberapa _flaws_ yang berujung fatal. Apa saja? Mari kita bahas satu per satu:
+
+1. Kita sebenarnya tidak bisa menghubungkan kausalitas antara __cuaca__ dan ___sales___ mobil secara langsung. Kenapa? Secara logika, terlalu banyak _middle factors_ bagi konsumen untuk membeli mobil.
+1.Jangan pernah bertanya seperti ini pada _Gemini_, _ChatGPT_, _Bing_, dan sejenisnya. Kenapa? Kalian hanya akan mendapatkan artikel _very optimist_ yang sejatinya belum jelas kebenarannya. Maksudnya, kalian akan mendapatkan artikel-artikel yang bernada _Yes Man!_ di mana semua hal yang kita tanyakan bisa dilakukan dan dibuat.
+1. Perhatikan banyaknya baris data saat membuat model _machine learning_! Jangan membuat model dengan baris data yang sedikit dan terbatas!
+1. Jangan tergiur untuk membuat model yang memiliki akurasi dan presisi yang __sempurna__! Lebih baik kita membuat model yang bisa dengan mudah diinterpretasikan.
+
+Selain poin-poin di atas, apa lagi _flaws_ yang bisa kalian dapatkan dari cerita di atas?

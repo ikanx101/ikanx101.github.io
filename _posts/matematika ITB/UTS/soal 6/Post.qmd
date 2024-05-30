@@ -48,7 +48,7 @@ Dari suatu persamaan diferensial dengan bentuk:
 
 $$\frac{dy}{dx} = f(x,y)$$
 
-dan memiliki _initial condition_ $y(x_0) = y_0$. Kita bisa menyelesaikannya dengan metode __Runge-Kutta__ order 4. Bentuk umumnya adalah sebagai berikut:
+dan memiliki *initial condition* $y(x_0) = y_0$. Kita bisa menyelesaikannya dengan metode **Runge-Kutta** order 4. Bentuk umumnya adalah sebagai berikut:
 
 $$y_{n+1} = y_n + h \sum_{i=1}^n b_i k_i$$
 
@@ -62,9 +62,9 @@ $$k_3 = f(x_0 + 0.5h,y_0 + 0.5k_2h)$$
 
 $$k4 = f(x_0 + h,y_0 + k_3h)$$
 
-Bentuk algoritmanya dalam _pseudocode_ adalah sebagai berikut:
+Bentuk algoritmanya dalam *pseudocode* adalah sebagai berikut:
 
-```
+```         
 INPUT x0,y0,xmax
 
 COMPUTE n = (xmax-x0)/h
@@ -78,7 +78,7 @@ FOR i 1:n
     x0 = x0 + h
 ```
 
-Jika dibuat dalam program __R__:
+Jika dibuat dalam program **R**:
 
 ```{r}
 rk_4order = function(f,      # dy/dx
@@ -130,7 +130,6 @@ solusi %>%
                caption = "Solusi Persamaan Diferensial dengan RK4")
 ```
 
-
 Dalam bentuk grafik:
 
 ```{r}
@@ -145,7 +144,6 @@ solusi %>%
        caption = "Digambar dengan R\n20921004@mahasiswa.itb.ac.id") +
   theme_minimal()
 ```
-
 
 ### Sub Soal Ib iii
 
@@ -182,10 +180,6 @@ ggplot() +
 ```
 
 Secara visual dan intuitif bisa kita simpulkan bahwa semakin kecil $h$, maka nilai hampirannya lebih baik karena penambahan $x$ terjadi secara perlahan.
-
-
-
-
 
 ------------------------------------------------------------------------
 
