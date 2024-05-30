@@ -112,8 +112,10 @@ Saya buat grafik untuk mengecek *fitted values* dengan data *real* dari
 Saya cukup puas dengan performa model *machine learning* yang dibuat
 tersebut.
 
-> ***Ternyata semakin panas suhu yang terjadi di Indonesia, semakin
-> menurun unit mobil terjual.***
+> ***Ternyata semakin panas suhu yang terjadi di Indonesia mengakibatkan
+> penurunan unit mobil terjual.***
+
+Dengan semakin panasnya bumi ini, bisa jadi mengakibatkan lesunya pasar mobil di Indonesia.
 
 ## *Epilog*
 
@@ -139,6 +141,7 @@ pembuatan model dan pengambilan kesimpulan menurut saya ada beberapa
 3.  Jangan tergiur untuk membuat model yang memiliki akurasi dan presisi
     yang **sempurna**! Lebih baik kita membuat model yang bisa dengan
     mudah diinterpretasikan.
+4.  Penarikan kesimpulan berdasarkan model yang dibangun dari data terbatas bisa sangat berbahaya! Apalagi penarikan kesimpulan dilakukan tanpa ada konteks yang dalam.
 
 Selain poin-poin di atas, apa lagi *flaws* yang bisa kalian dapatkan
 dari cerita di atas?
