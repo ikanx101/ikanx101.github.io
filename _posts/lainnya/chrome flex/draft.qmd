@@ -15,18 +15,17 @@ execute:
   error: false
 ---
 
-Pada _post_ yang lalu, saya membagikan [tips](https://ikanx101.com/blog/windows-buntu/) cara meng-_install_ `Windows 10` di Linux Ubuntu (saya menggunakan Pop OS yang berbasis Ubuntu 22). Pada saat saya sedang mencoba _install_ berbagai _software_ market riset yang dibutuhkan, _browser_ saya tiba-tiba memberikan rekomendasi artikel terkait _operating system_ bernama __Chrome OS Flex__.
+Pada *post* yang lalu, saya membagikan [tips](https://ikanx101.com/blog/windows-buntu/) cara meng-*install* `Windows 10` di Linux Ubuntu (saya menggunakan Pop OS yang berbasis Ubuntu 22). Pada saat saya sedang mencoba *install* berbagai *software* market riset yang dibutuhkan, *browser* saya tiba-tiba memberikan rekomendasi artikel terkait *operating system* bernama **Chrome OS Flex**.
 
-Saya sudah terbiasa menggunakan dan mengoprek __Chromebook__ selama perkuliahan kemarin. Bahkan menurut saya kemampuannya cukup [mumpuni](https://ikanx101.com/blog/samsung-chr/) untuk melakukan berbagai komputasi _data science_. Satu-satunya kelemahan utama dari __Chromebook__ adalah keterbatasan _hardware_ di _memory_ dan CPU saja. Ada kalanya saya ingin melakukan komputasi besar menggunakan __Chromebook__ (atau setidaknya di __Chrome OS__).
+Saya sudah terbiasa menggunakan dan mengoprek **Chromebook** selama perkuliahan kemarin. Bahkan menurut saya kemampuannya cukup [mumpuni](https://ikanx101.com/blog/samsung-chr/) untuk melakukan berbagai komputasi *data science*. Satu-satunya kelemahan utama dari **Chromebook** adalah keterbatasan *hardware* di *memory* dan CPU saja. Ada kalanya saya ingin melakukan komputasi besar menggunakan **Chromebook** (atau setidaknya di **Chrome OS**).
 
-
-Kembali lagi ke cerita awal saya tentang artikel terkait __Chrome OS Flex__. Jadi saya baru tahu bahwa Google secara resmi mengeluarkan _operating system_ bernama __Chrome OS Flex__ yang memungkinkan setiap laptop atau PC _non Chromebook_ bisa mengoperasikan __Chrome OS__.
+Kembali lagi ke cerita awal saya tentang artikel terkait **Chrome OS Flex**. Jadi saya baru tahu bahwa Google secara resmi mengeluarkan *operating system* bernama **Chrome OS Flex** yang memungkinkan setiap laptop atau PC *non Chromebook* bisa mengoperasikan **Chrome OS**.
 
 > Lantas apa bedanya laptop biasa dengan Chromebook?
 
-Menurut informasi yang beredar, salah satu pembedanya adalah keberadaan _security chip_ yang ditanamkan Google di __Chromebook__.
+Menurut informasi yang beredar, salah satu pembedanya adalah keberadaan *security chip* yang ditanamkan Google di **Chromebook**.
 
-Setelah mengumpulkan keberanian, saya coba untuk _hijrah_ menggunakan __Chrome OS Flex__. Bagaimana caranya? Cekidot:
+Setelah mengumpulkan keberanian, saya coba untuk *hijrah* menggunakan **Chrome OS Flex**. Bagaimana caranya? Cekidot:
 
 # PROSES INSTALASI
 
@@ -34,16 +33,16 @@ Setelah mengumpulkan keberanian, saya coba untuk _hijrah_ menggunakan __Chrome O
 
 Berikut adalah bahan dan bumbu yang dibutuhkan:
 
-1. Laptop atau PC dengan spek apapun selama masih nyala. _Hehe_. Saya akan _install_ __Chrome OS Flex__ justru menggunakan laptop kantor yang [terbaik-terbaik](https://ikanx101.com/blog/stress-test/). Kalian bisa melihat _certified list_ dari merek-merek laptop ternama pada [_link_ ini](https://support.google.com/chromeosflex/answer/11513094?sjid=17157849506754068174-AP#).
-1. USB _drive_ berukuran minimal __8 Gb__ sebagai media _installer_.
-1. _Browser Chrome_ karena akan digunakan untuk melakukan _flashing image_ dari __Chrome OS Flex__ ke dalam __USB drive__. Hal yang menurut saya _konyol_ adalah proses _flashing_ ini tidak bisa dilakukan dari _Chrome_ di Linux. Maka dari itu, saya butuh laptop Windows untuk melakukan _flashing_.
-1. Koneksi internet yang stabil untuk _download_ _image_ dari __Chrome OS Flex__.
+1.  Laptop atau PC dengan spek apapun selama masih nyala. *Hehe*. Saya akan *install* **Chrome OS Flex** justru menggunakan laptop kantor yang [terbaik-terbaik](https://ikanx101.com/blog/stress-test/). Kalian bisa melihat *certified list* dari merek-merek laptop ternama pada [*link* ini](https://support.google.com/chromeosflex/answer/11513094?sjid=17157849506754068174-AP#).
+2.  USB *drive* berukuran minimal **8 Gb** sebagai media *installer*.
+3.  *Browser Chrome* karena akan digunakan untuk melakukan *flashing image* dari **Chrome OS Flex** ke dalam **USB drive**. Hal yang menurut saya *konyol* adalah proses *flashing* ini tidak bisa dilakukan dari *Chrome* di Linux. Maka dari itu, saya butuh laptop Windows untuk melakukan *flashing*.
+4.  Koneksi internet yang stabil untuk *download* *image* dari **Chrome OS Flex**.
 
 ## Langkah-Langkah
 
-__Pertama__
+**Pertama**
 
-Buka situs [__Chrome OS Flex__](https://chromeos.google/products/chromeos-flex/) berikut:
+Buka situs [**Chrome OS Flex**](https://chromeos.google/products/chromeos-flex/) berikut:
 
 ```{r out.width="60%"}
 #| echo: false
@@ -52,11 +51,11 @@ Buka situs [__Chrome OS Flex__](https://chromeos.google/products/chromeos-flex/)
 knitr::include_graphics("img 1.png")
 ```
 
-Silakan baca-baca terlebih dahulu tentang __Chrome OS Flex__. Jika sudah yakin, lalu:
+Silakan baca-baca terlebih dahulu tentang **Chrome OS Flex**. Jika sudah yakin, lalu:
 
-__Kedua__
+**Kedua**
 
-Buka _Chrome_ dan _install_ _extension_ bernama __Chromebook Recovery Utility__. Caranya buka [_Chrome Web Store_](https://chromewebstore.google.com/detail/chromebook-recovery-utili/pocpnlppkickgojjlmhdmidojbmbodfm?pli=1) berikut:
+Buka *Chrome* dan *install* *extension* bernama **Chromebook Recovery Utility**. Caranya buka [*Chrome Web Store*](https://chromewebstore.google.com/detail/chromebook-recovery-utili/pocpnlppkickgojjlmhdmidojbmbodfm?pli=1) berikut:
 
 ```{r out.width="60%"}
 #| echo: false
@@ -65,11 +64,11 @@ Buka _Chrome_ dan _install_ _extension_ bernama __Chromebook Recovery Utility__.
 knitr::include_graphics("img 2.png")
 ```
 
-Lakukan instalasi lalu buka _extension_ tersebut.
+Lakukan instalasi lalu buka *extension* tersebut.
 
-__Ketiga__
+**Ketiga**
 
-Colok USB _drive_ pada laptop dan buka _extension_ tersebut.
+Colok USB *drive* pada laptop dan buka *extension* tersebut.
 
 ```{r out.width="60%"}
 #| echo: false
@@ -78,7 +77,7 @@ Colok USB _drive_ pada laptop dan buka _extension_ tersebut.
 knitr::include_graphics("img 3.png")
 ```
 
-Perhatikan bahwa semua data pada USB akan dihapus pada proses ini _ya_. Klik _Next_. Pada pilihan _model_, pilih __Chrome OS Flex__.
+Perhatikan bahwa semua data pada USB akan dihapus pada proses ini *ya*. Klik *Next*. Pada pilihan *model*, pilih **Chrome OS Flex**.
 
 ```{r out.width="60%"}
 #| echo: false
@@ -89,35 +88,34 @@ knitr::include_graphics("img 4.png")
 
 Tunggu prosesnya hingga selesai.
 
-__Keempat__
+**Keempat**
 
-Setelah USB _installer_ sudah jadi, _restart_ laptop dan ganti _boot_-nya ke USB tersebut. Proses instalasi akan dimulai dan akan memakan waktu yang relatif cepat (menurut saya lebih cepat dibandingkan instalasi Pop OS dan Ubuntu).
+Setelah USB *installer* sudah jadi, *restart* laptop dan ganti *boot*-nya ke USB tersebut. Proses instalasi akan dimulai dan akan memakan waktu yang relatif cepat (menurut saya lebih cepat dibandingkan instalasi Pop OS dan Ubuntu).
 
-Oh iya, sebagai bahan pertimbangan __Chrome OS Flex__ __tidak bisa untuk dual boot__. Jadi pikirkan matang-matang sebelum hijrah ke sana ya.
+Oh iya, sebagai bahan pertimbangan **Chrome OS Flex** **tidak bisa untuk dual boot**. Jadi pikirkan matang-matang sebelum hijrah ke sana ya.
 
-## _Review_
+## *Review*
 
-Setelah mencoba __Chrome OS Flex__ sebagai _daily driver_ selama seminggu, berikut adalah _review_ saya:
+Setelah mencoba **Chrome OS Flex** sebagai *daily driver* selama seminggu, berikut adalah *review* saya:
 
-### _Advantages_
+### *Advantages*
 
-1. Ringan _abisss_!!! Dengan spek komputer yang lebih tinggi, saya mendapati __Chrome OS Flex__ sebagai OS yang paling ringan yang pernah saya coba.
-1. Untuk _data scientist_ yang menggunakan __R Studio__ (Posit) atau __Ms. Visual Studio Code__ saya tetap bisa menggunakannya dengan cara mengaktifkan Linux _environment_ lalu:
-    - _Install_ __Docker__ untuk bisa [menggunakan __R Studio__](https://ikanx101.com/blog/docker-r/). 
-    - _Install_ __Ms. Visual Studio Code__ seperti [biasa kita _install_ di Linux Debian](https://ikanx101.com/blog/vs-code/).
-    - _Oh iya_, sebagai catatan Linux _environment_ yang digunakan pada __Chrome OS Flex__ adalah Debian _ya_.
-1. Untuk keperluan _Office_, kita bisa menggunakan _Google Workspace_ seperti _Google Docs_, _Google Sheets_, dan _Google Slides_.
-1. Koneksi dan sinkronisasi ke _Google Drive_ sangat _smooth_ tanpa ada halangan sama sekali.
+1.  Ringan *abisss*!!! Dengan spek komputer yang lebih tinggi, saya mendapati **Chrome OS Flex** sebagai OS yang paling ringan yang pernah saya coba.
+2.  Untuk *data scientist* yang menggunakan **R Studio** (Posit) atau **Ms. Visual Studio Code** saya tetap bisa menggunakannya dengan cara mengaktifkan Linux *environment* lalu:
+    -   *Install* **Docker** untuk bisa [menggunakan **R Studio**](https://ikanx101.com/blog/docker-r/).
+    -   *Install* **Ms. Visual Studio Code** seperti [biasa kita *install* di Linux Debian](https://ikanx101.com/blog/vs-code/).
+    -   *Oh iya*, sebagai catatan Linux *environment* yang digunakan pada **Chrome OS Flex** adalah Debian *ya*.
+3.  Untuk keperluan *Office*, kita bisa menggunakan *Google Workspace* seperti *Google Docs*, *Google Sheets*, dan *Google Slides*.
+4.  Koneksi dan sinkronisasi ke *Google Drive* sangat *smooth* tanpa ada halangan sama sekali.
 
-### _Disadvantages_
+### *Disadvantages*
 
-1. Tidak bisa _install_ __Anydesk__. Google dalam situs _support_-nya menjelaskan bahwa __Anydesk__ belum bisa digunakan __Chrome OS Flex__ dan masih belum tahu kapan bisa akan digunakan. Padahal __Anydesk__ saya sangat butuhkan untuk melakukan _remote_ beberapa PC dan laptop di kantor. Sebagai catatan, pada _Chromebook_ Samsung yang saya miliki, __Anydesk__ bisa digunakan dengan memanfaatkan __Google PlayStore__.
-1. Tidak ada __Google PlayStore__. Walaupun ada banyak tutorial di Youtube tentang bagaimana cara memasang __Google PlayStore__ di __Chrome OS Flex__, tapi belum ada cara yang lebih sederhana.
-1. Tidak bisa _install_ [__Virtual Box__](https://ikanx101.com/blog/windows-buntu/) padahal saat ini saya ada _project_ market riset yang membutuhkan satu _software_ tertentu yang hanya jalan di _Windows_. Ada beberapa cara untuk tetap bisa menggunakan _Windows_ di __Chrome OS Flex__ seperti menggunakan __VMware__ di Debian tapi setelah saya coba sangat lemot karena menggunakan _virtualization_ pada _layer_ ketiga (atau kedua _ya_).
+1.  Tidak bisa *install* **Anydesk**. Google dalam situs *support*-nya menjelaskan bahwa **Anydesk** belum bisa digunakan **Chrome OS Flex** dan masih belum tahu kapan bisa akan digunakan. Padahal **Anydesk** saya sangat butuhkan untuk melakukan *remote* beberapa PC dan laptop di kantor. Sebagai catatan, pada *Chromebook* Samsung yang saya miliki, **Anydesk** bisa digunakan dengan memanfaatkan **Google PlayStore**.
+2.  Tidak ada **Google PlayStore**. Walaupun ada banyak tutorial di Youtube tentang bagaimana cara memasang **Google PlayStore** di **Chrome OS Flex**, tapi belum ada cara yang lebih sederhana.
+3.  Tidak bisa *install* [**Virtual Box**](https://ikanx101.com/blog/windows-buntu/) padahal saat ini saya ada *project* market riset yang membutuhkan satu *software* tertentu yang hanya jalan di *Windows*. Ada beberapa cara untuk tetap bisa menggunakan *Windows* di **Chrome OS Flex** seperti menggunakan **VMware** di Debian tapi setelah saya coba sangat lemot karena menggunakan *virtualization* pada *layer* ketiga (atau kedua *ya*).
 
 ### Kesimpulan
 
-Setelah mencoba selama seminggu bekerja menggunakan __Chrome OS Flex__, saya akhirnya tidak jadi hijrah. Saya tetap kembali menggunakan Pop OS untuk bekerja. Alasan paling vital adalah ketidakberadaan __Anydesk__.
+Setelah mencoba selama seminggu bekerja menggunakan **Chrome OS Flex**, saya akhirnya tidak jadi hijrah. Saya tetap kembali menggunakan Pop OS untuk bekerja. Alasan paling vital adalah ketidakberadaan **Anydesk**.
 
-Namun tidak menutup kemungkinan suatu saat nanti saya akan kembali menggunakan __Chrome OS Flex__ karena _jujurly_ menggunakannya sangat membahagiakan bagi orang-orang yang sudah terbiasa dengan _Google Workspace Environment_.
-
+Namun tidak menutup kemungkinan suatu saat nanti saya akan kembali menggunakan **Chrome OS Flex** karena *jujurly* menggunakannya sangat membahagiakan bagi orang-orang yang sudah terbiasa dengan *Google Workspace Environment*.

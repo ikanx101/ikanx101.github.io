@@ -21,26 +21,25 @@ execute:
 setwd("~/ikanx101.github.io/_posts/lainnya/virtual windows")
 ```
 
+**Iya! Kalian tidak salah baca!**
 
-__Iya! Kalian tidak salah baca!__
+> Jika biasanya kebanyakan orang-orang di luar sana menggunakan Windows lalu meng-*install* Linux di Virtual Box, saya justru kebalikannya!
 
-> Jika biasanya kebanyakan orang-orang di luar sana menggunakan Windows lalu meng-_install_ Linux di Virtual Box, saya justru kebalikannya!
+Saya sudah nyaman sekali dengan Linux Ubuntu (beserta turunannya seperti [Pop OS](https://ikanx101.com/blog/pop-24/)). Oleh karena *job desc* saya sementara ini dialihkan kembali ke *market research*, maka saya membutuhkan Windows untuk menjalankan *software market research* bernama **Dobloo**.
 
-Saya sudah nyaman sekali dengan Linux Ubuntu (beserta turunannya seperti [Pop OS](https://ikanx101.com/blog/pop-24/)). Oleh karena _job desc_ saya sementara ini dialihkan kembali ke _market research_, maka saya membutuhkan Windows untuk menjalankan _software market research_ bernama __Dobloo__.
-
-Kali ini saya mau _share_ _best practice_ untuk meng-_install_ __Windows 10__ di Ubuntu 22 LTS (atau Linux distro apapun). Untuk melakukan hal ini, saya menggunakan _software_ __Oracle Virtual Box__.
+Kali ini saya mau *share* *best practice* untuk meng-*install* **Windows 10** di Ubuntu 22 LTS (atau Linux distro apapun). Untuk melakukan hal ini, saya menggunakan *software* **Oracle Virtual Box**.
 
 Berikut adalah langkah-langkahnya:
 
 ## Tahap I
 
-_Install_ terlebih dahulu _software_ __Oracle Virtual Box__. Kita bisa dapatkan di situs resminya di [_link_ berikut ini](https://www.virtualbox.org/wiki/Downloads).
+*Install* terlebih dahulu *software* **Oracle Virtual Box**. Kita bisa dapatkan di situs resminya di [*link* berikut ini](https://www.virtualbox.org/wiki/Downloads).
 
-Oleh karena saya menggunakan Ubuntu 22 LTS, tentu saya sesuaikan versi _software_-nya.
+Oleh karena saya menggunakan Ubuntu 22 LTS, tentu saya sesuaikan versi *software*-nya.
 
 ## Tahap II
 
-_Download_ _file_ `iso` dari __Windows 10__ di [_link_ berikut ini](https://www.microsoft.com/en-us/software-download/windows10ISO).
+*Download* *file* `iso` dari **Windows 10** di [*link* berikut ini](https://www.microsoft.com/en-us/software-download/windows10ISO).
 
 ```{r out.width="60%"}
 #| echo: false
@@ -49,11 +48,11 @@ _Download_ _file_ `iso` dari __Windows 10__ di [_link_ berikut ini](https://www.
 knitr::include_graphics("pic1.jpeg")
 ```
 
-Kita cukup memilih versi Windows _multi-edition_.
+Kita cukup memilih versi Windows *multi-edition*.
 
 ## Tahap III
 
-Setelah kita melakukan kedua tahapan sebelumnya, kita tinggal membuat _virtual machine_ berisi _file_ `iso` di atas.
+Setelah kita melakukan kedua tahapan sebelumnya, kita tinggal membuat *virtual machine* berisi *file* `iso` di atas.
 
 ```{r out.width="60%"}
 #| echo: false
@@ -63,7 +62,7 @@ knitr::include_graphics("pic2.png")
 knitr::include_graphics("pic3.jpeg")
 ```
 
-Kita bisa memberikan _check_ pada opsi _skip unattended installation_.
+Kita bisa memberikan *check* pada opsi *skip unattended installation*.
 
 ## Tahap IV
 
@@ -71,8 +70,7 @@ Setelah itu, kita cukup menunggu proses instalasi Windows selesai.
 
 ## Tahap V
 
-Berikut adalah hasilnya, yakni _Virtual Machine_ dengan Windows 10 yang sudah terinstal.
-
+Berikut adalah hasilnya, yakni *Virtual Machine* dengan Windows 10 yang sudah terinstal.
 
 ```{r out.width="60%"}
 #| echo: false
@@ -84,11 +82,6 @@ knitr::include_graphics("pic6.png")
 knitr::include_graphics("pic7.png")
 ```
 
----
+------------------------------------------------------------------------
 
 `if you find this article helpful, support this blog by clicking the ads.`
-
-
-
-
-
