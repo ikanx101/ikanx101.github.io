@@ -1,0 +1,58 @@
+---
+title: "Mengelompokkan Pertanyaan Survey dengan Factor Analysis"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: true
+    toc-depth: 4
+    fig-dpi: 500
+editor: visual
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+Pertama kali saya bekerja di bidang market riset pada 2008, senior-senior saya sering mengatakan bahwa salah satu analisa statistika yang umum digunakan di market riset adalah ___factor analysis___. Namun baru pada 2010 saya bersinggungan langsung dengan analisa tersebut.
+
+Dalam ___factor analysis___ (termasuk market riset atau analisa data pada umumnya), ada dua istilah terkait variabel, yaitu:
+
+1. _Observed variable_, yakni variabel yang diambil datanya dari sumbernya.
+1. _Latent variable_, yakni variabel yang tidak secara langsung diambil datanya namun nilainya didekati dari _observed variable_ lainnya.
+
+>Sederhananya, ___factor analysis___ digunakan untuk mengelompokkan pertanyaan survey atau variabel data berdasarkan kesamaannya. Ide dasarnya adalah membuat suatu variabel _latent_ yang tidak terobservasi sebagai gabungan dari beberapa variabel terobservasi yang ada. 
+
+_Masih bingung? Tak mengapa, nanti kita akan bahas pada contoh kasus_. _hehe_
+
+Ada dua jenis ___factor analysis___, yakni:
+
+1. _Exploratory factor analysis_.
+    - Prinsipnya adalah kita belum mengetahui _observed variables_ mana saja yang akan dikelompokkan menjadi _latent variables_ apa saja. 
+    - Sesuai dengan namanya, yakni _exploratory_ yang berarti eksplorasi atau pencarian.
+1. _Confirmatory factor analysis_.
+    - Prinsipnya adalah kita sudah mengetahui _observed variables_ mana saja yang akan dikelompokkan ke dalam beberapa _latent variables_.
+
+## _Confirmatory factor analysis_
+
+Perkenalan saya dengan _factor analysis_ dimulai dengan mengerjakan project _Customer Satisfaction and Loyalty Survey_ (CSLS) untuk salah satu BUMN Telekomunikasi. Teknik yang dipakai adalah membuat _Structured Equation Model_ (SEM) untuk menghitung sat index
+
+```{r}
+rm(list=ls())
+
+library(dplyr)
+library(tidyr)
+
+df = read.table("https://raw.githubusercontent.com/sunbeomk/PSYC490/main/scores.txt") %>% janitor::clean_names()
+
+corrplot::corrplot(cor(df))
+
+fa_output_1 = factanal(df, factors = 1,rotation="varimax",scores="regression")
+fa_output_2 = factanal(df, factors = 2,rotation="varimax",scores="regression")
+fa_output_3 = factanal(df, factors = 3,rotation="varimax",scores="regression")
+
+fa_output_1
+fa_output_2
+fa_output_3
+
+
+```
