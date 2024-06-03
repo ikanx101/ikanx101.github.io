@@ -1,5 +1,5 @@
 ---
-date: 2024-05-03T09:55:00-04:00
+date: 2024-06-03T09:55:00-04:00
 title: "Mengelompokkan Pertanyaan Survey dengan Factor Analysis"
 categories:
   - Blog
