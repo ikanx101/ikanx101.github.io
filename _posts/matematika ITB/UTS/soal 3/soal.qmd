@@ -23,8 +23,10 @@ library(ggplot2)
 setwd("~/ikanx101.github.io/_posts/matematika ITB/UTS/soal 3")
 ```
 
-# _TASK_ 1
+# *TASK* 1
+
 ## Soal
+
 Buatlah algoritma sederhana dengan metode Monte Carlo untuk mencari solusi dari integral berikut:
 
 $$f(x) = \int_1^5 x^2 dx$$
@@ -47,7 +49,6 @@ Berikut adalah langkah kerja yang dilakukan untuk menjawab soal ini:
 knitr::include_graphics("download.png")
 ```
 
-
 Kelak akan kita bandingkan metode numerik dengan hasil eksaknya.
 
 ### Analitik
@@ -62,13 +63,13 @@ $$\int_1^5 x^2 dx = \frac{5^3}{3} - \frac{1^3}{3} \approx 41.33333$$
 
 ### Numerik
 
-#### _Brute Force_
+#### *Brute Force*
 
-Analogi dari metode numerik ini adalah seperti melempar _darts_. Luas area di bawah kurva bisa didefinisikan sebagai:
+Analogi dari metode numerik ini adalah seperti melempar *darts*. Luas area di bawah kurva bisa didefinisikan sebagai:
 
 $$L = \frac{N darts_{ \text{on target} }} {N darts_{ \text{All} }}$$
 
-Berikut adalah _flowchart_-nya:
+Berikut adalah *flowchart*-nya:
 
 ```{r}
 #| fig-align: center
@@ -78,9 +79,9 @@ Berikut adalah _flowchart_-nya:
 knitr::include_graphics("download (1).png")
 ```
 
-Hal terpenting dalam metode ini adalah __mendefinisikan batas titik__ $x,y$ untuk di-_random_. Kenapa?
+Hal terpenting dalam metode ini adalah **mendefinisikan batas titik** $x,y$ untuk di-*random*. Kenapa?
 
-> Kita tidak ingin _darts_ yang kita lempar jatuh ke area sembarang! Kita harus definisikan di mana __area bermain__ _darts_.
+> Kita tidak ingin *darts* yang kita lempar jatuh ke area sembarang! Kita harus definisikan di mana **area bermain** *darts*.
 
 Perhatikan grafik $f(x)$ berikut:
 
@@ -111,7 +112,7 @@ plot +
   annotate("label", x = 4, y = 5, label = "Area Integral")
 ```
 
-Untuk sumbu $x$, batas titik yang akan di-_random_ sudah jelas, yakni: $[1,5]$.
+Untuk sumbu $x$, batas titik yang akan di-*random* sudah jelas, yakni: $[1,5]$.
 
 Lantas bagaimana dengan sumbu $y$?
 
@@ -135,11 +136,11 @@ plot +
   annotate("label", x = 2, y = 20, label = "Di Luar Area Integral:\nOFF TARGET")
 ```
 
-Kita akan membuat sejumlah _random_ di dalam area kotak merah dari grafik di atas. Kelak luas akan dihitung dari rasio titik di dalam area __on target__ dengan __total semua titik yang ada__ dikalikan dengan luas dari kotak merah.
+Kita akan membuat sejumlah *random* di dalam area kotak merah dari grafik di atas. Kelak luas akan dihitung dari rasio titik di dalam area **on target** dengan **total semua titik yang ada** dikalikan dengan luas dari kotak merah.
 
 $$L = 4 \times 25 \times \frac{N darts_{ \text{on target} }} {N darts_{ \text{All} }}$$
 
-Berikut adalah algoritmanya dalam __R__:
+Berikut adalah algoritmanya dalam **R**:
 
 ```{r}
 #| echo: true
@@ -186,13 +187,13 @@ brute_force = function(f,x1,x2,y1,y2,N){
 
 ```
 
-Saya menghitung _error_ atau __selisih solusi numerik dengan solusi eksak__ dengan cara:
+Saya menghitung *error* atau **selisih solusi numerik dengan solusi eksak** dengan cara:
 
 $$\Delta = |eksak - numerik|$$
 
-Dari _function_ di atas, kita akan coba hitung dengan berbagai nilai $N$ sebagai berikut:
+Dari *function* di atas, kita akan coba hitung dengan berbagai nilai $N$ sebagai berikut:
 
-$N=10$ 
+$N=10$
 
 ```{r}
 #| echo: true
@@ -211,7 +212,6 @@ $N=50$
 #| 
 brute_force(f,x1 = 1,x2 = 5,y1 = 0,y2 = 25,N = 50)
 ```
-
 
 $N=1000$
 
@@ -233,8 +233,7 @@ $N=50000$
 brute_force(f,x1 = 1,x2 = 5,y1 = 0,y2 = 25,N = 50000)
 ```
 
-
-> __Bagaimana jika selang integralnya dipisah menjadi:___
+> **Bagaimana jika selang integralnya dipisah menjadi:**\_
 
 $$f(x) = \int_1^3 x^2 dx + \int_3^5 x^2 dx$$
 
@@ -305,7 +304,7 @@ Secara intuitif, kita bisa melihat bahwa saat selang dibagi menjadi dua, sejatin
 
 #### Modifikasi Monte Carlo
 
-Ide dari algoritma ini adalah men-_generate_ titik _random_ di selang integral, kemudian dihitung luas _square_ yang ada.
+Ide dari algoritma ini adalah men-*generate* titik *random* di selang integral, kemudian dihitung luas *square* yang ada.
 
 $$I = \int_z^b f(x)dx$$
 
@@ -317,7 +316,7 @@ dengan
 
 $$\xi_i \text{ adalah random number antara 0 dan 1}$$
 
-Berikut adalah _flowchart_-nya:
+Berikut adalah *flowchart*-nya:
 
 ```{r}
 #| fig-align: center
@@ -329,8 +328,7 @@ knitr::include_graphics("download (2).png")
 rm(list=ls())
 ```
 
-
-Berdasarkan _flowchart_ di atas, berikut adalah _function_ di __R__ -nya:
+Berdasarkan *flowchart* di atas, berikut adalah *function* di **R** -nya:
 
 ```{r}
 #| echo: true
@@ -349,11 +347,11 @@ modif_monte = function(f,x1,x2,N){
   }
 ```
 
-Saya menghitung _error_ atau __selisih solusi numerik dengan solusi eksak__ dengan cara:
+Saya menghitung *error* atau **selisih solusi numerik dengan solusi eksak** dengan cara:
 
 $$\Delta = |eksak - numerik|$$
 
-Dari _function_ di atas, kita akan coba hitung dengan berbagai nilai $N$ sebagai berikut:
+Dari *function* di atas, kita akan coba hitung dengan berbagai nilai $N$ sebagai berikut:
 
 ```{r}
 #| fig-align: center
@@ -395,5 +393,3 @@ hasil %>%
        caption = "Digambar oleh 20921004 dengan R")
   
 ```
-
-
