@@ -1,5 +1,18 @@
-# Perhitungan Berapa Banyak Kantong Daging Qurban Menggunakan Simulasi Monte Carlo
-
+---
+date: 2024-06-13T10:08:00-04:00
+title: "Menentukan Berapa Banyak Kantong Daging Qurban Menggunakan Simulasi Monte Carlo"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - Simulasi
+  - Monte Carlo
+  - Simulasi Monte Carlo
+  - Daging
+  - Qurban
+  - Idul Adha
+---
 
 Berbeda dengan tahun-tahun sebelumnya, pada tahun ini saya
 diikutsertakan dalam kepanitiaan Idul Qurban di komplek perumahan yang
@@ -87,6 +100,8 @@ Asumsinya adalah satu kantong diisi oleh 0.5 kg daging sapi.
 
 *Flowchart*-nya adalah sebagai berikut:
 
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Monte%20Carlo/Qurban%20CCR/flow.png" style="width:50.0%" />
+
 Berikut adalah skripnya menggunakan **R**.
 
 ``` r
@@ -124,7 +139,7 @@ berapa_kantong = mcmapply(berapa_kantong,1:n_simulasi,mc.cores = n_core)
 Sekarang kita akan lihat persebaran berapa banyak kantongnya menggunakan
 *density plot* berikut:
 
-![](Qurban_files/figure-commonmark/unnamed-chunk-4-1.png)
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Monte%20Carlo/Qurban%20CCR/Qurban_files/figure-commonmark/unnamed-chunk-4-1.png)
 
 *Expected* kantong daging yang bisa didapatkan dari empat ekor sapi
 tersebut adalah sekitar **898** kantong. Namun, jika saya ingin
