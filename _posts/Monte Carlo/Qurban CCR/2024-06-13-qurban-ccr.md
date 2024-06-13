@@ -147,7 +147,7 @@ menggunakan angka **optimis - realistis**, maka saya akan gunakan batas
 quartil 3 sebesar **912** kantong. Maksudnya apa?
 
 > Ada peluang sebesar 76.196% kantong sapi yang dihasilkan sebanyak
-> ![\leq 911](https://latex.codecogs.com/svg.latex?%5Cleq%20911 "\leq 911")
+> ![\leq 912](https://latex.codecogs.com/svg.latex?%5Cleq%20912 "\leq 912")
 > kantong.
 
 ------------------------------------------------------------------------
