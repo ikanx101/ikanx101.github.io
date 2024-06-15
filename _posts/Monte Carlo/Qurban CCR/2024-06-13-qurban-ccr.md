@@ -58,7 +58,7 @@ Sehingga berat daging sapi adalah **35%** dari berat hidup sapi.
 
 ![\text{Berat daging} = \frac{35}{100} \times 350 = 122.5 \text{kg}](https://latex.codecogs.com/svg.latex?%5Ctext%7BBerat%20daging%7D%20%3D%20%5Cfrac%7B35%7D%7B100%7D%20%5Ctimes%20350%20%3D%20122.5%20%5Ctext%7Bkg%7D "\text{Berat daging} = \frac{35}{100} \times 350 = 122.5 \text{kg}")
 
-**Karkas** adalah **daging dengan tulas** tanpa jeroan, kotoran, kepala,
+**Karkas** adalah **daging dengan tulang** tanpa jeroan, kotoran, kepala,
 kaki, dan kulit.
 
 Sedangkan berat jeroan adalah **10%** dari berat karkas. Sehingga berat
