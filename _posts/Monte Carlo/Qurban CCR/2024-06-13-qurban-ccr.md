@@ -96,7 +96,7 @@ Berdasarkan kondisi ini, saya akan coba membuat simulasi Monte Carlo
 untuk menghitung kira-kira berapa banyak kantong daging sapi yang bisa
 dibuat dari empat ekor sapi dengan berat antara 340 - 350 kg.
 
-Asumsinya adalah satu kantong diisi oleh 0.5 kg daging sapi.
+Asumsinya adalah satu kantong diisi oleh 0.5 kg daging sapi. Satu kantong murni diisi oleh daging sapi, bukan jeroan, tulang, atau ekor.
 
 *Flowchart*-nya adalah sebagai berikut:
 
