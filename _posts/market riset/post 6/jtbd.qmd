@@ -1,0 +1,129 @@
+---
+title: "What is Jobs-To-Be-Done Outcome-Driven-Innovation?"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: false
+    toc-depth: 4
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: true
+  warning: false
+  error: false
+---
+
+JTBD ODI stands for Jobs-to-be-Done Outcome-Driven Innovation. It represents two methodologies combined to create a powerful framework for business innovation:
+
+* **Jobs-to-be-Done (JTBD):** This theory focuses on understanding the fundamental **job** a customer is trying to get done, not just the product or service they're currently using. It emphasizes understanding the customer's **needs, motivations, and desired outcomes**.
+
+* **Outcome-Driven Innovation (ODI):**  This methodology builds on JTBD by creating a systematic process to develop innovative solutions.  It uses the insights from JTBD to define the desired **outcomes** customers want to achieve and then uses those outcomes to guide the development of new products and services.
+
+Here's a breakdown of how they work together:
+
+1. **JTBD identifies the job:**  You identify the specific task or problem a customer is trying to solve. For example, the "job" might be "prepare a delicious meal for my family" or "find a reliable and affordable way to commute to work."
+2. **ODI defines desired outcomes:**  Once you understand the job, ODI helps you define the specific outcomes the customer wants to achieve.  In the first example, desired outcomes might include "a quick and easy meal preparation process" or "healthy ingredients that taste good." In the second example, desired outcomes might be "a fast and reliable commute with minimal traffic" or "an affordable transportation option."
+3. **ODI guides innovation:** With the desired outcomes defined, ODI helps you brainstorm and develop solutions that specifically address those outcomes. This could involve creating new products, services, or even improving existing ones.
+
+**Benefits of JTBD ODI:**
+
+* **Focus on customer needs:**  By focusing on the "job" and desired outcomes, businesses can develop solutions that are truly relevant and valuable to their customers.
+* **Increased innovation success rate:** Understanding the customer needs helps avoid developing products or services that nobody wants.
+* **Improved product development:** ODI provides a clear roadmap for innovation, ensuring that new products and services are aligned with customer expectations.
+
+**Here's an example:**
+
+## Example of JTBD ODI: Laundry Service
+
+**Job to be Done (JTBD):** Get my clothes clean and ready to wear with minimal effort. 
+
+**Customer Needs and Motivations:**
+
+* Don't have time to do laundry themselves due to busy schedules.
+* Dislike the hassle of washing, drying, and ironing clothes.
+* Want clean and fresh-smelling clothes.
+* Concerned about damaging delicate garments.
+* May need laundry services for specific needs like dry cleaning or stain removal.
+
+**Desired Outcomes:**
+
+* Convenient pickup and delivery of laundry.
+* Fast turnaround time for cleaned clothes.
+* High-quality cleaning that removes stains and wrinkles.
+* Safe handling of delicate garments.
+* Transparent pricing and easy payment options.
+* Eco-friendly cleaning methods (optional).
+
+**Innovation using ODI:**
+
+* Develop a mobile app for easy scheduling of laundry pickup and delivery.
+* Offer same-day or next-day laundry service options.
+* Invest in eco-friendly cleaning technologies that are gentle on clothes.
+* Implement a tiered pricing structure based on laundry type and urgency.
+* Partner with local dry cleaners to provide specialized services.
+
+**Benefits:**
+
+* The laundry service addresses the customer's need to save time and effort.
+* The desired outcomes ensure customer satisfaction with convenience, quality, and pricing.
+* This approach helps the laundry service stand out from competitors by focusing on specific customer needs.
+
+**Additional Considerations:**
+
+* This example focuses on laundry services, but JTBD ODI can be applied to any industry and product development process.
+* The desired outcomes will vary depending on the specific customer segment and their needs.
+* Continuous customer research is essential to ensure the JTBD and desired outcomes remain relevant.
+
+## Example of JTBD ODI: Cafe Business
+
+**Job to be Done:** Take a break from routine and socialize with friends/colleagues in a relaxing and stimulating environment.
+
+**Customer Needs and Motivations:**
+
+* Escape the monotony of work or home life.
+* Connect with friends or colleagues in a comfortable setting.
+* Enjoy a delicious beverage and potentially a light snack.
+* Find a place with a pleasant atmosphere for conversation or work.
+* Seek a stimulating environment with good Wi-Fi for remote work or studying.
+
+**Desired Outcomes:**
+
+* Friendly and welcoming service.
+* Comfortable seating arrangements for socializing or individual work.
+* A variety of high-quality coffee, tea, and other beverages.
+* Delicious and healthy food options (optional, depending on cafe type).
+* Reliable Wi-Fi connection for work or browsing.
+* A clean and inviting ambiance with pleasant music (not overly loud).
+* Convenient location with easy access and parking (if applicable).
+
+**Innovation using ODI:**
+
+* Offer themed events or activities (game nights, open mic nights) to encourage social interaction.
+* Create co-working spaces within the cafe with designated areas for remote work.
+* Develop a loyalty program that rewards frequent customers with discounts or free drinks.
+* Implement a mobile app for ordering and payment to avoid queues.
+* Offer healthy and delicious snack options alongside beverages.
+* Partner with local businesses to offer unique menu items or promotions.
+* Design a visually appealing and comfortable space with different seating options for various needs.
+
+**Benefits:**
+
+* The cafe caters to the customer's need for a break and socialization in a stimulating environment.
+* The desired outcomes ensure customer satisfaction with service, ambiance, food/drink options, and functionality.
+* This approach helps the cafe differentiate itself from competitors by focusing on specific customer needs and desired experiences.
+
+**Additional Considerations:**
+
+* This example focuses on a general cafe. Specific cafe types (e.g., study cafes, cat cafes) may require adjustments to the JTBD and desired outcomes.
+* The cafe's location and target audience will influence the type of innovation implemented.
+* Regularly gather customer feedback to ensure the JTBD and desired outcomes remain relevant.
+
+---
+
+By understanding the "job" customers are trying to get done and the outcomes they desire, cafes can create a unique and successful business model that caters to their specific needs. 
+
+This is just two examples, and the possibilities for innovation using JTBD ODI are vast. By focusing on customer needs and desired outcomes, businesses can develop solutions that are truly valuable and successful. 
+
+In conclusion, JTBD ODI is a powerful framework that helps businesses understand customer needs and develop innovative solutions that meet those needs. 
