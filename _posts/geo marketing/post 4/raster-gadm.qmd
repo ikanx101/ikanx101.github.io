@@ -1,0 +1,32 @@
+---
+title: "Update: Cara Mencari Nama Kota/Kabupaten dari Data LongLat"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: true
+    toc-depth: 4
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+Tahun lalu, saya pernah menuliskan bagaimana caranya agar dari data berupa _longitude_ dan _latitude_ kita bisa [mendapatkan data detail lokasi](https://ikanx101.com/blog/geo-marketing/) seperti:
+
+- Negara,
+- Provinsi,
+- Kota / Kabupaten,
+- Kecamatan, dan
+- Level lokasi lainnya.
+
+Data ini juga bersifat umum, tidak hanya berlaku di Indonesia saja.
+
+---
+
+Beberapa hari belakangan ini, saya mendapatkan _request_ untuk melakukan _web scraping_ sekian ribu tempat keramaian di beberapa kota luar negeri dari _Google Maps_. Sayangnya info dari _Google Maps_ tersebut tidak ada informasi detail lokasi kota dan distrik yang terstruktur. Saya harus mencari sendiri informasi tersebut menggunakan cara lain.
+
+Nah, saat saya mencoba cara yang sudah pernah saya _posting_ dari [tulisan yang lalu](https://ikanx101.com/blog/geo-marketing/) ternyata
