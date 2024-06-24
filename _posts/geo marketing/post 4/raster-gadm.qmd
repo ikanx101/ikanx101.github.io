@@ -15,18 +15,18 @@ execute:
   error: false
 ---
 
-Tahun lalu, saya pernah menuliskan bagaimana caranya agar dari data berupa _longitude_ dan _latitude_ kita bisa [mendapatkan data detail lokasi](https://ikanx101.com/blog/geo-marketing/) seperti:
+Tahun lalu, saya pernah menuliskan bagaimana caranya agar dari data berupa *longitude* dan *latitude* kita bisa [mendapatkan data detail lokasi](https://ikanx101.com/blog/geo-marketing/) seperti:
 
-- Negara,
-- Provinsi,
-- Kota / Kabupaten,
-- Kecamatan, dan
-- Level lokasi lainnya.
+-   Negara,
+-   Provinsi,
+-   Kota / Kabupaten,
+-   Kecamatan, dan
+-   Level lokasi lainnya.
 
 Data ini juga bersifat umum, tidak hanya berlaku di Indonesia saja.
 
----
+------------------------------------------------------------------------
 
-Beberapa hari belakangan ini, saya mendapatkan _request_ untuk melakukan _web scraping_ sekian ribu tempat keramaian di beberapa kota luar negeri dari _Google Maps_. Sayangnya info dari _Google Maps_ tersebut tidak ada informasi detail lokasi kota dan distrik yang terstruktur. Saya harus mencari sendiri informasi tersebut menggunakan cara lain.
+Beberapa hari belakangan ini, saya mendapatkan *request* untuk melakukan *web scraping* sekian ribu tempat keramaian di beberapa kota luar negeri dari *Google Maps*. Sayangnya info dari *Google Maps* tersebut tidak ada informasi detail lokasi kota dan distrik yang terstruktur. Saya harus mencari sendiri informasi tersebut menggunakan cara lain.
 
-Nah, saat saya mencoba cara yang sudah pernah saya _posting_ dari [tulisan yang lalu](https://ikanx101.com/blog/geo-marketing/) ternyata
+Nah, saat saya mencoba cara yang sudah pernah saya *posting* dari [tulisan yang lalu](https://ikanx101.com/blog/geo-marketing/) ternyata
