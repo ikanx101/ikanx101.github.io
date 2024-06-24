@@ -3,14 +3,14 @@ title: "Update: Cara Mencari Nama Kota/Kabupaten dari Data LongLat"
 format: 
   gfm:
     html-math-method: webtex
-    toc: true
+    toc: false
     toc-depth: 4
     fig-dpi: 500
     fig-width: 8
     fig-height: 4.5
 editor: visual
 execute:
-  echo: false
+  echo: true
   warning: false
   error: false
 ---
@@ -26,7 +26,104 @@ Tahun lalu, saya pernah menuliskan bagaimana caranya agar dari data berupa *long
 Data ini juga bersifat umum, tidak hanya berlaku di Indonesia saja.
 
 ------------------------------------------------------------------------
+<<<<<<< HEAD
 
 Beberapa hari belakangan ini, saya mendapatkan *request* untuk melakukan *web scraping* sekian ribu tempat keramaian di beberapa kota luar negeri dari *Google Maps*. Sayangnya info dari *Google Maps* tersebut tidak ada informasi detail lokasi kota dan distrik yang terstruktur. Saya harus mencari sendiri informasi tersebut menggunakan cara lain.
 
 Nah, saat saya mencoba cara yang sudah pernah saya *posting* dari [tulisan yang lalu](https://ikanx101.com/blog/geo-marketing/) ternyata
+=======
+
+Beberapa hari belakangan ini, saya mendapatkan *request* untuk melakukan *web scraping* sekian ribu tempat keramaian di beberapa kota luar negeri dari *Google Maps*. Salah satu kota targetnya adalah kota Kuala Lumpur di Malaysia.
+
+Langkah pertama yang saya biasanya saya kerjakan adalah membuat area persegi panjang dari Kuala Lumpur. Walaupun kita ketahui bersama bahwa tidak mungkin ada kota yang memiliki area berbentuk persegi panjang sempurna. Dari area ini, saya akan ambil semua titik keramaian yang mungkin ada.
+
+Nah, PR saya selanjutnya adalah memilih titik-titik mana saja yang benar-benar berada di Kuala Lumpur. Bagaimana caranya?
+
+> Caranya adalah dengan menggunakan cara yang saya [tulis sebelumnya](https://ikanx101.com/blog/geo-marketing/).
+
+Sebagai contoh, saya punya data _longlat_ berikut:
+
+```{r}
+lat  = 3.154614
+long = 101.635143
+# kita bentuk ke dalam data frame
+df   = data.frame(long,lat)
+```
+
+Ternyata __cara yang dahulu saya gunakan sudah tidak bisa lagi!__. Kenapa? Salah satu proses yang wajib dijalankan pada skrip terdahulu adalah men-_download_ data _raster_ dari _database_ __GADM__. Nah, ternyata versi __GADM__ yang terbaru sudah tidak _support_ lagi dengan skrip yang dahulu.
+
+Akhirnya saya harus mencari cara lain untuk mendapatkan informasi yang dibutuhkan.
+
+---
+
+## Alternatif Cara
+
+Dari _website_-nya, data __GADM__ terbaru merupakan versi 4.1 yang harus kita [_download manual_ per negara](https://gadm.org/download_country.html). Nah, kita cukup mengubah bentuk file hasil _download_ ke bentuk _shapefile_ yang siap kita gunakan. Berikut langkah-langkahnya:
+
+### Langkah I
+
+Buka [situs __GADM__](https://gadm.org/download_country.html), pilih `negara` yang diinginkan. Misalkan: Malaysia.
+
+```{r}
+#| echo: false
+
+knitr::include_graphics("gb1.png")
+```
+
+Pilih data ___shapefile___. Tunggu hingga _zipped file_-nya sudah selesai masuk ke _local drive_ kita.
+
+### Langkah II
+
+_Unzip file_ tersebut, lalu masukkan ke dalam _working directory_.
+
+```{r}
+#| echo: false
+
+knitr::include_graphics("gb2.png")
+```
+
+### Langkah III
+
+Sekarang kita akan _import_ data _shapefile_ yang sudah di-_download_ tersebut ke dalam __R__ dengan menggunakan `library(raster)` dan `library(sp)`. Misalkan saya hendak mendapatkan informasi hingga level ke dua.
+
+```{r}
+# load libraries
+library(raster)
+library(sp)
+library(dplyr)
+
+# import data
+malaysia = shapefile("gadm41_MYS_2.shp", package = "raster")
+
+```
+
+### Langkah IV
+
+Sekarang kita akan ekstrak informasinya.
+
+```{r}
+city_names = extract(malaysia,               # ini data referensinya
+                     df[, c("long", "lat")]) # ini data inputnya
+
+```
+
+Berikut adalah hasilnya:
+
+```{r}
+city_names
+```
+
+Oke, saya hanya akan menampilkan hasil yang dibutuhkan saja:
+
+```{r}
+city_names %>% 
+  select(COUNTRY,NAME_2,TYPE_2,ENGTYPE_2) %>% 
+  knitr::kable()
+```
+
+Bagaimana? Mudah kan?
+
+--- 
+
+`if you find this article helpful, support this blog by clicking the ads.`
+>>>>>>> 3e060a2561590da339e8b57680d2713a72ed714d

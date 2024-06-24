@@ -35,21 +35,21 @@ Ada dua jenis ***factor analysis***, yakni:
 
 ## *Confirmatory Factor Analysis*
 
-Perkenalan saya dengan *factor analysis* dimulai dengan mengerjakan project *Customer Satisfaction and Loyalty Survey* (CSLS) untuk salah satu BUMN Telekomunikasi. Teknik yang dipakai adalah membuat *Structured Equation Model* (SEM) untuk menghitung _satisfaction index_ dan _loyalty index_.
+Perkenalan saya dengan *factor analysis* dimulai dengan mengerjakan project *Customer Satisfaction and Loyalty Survey* (CSLS) untuk salah satu BUMN Telekomunikasi. Teknik yang dipakai adalah membuat *Structured Equation Model* (SEM) untuk menghitung *satisfaction index* dan *loyalty index*.
 
-Jadi kepuasan dan loyalitas pelanggan dihitung menggunakan pertanyaan-pertanyaan tak langsung dari faktor-faktor pembangunnya. Misalkan, kepuasan dari suatu produk bisa didekati dari pertanyaan-pertanyaan __4P__ (_product, placement, promotion,_ dan _price_). 
+Jadi kepuasan dan loyalitas pelanggan dihitung menggunakan pertanyaan-pertanyaan tak langsung dari faktor-faktor pembangunnya. Misalkan, kepuasan dari suatu produk bisa didekati dari pertanyaan-pertanyaan **4P** (*product, placement, promotion,* dan *price*).
 
-Misalkan pada survey tersebut, responden ditanyakan mengenai tingkat kesetujuan dari beberapa pertanyaan tersebut (misalkan pertanyaan $a_1,a_2,a_3,...,a_{10}$). Maka pertanyaan-pertanyaan tersebut menjadi _observed variables_. _Latent variables_ sudah didefinisikan sedemikian rupa dan jika digambarkan grafik hubungan, berikut bentuknya:
+Misalkan pada survey tersebut, responden ditanyakan mengenai tingkat kesetujuan dari beberapa pertanyaan tersebut (misalkan pertanyaan $a_1,a_2,a_3,...,a_{10}$). Maka pertanyaan-pertanyaan tersebut menjadi *observed variables*. *Latent variables* sudah didefinisikan sedemikian rupa dan jika digambarkan grafik hubungan, berikut bentuknya:
 
 ```{r}
 knitr::include_graphics("nomnoml.png")
 ```
 
-Nanti _satisfaction index_ akan didapatkan dari perkalian persentase _top 2 boxes_ per pertanyaan dengan nilai bobot yang dihasilkan dari _confirmatory factor analysis_.
+Nanti *satisfaction index* akan didapatkan dari perkalian persentase *top 2 boxes* per pertanyaan dengan nilai bobot yang dihasilkan dari *confirmatory factor analysis*.
 
 ## *Exploratory Factor Analysis*
 
-Berbeda dengan _CFA_, _EFA_ berarti kita sama sekali belum mengetahui hubungan antara satu variabel dengan variabel yang lainnya. Justru kita hendak membuat _latent variable(s)_ dari variabel-variabel yang ada beserta hubungannya.
+Berbeda dengan *CFA*, *EFA* berarti kita sama sekali belum mengetahui hubungan antara satu variabel dengan variabel yang lainnya. Justru kita hendak membuat *latent variable(s)* dari variabel-variabel yang ada beserta hubungannya.
 
 Misalkan kita melakukan survey berisi delapan buah pertanyaan kepada 100 orang responden, berikut adalah sampel datanya:
 
@@ -65,7 +65,7 @@ df = read.table("https://raw.githubusercontent.com/sunbeomk/PSYC490/main/scores.
 df %>% head(10)
 ```
 
-Untuk menentukan berapa banyak _latent variables_ dan bagaiman hubungannya, kita bisa membuat terlebih dahulu matriks korelasi. Jangan-jangan kita bisa membuat hipotesis tertentu dari matriks korelasi tersebut.
+Untuk menentukan berapa banyak *latent variables* dan bagaiman hubungannya, kita bisa membuat terlebih dahulu matriks korelasi. Jangan-jangan kita bisa membuat hipotesis tertentu dari matriks korelasi tersebut.
 
 ```{r}
 corrplot::corrplot(cor(df))
@@ -73,19 +73,19 @@ corrplot::corrplot(cor(df))
 
 Jika kita lihat:
 
-1. Pertanyaan $test_1, test_2, test_4, test_6$ saling berkorelasi kuat.
-1. Pertanyaan $test_3, test_5, test_7, test_8$ saling berkorelasi kuat.
+1.  Pertanyaan $test_1, test_2, test_4, test_6$ saling berkorelasi kuat.
+2.  Pertanyaan $test_3, test_5, test_7, test_8$ saling berkorelasi kuat.
 
-Kita bisa duga ada dua _latent variables_ yang dibangun dari dua kelompok pertanyaan.
+Kita bisa duga ada dua *latent variables* yang dibangun dari dua kelompok pertanyaan.
 
-Sekarang kita akan buat _EFA_-nya dengan dua _latent variables_:
+Sekarang kita akan buat *EFA*-nya dengan dua *latent variables*:
 
 ```{r}
 fa_output_1 = factanal(df, factors = 2,rotation="varimax",scores="regression")
 fa_output_1
 ```
 
-Perhatikan nilai total _proportion var_ sebesar `0.789` (atau $78.9 \%$). Artinya:
+Perhatikan nilai total *proportion var* sebesar `0.789` (atau $78.9 \%$). Artinya:
 
 > About $78.9 \%$ variance in the data is explained by these double factor model.
 
@@ -95,11 +95,11 @@ Masing-masing pertanyaan memiliki bobot tersendiri, yakni:
 fa_output_1$loadings
 ```
 
-Di mana masing-masing pertanyaan hanya _unique_ terpasang ke satu _latent variables_.
+Di mana masing-masing pertanyaan hanya *unique* terpasang ke satu *latent variables*.
 
-Pertanyaan berikutnya, __apakah dua__ ___latent variables___ __sudah cukup?__
+Pertanyaan berikutnya, **apakah dua** ***latent variables*** **sudah cukup?**
 
-Kita bisa melakukan eksperimen dengan cara melakukan perhitungan ulang dengan membuat banyaknya _latent variables_ bermacam-macam (misalkan dibuat menjadi 3,4, atau 5). Kemudian kita lihat nilai  _proportion var_-nya apakah tetap meningkat signifikan atau justru stabil tak bergerak di _range_ yang sama. Kesimpulannya kelak adalah kita akan pilih banyaknya _latent variables_ yang __paling sedikit__.
+Kita bisa melakukan eksperimen dengan cara melakukan perhitungan ulang dengan membuat banyaknya *latent variables* bermacam-macam (misalkan dibuat menjadi 3,4, atau 5). Kemudian kita lihat nilai *proportion var*-nya apakah tetap meningkat signifikan atau justru stabil tak bergerak di *range* yang sama. Kesimpulannya kelak adalah kita akan pilih banyaknya *latent variables* yang **paling sedikit**.
 
 Berikut adalah eksperimennya:
 
@@ -134,8 +134,8 @@ data.frame(n_latent = 1:4,
 
 ```
 
-Kita bisa lihat bahwa penambahan _latent variables_ menjadi 3 dan 4 tidak memberikan penambahan yang signifikan.
+Kita bisa lihat bahwa penambahan *latent variables* menjadi 3 dan 4 tidak memberikan penambahan yang signifikan.
 
----
+------------------------------------------------------------------------
 
 `if you find this article helpful, support this blog by clicking the ads.`
