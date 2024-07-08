@@ -1,0 +1,138 @@
+---
+title: "Menyelesaikan Soal Matematika dari Instagram"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: true
+    toc-depth: 4
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+Saat kuliah dulu, saya pernah _posting_ bagaimana cara saya [menyelesaikan soal aljabar](https://ikanx101.com/blog/ig-spl/) yang saya temukan di _instagram_.
+
+Kali ini, saya mendapatkan soal lain di _instagram_ berikut:
+
+> Temukan nilai __x__ dan __y__ yang memaksimalkan $x^y$ dengan syarat $x + y =8$
+
+Bagi saya, soal di atas adalah masalah optimisasi. Maka saya akan menggunakan metode _meta heuristic_ yang sering saya gunakan (sebagai tanda mata kuliah sains komputasi) yakni __spiral dynamic optimization algorithm__.
+
+Berikut adalah skrip-nya yang saya gunakan:
+
+```
+library(dplyr)
+library(tidyr)
+library(parallel)
+
+n_core = detectCores()
+n_var  = 2
+
+# function matriks rotasi
+buat_rot_mat = function(theta,n){
+  # buat template sebuah matriks identitas
+  temp_mat = matrix(0,ncol = n,nrow = n)
+  diag(temp_mat) = 1
+  
+  # buat matriks identitas terlebih dahulu
+  mat_rot = temp_mat
+  
+  for(i in 1:(n-1)){
+    for(j in 1:i){
+      temp = temp_mat
+      idx = n-i
+      idy = n+1-j
+      # print(paste0("Matriks rotasi untuk ",idx," - ",idy,": DONE"))
+      temp[idx,idx] = cos(theta)
+      temp[idx,idy] = -sin(theta)
+      temp[idy,idx] = sin(theta)
+      temp[idy,idy] = cos(theta)
+      # assign(paste0("M",idx,idy),temp)
+      mat_rot = mat_rot %*% temp
+      mat_rot = mat_rot 
+    }
+  }
+  return(mat_rot)
+}
+
+# bikin matriks rotasinya
+A_rot = buat_rot_mat(2*pi/30,n_var)
+
+# constrain
+cons_1 = function(vec){
+  x = vec[1]
+  y = vec[2]
+  z = x + y - 8
+  return(z)
+}
+
+# objective function
+obj_func = function(vec){
+  x = vec[1]
+  y = vec[2]
+  hasil = x^y
+  return(hasil)
+}
+
+# hitung total
+f_hit = function(vec){
+  con = cons_1(vec)
+  obj = obj_func(vec)
+  f   = -obj + 10^10 * con^2
+  return(f)
+}
+
+# generate solusi
+big_bang = function(dummy){
+  x = runif(1,0,8)
+  random_numb = runif(1)
+  if(random_numb < .5){
+    y = runif(1,0,8)
+  }
+  else if(random_numb >= .5){
+    y = 8 - x
+  }
+  return(c(x,y))
+}
+
+# kita mulai
+n_solusi = n_core * 30
+
+calon_solusi = mclapply(1:n_solusi,big_bang,mc.cores = n_core)
+f_hitung     = mclapply(calon_solusi,f_hit,mc.cores = n_core)
+
+buat_grafik  = vector("list",30)
+
+for(ikanx in 1:80){
+  n_min        = which.min(f_hitung)
+  center_star  = calon_solusi[[n_min]]
+  
+  # proses rotasi semua calon
+  for(i in 1:n_solusi){
+    Xt = calon_solusi[[i]]
+    X  = A_rot %*% (Xt - center_star)
+    X  = center_star + (.9 * X)
+    X  = abs(X)
+    X_ = c(X[1],X[2])
+    calon_solusi[[i]] = X_ 
+  }
+  
+  f_hitung             = mclapply(calon_solusi,f_hit,mc.cores = n_core)
+  buat_grafik[[ikanx]] = calon_solusi
+}
+
+n_min        = which.min(f_hitung)
+center_star  = calon_solusi[[n_min]]
+center_star
+```
+
+Hasil yang saya temukan adalah $x \sim 3.5$ dan $y \sim 4.5$.
+
+Animasi iteratifnya saya simpan di _Youtube channel_ saya berikut ini: [_link video_](https://youtube.com/shorts/X5uyvnO0o0g)
+
+
