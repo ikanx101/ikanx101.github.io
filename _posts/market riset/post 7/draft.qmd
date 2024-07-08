@@ -1,0 +1,184 @@
+---
+title: "Membuat Data Survey Sintetis Menggunakan R"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: false
+    toc-depth: 4
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: true
+  warning: false
+  error: false
+---
+
+Salah satu _jobdesk_ saya di kantor adalah memberikan _training_ ke tim market riset tentang berbagai macam hal. Kadang saya menggunakan data _real_ dari berbagai survey yang pernah kami lakukan. Namun lebih seringnya saya memerlukan suatu data _dummy_ yang bersifat universal.
+
+Oleh karena itu, saya biasa membuat data sintetis tersebut. Caranya bagaimana? Tentunya dengan memanfaatkan __R__. Mudah kok, _check this out!_
+
+---
+
+## _Libraries_ yang Diperlukan
+
+__R__ _libraries_ yang digunakan pada _lefo_ kali ini adalah _libraries_ yang memang sudah biasa digunakan sehari-hari, yakni:
+
+1. `dplyr`, `tidyr`, dan `data.table` untuk _data carpentry_.
+1. `parallel` untuk _parallel computing_.
+
+_Library_ `parallel` bersifat opsional ya. Rekan-rekan ber-OS Windows bisa mengganti proses komputasi paralel dengan menggunakan _looping_ (`for()`) atau _vectorization_ (`sapply()` atau `lapply()`).
+
+## Data yang Akan Dibuat
+
+Saya akan membuat data sederhana yang memuat informasi sebagai berikut:
+
+1. Lokasi tempat riset,
+1. _Gender_,
+1. Kelompok usia,
+1. SES (_Social Economy Status_),
+1. TOM (_Top of Mind_),
+1. _Aided awareness_,
+1. _Trial_,
+1. _Repeat_,
+1. _Last Usage_, dan
+1. _Future intention_.
+
+Saya akan membuat data survey satu per satu responden hingga sebanyak 1000 orang responden.
+
+Untuk itu saya memerlukan _conditions_ berikut ini:
+
+```{r}
+# dimulai dari nol
+rm(list=ls())
+
+# ambil semua library yang diperlukan
+library(dplyr)
+library(tidyr)
+library(parallel)
+
+# berapa banyak cores?
+n_core = 5
+
+# kita buat dulu data surveynya
+# function untuk men-generate data survey per orang
+survey_donk = function(dummy){
+  lokasi = sample(c("a","b","c","d","e","f"),1)
+  gender = sample(c("pria","wanita"),
+                  1,prob = c(.5,.5))
+  usia   = sample(c("< 15 th","16 - 20 th","21 - 25 th","26 - 30 th","> 30 th"),
+                  1,prob = c(.1,.2,.3,.3,2))
+  ses    = sample(c("upper","middle"),1,prob = c(.5,.5),replace = T)
+
+  # kita akan buat conditional
+  # seandainya ses nya up, makan peluang tom semakin tinggi
+  prob_  = ifelse(ses == "upper",.9,.6)
+  prob_  = c(prob_,1-prob_)
+  tom    = sample(c("ya","tidak"),1,prob = prob_)
+
+  # kita akan buat conditional
+  # seandainya ses nya up, makan peluang aided semakin tinggi
+  # selain itu, jika pada tom == ya, jangan sampai aidednya menjadi tidak
+  prob_  = ifelse(ses == "upper",.99,.8)
+  prob_  = c(prob_,1-prob_)
+  aided  = ifelse(tom == "ya","ya",
+                  sample(c("ya","tidak"),1,prob = prob_))
+
+  # kita akan buat conditional
+  # seandainya ses nya up, makan peluang trial semakin tinggi
+  # tapi harus inline dengan aided
+  # jangan sampai dia trial tapi aided == tidak
+  prob_  = ifelse(ses == "upper",.8,.5)
+  prob_  = c(prob_,1-prob_)
+  trial  = ifelse(aided == "tidak","tidak",
+                  sample(c("ya","tidak"),1,prob = prob_))
+
+  # kita akan buat conditional
+  # seandainya ses nya up, makan peluang repeat semakin rendah
+  # tapi harus inline dengan trial
+  # jangan sampai dia repeat tapi trial == tidak
+  prob_  = ifelse(ses == "upper",.5,.8)
+  prob_  = c(prob_,1-prob_)
+  repe   = ifelse(trial == "tidak","tidak",
+                  sample(c("ya","tidak"),1,prob = prob_))
+
+  # kita akan buat conditional
+  # seandainya ses nya up, makan peluang last usage semakin tinggi
+  # tapi harus inline dengan trial
+  # jangan sampai dia last usage tapi trial == tidak
+  prob_  = ifelse(ses == "upper",.8,.7)
+  prob_  = c(prob_,1-prob_)
+  last   = ifelse(trial == "tidak","tidak",
+                  sample(c("ya","tidak"),1,prob = prob_))
+
+  # kita akan buat conditional
+  # seandainya ses nya up, makan peluang future intention semakin tinggi
+  # tapi harus inline dengan trial
+  # jangan sampai dia future intention tapi trial == tidak
+  prob_  = ifelse(ses == "upper",.3,.9)
+  prob_  = c(prob_,1-prob_)
+  futur  = ifelse(trial == "tidak","tidak",
+                  sample(c("ya","tidak"),1,prob = prob_))
+
+  return(
+    data.frame(lokasi,gender,usia,ses,tom,aided,trial,repe,last,futur)
+  )
+}
+
+# berapa banyak responden
+n_resp    = 1000
+df_survey = mclapply(1:n_resp,survey_donk,mc.cores = n_core)
+df_survey = data.table::rbindlist(df_survey)
+
+```
+
+
+Berikut adalah sampel data hasilnya:
+
+```{r}
+df_survey %>% head(10) %>% knitr::kable()
+```
+
+## Tabulasi
+
+```{r}
+library(janitor)
+# tabulasi per lokasi
+df_survey |> tabyl(lokasi) |> adorn_pct_formatting(digits = 1)
+
+# tabulasi per gender
+df_survey |> tabyl(gender) |> adorn_pct_formatting(digits = 1)
+
+# tabulasi per ses
+df_survey |> tabyl(ses) |> adorn_pct_formatting(digits = 1)
+
+# tabulasi per usia
+df_survey |> tabyl(usia) |> adorn_pct_formatting(digits = 1)
+
+# tabulasi
+print("TOM")
+df_survey |> tabyl(tom) |> adorn_pct_formatting(digits = 1)
+
+print("LAST USAGE")
+df_survey |> tabyl(last) |> adorn_pct_formatting(digits = 1)
+
+print("FUTURE INTENTION")
+df_survey |> tabyl(futur) |> adorn_pct_formatting(digits = 1)
+
+```
+
+## Crosstabulasi
+
+```{r}
+# crosstabulasi
+print("SES - TOM")
+df_survey |> tabyl(ses,tom) |> adorn_percentages() |> adorn_pct_formatting(digits = 1)
+
+print("SES - LAST USAGE")
+df_survey |> tabyl(ses,last) |> adorn_percentages() |> adorn_pct_formatting(digits = 1)
+
+print("SES - FUTURE INTENTION")
+df_survey |> tabyl(ses,futur) |> adorn_percentages() |> adorn_pct_formatting(digits = 1)
+
+```
