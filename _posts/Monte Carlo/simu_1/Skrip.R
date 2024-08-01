@@ -75,5 +75,13 @@ simulasi_bulanan = function(dummy_input){
   return(output_final)
 }
 
-n_sim = 1:(n_core*10)
+n_sim = 1:(n_core*50)
 hasil = mcmapply(simulasi_bulanan,n_sim,mc.cores = n_core)
+
+df = data.frame(n_sim,hasil)
+save(df,file = "ready.rda")
+
+library(ggplot2)
+df |>
+  ggplot(aes(x = hasil)) +
+  geom_density()
