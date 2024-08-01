@@ -75,4 +75,5 @@ simulasi_bulanan = function(dummy_input){
   return(output_final)
 }
 
-
+n_sim = 1:(n_core*10)
+hasil = mcmapply(simulasi_bulanan,n_sim,mc.cores = n_core)
