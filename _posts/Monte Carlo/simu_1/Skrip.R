@@ -42,32 +42,37 @@ pelanggan_wd = function(dummy){
   return(output)
 }
 
-# weekdays
-simu_weekdays = vector("list",weekdays)
-for(i in 1:weekdays){
-  n_table = 1:table_wd()
-  uang    = sapply(n_table,duit)
-  cust    = lapply(n_table,pelanggan_wd)
-  cust    = data.table::rbindlist(cust) |> as.data.frame() |>
-            mutate(uang = uang)
-  simu_weekdays[[i]] = cust
-}
-# weekend
-simu_weekend = vector("list",weekend)
-for(i in 1:weekend){
-  n_table = 1:table_we()
-  uang    = sapply(n_table,duit)
-  cust    = lapply(n_table,pelanggan_we)
-  cust    = data.table::rbindlist(cust) |> as.data.frame() |>
-    mutate(uang = uang)
-  simu_weekend[[i]] = cust
+simulasi_bulanan = function(dummy_input){
+  # weekdays
+  simu_weekdays = vector("list",weekdays)
+  for(i in 1:weekdays){
+    n_table = 1:table_wd()
+    uang    = sapply(n_table,duit)
+    cust    = lapply(n_table,pelanggan_wd)
+    cust    = data.table::rbindlist(cust) |> as.data.frame() |>
+      mutate(uang = uang)
+    simu_weekdays[[i]] = cust
+  }
+  # weekend
+  simu_weekend = vector("list",weekend)
+  for(i in 1:weekend){
+    n_table = 1:table_we()
+    uang    = sapply(n_table,duit)
+    cust    = lapply(n_table,pelanggan_we)
+    cust    = data.table::rbindlist(cust) |> as.data.frame() |>
+      mutate(uang = uang)
+    simu_weekend[[i]] = cust
+  }
+  # gabung dan hitung omset total selama seminggu
+  output_final = 
+    rbind(data.table::rbindlist(simu_weekend),
+          data.table::rbindlist(simu_weekdays)) |>
+    as.data.frame() |>
+    mutate(omset = n_orang * uang) |>
+    pull(omset) |>
+    sum() * 4
+  
+  return(output_final)
 }
 
-output_final = 
-  rbind(data.table::rbindlist(simu_weekend),
-        data.table::rbindlist(simu_weekdays)) |>
-  as.data.frame() |>
-  mutate(omset = n_orang * uang) |>
-  pull(omset) |>
-  sum() * 4
 
