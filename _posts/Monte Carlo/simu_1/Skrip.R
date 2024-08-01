@@ -9,7 +9,24 @@ n_core = detectCores()
 weekend  = 2
 weekdays = 4
 
+table_wd = function(){sample(50:80,1)}
+table_we = function(){sample(80:120,1)}
+
 duit = function(dummy){rnorm(1,80000,30000)}
+
+pelanggan_we = function(dummy){
+  calon = c("keluarga","pasangan","rombongan","sendiri")
+  proba = c(.1,.2,.3,.4)
+  siapa = sample(calon,1,prob = proba)
+  n_orang = case_when(
+    siapa == "keluarga" ~ sample(3:5,1),
+    siapa == "pasangan" ~ 1,
+    siapa == "rombongan" ~ sample(7:12,1),
+    siapa == "sendiri" ~ 1
+  )
+  output = data.frame(siapa,n_orang)
+  return(output)
+}
 
 pelanggan_wd = function(dummy){
   calon = c("keluarga","pasangan","rombongan","sendiri")
@@ -18,7 +35,21 @@ pelanggan_wd = function(dummy){
   n_orang = case_when(
     siapa == "keluarga" ~ sample(3:7,1),
     siapa == "pasangan" ~ 1,
-    siapa == "rombongan" ~ sample(5:10,1)
+    siapa == "rombongan" ~ sample(5:10,1),
+    siapa == "sendiri" ~ 1
   )
+  output = data.frame(siapa,n_orang)
+  return(output)
+}
+
+# weekdays
+simu_weekdays = vector("list",weekdays)
+for(i in 1:weekdays){
+  n_table = 1:table_wd()
+  uang    = sapply(n_table,duit)
+  cust    = lapply(n_table,pelanggan_wd)
+  cust    = data.table::rbindlist(cust) |> as.data.frame() |>
+            mutate(uang = uang)
+  simu_weekdays[[i]] = cust
 }
 
