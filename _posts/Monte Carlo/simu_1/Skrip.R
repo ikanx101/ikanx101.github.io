@@ -52,4 +52,22 @@ for(i in 1:weekdays){
             mutate(uang = uang)
   simu_weekdays[[i]] = cust
 }
+# weekend
+simu_weekend = vector("list",weekend)
+for(i in 1:weekend){
+  n_table = 1:table_we()
+  uang    = sapply(n_table,duit)
+  cust    = lapply(n_table,pelanggan_we)
+  cust    = data.table::rbindlist(cust) |> as.data.frame() |>
+    mutate(uang = uang)
+  simu_weekend[[i]] = cust
+}
+
+output_final = 
+  rbind(data.table::rbindlist(simu_weekend),
+        data.table::rbindlist(simu_weekdays)) |>
+  as.data.frame() |>
+  mutate(omset = n_orang * uang) |>
+  pull(omset) |>
+  sum() * 4
 
