@@ -154,4 +154,4 @@ terhadap sensitivitas keputusan bisnis pada omset.
 
 ------------------------------------------------------------------------
 
-`if you find thsi article helpful, support this bog by clicking the ads.`
+`if you find this article helpful, support this blog by clicking the ads.`
