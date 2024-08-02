@@ -1,6 +1,17 @@
-# Math and Computational Science for Business part 1: Simulasi Monte
-Carlo untuk Planning Target Omset
-
+---
+date: 2024-08-02T16:37:00-04:00
+title: "Math and Computational Science for Business part 1: Simulasi Monte Carlo untuk Planning Target Omset"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - Simulasi
+  - Monte Carlo
+  - Simulasi Monte Carlo
+  - Omset
+  - Planning
+---
 
 Sepertinya sudah lama sekali saya tidak menulis artikel di *blog*. Jika
 saya pikirkan kembali, beberapa bulan belakangan pekerjaan datang
@@ -74,60 +85,73 @@ Simulasi dijalankan sebanyak 100.000 kali.
 
 Berikut adalah *flowchart* simulasinya:
 
-<img src="IMG_0684.png" data-fig-align="center" width="300" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Monte%20Carlo/simu_1/IMG_0684.png" data-fig-align="center" width="300" />
 
-Apa saja faedah dari Simulasi ini? Mari kita lihat pada grafik berikut:
+Apa saja faedah dari simulasi ini? Mari kita lihat pada grafik berikut:
 
-Hasil Simulasi
+## **Hasil Simulasi**
 
-Dari grafik di atas, kita bisa mendapatkan density plot dari omset yang
-mungkin tercapai setiap bulannya. Analoginya seperti Doctor Strange pada
-film Avengers: Endgame yang lalu, semua kemungkinan omset yang bisa
-terjadi dalam 100.000 kondisi ditampilkan dalam grafik tersebut.
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Monte%20Carlo/simu_1/Draft_files/figure-commonmark/unnamed-chunk-2-1.png)
 
-Kita bisa dapatkan expected omset yakni mean omset hasil simulasi
-sebesar Rp xxxx. Sang manager langsung mencocokkan apakah angka expected
-omset dengan rata-rata omset real selama 6 bulan ke belakang sudah
-mirip-mirip atau belum. Ternyata setelah dicek, angka hasil simulasi
-mirip-mirip dengan angka real. Artinya formula simulasi yang digunakan
-sudah bisa mendekati kondisi real nya.
+Dari grafik di atas, kita bisa mendapatkan *density plot* dari omset
+yang mungkin tercapai setiap bulannya. Analoginya seperti **Doctor
+Strange** pada film **Avengers: Endgame** yang lalu, semua kemungkinan
+omset yang bisa terjadi dalam 100.000 kondisi ditampilkan dalam grafik
+tersebut.
+
+Kita bisa dapatkan *expected* omset yakni *mean* omset hasil simulasi
+sebesar Rp549,694,758. Sang manager langsung mencocokkan apakah angka
+*expected* omset dengan rata-rata omset *real* selama enam bulan ke
+belakang sudah mirip-mirip atau belum. Ternyata setelah dicek, angka
+hasil simulasi mirip-mirip dengan angka *real*. Artinya formula simulasi
+yang digunakan sudah bisa mendekati kondisi *real*-nya.
 
 Bagaimana jika hasilnya berbeda dan melenceng jauh? Artinya ada
 parameter yang harus diperbaiki atau asumsi cara perhitungan omset harus
 diubah. Untuk kasus ini saya permudah contohnya ya. Namun pada kondisi
-real di pekerjaan, biasanya dibutuhkan iterasi beberapa kali hingga
-hasil simulasi mendekati angka real nya.
+*real* di pekerjaan, biasanya dibutuhkan iterasi beberapa kali hingga
+hasil simulasi mendekati angka *real*-nya.
 
 Perhatikan nilai Q1 (kuartil 1) pada grafik di atas. Apa artinya? Dengan
 kondisi yang ada sekarang sang manager punya peluang sebesar 75% bahwa
-omset cafe selama sebulan akan mencapai minimal Rp yyyy.
+omset cafe selama sebulan akan mencapai minimal Rp524,712,290.
 
 Perhatikan juga nilai Q3 (kuartil 3) pada grafik di atas. Apa artinya?
 Dengan kondisi yang ada sekarang sang manager punya peluang sebesar 75%
-bahwa omset cafe selama sebulan akan mencapai maksimal Rp zzzz.
+bahwa omset cafe selama sebulan akan mencapai maksimal Rp575,941,917.
 
-Dari simulasi ini sang manager juga bisa merencanakan bagaimana caranya
-untuk meningkatkan omset cafe di bulan-bulan berikutnya. Bagaimana?
-Dengan membuat program aktivasi yang bisa mengubah grafik omset tersebut
-ke arah kanan. Selain itu, program aktivasi bisa juga untuk mengubah
-grafik omset menjadi lebih pendek range nya.
+Dari simulasi ini sang *manager* juga bisa merencanakan bagaimana
+caranya untuk meningkatkan omset cafe di bulan-bulan berikutnya.
+Bagaimana? Dengan membuat program aktivasi yang bisa mengubah grafik
+omset tersebut ke arah kanan. Selain itu, program aktivasi bisa juga
+untuk mengubah grafik omset menjadi lebih pendek *range*-nya.
 
-Kasih ilustrasi before after.
+Berikut adalah ilustrasinya:
 
-Program aktivasi itu harus bisa ditranslasikan secara real untuk
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Monte%20Carlo/simu_1/IMG_0685.jpeg" data-fig-align="center" width="300" />
+
+Program aktivasi itu harus bisa ditranslasikan secara *real* untuk
 mengubah parameter.
 
-Misalkan: Pada bulan berikutnya sang manager membuat program sebagai
-berikut: 1. Diskon khusus pelanggan arisan pada weekdays. Walau besaran
-uang yang dibelikan konsumen berkurang akibat diskon tapi diharapkan
-menaikkan traffic per harinya. 2. Paket spesial menu keluarga, misalkan
-memberikan paket menu keluarga sehingga secara tidak sadar menaikkan
-besaran uang yang dibelanjakan konsumen. 3. Special diskon pada hari
-tertentu dan pada pelanggan tertentu untuk menaikkan traffic.
+Misalkan pada bulan berikutnya sang *manager* membuat program sebagai
+berikut:
+
+1.  Diskon khusus pelanggan arisan pada *weekdays*. Walau besaran uang
+    yang dibelikan konsumen berkurang akibat diskon tapi diharapkan
+    menaikkan *traffic* per harinya.
+2.  Paket spesial menu keluarga, misalkan memberikan paket menu keluarga
+    sehingga secara tidak sadar menaikkan besaran uang yang dibelanjakan
+    konsumen.
+3.  Spesial diskon pada hari tertentu dan pada pelanggan tertentu untuk
+    menaikkan *traffic*.
 
 Kita bisa simulasikan kembali dengan mengubah parameter-parameter yang
 ada. Setelah itu kita bisa melihat program mana yang bisa memberikan
-kenaikan expected omset paling besar.
+kenaikan *expected* omset paling besar.
 
-Planning dengan bantuan simulasi Monte Carlo memberikan kita gambaran
+*Planning* dengan bantuan simulasi Monte Carlo memberikan kita gambaran
 terhadap sensitivitas keputusan bisnis pada omset.
+
+------------------------------------------------------------------------
+
+`if you find thsi article helpful, support this bog by clicking the ads.`
