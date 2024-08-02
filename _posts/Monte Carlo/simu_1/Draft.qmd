@@ -13,43 +13,56 @@ execute:
   error: false
 ---
 
-Sepertinya sudah lama sekali saya tidak menulis artikel di _blog_. Jika saya pikirkan kembali, beberapa bulan belakangan pekerjaan datang bertubi-tubi layaknya huru-hara di akhir zaman kelak. _Hehe._
+```{r}
+#| include: false
 
-Nah, kali ini mumpung saya sedang _business trip_ di luar kota dan punya waktu luang sebelum tidur, saya akan coba buat satu topik tersendiri tentang aplikasi matematika dan sains komputasi dalam bisnis. Tentu saja beberapa _use cases_ yang hendak saya _share_ ini berasal dari pengalaman selama ini. Jika rekan-rekan pembaca punya kesamaan _use cases_ atau bahkan punya _use cases_ lain yang mau didiskusikan, _feel free_ untuk menghubungi saya melalui _telegram_.
+rm(list=ls())
 
-Pada artikel pertama ini, saya hendak menuliskan tentang bagaimana prinsip simulasi Monte Carlo bisa saya gunakan untuk menghitung dan melakukan _planning_ capaian omset di suatu cafe atau restoran.
+library(dplyr)
+library(ggplot2)
 
----
+load("ready.rda")
+```
 
-Di suatu cafe, omset bulanan didefinisikan sebagai total semua pembelian yang dilakukan oleh konsumen. Jadi, jika pada bulan X diketahui ada 100 org pelanggan, maka omsetnya adalah:
+Sepertinya sudah lama sekali saya tidak menulis artikel di *blog*. Jika saya pikirkan kembali, beberapa bulan belakangan pekerjaan datang bertubi-tubi layaknya huru-hara di akhir zaman kelak. *Hehe.*
+
+Nah, kali ini mumpung saya sedang *business trip* di luar kota dan punya waktu luang sebelum tidur, saya akan coba buat satu topik tersendiri tentang aplikasi matematika dan sains komputasi dalam bisnis. Tentu saja beberapa *use cases* yang hendak saya *share* ini berasal dari pengalaman selama ini. Jika rekan-rekan pembaca punya kesamaan *use cases* atau bahkan punya *use cases* lain yang mau didiskusikan, *feel free* untuk menghubungi saya melalui *telegram*.
+
+Pada artikel pertama ini, saya hendak menuliskan tentang bagaimana prinsip simulasi Monte Carlo bisa saya gunakan untuk menghitung dan melakukan *planning* capaian omset di suatu cafe atau restoran.
+
+------------------------------------------------------------------------
+
+Di suatu cafe, omset bulanan didefinisikan sebagai total semua pembelian yang dilakukan oleh konsumen. Jadi, jika pada bulan X diketahui ada 100 orang pelanggan, maka omsetnya adalah:
 
 $$omset_X = \sum_{i=1}^{100}harga_i \times item sold_i$$
 
 Misalkan:
 
-1. Pelanggan pertama, terdiri dari satu keluarga berisi empat orang. Masing-masing memesan menu makanan dan minuman pada harga yang sama (Rp50.000). Maka omset yang didapatkan adalah sebesar $4 \times 50.000 = 200.000$.
-2. Pelanggan kedua, terdiri dari sepasang suami istri. Suami memesan menu makanan dan minuman seharga Rp75.000 sedangkan istri memesan menu minuman dan dessert seharga Rp80.000. Maka omset yang didapatkan adalah sebesar $75.000 + 80.000 = 155.000$.
-3. Dan seterusnya.
+1.  Pelanggan pertama, terdiri dari satu keluarga berisi empat orang. Masing-masing memesan menu makanan dan minuman pada harga yang sama (Rp50.000). Maka omset yang didapatkan adalah sebesar $4 \times 50.000 = 200.000$.
+2.  Pelanggan kedua, terdiri dari sepasang suami istri. Suami memesan menu makanan dan minuman seharga Rp75.000 sedangkan istri memesan menu minuman dan dessert seharga Rp80.000. Maka omset yang didapatkan adalah sebesar $75.000 + 80.000 = 155.000$.
+3.  Dan seterusnya.
 
-Dari data historikal yang ada selama enam bulan ke belakang, didapatkan informasi bahwa pelanggan pada saat weekend lebih banyak dibandingkan pelanggan pada saat weekdays. Sang manager mencoba mengolah data tersebut sehingga mendapatkan informasi sebagai berikut:
+Dari data historikal yang ada selama enam bulan ke belakang, didapatkan informasi bahwa pelanggan pada saat _weekend_ lebih banyak dibandingkan pelanggan pada saat _weekdays_. Sang _manager_ mencoba mengolah data tersebut sehingga mendapatkan informasi sebagai berikut:
 
-Pada saat weekend, pelanggan yang datang berkisar antara 80-120 tables dengan komposisi:
-1. 50% keluarga berisi 3-7 orang.
-2. 30% pasangan.
-3. 10% rombongan berisi 5-10 orang.
+Pada saat _weekend_, pelanggan yang datang berkisar antara 80-120 _tables_ dengan komposisi: 
+
+1. 50% keluarga berisi 3-7 orang. 
+2. 30% pasangan. 
+3. 10% rombongan berisi 5-10 orang. 
 4. 10% pelanggan sendiri.
 
-Pada saat weekdays, pelanggan yang datang berkisar antara 50-80 tables dengan komposisi:
-1. 10% keluarga berisi 3-5 orang.
-2. 20% pasangan.
-3. 30% rombongan berisi 7-12 orang.
+Pada saat _weekdays_, pelanggan yang datang berkisar antara 50-80 _tables_ dengan komposisi: 
+
+1. 10% keluarga berisi 3-5 orang. 
+2. 20% pasangan. 
+3. 30% rombongan berisi 7-12 orang. 
 4. 40% pelanggan sendiri.
 
-Range harga makanan dan minuman yang disediakan cukup sempit (tidak lebar, harga hampir mirip-mirip). Besaran uang yang dibelikan per orang pelanggan mengikuti kurva normal dengan mean Rp80.000 dan standar deviasi Rp30.000 (artinya sekitar 66% peluang seorang pelanggan membeli menu di kisaran harga Rp50.000-Rp110.000).
+_Range_ harga makanan dan minuman yang disediakan cukup sempit (tidak lebar, harga hampir mirip-mirip). Besaran uang yang dibelikan per pelanggan mengikuti kurva normal dengan _mean_ Rp80.000 dan standar deviasi Rp30.000 (artinya sekitar 66% peluang seorang pelanggan membeli menu di kisaran harga Rp50.000-Rp110.000).
 
-Nah, berdasarkan informasi di atas, sang manager mencoba membuat simulasi Monte Carlo untuk mendapatkan persebaran omset dan distribusi peluangnya. Asumsinya adalah satu bulan terdiri dari empat minggu dengan satu minggu terdiri dari lima hari weekdays dan dua hari weekend. Simulasi dijalankan sebanyak 100.000 kali.
+Nah, berdasarkan informasi di atas, sang _manager_ mencoba membuat simulasi Monte Carlo untuk mendapatkan persebaran omset dan distribusi peluangnya. Asumsinya adalah satu bulan terdiri dari empat minggu dengan satu minggu terdiri dari lima hari _weekdays_ dan dua hari _weekend_. Simulasi dijalankan sebanyak 100.000 kali.
 
-Berikut adalah flowchart simulasinya:
+Berikut adalah _flowchart_ simulasinya:
 
 Apa saja faedah dari Simulasi ini? Mari kita lihat pada grafik berikut:
 
@@ -71,11 +84,7 @@ Kasih ilustrasi before after.
 
 Program aktivasi itu harus bisa ditranslasikan secara real untuk mengubah parameter.
 
-Misalkan:
-Pada bulan berikutnya sang manager membuat program sebagai berikut:
-1. Diskon khusus pelanggan arisan pada weekdays. Walau besaran uang yang dibelikan konsumen berkurang akibat diskon tapi diharapkan menaikkan traffic per harinya.
-2. Paket spesial menu keluarga, misalkan memberikan paket menu keluarga sehingga secara tidak sadar menaikkan besaran uang yang dibelanjakan konsumen.
-3. Special diskon pada hari tertentu dan pada pelanggan tertentu untuk menaikkan traffic.
+Misalkan: Pada bulan berikutnya sang manager membuat program sebagai berikut: 1. Diskon khusus pelanggan arisan pada weekdays. Walau besaran uang yang dibelikan konsumen berkurang akibat diskon tapi diharapkan menaikkan traffic per harinya. 2. Paket spesial menu keluarga, misalkan memberikan paket menu keluarga sehingga secara tidak sadar menaikkan besaran uang yang dibelanjakan konsumen. 3. Special diskon pada hari tertentu dan pada pelanggan tertentu untuk menaikkan traffic.
 
 Kita bisa simulasikan kembali dengan mengubah parameter-parameter yang ada. Setelah itu kita bisa melihat program mana yang bisa memberikan kenaikan expected omset paling besar.
 
