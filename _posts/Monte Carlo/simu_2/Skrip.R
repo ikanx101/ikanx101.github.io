@@ -6,7 +6,7 @@ library(parallel)
 library(ggplot2)
 
 n_core = detectCores() - 1
-n_sim  = 200
+n_sim  = 100
 
 simu_liu = function(performa_sim){
   # generate sales 3 bulan
