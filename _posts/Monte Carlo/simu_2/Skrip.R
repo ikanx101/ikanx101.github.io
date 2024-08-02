@@ -5,8 +5,8 @@ library(tidyr)
 library(parallel)
 library(ggplot2)
 
-n_core = 2
-n_sim  = 100
+n_core = detectCores() - 1
+n_sim  = 200
 
 simu_liu = function(performa_sim){
   # generate sales 3 bulan
@@ -33,8 +33,9 @@ input   = c(input_1,input_2)
 
 
 temp  = mclapply(input,simu_liu,mc.cores = n_core)
-data.table::rbindlist(temp) |>
-  as.data.frame() |>
+temp  = data.table::rbindlist(temp) |> as.data.frame()
+save(temp,file = "ready.rda")
+temp |>
   ggplot(aes(x = persen,y = f3_0)) +
   geom_point() +
   geom_smooth(method = "loess") +
