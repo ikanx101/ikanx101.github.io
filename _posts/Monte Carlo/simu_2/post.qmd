@@ -13,57 +13,57 @@ execute:
   error: false
 ---
 
-Kembali lagi dalam topik terbaru dalam _blog_ saya. Kali ini melanjutkan tulisan sebelumnya (_sudah baca kan ya? Jika belum, silakan dibaca dulu ya_) saya akan membahas bagaimana matematika dan sains komputasi bisa digunakan untuk membantu dalam bisnis. Sama seperti pada tulisan sebelumnya, saya tidak ingin terjebak ke dalam teknis algoritma dan _how to_-nya. Saya ingin memberikan ide, konsep, dan prinsip yang bisa digunakan pada bisnis.
+Kembali lagi dalam topik terbaru dalam *blog* saya. Kali ini melanjutkan tulisan sebelumnya (*sudah baca kan ya? Jika belum, silakan dibaca dulu ya*) saya akan membahas bagaimana matematika dan sains komputasi bisa digunakan untuk membantu dalam bisnis. Sama seperti pada tulisan sebelumnya, saya tidak ingin terjebak ke dalam teknis algoritma dan *how to*-nya. Saya ingin memberikan ide, konsep, dan prinsip yang bisa digunakan pada bisnis.
 
-Pada tulisan ini, saya akan memberikan satu _use case_ menarik di mana simulasi Monte Carlo bisa digunakan untuk memvalidasi sebuah hipotesis yang dimiliki oleh salah seorang _sales manager_ di sebuah perusahaan FMCG terkemuka. 
+Pada tulisan ini, saya akan memberikan satu *use case* menarik di mana simulasi Monte Carlo bisa digunakan untuk memvalidasi sebuah hipotesis yang dimiliki oleh salah seorang *sales manager* di sebuah perusahaan FMCG terkemuka.
 
-Bagaimana ceritanya? _Cekidot!_
+Bagaimana ceritanya? *Cekidot!*
 
----
+------------------------------------------------------------------------
 
-Suatu hari saya bertemu dengan seorang _sales manager_ dengan _level legendary_ di suatu kota. Beliau sudah berkarir sejak lama (hanya beda beberapa tahun dari total umur saya saat ini). Beliau memberikan _challenge_ kepada saya untuk bisa membuktikan teori yang dia kembangkan. 
+Suatu hari saya bertemu dengan seorang *sales manager* dengan *level legendary* di suatu kota. Beliau sudah berkarir sejak lama (hanya beda beberapa tahun dari total umur saya saat ini). Beliau memberikan *challenge* kepada saya untuk bisa membuktikan teori yang dia kembangkan.
 
-> Sebagai seorang (yang mengaku _scientist_), mungkin akan lebih aman jika saya menuliskan kata teori sebagai hipotesis. _Hehe_
+> Sebagai seorang (yang mengaku *scientist*), mungkin akan lebih aman jika saya menuliskan kata teori sebagai hipotesis. *Hehe*
 
 Bagaimana hipotesisnya? Beliau memberikan sebuah proposisi sebagai berikut:
 
-> __Jika performa distribusi di atas 40%, maka distribution error akan berada di bawah 20%__.
+> **Jika performa distribusi di atas 40%, maka distribution error akan berada di bawah 20%**.
 
-Untuk menjelaskan apa yang dimaksud dengan __performa distribusi__ dan ___distribution error___, perhatikan ilustrasi sebagai berikut:
+Untuk menjelaskan apa yang dimaksud dengan **performa distribusi** dan ***distribution error***, perhatikan ilustrasi sebagai berikut:
 
 ## Ilustrasi
 
-Misalkan seorang _sales manager_ di kota tertentu bertanggung jawab untuk memasarkan produk A. Dalam rentang waktu Januari hingga Agustus, beliau memiliki data transaksi berapa banyak dan siapa saja toko (atau _outlet_) yang membeli produk A dari perusahaannya sebagai berikut:
+Misalkan seorang *sales manager* di kota tertentu bertanggung jawab untuk memasarkan produk A. Dalam rentang waktu Januari hingga Agustus, beliau memiliki data transaksi berapa banyak dan siapa saja toko (atau *outlet*) yang membeli produk A dari perusahaannya sebagai berikut:
 
 ![](tabel_1.png){fig-align="center" width="900"}
 
-Semua toko yang telah bertransaksi sejak Januari hingga Agustus disebut dengan ___registered outlet___ (__RO__). Sedangkan toko yang aktif bertransaksi di suatu bulan tertentu disebut dengan ___active outlet___ (__AO__).
+Semua toko yang telah bertransaksi sejak Januari hingga Agustus disebut dengan ***registered outlet*** (**RO**). Sedangkan toko yang aktif bertransaksi di suatu bulan tertentu disebut dengan ***active outlet*** (**AO**).
 
-Performa distribusi adalah rata-rata rasio __AO per RO__ selama bulan Januari hingga Agustus, atau bisa saya tuliskan sebagai:
+Performa distribusi adalah rata-rata rasio **AO per RO** selama bulan Januari hingga Agustus, atau bisa saya tuliskan sebagai:
 
 $$\text{performa distribusi}  = \frac{\sum_{i = Jan}^{Agt} \frac{AO_i}{EA_i}}{8}$$
 
-Angka delapan artinya ada delapan bulan sejak Januari hingga Agustus (ingat rumus rata-rata _yah_).
+Angka delapan artinya ada delapan bulan sejak Januari hingga Agustus (ingat rumus rata-rata *yah*).
 
-Sedangkan _distribution error_ adalah rasio dari berapa banyak __RO__ yang tidak bertransaksi sama sekali di tiga bulan terakhir (Juni, Juli, dan Agustus) per total semua __RO__ yang ada.
+Sedangkan *distribution error* adalah rasio dari berapa banyak **RO** yang tidak bertransaksi sama sekali di tiga bulan terakhir (Juni, Juli, dan Agustus) per total semua **RO** yang ada.
 
-Dari definisi di atas dan dari ilustrasi tabel yang saya berikan, maka besaran performa distribusi adalah rata-rata dari baris `Rasio AO/RO` pada baris ke `15`, yakni sebesar: `26.25%`. Sedangkan besaran _distribution error_ dari kasus di atas adalah sebesar `20%` (2 toko dari 10 __RO__).
+Dari definisi di atas dan dari ilustrasi tabel yang saya berikan, maka besaran performa distribusi adalah rata-rata dari baris `Rasio AO/RO` pada baris ke `15`, yakni sebesar: `26.25%`. Sedangkan besaran *distribution error* dari kasus di atas adalah sebesar `20%` (2 toko dari 10 **RO**).
 
-Pertanyaan pertama yang terbersit dalam pikiran saya adalah bagaimana caranya memvalidasi pernyataan sang _legendary sales manager_ tersebut? 
+Pertanyaan pertama yang terbersit dalam pikiran saya adalah bagaimana caranya memvalidasi pernyataan sang *legendary sales manager* tersebut?
 
-_Jujurly_, untuk mendapatkan data transaksi detail seperti yang ada dalam ilustrasi tersebut tampaknya sulit bagi saya. Sampai suatu saat saya berpikir:
+*Jujurly*, untuk mendapatkan data transaksi detail seperti yang ada dalam ilustrasi tersebut tampaknya sulit bagi saya. Sampai suatu saat saya berpikir:
 
-> _Bagaimana jika di Monte Carlo-in saja!_
+> *Bagaimana jika di Monte Carlo-in saja!*
 
-Caranya adalah dengan membuat data transaksi sintetis selama tiga bulan berturut-turut dengan _input_ berupa persentase performa distribusi yang beragam. Ingat kembali definisi dari performa distribusi!
+Caranya adalah dengan membuat data transaksi sintetis selama tiga bulan berturut-turut dengan *input* berupa persentase performa distribusi yang beragam. Ingat kembali definisi dari performa distribusi!
 
-Performa distribusi adalah rata-rata persentase rasio __AO__ dengan __RO__. Dari definisi ini saja kita sudah bisa melihat bagaimana kira-kira bekerjanya simulasi tersebut.
+Performa distribusi adalah rata-rata persentase rasio **AO** dengan **RO**. Dari definisi ini saja kita sudah bisa melihat bagaimana kira-kira bekerjanya simulasi tersebut.
 
-Saya akan buat algoritmanya sebagai berikut dan melakukan simulasi sebanyak $10^3$ kali. Berikut adalah _flowchart_ simulasinya.
+Saya akan buat algoritmanya sebagai berikut dan melakukan simulasi sebanyak $10^3$ kali. Berikut adalah *flowchart* simulasinya.
 
 ![](nomnoml.png){fig-align="center"}
 
-Bagaimana hasilnya? Berikut adalah grafik _scatterplot_ antara performa distribusi dan _distribution error_:
+Bagaimana hasilnya? Berikut adalah grafik *scatterplot* antara performa distribusi dan *distribution error*:
 
 ```{r}
 #| echo: false
@@ -89,18 +89,19 @@ temp |>
        title = "Hasil Simulasi Monte Carlo")
 ```
 
-Saya tambahkan pula dalam grafik tersebut garis biru yang merupakan formula _smoothing_ dari titik data hasil simulasi. 
+Saya tambahkan pula dalam grafik tersebut garis biru yang merupakan formula *smoothing* dari titik data hasil simulasi.
 
-> Hal yang mengejutkan ternyata angka performa distribusi sebesar 40% memiliki nilai _distribution error_ sekitar 20% berdasarkan model pada garis biru.
+> Hal yang mengejutkan ternyata angka performa distribusi sebesar 40% memiliki nilai *distribution error* sekitar 20% berdasarkan model pada garis biru.
 
-Ternyata memang benar _experience matters_ pada kasus ini. Ucapan sang _legendary sales manager_ benar adanya.
+Ternyata memang benar *experience matters* pada kasus ini. Ucapan sang *legendary sales manager* benar adanya.
 
----
+------------------------------------------------------------------------
 
-
-Pertanyaan selanjutnya adalah menentukan _critical area_ bagi suatu produk. Maksudnya adalah kapan kita bisa menentukan suatu produk __tidak sedang  baik-baik saja__ dan perlu diberikan _treatment_ khusus sebelum terlambat.
+Pertanyaan selanjutnya adalah menentukan *critical area* bagi suatu produk. Maksudnya adalah kapan kita bisa menentukan suatu produk **tidak sedang baik-baik saja** dan perlu diberikan *treatment* khusus sebelum terlambat.
 
 Cara termudah yang saya bisa lakukan adalah dengan menentukan area awal di sumbu $x$ yang memberikan kenaikan drastis pada sumbu $y$. Konsep ini di kalkulus disebut dengan diferensial atau turunan.
+
+Perhatikan kembali grafik persamaan garis dari hasil simulasi (grafik sebelumnya) berikut ini:
 
 ```{r}
 #| echo: false
@@ -119,27 +120,44 @@ temp_ =
 
 temp_ %>% 
   ggplot(aes(x,y)) +
-  geom_point(size = .25) +
+  geom_point(size = .1,color = "blue") +
   geom_vline(xintercept = 40,color = "darkred",alpha = .5) +
-  geom_hline(yintercept = 20,color = "darkred",alpha = .5)
+  geom_hline(yintercept = 20,color = "darkred",alpha = .5) +
+  labs(x = "Performa distribusi",
+       y = "Distribution error")
+```
 
+Dari grafik di atas, saya coba hitung nilai $\frac{dy}{dx}$ secara numerik lalu saya buatkan grafiknya sebagai berikut:
+
+```{r}
+#| echo: false
 temp_ %>% 
   ggplot(aes(x,dy)) +
   # geom_point(size = .25) +
-  geom_vline(xintercept = 40,color = "darkred",alpha = .5) +
-  geom_smooth(method = "loess")
+  geom_vline(xintercept = 37.5,color = "darkred",alpha = .5) +
+  geom_smooth(method = "loess") +
+  labs(x = "Performa distribusi",
+       y = "dy (perubahan dist. error)")
 ```
 
-## _Remarks_
+> Dugaan saya, grafik awal $y \sim x$ dan grafik $\frac{dy}{dx}$ merupakan fungsi eksponensial karena bentuk grafiknya hampir sama.
 
-Pada contoh di atas, sang _legendary sales manager_ memberikan simplifikasi dimana _sales value_ permasing-masing toko tidak dilihat pada aturan 40-20 miliknya. Namun besaran _sales value_ kelak akan dilihat sebagai persentase kontribusi masing-masing toko terhadap sales total produknya.
+_Nah_, dari grafik $\frac{dy}{dx}$ kita bisa __lihat secara visual__ dari _grid_ grafik bahwa pada area di sebelah kiri garis merah memiliki turunan yang lebih curam dibanding area di sebelah kanan garis merah.
 
-Hal ini berguna saat ada produk dengan performa jelek, maka toko-toko yang tidak membeli produk sama sekali dalam tiga bulan akan dilihat siapa saja _top contributors_-nya. _Special treatment_ akan dilakukan kepada toko-toko tersebut.
+Garis merah tersebut berada pada titik performa distribusi sebesar $37.5$.
 
-Pada penjelasan artikel ini, saya hanya membuat simulasi Monte Carlo untuk membandingkan performa distribusi dengan _distribution error_ tanpa melihat _sales value_ per masing-masing toko.
+## Kesimpulan Sementara
 
-—-
+_Critical area_ yang bisa saya simpulkan secara sederhana adalah pada saat produk memiliki performa distribusi di bawah $37.5$, maka produk tersebut sudah harus mendapatkan _treatment_ khusus sebelum _distribution error_-nya menjadi lebih tinggi.
+
+## *Remarks*
+
+Pada contoh di atas, sang *legendary sales manager* memberikan simplifikasi dimana *sales value* permasing-masing toko tidak dilihat pada aturan 40-20 miliknya. Namun besaran *sales value* kelak akan dilihat sebagai persentase kontribusi masing-masing toko terhadap sales total produknya.
+
+Hal ini berguna saat ada produk dengan performa jelek, maka toko-toko yang tidak membeli produk sama sekali dalam tiga bulan akan dilihat siapa saja *top contributors*-nya. *Special treatment* akan dilakukan kepada toko-toko tersebut.
+
+Pada penjelasan artikel ini, saya hanya membuat simulasi Monte Carlo untuk membandingkan performa distribusi dengan *distribution error* tanpa melihat *sales value* per masing-masing toko.
+
+---
 
 `if you find this article helpful, support this blog by clicking the ads.`
-
-
