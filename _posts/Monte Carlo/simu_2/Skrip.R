@@ -6,7 +6,7 @@ library(parallel)
 library(ggplot2)
 
 n_core = detectCores() - 1
-n_sim  = 100
+n_sim  = 10^2
 
 simu_liu = function(performa_sim){
   # generate sales 3 bulan
@@ -27,17 +27,24 @@ simu_liu = function(performa_sim){
   return(output)
 }
 
-input_1 = seq(10,90,by = 0.1) / 100
-input_2 = seq(10,90,by = 0.1) / 100
-input   = c(input_1,input_2)
+input_1 = seq(1,100,by = 0.1) / 100
+input_2 = seq(1,100,by = 0.05) / 100
+input_3 = seq(1,100,by = 0.025) / 100
+input_4 = seq(1,100,by = 0.075) / 100
+input_5 = seq(1,100,by = 0.015) / 100
 
-
-temp  = mclapply(input,simu_liu,mc.cores = n_core)
+temp  = mclapply(c(input_1,input_2),simu_liu,mc.cores = n_core)
 temp  = data.table::rbindlist(temp) |> as.data.frame()
-save(temp,file = "ready.rda")
-temp |>
-  ggplot(aes(x = persen,y = f3_0)) +
-  geom_point() +
-  geom_smooth(method = "loess") +
-  geom_vline(xintercept = 40) +
-  geom_hline(yintercept = 20)
+
+input = c(input_1,input_2,input_3,input_4,input_5)
+input = rep(input,40)
+temp_ = mclapply(input,simu_liu,mc.cores = n_core)
+temp_ = data.table::rbindlist(temp_) |> as.data.frame()
+
+save(temp,temp_,file = "ready.rda")
+# temp |>
+#   ggplot(aes(x = persen,y = f3_0)) +
+#   geom_point() +
+#   geom_smooth(method = "loess") +
+#   geom_vline(xintercept = 40) +
+#   geom_hline(yintercept = 20)

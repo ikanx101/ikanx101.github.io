@@ -68,7 +68,7 @@ Berikut adalah *flowchart* simulasinya:
 
 Apa saja faedah dari simulasi ini? Mari kita lihat pada grafik berikut:
 
-## __Hasil Simulasi__
+## **Hasil Simulasi**
 
 ```{r}
 #| echo: false
@@ -104,36 +104,34 @@ df |>
        x = "Omset dalam (rupiah)")
 ```
 
-Dari grafik di atas, kita bisa mendapatkan _density plot_ dari omset yang mungkin tercapai setiap bulannya. Analoginya seperti __Doctor Strange__ pada film __Avengers: Endgame__ yang lalu, semua kemungkinan omset yang bisa terjadi dalam 100.000 kondisi ditampilkan dalam grafik tersebut.
+Dari grafik di atas, kita bisa mendapatkan *density plot* dari omset yang mungkin tercapai setiap bulannya. Analoginya seperti **Doctor Strange** pada film **Avengers: Endgame** yang lalu, semua kemungkinan omset yang bisa terjadi dalam 100.000 kondisi ditampilkan dalam grafik tersebut.
 
-Kita bisa dapatkan _expected_ omset yakni _mean_ omset hasil simulasi sebesar Rp549,694,758. Sang manager langsung mencocokkan apakah angka _expected_ omset dengan rata-rata omset _real_ selama enam bulan ke belakang sudah mirip-mirip atau belum. Ternyata setelah dicek, angka hasil simulasi mirip-mirip dengan angka _real_. Artinya formula simulasi yang digunakan sudah bisa mendekati kondisi _real_-nya.
+Kita bisa dapatkan *expected* omset yakni *mean* omset hasil simulasi sebesar Rp549,694,758. Sang manager langsung mencocokkan apakah angka *expected* omset dengan rata-rata omset *real* selama enam bulan ke belakang sudah mirip-mirip atau belum. Ternyata setelah dicek, angka hasil simulasi mirip-mirip dengan angka *real*. Artinya formula simulasi yang digunakan sudah bisa mendekati kondisi *real*-nya.
 
-Bagaimana jika hasilnya berbeda dan melenceng jauh? Artinya ada parameter yang harus diperbaiki atau asumsi cara perhitungan omset harus diubah. Untuk kasus ini saya permudah contohnya ya. Namun pada kondisi _real_ di pekerjaan, biasanya dibutuhkan iterasi beberapa kali hingga hasil simulasi mendekati angka _real_-nya.
+Bagaimana jika hasilnya berbeda dan melenceng jauh? Artinya ada parameter yang harus diperbaiki atau asumsi cara perhitungan omset harus diubah. Untuk kasus ini saya permudah contohnya ya. Namun pada kondisi *real* di pekerjaan, biasanya dibutuhkan iterasi beberapa kali hingga hasil simulasi mendekati angka *real*-nya.
 
 Perhatikan nilai Q1 (kuartil 1) pada grafik di atas. Apa artinya? Dengan kondisi yang ada sekarang sang manager punya peluang sebesar 75% bahwa omset cafe selama sebulan akan mencapai minimal Rp524,712,290.
 
 Perhatikan juga nilai Q3 (kuartil 3) pada grafik di atas. Apa artinya? Dengan kondisi yang ada sekarang sang manager punya peluang sebesar 75% bahwa omset cafe selama sebulan akan mencapai maksimal Rp575,941,917.
 
-Dari simulasi ini sang _manager_ juga bisa merencanakan bagaimana caranya untuk meningkatkan omset cafe di bulan-bulan berikutnya. Bagaimana? Dengan membuat program aktivasi yang bisa mengubah grafik omset tersebut ke arah kanan. Selain itu, program aktivasi bisa juga untuk mengubah grafik omset menjadi lebih pendek _range_-nya.
+Dari simulasi ini sang *manager* juga bisa merencanakan bagaimana caranya untuk meningkatkan omset cafe di bulan-bulan berikutnya. Bagaimana? Dengan membuat program aktivasi yang bisa mengubah grafik omset tersebut ke arah kanan. Selain itu, program aktivasi bisa juga untuk mengubah grafik omset menjadi lebih pendek *range*-nya.
 
 Berikut adalah ilustrasinya:
 
 ![](IMG_0685.jpeg){fig-align="center" width="300"}
 
+Program aktivasi itu harus bisa ditranslasikan secara *real* untuk mengubah parameter.
 
-Program aktivasi itu harus bisa ditranslasikan secara _real_ untuk mengubah parameter.
+Misalkan pada bulan berikutnya sang *manager* membuat program sebagai berikut:
 
-Misalkan pada bulan berikutnya sang _manager_ membuat program sebagai berikut: 
+1.  Diskon khusus pelanggan arisan pada *weekdays*. Walau besaran uang yang dibelikan konsumen berkurang akibat diskon tapi diharapkan menaikkan *traffic* per harinya.
+2.  Paket spesial menu keluarga, misalkan memberikan paket menu keluarga sehingga secara tidak sadar menaikkan besaran uang yang dibelanjakan konsumen.
+3.  Spesial diskon pada hari tertentu dan pada pelanggan tertentu untuk menaikkan *traffic*.
 
-1. Diskon khusus pelanggan arisan pada _weekdays_. Walau besaran uang yang dibelikan konsumen berkurang akibat diskon tapi diharapkan menaikkan _traffic_ per harinya. 
-2. Paket spesial menu keluarga, misalkan memberikan paket menu keluarga sehingga secara tidak sadar menaikkan besaran uang yang dibelanjakan konsumen. 
-3. Spesial diskon pada hari tertentu dan pada pelanggan tertentu untuk menaikkan _traffic_.
+Kita bisa simulasikan kembali dengan mengubah parameter-parameter yang ada. Setelah itu kita bisa melihat program mana yang bisa memberikan kenaikan *expected* omset paling besar.
 
-Kita bisa simulasikan kembali dengan mengubah parameter-parameter yang ada. Setelah itu kita bisa melihat program mana yang bisa memberikan kenaikan _expected_ omset paling besar.
+*Planning* dengan bantuan simulasi Monte Carlo memberikan kita gambaran terhadap sensitivitas keputusan bisnis pada omset.
 
-_Planning_ dengan bantuan simulasi Monte Carlo memberikan kita gambaran terhadap sensitivitas keputusan bisnis pada omset.
-
-
----
+------------------------------------------------------------------------
 
 `if you find thsi article helpful, support this bog by clicking the ads.`
