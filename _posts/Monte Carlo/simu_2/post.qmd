@@ -41,7 +41,7 @@ Semua toko yang telah bertransaksi sejak Januari hingga Agustus disebut dengan *
 
 Performa distribusi adalah rata-rata rasio **AO per RO** selama bulan Januari hingga Agustus, atau bisa saya tuliskan sebagai:
 
-$$\text{performa distribusi}  = \frac{\sum_{i = Jan}^{Agt} \frac{AO_i}{EA_i}}{8}$$
+$$\text{performa distribusi}  = \frac{\sum_{i = Jan}^{Agt} \frac{AO_i}{RO_i}}{8}$$
 
 Angka delapan artinya ada delapan bulan sejak Januari hingga Agustus (ingat rumus rata-rata *yah*).
 
@@ -142,13 +142,13 @@ temp_ %>%
 
 > Dugaan saya, grafik awal $y \sim x$ dan grafik $\frac{dy}{dx}$ merupakan fungsi eksponensial karena bentuk grafiknya hampir sama.
 
-_Nah_, dari grafik $\frac{dy}{dx}$ kita bisa __lihat secara visual__ dari _grid_ grafik bahwa pada area di sebelah kiri garis merah memiliki turunan yang lebih curam dibanding area di sebelah kanan garis merah.
+*Nah*, dari grafik $\frac{dy}{dx}$ kita bisa **lihat secara visual** dari *grid* grafik bahwa pada area di sebelah kiri garis merah memiliki turunan yang lebih curam dibanding area di sebelah kanan garis merah.
 
 Garis merah tersebut berada pada titik performa distribusi sebesar $37.5$.
 
 ## Kesimpulan Sementara
 
-_Critical area_ yang bisa saya simpulkan secara sederhana adalah pada saat produk memiliki performa distribusi di bawah $37.5$, maka produk tersebut sudah harus mendapatkan _treatment_ khusus sebelum _distribution error_-nya menjadi lebih tinggi.
+*Critical area* yang bisa saya simpulkan secara sederhana adalah pada saat produk memiliki performa distribusi di bawah $37.5$, maka produk tersebut sudah harus mendapatkan *treatment* khusus sebelum *distribution error*-nya menjadi lebih tinggi.
 
 ## *Remarks*
 
@@ -158,6 +158,6 @@ Hal ini berguna saat ada produk dengan performa jelek, maka toko-toko yang tidak
 
 Pada penjelasan artikel ini, saya hanya membuat simulasi Monte Carlo untuk membandingkan performa distribusi dengan *distribution error* tanpa melihat *sales value* per masing-masing toko.
 
----
+------------------------------------------------------------------------
 
 `if you find this article helpful, support this blog by clicking the ads.`
