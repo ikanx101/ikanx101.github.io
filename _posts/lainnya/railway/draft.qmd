@@ -1,0 +1,88 @@
+---
+title: "Menjalankan R Studio Server di Railway.app"
+format: 
+  gfm:
+    html-math-method: webtex
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+Jika rekan-rekan mengikuti tulisan saya di *blog* ini, kalian akan mengetahui berbagai upaya yang saya lakukan agar saya bisa menggunakan **R Studio** secara *online* dengan *gadget* apapun.
+
+Setidaknya ada dua cara yang sudah saya pernah tuliskan, yakni melalui menyewa [*droplet* Digital Ocean](https://ikanx101.com/blog/docker-update/) atau menggunakan [*Google Cloud Run*](https://ikanx101.com/blog/docker-cloud-run/).
+
+![](rail1.png){fig-align="center" width="600"}
+
+Pertama kali saya mengenal [*Railway.app*](http://railway.app/) dari [Mas Dito](https://www.linkedin.com/in/apriandito/?originalSubdomain=id), kolega saya di komunitas __R Indo__. _Railway.app_ ini sejatinya adalah situs yang menyediakan __wadah__ untuk _deployment_ berbagai aplikasi yang kita sudah buat. Salah satu fiturnya adalah mereka _support_ dan bisa _instant deployment_ dari _docker container_.
+
+Saya sendiri telah [membuat _docker container_ berisi _custom_ __R Studio Server__](https://ikanx101.com/blog/docker-r/). Artinya secara teori saya bisa menempelkan _container_ yang saya buat tersebut ke _Railway.app_.
+
+Layanan yang diberikan _Railway.app_ ada yang _free_ dan berbayar tergantung kebutuhan kita. Saya sendiri berlangganan _hobby plan_ sebesar __5 USD__ per bulan dengan spek sebagai berikut:
+
+![](rail2.png){fig-align="center" width="600"}
+
+Lantas apakah saya akan meninggalkan _Digital Ocean_ dan beralih sepenuhnya ke _Railway.app_?
+
+> Jawabannya __kemungkinan besar iya...__ Namun saya tetap akan menggunakan _Digital Ocean_ jika saya mengerjakan _project web scraping_ menggunakan __RSelenium__.
+
+
+## _How To_
+
+Berikut ini saya berikan langkah-langkah sederhana bagaimana cara menempel _container_ saya tersebut ke situs _Railway.app_.
+
+### Langkah I
+
+Buka situs [_Railway.app_](https://railway.app/) dan buat akun di sana. Untuk keperluan pembayaran, silakan masukkan detail kartu VISA _yah_. Saya sendiri tidak menggunakan kartu kredit dan hanya mengandalkan kartu digital dari sebuah bank digital di Indonesia.
+
+### Langkah II
+
+Buat _new project_ pada halaman depan.
+
+![](rail3.jpeg){fig-align="center" width="600"}
+
+Buat saja _empty project_.
+
+![](rail4.jpeg){fig-align="center" width="600"}
+
+
+Kemudian _Add a service_, lalu pilih _Docker image_.
+
+![](rail5.jpeg){fig-align="center" width="600"}
+
+Masukkan _docker image_ yang telah saya buat: __ikanx101/r-custom:latest__ lalu _enter_.
+
+![](rail6.jpeg){fig-align="center" width="600"}
+
+Setelah selesai, akan tampak tampilan seperti ini:
+
+![](rail7.jpeg){fig-align="center" width="600"}
+
+> Perlu diingat, penamaan _project_ ini sudah otomatis dari _Railway.app_. 
+
+Jangan terburu-buru untuk klik _deploy_. Setidaknya ada tiga parameter yang perlu kita _setting_. Buka _tab_ _setting_ dan masuk ke _menu variables_.
+
+![](rail8.jpeg){fig-align="center" width="600"}
+
+Silakan _add variables_ dan masukkan tiga hal ini:
+
+1. Nama variabel: `PORT`, isikan: `8787`.
+1. Nama variabel: `USER`, isikan: `ikanx101`.
+1. Nama variabel: `PASSWORD`, isikan: `ikanx101`.
+
+Khusus `USER` dan `PASSWORD`, silakan disesuaikan dengan keinginan masing-masing _ya_.
+
+Jika selesai, silakan klik _deploy_. Setelah selesai, kita akan mendapatkan satu _link_ khusus yang jika kita klik akan menuntuk kita ke halaman depan R Studio Server.
+
+Proses ini memakan waktu sekitar 5 - 10 menit saja. _Mudah kan?_
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
