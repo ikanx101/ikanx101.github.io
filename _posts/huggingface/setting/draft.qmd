@@ -43,7 +43,7 @@ Berikut adalah skrip tahap pertama yang dimasukkan ke dalam *terminal* beserta p
 ```         
 # kita update dan upgrade sistem linux nya
 apt update
-apt upgrade --y
+apt upgrade -y
 
 # kita akan install python3 environment terlebih dahulu
 apt install python3.11-venv
@@ -60,9 +60,9 @@ pip install 'transformers[torch]'
 pip install diffusers["torch"] transformers
 ```
 
-Setelah instalasi *transformers*, _diffusers_, dan *torch* selesai, kita sudah bisa langsung menarik model dari *Huggingface* dan langsung mencobanya. 
+Setelah instalasi *transformers*, *diffusers*, dan *torch* selesai, kita sudah bisa langsung menarik model dari *Huggingface* dan langsung mencobanya.
 
-## Contoh I: Model LLM
+## Contoh: Model LLM
 
 Sebagai contoh, saya akan menarik [model *summarization* berbahasa Indonesia berikut ini](https://huggingface.co/cahya/bert2gpt-indonesian-summarization).
 
@@ -105,30 +105,6 @@ Berikut adalah *screenshot*-nya:
 
 ![](hug.png){fig-align="center" width="600"}
 
-
-## Contoh II: Model _Diffusers_
-
-Berikutnya, saya akan coba [model _text to image_ menggunakan _diffusers_](https://huggingface.co/runwayml/stable-diffusion-v1-5). Berikut skripnya:
-
-```
-from diffusers import StableDiffusionPipeline
-import torch
-
-model_id = "runwayml/stable-diffusion-v1-5"
-pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
-pipe = pipe.to("cuda")
-
-prompt = "a photo of superman watching New York City destroyed by Tornado"
-image = pipe(prompt).images[0]  
-    
-image.save("supes.png")
-```
-
-Ini _screenshot_ dan _image_ hasilnya:
-
-
-
-
----
+------------------------------------------------------------------------
 
 `if you find this article helpful, support this blog by clicking the ads.`

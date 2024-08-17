@@ -1,4 +1,18 @@
-# Setting Awal Untuk Menjalankan Model Huggingface di Laptop Sendiri
+---
+date: 2024-08-17T10:51:00-04:00
+title: "Setting Awal Untuk Menjalankan Model Huggingface di Laptop Sendiri"
+categories:
+  - Blog
+tags:
+  - Machine Learning
+  - Artificial Intelligence
+  - Huggingface
+  - Summarization
+  - Text Analysis
+  - R Studio
+  - Python
+  - Deep Learning
+---
 
 
 Sampai saat ini ada lima tulisan saya terkait [*large language model*
@@ -43,7 +57,7 @@ beserta penjelasannya:
 
     # kita update dan upgrade sistem linux nya
     apt update
-    apt upgrade --y
+    apt upgrade -y
 
     # kita akan install python3 environment terlebih dahulu
     apt install python3.11-venv
@@ -56,9 +70,14 @@ diperlukan. Skrip selanjutnya sebagai berikut:
     # proses install transformers dan torch
     pip install transformers
     pip install 'transformers[torch]'
+    pip install diffusers["torch"] transformers
 
-Setelah instalasi *transformers* dan *torch* selesai, kita sudah bisa
-langsung menarik model dari *Huggingface* dan langsung mencobanya.
+Setelah instalasi *transformers*, *diffusers*, dan *torch* selesai, kita
+sudah bisa langsung menarik model dari *Huggingface* dan langsung
+mencobanya.
+
+## Contoh: Model LLM
+
 Sebagai contoh, saya akan menarik [model *summarization* berbahasa
 Indonesia berikut
 ini](https://huggingface.co/cahya/bert2gpt-indonesian-summarization).
@@ -98,7 +117,7 @@ Berikut adalah hasilnya:
 
 Berikut adalah *screenshot*-nya:
 
-<img src="hug.png" data-fig-align="center" width="600" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/huggingface/setting/hug.png" data-fig-align="center" width="600" />
 
 ------------------------------------------------------------------------
 
