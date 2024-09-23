@@ -1,0 +1,12 @@
+Age,Gender,Marital Status,Income,Purchase Frequency
+25-34,Female,Married,Medium,Weekly
+18-24,Male,Single,Low,Daily
+35-44,Female,Married,High,Monthly
+45-54,Male,Divorced,Medium,Rarely
+55+,Female,Married,High,Monthly
+25-34,Male,Single,Low,Daily
+18-24,Female,Married,Medium,Weekly
+35-44,Male,Single,High,Monthly
+45-54,Female,Divorced,Medium,Rarely
+55+,Male,Married,High,Monthly
+45-54,Male,Single,High,Weekly
