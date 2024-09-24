@@ -123,6 +123,8 @@ Metode Elbow Method adalah salah satu teknik yang paling umum digunakan untuk me
 rm(list=ls())
 gc()
 
+set.seed(10104074)
+
 library(dplyr)
 
 setwd("~/ikanx101.github.io/_posts/market riset/post 8")
@@ -163,7 +165,7 @@ n_core = detectCores()
 ```{r}
 # membuat function untuk menghitung WCD
 within_diff = function(k_input){
-  kmodes_result = kmodes(df,k_input,iter.max = 15)
+  kmodes_result = kmodes(df,k_input,iter.max = 10)
   output        = kmodes_result$withindiff %>% sum()
   return(output)
 }
@@ -188,12 +190,12 @@ data.frame(k = k_val,
        y = "nilai WCD")
 ```
 
-Dari grafik di atas, saya bisa menyimpulkan ada dua kemungkinan nilai $k$, yakni $k=4$ atau $k=6$. 
+Dari grafik di atas, saya bisa menyimpulkan kemungkinan nilai $k$ adalah $k=6$.
 
-**Langkah IV** Saya akan coba dulu untuk $k=4$ berikut ini:
+**Langkah IV** Saya akan coba dulu untuk $k=6$ berikut ini:
 
 ```{r}
-cl_ana = kmodes(df,4,iter.max = 15)
+cl_ana = kmodes(df,6,iter.max = 10)
 
 # berikut adalah cluster center-nya
 cl_ana$modes |> 
@@ -209,6 +211,5 @@ df |>
   tab_stat_cpct() |> 
   tab_pivot()
 ```
-
 
 `if you find this article helpful, support this blog by clicking the ads.`
