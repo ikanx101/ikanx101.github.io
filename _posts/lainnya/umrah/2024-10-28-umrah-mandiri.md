@@ -175,16 +175,16 @@ Bagaimana *itinerary*-nya?
   Hajar Tower**. Di Mekah hanya ada satu hotel Movenpick, jadi tidak
   perlu bingung. Alasan kami memilih hotel ini adalah karena lokasinya
   yang tepat di depan Masjidil Haram.
-- Pada tanggal 22 Oktober siang, kami berencana kembali lagi ke Madinah
+- Pada tanggal 21 Oktober siang, kami berencana kembali lagi ke Madinah
   dan menginap di hotel **Mysk Touch Al Balad**. Alasan kenapa memilih
   hotel ini adalah: kami belum pernah mengeksplorasi area depan Masjid
   Nabawi; lokasi hotelnya tepat menusuk ke area Raudhoh dan Makam
   Rasulullah (sangat dekat).
-- Pada tanggal 23 Oktober pagi, kami terbang ke Istanbul dan menginap di
+- Pada tanggal 22 Oktober pagi, kami terbang ke Istanbul dan menginap di
   **Kalyon Hotel** di kawasan Sultan Ahmet. Alasannya adalah hotel ini
   rekomendasi rekannya rekan saya yang menjadi warga lokal sana.
-- Pada tanggal 24 Oktober, kami terbang ke Jeddah untuk langsung terbang
-  pulang ke Jakarta.
+- Pada tanggal 23 Oktober, kami terbang ke Jeddah untuk langsung terbang
+  pulang ke Jakarta. Tanggal 24 pagi, kami tiba di Jakarta.
 
 Setidaknya begitulah *planning* final saya dan istri.
 
