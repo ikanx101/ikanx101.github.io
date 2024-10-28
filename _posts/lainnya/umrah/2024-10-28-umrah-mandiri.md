@@ -56,6 +56,7 @@ Saya mulai ceritanya ya!
     Turki?](#perlu-ambil-uang-tunai-di-arab-dan-turki)
   - [Bagaimana cara *booking*
     hotelnya?](#bagaimana-cara-booking-hotelnya)
+  - [Apakah ada kendala bahasa?](#apakah-ada-kendala-bahasa)
 
 
 # Prolog
@@ -776,3 +777,9 @@ temui di *Grand Bazaar* memiliki mesin EDC.
 Saya sudah jelaskan di *part* cerita sebelumnya. Saya menggunakan Agoda
 dan *booking.com*. Hal terpenting saat melakukan *booking* hotel adalah
 melakukan konfirmasi ke pihak hotel sehingga *booking* kita lebih aman.
+
+## Apakah ada kendala bahasa?
+
+_Alhamdulillah_ selama perjalanan tidak ada kendala bahasa yang berarti. Di Arab Saudi, kita bisa menemukan orang yang fasih berbahasa Inggris di setiap lobi hotel. Namun untuk supir taksi _online_, hanya ada satu yang fasih berbahasa Inggris. Sementara para pedagang sudah sangat familiar dengan Bahasa Indonesia. Jadi aman-aman saja.
+
+Selama di Turki, seperti biasa, petugas hotel tentunya fasih berbahasa Inggris. Sebagian besar para pedagang di Grand Bazaar juga bisa berkomunikasi dengan Bahasa Inggris. Tapi untuk warga lokal, terutama warga senior, tidak semua bisa berbahasa Inggris.
