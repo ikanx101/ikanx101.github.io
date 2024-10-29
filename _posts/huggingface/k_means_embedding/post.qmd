@@ -1,0 +1,56 @@
+---
+title: "Text Clustering Menggunakan Word Embedding"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: false
+    toc-depth: 4
+    fig-dpi: 500
+editor: visual
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+Setahun yang lalu, saya sempat menuliskan bagaimana caranya [melakukan *clustering* terhadap data teks berupa komentar atau *review* terhadap *oat drink* merek Tropicana Slim](https://ikanx101.com/blog/clustering-oat/). Lima tahun yang lalu, saya menuliskan cara [melakukan pengelompokan data teks menggunakan metode LDA](https://ikanx101.com/blog/blog-posting-sunyi/).
+
+*Jujurly*, saya belum puas terhadap hasil keduanya karena masih terlalu kuantitatif dan tidak melibatkan konteks dari teks tersebut.
+
+> Belum cukup pintar untuk bisa membaca dan mengelompokan konteks dari teks yang ada.
+
+Begitu pikir saya.
+
+Dengan perkembangan *large language model* (__LLM__) yang sangat pesat beberapa bulan belakangan ini, saya mencari cara lain bagaimana melakukan teks *clustering* menggunakan *k-means* tapi dengan proses **pembacaan konteks yang lebih pintar**.
+
+*Flowchart*-nya kira-kira sebagai berikut:
+
+![](nomnoml.png){width="250"}
+
+Titik kritis yang membedakan analisa kali ini dengan analisa _clustering_ sebelumnya terletak pada saat melakukan _word embedding_ yang dibantu __LLM__. Model yang saya gunakan adalah `all-MiniLM-L6-v2` yang kita bisa dapatkan di situs [__Huggingface__](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2).
+
+Semua proses ini saya lakukan di **R** dengan *environment* `Python3` yang saya panggil menggunakan `library(reticulate)`.
+
+Bagaimana caranya? *Cekidots!*
+
+## Data yang Digunakan
+
+Data yang saya gunakan adalah 20 baris teks berisi komplain _customer_ __sintetis__ yang saya buat menggunakan Gemini Google berikut:
+
+```{r}
+#| include: false
+
+complaints = readLines("komplen.txt")
+```
+
+```{r}
+#| echo: false
+
+complaints
+```
+
+## Apa Gunanya _Clustering_ Ini?
+
+
+https://colab.research.google.com/drive/1yg4q4jkD_8BuEanyZeNT1rAr8jDr7Qt_?usp=sharing
+
