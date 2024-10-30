@@ -21,21 +21,21 @@ Setahun yang lalu, saya sempat menuliskan bagaimana caranya [melakukan *clusteri
 
 Begitu pikir saya.
 
-Dengan perkembangan *large language model* (__LLM__) yang sangat pesat beberapa bulan belakangan ini, saya mencari cara lain bagaimana melakukan teks *clustering* menggunakan *k-means* tapi dengan proses **pembacaan konteks yang lebih pintar**.
+Dengan perkembangan *large language model* (**LLM**) yang sangat pesat beberapa bulan belakangan ini, saya mencari cara lain bagaimana melakukan teks *clustering* menggunakan *k-means* tapi dengan proses **pembacaan konteks yang lebih pintar**.
 
 *Flowchart*-nya kira-kira sebagai berikut:
 
 ![](nomnoml.png){width="250"}
 
-Titik kritis yang membedakan analisa kali ini dengan analisa _clustering_ sebelumnya terletak pada saat melakukan _word embedding_ yang dibantu __LLM__. Model yang saya gunakan adalah `all-MiniLM-L6-v2` yang kita bisa dapatkan di situs [__Huggingface__](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2).
+Titik kritis yang membedakan analisa kali ini dengan analisa *clustering* sebelumnya terletak pada saat melakukan *word embedding* yang dibantu **LLM**. Model yang saya gunakan adalah `all-MiniLM-L6-v2` yang kita bisa dapatkan di situs [**Huggingface**](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2).
 
-Semua proses ini saya lakukan di **R** dengan *environment* `Python3` yang saya panggil menggunakan `library(reticulate)`.
+Semua proses ini saya lakukan di **R** dengan *environment* `Python3` yang saya panggil menggunakan `library(reticulate)`. Oleh karena itu, pastikan _local computer_ sudah ter-_install_ __R__ dan `Python3` _ya_. Jika kalian hendak menggunakan _Google Colab_ juga dipersilakan.
 
 Bagaimana caranya? *Cekidots!*
 
 ## Data yang Digunakan
 
-Data yang saya gunakan adalah 20 baris teks berisi komplain _customer_ __sintetis__ yang saya buat menggunakan Gemini Google berikut:
+Data yang saya gunakan adalah 20 baris teks berisi komplain *customer* **sintetis** yang saya buat menggunakan Gemini Google berikut:
 
 ```{r}
 #| include: false
@@ -49,8 +49,124 @@ complaints = readLines("komplen.txt")
 complaints
 ```
 
-## Apa Gunanya _Clustering_ Ini?
+Kita akan cek apakah hasil _clustering_ saya saat ini lebih baik dibandingkan sebelumnya atau tidak.
+
+## Langkah Pengerjaan
+
+### Tahap I
+
+Langkah awal pengerjaan adalah _setting_ awal _environment_ `Python3`. Rekan-rekan bisa _copy, paste, and run_ skrip berikut di __R__:
+
+```
+system("pip install sentence-transformers")
+```
+
+Kegunaan skrip tersebut adalah meng-_install_ sistem `sentence-transformers` ke dalam _local computer_.
+
+Selanjutnya adalah memanggil semua _libraries_ yang diperlukan:
+
+```
+# Load necessary libraries
+library(reticulate)
+library(readr)
+library(dplyr)
+```
+
+Kemudian membuat __R__ menggunakan _environment_ dari `Python3`. Silakan dimodifikasi _path_ sesuai kebutuhan.
+
+```
+use_python("/usr/bin/python3")
+```
+
+Berikutnya kita _load_ _library_ di `Python3` berikut:
 
 
-https://colab.research.google.com/drive/1yg4q4jkD_8BuEanyZeNT1rAr8jDr7Qt_?usp=sharing
+```
+transformers <- reticulate::import("sentence_transformers")
+```
 
+Kemudian kita unduh model _word embedding_ yang diperlukan:
+
+```
+model <- transformers$SentenceTransformer('all-MiniLM-L6-v2')
+```
+
+Proses ini mungkin memakan waktu yang relatif lama karena ukurannya yang cukup besar.
+
+Kemudian saya akan memasukkan kembali komplen konsumen dari _file_ `komplen.txt` yang ada.
+
+```
+complaints = readLines("komplen.txt")
+```
+
+### Tahap II
+
+Selanjutnya saya akan lakukan _word embedding_ dari model yang ada. Kemudian saya ubah menjadi matriks jarak untuk keperluan _k-means clustering_.
+
+```
+complaint_embeddings <- model$encode(complaints)
+embeddings_matrix    <- as.matrix(reticulate::py_to_r(complaint_embeddings))
+```
+
+### Tahap III
+
+Selanjutnya kita akan menentukan nilai _k_ untuk _k-means clustering_. Untuk melakukannya, saya akan menghitung nilai _total within_ per masing-masing _clusters_ jika diandaikan suatu nilai _k_ tertentu.
+
+
+```{r}
+#| include: false
+
+library(dplyr)
+library(ggplot2)
+
+rm(list=ls())
+gc()
+
+load("bahan_blog.rda")
+```
+
+Saya buat _function_ khusus berikut dan akan hitung seandainya nilai $k = 1,2,..,7$ kemudian saya buat grafiknya:
+
+```{r}
+#| echo: true
+
+# function perhitungan total within
+within_diff = function(k_input){
+  kmeans_result = kmeans(embeddings_matrix, centers = k_input,iter.max = 50)
+  output        = kmeans_result$tot.withinss
+  return(output)
+}
+
+# perhitungan functionnya
+tot = sapply(1:7,within_diff)
+
+# membuat grafiknya
+data.frame(k = 1:7,
+           tot) |>
+  ggplot(aes(x = factor(k),y = tot)) +
+  geom_line(group = 1) +
+  theme_classic() +
+  labs(x = "How many k",
+       y = "Total within")
+```
+
+
+```{r}
+num_clusters  <- 3
+kmeans_result <- kmeans(embeddings_matrix, centers = num_clusters)
+
+
+complaints = 
+  complaints |> 
+  mutate(cluster = kmeans_result$cluster)
+
+head(complaints %>% 
+       group_by(cluster) %>% 
+       summarise(complaints = paste(complaints, collapse = "; "))
+     ) |> 
+  knitr::kable()
+```
+
+## Apa Gunanya *Clustering* Ini?
+
+https://colab.research.google.com/drive/1yg4q4jkD_8BuEanyZeNT1rAr8jDr7Qt\_?usp=sharing
