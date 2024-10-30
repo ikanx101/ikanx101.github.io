@@ -27,7 +27,7 @@ Dengan perkembangan *large language model* (**LLM**) yang sangat pesat beberapa 
 
 ![](nomnoml.png){width="250"}
 
-Titik kritis yang membedakan analisa kali ini dengan analisa *clustering* sebelumnya terletak pada saat melakukan *word embedding* yang dibantu **LLM**. Model yang saya gunakan adalah `all-MiniLM-L6-v2` yang kita bisa dapatkan di situs [**Huggingface**](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2).
+Titik kritis yang membedakan analisa kali ini dengan analisa *clustering* sebelumnya terletak pada saat melakukan *word embedding* yang dibantu **LLM**. Model yang saya gunakan adalah `firqaaa/indo-sentence-bert-base` yang kita bisa dapatkan di situs [**Huggingface**](https://huggingface.co/firqaaa/indo-sentence-bert-base).
 
 Semua proses ini saya lakukan di **R** dengan *environment* `Python3` yang saya panggil menggunakan `library(reticulate)`. Oleh karena itu, pastikan _local computer_ sudah ter-_install_ __R__ dan `Python3` _ya_. Jika kalian hendak menggunakan _Google Colab_ juga dipersilakan.
 
@@ -88,7 +88,7 @@ transformers <- reticulate::import("sentence_transformers")
 Kemudian kita unduh model _word embedding_ yang diperlukan:
 
 ```
-model <- transformers$SentenceTransformer('all-MiniLM-L6-v2')
+model <- transformers$SentenceTransformer('firqaaa/indo-sentence-bert-base')
 ```
 
 Proses ini mungkin memakan waktu yang relatif lama karena ukurannya yang cukup besar.
@@ -150,23 +150,128 @@ data.frame(k = 1:7,
        y = "Total within")
 ```
 
+Grafik _elbow_ di atas menunjukkan bahwa $k=3$ bisa dipilih sebagai salah satu alternatif banyaknya _cluster_ yang terbentuk. 
+
+Selain itu, saya coba buatkan grafik _principal component analysis_ untuk melihat berapa kira-kira _clusters_ yang pantas.
+
 
 ```{r}
-num_clusters  <- 3
-kmeans_result <- kmeans(embeddings_matrix, centers = num_clusters)
+#| echo: false
 
+num_clusters  <- 4
+kmeans_result <- kmeans(embeddings_matrix, centers = num_clusters,iter.max = 100)
 
 complaints = 
   complaints |> 
   mutate(cluster = kmeans_result$cluster)
 
+
+pca <- prcomp(embeddings_matrix, center = TRUE, scale. = TRUE)
+pca_data <- as.data.frame(pca$x[,1:2])
+#pca_data$cluster <- factor(complaints$cluster)
+
+ggplot(pca_data, aes(x = PC1, y = PC2, 
+                     #color = cluster
+                     )) +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "Customer Complaints Clusters", x = "PC1", y = "PC2")
+```
+
+Jika kita lihat, dugaannya nilai $k=3$ masih _acceptable_ namun saya ingin mencoba nilai $k=4$. Berikut adalah PCA dan hasilnya:
+
+```{r}
+pca <- prcomp(embeddings_matrix, center = TRUE, scale. = TRUE)
+pca_data <- as.data.frame(pca$x[,1:2])
+pca_data$cluster <- factor(complaints$cluster)
+
+ggplot(pca_data, aes(x = PC1, y = PC2, 
+                     color = cluster
+                     )) +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "Customer Complaints Clusters", x = "PC1", y = "PC2")
+
+```
+
+_Cluster_ final:
+
+```{r}
+#| echo: false
+
 head(complaints %>% 
        group_by(cluster) %>% 
-       summarise(complaints = paste(complaints, collapse = "; "))
+       summarise(complaints = paste(complaints, collapse = " "))
      ) |> 
   knitr::kable()
 ```
 
+
+```{r}
+library(factoextra)
+library(fpc)
+library(dbscan)
+
+
+set.seed(240)  # Setting seed
+dist.mat<-dist(embeddings_matrix)
+
+Hierar_cl = hclust(dist.mat, method = "complete")
+
+plot(Hierar_cl)
+
+fit = cutree(Hierar_cl, k = 10)
+table(fit)
+plot(Hierar_cl)
+rect.hclust(Hierar_cl, k = 10, border = "red")
+
+```
+
+
+```{r}
+complaints = 
+  complaints |> 
+  mutate(cluster = fit)
+
+```
+
+
+```{r}
+#| echo: false
+
+head(complaints %>% 
+       group_by(cluster) %>% 
+       summarise(complaints = paste(complaints, collapse = " "))
+     ) |> 
+  knitr::kable()
+```
+
+
+```{r}
+pca <- prcomp(embeddings_matrix, center = TRUE, scale. = TRUE)
+pca_data <- as.data.frame(pca$x[,1:2])
+pca_data$cluster <- factor(complaints$cluster)
+
+ggplot(pca_data, aes(x = PC1, y = PC2, 
+                     color = cluster
+                     )) +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "Customer Complaints Clusters", x = "PC1", y = "PC2")
+
+```
+
+
+Terlihat bahwa _clusters_ yang terbentuk memiliki kesamaan konteks di internal _cluster_ dan perbedaan konteks antar _cluster_.
+
+Untuk menamakan cluster ini, saya akan coba rangkum menggunakan bantuan __Gemini__ sebagai berikut:
+
+1. __Cluster 1__:
+1. __Cluster 2__:
+1. __CLuster 3__:
+
 ## Apa Gunanya *Clustering* Ini?
 
-https://colab.research.google.com/drive/1yg4q4jkD_8BuEanyZeNT1rAr8jDr7Qt\_?usp=sharing
+Bagi saya yang setiap hari berkecimpung di dunia _market research_, pada setiap survey biasanya memiliki setidaknya satu pertanyaan _open ended_ yang harus dikelompokkan terlebih dahulu agar bisa dianalisa lebih lanjut.
+
+`if you find this article, please support this blog by clicking the ads`.
