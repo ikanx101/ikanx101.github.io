@@ -163,7 +163,7 @@ Sebagai penjelasan *how to do clustering*, rekan-rekan bisa melihat
 Selanjutnya saya akan lakukan *hierarchical clustering* dengan membuat
 *dendogram* dengan *cut off* sebanyak `3` *clusters* berikut ini:
 
-![](post_files/figure-commonmark/unnamed-chunk-5-1.png)
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/huggingface/k_means_embedding/post_files/figure-commonmark/unnamed-chunk-5-1.png)
 
 Sekarang kita lihat bentuk akhir grafik **PCA** dengan *clusters* yang
 sudah final:
