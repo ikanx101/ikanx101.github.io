@@ -125,8 +125,7 @@ Kemudian saya akan memasukkan kembali komplen konsumen dari *file*
 ### Tahap II
 
 Selanjutnya saya akan lakukan *word embedding* dari model yang ada.
-Kemudian saya ubah menjadi matriks jarak untuk keperluan *k-means
-clustering*.
+Kemudian saya ubah menjadi matriks jarak untuk keperluan *clustering*.
 
     complaint_embeddings <- model$encode(complaints)
     embeddings_matrix    <- as.matrix(reticulate::py_to_r(complaint_embeddings))
