@@ -1,5 +1,5 @@
 ---
-title: "Text Clustering Menggunakan Word Embedding"
+title: "Pengelompokkan Data Teks Menggunakan LLM Word Embedding dan Hierarchical CLustering"
 format: 
   gfm:
     html-math-method: webtex
@@ -21,11 +21,11 @@ Setahun yang lalu, saya sempat menuliskan bagaimana caranya [melakukan *clusteri
 
 Begitu pikir saya.
 
-Dengan perkembangan *large language model* (**LLM**) yang sangat pesat beberapa bulan belakangan ini, saya mencari cara lain bagaimana melakukan teks *clustering* menggunakan *k-means* tapi dengan proses **pembacaan konteks yang lebih pintar**.
+Dengan perkembangan *large language model* (**LLM**) yang sangat pesat beberapa bulan belakangan ini, saya mencari cara lain bagaimana melakukan pengelompokkan teks menggunakan metode _clustering_ seperti _k-means_ atau _hierarchical_ tapi dengan proses **pembacaan konteks yang lebih pintar**.
 
 *Flowchart*-nya kira-kira sebagai berikut:
 
-![](nomnoml.png){width="250"}
+![](nomnoml.png){width="450"}
 
 Titik kritis yang membedakan analisa kali ini dengan analisa *clustering* sebelumnya terletak pada saat melakukan *word embedding* yang dibantu **LLM**. Model yang saya gunakan adalah `firqaaa/indo-sentence-bert-base` yang kita bisa dapatkan di situs [**Huggingface**](https://huggingface.co/firqaaa/indo-sentence-bert-base).
 
@@ -110,7 +110,9 @@ embeddings_matrix    <- as.matrix(reticulate::py_to_r(complaint_embeddings))
 
 ### Tahap III
 
-Selanjutnya kita akan menentukan nilai _k_ untuk _k-means clustering_. Untuk melakukannya, saya akan menghitung nilai _total within_ per masing-masing _clusters_ jika diandaikan suatu nilai _k_ tertentu.
+Tahap selanjutnya adalah melakukan _clustering_ dari data `embedding_matrix` hasil keluaran dari __LLM__. _Nah_ sebelum menentukan apakah saya akan menggunakan metode _k-means_ atau _hierarchical_, saya akan coba membuat visualisasi dari matriks tersebut.
+
+Sebagai informasi, matriks tersebut berukuran $20 \times 768$ alias berdimensi tinggi. Agar memudahkan membuat visualisasinya, saya akan lakukan _dimension reduction_ dengan _principal component analysis_ (__PCA__). Berikut adalah grafik __PCA__-nya
 
 
 ```{r}
@@ -125,46 +127,8 @@ gc()
 load("bahan_blog.rda")
 ```
 
-Saya buat _function_ khusus berikut dan akan hitung seandainya nilai $k = 1,2,..,7$ kemudian saya buat grafiknya:
-
-```{r}
-#| echo: true
-
-# function perhitungan total within
-within_diff = function(k_input){
-  kmeans_result = kmeans(embeddings_matrix, centers = k_input,iter.max = 50)
-  output        = kmeans_result$tot.withinss
-  return(output)
-}
-
-# perhitungan functionnya
-tot = sapply(1:7,within_diff)
-
-# membuat grafiknya
-data.frame(k = 1:7,
-           tot) |>
-  ggplot(aes(x = factor(k),y = tot)) +
-  geom_line(group = 1) +
-  theme_classic() +
-  labs(x = "How many k",
-       y = "Total within")
-```
-
-Grafik _elbow_ di atas menunjukkan bahwa $k=3$ bisa dipilih sebagai salah satu alternatif banyaknya _cluster_ yang terbentuk. 
-
-Selain itu, saya coba buatkan grafik _principal component analysis_ untuk melihat berapa kira-kira _clusters_ yang pantas.
-
-
 ```{r}
 #| echo: false
-
-num_clusters  <- 4
-kmeans_result <- kmeans(embeddings_matrix, centers = num_clusters,iter.max = 100)
-
-complaints = 
-  complaints |> 
-  mutate(cluster = kmeans_result$cluster)
-
 
 pca <- prcomp(embeddings_matrix, center = TRUE, scale. = TRUE)
 pca_data <- as.data.frame(pca$x[,1:2])
@@ -175,66 +139,57 @@ ggplot(pca_data, aes(x = PC1, y = PC2,
                      )) +
   geom_point() +
   theme_minimal() +
-  labs(title = "Customer Complaints Clusters", x = "PC1", y = "PC2")
+  labs(title = "PCA dari 20 Komplain", x = "PC1", y = "PC2")
 ```
 
-Jika kita lihat, dugaannya nilai $k=3$ masih _acceptable_ namun saya ingin mencoba nilai $k=4$. Berikut adalah PCA dan hasilnya:
+Jika saya lihat grafik di atas, saya bisa menggunakan metode:
 
-```{r}
-pca <- prcomp(embeddings_matrix, center = TRUE, scale. = TRUE)
-pca_data <- as.data.frame(pca$x[,1:2])
-pca_data$cluster <- factor(complaints$cluster)
+1. _k-means_ untuk $k=3$ atau $k=4$, ATAU
+1. _Hierarchical cluster_ dengan metode perhitungan jarak _complete_ (_max_) dengan _cut off cluster_ di `3` atau `4`.
 
-ggplot(pca_data, aes(x = PC1, y = PC2, 
-                     color = cluster
-                     )) +
-  geom_point() +
-  theme_minimal() +
-  labs(title = "Customer Complaints Clusters", x = "PC1", y = "PC2")
+Kedua metode tersebut akan menghasilkan hasil yang sama (secara teori). Sebagai penjelasan _how to do clustering_, rekan-rekan bisa melihat [tulisan saya sebelumnya ini](https://ikanx101.com/blog/clustering-R/).
 
-```
+### Tahap IV
 
-_Cluster_ final:
-
-```{r}
-#| echo: false
-
-head(complaints %>% 
-       group_by(cluster) %>% 
-       summarise(complaints = paste(complaints, collapse = " "))
-     ) |> 
-  knitr::kable()
-```
-
+Selanjutnya saya akan lakukan _hierarchical clustering_ dengan membuat _dendogram_ dengan _cut off_ sebanyak `3` _clusters_ berikut ini:
 
 ```{r}
 library(factoextra)
 library(fpc)
-library(dbscan)
-
 
 set.seed(240)  # Setting seed
-dist.mat<-dist(embeddings_matrix)
+dist.mat  <- dist(embeddings_matrix,method = "euclidean")
+Hierar_cl <- hclust(dist.mat, method = "complete")
 
-Hierar_cl = hclust(dist.mat, method = "complete")
-
+fit = cutree(Hierar_cl, k = 3)
 plot(Hierar_cl)
+rect.hclust(Hierar_cl, k = 3, border = "red")
 
-fit = cutree(Hierar_cl, k = 10)
-table(fit)
-plot(Hierar_cl)
-rect.hclust(Hierar_cl, k = 10, border = "red")
+```
 
+Sekarang kita lihat bentuk akhir grafik __PCA__ dengan _clusters_ yang sudah final:
+
+```{r}
+#| include: false
+complaints = complaints |> mutate(cluster = fit)
 ```
 
 
 ```{r}
-complaints = 
-  complaints |> 
-  mutate(cluster = fit)
+#| echo: false
 
+pca <- prcomp(embeddings_matrix, center = TRUE, scale. = TRUE)
+pca_data <- as.data.frame(pca$x[,1:2])
+pca_data$cluster <- factor(complaints$cluster)
+
+ggplot(pca_data, aes(x = PC1, y = PC2, color = cluster
+                     )) +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "PCA dari 20 Komplain", x = "PC1", y = "PC2")
 ```
 
+Berikut adalah hasil pengelompokkan komplain konsumen final:
 
 ```{r}
 #| echo: false
@@ -247,31 +202,31 @@ head(complaints %>%
 ```
 
 
-```{r}
-pca <- prcomp(embeddings_matrix, center = TRUE, scale. = TRUE)
-pca_data <- as.data.frame(pca$x[,1:2])
-pca_data$cluster <- factor(complaints$cluster)
+Jika kita baca secara seksama, terlihat bahwa _clusters_ yang terbentuk sudah memiliki kesamaan konteks di internal _cluster_ dan perbedaan konteks antar _cluster_. Namun tetap kita bisa menemukan ada tiga pernyataan di _cluster 1_ yang tampaknya __salah masuk cluster__, yakni:
 
-ggplot(pca_data, aes(x = PC1, y = PC2, 
-                     color = cluster
-                     )) +
-  geom_point() +
-  theme_minimal() +
-  labs(title = "Customer Complaints Clusters", x = "PC1", y = "PC2")
-
-```
+1. __Sinyal XL sering hilang saat bepergian menggunakan transportasi umum__.
+1. __Kecepatan internet XL masih kalah cepat dibandingkan dengan provider lain di kota besar__.
+1. __Aplikasi XL Center seringkali mengalami error saat digunakan__.
 
 
-Terlihat bahwa _clusters_ yang terbentuk memiliki kesamaan konteks di internal _cluster_ dan perbedaan konteks antar _cluster_.
+Untuk __pernyataan 1__ seharusnya lebih cocok masuk ke dalam __cluster 2__ sedangkan __pernyataan 2__ lebih cocok masuk ke dalam __cluster 3__. Sementara __pernyataan 3__ memang seharusnya menjadi _cluster_ baru.
 
-Untuk menamakan cluster ini, saya akan coba rangkum menggunakan bantuan __Gemini__ sebagai berikut:
+> Ternyata penggunaan _word embedding_ dan pemilihan metode perhitungan _hierarchical cluster_ menjadi hal yang kritis. 
 
-1. __Cluster 1__:
-1. __Cluster 2__:
-1. __CLuster 3__:
+Saya sudah mencoba beberapa kemungkinan metode perhitungan _hierarchical cluster_ dan memang saat memilah _dendogram_ menjadi cluster yang lebih banyak saya bisa dapatkan hasil yang lebih baik. _Nah_, ini untuk keperluan contoh, __saya rasa tiga cluster sudah cukup__.
+
+### Tahap V
+
+Untuk memberikan nama atau istilah umum dari masing-masing _cluster_, saya akan coba rangkum menggunakan bantuan __Gemini__ sebagai berikut:
+
+1. __Cluster 1__: XL memberikan layanan internet yang cukup baik, terutama dalam hal kecepatan dan fitur tambahan. Namun, kualitas jaringan masih perlu ditingkatkan di beberapa area.
+1. __Cluster 2__: Sinyal XL sering lemah dan tidak stabil di berbagai kondisi.
+1. __Cluster 3__: Layanan XL perlu ditingkatkan di berbagai aspek, seperti kuota, kecepatan, dan harga.
 
 ## Apa Gunanya *Clustering* Ini?
 
-Bagi saya yang setiap hari berkecimpung di dunia _market research_, pada setiap survey biasanya memiliki setidaknya satu pertanyaan _open ended_ yang harus dikelompokkan terlebih dahulu agar bisa dianalisa lebih lanjut.
+Bagi saya yang setiap hari berkecimpung di dunia _market research_, metode pengelompokan data teks yang saya lakukan saat ini sangat berguna. Pada setiap survey, biasanya ada setidaknya satu pertanyaan _open ended_ yang harus dikelompokkan terlebih dahulu agar bisa dianalisa lebih lanjut.
+
+Metode ini memberikan satu cara alternatif yang lebih cepat untuk melakukan analisa teks yang banyak dalam waktu yang lebih singkat.
 
 `if you find this article, please support this blog by clicking the ads`.
