@@ -1,0 +1,184 @@
+---
+title: "Apa Saja Komen Netizen di Post Instagram Terhits Nutrifood Sepanjang Tahun 2024"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: false
+    toc-depth: 4
+    fig-dpi: 500
+editor: visual
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+Sepanjang tahun 2024, banyak sekali hal-hal yang terjadi di Nutrifood dan di-*share* di berbagai sosial media resmi kami seperti di Instagram. Salah satu *post* dengan banyaknya *likes*, *share*, dan _comments_ terbanyak adalah berikut ini:
+
+![](posig.png){width="450"}
+
+Masih _nyambung_ dengan [tulisan saya sebelumnya](https://ikanx101.com/blog/llm-teks-clustering/), saya tertarik untuk menganalisa semua komentar _netizen_ di _post_ ini. _Mari kita mulai!_
+
+```{r}
+#| include: false
+
+rm(list = ls())
+gc()
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(readxl)
+
+komen = read_excel("Komentar Nutrifood.xlsx") |> janitor::clean_names()
+komen = komen |> select(username,text)
+```
+
+## Data Komentar
+
+Berikut adalah data komentar yang saya ambil dari _post_ tersebut:
+
+```{r}
+#| echo: false
+komen
+```
+
+
+Tercatat ada 144 baris komentar yang saya ambil per tanggal 1 November 2024 pukul 10.00 WIB. Kita bisa lihat bahwa dari semua komentar tersebut, ada beberapa _reply comments_ yang dilakukan oleh __mimin Nutrifood__. Oleh karena itu, saya akan coba buang semua _reply comments_ tersebut.
+
+```{r}
+#| include: false
+komen = komen |> filter(username != "nutrifood")
+```
+
+
+```{r}
+#| include: false
+
+library(dplyr)
+library(tidytext)
+library(tidyr)
+library(ggplot2)
+library(ggraph)
+library(igraph)
+
+stop = readLines("https://raw.githubusercontent.com/stopwords-iso/stopwords-id/master/stopwords-id.txt")
+
+pre_data =
+  komen %>%
+  mutate(kalimat = c(1:115)) %>% 
+  unnest_tokens("words",text) %>%
+  filter(!words %in% stop) %>% 
+  filter(stringr::str_length(words) > 3) %>% 
+  group_by(username,kalimat) %>% 
+  summarise(komen = paste(words,collapse = " ")) %>% 
+  ungroup() %>% 
+  select(-kalimat)
+  
+
+```
+
+Analisa pertama yang bisa saya lakukan adalah analisa _bigrams_ atau pasangan kata (dua kata yang muncul bersamaan). Mari kita lihat apa yang kita dapatkan dari analisa ini:
+
+```{r}
+
+pre_data %>% 
+  unnest_tokens("bigrams",komen,token = "ngrams",n = 2) %>% 
+  group_by(bigrams) %>% 
+  count(sort = T) %>% 
+  ungroup() %>% 
+  filter(n > 1) %>% 
+  filter(!is.na(bigrams)) |> 
+  filter(!grepl("ardika",bigrams)) |> 
+  separate(bigrams,into = c("from","to"),sep = " ") %>% 
+  graph_from_data_frame() %>% 
+  ggraph(layout = 'fr') +
+  geom_edge_bend(aes(edge_alpha=n),
+                 show.legend = F,
+                 color='darkred') +
+  geom_node_point(size=1,color='steelblue') +
+  geom_node_text(aes(label=name),alpha=0.4,size=3,repel = T) +
+  theme_void()
+
+```
+
+
+Dari _bigrams_ di atas, secara kualitatif kita bisa memilah beberapa komentar yang sering muncul sebagai berikut:
+
+1. Pertanyaan terkait waktu batas pendaftaran.
+1. Komentar terkait email konfirmasi dan _link upload_.
+1. _Interview_ _online_ dan _offline_.
+1. Pertanyaan terkait lokasi dan waktu (_part time_ atau _full time_).
+1. Ucapan terima kasih.
+
+Bagaimana jika saya melakukan [_embedding - clustering_ berdasarkan teks komentar](https://ikanx101.com/blog/llm-teks-clustering/)? Ada berapa banyak kelompok komentar yang ada?
+
+Ternyata ditemukan delapan buah _clusters_ dengan rangkuman sebagai berikut:
+
+__Cluster 1__
+
+> "Kapan pengumuman penerima beasiswa Nutrifood? Apa saja tahapan seleksi offline? Apakah difabel dengan pengalaman kerja bisa mendaftar? Dan banyak peserta lain yang antusias ingin menjadi bagian dari Nutrifood."
+
+__Cluster 2__
+
+> "Beberapa pengguna media sosial mengajak teman-temannya untuk "gas" atau melakukan sesuatu dengan antusias."
+
+__Cluster 3__
+
+> "Pelamar ingin mengetahui persyaratan rekrutmen, termasuk batas usia, jenis SIM yang dibutuhkan, format CV, tingkat pendidikan yang diterima, lama masa kontrak, serta kemampuan berbahasa asing, dan juga ingin mengetahui perbedaan antara program magang dan program rekrutmen ini."
+
+__Cluster 4__
+
+> "Saya sangat antusias dan telah mendaftar untuk mengikuti acara ini."
+
+__Cluster 5__
+
+> "Peserta ingin mengetahui status pendaftarannya, apakah masih dibuka, kapan batas akhir pendaftaran, dan bagaimana cara mereka akan diberitahu mengenai hasil seleksi."
+
+__Cluster 6__
+
+> "Pengguna ini mengucapkan terima kasih kepada _user tertentu_, mengajak beberapa teman lainnya untuk ikut serta dalam suatu kegiatan yang menarik."
+
+__Cluster 7__
+
+> "Pelamar ingin tahu apakah bisa mendaftar lebih dari satu posisi, menambahkan posisi baru setelah mendaftar, mendaftar ulang jika ada pencapaian baru, dan ingin konfirmasi terkait tanggal, lokasi, dan format pelaksanaan interview."
+
+__Cluster 8__
+
+> "Calon peserta program Management Trainee Nutrifood menanyakan tentang persyaratan, prosedur pendaftaran, format interview, dan kemungkinan perubahan pilihan program setelah pendaftaran."
+
+
+---
+
+_Notes_: saya sengaja tidak menuliskan cara saya mendapatkan ke delapan _clusters_ tersebut. Tapi jika rekan-rekan penasaran, _feel free_ untuk menghubungi saya. Saya bisa berikan skrip __R__ nya.
+
+---
+
+Dari 115 komentar yang ada, kemudian saya coba mengecek sentimennya. Untuk melakukannya, saya menggunakan model LLM _sentiment_ berbahasa Indonesia yang didapatkan dari Huggingface. Hasilnya adalah:
+
+- Sebanyak __11 komentar bersentimen positif__. Semuanya memiliki konteks ucapan `terima kasih` atas informasi dan kesempatannya.
+- __Sisanya bersentimen netral__. Yakni berisi pertanyaan kepada __Nutrifood__ atau _tagging_ pengguna lain untuk _share_ informasi seputar isi dari _post instagram_ ini.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
