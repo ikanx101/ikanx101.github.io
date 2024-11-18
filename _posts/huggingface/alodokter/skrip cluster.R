@@ -1,6 +1,8 @@
 rm(list=ls())
 gc()
 
+set.seed(20921004)
+
 # Load necessary libraries
 library(reticulate)
 library(readr)
@@ -9,7 +11,13 @@ library(readxl)
 library(cluster)
 library(factoextra)
 library(parallel)
+library(tidytext)
+library(ggraph)
+library(igraph)
 ncore = detectCores()
+
+stop = readLines("https://raw.githubusercontent.com/stopwords-iso/stopwords-id/master/stopwords-id.txt")
+
 
 # Membaca data komentar dan melakukan preprocessing sederhana
 file  = list.files(pattern = "*csv")
@@ -19,7 +27,20 @@ df    = data.table::rbindlist(df,fill = T) |> as.data.frame()
 komen = df |> janitor::clean_names()
 komen = komen |> pull(judul) |> unique() |> sort()
 
-save(komen,file = "to colab.rda")
+input = data.frame(id = 1:length(komen),text = komen)
+
+pre_data =
+  input %>%
+  unnest_tokens("words",text) %>%
+  filter(!words %in% stop) %>% 
+  filter(stringr::str_length(words) > 3) %>% 
+  group_by(id) %>% 
+  summarise(komen = paste(words,collapse = " ")) %>% 
+  ungroup()
+
+komen = pre_data$komen
+
+# save(komen,file = "to colab.rda")
 
 # python3 -m venv blog
 # source blog/bin/activate
@@ -48,24 +69,46 @@ save(komen,file = "to colab.rda")
 # embeddings_matrix <- as.matrix(reticulate::py_to_r(complaint_embeddings))
 
 
+load("to blog.rda")
 
-# Menentukan rentang jumlah cluster yang akan diuji dan menghitung rata-rata silhouette
-k_range <- 2:10
-avg_sil_widths <- sapply(k_range, function(k) {
-  # Melakukan clustering k-means dan menghitung silhouette score untuk setiap nilai k
-  kmeans_result <- kmeans(embeddings_matrix, centers = k,iter.max = 50)
-  sil <- silhouette(kmeans_result$cluster, dist(embeddings_matrix))
-  mean(sil[, 3])
-})
 
-# Menentukan jumlah cluster optimal berdasarkan nilai silhouette tertinggi
-optimal_k <- k_range[which.max(avg_sil_widths)]
+pca <- prcomp(embeddings_matrix, center = TRUE, scale. = TRUE)
+pca_data <- as.data.frame(pca$x[,1:2])
+#pca_data$cluster <- factor(complaints$cluster)
 
-# Melakukan clustering k-means dengan jumlah cluster optimal
-kmeans_result <- kmeans(embeddings_matrix, centers = optimal_k,iter.max = 50)
+summary(pca) |> head()
+
+
+ggplot(pca_data, aes(x = PC1, y = PC2
+                     #color = cluster
+)) +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "PCA dari 20 Komplain", x = "PC1", y = "PC2")
+
+
+
+library(factoextra)
+library(fpc)
+
+set.seed(240)  # Setting seed
+dist.mat  <- dist(embeddings_matrix,method = "euclidean")
+Hierar_cl <- hclust(dist.mat, method = "ward.D2")
+plot(Hierar_cl)
+
+fit = cutree(Hierar_cl, k = 19)
+plot(Hierar_cl)
+rect.hclust(Hierar_cl, k = 19, border = "red")
+
+ggplot(pca_data, aes(x = PC1, y = PC2,color = as.factor(fit) 
+                     #color = cluster
+)) +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "PCA dari 20 Komplain", x = "PC1", y = "PC2")
 
 # Membuat data frame hasil clustering
-hasil = data.frame(text = komen,cluster = kmeans_result$cluster)
+hasil = data.frame(text = komen,cluster = fit)
 
 # Menggabungkan komentar dalam setiap cluster
 final = hasil |> 
@@ -74,6 +117,9 @@ final = hasil |>
   ungroup()
 
 # Menyimpan hasil clustering
-save(final,file = "clustered.rda")
+save(df,pre_data,komen,final,file = "clustered.rda")
+
+
+
 
 
