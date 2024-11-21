@@ -1,0 +1,109 @@
+---
+title: "Untitled"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: false
+    toc-depth: 4
+    fig-dpi: 500
+editor: visual
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+> Setiap tanggal 14 November diperingati sebagai _World Diabetes Day_. Setiap tanggal tersebut, __Tropicana Slim__ melakukan berbagai macam _event_ sebagai bentuk meningkatkan _awareness_ publik terkait penyakit diabetes.
+
+_Jujurly_, sebelum masuk Nutrifood, saya benar-benar _blank_ sama sekali terkait apa itu penyakit diabetes. Satu-satunya hal yang saya ketahui adalah diabetes merupakan __penyakit gula__ atau __kencing manis__. Padahal beberapa orang keluarga besar (Uwak, oom, dan tante - dari pihak ayah dan ibu) waktu itu sudah menjadi diabetesi. Beberapa tahun berselang saya harus menerima bahwa ibu saya seorang diabetesi juga.
+
+Saya sangat beruntung bekerja di Nutrifood karena edukasi terkait diabetes __sudah sangat kencang dan masif__. Saya jadi membayangkan bagaimana dengan masyarakat awam yang masih jarang terpapar dengan edukasi diabetes. Bisa jadi pengetahuan mereka belum terlalu banyak.
+
+> _Bagaimana mengukur pengetahuan masyarakat umum? Pertanyaan apa saja di benak mereka terkait diabetes?_
+
+Pikir saya.
+
+Untuk menjawab pertanyaan saya tersebut, saya coba melakukan _data collection_ melalui _web scraping_ dan melakukan sedikit analisa teks. _Yuk_ kita mulai!
+
+---
+
+## _Data Collection_
+
+Salah satu situs yang saya bisa gunakan untuk menjawab pertanyaan saya adalah situs [__alodokter.com__](https://www.alodokter.com/komunitas/diskusi/penyakit). Di situs tersebut, masyarakat umum bisa melakukan tanya jawab kepada dokter yang ada terkait berbagai macam topik penyakit. Setelah saya cek, ternyata ada __enam topik khusus__ terkait diabetes.
+
+![](alo1.png){width="650"}
+
+
+Jika kita pilih salah satu topik terkait diabetes, kita bisa melihat berbagai macam pertanyaan yang diajukan oleh _netizen_ terkait topik ini.
+
+![](alo2.png){width="650"}
+
+
+Untuk masing-masing topik, saya akan ambil (hampir) semua pertanyaan yang diajukan masyarakat umum. _Nah_ kali ini saya akan melakukan suatu hal yang berbeda.
+
+Kalau biasanya saya _develop_ sendiri algoritma _web scraping_ bermodalkan `RSelenium` dan `rvest` di __R__, kali ini saya akan menggunakan _tools web scraping_ yang dibuat oleh kolega saya di komunitas __R Indo__ dan __Asosiasi Ilmuwan Data Indonesia__ (__AIDI__), yakni [Mas Apriandito](https://www.linkedin.com/in/apriandito/?originalSubdomain=id) bernama [__thescraper.id__](https://thescraper.id/).
+
+![](scraper.png){width="650"}
+
+
+Singkat cerita, saya mendapatkan banyaknya pertanyaan per topik sebagai berikut:
+
+```{r}
+rm(list=ls())
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(parallel)
+n_core = detectCores()
+
+csvs = list.files(pattern = "csv")
+
+ambilin = function(target){
+  df = read.csv(target) |> janitor::clean_names()
+
+  target = gsub("alodokter","",target)
+  target = gsub("10-scraped.csv","",target)
+  target = gsub("-"," ",target)
+  target = trimws(target)
+  df$topik = target
+
+  return(df)
+}
+
+final = mclapply(csvs,ambilin,mc.cores = n_core)
+data.table::rbindlist(final,fill = T) |> 
+  as.data.frame() |> 
+  group_by(topik) |> 
+  tally(sort = T) |> 
+  ungroup() |> 
+  ggplot(aes(x = reorder(topik,n),
+             y = n)) +
+  geom_col(color = "black",
+           fill  = "steelblue") +
+  geom_label(aes(label = n)) +
+  coord_flip() +
+  labs(x = "Banyak pertanyaan",
+       y = "Topik pertanyaan",
+       title = "Berapa banyak pertanyaan yang bisa saya scrape?",
+       subtitle = "sumber: situs alodokter.com",
+       caption = "scraped using thescraper.id\nvisualized using R by ikanx101.com")
+```
+
+
+## _Objectives_
+
+Tujuan awal saya adalah mengukur seberapa _aware_ masyarakat awam terhadap diabetes. Salah satu pendekatan yang saya bisa lakukan adalah dengan melihat __hal-hal apa saja yang ditanyakan masyarakat umum di situs alodokter__.
+
+> _Syukur-syukur saya bisa mendapatkan hal konklusif dari analisa tersebut._
+
+
+```{r}
+final
+
+```
+
+
+
+
+
