@@ -1,0 +1,121 @@
+---
+title: "Untitled"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: false
+    toc-depth: 4
+    fig-dpi: 500
+editor: visual
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+```{r}
+#| include: false
+rm(list=ls())
+gc()
+```
+
+Di _blog_ ini saya sudah menuliskan berbagai macam metode dan teknik pengambilan data longlat dari alamat (_vice versa_). Istilah kerennya itu ___geocoding___. 
+
+> Salah satu metode andalan saya dalam melakukan _geocoding_ adalah dengan menggunakan `library(googleway)` dan `Google Geocode API`. 
+
+Salah satu kelemahan metode ini adalah _budget_ yang dikeluarkan untuk melakukan _geocode_ dalam jumlah banyak. 
+
+Kali ini saya hendak melakukan _geocoding_ yang gratis dengan memanfaatkan `library(tidygeocoder)`. Bagaimana caranya?
+
+## Tahap I
+
+_Install_ _library_ yang dibutuhkan:
+
+```
+install.packages("tidygeocoder")
+```
+
+## Tahap II
+
+Panggil _libraries_ yang dibutuhkan:
+
+```{r}
+library(dplyr)
+library(tidygeocoder)
+```
+
+## Tahap III
+
+Kita buat data _input_ berupa dummy alamat dari beberapa tempat yang ada di Jakarta dan kota lainnya.
+
+```{r}
+address_single = 
+  data.frame(address = c(
+  "Wisma 46 Jakarta",
+  "Hotel Tentrem Jogjakarta",
+  "Kampus Ganesha ITB Bandung",
+  "Nutrifood Pulogadung Jakarta"
+))
+```
+
+
+## Tahap IV
+
+Selanjutnya kita lakukan _geocoding_. Ada berbagai macam metode yang diberikan oleh `tidygeocoder`, saya akan tunjukkan dua metode yang gratis (tanpa memerlukan API dari layanan _online_) yakni:
+
+1. Metode berbasis _Open Street Map_.
+1. Metode berbasis _ARCGIS_.
+
+### Metode _Open Street Map_
+
+Berikut adalah _function_-nya:
+
+```{r}
+#| message: false
+osm_output = geo(
+  address = address_single$address, 
+  method  = "osm",
+  lat     = latitude, 
+  long    = longitude, 
+  full_results = T
+)
+```
+
+Berikut keluarannya:
+
+```{r}
+#| echo: false
+osm_output |> knitr::kable()
+```
+
+Ternyata kita dapatkan ada dua buah _input_ yang tidak bisa di-_geocoding_. Sekarang kita gunakan metode lain:
+
+### Metode _ARC GIS_
+
+Berikut adalah _function_-nya:
+
+```{r}
+#| message: false
+gis_output = 
+  geo(
+  address      = address_single$address, 
+  method       = "arcgis",
+  lat          = latitude, 
+  long         = longitude, 
+  full_results = T
+)
+```
+
+Berikut keluarannya:
+
+```{r}
+#| echo: false
+gis_output |> knitr::kable()
+```
+
+
+Kita dapatkan bahwa metode `arcgis` bisa memberikan hasil _geocoding_ untuk semua _input_ namun data dari `osm` memberikan informasi yang lebih banyak.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
