@@ -8,7 +8,6 @@ format:
     fig-dpi: 500
 editor: visual
 execute:
-  echo: false
   warning: false
   error: false
 ---

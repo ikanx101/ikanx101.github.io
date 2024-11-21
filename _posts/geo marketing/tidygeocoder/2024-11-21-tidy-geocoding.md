@@ -36,10 +36,26 @@ memanfaatkan `library(tidygeocoder)`. Bagaimana caranya?
 
 Panggil *libraries* yang dibutuhkan:
 
+``` r
+library(dplyr)
+library(tidygeocoder)
+```
+
 ## Tahap III
 
 Kita buat data *input* berupa dummy alamat dari beberapa tempat yang ada
 di Jakarta dan kota lainnya.
+
+``` r
+address_single = 
+  data.frame(address = c(
+  "Wisma 46 Jakarta",
+  "Hotel Tentrem Jogjakarta",
+  "Kampus Ganesha ITB Bandung",
+  "Nutrifood Pulogadung Jakarta"
+))
+```
+
 
 ## Tahap IV
 
@@ -53,6 +69,16 @@ gratis (tanpa memerlukan API dari layanan *online*) yakni:
 ### Metode *Open Street Map*
 
 Berikut adalah *function*-nya:
+
+``` r
+osm_output = geo(
+  address = address_single$address, 
+  method  = "osm",
+  lat     = latitude, 
+  long    = longitude, 
+  full_results = T
+)
+```
 
 Berikut keluarannya:
 
@@ -69,6 +95,18 @@ di-*geocoding*. Sekarang kita gunakan metode lain:
 ### Metode *ARC GIS*
 
 Berikut adalah *function*-nya:
+
+
+``` r
+gis_output = 
+  geo(
+  address      = address_single$address, 
+  method       = "arcgis",
+  lat          = latitude, 
+  long         = longitude, 
+  full_results = T
+)
+```
 
 Berikut keluarannya:
 
