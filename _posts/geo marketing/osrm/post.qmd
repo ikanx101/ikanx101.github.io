@@ -1,0 +1,145 @@
+---
+title: "Untitled"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: false
+    toc-depth: 4
+    fig-dpi: 500
+editor: visual
+execute:
+  warning: false
+  error: false
+---
+
+```{r}
+#| include: false
+
+rm(list=ls())
+gc()
+
+
+library(osrm) 
+library(dplyr)
+library(sf)
+
+load("blog.rda")
+
+df = gis_output |> select(address,latitude,longitude)
+```
+
+
+Tulisan ini masih _nyambung_ dengan tulisan [saya kemarin pagi](https://ikanx101.com/blog/tidy-geocoding/), yakni tentang data geografis. Kali ini saya masih membawakan tema [_geomarketing_](https://ikanx101.com/tags/#geomarketing) dengan alternatif pengerjaan yang berbeda tentunya. Apa itu?
+
+> Saya akan menjelaskan penggunaan __OSRM__ (__OpenStreetMap-Based Routing Service__) untuk mencari jarak dan waktu berkendara dari satu lokasi ke lokasi yang lain.
+
+Biasanya sehari-hari saat hendak bepergian dari satu lokasi ke lokasi yang lain, kita mengecek jarak dan waktu berkendara menggunakan layanan dari _Google Maps_. Layanan tersebut juga bisa __digunakan di R atau Python__ dengan cara memanggil API dari Google. Namun seperti biasa, layanan ini berbayar. Jika kita menggunakan __OSRM__, kita bisa melakukan hal yang serupa dengan gratis. Basis peta yang dijadikan acuan adalah _Open Street Map_.
+
+Memangnya apa faedahnya kita mencari jarak dan waktu berkendara?
+
+Masih ingat _postingan_ saya terkait [analisa geomarketing warteg, padang, dan mie ayam](https://ikanx101.com/blog/geomkt-bks/)?
+
+> __Untuk menghitung aksesbilitas, saya menggunakan jarak euclidean langsung dari titik longlatnya__. Dengan menggunakan __OSRM__, saya bisa mendapatkan jarak _real_ dari titik tertentu ke titik tertentu.
+
+
+Bagaimana caranya? _Cekidot!_
+
+## _Library_
+
+### Instalasi
+
+Kita mulai dari _install library_ yang dibutuhkan:
+
+```
+install.packages("osrm")
+```
+
+Berhubung saya menggunakan Linux, saat saya mengeksekusi perintah di atas menggunakan __R__, saya akan mendapatkan pesan _error_ bahwa ada beberapa _filesystem Linux_ yang _missing_. Oleh karena itu, saya perlu _run_ perintah berikut di _Linux terminal_.
+
+```
+apt-get -y update && apt-get install -y  libudunits2-dev libgdal-dev libgeos-dev libproj-dev
+```
+
+Bagi pengguna _Windows_, saya belum tahu apakah ada masalah serupa atau tidak.
+
+### Memanggil _Libraries_
+
+Setelah terinstall sempurna, mari kita panggil _libraries_ yang diperlukan:
+
+```{r}
+library(osrm) 
+library(dplyr)
+library(sf)
+```
+
+Pada skrip di atas, saya memanggil `library(sf)` dengan tujuan untuk membuat visualisasi dari rute yang terbentuk kelak. Namun, jika tidak diperlukan maka kalian tidak perlu memanggil _library_ itu.
+
+## _Function_ yang Digunakan
+
+Sekarang saya akan membahas tentang dua _functions_ utama yang sering saya pakai. Namun, saya akan berikan dulu data _dummy_ yang saya gunakan. Datanya adalah data longlat yang kemarin kita dapatkan dari _geocoding_.
+
+```{r}
+#| echo: false
+df |> knitr::kable()
+```
+
+
+### Menghitung Jarak Antar Dua Lokasi
+
+Misalkan saya hendak mengukur jarak antara __Wisma 46 Jakarta__ dengan __Nutrifood Pulogadung Jakarta__, maka berikut adalah caranya:
+
+```{r}
+titik_awal = df |> filter(address == "Wisma 46 Jakarta") |> select(-address)
+titik_akhr = df |> filter(address == "Nutrifood Pulogadung Jakarta") |> select(-address)
+
+osrmRoute(src = c(titik_awal$longitude, titik_awal$latitude),
+          dst = c(titik_akhr$longitude, titik_akhr$latitude),
+          overview = FALSE)
+
+```
+
+Secara _default_, _profile_ yang digunakan adalah `car`. Artinya jarak dan waktu dari Wisma 46 ke Nutrifood dihitung jika kita menggunakan mobil.
+
+> Kita dapatkan waktu tempuh sebesar __11.79 menit__ dan jarak sebesar __11.02 km__.
+
+Bagaimana jika kita ingin mengubah profilnya? Profil yang disediakan oleh `osrm` adalah:
+
+1. `car`,
+1. `bike`, dan 
+1. `foot`.
+
+Kita cukup menggantinya pada skrip di atas.
+
+Sekarang saya akan membuat visualisasi rute yang terbentuk antara dua lokasi tersebut jika profilnya _foot_.
+
+```{r}
+rute = 
+  osrmRoute(src = c(titik_awal$longitude, titik_awal$latitude),
+            dst = c(titik_akhr$longitude, titik_akhr$latitude),
+            overview = "full",
+            osrm.profile	= "foot")
+
+plot(st_geometry(rute))
+rute
+```
+
+Kita dapatkan durasinya menjadi __~133 menit__ dengan durasi __~10 km__.
+
+
+### Membuat Matriks Jarak
+
+_Function_ lain yang sangat bermanfaat adalah membuat matriks jarak. Jadi jika ingin melihat jarak antar lokasi dari empat titik dari data, kita bisa memanfaatkan _function_ berikut ini:
+
+```{r}
+input = df |> select(longitude,latitude)
+osrmTable(src = input,measure = c('duration', 'distance'),osrm.profile = "bike")
+
+```
+
+Keterangan: durasi dalam menit dan jarak dalam meter.
+
+Dari hasil di atas kita bisa mendapatkan matriks jarak dan durasi tempuh antar lokasi pada data.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
