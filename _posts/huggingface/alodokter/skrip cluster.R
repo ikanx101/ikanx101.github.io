@@ -87,37 +87,61 @@ ggplot(pca_data, aes(x = PC1, y = PC2
   labs(title = "PCA dari 20 Komplain", x = "PC1", y = "PC2")
 
 
+# kita coba dengan pendekatan lainnya
+library(Rtsne)
+
+tsne_model <- Rtsne(embeddings_matrix, 
+                    dims = 2, 
+                    perplexity = 30, 
+                    theta = 0.5, max_iter = 1000,
+                    check_duplicates = FALSE)
+
+tsne_data <- data.frame(x = tsne_model$Y[, 1], y = tsne_model$Y[, 2])
+ggplot(tsne_data, aes(x = x, y = y)) + geom_point()
+
+
 
 library(factoextra)
 library(fpc)
 
 set.seed(240)  # Setting seed
-dist.mat  <- dist(embeddings_matrix,method = "euclidean")
+dist.mat  <- dist(tsne_data,method = "euclidean")
+# dist.mat  <- dist(embeddings_matrix,method = "euclidean")
+
 Hierar_cl <- hclust(dist.mat, method = "ward.D2")
 plot(Hierar_cl)
 
-fit = cutree(Hierar_cl, k = 19)
+fit = cutree(Hierar_cl, k = 22)
 plot(Hierar_cl)
-rect.hclust(Hierar_cl, k = 19, border = "red")
+rect.hclust(Hierar_cl, k = 22, border = "red")
 
-ggplot(pca_data, aes(x = PC1, y = PC2,color = as.factor(fit) 
-                     #color = cluster
-)) +
-  geom_point() +
-  theme_minimal() +
-  labs(title = "PCA dari 20 Komplain", x = "PC1", y = "PC2")
+tsne_data$cluster = fit
+plot_tsne = ggplot(tsne_data, aes(x = x, y = y,color = as.factor(cluster))) + geom_point()
 
 # Membuat data frame hasil clustering
-hasil = data.frame(text = komen,cluster = fit)
+keperluan_blog = data.frame(judul_asli = komen,cluster = fit)
 
 # Menggabungkan komentar dalam setiap cluster
-final = hasil |> 
+final = keperluan_blog |> 
   group_by(cluster) |> 
-  summarise(komen = paste(text,collapse = ".")) |> 
+  summarise(komen = paste(judul_asli,collapse = ".")) |> 
   ungroup()
 
+
+
+
+
+
+# ggplot(pca_data, aes(x = PC1, y = PC2,color = as.factor(fit) 
+#                      #color = cluster
+# )) +
+#   geom_point() +
+#   theme_minimal() +
+#   labs(title = "PCA dari 20 Komplain", x = "PC1", y = "PC2")
+
+
 # Menyimpan hasil clustering
-save(df,pre_data,komen,final,file = "clustered.rda")
+save(df,pre_data,komen,plot_tsne,keperluan_blog,final,file = "clustered 2.rda")
 
 
 

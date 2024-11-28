@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Text Analysis: Pertanyaan Netizen Seputar Diabetes"
 format: 
   gfm:
     html-math-method: webtex
@@ -13,49 +13,53 @@ execute:
   error: false
 ---
 
-> Setiap tanggal 14 November diperingati sebagai _World Diabetes Day_. Setiap tanggal tersebut, __Tropicana Slim__ melakukan berbagai macam _event_ sebagai bentuk meningkatkan _awareness_ publik terkait penyakit diabetes.
+> Setiap tanggal 14 November diperingati sebagai *World Diabetes Day*. Setiap tanggal tersebut, **Tropicana Slim** melakukan berbagai macam *event* sebagai bentuk meningkatkan *awareness* publik terkait penyakit diabetes.
 
-_Jujurly_, sebelum masuk Nutrifood, saya benar-benar _blank_ sama sekali terkait apa itu penyakit diabetes. Satu-satunya hal yang saya ketahui adalah diabetes merupakan __penyakit gula__ atau __kencing manis__. Padahal beberapa orang keluarga besar (Uwak, oom, dan tante - dari pihak ayah dan ibu) waktu itu sudah menjadi diabetesi. Beberapa tahun berselang saya harus menerima bahwa ibu saya seorang diabetesi juga.
+*Jujurly*, sebelum masuk Nutrifood, saya benar-benar *blank* sama sekali terkait apa itu penyakit diabetes. Satu-satunya hal yang saya ketahui adalah diabetes merupakan **penyakit gula** atau **kencing manis**. Padahal beberapa orang keluarga besar (Uwak, oom, dan tante - dari pihak ayah dan ibu) waktu itu sudah menjadi diabetesi. Beberapa tahun berselang saya harus menerima bahwa ibu saya seorang diabetesi juga.
 
-Saya sangat beruntung bekerja di Nutrifood karena edukasi terkait diabetes __sudah sangat kencang dan masif__. Saya jadi membayangkan bagaimana dengan masyarakat awam yang masih jarang terpapar dengan edukasi diabetes. Bisa jadi pengetahuan mereka belum terlalu banyak.
+Saya sangat beruntung bekerja di Nutrifood karena edukasi terkait diabetes **sudah sangat kencang dan masif**. Saya jadi membayangkan bagaimana dengan masyarakat awam yang masih jarang terpapar dengan edukasi diabetes. Bisa jadi pengetahuan mereka belum terlalu banyak.
 
-> _Bagaimana mengukur pengetahuan masyarakat umum? Pertanyaan apa saja di benak mereka terkait diabetes?_
+> *Bagaimana mengukur pengetahuan masyarakat umum? Pertanyaan apa saja di benak mereka terkait diabetes?*
 
 Pikir saya.
 
-Untuk menjawab pertanyaan saya tersebut, saya coba melakukan _data collection_ melalui _web scraping_ dan melakukan sedikit analisa teks. _Yuk_ kita mulai!
+Untuk menjawab pertanyaan saya tersebut, saya coba melakukan *data collection* melalui *web scraping* dan melakukan sedikit analisa teks. *Yuk* kita mulai!
 
 ---
 
-## _Data Collection_
+## *Data Collection*
 
-Salah satu situs yang saya bisa gunakan untuk menjawab pertanyaan saya adalah situs [__alodokter.com__](https://www.alodokter.com/komunitas/diskusi/penyakit). Di situs tersebut, masyarakat umum bisa melakukan tanya jawab kepada dokter yang ada terkait berbagai macam topik penyakit. Setelah saya cek, ternyata ada __enam topik khusus__ terkait diabetes.
+Salah satu situs yang saya bisa gunakan untuk menjawab pertanyaan saya adalah situs [**alodokter.com**](https://www.alodokter.com/komunitas/diskusi/penyakit). Di situs tersebut, masyarakat umum bisa melakukan tanya jawab kepada dokter yang ada terkait berbagai macam topik penyakit. Setelah saya cek, ternyata ada **enam topik khusus** terkait diabetes.
 
 ![](alo1.png){width="650"}
 
-
-Jika kita pilih salah satu topik terkait diabetes, kita bisa melihat berbagai macam pertanyaan yang diajukan oleh _netizen_ terkait topik ini.
+Jika kita pilih salah satu topik terkait diabetes, kita bisa melihat berbagai macam pertanyaan yang diajukan oleh *netizen* terkait topik ini.
 
 ![](alo2.png){width="650"}
 
+Untuk masing-masing topik, saya akan ambil (hampir) semua pertanyaan yang diajukan masyarakat umum. *Nah* kali ini saya akan melakukan suatu hal yang berbeda.
 
-Untuk masing-masing topik, saya akan ambil (hampir) semua pertanyaan yang diajukan masyarakat umum. _Nah_ kali ini saya akan melakukan suatu hal yang berbeda.
-
-Kalau biasanya saya _develop_ sendiri algoritma _web scraping_ bermodalkan `RSelenium` dan `rvest` di __R__, kali ini saya akan menggunakan _tools web scraping_ yang dibuat oleh kolega saya di komunitas __R Indo__ dan __Asosiasi Ilmuwan Data Indonesia__ (__AIDI__), yakni [Mas Apriandito](https://www.linkedin.com/in/apriandito/?originalSubdomain=id) bernama [__thescraper.id__](https://thescraper.id/).
+Kalau biasanya saya *develop* sendiri algoritma *web scraping* bermodalkan `RSelenium` dan `rvest` di **R**, kali ini saya akan menggunakan *tools web scraping* yang dibuat oleh kolega saya di komunitas **R Indo** dan **Asosiasi Ilmuwan Data Indonesia** (**AIDI**), yakni [Mas Apriandito](https://www.linkedin.com/in/apriandito/?originalSubdomain=id) bernama [**thescraper.id**](https://thescraper.id/).
 
 ![](scraper.png){width="650"}
 
-
-Singkat cerita, saya mendapatkan banyaknya pertanyaan per topik sebagai berikut:
+Singkat cerita, saya mendapatkan total __446__ _unique_ pertanyaan. Jika saya bagi per topik di situs Alodokter, berikut adalah sebarannya:
 
 ```{r}
 rm(list=ls())
 
 library(dplyr)
+library(tidytext)
 library(tidyr)
 library(ggplot2)
+library(ggraph)
+library(igraph)
 library(parallel)
+library(janitor)
 n_core = detectCores()
+
+stop = readLines("https://raw.githubusercontent.com/stopwords-iso/stopwords-id/master/stopwords-id.txt")
+
 
 csvs = list.files(pattern = "csv")
 
@@ -72,8 +76,11 @@ ambilin = function(target){
 }
 
 final = mclapply(csvs,ambilin,mc.cores = n_core)
-data.table::rbindlist(final,fill = T) |> 
-  as.data.frame() |> 
+df = 
+  data.table::rbindlist(final,fill = T) |> 
+  as.data.frame() 
+
+df |> 
   group_by(topik) |> 
   tally(sort = T) |> 
   ungroup() |> 
@@ -83,27 +90,344 @@ data.table::rbindlist(final,fill = T) |>
            fill  = "steelblue") +
   geom_label(aes(label = n)) +
   coord_flip() +
-  labs(x = "Banyak pertanyaan",
-       y = "Topik pertanyaan",
+  labs(x = "Topik pertanyaan di Alodokter",
+       y = "Banyak pertanyaan",
        title = "Berapa banyak pertanyaan yang bisa saya scrape?",
        subtitle = "sumber: situs alodokter.com",
        caption = "scraped using thescraper.id\nvisualized using R by ikanx101.com")
 ```
 
+## *Objectives*
 
-## _Objectives_
+Tujuan awal saya adalah mengukur seberapa *aware* masyarakat awam terhadap diabetes. Salah satu pendekatan yang saya bisa lakukan adalah dengan melihat **hal-hal apa saja yang ditanyakan masyarakat umum di situs alodokter**.
 
-Tujuan awal saya adalah mengukur seberapa _aware_ masyarakat awam terhadap diabetes. Salah satu pendekatan yang saya bisa lakukan adalah dengan melihat __hal-hal apa saja yang ditanyakan masyarakat umum di situs alodokter__.
+> *Syukur-syukur saya bisa mendapatkan hal konklusif dari analisa tersebut.*
 
-> _Syukur-syukur saya bisa mendapatkan hal konklusif dari analisa tersebut._
+## Metode
 
+Untuk memudahkan saya melakukan analisa, saya hanya akan menganalisa __judul pertanyaan yang diajukan__ daripada isi pertanyaannya. Alasannya karena judul pertanyaan sudah merupakan __intisari dari isi pertanyaan__. Jika ada rekan-rekan yang hendak melakukan analisa terhadap isi pertanyaannya, _feel free_ untuk meminta datanya langsung ke saya _yah_.
+
+## Analisa
+
+Analisa pertama yang hendak saya lakukan adalah _bigrams_. Saya ingin mengetahui kira-kira pasangan kata apa saja yang sering muncul dalam pertanyaan. Namun ada tahapan _pre processing_ yang saya kerjakan terlebih dahulu, yakni __menghapus semua stopwords Bahasa Indonesia__ dari judul pertanyaan.
+
+Berikut adalah hasil grafiknya:
 
 ```{r}
-final
+pre_data =
+  df %>%
+  mutate(kalimat = c(1:485)) %>% 
+  unnest_tokens("words",judul) %>%
+  filter(!words %in% stop) %>% 
+  filter(stringr::str_length(words) > 3) %>% 
+  group_by(kalimat) %>% 
+  summarise(komen = paste(words,collapse = " ")) %>% 
+  ungroup() %>% 
+  select(-kalimat)
+  
+pre_data %>% 
+  unnest_tokens("bigrams",komen,token = "ngrams",n = 2) %>% 
+  group_by(bigrams) %>% 
+  count(sort = T) %>% 
+  ungroup() %>% 
+  filter(n > 4) %>% 
+  filter(!is.na(bigrams)) |> 
+  filter(!grepl("ardika",bigrams)) |> 
+  separate(bigrams,into = c("from","to"),sep = " ") %>% 
+  graph_from_data_frame() %>% 
+  ggraph(layout = 'fr') +
+  geom_edge_bend(aes(edge_alpha=n),
+                 show.legend = F,
+                 color='darkred') +
+  geom_node_point(size=1,color='steelblue') +
+  geom_node_text(aes(label=name),alpha=0.4,size=3,repel = T) +
+  theme_void()
 
 ```
 
+Dari temuan di atas, kita bisa mengambil beberapa hipotesa seputar hal apa saja yang sering muncul pada pertanyaan seperti:
+
+1. Pemeriksaan kadar gula darah, termasuk cara menurunkan dan berapa kadar gula yang normal.
+1. Penyebab, cara mengatasi, dan pengobatan diabetes, termasuk obat minum _metformin_ dan _suntik insulin_.
+1. Perbedaan tipe-tipe diabetes.
+1. Gejala, luka, kaki bengkak akibat diabetes.
+
+Ada beberapa _bigrams_ lain yang muncul seperti __efek samping__, __kencing manis__, dan __berat badan__ tapi tidak tersambung dengan kata lainnya. Saya tetap menduga ada hubungan tak langsung terhadap diabetes tapi saya belum terlalu bisa dengan _robust_ menebaknya.
 
 
+Analisa berikutnya adalah saya hendak melakukan _clustering_. Untuk membantu saya __mengukur kesamaan__ antara satu pertanyaan dengan pertanyaan lainnya saya memakai bantuan salah satu __LLM__ berbahasa Indonesia _sentence transformers_ dari situs __Huggingface__.
+
+Langkah berikutnya yang saya lakukan setelah menghapus _stopwords_ adalah membuat _embedding matrix_ berdasarkan model __LLM__ yang saya telah pilih. Hasil finalnya adalah matriks berukuran $446 \times 1024$.
+
+> Matriks ini sejatinya adalah matriks jarak antara 446 pertanyaan yang saya dapatkan.
+
+Bermodalkan matriks ini, saya sebenarnya sudah bisa membuat analisa _clustering_ seperti _k-means_, _hierarchical_, atau _DBScan_.
+
+Kali ini saya akan bereksperimen dengan melakukan cara lain untuk menentukan metode _clustering analysis_, yakni dengan melakukan reduksi dimensi dari matriks jarak tersebut. Saya akan reduksi matriks sebelumnya menjadi matriks berukuran $446 \times 2$. Bagaimana caranya?
+
+### _Dimension Reduction_
+
+Saya rasa mayoritas data saintis sudah sangat familiar dengan metode _principal component analysis_ (PCA) untuk melakukan _dimension reduction_. PCA bertujuan untuk menjelaskan varians terbesar dalam data. PCA mencari arah (komponen utama) di mana data memiliki varians terbesar. Metodenya menggunakan transformasi linear untuk memproyeksikan data ke ruang dimensi yang lebih rendah.
+
+Sebenarnya selain PCA ada beberapa metode lain yang kita bisa coba. Pada kasus ini, saya menggunakan metode bernama __t-SNE__.
+
+Apa itu __t-SNE__?
+
+__t-Distributed Stochastic Neighbor Embedding__ adalah teknik yang sangat berguna untuk memvisualisasikan data dengan dimensi tinggi ke dalam ruang dua atau tiga dimensi.
+
+Bagaimana t-SNE Bekerja?
+
+Secara sederhana, t-SNE bekerja dengan cara berikut:
+
+1. Mengukur Kemiripan:
+    1. t-SNE pertama-tama akan menghitung seberapa mirip setiap titik data dengan tetangganya dalam ruang dimensi tinggi. Kemiripan ini diukur berdasarkan jarak antara titik-titik data.
+    1. Kemiripan ini kemudian diubah menjadi probabilitas. Probabilitas yang tinggi menunjukkan bahwa dua titik data sangat mirip dan kemungkinan besar berada dalam kelompok yang sama.
+1. Membuat Peta Dimensi Rendah:
+    1. Selanjutnya, t-SNE akan mencoba untuk membuat peta baru dalam ruang dimensi yang lebih rendah (misalnya, 2D atau 3D), di mana kemiripan antara titik-titik data tetap terjaga sebisa mungkin.
+    1. Dalam peta yang baru ini, titik-titik data yang sangat mirip dalam ruang dimensi tinggi akan ditempatkan berdekatan, sedangkan titik-titik data yang tidak mirip akan ditempatkan jauh.
+1. Mengoptimalkan Peta:
+    1. Proses pembuatan peta ini bersifat iteratif. t-SNE akan terus-menerus menyesuaikan posisi titik-titik data dalam peta dimensi rendah hingga ditemukan konfigurasi yang meminimalkan perbedaan antara kemiripan dalam ruang dimensi tinggi dan dimensi rendah.
+
+Beberapa keunggulannya adalah:
+
+1. Sangat baik dalam menangkap struktur non-linear dalam data.
+1. Ideal untuk visualisasi data berdimensi tinggi.
+1. Dapat mengungkapkan kelompok data yang kompleks.
+
+Saya menduga untuk data berupa kalimat, bisa saja hubungan yang terjadi non linear. Oleh karena itu saya akan gunakan metode __t-SNE__ untuk mereduksi matriks yang ada sebelumnya.
+
+```{r}
+rm(list=ls())
+load("clustered 2.rda")
+```
+
+Singkat cerita, berikut adalah visualisasi dari hasil reduksi yang telah saya lakukan:
+
+```{r}
+plot_tsne +
+  geom_point(color = "black") +
+  labs(title = "Visualisasi dari Dimensi yang Tereduksi") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  labs(caption = "Visualized using R\nikanx101.com")
+
+```
+
+Berasal dari dimensi baru ini, saya akan hitung kembali matriks jarak yang ada dan melakukan _hierarchical clustering_. Alasan saya melakukan itu adalah:
+
+> Dari visualisasi di atas, akan lebih tepat jika saya __tidak menggunakan k-means__. Detailnya bisa rekan-rekan [_refer_ balik ke tulisan saya yang ini](https://ikanx101.com/blog/clustering-R/).
+
+Akhirnya saya dapatkan __22 clusters pertanyaan__ yang terbentuk. Ada berapa banyak pertanyaan per-_cluster_? Berikut visualisasinya:
+
+```{r}
+plot_tsne +
+  # geom_point(color = "black") +
+  labs(title = "Visualisasi dari Dimensi yang Tereduksi") +
+  theme_minimal() 
+
+keperluan_blog %>% 
+  tabyl(cluster) %>% 
+  mutate(label = percent * 100,
+         label = round(label,2),
+         label = paste0(label,"%")) %>% 
+  ggplot(aes(x = reorder(cluster,percent),
+             y = percent)) +
+  geom_col(color = "black",fill = "steelblue") +
+  geom_label(aes(label = label),size = 2.5) +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "Berapa banyak pertanyaan per cluster?",
+       subtitle = "Hasil hierarchical clustering",
+       caption = "Visualized using R\nikanx101.com",
+       x = "Persen",
+       y = "Cluster ke") +
+  theme(axis.text.x = element_blank())
+```
+
+Apa saja isi masing-masing _cluster_? Saya akan rangkum menggunakan __LLM__ _summarization_, berikut adalah hasilnya:
+
+__Cluster 1__
+
+- Minuman: Apa saja minuman yang bisa membantu menurunkan gula darah, seperti teh hijau, kopi, jus tomat, dan lainnya?
+- Makanan: Buah-buahan seperti mengkudu dan mentimun sering disebut-sebut dalam konteks menurunkan gula darah.
+- Gejala: Tanda-tanda gula darah tinggi, seperti sering haus, sering buang air kecil, dan pandangan kabur, sering ditanyakan.
+- Penyebab: Faktor-faktor yang menyebabkan gula darah tinggi, seperti gaya hidup tidak sehat, genetik, dan kondisi medis tertentu.
+- Pengobatan: Baik pengobatan medis konvensional maupun alternatif seperti jamu dan obat herbal sering dicari.
+- Komplikasi: Dampak jangka panjang dari gula darah tinggi, seperti penyakit jantung, stroke, dan kerusakan saraf.
+
+__Cluster 2__
+
+- Definisi: Apa itu diabetes dan apa perbedaan antara tipe 1 dan tipe 2?
+- Penyebab: Apa yang menyebabkan diabetes?
+- Gejala: Apa saja tanda-tanda diabetes?
+- Pengobatan: Bagaimana cara mengobati diabetes, termasuk penggunaan obat herbal?
+- Komplikasi: Apakah ada hubungan antara diabetes dengan masalah lain seperti asam lambung?
+
+__Cluster 3__
+
+- Pengobatan: Banyak pertanyaan seputar cara mengobati diabetes, baik secara medis maupun alami, termasuk penggunaan obat-obatan, olahraga, dan makanan seperti air kelapa.
+- Penyembuhan: Banyak yang bertanya apakah diabetes bisa sembuh total.
+- Komplikasi: Pertanyaan tentang komplikasi diabetes seperti disfungsi ereksi juga muncul.
+
+__Cluster 4__
+
+- Buah-buahan dan Sayuran: Banyak pertanyaan tentang jenis buah-buahan dan sayuran yang aman dikonsumsi, seperti air kelapa, jagung manis, ubi madu, dan berbagai jenis buah lainnya.
+- Makanan Manis: Pertanyaan tentang makanan manis seperti es krim, madu, tape, dan gula lainnya sering muncul.
+- Makanan Lain: Pertanyaan tentang makanan seperti roti, nasi, sambal, dan makanan olahan lainnya juga diajukan.
+- Minuman: Pertanyaan tentang minuman seperti jus pare dan air rebusan daun salam sering muncul.
+- Dampak Kesehatan: Pertanyaan tentang dampak kesehatan dari berbagai jenis makanan, seperti bahaya konsumsi makanan gurih, juga diajukan.
+
+__Cluster 5__
+
+- Metode Penggunaan: Cara menyuntikkan insulin, jenis-jenis suntikan insulin, dan penggunaan pompa insulin.
+- Frekuensi Penggantian: Kapan jarum insulin perlu diganti.
+- Efek Samping: Dampak samping penggunaan insulin dan cara mengatasinya.
+- Alternatif: Apakah ada alternatif lain selain suntikan insulin untuk diabetes tipe 1.
+- Penggunaan Saat Kondisi Tertentu: Penggunaan insulin saat demam atau pada ibu hamil.
+
+__Cluster 6__
+
+- Efektivitas Metformin: Seberapa efektif metformin untuk diabetes tipe 1 dan bagaimana cara kerjanya.
+- Cara Penggunaan: Dosis, frekuensi konsumsi, dan waktu yang tepat untuk minum metformin.
+- Efek Samping: Berbagai efek samping yang mungkin terjadi setelah mengonsumsi metformin, seperti diare, mual, dan penurunan nafsu makan.
+- Interaksi Obat: Bagaimana metformin berinteraksi dengan obat lain, seperti diuretik, obat antihipertensi, dan obat tidur.
+- Kondisi Khusus: Penggunaan metformin pada kondisi tertentu, seperti saat haid atau pada pasien dengan nilai kreatinin yang meningkat.
+
+__Cluster 7__
+
+- Frekuensi normal buang air kecil: Berapa kali buang air kecil yang dianggap normal pada berbagai usia.
+- Penyebab sering buang air kecil: Infeksi saluran kemih, diabetes, pembesaran prostat, dan kondisi medis lainnya.
+- Gejala tambahan: Selain sering buang air kecil, gejala lain seperti sakit saat buang air kecil, demam, dan kesulitan buang air kecil juga dibahas.
+- Pengobatan: Pilihan pengobatan yang mungkin, termasuk obat-obatan.
+
+__Cluster 8__
+
+- Frekuensi Pemeriksaan: Kapan waktu yang tepat untuk memeriksa gula darah dan seberapa sering pemeriksaan harus dilakukan.
+- Interpretasi Hasil: Bagaimana cara menginterpretasikan hasil pemeriksaan gula darah, termasuk saat hasil menunjukkan nilai yang tinggi, rendah, atau tidak stabil.
+- Faktor yang Mempengaruhi: Bagaimana aktivitas fisik, pola makan, dan obat-obatan mempengaruhi kadar gula darah.
+- Penanganan: Cara menurunkan kadar gula darah yang tinggi, termasuk penggunaan insulin dan obat-obatan oral.
+- Komplikasi: Hubungan antara kadar gula darah yang tidak terkontrol dengan gejala seperti sering buang air kecil.
+
+__Cluster 9__
+
+- Efek Samping Minuman: Banyak pertanyaan tentang efek samping dari konsumsi berlebihan air putih, gula aren, dan minuman berkafein seperti kopi.
+- Gejala Diabetes: Pertanyaan tentang gejala diabetes seperti lemas, sering buang air kecil, dan keinginan kuat untuk makan.
+- Pengelolaan Diabetes: Pertanyaan tentang cara mengelola diabetes, termasuk pilihan makanan, minuman, dan gaya hidup sehat.
+- Pengaruh Makanan: Bagaimana jenis makanan tertentu, seperti makanan manis dan berkafein, dapat mempengaruhi kadar gula darah dan kesehatan secara keseluruhan.
+
+__Cluster 10__
+
+- Komplikasi Diabetes: Pertanyaan tentang amputasi, gangguan saraf, masalah kulit, dan masalah tidur pada penderita diabetes.
+- Penyakit Lain: Pertanyaan tentang penyakit lain yang sering menyertai diabetes, seperti tuberculosis, penyakit autoimun, dan gangguan hormon.
+- Prosedur Medis: Pertanyaan tentang anestesi, operasi caesar, dan operasi bariatrik.
+- Gejala Umum: Pertanyaan tentang gejala seperti keringat berlebih, bau mulut, dan kesulitan tidur.
+- Perkembangan Penyakit: Pertanyaan tentang perubahan penyakit dari tipe 1 ke tipe 2 dan perkembangan penyakit pada anak.
+
+__Cluster 11__
+
+- Penyebab: Mengapa diabetes gestasional, diabetes insipidus, dan diabetes melitus tipe 2 terjadi.
+- Gejala: Gejala-gejala umum dari masing-masing jenis diabetes, seperti sering buang air kecil, haus, dan dehidrasi.
+- Pengobatan: Pilihan pengobatan untuk diabetes insipidus dan diabetes gestasional.
+- Komplikasi: Hubungan antara diabetes dengan kondisi lain seperti infeksi saluran kemih dan preeklamsia.
+- Kemungkinan Sembuh: Apakah diabetes insipidus dan diabetes melitus tipe 2 dapat sembuh total.
+
+__Cluster 12__
+
+Pertanyaan-pertanyaan pada _cluster_ ini umumnya berpusat pada gejala diabetes melitus. Gejala-gejala yang sering disebutkan antara lain:
+
+- Sering haus dan buang air kecil: Ini adalah gejala yang paling umum pada diabetes.
+- Rasa lapar yang berlebihan: Meskipun sudah makan, penderita diabetes sering merasa lapar.
+- Penurunan berat badan: Meskipun nafsu makan baik, penderita diabetes sering mengalami penurunan berat badan.
+- Kelelahan dan lemas: Kelelahan dan lemas adalah gejala umum yang sering dirasakan oleh penderita diabetes.
+- Pusing dan pandangan kabur: Gejala ini sering muncul akibat kadar gula darah yang tidak stabil.
+
+__Cluster 13__
+
+- Perbedaan antara diabetes tipe 1 dan tipe 2: Fokus pada perbedaan penyebab, gejala, dan cara pengobatan.
+- Prediabetes: Apa itu prediabetes, bagaimana cara mendeteksinya, dan apakah bisa kembali normal.
+- Istilah yang sering digunakan: Menjelaskan perbedaan antara istilah seperti diabetes, diabetes melitus, diabetes basah, dan diabetes kering.
+
+__Cluster 14__
+
+- Perbedaan Luka: Apa yang membedakan luka diabetes dengan luka biasa, dan mengapa luka diabetes seringkali sulit sembuh?
+- Penyebab: Mengapa penderita diabetes lebih rentan mengalami luka dan infeksi?
+- Pengobatan: Bagaimana cara merawat luka diabetes agar cepat sembuh dan mencegah komplikasi seperti infeksi?
+- Pencegahan: Cara mencegah terjadinya luka pada penderita diabetes.
+
+__Cluster 15__
+
+- Gejala Diabetes: Pertanyaan tentang berbagai gejala diabetes, baik yang umum seperti sering buang air kecil dan haus, maupun gejala yang lebih spesifik seperti perubahan kulit, masalah penglihatan, dan kelelahan.
+- Faktor Risiko: Pertanyaan tentang faktor risiko diabetes, termasuk faktor genetik (keturunan) dan gaya hidup.
+- Komplikasi: Pertanyaan tentang komplikasi diabetes, seperti masalah pada kulit dan kaki.
+- Pencegahan: Pertanyaan tentang cara mencegah diabetes dan komplikasi yang terkait.
+
+__Cluster 16__
+
+- Diabetes dan Kesuburan: Bagaimana diabetes memengaruhi kesuburan, baik pada pria maupun wanita?
+- Kehamilan dan Diabetes: Bagaimana cara merencanakan kehamilan bagi penderita diabetes? Apa saja risiko dan tantangan yang mungkin dihadapi?
+- Faktor Risiko: Apa saja faktor yang meningkatkan risiko seseorang terkena diabetes, termasuk faktor genetik dan gaya hidup?
+- Komplikasi: Bagaimana diabetes dapat memengaruhi kondisi kesehatan secara keseluruhan, termasuk tekanan darah, kadar gula darah, dan fungsi pencernaan?
+
+__Cluster 17__
+
+- Komplikasi: Bagaimana diabetes dapat menyebabkan komplikasi seperti gagal ginjal, anemia, dan masalah lain.
+- Pengobatan: Apa saja pilihan pengobatan untuk diabetes, termasuk penggunaan vaksin dan terapi lain.
+- Pemantauan: Pentingnya pemeriksaan kadar gula darah (HbA1c) dan vaksinasi untuk penderita diabetes.
+- Penyebab: Mengapa diabetes dapat terjadi dan faktor-faktor apa yang dapat memperburuk kondisi.
+
+__Cluster 18__
+
+- Jenis Diabetes: Perbedaan antara diabetes tipe 1 dan tipe 2, serta faktor risiko yang memicu masing-masing tipe.
+- Diagnosis: Cara mengetahui seseorang menderita diabetes tipe 1 atau tipe 2.
+- Pengobatan: Pilihan pengobatan untuk diabetes tipe 1 dan tipe 2, termasuk perubahan gaya hidup dan penggunaan obat-obatan.
+- Penyebab: Faktor-faktor yang dapat menyebabkan diabetes, seperti genetik dan gaya hidup.
+
+__Cluster 19__
+
+- Kadar Gula Darah Normal: Batas normal kadar gula darah untuk berbagai kelompok usia, baik sebelum maupun sesudah makan.
+- Pengaruh Puasa: Bagaimana puasa memengaruhi kadar gula darah, terutama pada ibu hamil.
+- Kondisi Medis: Bagaimana kondisi seperti kehamilan dapat memengaruhi kadar gula darah.
+
+__Cluster 20__
+
+- Kaki Bengkak: Hubungan antara kaki bengkak dengan diabetes, penyebab, dan cara mengatasinya.
+- Kesemutan dan Kebaas: Penyebab kesemutan dan kebas pada kaki, terutama pada penderita diabetes.
+- Nyeri: Jenis-jenis nyeri yang sering dialami penderita diabetes, seperti nyeri kaki, nyeri saat berjalan, dan nyeri setelah amputasi.
+- Gejala Lain: Gejala lain yang sering menyertai komplikasi diabetes pada kaki, seperti kaki dingin, keringat dingin, dan kelemahan.
+
+__Cluster 21__
+
+- Gatal-gatal: Hubungan antara kadar gula darah tinggi dan gatal-gatal pada kulit. Penyebab gatal-gatal pada penderita diabetes, seperti infeksi jamur dan kerusakan saraf.
+- Kulit Menghitam: Penyebab kulit menghitam pada penderita diabetes, terutama di area kaki.
+- Perawatan Kulit: Cara merawat kulit bagi penderita diabetes, termasuk mengatasi gatal-gatal, kulit kering, dan infeksi.
+
+__Cluster 22__
+
+- Keamanan Susu: Apakah susu, terutama susu bubuk, aman dikonsumsi oleh penderita diabetes?
+- Nutrisi: Nutrisi apa saja yang perlu diperhatikan dalam memilih susu untuk penderita diabetes, seperti kandungan gula, lemak, dan kalsium.
+- Rekomendasi: Susu merek apa yang direkomendasikan untuk penderita diabetes, terutama lansia.
+
+
+# Kesimpulan dan _Remarks_
+
+Dari hasil di atas, saya coba rangkum beberapa hal sebagai berikut ini:
+
+1. Terkait metode dan teknik _clustering_ yang dilakukan:
+    - Sepertinya penentuan berapa banyak _cluster_ masih bisa dipertajam lagi sehingga benar-benar tidak ada _clusters_ yang saling tumpang tindih.
+    - Dari temuan di atas, kita bisa lihat bahwa beberapa _clusters_ memiliki beberapa topik yang isinya hampir mirip. Kemudian kita bisa lihat juga beberapa _clusters_ benar-benar berbeda dengan _clusters_ lainnya.
+    - Saya sempat berdiskusi dengan Mas Apriandito tentang metode mana yang lebih _pas_ untuk membuat matriks jarak dari data teks. Saya [dulu pernah mencoba menggunakan metode tf-idf](https://ikanx101.com/blog/clustering-oat/). Kali ini dengan _embedding matrix via_ __LLM__. Hasilnya memang masih belum 100% sesuai dengan keinginan tapi siapa tahu dalam waktu beberapa tahun ke depan akan muncul model yang lebih sempurna lagi.
+1. Terkait isi _clusters_:
+    - __Cluster 22__ khusus menyebutkan tentang susu dan nutrisi bagi penderita diabetes. Sebenarnya menarik untuk melihat bagaimana jawaban dokter dari pertanyaan yang dilontarkan _netizen_ pada _cluster_ ini.
+    - Beberapa _clusters_ memiliki topik pertanyaan spesifik yang menarik untuk ditelusuri bagaimana jawaban dokternya.
+    
+_Oke_, jika kembali ke pertanyaan awal saya. Apakah saya bisa dengan konklusif mengukur seberapa pengetahuan masyarakat umum terkait diabetes?
+
+Dilihat dari topik per _clusters_, _clusters_ dengan topik yang sangat khusus (tak umum) sebenarnya sangat sedikit sekali (contohnya _cluster_ 5, 6, dan 11). Selebihnya _clusters_ lain lebih bersifat pertanyaan _general_.
+
+Artinya memang masih banyak _netizen_ / masyarakat umum yang masih bisa diedukasi lebih jauh tentang diabetes.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads`.
 
 
