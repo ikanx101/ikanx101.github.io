@@ -1,0 +1,89 @@
+---
+title: "Mencari Batas-Batas Wilayah Kota dan Kabupaten di R dari Data Shapefile"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: false
+    toc-depth: 4
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: true
+  warning: false
+  error: false
+---
+
+Pada bulan Juni lalu, saya pernah menuliskan bagaimana cara mendapatkan data berupa nama kecamatan, kota / kabupaten, dan provinsi dari data berupa titik longlat menggunakan __R__ dan data yang didapatkan dari situs [GADM](https://gadm.org/download_country.html). Sekarang saya akan coba mengutilisasi data _shapefile_ yang saya dapat dari GADM untuk mendapatkan data-data lainnya seperti batas-batas wilayah suatu area.
+
+> Untuk mempermudah, saya akan mencari batas-batas wilayah longlat dari semua kota yang ada di Indonesia. 
+
+Bagaimana caranya? _Cekidot!_
+
+## Persiapan
+
+Pertama-tama kita memerlukan data _shapefiles_ dari situs GADM. Kemudian pada __R__, silakan _install_ `library(sf)`. Betul, kita memerlukan `library(sf)` untuk mengambil data dari _shapefile_ tersebut.
+
+## Pengambilan Data
+
+Sekarang kita akan ambil data batas wilayah dari _shapefile_ yang ada. Saya akan baca _file_ bernama `gadm41_IDN_2.shp` dari GADM. 
+
+```
+# step 1
+# kita baca shapefile menggunakan library sf
+library(sf)
+city_boundary   = st_read("gadm41_IDN_2.shp")
+```
+
+Dari _object_ bernama `city_boundary` kita sebenarnya sudah mendapatkan __sejenis__ _data frame_ yang berisi semua data wilayah perkota. Namun strukturnya masih cukup rumit untuk sebagian besar orang. Maka saya akan buat satu _function_ untuk melakukan ekstraksi lebih lanjut dan menjadikannya dalam struktur _data frame_ yang rapi. Sebagai _input_ _function_-nya adalah nama kota yang sudah didapatkan dari _object_ `city_boundary`.
+
+```
+# step 2
+# mengambil semua nama provinsi dan kota dari city_boundary
+provinsi        = city_boundary$NAME_1
+nama_semua_kota = city_boundary$NAME_2
+
+# step 3
+# membuat function untuk ekstraksi dan merapikan
+extrak_kota = function(kota_input){
+  # ambil longlatnya
+  selected_city = city_boundary %>% filter(NAME_2 == kota_input)
+  bbox          = sf::st_bbox(selected_city)
+  min_lat       = bbox[2]
+  max_lat       = bbox[4]
+  min_lon       = bbox[1]
+  max_lon       = bbox[3]
+  # menjadikan dalam satu data frame
+  output = data.frame(kota = kota_input,
+                      min_lat,max_lat,min_lon,max_lon)
+  return(output)
+}
+```
+
+Setelah ini saya akan lakukan komputasi parallel untuk semua kota tersebut.
+
+```
+# memanggil library(parallel)
+library(parallel)
+# menentukan berapa banyak cores yang terlibat
+ncore = detectCores()
+
+# proses run function secara parallel
+temp       = mclapply(nama_semua_kota,extrak_kota,mc.cores = ncore)
+# menggabungkan hasil run dan menambahkan informasi provinsi
+batas_kota = data.table::rbindlist(temp) %>% as.data.frame() %>% mutate(provinsi)
+```
+
+_Segitu_ aja caranya. Prosesnya cukup mudah dan cepat. Berikut adalah sampel dari data yang saya dapatkan:
+
+```{r}
+load("~/gmaps_scraper/Batas Wilayah Semua/batas.rda")
+batas_kota[sample(400,10)] |> knitr::kable()
+```
+
+Semoga membantu.
+
+---
+
+`if you find this article helpful support this blog by clicking the ads.`
