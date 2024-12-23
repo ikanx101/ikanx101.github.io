@@ -15,75 +15,109 @@ execute:
   error: false
 ---
 
-Pada bulan Juni lalu, saya pernah menuliskan bagaimana cara mendapatkan data berupa nama kecamatan, kota / kabupaten, dan provinsi dari data berupa titik longlat menggunakan __R__ dan data yang didapatkan dari situs [GADM](https://gadm.org/download_country.html). Sekarang saya akan coba mengutilisasi data _shapefile_ yang saya dapat dari GADM untuk mendapatkan data-data lainnya seperti batas-batas wilayah suatu area.
+Pada bulan Juni lalu, saya pernah menuliskan bagaimana cara mendapatkan data berupa nama kecamatan, kota / kabupaten, dan provinsi dari data berupa titik longlat menggunakan **R**. Hal itu dimungkinkan menggunakan data geografi _shapefile_ yang didapatkan dari situs [GADM](https://gadm.org/download_country.html). Sekarang saya akan coba mengutilisasi data *shapefile* tersebut lebih lanjut.
 
-> Untuk mempermudah, saya akan mencari batas-batas wilayah longlat dari semua kota yang ada di Indonesia. 
+> Saya akan mencari batas-batas wilayah longlat dari semua kota yang ada di Indonesia.
 
-Bagaimana caranya? _Cekidot!_
+Bagaimana caranya? *Cekidot!*
 
 ## Persiapan
 
-Pertama-tama kita memerlukan data _shapefiles_ dari situs GADM. Kemudian pada __R__, silakan _install_ `library(sf)`. Betul, kita memerlukan `library(sf)` untuk mengambil data dari _shapefile_ tersebut.
+Pertama-tama kita memerlukan data *shapefiles* dari situs GADM. Kemudian pada **R**, silakan *install* `library(sf)`. Betul, kita memerlukan `library(sf)` untuk mengambil data dari *shapefile* tersebut.
 
 ## Pengambilan Data
 
-Sekarang kita akan ambil data batas wilayah dari _shapefile_ yang ada. Saya akan baca _file_ bernama `gadm41_IDN_2.shp` dari GADM. 
+Sekarang kita akan ambil data batas wilayah dari *shapefile* yang ada. Saya akan baca *file* bernama `gadm41_IDN_2.shp` dari GADM. Jika kalian hendak mendapatkan data batas untuk level kecamatan, maka kita memerlukan data _shapefile_ level ketiga.
 
-```
+```         
 # step 1
 # kita baca shapefile menggunakan library sf
 library(sf)
 city_boundary   = st_read("gadm41_IDN_2.shp")
 ```
 
-Dari _object_ bernama `city_boundary` kita sebenarnya sudah mendapatkan __sejenis__ _data frame_ yang berisi semua data wilayah perkota. Namun strukturnya masih cukup rumit untuk sebagian besar orang. Maka saya akan buat satu _function_ untuk melakukan ekstraksi lebih lanjut dan menjadikannya dalam struktur _data frame_ yang rapi. Sebagai _input_ _function_-nya adalah nama kota yang sudah didapatkan dari _object_ `city_boundary`.
+Dari *object* bernama `city_boundary` kita sebenarnya sudah mendapatkan **sejenis** *data frame* yang berisi semua data wilayah perkota. Namun strukturnya masih cukup rumit untuk sebagian besar orang. Maka saya akan buat satu *function* untuk melakukan ekstraksi lebih lanjut dan menjadikannya dalam struktur *data frame* yang rapi. Sebagai *input* *function*-nya adalah nama kota yang sudah didapatkan dari *object* `city_boundary`.
 
-```
+```         
 # step 2
-# mengambil semua nama provinsi dan kota dari city_boundary
-provinsi        = city_boundary$NAME_1
-nama_semua_kota = city_boundary$NAME_2
+# merapikan bentuk data menjadi data frame
+# dimulai dari mempersiapkan data input
+city_boundary = 
+  city_boundary |> 
+  mutate(pencarian = paste(NAME_1,NAME_2,sep = "-"))
 
-# step 3
-# membuat function untuk ekstraksi dan merapikan
+# menuliskan semua nama kota
+nama_semua_kota = city_boundary$pencarian
+
+# membuat function per kota
 extrak_kota = function(kota_input){
   # ambil longlatnya
-  selected_city = city_boundary %>% filter(NAME_2 == kota_input)
-  bbox          = sf::st_bbox(selected_city)
-  min_lat       = bbox[2]
-  max_lat       = bbox[4]
-  min_lon       = bbox[1]
-  max_lon       = bbox[3]
-  # menjadikan dalam satu data frame
-  output = data.frame(kota = kota_input,
-                      min_lat,max_lat,min_lon,max_lon)
+  selected_city = city_boundary %>% filter(pencarian == kota_input)
+  bbox = sf::st_bbox(selected_city)
+  min_lat = bbox[2]
+  max_lat = bbox[4]
+  min_lon = bbox[1]
+  max_lon = bbox[3]
+  
+  output  = data.frame(kota = kota_input,
+                       min_lat,max_lat,min_lon,max_lon)
+  
   return(output)
 }
 ```
 
 Setelah ini saya akan lakukan komputasi parallel untuk semua kota tersebut.
 
-```
+```         
 # memanggil library(parallel)
 library(parallel)
 # menentukan berapa banyak cores yang terlibat
 ncore = detectCores()
 
-# proses run function secara parallel
+# run parallel function-nya
 temp       = mclapply(nama_semua_kota,extrak_kota,mc.cores = ncore)
-# menggabungkan hasil run dan menambahkan informasi provinsi
-batas_kota = data.table::rbindlist(temp) %>% as.data.frame() %>% mutate(provinsi)
+batas_kota = 
+  data.table::rbindlist(temp) %>% as.data.frame() |> 
+  separate(kota,into = c("provinsi","kota"),sep = "\\-")
 ```
 
-_Segitu_ aja caranya. Prosesnya cukup mudah dan cepat. Berikut adalah sampel dari data yang saya dapatkan:
+*Segitu* aja caranya. Prosesnya cukup mudah dan cepat. Berikut adalah sampel dari data yang saya dapatkan:
 
 ```{r}
+#| echo: false
+#| warning: false
+library(dplyr)
 load("~/gmaps_scraper/Batas Wilayah Semua/batas.rda")
-batas_kota[sample(400,10)] |> knitr::kable()
+batas_kota[sample(400,10),] |> arrange(provinsi,kota) #|> knitr::kable()
+```
+
+Perlu saya garis bawahi bahwa untuk mempermudah penulisan batas wilayah, digunakan _rounding box_ berbentuk persegi. 
+
+Dengan menggunakan prinsip yang sama dengan [simulasi Monte Carlo ini](https://ikanx101.com/blog/hitung-pi/), kita bisa menggambarkan area sebenarnya dari suatu kabupaten kota. Misalkan saya hendak menggambarkan Kota Kediri.
+
+```{r}
+#| echo: false
+#| warning: false
+
+library(parallel)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+rm(list = ls())
+gc()
+
+load("demo_kediri.rda")
+
+data_geocoded |> 
+  ggplot(aes(x = lat,y = lon)) +
+  geom_point(color = "darkblue") +
+  coord_equal() +
+  theme_void()
 ```
 
 Semoga membantu.
 
----
+------------------------------------------------------------------------
 
 `if you find this article helpful support this blog by clicking the ads.`
