@@ -157,12 +157,17 @@ mapview(mytrip)
 
 ![](trip.png){fig-align="center" width="650"}
 
-Kita bisa _save_ rute tersebut menjadi file `.kml` agar bisa dimasukkan ke dalam *Google Earth* atau *Google Mymaps*, caranya:
+Kita bisa *save* rute tersebut menjadi file `.kml` agar bisa dimasukkan ke dalam *Google Earth* atau *Google Mymaps*, caranya:
 
 ```{r}
+titik = 
+  df |> 
+  st_as_sf(coords = c("long", "lat"), crs = "+proj=longlat +datum=WGS84")
+
+st_write(obj = titik, dsn = "tes rute.kml", driver = "libkml",layer="pt")
 st_write(obj = mytrip, dsn = "tes rute.kml", driver = "libkml")
 ```
 
-Berikut adalah _screenshot_ setelah saya _upload_ ke *Google Mymaps*:
+Berikut adalah *screenshot* setelah saya *upload* ke *Google Mymaps*:
 
 ![](gmap.png){fig-align="center" width="650"}

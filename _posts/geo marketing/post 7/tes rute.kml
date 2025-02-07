@@ -6,6 +6,11 @@
       <SimpleField name="duration" type="float"/>
       <SimpleField name="distance" type="float"/>
     </Schema>
+    <Schema id="pt.schema">
+      <SimpleField name="kota" type="string"/>
+      <SimpleField name="nama_rs" type="string"/>
+      <SimpleField name="telepon" type="string"/>
+    </Schema>
     <Document id="tes_rute">
       <name>tes rute</name>
       <Placemark id="tes_rute.1">
@@ -320,6 +325,147 @@
             106.750991,-6.494955,0
           </coordinates>
         </LineString>
+      </Placemark>
+    </Document>
+    <Document id="pt">
+      <name>pt</name>
+      <Placemark id="pt.1">
+        <ExtendedData>
+          <SchemaData schemaUrl="#pt.schema">
+            <SimpleData name="kota">Bogor</SimpleData>
+            <SimpleData name="nama_rs">RS Sentosa</SimpleData>
+            <SimpleData name="telepon">0251 - 7541900</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            106.7511317,-6.49509490199995,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark id="pt.2">
+        <ExtendedData>
+          <SchemaData schemaUrl="#pt.schema">
+            <SimpleData name="kota">Bekasi</SimpleData>
+            <SimpleData name="nama_rs">RS Umum Cikarang Medika</SimpleData>
+            <SimpleData name="telepon">021-29568832</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            107.1450996,-6.25192369399997,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark id="pt.3">
+        <ExtendedData>
+          <SchemaData schemaUrl="#pt.schema">
+            <SimpleData name="kota">Bekasi</SimpleData>
+            <SimpleData name="nama_rs">RS Umum Medirossa Cikarang</SimpleData>
+            <SimpleData name="telepon">021-89833216</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            107.1449779,-6.29924530899996,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark id="pt.4">
+        <ExtendedData>
+          <SchemaData schemaUrl="#pt.schema">
+            <SimpleData name="kota">Kota Bogor</SimpleData>
+            <SimpleData name="nama_rs">RS Ibu dan Anak Sawojajar</SimpleData>
+            <SimpleData name="telepon">(0251) 832 4371</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            106.7937124,-6.58811098699994,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark id="pt.5">
+        <ExtendedData>
+          <SchemaData schemaUrl="#pt.schema">
+            <SimpleData name="kota">Kota Tasikmalaya</SimpleData>
+            <SimpleData name="nama_rs">RS Umum Islam Hj. Siti Muniroh</SimpleData>
+            <SimpleData name="telepon">0265-323868</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            108.2327706,-7.37875929399996,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark id="pt.6">
+        <ExtendedData>
+          <SchemaData schemaUrl="#pt.schema">
+            <SimpleData name="kota">Sukabumi</SimpleData>
+            <SimpleData name="nama_rs">RS Primaya Sukabumi</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            106.9578253,-6.91845824999996,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark id="pt.7">
+        <ExtendedData>
+          <SchemaData schemaUrl="#pt.schema">
+            <SimpleData name="kota">Bogor</SimpleData>
+            <SimpleData name="nama_rs">RS Umum Daerah Cileungsi</SimpleData>
+            <SimpleData name="telepon">(021) 89934667</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            107.0486656,-6.43280450999993,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark id="pt.8">
+        <ExtendedData>
+          <SchemaData schemaUrl="#pt.schema">
+            <SimpleData name="kota">Kota Bekasi</SimpleData>
+            <SimpleData name="nama_rs">RS Umum Masmitra</SimpleData>
+            <SimpleData name="telepon">2184971766</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            106.929967,-6.28174514199998,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark id="pt.9">
+        <ExtendedData>
+          <SchemaData schemaUrl="#pt.schema">
+            <SimpleData name="kota">Kuningan</SimpleData>
+            <SimpleData name="nama_rs">RS Jantung Hasna Medika Kuningan</SimpleData>
+            <SimpleData name="telepon">6.22329E+11</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            108.467808,-6.97465585799995,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark id="pt.10">
+        <ExtendedData>
+          <SchemaData schemaUrl="#pt.schema">
+            <SimpleData name="kota">Indramayu</SimpleData>
+            <SimpleData name="nama_rs">RS Sentra Medika Langut</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            108.2506487,-6.40697151799998,0
+          </coordinates>
+        </Point>
       </Placemark>
     </Document>
   </Document>
