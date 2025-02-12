@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document id="root_doc">
+    <Schema id="tes_rute.schema">
+      <SimpleField name="start" type="string"/>
+      <SimpleField name="duration" type="float"/>
+      <SimpleField name="distance" type="float"/>
+    </Schema>
+    <Schema id="pt.schema">
+      <SimpleField name="kota" type="string"/>
+      <SimpleField name="nama_rs" type="string"/>
+      <SimpleField name="telepon" type="string"/>
+    </Schema>
+    <Document id="tes_rute">
+      <name>tes rute</name>
+      <Placemark id="tes_rute.1">
+        <TimeSpan>
+          <end>166</end>
+        </TimeSpan>
+        <ExtendedData>
+          <SchemaData schemaUrl="#tes_rute.schema">
+            <SimpleData name="start">204</SimpleData>
+            <SimpleData name="duration">166.086666666667</SimpleData>
+            <SimpleData name="distance">39.4165</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <LineString>
+          <coordinates>
+            106.750991,-6.494955,0
+            106.819832,-6.482661,0
+            106.836461,-6.464693,0
+            106.857994,-6.463764,0
+            106.887568,-6.431679,0
+            106.91929,-6.369646,0
+            106.929973,-6.281752,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+      <Placemark id="tes_rute.2">
+        <TimeSpan>
+          <end>209</end>
+        </TimeSpan>
+        <ExtendedData>
+          <SchemaData schemaUrl="#tes_rute.schema">
+            <SimpleData name="start">166</SimpleData>
+            <SimpleData name="duration">115.291666666667</SimpleData>
+            <SimpleData name="distance">29.5787</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <LineString>
+          <coordinates>
+            106.929973,-6.281752,0
+            106.941212,-6.288118,0
+            106.936909,-6.30745,0
+            106.968933,-6.320638,0
+            106.960363,-6.349805,0
+            106.973273,-6.369468,0
+            106.976156,-6.406518,0
+            107.020221,-6.413157,0
+            107.048695,-6.4325,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+      <Placemark id="tes_rute.3">
+        <TimeSpan>
+          <end>159</end>
+        </TimeSpan>
+        <ExtendedData>
+          <SchemaData schemaUrl="#tes_rute.schema">
+            <SimpleData name="start">209</SimpleData>
+            <SimpleData name="duration">87.085</SimpleData>
+            <SimpleData name="distance">22.7214</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <LineString>
+          <coordinates>
+            107.048695,-6.4325,0
+            107.058684,-6.441857,0
+            107.086267,-6.427807,0
+            107.113869,-6.374707,0
+            107.120651,-6.334979,0
+            107.145046,-6.299052,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+      <Placemark id="tes_rute.4">
+        <TimeSpan>
+          <end>248</end>
+        </TimeSpan>
+        <ExtendedData>
+          <SchemaData schemaUrl="#tes_rute.schema">
+            <SimpleData name="start">159</SimpleData>
+            <SimpleData name="duration">25.3383333333333</SimpleData>
+            <SimpleData name="distance">6.3237</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <LineString>
+          <coordinates>
+            107.145046,-6.299052,0
+            107.153614,-6.280831,0
+            107.14523,-6.251827,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+      <Placemark id="tes_rute.5">
+        <TimeSpan>
+          <end>360</end>
+        </TimeSpan>
+        <ExtendedData>
+          <SchemaData schemaUrl="#tes_rute.schema">
+            <SimpleData name="start">248</SimpleData>
+            <SimpleData name="duration">616.818333333333</SimpleData>
+            <SimpleData name="distance">161.0223</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <LineString>
+          <coordinates>
+            107.14523,-6.251827,0
+            107.173338,-6.205047,0
+            107.179923,-6.17237,0
+            107.272244,-6.168468,0
+            107.285322,-6.155105,0
+            107.322578,-6.159322,0
+            107.353477,-6.179134,0
+            107.414643,-6.157979,0
+            107.449894,-6.190537,0
+            107.481132,-6.192518,0
+            107.583364,-6.250213,0
+            107.60477,-6.249694,0
+            107.66596,-6.279483,0
+            107.707436,-6.339903,0
+            107.73907,-6.348948,0
+            107.748719,-6.365784,0
+            107.792945,-6.380747,0
+            107.831706,-6.376322,0
+            107.892513,-6.420153,0
+            107.923553,-6.394194,0
+            107.939272,-6.399572,0
+            107.982944,-6.376291,0
+            108.024026,-6.385091,0
+            108.102919,-6.359695,0
+            108.132296,-6.376246,0
+            108.148049,-6.351023,0
+            108.156386,-6.356179,0
+            108.165987,-6.337481,0
+            108.182384,-6.334591,0
+            108.203923,-6.335817,0
+            108.218125,-6.370598,0
+            108.249141,-6.389418,0
+            108.249485,-6.406957,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+      <Placemark id="tes_rute.6">
+        <TimeSpan>
+          <end>337</end>
+        </TimeSpan>
+        <ExtendedData>
+          <SchemaData schemaUrl="#tes_rute.schema">
+            <SimpleData name="start">360</SimpleData>
+            <SimpleData name="duration">381.566666666667</SimpleData>
+            <SimpleData name="distance">98.0548</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <LineString>
+          <coordinates>
+            108.249485,-6.406957,0
+            108.242235,-6.383153,0
+            108.290959,-6.385501,0
+            108.289366,-6.463472,0
+            108.305199,-6.501535,0
+            108.342699,-6.540597,0
+            108.32185,-6.591566,0
+            108.37318,-6.612717,0
+            108.375681,-6.647237,0
+            108.410974,-6.665234,0
+            108.43258,-6.762591,0
+            108.446636,-6.764571,0
+            108.460387,-6.806387,0
+            108.472238,-6.809345,0
+            108.493065,-6.857644,0
+            108.484012,-6.864506,0
+            108.49938,-6.866691,0
+            108.495524,-6.953723,0
+            108.477418,-6.981956,0
+            108.467961,-6.974718,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+      <Placemark id="tes_rute.7">
+        <TimeSpan>
+          <end>34</end>
+        </TimeSpan>
+        <ExtendedData>
+          <SchemaData schemaUrl="#tes_rute.schema">
+            <SimpleData name="start">337</SimpleData>
+            <SimpleData name="duration">333.863333333333</SimpleData>
+            <SimpleData name="distance">85.9802</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <LineString>
+          <coordinates>
+            108.467961,-6.974718,0
+            108.458365,-6.967701,0
+            108.445935,-6.977957,0
+            108.456893,-6.982513,0
+            108.44739,-6.993039,0
+            108.454874,-7.027133,0
+            108.441318,-7.054203,0
+            108.412753,-7.058946,0
+            108.416484,-7.092127,0
+            108.439864,-7.107402,0
+            108.410036,-7.143684,0
+            108.403237,-7.172767,0
+            108.366734,-7.18334,0
+            108.352723,-7.206578,0
+            108.339975,-7.207092,0
+            108.307275,-7.282825,0
+            108.282501,-7.303203,0
+            108.234473,-7.291457,0
+            108.220447,-7.300235,0
+            108.217349,-7.354449,0
+            108.232812,-7.378762,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+      <Placemark id="tes_rute.8">
+        <TimeSpan>
+          <end>378</end>
+        </TimeSpan>
+        <ExtendedData>
+          <SchemaData schemaUrl="#tes_rute.schema">
+            <SimpleData name="start">34</SimpleData>
+            <SimpleData name="duration">875.518333333333</SimpleData>
+            <SimpleData name="distance">223.6584</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <LineString>
+          <coordinates>
+            108.232812,-7.378762,0
+            108.203168,-7.344719,0
+            108.194078,-7.289841,0
+            108.152146,-7.257637,0
+            108.12972,-7.221481,0
+            108.086096,-7.2139,0
+            108.059757,-7.191292,0
+            108.046437,-7.200048,0
+            108.000719,-7.18216,0
+            107.988874,-7.137671,0
+            107.972518,-7.13379,0
+            107.956302,-7.108754,0
+            107.934104,-7.116256,0
+            107.867634,-7.102638,0
+            107.809983,-7.103837,0
+            107.773832,-7.049904,0
+            107.743587,-7.049811,0
+            107.631372,-7.005168,0
+            107.582221,-7.022914,0
+            107.514881,-7.026999,0
+            107.479811,-6.997618,0
+            107.455792,-6.997165,0
+            107.431373,-6.978848,0
+            107.279595,-7.040549,0
+            107.164594,-7.061631,0
+            107.150183,-7.038163,0
+            107.116796,-7.040561,0
+            107.079448,-7.016737,0
+            107.072407,-6.981944,0
+            107.047319,-6.957957,0
+            106.98702,-6.939847,0
+            106.974351,-6.922447,0
+            106.9406,-6.937054,0
+            106.932417,-6.931498,0
+            106.932318,-6.911067,0
+            106.95857,-6.907843,0
+            106.957789,-6.91821,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+      <Placemark id="tes_rute.9">
+        <TimeSpan>
+          <end>267</end>
+        </TimeSpan>
+        <ExtendedData>
+          <SchemaData schemaUrl="#tes_rute.schema">
+            <SimpleData name="start">378</SimpleData>
+            <SimpleData name="duration">297.031666666667</SimpleData>
+            <SimpleData name="distance">72.8262</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <LineString>
+          <coordinates>
+            106.957789,-6.91821,0
+            106.95033,-6.90087,0
+            106.924974,-6.900354,0
+            106.911288,-6.873085,0
+            106.80371,-6.885397,0
+            106.793259,-6.845847,0
+            106.799737,-6.835494,0
+            106.783149,-6.82236,0
+            106.787198,-6.784085,0
+            106.77766,-6.770621,0
+            106.799266,-6.7028,0
+            106.78921,-6.683316,0
+            106.808178,-6.641316,0
+            106.793675,-6.588395,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+      <Placemark id="tes_rute.10">
+        <TimeSpan>
+          <end>204</end>
+        </TimeSpan>
+        <ExtendedData>
+          <SchemaData schemaUrl="#tes_rute.schema">
+            <SimpleData name="start">267</SimpleData>
+            <SimpleData name="duration">63.4233333333333</SimpleData>
+            <SimpleData name="distance">15.1833</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <LineString>
+          <coordinates>
+            106.793675,-6.588395,0
+            106.763534,-6.565534,0
+            106.750991,-6.494955,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+    </Document>
+    <Document id="pt">
+      <name>pt</name>
+      <Placemark id="pt.1">
+        <ExtendedData>
+          <SchemaData schemaUrl="#pt.schema">
+            <SimpleData name="kota">Bogor</SimpleData>
+            <SimpleData name="nama_rs">RS Sentosa</SimpleData>
+            <SimpleData name="telepon">0251 - 7541900</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            106.7511317,-6.49509490199995,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark id="pt.2">
+        <ExtendedData>
+          <SchemaData schemaUrl="#pt.schema">
+            <SimpleData name="kota">Bekasi</SimpleData>
+            <SimpleData name="nama_rs">RS Umum Cikarang Medika</SimpleData>
+            <SimpleData name="telepon">021-29568832</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            107.1450996,-6.25192369399997,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark id="pt.3">
+        <ExtendedData>
+          <SchemaData schemaUrl="#pt.schema">
+            <SimpleData name="kota">Bekasi</SimpleData>
+            <SimpleData name="nama_rs">RS Umum Medirossa Cikarang</SimpleData>
+            <SimpleData name="telepon">021-89833216</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            107.1449779,-6.29924530899996,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark id="pt.4">
+        <ExtendedData>
+          <SchemaData schemaUrl="#pt.schema">
+            <SimpleData name="kota">Kota Bogor</SimpleData>
+            <SimpleData name="nama_rs">RS Ibu dan Anak Sawojajar</SimpleData>
+            <SimpleData name="telepon">(0251) 832 4371</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            106.7937124,-6.58811098699994,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark id="pt.5">
+        <ExtendedData>
+          <SchemaData schemaUrl="#pt.schema">
+            <SimpleData name="kota">Kota Tasikmalaya</SimpleData>
+            <SimpleData name="nama_rs">RS Umum Islam Hj. Siti Muniroh</SimpleData>
+            <SimpleData name="telepon">0265-323868</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            108.2327706,-7.37875929399996,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark id="pt.6">
+        <ExtendedData>
+          <SchemaData schemaUrl="#pt.schema">
+            <SimpleData name="kota">Sukabumi</SimpleData>
+            <SimpleData name="nama_rs">RS Primaya Sukabumi</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            106.9578253,-6.91845824999996,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark id="pt.7">
+        <ExtendedData>
+          <SchemaData schemaUrl="#pt.schema">
+            <SimpleData name="kota">Bogor</SimpleData>
+            <SimpleData name="nama_rs">RS Umum Daerah Cileungsi</SimpleData>
+            <SimpleData name="telepon">(021) 89934667</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            107.0486656,-6.43280450999993,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark id="pt.8">
+        <ExtendedData>
+          <SchemaData schemaUrl="#pt.schema">
+            <SimpleData name="kota">Kota Bekasi</SimpleData>
+            <SimpleData name="nama_rs">RS Umum Masmitra</SimpleData>
+            <SimpleData name="telepon">2184971766</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            106.929967,-6.28174514199998,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark id="pt.9">
+        <ExtendedData>
+          <SchemaData schemaUrl="#pt.schema">
+            <SimpleData name="kota">Kuningan</SimpleData>
+            <SimpleData name="nama_rs">RS Jantung Hasna Medika Kuningan</SimpleData>
+            <SimpleData name="telepon">6.22329E+11</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            108.467808,-6.97465585799995,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark id="pt.10">
+        <ExtendedData>
+          <SchemaData schemaUrl="#pt.schema">
+            <SimpleData name="kota">Indramayu</SimpleData>
+            <SimpleData name="nama_rs">RS Sentra Medika Langut</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            108.2506487,-6.40697151799998,0
+          </coordinates>
+        </Point>
+      </Placemark>
+    </Document>
+  </Document>
+</kml>

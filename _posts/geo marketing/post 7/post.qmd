@@ -1,0 +1,173 @@
+---
+title: "Oprek Data Geospasial Berformat .kml dan .kmz Menggunakan R"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: false
+    toc-depth: 4
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: true
+  warning: false
+  error: false
+---
+
+```{r}
+#| include: false
+
+rm(list=ls())
+gc()
+```
+
+Tulisan ini masih menjadi satu rangkaian pengolahan data *geomarketing* yang saya sedang lakukan di kantor beberapa minggu belakangan ini.
+
+Kali ini saya hendak menuliskan tentang apa saja yang saya oprek dari format data geospasial berekstensi `.kml` dan `.kmz`.
+
+Sebagai contoh pada tulisan ini, saya akan menggunakan data *Google Mymaps* yang saya miliki. Saya memiliki data rekapan rute yang dijalankan oleh beberapa orang *interviewer* saat melakukan survey di kota Solo. Berikut adalah contoh datanya saat ditampilkan di *Google Mymaps*.
+
+![](solo.png){fig-align="center" width="650"}
+
+Datanya sendiri disimpan dalam nama `Solo Full.kmz`. Jika dilihat dari peta di atas, `Solo Full.kmz` memiliki beberapa *layers* rute.
+
+***Oke, kita mulai ngopreknya...!***
+
+Pertama-tama, kita panggil *libraries* yang terlibat:
+
+```{r}
+library(dplyr) # data wrangling
+library(tidyr) # data wrangling
+library(sf)    # geospasial
+library(mapview) # membuat maps
+```
+
+Langkah pertama adalah dengan mengecek ada berapa *layers* data pada *file* `.kmz` tersebut.
+
+```{r}
+file     = "Solo Full.kmz"
+layers   = st_layers(file)
+
+layers
+```
+
+Kita dapatkan ada 10 *layers* yang merupakan 10 rute yang saya miliki di Solo. Selanjutnya saya hendak melihat detail salah satu *layer* yang ada. Misalkan *layer* bernama `Surakarta-Banjarsari-Banyuanyar`.
+
+```{r}
+df_geo = st_read(file,layer = layers$name[1])
+```
+
+Berikut ini adalah detail *object* data yang sudah di-*read*:
+
+```{r}
+df_geo
+```
+
+Terlihat membingungkan ya? Ini versi simpelnya:
+
+```{r}
+df_geo |> glimpse()
+```
+
+Kita bisa membuat *maps* di **R** menggunakan *layer* tersebut:
+
+```         
+mapview(df_geo)
+```
+
+![](map.png){fig-align="center" width="650"}
+
+Kita juga bisa memandang data tersebut sebagai struktur *data frame*.
+
+```{r}
+df_geo |> as.data.frame()
+```
+
+Perhatikan bahwa **baris pertama adalah rute jalan** sedangkan **baris kedua sampai akhir merupakan titik tempat**.
+
+Kita juga bisa mengekstrak titik *longlat* dari kolom `geometri` sebagai berikut:
+
+```{r}
+df_geo[2:4,] %>% 
+  mutate(long = st_coordinates(.)[,1],
+         lat = st_coordinates(.)[,2]) |> 
+  select(Name,long,lat) |> 
+  as.data.frame()
+```
+
+Jika rekan-rekan masih ingat tulisan saya tentang [perhitungan jarak dan membuat rute di `osrm`](https://ikanx101.com/blog/osrm-R/), kita juga bisa meng-ekspor rute tersebut menjadi format ekstensi `.kml` sehingga bisa di-*upload* dan digunakan pada *Google Earth* atau *Google Mymaps*.
+
+Sebagai contoh, saya akan gunakan data `sebaran rumah sakit` di Provinsi Jawa Barat yang saya dapatkan dari situs *arcgis Jawa Barat*. Berikut adalah contoh datanya:
+
+```{r}
+#| include: false
+
+rm(list=ls())
+gc()
+
+file = "sebaran-rumah-sakit-jawa-barat.csv"
+df   = read.csv(file) |> janitor::clean_names()
+
+df = df |> select(wadmkk,namobj,telepon,geom) 
+
+# acak = sample(1:nrow(df),10)
+acak = c(204,248,159,267,34,378,209,166,337,360)
+
+df = df[acak,]
+df = df |> rename(kota = wadmkk,
+                  nama_rs = namobj)
+
+df = 
+  df |> 
+  mutate(geom = gsub("POINT (","",geom,fixed = T)) |>
+  mutate(geom = gsub("\\)","",geom)) |>
+  separate(geom,
+           into = c("lat","long"),
+           sep = " ") |> 
+  mutate(lat = as.numeric(lat),
+         long = as.numeric(long))
+```
+
+```{r}
+#| echo: false
+df |> knitr::kable()
+```
+
+Misalkan **saya hendak membuat rute bersepeda yang melalui 10 Rumah Sakit** tersebut. Saya bisa menggunakan *function* `osrmTrip()` dari `library(osrm)` dengan input berupa matriks *longlat*. Berikut caranya:
+
+```{r}
+input = df |> select(long,lat) |> as.matrix()
+input
+trips = osrm::osrmTrip(loc = input,osrm.profile = "bike")
+trips
+```
+
+Saya dapatkan total durasi perjalanan selama `r round(trips[[1]]$summary$duration,1)` menit dengan total jarak sebesar `r round(trips[[1]]$summary$distance,1)` km.
+
+Berikut adalah petanya:
+
+```{r}
+mytrip = trips[[1]]$trip
+```
+
+```         
+mapview(mytrip)
+```
+
+![](trip.png){fig-align="center" width="650"}
+
+Kita bisa *save* rute tersebut menjadi file `.kml` agar bisa dimasukkan ke dalam *Google Earth* atau *Google Mymaps*, caranya:
+
+```{r}
+titik = 
+  df |> 
+  st_as_sf(coords = c("long", "lat"), crs = "+proj=longlat +datum=WGS84")
+
+st_write(obj = titik, dsn = "tes rute.kml", driver = "libkml",layer="pt")
+st_write(obj = mytrip, dsn = "tes rute.kml", driver = "libkml")
+```
+
+Berikut adalah *screenshot* setelah saya *upload* ke *Google Mymaps*:
+
+![](gmap.png){fig-align="center" width="650"}

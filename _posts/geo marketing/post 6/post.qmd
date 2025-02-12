@@ -15,7 +15,6 @@ execute:
   error: false
 ---
 
-
 ```{r}
 #| include: false
 rm(list=ls())
@@ -25,23 +24,22 @@ library(dplyr)
 library(tidyr)
 ```
 
-Beberapa waktu belakangan ini, saya sedang mengerjakan kembali beberapa _project_ terkait _geomarketing_ di kantor. Agar tidak lupa, saya juga menuliskan beberapa algoritma terkait pengerjaan data _geolocation_ di blog ini.
+Beberapa waktu belakangan ini, saya sedang mengerjakan kembali beberapa *project* terkait *geomarketing* di kantor. Agar tidak lupa, saya juga menuliskan beberapa algoritma terkait pengerjaan data *geolocation* di blog ini.
 
-Setidaknya ada beberapa tulisan yang pernah saya tulis terkait tahapan pre-analisa _geolocation_ dan _geomarketing_, yakni:
+Setidaknya ada beberapa tulisan yang pernah saya tulis terkait tahapan pre-analisa *geolocation* dan *geomarketing*, yakni:
 
-1. [Mencari nama kecamatan, kota / kabupaten, dan provinsi dari data longlat menggunakan data GADM.](https://ikanx101.com/blog/raster-gadm/)
-1. [Mencari titik longlat dari data berupa alamat lengkap.](https://ikanx101.com/blog/tidy-geocoding/)
-1. [Menghitung jarak antara dua titik longlat menggunakan _open street map_.](https://ikanx101.com/blog/osrm-R/)
-1. [Mencari batas-batas wilayah dari data GADM.](https://ikanx101.com/blog/batas-wilayahgeo/)
+1.  [Mencari nama kecamatan, kota / kabupaten, dan provinsi dari data longlat menggunakan data GADM.](https://ikanx101.com/blog/raster-gadm/)
+2.  [Mencari titik longlat dari data berupa alamat lengkap.](https://ikanx101.com/blog/tidy-geocoding/)
+3.  [Menghitung jarak antara dua titik longlat menggunakan *open street map*.](https://ikanx101.com/blog/osrm-R/)
+4.  [Mencari batas-batas wilayah dari data GADM.](https://ikanx101.com/blog/batas-wilayahgeo/)
 
-Pada tulisan kali ini saya akan menuliskan bagaimana cara melakukan _reverse geocoding_ di __R__. Apa itu _reverse geocoding_?
+Pada tulisan kali ini saya akan menuliskan bagaimana cara melakukan *reverse geocoding* di **R**. Apa itu *reverse geocoding*?
 
-> Jadi _reverse geocoding_ adalah mencari alamat lengkap dari data berupa titik longlat.
+> Jadi *reverse geocoding* adalah mencari alamat lengkap dari data berupa titik longlat.
 
 Bagaimana caranya? Cukup mudah.
 
-Misalkan saya memiliki data _geolocation_ sebagai berikut:
-
+Misalkan saya memiliki data *geolocation* sebagai berikut:
 
 ```{r}
 df = data.frame(lat = c(-6.187633,-6.648847), 
@@ -69,13 +67,12 @@ output_1 =
   )
 ```
 
-Mari kita lihat _output_-nya sebagai berikut:
+Mari kita lihat *output*-nya sebagai berikut:
 
 ```{r}
 #| echo: false
 output_1 |> knitr::kable()
 ```
-
 
 Jika rekan-rekan perhatikan, metode yang digunakan pada skrip tersebut adalah `osm`. Sebagaimana fungsi lain dari `library(tidygeocoder)`, kita bisa mengganti metodenya menjadi `arcgis`. Apa bedanya? Coba kita ganti:
 
@@ -90,18 +87,15 @@ output_2 =
   )
 ```
 
-Mari kita lihat _output_-nya sebagai berikut:
+Mari kita lihat *output*-nya sebagai berikut:
 
 ```{r}
 #| echo: false
 output_2 |> knitr::kable()
 ```
 
-Bagaimana? Mudah _kan_?
+Bagaimana? Mudah *kan*?
 
----
+------------------------------------------------------------------------
 
 `if you find this article helpful, support this blog by clicking the ads.`
-
-
-
