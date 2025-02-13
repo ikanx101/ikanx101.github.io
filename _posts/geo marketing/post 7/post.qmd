@@ -86,6 +86,14 @@ df_geo |> as.data.frame()
 
 Perhatikan bahwa **baris pertama adalah rute jalan** sedangkan **baris kedua sampai akhir merupakan titik tempat**.
 
+Kita bisa menghitung berapa jarak dari rute jalan pada baris pertama dengan cara:
+
+```{r}
+st_length(df_geo$geometry[1])
+```
+
+Kita dapatkan jarak sepanjang __1.359,684 meter__.
+
 Kita juga bisa mengekstrak titik *longlat* dari kolom `geometri` sebagai berikut:
 
 ```{r}
@@ -160,12 +168,12 @@ mapview(mytrip)
 Kita bisa *save* rute tersebut menjadi file `.kml` agar bisa dimasukkan ke dalam *Google Earth* atau *Google Mymaps*, caranya:
 
 ```{r}
-titik = 
-  df |> 
-  st_as_sf(coords = c("long", "lat"), crs = "+proj=longlat +datum=WGS84")
-
-st_write(obj = titik, dsn = "tes rute.kml", driver = "libkml",layer="pt")
-st_write(obj = mytrip, dsn = "tes rute.kml", driver = "libkml")
+# titik = 
+#   df |> 
+#   st_as_sf(coords = c("long", "lat"), crs = "+proj=longlat +datum=WGS84")
+# 
+# st_write(obj = titik, dsn = "tes rute.kml", driver = "libkml",layer="pt")
+# st_write(obj = mytrip, dsn = "tes rute.kml", driver = "libkml")
 ```
 
 Berikut adalah *screenshot* setelah saya *upload* ke *Google Mymaps*:
