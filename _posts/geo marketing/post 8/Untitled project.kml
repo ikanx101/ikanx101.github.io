@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>Untitled project</name>
+	<Schema name="__managed_schema" id="__managed_schema">
+		<SimpleField type="int" name="055D273F113638818691">
+			<displayName>Accuracy (m)</displayName>
+		</SimpleField>
+	</Schema>
+	<StyleMap id="__managed_style_0D8B379CA5363883064A">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_116E22D525363883064A</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_2B6684C26E363883064A</styleUrl>
+		</Pair>
+	</StyleMap>
+	<gx:CascadingStyle kml:id="__managed_style_2B6684C26E363883064A">
+		<Style>
+			<IconStyle>
+				<scale>1.2</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=fbc02d&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>5.33125</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<gx:displayMode>card</gx:displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<gx:CascadingStyle kml:id="__managed_style_036EF2BD8D363881868B">
+		<Style>
+			<IconStyle>
+				<scale>1.2</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>5.33125</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<displayMode>hide</displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<gx:CascadingStyle kml:id="__managed_style_1FAF9C7F263638818689">
+		<Style>
+			<IconStyle>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>3.55417</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<displayMode>hide</displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<gx:CascadingStyle kml:id="__managed_style_116E22D525363883064A">
+		<Style>
+			<IconStyle>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=fbc02d&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>3.55417</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<gx:displayMode>card</gx:displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<StyleMap id="__managed_style_0791BD9B663638818689">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_1FAF9C7F263638818689</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_036EF2BD8D363881868B</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Placemark id="019D38350B3638818670">
+		<name>No Name Places</name>
+		<LookAt>
+			<longitude>106.9124154</longitude>
+			<latitude>-6.1877077</latitude>
+			<altitude>6.93236901994495</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>500</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0791BD9B663638818689</styleUrl>
+		<ExtendedData>
+			<SchemaData schemaUrl="#__managed_schema">
+				<SimpleData name="055D273F113638818691">11</SimpleData>
+			</SchemaData>
+		</ExtendedData>
+		<Point>
+			<extrude>1</extrude>
+			<coordinates>106.9124154,-6.1877077,5.563954818290306</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="08BE371CCA3638830640">
+		<name>Laka - Laka Mie Ayam &amp; Bakso</name>
+		<gx:mid>/g/11bxgp6nv6</gx:mid>
+		<gx:fid>0x2e698b37715a4159:0xc7a018582487f567</gx:fid>
+		<LookAt>
+			<longitude>106.9229668</longitude>
+			<latitude>-6.1907905</latitude>
+			<altitude>0</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>1049.646558898431</range>
+			<altitudeMode>relativeToGround</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0D8B379CA5363883064A</styleUrl>
+		<Point>
+			<altitudeMode>relativeToGround</altitudeMode>
+			<coordinates>106.9229668,-6.190790499999999,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="091693A4793638832365">
+		<name>Bakso Rindu 5</name>
+		<gx:mid>/g/1pzv4xt52</gx:mid>
+		<gx:fid>0x2e698b48f25979e5:0x4e17f98f30318629</gx:fid>
+		<LookAt>
+			<longitude>106.9223879</longitude>
+			<latitude>-6.1967251</latitude>
+			<altitude>0</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>1049.63335291369</range>
+			<altitudeMode>relativeToGround</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0D8B379CA5363883064A</styleUrl>
+		<Point>
+			<altitudeMode>relativeToGround</altitudeMode>
+			<coordinates>106.9223879,-6.1967251,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="009A368BFF36388341A7">
+		<name>&quot; Bakso Sumo &quot;</name>
+		<gx:mid>/g/1q62gzkzq</gx:mid>
+		<gx:fid>0x2e698b2cdf0a96cf:0xd60be357c4e94e6b</gx:fid>
+		<LookAt>
+			<longitude>106.9134565</longitude>
+			<latitude>-6.1809812</latitude>
+			<altitude>0</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>1049.668359504508</range>
+			<altitudeMode>relativeToGround</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0D8B379CA5363883064A</styleUrl>
+		<Point>
+			<altitudeMode>relativeToGround</altitudeMode>
+			<coordinates>106.9134565,-6.1809812,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="044AD3B57E3638835895">
+		<name>Pondok Bakso Barokah Pak Sugeng</name>
+		<gx:mid>/g/11bbrgnqwy</gx:mid>
+		<gx:fid>0x2e698b699676f031:0xe3198d603e75fd9d</gx:fid>
+		<LookAt>
+			<longitude>106.9073123</longitude>
+			<latitude>-6.1845791</latitude>
+			<altitude>0</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>1049.660367367258</range>
+			<altitudeMode>relativeToGround</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0D8B379CA5363883064A</styleUrl>
+		<Point>
+			<altitudeMode>relativeToGround</altitudeMode>
+			<coordinates>106.9073123,-6.1845791,0</coordinates>
+		</Point>
+	</Placemark>
+</Document>
+</kml>

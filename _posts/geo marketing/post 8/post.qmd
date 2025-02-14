@@ -1,0 +1,357 @@
+---
+title: "Mengambil Data Longlat dari Google Earth dan OpenStreetMap"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: false
+    toc-depth: 4
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: true
+  warning: false
+  error: false
+---
+
+```{r}
+#| include: false
+
+rm(list=ls())
+gc()
+
+setwd("~/ikanx101.github.io/_posts/geo marketing/post 8")
+```
+
+Pada 2022 lalu, saya membuat suatu algoritma untuk bisa melakukan *web scraping* dari **Google Maps** dengan mengandalkan `library(RSelenium)` dan `library(rvest)` di **R**. Sampai saat ini, algoritma tersebut menjadi andalan dalam mengambil data-data *point of interest* (tempat-tempat keramaian) sebagai bahan analisa *geomarketing* di kantor.
+
+Proses kerjanya sederhana. Saya butuh *input* berupa:
+
+1.  Nama kota atau area target.
+2.  *Keywords* pencarian tempat.
+
+Secara otomatis algoritma tersebut akan mencari tempat sesuai *keywords* di kota atau area tersebut sampai selesai.
+
+------------------------------------------------------------------------
+
+Beberapa rekan yang tidak terlalu paham *ngoding* juga ingin melakukan *web scraping* dengan skala yang lebih kecil dan ringkas dari **Google Maps**. Misalkan mereka ingin mencari para pedagang bakso dari suatu kecamatan. Biasanya rekan-rekan saya ini langsung menggunakan layanan **Apify**. Salah satu keunggulannya adalah mereka tidak perlu *ngoding*. Namun, hasil yang didapatkan biasanya masih terbatas.
+
+*Nah* kali ini saya akan memberikan cara alternatif **bagaimana cara mengambil data POI dari Google Earth dan OpenStreetMap**.
+
+Cara yang hendak saya share ini bersifat semi otomatis. Maksudnya adalah ada beberapa hal yang harus kita kerjakan secara manual tapi ada beberapa hal yang bisa dipercepat dengan **R**.
+
+> **Prinsip sederhananya adalah dengan mengekspor data Google Earth atau OpenStreetMap ke dalam format** `.kml` **untuk kemudian [dibaca](https://ikanx101.com/blog/kml-kmz/)**.
+
+Berikut ini adalah tabel perbedaan data yang bisa diambil dari kedua situs tersebut:
+
+![](perbedaan.png){fig-align="center"}
+
+Dari hasil oprekan saya, saya memiliki hipotesis sebagai berikut:
+
+1.  *Google Earth* bisa digunakan untuk mendapatkan data **POI** yang bersifat umum dan bebas. Misalkan: mencari pedagang bakso, warung, mie ayam, dll.
+2.  *OpenStreetMap* bisa digunakan untuk mendapatkan data **POI** berdasarkan *list amenities* yang sudah tersedia.
+
+Oke, saya mulai yang pertama ya.
+
+## *Google Earth*
+
+### Profil Singkat
+
+*Google Earth* adalah program perangkat lunak dan layanan peta berbasis *web* yang memungkinkan pengguna untuk menjelajahi dunia secara *virtual* melalui gambar satelit, peta, dan data geografis 3D. Diluncurkan oleh Google pada tahun 2001, awalnya bernama *Earth Viewer 3D*, *Google Earth* telah berkembang menjadi alat yang sangat populer untuk visualisasi bumi dan analisis geografis. Pengguna dapat terbang secara virtual ke lokasi mana pun di planet ini, melihat lanskap, bangunan 3D, dan fitur geografis lainnya dengan detail yang menakjubkan. Selain tampilan bumi, *Google Earth* juga menyediakan akses ke data astronomi untuk menjelajahi langit malam dan planet lain.
+
+Fitur utama *Google Earth* termasuk citra satelit resolusi tinggi yang diperbarui secara berkala, yang memungkinkan pengguna melihat perubahan di permukaan bumi dari waktu ke waktu. Fitur 3D memungkinkan visualisasi lanskap dan bangunan dalam tiga dimensi, memberikan perspektif yang lebih realistis. Street View, yang terintegrasi dengan *Google Earth*, memungkinkan pengguna untuk melihat gambar panorama 360 derajat dari jalan-jalan di berbagai lokasi di seluruh dunia. Selain itu, Google Earth menyediakan fitur untuk mengukur jarak dan area, menambahkan anotasi, membuat tur virtual, dan mengakses data historis untuk melihat perubahan lingkungan dari waktu ke waktu.
+
+*Google Earth* memiliki berbagai aplikasi praktis dan edukatif. Dalam pendidikan, alat ini digunakan untuk mempelajari geografi, lingkungan, dan budaya di seluruh dunia. Untuk perjalanan dan pariwisata, Google Earth membantu pengguna merencanakan rute perjalanan, mencari lokasi menarik, dan mendapatkan gambaran visual tentang tujuan mereka sebelum berkunjung. Profesional di bidang perencanaan kota, konservasi lingkungan, dan penelitian ilmiah juga memanfaatkan *Google Earth* untuk analisis spasial, pemantauan perubahan lahan, dan visualisasi data geografis. Dengan antarmuka yang intuitif dan akses ke data global yang luas, Google Earth terus menjadi alat yang berharga bagi berbagai kalangan untuk eksplorasi dan pemahaman tentang dunia kita.
+
+### Cara Mengambil Data
+
+Pertama-tama, kita buka situs *Google Earth* \>\> *Create New Project*. Lalu kita buka peta yang ada. Kita bisa langsung mencari **POI** sesuai kebutuhan di area yang kita inginkan. Sebagai contoh, saya hendak mencari **bakso** di area sekitar Jakarta Timur.
+
+![](earth1.png){fig-align="center" width="750"}
+
+Kita bisa memilih __POI__ yang diinginkan dari _search box_. Lalu kita pilih ___Save to Project___. Jika sudah memilih dan _save_, contohnya sebagai berikut:
+
+![](earth2.png){fig-align="center" width="750"}
+
+Selain titik __POI__, kita juga bisa menambahkan _path_ atau _polygon_ dari peta tersebut.
+
+Setelah itu, kita akan _export_ menjadi format `.kml` berikut:
+
+![](earth3.png){fig-align="center" width="750"}
+
+Dari data `.kml` itu, kita bisa ekstrak informasinya sebagai berikut:
+
+```{r}
+#| warning: false
+#| message: false
+
+library(dplyr)
+library(sf)
+
+file   = "Untitled project.kml"
+df_geo = st_read(file)
+
+df_geo %>% 
+  mutate(long = st_coordinates(.)[,1],
+         lat = st_coordinates(.)[,2]) |> 
+  select(Name,long,lat) |> 
+  as.data.frame() %>% 
+  knitr::kable()
+```
+
+Data yang kita dapatkan murni hanya `Nama POI` dan titik `longlat` saja.
+
+
+
+
+## *OpenStreetMap*
+
+### Profil Singkat
+
+_OpenStreetMap_ (OSM) adalah proyek kolaboratif daring untuk menciptakan peta dunia yang bebas dan terbuka. Dikenal sebagai "Wikipedia untuk peta," OSM dibangun oleh komunitas pembuat peta yang menyumbangkan dan memelihara data tentang jalan, jalur setapak, rel kereta api, sungai, bangunan, dan banyak lagi di seluruh dunia. Data peta ini dibuat secara sukarela oleh orang-orang yang menggunakan survei lapangan, perangkat GPS, citra udara, dan sumber bebas lainnya. _OpenStreetMap_ dilisensikan di bawah Lisensi _Creative Commons Attribution-ShareAlike 2.0_, yang berarti data peta bebas digunakan, didistribusikan, dan dimodifikasi, asalkan atribusi yang tepat diberikan kepada kontributor _OpenStreetMap_ dan jika turunan peta didistribusikan dengan lisensi yang sama.
+
+Salah satu karakteristik utama _OpenStreetMap_ adalah sifatnya yang terbuka dan fleksibel. Data peta dapat diakses dan diunduh oleh siapa saja secara gratis dalam berbagai format data, memungkinkan pengguna untuk membuat peta khusus untuk berbagai keperluan. Berbeda dengan layanan peta komersial yang seringkali memiliki batasan dalam penggunaan data, _OpenStreetMap_ memungkinkan penggunaan yang luas dalam pengembangan perangkat lunak, penelitian, pendidikan, dan aplikasi komersial. Komunitas _OpenStreetMap_ yang aktif terus menerus memperbarui dan meningkatkan kualitas data peta, memastikan bahwa informasi yang tersedia selalu relevan dan akurat. Berbagai alat dan platform tersedia untuk berkontribusi pada _OpenStreetMap_, dari editor _web_ sederhana hingga perangkat lunak __GIS__ yang lebih canggih, sehingga siapa pun dapat terlibat dalam pemetaan.
+
+_OpenStreetMap_ memiliki dampak yang signifikan di berbagai bidang. Dalam konteks kemanusiaan, OSM telah memainkan peran penting dalam membantu upaya bantuan bencana, menyediakan peta yang sangat rinci dan terbaru di daerah-daerah yang terkena dampak di mana data peta komersial mungkin tidak tersedia atau tidak mutakhir. Dalam pengembangan, OSM digunakan untuk perencanaan kota, manajemen sumber daya alam, dan proyek infrastruktur. Bisnis dan organisasi juga memanfaatkan _OpenStreetMap_ untuk berbagai aplikasi, termasuk navigasi, analisis lokasi, dan visualisasi data. Dengan sifatnya yang terbuka, komunitas yang kuat, dan fleksibilitas penggunaan, _OpenStreetMap_ terus menjadi sumber daya peta global yang berharga dan semakin penting.
+
+### **Categories of Amenities in OpenStreetMap:**
+
+**1. Food and Drink:**
+
+-   **`restaurant`**: Restaurants of various cuisines and types.
+-   **`cafe`**: Coffee shops, cafes.
+-   **`bar`**: Bars, pubs.
+-   **`fast_food`**: Fast food restaurants.
+-   **`food_court`**: Areas with multiple food vendors.
+-   **`ice_cream`**: Ice cream parlors.
+-   **`pub`**: Traditional pubs.
+-   **`biergarten`**: Beer gardens.
+-   **`wine_bar`**: Wine bars.
+-   **`juice_bar`**: Juice bars.
+-   **`nightclub`**: Nightclubs, discos.
+
+**2. Accommodation:**
+
+-   **`hotel`**: Hotels.
+-   **`motel`**: Motels.
+-   **`hostel`**: Hostels, youth hostels.
+-   **`guest_house`**: Guest houses.
+-   **`bed_and_breakfast`**: Bed and Breakfasts (B&Bs).
+-   **`chalet`**: Chalets.
+-   **`alpine_hut`**: Alpine huts, mountain huts.
+-   **`camp_site`**: Camp sites, campgrounds.
+-   **`caravan_site`**: Caravan sites, RV parks.
+
+**3. Shops and Commerce (Often also tagged with `shop=*`):**
+
+-   **`bank`**: Banks.
+-   **`atm`**: Automated Teller Machines (ATMs).
+-   **`bureau_de_change`**: Currency exchange bureaus.
+-   **`vending_machine`**: Vending machines (often specified with `vending=*` for type of product).
+-   **`car_wash`**: Car washes.
+-   **`dry_cleaning`**: Dry cleaners.
+-   **`laundry`**: Laundromats, self-service laundries.
+-   **`marketplace`**: Marketplaces.
+-   **`kiosk`**: Kiosks.
+-   **`convenience`**: Convenience stores.
+-   **`supermarket`**: Supermarkets.
+-   **`department_store`**: Department stores.
+-   **`greengrocer`**: Greengrocers (fruit and vegetable shops).
+-   **`bakery`**: Bakeries.
+-   **`butcher`**: Butchers.
+-   **`florist`**: Florists.
+-   **`gift_shop`**: Gift shops.
+-   **`jewelry`**: Jewelry stores.
+-   **`newsagent`**: Newsagents.
+-   **`clothes`**: Clothing stores.
+-   **`shoes`**: Shoe stores.
+-   **`books`**: Bookstores.
+-   **`electronics`**: Electronics stores.
+-   **`hardware`**: Hardware stores.
+-   **`furniture`**: Furniture stores.
+-   **`garden_centre`**: Garden centers.
+-   **`sports`**: Sports shops.
+-   **`toys`**: Toy stores.
+-   **`car_repair`**: Car repair shops.
+-   **`bicycle_repair_shop`**: Bicycle repair shops.
+-   **`computer_repair`**: Computer repair shops.
+-   **`mobile_phone_shop`**: Mobile phone shops.
+-   **`photo_shop`**: Photo shops.
+-   **`stationery`**: Stationery shops.
+-   **`travel_agency`**: Travel agencies.
+
+**4. Financial Services:**
+
+-   **`bank`**: Banks (already mentioned above, but significant).
+-   **`atm`**: ATMs (already mentioned above, but significant).
+-   **`bureau_de_change`**: Currency exchange (already mentioned above).
+
+**5. Transportation:**
+
+-   **`bus_station`**: Bus stations.
+-   **`bus_stop`**: Bus stops.
+-   **`taxi`**: Taxi ranks, taxi stands.
+-   **`fuel`**: Fuel stations (gas stations, petrol stations).
+-   **`charging_station`**: Electric vehicle charging stations.
+-   **`car_rental`**: Car rental agencies.
+-   **`bicycle_rental`**: Bicycle rental agencies.
+-   **`ferry_terminal`**: Ferry terminals.
+-   **`parking`**: Parking areas (surface parking, parking garages - often further detailed with `parking=*` key).
+-   **`parking_entrance`**: Entrances to parking areas.
+-   **`car_sharing`**: Car sharing locations.
+-   **`bicycle_parking`**: Bicycle parking.
+-   **`airport`**: Airports (though often tagged as `aeroway=aerodrome` and `amenity=airport`).
+-   **`railway_station`**: Railway stations (train stations - often tagged as `railway=station` and `amenity=railway_station`).
+-   **`tram_stop`**: Tram stops.
+-   **`subway_entrance`**: Subway/Metro entrances.
+
+**6. Healthcare:**
+
+-   **`hospital`**: Hospitals.
+-   **`clinic`**: Clinics.
+-   **`doctors`**: Doctor's offices, general practitioners, specialists.
+-   **`dentist`**: Dentists.
+-   **`pharmacy`**: Pharmacies, chemists.
+-   **`veterinary`**: Veterinary clinics, vets.
+-   **`baby_hatch`**: Baby hatches (places for safe infant surrender).
+-   **`blood_donation`**: Blood donation centers.
+-   **`first_aid`**: First aid stations.
+-   **`nursing_home`**: Nursing homes, care homes.
+
+**7. Education and Culture:**
+
+-   **`school`**: Schools (primary, secondary, etc.).
+-   **`kindergarten`**: Kindergartens, preschools.
+-   **`university`**: Universities, colleges.
+-   **`library`**: Libraries.
+-   **`museum`**: Museums.
+-   **`gallery`**: Art galleries.
+-   **`theatre`**: Theatres.
+-   **`cinema`**: Cinemas, movie theaters.
+-   **`planetarium`**: Planetariums.
+-   **`aquarium`**: Aquariums.
+-   **`zoo`**: Zoos.
+-   **`community_centre`**: Community centers.
+-   **`events_venue`**: Event venues, conference centers.
+-   **`music_venue`**: Music venues, concert halls.
+-   **`conference_centre`**: Conference centers.
+-   **`exhibition_centre`**: Exhibition centers.
+
+**8. Public Services:**
+
+-   **`post_office`**: Post offices.
+-   **`townhall`**: Town halls, city halls.
+-   **`police`**: Police stations.
+-   **`fire_station`**: Fire stations.
+-   **`courthouse`**: Courthouses.
+-   **`prison`**: Prisons, jails.
+-   **`recycling`**: Recycling centers, recycling bins (often further specified with `recycling_type=*` and `recycling:*=*` for materials accepted).
+-   **`waste_disposal`**: Waste disposal sites, rubbish dumps.
+-   **`public_building`**: General public buildings (often further specified with `building=*` or `government=*`).
+
+**9. Leisure and Sports:**
+
+-   **`park`**: Parks (often tagged as `leisure=park` and `amenity=park`).
+-   **`playground`**: Playgrounds.
+-   **`sports_centre`**: Sports centers, sports complexes.
+-   **`swimming_pool`**: Swimming pools.
+-   **`gymnasium`**: Gymnasiums.
+-   **`stadium`**: Stadiums.
+-   **`pitch`**: Sports pitches (football, basketball, etc. - often specified with `sport=*`).
+-   **`golf_course`**: Golf courses.
+-   **`miniature_golf`**: Miniature golf courses.
+-   **`water_park`**: Water parks.
+-   **`ice_rink`**: Ice rinks.
+-   **`marina`**: Marinas.
+-   **`beach_resort`**: Beach resorts.
+-   **`dive_centre`**: Dive centers.
+
+**10. Religious Facilities:**
+
+-   **`place_of_worship`**: General place of worship (often further specified with `religion=*` and `denomination=*`).
+-   **`church`**: Churches.
+-   **`cathedral`**: Cathedrals.
+-   **`chapel`**: Chapels.
+-   **`mosque`**: Mosques.
+-   **`synagogue`**: Synagogues.
+-   **`temple`**: Temples (Buddhist, Hindu, etc.).
+-   **`shrine`**: Shrines.
+
+**11. Toilets and Public Conveniences:**
+
+-   **`toilets`**: Public toilets, restrooms.
+-   **`drinking_water`**: Drinking water fountains, water taps.
+-   **`shower`**: Public showers.
+
+**12. Other Amenities:**
+
+-   **`grave_yard`**: Graveyards, cemeteries.
+-   **`crematorium`**: Crematoriums.
+-   **`funeral_home`**: Funeral homes, mortuaries.
+-   **`shelter`**: Shelters (bus shelters, emergency shelters, etc. - often specified with `shelter_type=*`).
+-   **`clock`**: Public clocks.
+-   **`telephone`**: Public telephones, payphones.
+-   **`internet_cafe`**: Internet cafes, cybercafes.
+-   **`social_centre`**: Social centers.
+-   **`coworking_space`**: Coworking spaces.
+-   **`library`**: Libraries (also under Education, but can be seen as a general amenity).
+-   **`childcare`**: Childcare facilities.
+-   **`compressed_air`**: Compressed air stations (e.g., for bikes).
+-   **`bbq`**: Barbecue areas.
+-   **`wastebasket`**: Waste baskets, litter bins.
+-   **`mailboxes`**: Mailboxes, post boxes.
+-   **`feeding_place`**: Animal feeding places.
+-   **`bicycle_wash`**: Bicycle wash stations.
+-   **`lounger`**: Public loungers, deckchairs.
+-   **`shower`**: Public showers.
+-   **`water_well`**: Water wells.
+
+### Cara Mengambil Data
+
+Kunjungi situs [https://overpass-turbo.eu/](https://overpass-turbo.eu/). Kita bisa mengambil data dari OSM berdasarkan _query_. Cara membuat _query_-nya mudah karena kita bisa menggunakan _wizard_.
+
+Sebagai contoh, saya akan mencari SPBU atau _fuel_ di daerah Bekasi.
+
+![](osm1.png){fig-align="center" width="750"}
+
+Kemudian kita akan _export_ ke format `.kml`.
+
+![](osm2.png){fig-align="center" width="750"}
+
+Dari data `.kml` itu, kita bisa ekstrak informasinya sebagai berikut:
+
+```{r}
+#| warning: false
+#| message: false
+
+file   = "export (1).kml"
+df_geo = st_read(file)
+
+df_geo %>% 
+  mutate(centro = st_centroid(geometry)) %>% 
+  mutate(long = st_coordinates(centro)[,1],
+         lat  = st_coordinates(centro)[,2]) |> 
+  select(Name,amenity,operator,opening_hours,addr_street,addr_city,long,lat) |> 
+  as.data.frame() %>% 
+  filter(!is.na(addr_city)) %>% 
+  knitr::kable()
+```
+
+Kita bisa dapatkan berbagai macam data dari OSM. Masih banyak data yang tidka saya tampilkan dari tabel di atas, seperti:
+
+```{r}
+df_geo %>% glimpse()
+```
+
+__Bagaimana? Mudah kan?__
+
+---
+
+
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
+
+
+
