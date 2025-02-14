@@ -490,7 +490,7 @@ df_geo %>%
 | SPBU 34-13908 | fuel | PT Pertamina | NA | NA | DKI Jakarta | 106.9673 | -6.189540 | POINT (106.9673 -6.18954) |
 
 Kita bisa dapatkan berbagai macam data dari OSM. Masih banyak data yang
-tidka saya tampilkan dari tabel di atas, seperti:
+tidak saya tampilkan dari tabel di atas, seperti:
 
 ``` r
 df_geo %>% glimpse()
