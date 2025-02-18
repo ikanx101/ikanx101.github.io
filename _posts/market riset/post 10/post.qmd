@@ -1,0 +1,225 @@
+---
+title: "Simpson Paradox pada Analisa Data Market Riset (dan bagaimana cara mendeteksinya)"
+format:
+  gfm:
+    html-math-method: webtex
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+    editor: visual
+execute:
+  warning: false
+  error: false
+---
+
+Sebagai seorang _market researcher_, seringkali saya menemukan beberapa hasil analisa yang berbeda (bahkan bertolak belakang) tergantung _point of view_ analisa. Sebagai contoh, saat saya melakukan analisa untuk _all respondents_, saya mendapatkan hasilnya berupa __A__. Tapi saat dipisah menjadi kelompok-kelompok responden tertentu, hasilnya sudah bukan __A__ lagi tapi menjadi __B__ (bahkan menjadi __C__).
+
+Kejadian di atas merupakan salah satu contoh dari __Simpson Paradox__.
+
+## **Apa itu Simpson Paradox?**
+
+_Simpson Paradox_, atau Paradoks Simpson, adalah sebuah fenomena yang membingungkan dalam statistika dan probabilitas.  Sederhananya, paradoks ini terjadi ketika suatu kecenderungan atau hubungan yang terlihat dalam beberapa kelompok data **hilang atau bahkan bertolak belakang** ketika kelompok-kelompok data tersebut digabungkan. Paradoks ini dinamakan dari [Edward H. Simpson](https://en.wikipedia.org/wiki/Edward_H._Simpson), seorang statistikawan yang mendeskripsikannya pada tahun 1951, meskipun fenomena ini sudah diketahui sebelumnya.
+
+**Mengapa ini disebut 'Paradoks'?**
+
+Disebut paradoks karena bertentangan dengan intuisi kita. Secara logika, jika dalam setiap kelompok bagian dari keseluruhan kita melihat suatu kecenderungan, kita akan berharap kecenderungan tersebut tetap ada atau semakin kuat ketika semua kelompok digabungkan.  Namun, _Simpson Paradox_ menunjukkan bahwa hal tersebut tidak selalu benar.
+
+## **Contoh Sederhana dalam Konteks Market Research**
+
+Misalkan saya melakukan survey kepuasan pelanggan terhadap dua jenis kemasan produk: 
+
+- Kemasan A dan 
+- Kemasan B.  
+
+Survey dilakukan di dia kota yang berbeda, yakni: __Kota Maju__ dan __Kota Berkembang__.
+
+Berikut adalah hasil survei yang saya dapatkan:
+
+**Kepuasan Pelanggan di Kota Maju**
+
+| Kemasan | Jumlah Pelanggan | Jumlah Puas | Persentase Kepuasan |
+|---|---|---|---|
+| Kemasan A | 100 | 80 | 80% |
+| Kemasan B | 200 | 140 | 70% |
+
+**Kepuasan Pelanggan di Kota Berkembang**
+
+| Kemasan | Jumlah Pelanggan | Jumlah Puas | Persentase Kepuasan |
+|---|---|---|---|
+| Kemasan A | 400 | 240 | 60% |
+| Kemasan B | 100 | 55 | 55% |
+
+**Analisis per Kota:**
+
+*   **Di Kota Maju:** Kemasan A memiliki persentase kepuasan yang lebih tinggi (`80%`) dibandingkan Kemasan B (`70%`).
+*   **Di Kota Berkembang:** Kemasan A juga masih memiliki persentase kepuasan yang lebih tinggi (`60%`) dibandingkan Kemasan B (`55%`).
+
+> Sejauh ini, terlihat jelas bahwa __Kemasan A lebih unggul dalam hal kepuasan pelanggan di kedua kota__.
+
+Sekarang, mari kita **gabungkan data dari kedua kota** untuk melihat gambaran secara keseluruhan:
+
+**Kepuasan Pelanggan Gabungan (Kota Maju + Kota Berkembang)**
+
+| Kemasan | Jumlah Pelanggan Total | Jumlah Puas Total | Persentase Kepuasan Total |
+|---|---|---|---|
+| Kemasan A | 500 (100+400) | 320 (80+240) | 64% |
+| Kemasan B | 300 (200+100) | 195 (140+55) | 65% |
+
+**Analisis Data Gabungan:**
+
+> **Secara keseluruhan (gabungan kedua kota):**  Tiba-tiba, persentase kepuasan untuk Kemasan B (65%) **sedikit lebih tinggi** dibandingkan Kemasan A (64%).
+
+**Paradoksnya Muncul!**
+
+Bagaimana bisa ini terjadi?  Dalam setiap kota secara terpisah, Kemasan A selalu lebih unggul. Tetapi ketika datanya digabungkan, Kemasan B justru terlihat sedikit lebih baik. 
+
+__Inilah inti dari Simpson Paradox.__
+
+## **Penjelasan Mengapa Simpson Paradox Terjadi dalam Contoh Ini**
+
+Paradoks ini terjadi karena adanya **variabel tersembunyi** atau **variabel perancu** (_confounding_ _variable_) yang tidak kita sadari atau tidak kita kontrol. Dalam contoh ini, variabel perancunya adalah **ukuran kota atau jumlah pelanggan di setiap kota**.
+
+*   **Kota Maju:**  Lebih banyak pelanggan yang disurvei untuk Kemasan B (200) dibandingkan Kemasan A (100). Namun, secara persentase, kepuasan Kemasan A tetap lebih tinggi di kota ini.
+*   **Kota Berkembang:**  Jumlah pelanggan untuk Kemasan A (400) jauh lebih banyak dibandingkan Kemasan B (100).  Kepuasan Kemasan A juga lebih tinggi di kota ini secara persentase.
+
+Karena Kota Berkembang memiliki jumlah pelanggan yang jauh lebih besar untuk Kemasan A, dan tingkat kepuasan di Kota Berkembang secara umum lebih rendah dibandingkan Kota Maju (mungkin karena faktor ekonomi, demografi, dll. yang tidak kita teliti di sini), maka ketika data digabungkan, efek dari Kota Berkembang __mendominasi__ hasil keseluruhan.
+
+Akibatnya, meskipun Kemasan A lebih baik di setiap kota, karena proporsi pelanggan Kemasan A yang besar berasal dari kota dengan tingkat kepuasan yang lebih rendah, maka rata-rata kepuasan gabungan Kemasan A menjadi sedikit lebih rendah dibandingkan Kemasan B.
+
+## **Implikasi Simpson Paradox untuk Market Researcher**
+
+Simpson Paradox sangat penting untuk diperhatikan oleh _market researcher_ karena dapat menyebabkan **kesimpulan yang salah atau menyesatkan** jika kita hanya melihat data agregat (data gabungan) tanpa mempertimbangkan subkelompok atau variabel lain yang mungkin relevan.
+
+Dalam pekerjaan Anda, ini berarti:
+
+1.  **Jangan hanya melihat data secara keseluruhan:**  Saat menganalisis hasil survei atau data riset pasar lainnya, jangan hanya terpaku pada angka-angka agregat.  Selalu pertimbangkan untuk memecah data menjadi subkelompok yang lebih kecil berdasarkan variabel-variabel penting (seperti demografi, lokasi geografis, segmen pelanggan, dll.).
+2.  **Identifikasi dan pertimbangkan variabel perancu:**  Pikirkan variabel-variabel lain yang mungkin mempengaruhi hasil riset Anda. Dalam contoh di atas, variabel perancunya adalah kota. Dalam riset pasar lainnya, variabel perancu bisa berupa usia, pendapatan, tingkat pendidikan, jenis kelamin, dan lain-lain.
+3.  **Analisis data per subkelompok:**  Setelah memecah data menjadi subkelompok, lakukan analisis secara terpisah untuk setiap subkelompok. Apakah pola atau tren yang Anda lihat konsisten di semua subkelompok? Jika tidak, mengapa?
+4.  **Hati-hati dalam menarik kesimpulan:**  Jika Anda menemukan Simpson Paradox, berhati-hatilah dalam menarik kesimpulan.  Kesimpulan yang valid mungkin berbeda tergantung pada apakah Anda melihat data agregat atau data per subkelompok.  Pahami konteks dan faktor-faktor yang menyebabkan paradoks tersebut.
+
+**Bagaimana Menghindari Kesalahan Interpretasi Akibat Simpson Paradox?**
+
+*   **Segmentasi Data:**  Langkah pertama adalah selalu melakukan segmentasi data berdasarkan variabel-variabel yang relevan.
+*   **Analisis Lebih Dalam:**  Jangan hanya berhenti pada analisis deskriptif. Lakukan analisis inferensial dan eksploratif untuk memahami hubungan antar variabel dan mengidentifikasi variabel perancu.
+*   **Pertimbangkan Konteks:**  Selalu pertimbangkan konteks riset Anda.  Faktor-faktor apa saja yang mungkin mempengaruhi hasil? Apakah ada variabel tersembunyi yang perlu dipertimbangkan?
+*   **Komunikasi yang Jelas:**  Saat menyampaikan hasil riset, jelaskan secara transparan apakah Simpson Paradox mungkin terjadi dan bagaimana Anda mengatasinya dalam analisis Anda.  Sajikan data per subkelompok dan data agregat jika perlu, dan jelaskan interpretasi yang tepat.
+
+
+# __Bagaimana Mendeteksi Simpson Paradox?__
+
+Salah satu hal yang bisa kita lakukan untuk mendeteksi kemungkinan terjadinya _Simpson Paradox_ adalah dengan memperbanyak _cross_ tabulasi antar variabel pada data yang kita miliki. Namun ada cara lain yang bisa kita lakukan, yakni dengan memanfaatkan model _machine learning_ (baca: statistika) sederhana yakni _general linear model_.
+
+> Prinsipnya adalah seperti mencari _predictors_ mana saja yang __signifikan__ dalam suatu model prediksi.
+
+Model _general linear model_ merupakan model yang mudah diinterpretasikan sehingga menjadi pilihan yang tepat untuk pekerjaan ini.
+
+Saya akan berikan contoh bagaimana regresi binomial logistik bisa digunakan untuk mendeteksi variabel mana saja yang merupakan _confounding variables_.
+
+## Contoh Data Survey
+
+Misalkan saya telah melakukan survey terhadap __365 orang__ responden. 
+
+Survey dilakukan untuk mencari tahu apakah responden _aware_ atau tidak tentang suatu produk makanan dan minuman. Pertanyaan lain yang ditanyakan adalah _gender_, _social economy status_ (SES), dan kelompok usia. Kita akan mencari di antara tiga variabel tersebut, mana yang menjadi _confounding variable_.
+
+Berikut adalah sampel datanya:
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+library(dplyr)
+library(tidyr)
+library(janitor)
+library(ggplot2)
+
+rm(list=ls())
+
+load("data_survey.rda")
+load("model.rda")
+
+id_sample = sample(1:365,10) %>% sort()
+
+df_survey[id_sample,] %>% knitr::kable()
+```
+
+Berikut adalah tabulasi dari demografi jika saya hitung dari _all respondents_:
+
+```{r}
+#| echo: false
+df_survey %>% tabyl(gender) %>% adorn_pct_formatting() %>% knitr::kable()
+df_survey %>% tabyl(ses) %>% adorn_pct_formatting() %>% knitr::kable()
+df_survey %>% tabyl(usia) %>% adorn_pct_formatting() %>% knitr::kable()
+```
+
+Sedangkan berikut ini adalah tabulasi berapa banyak responden yang _aware_:
+
+```{r}
+#| echo: false
+df_survey %>% tabyl(aware) %>% adorn_pct_formatting()%>% knitr::kable()
+```
+
+Jika dilihat, persentase responden yang _aware_ sebesar `48.8%`, sedikit lebih rendah daripada responden yang tidak _aware_ (`51.2%`). Kita akan mencoba mencari pada subkelompok apa dari demografi dimana terjadi perbedaan persentase yang signifikan.
+
+Saya akan membuat model regresi binomial logistik dari data tersebut. Sebelum kita membuat model berikut ini:
+
+$$\text{aware} \sim \text{gender} + \text{ses} + \text{usia}$$
+
+Perlu diperhatikan bahwa kita harus melakukan proses _one hot encoding_ terlebih dahulu karena variabel _gender_, SES, dan kelompok usia merupakan variabel kategorik.
+
+Oleh karena _gender_ hanya memiliki dua nilai:
+
+- __Pria__
+- __Wanita__
+
+Kita cukup membuat label untuk salah satu saja. Hal yang sama juga bisa kita lakukan untuk SES. Kita cukup membuat label untuk SES `middle` dan `lower` saja. Pun demikian untuk variabel kelompok usia.
+
+Sementara untuk _target variable: aware_, saya buat `ya == 1` dan `tidak == 0`.
+
+Setelah kita buat modelnya, kita bisa langsung melihat variabel mana saja yang __signifikan__ terhadap _aware_ berdasarkan model yang ada:
+
+```{r}
+summary(model_logistik)
+```
+
+Kita bisa lihat bahwa:
+
+- __Dua variabel SES__ signifikan dengan nilai koefisien negatif. Artinya pada SES _middle_ dan _low_, peluang lebih tinggi kita mendapatkan responden yang __tidak__ ___aware___. Oleh karena variabel _dummy_ SES __Up__ tidak ada, kita tidak bisa melihat hubungannya. Namun kita bisa simpulkan bahwa variabel SES merupakan salah satu _confounding variable_.
+
+Saya akan coba buat _cross_ tabulasi antara _aware_ dengan SES berikut ini:
+
+```{r}
+#| echo: false
+df_survey %>% tabyl(ses,aware) %>% adorn_percentages("row") %>% 
+  adorn_pct_formatting() %>% knitr::kable()
+```
+
+Sesuai dengan model, kita dapatkan persentase _aware_ tertinggi dari responden yang berasal dari SES __Up__. Sedangkan persentase _aware_ akan menurun sesuai dengan penurunan SES. __Ada perbedaan proporsi__ ___aware___ __pada subkelompok SES__.
+
+- __Ada variabel pada kelompok usia__ yang signifikan, yakni `usia 21-25 th`. Nilai koefisien positif. Artinya kita bisa menduga bahwa pada kelompok usia ini, persentase _aware_ akan lebih banyak. Namun pada variabel kelompok usia yang lain tidak ada yang signifikan.
+
+Saya akan buatkan _cross_ tabulasinya berikut ini:
+
+```{r}
+#| echo: false
+df_survey %>% tabyl(usia,aware) %>% adorn_percentages("row") %>% 
+  adorn_pct_formatting() %>% knitr::kable()
+```
+Kita __tidak bisa simpulkan__ adanya perbedaan proporsi _aware_ pada subkelompok usia.
+
+Dari model di atas, kita tidak mendapatkan _gender_ menjadi _confounding variable_. Mari kita lihat _cross_ tabulasinya:
+
+```{r}
+#| echo: false
+df_survey %>% tabyl(gender,aware) %>% adorn_percentages("row") %>% 
+  adorn_pct_formatting() %>% knitr::kable()
+```
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
+
+
+
