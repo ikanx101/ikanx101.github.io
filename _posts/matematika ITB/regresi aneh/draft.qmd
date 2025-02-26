@@ -1,0 +1,93 @@
+---
+title: "Saat Model Prediksi Memberikan Hasil yang Akurat Tapi Jelek"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: false
+    toc-depth: 4
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: true
+  warning: false
+  error: false
+---
+
+_Nah lho?_ Apakah kalian pusing membaca judul artikel ini? _Hehe_
+
+Jadi begini ceritanya:
+
+---
+
+Beberapa minggu belakangan ini, saya diminta melakukan analisa kausalitas dari dua variabel ke suatu variabel tertentu. Semua variabel yang terlibat berupa numerik. Misalkan saya berikan nama variabel $x_1$ dan $x_2$ sebagai _predictors_ dan $y$ sebagai targetnya.
+
+Salah satu bentuk model kausalitas yang paling sederhana adalah regresi. Jadilah saya mencoba membuat model regresi sebagai berikut:
+
+$$y \sim a \space x_1 + b \space x_2 + C$$
+
+Sebelum membuat regresi, tentu saya harus melihat kembali asumsi-asumsi yang ada, seperti:
+
+1. __Linearitas__; Hubungan antara _predictors_ dan _target_ harus linear. Artinya, perubahan pada variabel independen harus menghasilkan perubahan yang proporsional pada variabel dependen.
+1. __Independensi__; Observasi atau data harus independen satu sama lain. Tidak boleh ada korelasi atau ketergantungan antar observasi.
+1. __Tidak Ada Multikolinearitas__; _predictors_ tidak boleh berkorelasi tinggi satu sama lain. Multikolinearitas dapat menyebabkan masalah dalam estimasi koefisien regresi dan interpretasi hasil.
+
+Beberapa asumsi penting lain baru akan saya hitung setelah model saya selesai dibuat, seperti:
+
+1. __Normalitas Residual__; Selisih antara nilai observasi dan nilai prediksi harus berdistribusi normal. Asumsi ini penting untuk validitas uji hipotesis dan interval kepercayaan.
+1. __Homoskedastisitas__; Varians dari residual harus konstan di seluruh rentang nilai _predictors_. 
+
+__Singkat cerita__, saya telah selesai membuat model regresi.
+
+Untuk menguji seberapa baik performa modelnya, saya menghitung $R^2$ dan _mean absolute error_ (__MAE__).
+
+Saya mendapatkan hasil yang menarik, yakni:
+
+1. $R^2$ yang saya dapatkan kecil.
+1. __MAE__ yang saya dapatkan kecil alias _error_ yang dihasilkan kecil sehingga bisa dibilang hasil prediksi model saya akurat.
+
+> __Sebuah hasil yang saling bertolak belakang__.
+
+Kenapa hal ini bisa terjadi? Mari kita telaah bersama.
+
+## Memahami Metrik
+
+$R^2$ mengukur seberapa besar proporsi varians dalam variabel terikat yang dapat dijelaskan oleh variabel bebas dalam model. $R^2$ yang rendah menunjukkan bahwa model tidak menjelaskan banyak variasi dalam data. Sedangkan __MAE__ mengukur rata-rata perbedaan antara nilai prediksi dan nilai aktual. __MAE__ yang rendah berarti prediksi model cukup akurat.
+
+$R^2$ dan __MAE__ fokus pada aspek yang berbeda dari kinerja model:
+
+1. $R^2$ : seberapa baik model menjelaskan data secara keseluruhan.
+1. __MAE__ : Seberapa akurat prediksi model.
+
+## Karakteristik Data
+
+Bisa jadi beberapa hal ini ditemukan dalam data saya:
+
+1. __Variabilitas Tinggi__; Jika _predictors_ memiliki variabilitas yang tinggi, sulit untuk mencapai $R^2$ yang tinggi, meskipun prediksi cukup akurat (__MAE__ rendah).
+1. __Hubungan Non-linear__; $R^2$ mengasumsikan hubungan linear. Jika hubungan antar variabel non-linear, $R^2$ mungkin rendah meskipun __MAE__ baik.
+
+## Apa Artinya?
+
+Model saya mungkin:
+
+1. Prediktif, tetapi tidak _Explanatory_: Model dapat membuat prediksi yang baik, tetapi tidak serta merta menjelaskan hubungan antar variabel dengan baik.
+1. Baik untuk Tujuan Tertentu: Jika tujuan utama adalah prediksi yang akurat, $R^2$ yang rendah mungkin tidak menjadi masalah selama MAE rendah.
+
+Namun ada satu hal yang saya curigai sebagai penyebabnya, yakni:
+
+___Overfitting___; oleh karena data yang saya miliki terbatas, saya tidak membagi data sebagai _train_ dan _test_ sehingga semua data dijadikan data _input_ pembuatan model. Data yang dijadikan _input_ hanya memiliki 30-40 baris saja. 
+
+_Lho kenapa dipaksakan untuk dibuat?_
+
+Justru saya sengaja ingin membuat model prediksi ini sebagai bentuk pembuktian bahwa hal-hal semacam ini bisa terjadi.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
+
+
+
+
