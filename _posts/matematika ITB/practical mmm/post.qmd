@@ -1,0 +1,513 @@
+---
+title: "Practical Guide to Build Mixed-Marketing-Model"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: false
+    toc-depth: 4
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: true
+  warning: false
+  error: false
+---
+
+Sebenarnya tulisan ini masih _nyambung_ dengan tulisan saya sebelumnya di [sini](https://ikanx101.com/blog/akurat-jelek/). _hehe_
+
+Beberapa pekan terakhir saya sedang berkutat tentang bagaimana membuat _mixed-marketing-model_ (MMM) untuk beberapa _brand_ di kantor. Apa itu MMM?
+
+> MMM (atau sering disebut juga sebagai _marketing mix_), adalah sebuah _framework_ atau konsep dasar dalam pemasaran yang mengidentifikasi dan menggabungkan berbagai elemen pemasaran yang dapat dikendalikan oleh perusahaan untuk mempengaruhi konsumen dan mencapai tujuan pemasaran mereka.  Tujuan utamanya adalah untuk menciptakan kombinasi elemen pemasaran yang paling efektif dan efisien dalam mencapai target pasar yang dituju.
+
+Dalam konteks _mixed marketing_, kita seringkali ingin memahami bagaimana perubahan pada elemen-elemen _marketing mix_ dapat mempengaruhi hasil pemasaran, seperti penjualan, pangsa pasar, atau kesadaran merek.  Untuk menganalisis hubungan ini secara kuantitatif, kita dapat menggunakan teknik regresi.
+
+__Regresi__ adalah metode statistik yang digunakan untuk memodelkan hubungan antara satu variabel dependen (variabel yang ingin dijelaskan atau diprediksi, misalnya penjualan) dengan satu atau lebih variabel independen (variabel yang dianggap mempengaruhi variabel dependen, misalnya belanja iklan, harga, atau promosi).
+
+Berdasarkan informasi di atas, kelak saya hendak membuat model yang tujuannya adalah menghubungkan _predictors_ (variabel-variabel _marketing_ berupa _spending_) terhadap nilai _sales_-nya.
+
+Saya akan berikan salah satu _guide_ sederhana untuk membuat model tersebut. Oleh karena tak mungkin saya menggunakan data yang ada di perusahaan saya, maka saya akan gunakan data contoh yang ada di `library(datarium)`.
+
+```{r}
+#| include: false
+rm(list=ls())
+gc()
+set.seed(9999)
+```
+
+---
+
+Sebagai langkah awal, saya akan panggil _libraries_ yang diperlukan:
+
+```{r}
+#| warning: false
+#| message: false
+
+# load libraries yang dibutuhkan
+
+# dplyr: manipulasi data efisien (filter, sort, group)
+library(dplyr)
+
+# datarium: dataset latihan & analisis statistik dasar
+library(datarium)
+
+# PerformanceAnalytics: analisis kinerja aset keuangan & visualisasi portofolio
+library(PerformanceAnalytics)
+
+# forecast: peramalan data deret waktu (time series)
+library(forecast)
+
+# DALEX: untuk explainable AI
+library(DALEX)
+
+# ggfortify: visualisasi time series
+library(ggfortify)
+par(mfrow=c(1,1)) # reset to 1 chart per page
+```
+
+Berikut adalah proses memasukkan data ke dalam _environment_ R:
+
+```{r}
+# data(marketing) - Memuat dataset 'marketing' yang tersedia di dalam library 'datarium' (jika library sudah terinstall).
+data(marketing)
+
+# sampledf = marketing - Membuat dataframe baru bernama 'sampledf' dan mengisinya dengan data dari dataset 'marketing'.
+sampledf = marketing
+
+# str(sampledf) - Menampilkan struktur dari dataframe 'sampledf', termasuk tipe data setiap kolom dan contoh datanya.
+str(sampledf)
+```
+
+Berikut adalah sampel 10 data teratas yang saya gunakan.
+
+```{r}
+#|eecho: false
+sampledf %>% head(10) %>% knitr::kable()
+```
+
+Kita bisa lihat bahwa ada empat variabel, yakni:
+
+1. `sales`: merupakan nilai penjualan yang hendak dijadikan variabel dependen (target prediksi model).
+1. `youtube`: merupakan nilai _spending_ perusahaan saat melakukan _campaign_ di __Youtube__.
+1. `facebook`: merupakan nilai _spending_ perusahaan saat melakukan _campaign_ di __Facebook__.
+1. `newspaper`: merupakan nilai _spending_ perusahaan saat melakukan _campaign_ di __koran__.
+
+Satu baris data ini merepresentasikan satu pekan. Total saya mendapatkan 200 baris (pekan) buah data. 
+
+Perhatikan bahwa saya tidak memiliki data aktivitas kompetitor saat membuat MMM ini.
+
+Sekarang kita akan cek korelasi antar variabel yang ada pada data:
+
+```{r}
+chart.Correlation(sampledf, histogram = TRUE, pch=19)
+```
+
+Kita bisa lihat dari grafik di atas bahwa _spending youtube_ memiliki korelasi positif yang kuat terhadap _sales_. Sedangkan dua variabel lainnya memiliki korelasi yang sedang (_spending facebook_) dan lemah (_spending_ koran). 
+
+_Nah_, sebelum membuat model regresinya, setidaknya ada dua hal yang harus kita lakukan yakni:
+
+1. Menghitung _adstock_.
+1. Melakukan dekomposisi terhadap _sales_.
+
+Mari kita bahas satu-persatu.
+
+## _Adstock_
+
+__Definisi__ ___Adstock___:
+
+_Adstock_, dalam konteks _marketing_ dan terutama MMM, adalah sebuah teknik transformasi yang digunakan untuk memodelkan efek jangka panjang atau efek kumulatif dari iklan atau aktivitas _marketing_ terhadap perilaku konsumen.  Secara sederhana, _adstock_ mencoba untuk merepresentasikan bagaimana efek iklan tidak langsung hilang sepenuhnya setelah iklan tersebut berhenti ditayangkan.  Sebaliknya, efeknya bisa bertahan atau bahkan berakumulasi dari waktu ke waktu.
+
+__Konsep Dasar__ ___Adstock___:
+
+Bayangkan kita melihat iklan televisi untuk sebuah produk minuman energi.  Efek iklan tersebut tidak hanya terjadi saat kita menontonnya.  Mungkin beberapa hari kemudian, saat kita berada di toko dan melihat minuman energi tersebut, iklan yang pernah kita lihat akan kembali teringat dan mempengaruhi keputusan kita untuk membeli.  
+
+> Inilah inti dari _adstock_:  efek iklan "membekas" dan bertahan.
+
+_Adstock_ mencoba memodelkan efek "bekas" ini dengan dua parameter utama:
+
+1. _Decay Rate_ (Tingkat Peluruhan):  Ini menggambarkan seberapa cepat efek iklan memudar seiring waktu.  _Decay rate_ biasanya direpresentasikan sebagai nilai antara 0 dan 1.
+    - Nilai _decay rate_ tinggi (mendekati 1): Menunjukkan efek iklan bertahan lama dan memudar dengan sangat lambat. Efek iklan hari ini masih akan sangat terasa di hari-hari mendatang.
+    - Nilai _decay rate_ rendah (mendekati 0): Menunjukkan efek iklan cepat memudar. Efek iklan hari ini hampir hilang sepenuhnya dalam waktu singkat.
+1. _Lag_ (Keterlambatan): Ini menggambarkan seberapa cepat efek iklan mulai terasa setelah iklan ditayangkan. _Lag_ merepresentasikan penundaan waktu antara paparan iklan dan efek yang dihasilkan.   
+    - _Lag_ tinggi (misalnya, 2 minggu): Menunjukkan efek iklan baru akan signifikan setelah beberapa waktu (dalam contoh ini, 2 minggu) setelah penayangan iklan. Ini bisa terjadi untuk produk yang pembeliannya memerlukan pertimbangan lebih lama.
+    - _Lag_ rendah (misalnya, 0 atau 1 minggu): Menunjukkan efek iklan hampir langsung terasa atau dengan keterlambatan yang sangat singkat. Ini mungkin terjadi untuk produk yang pembeliannya impulsif atau segera dibutuhkan.
+
+__Bagaimana__ ___Adstock___ __Bekerja secara Matematis (Konsep Sederhana)__:
+
+Secara matematis, _adstock_ mengubah input iklan mentah (misalnya, _spending_ iklan mingguan) menjadi output iklan yang "di-adstock" yang merepresentasikan efek kumulatif.
+
+Rumus sederhananya adalah sebagai berikut: 
+
+$Adstocked \space Advertising_t = Advertising_t +$ $Decay \space Rate \times$ $Adstocked \space Advertising_{t-1}$
+
+Dimana:
+
+*     $Adstocked$ $Advertising_t$ : Nilai iklan yang sudah di-_adstock_ pada periode waktu $t$ (misalnya, pekan ini). Ini merepresentasikan efek kumulatif iklan hingga periode $t$.
+*     $Advertising_t$ : Nilai iklan mentah pada periode waktu $t$ (misalnya, _spending_ iklan minggu ini).
+*     $Decay \space Rate$ : Tingkat peluruhan (nilai antara 0 dan 1).
+*     $Adstocked$ $Advertising_{t-1}$ : Nilai iklan yang sudah di-_adstock_ pada periode waktu sebelumnya ($t-1$, misalnya, minggu lalu).
+
+__Contoh Ilustrasi__
+
+Misalkan _decay rate_ adalah 0.8 dan _lag_ adalah 0.
+
+| Minggu ke- | Pengeluaran Iklan Mentah | Iklan yang Di-Adstock (Efek Kumulatif) |
+| :---------- | :--------------------- | :------------------------------------ |
+| 1           | 100                      | 100                                  |
+| 2           | 200                      | 200 + (0.8 * 100) = 280               |
+| 3           | 0                        | 0   + (0.8 * 280) = 224               |
+| 4           | 0                        | 0   + (0.8 * 224) = 179.2             |
+| 5           | 150                      | 150 + (0.8 * 179.2) = 293.36            |
+
+**Mengapa** ___Adstock___ **Penting dalam MMM?**
+
+Untuk memahami bagaimana berbagai _channel_ *marketing* (TV, digital, *print*, dll.) berkontribusi terhadap penjualan atau metrik *marketing* lainnya.  Jika kita hanya menggunakan data pengeluaran iklan mentah, kita mungkin **meremehkan efek jangka panjang** iklan dan membuat keputusan yang kurang optimal.
+
+_Adstock_ membantu mengatasi masalah ini dengan:
+
+*   **Memodelkan Efek Jangka Panjang:**  _Adstock_ memungkinkan model untuk menangkap efek iklan yang bertahan lama dan efek kumulatif.
+*   **Alokasi Anggaran yang Lebih Akurat:** Dengan memahami efek jangka panjang, pemasar dapat membuat keputusan alokasi anggaran yang lebih baik antar saluran *marketing*. Misalnya, jika iklan TV memiliki *decay rate* yang tinggi, mungkin investasi di TV perlu dipertimbangkan untuk efek jangka panjangnya.
+*   **Pengukuran ROI yang Lebih Realistis:**  _Adstock_ membantu menghitung *Return on Investment* (ROI) yang lebih akurat karena memperhitungkan efek jangka panjang dari investasi *marketing*.
+
+**Tantangan dan Pertimbangan dalam Menggunakan** ___Adstock___:
+
+*   **Pemilihan Parameter *Decay Rate* dan *Lag*:** Menentukan nilai *decay rate* dan *lag* yang tepat adalah tantangan. Ini sering dilakukan melalui analisis statistik, optimasi model, atau pengetahuan domain (pemahaman tentang industri dan perilaku konsumen).  Nilai yang salah dapat menghasilkan model yang kurang akurat.
+*   **Penyederhanaan Realitas:** Adstock adalah penyederhanaan dari efek iklan yang kompleks di dunia nyata.  Efek iklan bisa dipengaruhi oleh banyak faktor lain (konteks iklan, kreativitas, pesan, kondisi pasar, dll.) yang tidak secara langsung dimasukkan dalam model adstock sederhana.
+*   **Interpretasi:**  Meskipun adstock membantu memodelkan efek jangka panjang, interpretasi parameter *decay rate* dan *lag* harus dilakukan dengan hati-hati dan berdasarkan konteks bisnis.
+
+## Kembali ke MMM Saya
+
+Sekarang saya akan definisikan _decay rate_ dan _lag_ dari masing-masing _spending_:
+
+### _Adstock Spending Facebook_
+
+Misalkan _rate_ dan _lag_ sebagai berikut:
+
+```{r}
+# set adstock fb rate
+set_rate_fb    = 0.15
+set_memory     = 3
+get_adstock_fb = rep(set_rate_fb, set_memory+1) ^ c(0:set_memory)
+
+# adstocked fb
+ads_fb = stats::filter(c(rep(0, set_memory), sampledf$facebook), 
+                       get_adstock_fb,
+                       method="convolution")
+ads_fb = ads_fb[!is.na(ads_fb)]
+#plot
+plot(seq(1,length(sampledf$facebook)), 
+     sampledf$facebook, type="h", 
+     main = "Adstocked Facebook",
+     xlab="Time (Weeks)", ylab="Facebook", 
+     ylim=c(0, max(c(sampledf$facebook, ads_fb))), 
+     frame.plot=FALSE)
+lines(ads_fb, col="blue")
+
+```
+
+Warna _bar_ abu-abu itu adalah _spending_ aslinya sedangkan garis biru adalah _adstock_-nya.
+
+
+### _Adstock Spending Youtube_
+
+Misalkan _rate_ dan _lag_ sebagai berikut:
+
+```{r}
+# set adstock youtube rate
+set_rate_yt         = 0.25
+set_memory          = 2
+get_adstock_youtube = rep(set_rate_yt, set_memory+1) ^ c(0:set_memory)
+
+# adstocked youtube
+ads_youtube <- stats::filter(c(rep(0, set_memory), 
+                               sampledf$youtube), 
+                             get_adstock_youtube, 
+                             method="convolution")
+ads_youtube <- ads_youtube[!is.na(ads_youtube)]
+#plot
+plot(seq(1,length(sampledf$youtube)), sampledf$youtube, type="h", 
+     main = "Adstocked Youtube", 
+     xlab="Time (Weeks)", ylab="Youtube", 
+     ylim=c(0, max(c(sampledf$youtube, ads_youtube))), 
+     frame.plot=FALSE)
+lines(ads_youtube, col="blue")
+```
+
+Warna _bar_ abu-abu itu adalah _spending_ aslinya sedangkan garis biru adalah _adstock_-nya.
+
+### _Adstock Spending_ Koran
+
+Misalkan _rate_ dan _lag_ sebagai berikut:
+
+```{r}
+# set adstock koran
+set_rate_news    = 0.2
+set_memory       = 1
+get_adstock_news = rep(set_rate_news, set_memory+1) ^ c(0:set_memory)
+
+#adstocked newpaper
+ads_news <- stats::filter(c(rep(0, set_memory), sampledf$newspaper), 
+                          get_adstock_news, 
+                          method="convolution")
+ads_news <- ads_news[!is.na(ads_news)]
+#plot
+plot(seq(1,length(sampledf$newspaper)), sampledf$newspaper, type="h", 
+     main = "Adstocked Newspaper",
+     xlab="Time (Weeks)", ylab="Newspaper", 
+     ylim=c(0, max(c(sampledf$newspaper, ads_news))), 
+     frame.plot=FALSE)
+lines(ads_news, col="blue")
+```
+
+Warna _bar_ abu-abu itu adalah _spending_ aslinya sedangkan garis biru adalah _adstock_-nya.
+
+__Catatan:__ Perlu diingat bahwa besaran _decay rate_ dan _lag_ ini merupakan justifikasi subjektif saya pribadi.
+
+Kelak nilai ketiga _adstock_ ini akan dijadikan _predictors_ pada model saya. _Nah_, saya masih belum bisa membuat modelnya karena ada dekomposisi yang harus dilakukan.
+
+Saya jelaskan dulu ya:
+
+## Dekomposisi
+
+**Apa itu Dekomposisi *Time Series*?**
+
+Dekomposisi *time series* adalah sebuah teknik statistik yang bertujuan untuk **memisahkan suatu deret waktu menjadi beberapa komponen dasar yang mendasarinya.** Ide utama di balik dekomposisi adalah bahwa banyak deret waktu dipengaruhi oleh berbagai jenis pola yang bekerja secara bersamaan. Dengan memisahkan deret waktu menjadi komponen-komponen ini, kita dapat memahami perilaku data dengan lebih baik, melakukan peramalan (*forecasting*) yang lebih akurat, dan mengidentifikasi faktor-faktor utama yang memengaruhi data tersebut.
+
+**Komponen-Komponen dalam Dekomposisi *Time Series***
+
+Secara umum, deret waktu dapat diuraikan menjadi empat komponen utama:
+
+1.  **Tren (*Trend*) (T):**
+    *   **Definisi:**  Tren adalah **arah jangka panjang pergerakan data**. Ini merepresentasikan kecenderungan data untuk naik atau turun secara bertahap selama periode waktu yang panjang.
+    *   **Karakteristik:** Tren bisa linear (garis lurus), non-linear (kurva), atau bahkan tidak ada tren sama sekali (stasioner).
+2.  **Musiman (*Seasonality*) (S):**
+    *   **Definisi:** Musiman adalah **pola berulang yang terjadi dalam periode waktu tetap (kurang dari satu tahun)**. Pola ini teratur dan dapat diprediksi.
+    *   **Karakteristik:**  Periode musiman bisa harian, mingguan, bulanan, kuartalan, atau bahkan jam-jaman, tergantung pada data.
+3.  **Residu/Irreguler (*Residual/Irregular*) (R atau I):**
+    *   **Definisi:** Residu atau irreguler adalah **fluktuasi acak atau sisa** dalam deret waktu yang tidak dapat dijelaskan oleh tren dan musiman. Ini adalah komponen yang "tersisa" setelah komponen-komponen lainnya dihilangkan.
+    *   **Karakteristik:**  Residu bersifat **acak, tidak berpola, dan tidak dapat diprediksi**. Mereka bisa disebabkan oleh kejadian tak terduga, *noise* acak dalam data, atau faktor-faktor lain yang tidak sistematis.
+
+**Model Dekomposisi: Aditif vs. Multiplikatif**
+
+Ada dua model dasar untuk menggabungkan komponen-komponen ini dalam dekomposisi *time series*:
+
+1.  **Model Aditif:**
+    *   **Asumsi:** Model aditif mengasumsikan bahwa komponen-komponen **beroperasi secara independen dan saling menambah** untuk membentuk deret waktu asli.  Besarnya variasi musiman dan siklikal diasumsikan **konstan** sepanjang waktu (tidak bergantung pada tingkat tren).
+    *   **Rumus:** $Y_t = T_t + S_t + R_t$, dimana:
+        *   $Y_t$ adalah nilai deret waktu pada waktu $t$.
+        *   $T_t$ adalah komponen tren pada waktu $t$.
+        *   $S_t$ adalah komponen musiman pada waktu $t$.
+        *   $R_t$ adalah komponen residu pada waktu $t$.
+    *   **Kapan Menggunakan:** Model aditif cocok digunakan **ketika variasi musiman cenderung konstan** sepanjang waktu. Jika amplitudo fluktuasi musiman tampak sama dari tahun ke tahun, model aditif mungkin lebih tepat.
+2.  **Model Multiplikatif:**
+    *   **Asumsi:** Model multiplikatif mengasumsikan bahwa komponen-komponen **berinteraksi secara perkalian** untuk membentuk deret waktu asli. Besarnya variasi musiman dan siklikal diasumsikan **proporsional dengan tingkat tren**. Artinya, fluktuasi musiman menjadi lebih besar seiring dengan meningkatnya tren.
+    *   **Rumus:** $Y_t = T_t \times S_t \times R_t$. Dalam praktiknya, seringkali residu dianggap aditif setelah komponen perkalian tren dan musim dihitung: $Y_t = T_t \times S_t + R_t$. Dalam banyak implementasi, logaritma seringkali digunakan untuk mengubah model multiplikatif menjadi aditif agar lebih mudah diolah: $\log Y_t = \log  T_t + \log  S_t + \log R_t$
+
+**Metode Dekomposisi *Time Series***
+
+Ada berbagai metode untuk melakukan dekomposisi *time series*, beberapa yang umum digunakan adalah:
+
+*   **Metode *Moving Average* (Rata-Rata Bergerak):**  Metode klasik yang menggunakan rata-rata bergerak untuk menghaluskan deret waktu dan memperkirakan komponen tren dan siklikal. Perbedaan antara data asli dan tren yang dihaluskan dapat digunakan untuk memperkirakan komponen musiman dan residu.
+*   **Dekomposisi Klasik (*Classical Decomposition*):**  Metode tradisional yang secara iteratif memperkirakan tren, musiman, dan residu, biasanya menggunakan *moving average*.
+*   **Dekomposisi X-12-ARIMA dan X-13ARIMA-SEATS:** Metode yang lebih canggih dan kompleks yang dikembangkan oleh biro statistik pemerintah. Metode ini menggunakan model ARIMA untuk memperkirakan komponen dan melakukan penyesuaian musiman yang lebih baik.
+*   **STL Decomposition (*Seasonal-Trend decomposition using Loess*):**  Metode yang fleksibel dan non-parametrik yang menggunakan *Loess smoothing* untuk memperkirakan komponen tren dan musiman. STL sangat _robust_ dan dapat menangani berbagai jenis pola musiman dan tren.
+
+Saya biasa menggunakan metode dekomposisi __STL__ dalam membuat model ini.
+
+## Kembali ke MMM Saya
+
+Sekarang saya kembali ke MMM saya. Saya akan lakukan dekomposisi __STL__ berikut ini:
+
+```{r}
+# menjadikan data sale sebagai data time series
+ts_sales = ts(sampledf$sales, start = 1, frequency = 52)
+
+# proses dekomposisi
+ts_sales_comp = decompose(ts_sales)
+
+# membuat plot hasil dekomposisi
+plot(ts_sales_comp)
+```
+
+_Nah_, kita bisa langsung memasukkan __tren__ dan ___seasonal___ ke dalam formula regresi dengan memanfaatkan regresi _time series_ berikut:
+
+```{r}
+mmm = tslm(ts_sales ~ trend + season + ads_youtube + ads_fb + ads_news)
+```
+
+Berikut adalah modelnya:
+
+```{r}
+summary(mmm)
+```
+
+Perhatikan bahwa muncul 51 buah variabel `seasonal` secara otomatis dari model. Kenapa hal tersebut terjadi? Berikut adalah penjelasannya:
+
+> When using the "seasonal" variable within the tslm() function in R, it automatically generates multiple variables representing each distinct season within your data (like months in a year or quarters), essentially acting as dummy variables to capture the unique seasonal effects on your time series, which is why you see many "season" variables in the model summary; each variable corresponds to a different season.
+
+Berikut adalah kesimpulannya:
+
+1. Seberapa bagus model bisa dilihat dari _Adjusted_ $R^2$, yakni sebesar $0.8587$. Sebuah nilai yang lebih dari cukup (_menurut saya_).
+1. Jika dilihat, hanya _spending_ di _Youtube_ dan _Facebook_ yang menghasilkan efek positif terhadap nilai _sales_.
+1. Variabel _seasonal_ pada __3, 11, 23, 27, 29, 45, dan 51__ bernilai negatif serta signifikan (ditandai dengan `***` di _output_ __R__). Artinya _seasonal_ pada pekan tersebut menurun sebesar konstanta masing-masing variabel dibanding pekan pertama.
+
+## Implikasi MMM
+
+Setelah kita berhasil membuat model ini, lantas apa implikasinya? Kita bisa melakukan prediksi untuk data _spending_ yang berbeda.
+
+
+Misalkan saya menyakini bahwa model tersebut benar, bagaimana jika pada periode sebelumnya saya pindahkan _budget_ _spending_ koran ke _Facebook_ sebesar 70% dan _Youtube_ sebesar 30%. Berapa nilai _sales_ yang terjadi?
+
+```{r}
+# pindahkan budget dari koran ke Facebook
+fb_spend           = as.data.frame(ads_fb)
+names(fb_spend)[1] = "ads_fb"
+fb_spend$ads_fb    = fb_spend$ads_fb + (ads_news*0.7)
+
+# pindahkan budget dari koran ke Youtube
+yt_spend             = as.data.frame(ads_youtube)
+names(yt_spend)[1]   = "ads_youtube"
+yt_spend$ads_youtube = yt_spend$ads_youtube + (ads_news*0.3)
+
+# spending untuk koran habis
+final_news_spend           = as.data.frame(ads_news * 0)
+names(final_news_spend)[1] = "ads_news"
+
+# kita gabungkan menjadi satu data frame baru
+new_spends = cbind(yt_spend, fb_spend,final_news_spend)
+
+# membuat prediksi
+forecast_new_spends <- forecast(mmm, newdata=new_spends)
+
+# membuat visualisasinya
+ggplot2::autoplot(forecast_new_spends, 
+                  ts.colour = 'black', 
+                  size= 0.5, 
+                  predict.size = 0.7, 
+                  predict.colour = 'blue', 
+                  conf.int = TRUE, 
+                  conf.int.fill = 'blue', 
+                  main = "Biru Prediksi - Hitam Existing")
+```
+
+Secara visual kita bisa lihat bahwa terjadi kenaikan besaran _sales_ secara keseluruhan. Tentunya kita bisa menghitung berapa besaran _spending_ yang optimal dari model tersebut untuk masing-masing _marketing channel_.
+
+---
+
+## Catatan
+
+Cara yang saya tulis ini adalah satu dari sekian banyak cara untuk membangun MMM. Tentunya kita bisa menggunakan model regresi lain seperti _ridge regression_ untuk mengakali _multicollinearity_. Jika saya tak salah, regresi menggunakan _TensorFlow_ merupakan _ridge regression_. Kita juga bisa membuat model non linear lain dan bisa di-_explain_ dengan `DALEX.`
+
+---
+
+## Alternatif Model untuk MMM
+
+Saya akan mencoba membuat MMM menggunakan model regresi multivariat polinom dan menjelaskannya menggunakan `library(DALEX)`.
+
+Berikut adalah skrip untuk membuat modelnya:
+
+```{r}
+seasonal = ts_sales_comp$seasonal %>% as.numeric()
+tren     = ts_sales_comp$trend %>% as.numeric()
+
+tren[is.na(tren)] = 0
+
+df_input = data.frame(sales = sampledf$sales,
+                      tren,seasonal,ads_youtube,ads_fb,ads_news)
+
+mmm_2 = lm(sales ~ poly(tren,3) + poly(seasonal,3) + poly(ads_youtube,3) +
+                   poly(ads_fb,3) + poly(ads_news,3),
+           data = df_input)
+```
+
+Mari kita lihat performa model dengan cara membuat _explainer_ dari `DALEX`:
+
+```{r}
+explainer_mmm = DALEX::explain(model = mmm_2,
+                               data  = df_input,
+                               y     = df_input$sales,
+                               type  = "regression",
+                               label = "MMM Regression",
+                               colorize = FALSE)
+
+performa_model = model_performance(explainer_mmm)
+performa_model
+```
+
+Kita bisa melihat bahwa $R^2 = 0.8884122$, yakni lebih tinggi dibandingkan model linear di awal. Mari kita lihat _variable importance_:
+
+
+```{r}
+var_importante  = model_parts(explainer_mmm)
+plot_importance = plot(var_importante,show_boxplots = FALSE)
+plot_importance
+```
+
+Kita mendapatkan temuan yang serupa dengan temuan sebelumnya di mana _spending_ di _Youtube_ dan _Facebook_ memiliki tingkat pengaruh yang lebih tinggi dibandingkan koran. Sekarang kita akan lihat pengaruh detail per variabel:
+
+```{r}
+mp_mmm = model_profile(explainer_mmm, 
+                        variable =  c("ads_youtube","ads_fb","ads_news"), 
+                        type = "accumulated")
+plot(mp_mmm)
+```
+
+Kita bisa lihat bahwa:
+
+1. _Facebook Spending_ memiliki hubungan yang positif walau sempat ada penurunan di _range_ nilai kecil.
+1. _Spending_ koran justru memiliki hubungan negatif. Semakin besar, justru hasilnya tidak memperbaiki _sales_.
+1. _Youtube Spending_ memiliki hubungan yang positif dengan peningkatan yang signifikan. Namun perlu dilihat bahwa peningkatan signifikan ini hanya berlaku pada nilai _spending_ yang lebih besar dibandingkan kedua _channel marketing_ lainnya.
+
+Sekarang saya akan coba lihat dua kondisi _sales_:
+
+1. Saat _sales_ tertinggi.
+1. Saat _sales_ terendah.
+
+Apa yang menjadi penyebabnya?
+
+### Saat _Sales_ Tertinggi
+
+```{r}
+#| echo: false
+ronaldo = 
+  df_input %>% 
+  filter(sales == max(sales)) %>% 
+  select(-sales)
+ronaldo = predict_parts(explainer_mmm, ronaldo)
+plot(ronaldo)
+```
+
+### Saat _Sales_ Terendah
+
+```{r}
+#| echo: false
+ronaldo = 
+  df_input %>% 
+  filter(sales == min(sales)) %>% 
+  select(-sales)
+ronaldo = predict_parts(explainer_mmm, ronaldo)
+plot(ronaldo)
+```
+
+Kita bisa lihat bahwa _spending Youtube_ menjadi hal yang krusial. Saat _spending_-nya rendah, ternyata efeknya malah menurunkan _sales_. Oleh karena itu, __kita perlu menjaga agar__ ___spending___ __Youtube selalu berada di level tertinggi__.
+
+Bagaimana jika perusahaan tidak memiliki _budget spending_? 
+
+```{r}
+df_in = data.frame(tren = 0,seasonal = 0,ads_youtube = 200,ads_fb = 0,ads_news = 0)
+ronaldo = predict_parts(explainer_mmm, df_in)
+plot(ronaldo)
+
+```
+
+Perusahaan masih bisa mendapatkan _sales_ dan ternyata koran menghasilkan hasil yang positif saat tidak ada _spending_.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
+
+
+
