@@ -1,0 +1,201 @@
+---
+title: "Membuat Mixed-Marketing-Model Menggunakan META: ROBYN - part II"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: false
+    toc-depth: 4
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: true
+  warning: false
+  error: false
+---
+
+Sesuai dengan janji saya pada [tulisan sebelumnya](https://ikanx101.com/blog/meta-rob1n/), pada tulisan ini saya akan mencoba membuat model MMM menggunakan Meta Robyn. Syukurnya Meta Robyn bisa kita gunakan menggunakan bahasa **R**. Namun, untuk menggunakan Meta Robyn kita harus melakukan *setting* agar *Python* bisa digunakan di *compute environment* kita.
+
+Caranya cukup mudah, kalian bisa *refer* ke [tulisan saya yang ini](https://ikanx101.com/blog/setting-hug/). Perbedaannya, kita harus meng-*install* *libraries* `numpy` dan `nevergrad`. Agar mudah, saya akan tuliskan kembali skripnya sebagai berikut:
+
+```         
+# silakan di-run di console atau terminal
+# kita update dan upgrade sistem linux nya
+apt update
+apt upgrade -y
+
+# kita akan install python3 environment terlebih dahulu
+python3 -m venv .env
+source .env/bin/activate
+
+# proses install numpy dan nevergrad
+pip install numpy
+pip install nevergrad
+```
+
+Jika rekan-rekan perhatikan, bahwa pada data *marketing* di [tulisan sebelumnya](https://ikanx101.com/blog/practical-mmm/) tidak terdapat informasi mengenai tanggal sedangkan pada Meta Robyn kita memerlukan data tanggal. Oleh karena itu, saya akan membuat data tanggal *dummy* sebanyak 200 buah. Berikut adalah *sample* datanya:
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+rm(list=ls())
+gc()
+
+library(dplyr)
+library(tidyr)
+
+load("ready.rda")
+
+sampledf %>% head(20) %>% 
+  relocate(date,.before = "youtube") %>% 
+  knitr::kable()
+```
+
+Selanjutnya kita perlu memanggil *libraries* yang digunakan. Sejatinya hanya `library(Robyn)` saja yang perlu dipanggil. Tapi seperti biasa, saya juga memanggil *library* `tidyverse` yang lain. Selain itu, kita akan tambah skrip agar memungkinkan komputasi paralel pada Robyn.
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(Robyn)
+
+Sys.setenv(R_FUTURE_FORK_ENABLE = "true")
+options(future.fork.enable = TRUE)
+```
+
+Satu hal yang menarik adalah kita bisa menambahkan data hari libur berdasarkan kalendar dari *Facebook*. Kalendar hari libur tersebut tersedia untuk berbagai negara, termasuk **Indonesia**. Berikut adalah *sample* datanya:
+
+```{r}
+data("dt_prophet_holidays")
+dt_prophet_holidays %>% 
+  filter(country == "ID") %>% 
+  filter(year >= 2021) %>% 
+  head(10) %>% 
+  knitr::kable()
+```
+
+Berikutnya kita perlu membuat satu *folder* sebagai tempat bernaung *files* hasil komputasinya.
+
+```{r}
+robyn_directory = "./output"
+```
+
+Berikutnya adalah membuat *input* bagi Robyn. Tentunya saya sesuaikan dari data yang dimiliki.
+
+```         
+InputCollect <- robyn_inputs(
+  dt_input = sampledf,
+  dt_holidays = dt_prophet_holidays,
+  date_var = "date", 
+  dep_var = "sales", 
+  dep_var_type = "revenue", 
+  prophet_vars = c("trend", "season", "holiday"), 
+  prophet_country = "ID", 
+  paid_media_spends = c("youtube","facebook","newspaper"),
+  window_start = "2021-01-01",
+  window_end = "2024-10-25",
+  adstock = "geometric" 
+)
+print(InputCollect)
+```
+
+Ada tiga *hyperparameters* yang bisa dimasukkan *range* nilainya. Kelak Robyn akan secara otomatis akan mencari nilai yang optimal sehingga MMM yang dihasilkan memiliki $R^2$ terbaik.
+
+-   ***Adstock parameters*** (*theta*). Ini merupakan parameter *decay rate* seperti yang pernah saya jelaskan [pada tulisan sebelumnya](https://ikanx101.com/blog/practical-mmm/#adstock).
+-   ***Saturation parameters*** (*alpha/gamma*). Robyn menggunakan **fungsi Hill** untuk menghitung nilai saturasi. Ini saya sadur langsung dari *documentation* Robyn mengenai apa arti *alpha* dan *gamma*: *Alpha controls the shape of the curve between exponential and s-shape. Recommended bound is c(0.5, 3). The larger the alpha, the more S-shape. The smaller, the more C-shape. Gamma controls the inflexion point. Recommended bounce is c(0.01, 1). The larger the gamma, the later the inflection point in the response curve.*
+-   ***Time series validation parameter*** (*train_size*). *Train size* menyatakan berapa persen data untuk *train* dan *test*.
+
+Setelah kode dieksekusi, **R** akan melakukan komputasi dengan membuat semua kemungkinan (hingga ribuan) model. Setelah menunggu 5-10 menit, kita akan mendapati beberapa *files* hasil *export* sudah berada pada *folder* yang telah kita definisikan sebelumnya.
+
+Pada kasus ini, Robyn memberikan *output* dari **empat model terbaik**. Saya akan coba bahas salah satun model saja *ya*.
+
+Saya akan memilih model yang terbaik dengan cara:
+
+-   Semua model menghasilkan $R^2$ yang mirip-mirip di angka $0.6$ sekian.
+-   Oleh karena itu, saya coba lihat plot *fitted vs residuals* yang dihasilkan. Model mana saja yang memberikan **gambaran titik-titik secara acak**. Sebagai pengingat, saya pernah menuliskan tentang [pengujian asumsi regresi](https://ikanx101.com/blog/belajar-regresi/). Secara simpel:
+    -   Linearitas:
+        -   Model yang baik akan menunjukkan titik-titik yang tersebar secara acak di sekitar garis *horizontal* nol.
+        -   Jika ada pola melengkung, itu menandakan hubungan non-linear dan model perlu diperbaiki.
+    -   Homoskedastisitas:
+        -   Model yang baik akan menunjukkan varians residual yang konstan di seluruh rentang nilai prediksi.
+        -   Pola "corong" (*funnel*) menandakan heteroskedastisitas, yang berarti varians residual tidak konstan.
+    -   Independensi:
+        -   *Plot* seharusnya tidak menunjukkan pola tertentu yang mengindikasikan korelasi antara residual.
+        -   Walaupun *plot* ini tidak secara langsung menguji independensi, dengan melihat sebaran acak kita dapat mengasumsikan bahwa data tersebut independen.
+
+Masalahnya adalah tidak ada satupun model yang sesuai dengan deskripsi asumsi di atas. Namun ada satu model yang paling *acceptable* (acak tapi masih ada pola dan berbentuk *funnel*), yakni model nomor `2_34_6`.
+
+Berikut adalah *one pager* *output* dari Robyn untuk model tersebut:
+
+![](2_34_6.png){fig-align="center" width="900"}
+
+Dari _one pager_ di atas, kita dapati $R^2 = 0.6419$. Kemudian kita bisa melakukan analisa dari beberapa grafik yang ada.
+
+### _Plot I & II_ `Actual vs Predicted Response` dan `Waterfall`
+
+![](Rplot01.png){fig-align="center" width="800"}
+
+Grafik _Actual vs Predicted_ menggambarkan bagaimana komparasi antara hasil prediksi model dengan data sebenarnya. __Semakin mepet__ kedua garis, maka semakin baik model memprediksi nilai sebenarnya.
+
+Grafik __Waterfall__ menggambarkan kontribusi masing-masing prediktor terhadap nilai _sales_-nya. Kita bisa lihat bahwa _Youtube_ memberikan dampak _incrementa sales_ terbesar dibandingkan _predictors_ lainnya.
+
+
+### _Plot III & IV_ `Share Spend, Effect & ROAS`
+
+
+![](Rplot02.png){fig-align="center" width="800"}
+
+
+Robyn bisa memberikan penjelasan tentang tiga parameter dalam _channel marketing_ yang kita gunakan kemudian menyajikannya dalam grafik di atas. Ketiganya adalah:
+
+1. _Spend Share_.
+    - Metrik ini menunjukkan berapa banyak anggaran pemasaran yang dialokasikan ke setiap _channel marketing_.
+    - Misalnya, jika iklan TV mendapatkan 50% dari anggaran, maka bagian pengeluarannya adalah 50%.
+1. _Effect Share_.
+    - Metrik ini mengukur seberapa besar dampak setiap _channel_ terhadap peningkatan _sales_.
+1. ROAS (_Return on Ad Spend_).
+    - Metrik ini mengukur efisiensi setiap channel, yaitu seberapa banyak pendapatan yang dihasilkan untuk setiap _spending_ yang dikeluarkan.
+    - ROAS yang tinggi berarti _channel_ tersebut menghasilkan banyak pendapatan dengan sedikit pengeluaran.
+
+
+### _Plot V & VI_ `Geometric Adstock` dan `Immediate vs Carryover`
+
+![](Rplot03.png){fig-align="center" width="800"}
+
+Grafik di atas memberikan kita gambaran tentang besaran nilai [_theta_](https://ikanx101.com/blog/practical-mmm/#adstock) dari masing-masing _channel marketing_.
+
+Grafik _immediate_ vs _carryover_ memberikan gambaran tentang apakah efek dari masing-masing _channel marketing_ merupakan efek langsung saat itu (_immediate_) atau efek yang memiliki jangka waktu (_carryover_).
+
+### _Plot VII & VIII_ `Response Curve` dan `Fitted vs Residual`
+
+![](Rplot04.png){fig-align="center" width="800"}
+
+Grafik _response curve_ memberikan gambaran kepada kita tentang hubungan antara _spending channel marketing_ dan respons nilai _sales_ yang dihasilkan. Ada tiga hal yang bisa kita analisa:
+
+1. Titik Jenuh (_Saturation_).
+    - _Channel marketing_ dapat mencapai titik jenuh, di mana peningkatan _spending_ tidak lagi menghasilkan peningkatan _sales_ yang signifikan.
+1. Titik Infleksi (_Inflection Point_).
+    - Titik infleksi adalah titik pada kurva di mana laju perubahan respons mulai melambat.
+    - Sebelum titik infleksi, laju perubahan respon meningkat, dan sesudah titik infleksi laju perubahan respon menurun.
+1. Realokasi Anggaran.
+    - Dengan membandingkan kurva respons dari berbagai saluran media, kita dapat mengidentifikasi _channel_ mana yang mendekati titik jenuh dan _channel_ mana yang masih memiliki potensi pertumbuhan.
+    - Akibatnya kita bisa merealokasi _spending_ ke _channel_ yang masih bertumbuh.
+    
+
+Dari MMM yang dihasilkan Robyn, kita bisa membuat beberapa skenario _marketing_. Ada tiga skenario yang bisa dilakukan:
+
+1. Memaksimalkan respon _sales_ berdasarkan $x$ minggu terakhir.
+1. Memaksimalkan nilai __ROAS__ menjadi __1__.
+
+Sebagai contoh, saya membuat skenario untuk memaksimalkan nilai ROAS. Berikut adalah hasilnya:
+
+![](2_34_6_reallocated_target_roas.png){fig-align="center" width="800"}
+
+Kita bisa dapatkan bahwa dengan __membabat 90%__ _budget spending_, bisa mendapatkan $ROAS = 1$ dengan _total response_ separuh dari _initial_.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
+

@@ -15,9 +15,9 @@ execute:
   error: false
 ---
 
-Tulisan ini masih membahas tentang MMM, lanjutan dari [tulisan sebelumnya](https://ikanx101.com/blog/practical-mmm/). Jika sebelumnya, saya menuliskan bagaimana membuat MMM dari __nol__. Kini saya akan menggunakan _open source model_ dan _framework_ milik __Meta Facebook__ bernama [Robyn](https://facebookexperimental.github.io/Robyn/).
+Tulisan ini masih membahas tentang MMM, lanjutan dari [tulisan sebelumnya](https://ikanx101.com/blog/practical-mmm/). Jika sebelumnya, saya menuliskan bagaimana membuat MMM dari **nol**. Kini saya akan menggunakan *open source model* dan *framework* milik **Meta Facebook** bernama [Robyn](https://facebookexperimental.github.io/Robyn/).
 
-Saya akan membagi dua tulisan ini. Pada _part_ pertama, saya akan coba jelaskan terlebih dahulu tentang _Robyn_. Baru nanti di _part_ kedua, saya akan membuat MMM dari data yang telah saya gunakan sebelumnya.
+Saya akan membagi dua tulisan ini. Pada *part* pertama, saya akan coba jelaskan terlebih dahulu tentang *Robyn*. Baru nanti di *part* kedua, saya akan membuat MMM dari data yang telah saya gunakan sebelumnya.
 
 ## **Deskripsi tentang Robyn**
 
@@ -28,40 +28,35 @@ Robyn adalah *framework open-source* yang dikembangkan oleh Meta (Facebook) untu
 Framework Robyn bekerja melalui serangkaian langkah sistematis untuk membangun model MMM yang komprehensif. Berikut adalah tahapan utama dalam cara kerja Robyn:
 
 1.  **Input Data:**
-    *   **Data Pengeluaran Pemasaran (Marketing Spend Data):** Robyn membutuhkan data historis tentang pengeluaran untuk berbagai saluran pemasaran. Ini bisa mencakup saluran *online* seperti iklan digital (misalnya, iklan mesin pencari, iklan media sosial, iklan display) dan saluran *offline* (misalnya, iklan TV, iklan radio, iklan cetak, *out-of-home*). Data ini harus mencakup periode waktu yang relevan untuk analisis.
-    *   **Data Penjualan/Konversi (Sales/Conversion Data):**  Ini adalah metrik hasil yang ingin dipengaruhi oleh pemasaran. Biasanya berupa data penjualan (misalnya, pendapatan, unit terjual) atau data konversi (misalnya, jumlah pendaftaran, *leads*). Data ini juga harus mencakup periode waktu yang sama dengan data pengeluaran pemasaran.
-    *   **Variabel Kontrol (Control Variables):** Variabel-variabel eksternal yang dapat mempengaruhi penjualan atau konversi dan berada di luar kendali aktivitas pemasaran langsung. Contohnya adalah:
-        *   **Musiman (Seasonality):** Efek musiman seperti liburan atau perubahan cuaca.
-        *   **Tren Ekonomi:** Indikator ekonomi makro seperti inflasi atau tingkat pengangguran.
-        *   **Aktivitas Promosi Spesifik:**  Diskon besar atau promosi khusus di luar kampanye pemasaran reguler.
-
+    -   **Data Pengeluaran Pemasaran (Marketing Spend Data):** Robyn membutuhkan data historis tentang pengeluaran untuk berbagai saluran pemasaran. Ini bisa mencakup saluran *online* seperti iklan digital (misalnya, iklan mesin pencari, iklan media sosial, iklan display) dan saluran *offline* (misalnya, iklan TV, iklan radio, iklan cetak, *out-of-home*). Data ini harus mencakup periode waktu yang relevan untuk analisis.
+    -   **Data Penjualan/Konversi (Sales/Conversion Data):** Ini adalah metrik hasil yang ingin dipengaruhi oleh pemasaran. Biasanya berupa data penjualan (misalnya, pendapatan, unit terjual) atau data konversi (misalnya, jumlah pendaftaran, *leads*). Data ini juga harus mencakup periode waktu yang sama dengan data pengeluaran pemasaran.
+    -   **Variabel Kontrol (Control Variables):** Variabel-variabel eksternal yang dapat mempengaruhi penjualan atau konversi dan berada di luar kendali aktivitas pemasaran langsung. Contohnya adalah:
+        -   **Musiman (Seasonality):** Efek musiman seperti liburan atau perubahan cuaca.
+        -   **Tren Ekonomi:** Indikator ekonomi makro seperti inflasi atau tingkat pengangguran.
+        -   **Aktivitas Promosi Spesifik:** Diskon besar atau promosi khusus di luar kampanye pemasaran reguler.
 2.  **Pra-pemrosesan Data dan Rekayasa Fitur (Data Pre-processing and Feature Engineering):**
-    *   **Transformasi Adstock:** Robyn menggunakan transformasi *adstock* untuk memodelkan efek kumulatif dan efek penundaan (lag) dari pengeluaran pemasaran. Transformasi ini memperhitungkan bahwa dampak pemasaran tidak selalu langsung terjadi pada periode yang sama dengan pengeluaran, tetapi dapat berlanjut dalam beberapa periode berikutnya.  
-    *   **Efek Saturasi (Saturation Effect):**  Robyn juga mempertimbangkan efek saturasi atau *diminishing returns*. Ini berarti bahwa pada titik tertentu, peningkatan pengeluaran pemasaran tidak lagi menghasilkan peningkatan penjualan atau konversi yang proporsional. Model akan memperhitungkan titik jenuh ini.
-    *   **Normalisasi dan Skala Data:** Robyn melakukan normalisasi atau penskalaan data untuk memastikan bahwa variabel dengan skala yang berbeda tidak memberikan pengaruh yang tidak proporsional pada model.
-
+    -   **Transformasi Adstock:** Robyn menggunakan transformasi *adstock* untuk memodelkan efek kumulatif dan efek penundaan (lag) dari pengeluaran pemasaran. Transformasi ini memperhitungkan bahwa dampak pemasaran tidak selalu langsung terjadi pada periode yang sama dengan pengeluaran, tetapi dapat berlanjut dalam beberapa periode berikutnya.\
+    -   **Efek Saturasi (Saturation Effect):** Robyn juga mempertimbangkan efek saturasi atau *diminishing returns*. Ini berarti bahwa pada titik tertentu, peningkatan pengeluaran pemasaran tidak lagi menghasilkan peningkatan penjualan atau konversi yang proporsional. Model akan memperhitungkan titik jenuh ini.
+    -   **Normalisasi dan Skala Data:** Robyn melakukan normalisasi atau penskalaan data untuk memastikan bahwa variabel dengan skala yang berbeda tidak memberikan pengaruh yang tidak proporsional pada model.
 3.  **Pemilihan Model dan Pelatihan (Model Selection and Training):**
-    *   **Model Regresi:** Robyn umumnya menggunakan model regresi sebagai inti dari MMM. Model regresi yang umum digunakan adalah regresi linier (misalnya, *Ridge Regression*) karena efisien dan interpretatif. Namun, Robyn juga mendukung model lain seperti *Random Forest* atau *Prophet* untuk fleksibilitas yang lebih tinggi, terutama jika ada non-linearitas yang kompleks atau komponen deret waktu yang kuat.
-    *   **Optimasi Hyperparameter:**  Robyn menggunakan algoritma optimasi (misalnya, *Bayesian Optimization* atau algoritma genetika) untuk mencari kombinasi *hyperparameter* terbaik untuk model. *Hyperparameter* ini mengontrol aspek-aspek seperti bentuk kurva *adstock*, tingkat saturasi, dan kekuatan regularisasi dalam model regresi. Proses optimasi ini bertujuan untuk memaksimalkan kinerja model dalam memprediksi penjualan atau konversi berdasarkan data historis.
-
+    -   **Model Regresi:** Robyn umumnya menggunakan model regresi sebagai inti dari MMM. Model regresi yang umum digunakan adalah regresi linier (misalnya, *Ridge Regression*) karena efisien dan interpretatif. Namun, Robyn juga mendukung model lain seperti *Random Forest* atau *Prophet* untuk fleksibilitas yang lebih tinggi, terutama jika ada non-linearitas yang kompleks atau komponen deret waktu yang kuat.
+    -   **Optimasi Hyperparameter:** Robyn menggunakan algoritma optimasi (misalnya, *Bayesian Optimization* atau algoritma genetika) untuk mencari kombinasi *hyperparameter* terbaik untuk model. *Hyperparameter* ini mengontrol aspek-aspek seperti bentuk kurva *adstock*, tingkat saturasi, dan kekuatan regularisasi dalam model regresi. Proses optimasi ini bertujuan untuk memaksimalkan kinerja model dalam memprediksi penjualan atau konversi berdasarkan data historis.
 4.  **Integrasi MTA (Multi-Touch Attribution):**
-    *   **Model Atribusi Eksternal:** Robyn dapat diintegrasikan dengan model MTA yang dibangun secara terpisah. MTA bertujuan untuk memberikan bobot kontribusi yang lebih akurat ke setiap *touchpoint* atau interaksi pemasaran dalam *customer journey*.
-    *   **Bobot Atribusi sebagai Input:** Hasil dari model MTA (misalnya, bobot kontribusi untuk setiap saluran berdasarkan model *data-driven attribution*) dapat dimasukkan ke dalam Robyn sebagai informasi tambahan. Ini memungkinkan Robyn untuk menggabungkan pandangan *granular* dari MTA tentang jalur konversi dengan analisis *agregat* dari MMM tentang dampak keseluruhan saluran pemasaran.
-    *   **Peningkatan Akurasi dan Pemahaman:** Dengan mengintegrasikan MTA, Robyn dapat memberikan pandangan yang lebih komprehensif dan akurat tentang efektivitas pemasaran, terutama dalam ekosistem pemasaran digital yang kompleks dengan banyak titik sentuh.
-
+    -   **Model Atribusi Eksternal:** Robyn dapat diintegrasikan dengan model MTA yang dibangun secara terpisah. MTA bertujuan untuk memberikan bobot kontribusi yang lebih akurat ke setiap *touchpoint* atau interaksi pemasaran dalam *customer journey*.
+    -   **Bobot Atribusi sebagai Input:** Hasil dari model MTA (misalnya, bobot kontribusi untuk setiap saluran berdasarkan model *data-driven attribution*) dapat dimasukkan ke dalam Robyn sebagai informasi tambahan. Ini memungkinkan Robyn untuk menggabungkan pandangan *granular* dari MTA tentang jalur konversi dengan analisis *agregat* dari MMM tentang dampak keseluruhan saluran pemasaran.
+    -   **Peningkatan Akurasi dan Pemahaman:** Dengan mengintegrasikan MTA, Robyn dapat memberikan pandangan yang lebih komprehensif dan akurat tentang efektivitas pemasaran, terutama dalam ekosistem pemasaran digital yang kompleks dengan banyak titik sentuh.
 5.  **Validasi dan Evaluasi Model (Model Validation and Evaluation):**
-    *   **Metrik Kinerja:** Robyn menggunakan berbagai metrik untuk mengevaluasi kinerja model, seperti:
-        *   **R-squared (R²):** Mengukur seberapa baik model menjelaskan variasi dalam data penjualan atau konversi. Semakin tinggi R², semakin baik model.
-        *   **Root Mean Squared Error (RMSE):** Mengukur rata-rata kesalahan prediksi model. Semakin rendah RMSE, semakin baik model.
-        *   **Mean Absolute Percentage Error (MAPE):** Mengukur rata-rata persentase kesalahan prediksi. Semakin rendah MAPE, semakin baik model.
-    *   **Validasi Silang Waktu (Time-Series Cross-Validation):** Robyn sering menggunakan validasi silang waktu untuk memastikan bahwa model tidak hanya *overfit* pada data historis tetapi juga dapat menggeneralisasi dengan baik ke data baru. Ini melibatkan pelatihan model pada sebagian data historis dan mengujinya pada bagian data yang tersisa secara berurutan.
-    *   **Analisis Residual:** Memeriksa residual (perbedaan antara nilai aktual dan nilai prediksi) untuk memastikan tidak ada pola sistematis yang tersisa, yang bisa mengindikasikan masalah dengan model.
-
+    -   **Metrik Kinerja:** Robyn menggunakan berbagai metrik untuk mengevaluasi kinerja model, seperti:
+        -   **R-squared (R²):** Mengukur seberapa baik model menjelaskan variasi dalam data penjualan atau konversi. Semakin tinggi R², semakin baik model.
+        -   **Root Mean Squared Error (RMSE):** Mengukur rata-rata kesalahan prediksi model. Semakin rendah RMSE, semakin baik model.
+        -   **Mean Absolute Percentage Error (MAPE):** Mengukur rata-rata persentase kesalahan prediksi. Semakin rendah MAPE, semakin baik model.
+    -   **Validasi Silang Waktu (Time-Series Cross-Validation):** Robyn sering menggunakan validasi silang waktu untuk memastikan bahwa model tidak hanya *overfit* pada data historis tetapi juga dapat menggeneralisasi dengan baik ke data baru. Ini melibatkan pelatihan model pada sebagian data historis dan mengujinya pada bagian data yang tersisa secara berurutan.
+    -   **Analisis Residual:** Memeriksa residual (perbedaan antara nilai aktual dan nilai prediksi) untuk memastikan tidak ada pola sistematis yang tersisa, yang bisa mengindikasikan masalah dengan model.
 6.  **Interpretasi Hasil dan Output (Output Interpretation and Insights):**
-    *   **Kontribusi Saluran (Channel Contribution):** Robyn memberikan estimasi tentang kontribusi absolut dan relatif dari setiap saluran pemasaran terhadap penjualan atau konversi. Ini memungkinkan pemasar untuk memahami saluran mana yang paling efektif. [Image of Channel contribution chart]
-    *   **ROI dan Efisiensi (ROI and Efficiency):** Berdasarkan kontribusi dan pengeluaran, Robyn dapat menghitung *Return on Investment* (ROI) untuk setiap saluran pemasaran. Ini membantu dalam menilai efisiensi setiap saluran dalam menghasilkan hasil bisnis.
-    *   **Kurva Respon (Response Curves):** Robyn menghasilkan kurva respon yang menunjukkan hubungan antara pengeluaran pemasaran dan hasil untuk setiap saluran. Kurva ini menggambarkan efek saturasi dan membantu dalam memahami bagaimana perubahan pengeluaran akan mempengaruhi hasil.
-    *   **Optimasi Anggaran (Budget Optimization):** Berdasarkan model yang dibangun, Robyn dapat digunakan untuk mensimulasikan dan merekomendasikan alokasi anggaran pemasaran yang optimal di berbagai saluran untuk memaksimalkan penjualan atau konversi dengan anggaran yang diberikan. [Image of Budget optimization dashboard]
+    -   **Kontribusi Saluran (Channel Contribution):** Robyn memberikan estimasi tentang kontribusi absolut dan relatif dari setiap saluran pemasaran terhadap penjualan atau konversi. Ini memungkinkan pemasar untuk memahami saluran mana yang paling efektif. \[Image of Channel contribution chart\]
+    -   **ROI dan Efisiensi (ROI and Efficiency):** Berdasarkan kontribusi dan pengeluaran, Robyn dapat menghitung *Return on Investment* (ROI) untuk setiap saluran pemasaran. Ini membantu dalam menilai efisiensi setiap saluran dalam menghasilkan hasil bisnis.
+    -   **Kurva Respon (Response Curves):** Robyn menghasilkan kurva respon yang menunjukkan hubungan antara pengeluaran pemasaran dan hasil untuk setiap saluran. Kurva ini menggambarkan efek saturasi dan membantu dalam memahami bagaimana perubahan pengeluaran akan mempengaruhi hasil.
+    -   **Optimasi Anggaran (Budget Optimization):** Berdasarkan model yang dibangun, Robyn dapat digunakan untuk mensimulasikan dan merekomendasikan alokasi anggaran pemasaran yang optimal di berbagai saluran untuk memaksimalkan penjualan atau konversi dengan anggaran yang diberikan. \[Image of Budget optimization dashboard\]
 
 **Langkah-langkah Praktis Menggunakan Robyn:**
 
@@ -73,44 +68,38 @@ Secara ringkas, berikut adalah langkah-langkah umum untuk menggunakan Robyn:
 4.  **Evaluasi Model:** Tinjau metrik kinerja model, validasi silang, dan analisis residual untuk memastikan model yang dibangun valid dan dapat diandalkan.
 5.  **Interpretasi dan Aplikasi Hasil:** Gunakan output Robyn (kontribusi saluran, ROI, kurva respon, rekomendasi optimasi anggaran) untuk mengambil keputusan pemasaran yang lebih baik, seperti mengalokasikan ulang anggaran, menyesuaikan strategi saluran, dan memprediksi dampak kampanye mendatang.
 
-
 **Perbandingan dengan Framework Model Open Source Lain yang Sejenis**
 
-Meta Robyn bukan satu-satunya _framework model open source_ untuk MMM. Ada beberapa alternatif lain yang tersedia, masing-masing dengan pendekatan dan fitur yang berbeda. Berikut adalah perbandingan singkat dengan beberapa framework sejenis:
+Meta Robyn bukan satu-satunya *framework model open source* untuk MMM. Ada beberapa alternatif lain yang tersedia, masing-masing dengan pendekatan dan fitur yang berbeda. Berikut adalah perbandingan singkat dengan beberapa framework sejenis:
 
 1.  **LightweightMMM (Google):**
-    *   **Pengembang:** Google
-    *   **Pendekatan:** Bayesian MMM. Menggunakan library `TensorFlow Probability` untuk inferensi Bayesian.
-    *   **Bahasa:** Python
-    *   **Fitur:** Mirip dengan Robyn dalam hal prinsip dasar MMM Bayesian. Fokus pada skalabilitas dan efisiensi komputasi. Menawarkan berbagai jenis model regresi dan fitur untuk menangani *carryover effect* dan *saturation*.
-    *   **Perbandingan dengan Robyn:** Keduanya adalah framework MMM Bayesian open source yang kuat. LightweightMMM mungkin lebih fokus pada skalabilitas dan integrasi dengan ekosistem Google (TensorFlow). Robyn, di sisi lain, mungkin lebih fokus pada fleksibilitas dalam konfigurasi model dan interpretasi hasil, serta integrasi dengan library `Stan` yang populer untuk inferensi Bayesian.
-
+    -   **Pengembang:** Google
+    -   **Pendekatan:** Bayesian MMM. Menggunakan library `TensorFlow Probability` untuk inferensi Bayesian.
+    -   **Bahasa:** Python
+    -   **Fitur:** Mirip dengan Robyn dalam hal prinsip dasar MMM Bayesian. Fokus pada skalabilitas dan efisiensi komputasi. Menawarkan berbagai jenis model regresi dan fitur untuk menangani *carryover effect* dan *saturation*.
+    -   **Perbandingan dengan Robyn:** Keduanya adalah framework MMM Bayesian open source yang kuat. LightweightMMM mungkin lebih fokus pada skalabilitas dan integrasi dengan ekosistem Google (TensorFlow). Robyn, di sisi lain, mungkin lebih fokus pada fleksibilitas dalam konfigurasi model dan interpretasi hasil, serta integrasi dengan library `Stan` yang populer untuk inferensi Bayesian.
 2.  **PyMC3/PyMC (Community-driven):**
-    *   **Pengembang:** Komunitas Open Source
-    *   **Pendekatan:** Bayesian Modeling secara umum. PyMC adalah library Python untuk pemodelan probabilistik dan inferensi Bayesian. Meskipun bukan framework MMM spesifik, PyMC sangat fleksibel dan dapat digunakan untuk membangun model MMM Bayesian dari awal.
-    *   **Bahasa:** Python
-    *   **Fitur:** Sangat fleksibel dan kuat untuk pemodelan Bayesian. Memungkinkan pengguna untuk membangun model yang sangat kustom dan kompleks. Dukungan komunitas yang besar.
-    *   **Perbandingan dengan Robyn:** PyMC lebih merupakan library pemodelan Bayesian umum, bukan framework MMM *out-of-the-box* seperti Robyn. Menggunakan PyMC untuk MMM memerlukan lebih banyak upaya untuk membangun model dan alur kerja dari awal. Namun, PyMC memberikan fleksibilitas yang tak tertandingi dalam hal kustomisasi model. Robyn lebih *user-friendly* untuk MMM spesifik, dengan alur kerja dan visualisasi yang sudah dibangun.
-
+    -   **Pengembang:** Komunitas Open Source
+    -   **Pendekatan:** Bayesian Modeling secara umum. PyMC adalah library Python untuk pemodelan probabilistik dan inferensi Bayesian. Meskipun bukan framework MMM spesifik, PyMC sangat fleksibel dan dapat digunakan untuk membangun model MMM Bayesian dari awal.
+    -   **Bahasa:** Python
+    -   **Fitur:** Sangat fleksibel dan kuat untuk pemodelan Bayesian. Memungkinkan pengguna untuk membangun model yang sangat kustom dan kompleks. Dukungan komunitas yang besar.
+    -   **Perbandingan dengan Robyn:** PyMC lebih merupakan library pemodelan Bayesian umum, bukan framework MMM *out-of-the-box* seperti Robyn. Menggunakan PyMC untuk MMM memerlukan lebih banyak upaya untuk membangun model dan alur kerja dari awal. Namun, PyMC memberikan fleksibilitas yang tak tertandingi dalam hal kustomisasi model. Robyn lebih *user-friendly* untuk MMM spesifik, dengan alur kerja dan visualisasi yang sudah dibangun.
 3.  **statsmodels (Community-driven):**
-    *   **Pengembang:** Komunitas Open Source
-    *   **Pendekatan:** Statistik Klasik (Frequentist). `statsmodels` adalah library Python untuk pemodelan statistik klasik, termasuk regresi linear, analisis deret waktu, dan banyak model statistik lainnya. Dapat digunakan untuk membangun model MMM menggunakan pendekatan statistik klasik.
-    *   **Bahasa:** Python
-    *   **Fitur:** Menyediakan berbagai model statistik klasik yang lengkap. Dokumentasi yang baik. Terintegrasi dengan ekosistem SciPy dan NumPy.
-    *   **Perbandingan dengan Robyn:** `statsmodels` menggunakan pendekatan statistik klasik (frequentist), berbeda dengan pendekatan Bayesian Robyn. Model yang dibangun dengan `statsmodels` mungkin lebih sederhana dan lebih cepat untuk dilatih dibandingkan model Bayesian Robyn. Namun, pendekatan Bayesian Robyn memberikan keuntungan dalam hal penanganan ketidakpastian, penggabungan prior, dan inferensi kausal yang lebih robust. `statsmodels` lebih cocok untuk analisis MMM yang lebih sederhana atau sebagai titik awal sebelum beralih ke pendekatan Bayesian yang lebih kompleks.
+    -   **Pengembang:** Komunitas Open Source
+    -   **Pendekatan:** Statistik Klasik (Frequentist). `statsmodels` adalah library Python untuk pemodelan statistik klasik, termasuk regresi linear, analisis deret waktu, dan banyak model statistik lainnya. Dapat digunakan untuk membangun model MMM menggunakan pendekatan statistik klasik.
+    -   **Bahasa:** Python
+    -   **Fitur:** Menyediakan berbagai model statistik klasik yang lengkap. Dokumentasi yang baik. Terintegrasi dengan ekosistem SciPy dan NumPy.
+    -   **Perbandingan dengan Robyn:** `statsmodels` menggunakan pendekatan statistik klasik (frequentist), berbeda dengan pendekatan Bayesian Robyn. Model yang dibangun dengan `statsmodels` mungkin lebih sederhana dan lebih cepat untuk dilatih dibandingkan model Bayesian Robyn. Namun, pendekatan Bayesian Robyn memberikan keuntungan dalam hal penanganan ketidakpastian, penggabungan prior, dan inferensi kausal yang lebih robust. `statsmodels` lebih cocok untuk analisis MMM yang lebih sederhana atau sebagai titik awal sebelum beralih ke pendekatan Bayesian yang lebih kompleks.
 
 **Ringkasan Perbandingan:**
 
-| Framework       | Pendekatan Statistik | Bahasa   | Fokus Utama                      | Tingkat Kustomisasi | Kemudahan Penggunaan |
-| :--------------- | :------------------- | :------- | :-------------------------------- | :------------------ | :------------------- |
-| **Meta Robyn**   | Bayesian             | Python dan R   | MMM Bayesian, Inferensi Kausal | Tinggi               | Menengah             |
-| **LightweightMMM** | Bayesian             | Python   | MMM Bayesian, Skalabilitas      | Menengah               | Menengah             |
-| **PyMC3/PyMC**     | Bayesian             | Python   | Pemodelan Bayesian Umum          | Sangat Tinggi         | Sulit                |
-| **statsmodels**    | Frequentist          | Python   | Statistik Klasik Umum            | Menengah               | Menengah             |
+| Framework | Pendekatan Statistik | Bahasa | Fokus Utama | Tingkat Kustomisasi | Kemudahan Penggunaan |
+|:-----------|:-----------|:-----------|:-------------|:-----------|:-----------|
+| **Meta Robyn** | Bayesian | Python dan R | MMM Bayesian, Inferensi Kausal | Tinggi | Menengah |
+| **LightweightMMM** | Bayesian | Python | MMM Bayesian, Skalabilitas | Menengah | Menengah |
+| **PyMC3/PyMC** | Bayesian | Python | Pemodelan Bayesian Umum | Sangat Tinggi | Sulit |
+| **statsmodels** | Frequentist | Python | Statistik Klasik Umum | Menengah | Menengah |
 
----
+------------------------------------------------------------------------
 
 `if you find this article helpful, support this blog by clicking the ads.`
-
-
-
