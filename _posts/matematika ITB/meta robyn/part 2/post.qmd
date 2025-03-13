@@ -131,71 +131,65 @@ Berikut adalah *one pager* *output* dari Robyn untuk model tersebut:
 
 ![](2_34_6.png){fig-align="center" width="900"}
 
-Dari _one pager_ di atas, kita dapati $R^2 = 0.6419$. Kemudian kita bisa melakukan analisa dari beberapa grafik yang ada.
+Dari *one pager* di atas, kita dapati $R^2 = 0.6419$. Kemudian kita bisa melakukan analisa dari beberapa grafik yang ada.
 
-### _Plot I & II_ `Actual vs Predicted Response` dan `Waterfall`
+### *Plot I & II* `Actual vs Predicted Response` dan `Waterfall`
 
 ![](Rplot01.png){fig-align="center" width="800"}
 
-Grafik _Actual vs Predicted_ menggambarkan bagaimana komparasi antara hasil prediksi model dengan data sebenarnya. __Semakin mepet__ kedua garis, maka semakin baik model memprediksi nilai sebenarnya.
+Grafik *Actual vs Predicted* menggambarkan bagaimana komparasi antara hasil prediksi model dengan data sebenarnya. **Semakin mepet** kedua garis, maka semakin baik model memprediksi nilai sebenarnya.
 
-Grafik __Waterfall__ menggambarkan kontribusi masing-masing prediktor terhadap nilai _sales_-nya. Kita bisa lihat bahwa _Youtube_ memberikan dampak _incrementa sales_ terbesar dibandingkan _predictors_ lainnya.
+Grafik **Waterfall** menggambarkan kontribusi masing-masing prediktor terhadap nilai *sales*-nya. Kita bisa lihat bahwa *Youtube* memberikan dampak *incrementa sales* terbesar dibandingkan *predictors* lainnya.
 
-
-### _Plot III & IV_ `Share Spend, Effect & ROAS`
-
+### *Plot III & IV* `Share Spend, Effect & ROAS`
 
 ![](Rplot02.png){fig-align="center" width="800"}
 
+Robyn bisa memberikan penjelasan tentang tiga parameter dalam *channel marketing* yang kita gunakan kemudian menyajikannya dalam grafik di atas. Ketiganya adalah:
 
-Robyn bisa memberikan penjelasan tentang tiga parameter dalam _channel marketing_ yang kita gunakan kemudian menyajikannya dalam grafik di atas. Ketiganya adalah:
+1.  *Spend Share*.
+    -   Metrik ini menunjukkan berapa banyak anggaran pemasaran yang dialokasikan ke setiap *channel marketing*.
+    -   Misalnya, jika iklan TV mendapatkan 50% dari anggaran, maka bagian pengeluarannya adalah 50%.
+2.  *Effect Share*.
+    -   Metrik ini mengukur seberapa besar dampak setiap *channel* terhadap peningkatan *sales*.
+3.  ROAS (*Return on Ad Spend*).
+    -   Metrik ini mengukur efisiensi setiap channel, yaitu seberapa banyak pendapatan yang dihasilkan untuk setiap *spending* yang dikeluarkan.
+    -   ROAS yang tinggi berarti *channel* tersebut menghasilkan banyak pendapatan dengan sedikit pengeluaran.
 
-1. _Spend Share_.
-    - Metrik ini menunjukkan berapa banyak anggaran pemasaran yang dialokasikan ke setiap _channel marketing_.
-    - Misalnya, jika iklan TV mendapatkan 50% dari anggaran, maka bagian pengeluarannya adalah 50%.
-1. _Effect Share_.
-    - Metrik ini mengukur seberapa besar dampak setiap _channel_ terhadap peningkatan _sales_.
-1. ROAS (_Return on Ad Spend_).
-    - Metrik ini mengukur efisiensi setiap channel, yaitu seberapa banyak pendapatan yang dihasilkan untuk setiap _spending_ yang dikeluarkan.
-    - ROAS yang tinggi berarti _channel_ tersebut menghasilkan banyak pendapatan dengan sedikit pengeluaran.
-
-
-### _Plot V & VI_ `Geometric Adstock` dan `Immediate vs Carryover`
+### *Plot V & VI* `Geometric Adstock` dan `Immediate vs Carryover`
 
 ![](Rplot03.png){fig-align="center" width="800"}
 
-Grafik di atas memberikan kita gambaran tentang besaran nilai [_theta_](https://ikanx101.com/blog/practical-mmm/#adstock) dari masing-masing _channel marketing_.
+Grafik di atas memberikan kita gambaran tentang besaran nilai [*theta*](https://ikanx101.com/blog/practical-mmm/#adstock) dari masing-masing *channel marketing*.
 
-Grafik _immediate_ vs _carryover_ memberikan gambaran tentang apakah efek dari masing-masing _channel marketing_ merupakan efek langsung saat itu (_immediate_) atau efek yang memiliki jangka waktu (_carryover_).
+Grafik *immediate* vs *carryover* memberikan gambaran tentang apakah efek dari masing-masing *channel marketing* merupakan efek langsung saat itu (*immediate*) atau efek yang memiliki jangka waktu (*carryover*).
 
-### _Plot VII & VIII_ `Response Curve` dan `Fitted vs Residual`
+### *Plot VII & VIII* `Response Curve` dan `Fitted vs Residual`
 
 ![](Rplot04.png){fig-align="center" width="800"}
 
-Grafik _response curve_ memberikan gambaran kepada kita tentang hubungan antara _spending channel marketing_ dan respons nilai _sales_ yang dihasilkan. Ada tiga hal yang bisa kita analisa:
+Grafik *response curve* memberikan gambaran kepada kita tentang hubungan antara *spending channel marketing* dan respons nilai *sales* yang dihasilkan. Ada tiga hal yang bisa kita analisa:
 
-1. Titik Jenuh (_Saturation_).
-    - _Channel marketing_ dapat mencapai titik jenuh, di mana peningkatan _spending_ tidak lagi menghasilkan peningkatan _sales_ yang signifikan.
-1. Titik Infleksi (_Inflection Point_).
-    - Titik infleksi adalah titik pada kurva di mana laju perubahan respons mulai melambat.
-    - Sebelum titik infleksi, laju perubahan respon meningkat, dan sesudah titik infleksi laju perubahan respon menurun.
-1. Realokasi Anggaran.
-    - Dengan membandingkan kurva respons dari berbagai saluran media, kita dapat mengidentifikasi _channel_ mana yang mendekati titik jenuh dan _channel_ mana yang masih memiliki potensi pertumbuhan.
-    - Akibatnya kita bisa merealokasi _spending_ ke _channel_ yang masih bertumbuh.
-    
+1.  Titik Jenuh (*Saturation*).
+    -   *Channel marketing* dapat mencapai titik jenuh, di mana peningkatan *spending* tidak lagi menghasilkan peningkatan *sales* yang signifikan.
+2.  Titik Infleksi (*Inflection Point*).
+    -   Titik infleksi adalah titik pada kurva di mana laju perubahan respons mulai melambat.
+    -   Sebelum titik infleksi, laju perubahan respon meningkat, dan sesudah titik infleksi laju perubahan respon menurun.
+3.  Realokasi Anggaran.
+    -   Dengan membandingkan kurva respons dari berbagai saluran media, kita dapat mengidentifikasi *channel* mana yang mendekati titik jenuh dan *channel* mana yang masih memiliki potensi pertumbuhan.
+    -   Akibatnya kita bisa merealokasi *spending* ke *channel* yang masih bertumbuh.
 
-Dari MMM yang dihasilkan Robyn, kita bisa membuat beberapa skenario _marketing_. Ada tiga skenario yang bisa dilakukan:
+Dari MMM yang dihasilkan Robyn, kita bisa membuat beberapa skenario *marketing*. Ada tiga skenario yang bisa dilakukan:
 
-1. Memaksimalkan respon _sales_ berdasarkan $x$ minggu terakhir.
-1. Memaksimalkan nilai __ROAS__ menjadi __1__.
+1.  Memaksimalkan respon *sales* berdasarkan $x$ minggu terakhir.
+2.  Memaksimalkan nilai **ROAS** menjadi **1**.
 
 Sebagai contoh, saya membuat skenario untuk memaksimalkan nilai ROAS. Berikut adalah hasilnya:
 
 ![](2_34_6_reallocated_target_roas.png){fig-align="center" width="800"}
 
-Kita bisa dapatkan bahwa dengan __membabat 90%__ _budget spending_, bisa mendapatkan $ROAS = 1$ dengan _total response_ separuh dari _initial_.
+Kita bisa dapatkan bahwa dengan **membabat 90%** *budget spending*, bisa mendapatkan $ROAS = 1$ dengan *total response* separuh dari *initial*.
 
----
+------------------------------------------------------------------------
 
 `if you find this article helpful, support this blog by clicking the ads.`
-
