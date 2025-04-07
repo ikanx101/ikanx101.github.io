@@ -1,0 +1,100 @@
+---
+title: "Update 2025: Menginstall R Studio Server ke Google Colab"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: false
+    toc-depth: 4
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: true
+  warning: false
+  error: false
+---
+
+Pada tahun 2021 lalu, saya sempat menuliskan bagaimana cara melakukan [instalasi R Studio Server ke dalam Google Colab](https://ikanx101.com/blog/r-server-colab/). Sekarang saya akan berikan _update_ skrip cara terbarunya karena ada beberapa _updates_ yang terjadi di _Google Cloud_. Berikut adalah skripnya dan silakan _copy paste_ ke dalam _Google Colab_ dengan _Runtime_ `Python`.
+
+## Langkah I
+
+Definisikan _username_ dan _password_ untuk R Studio Server:
+
+```
+!sudo useradd -m -s /bin/bash rstudio
+!echo rstudio:password | chpasswd
+```
+
+## Langkah II
+
+_Update_ linux dan _install_ __R__ versi _command line interface_.
+
+```
+# melakukan update Linux
+!apt-get update
+
+# install R base (cli version)
+!apt-get install r-base
+```
+
+## Langkah III
+
+_Install_ beberapa _libraries_ linux.
+
+```
+# install beberapa library Linux
+!apt-get install libglpk-dev # ini khusus untuk optimisasi
+!apt-get install gdebi-core
+```
+
+## Langkah IV
+
+_Install_ `libssl` versi yang lebih _outdated_.
+
+```
+!sudo add-apt-repository ppa:nrbrtx/libssl1
+!sudo apt update
+!sudo apt install libssl1.1
+!apt install openssl
+```
+
+## Langkah V
+
+_Download_ dan _install_ R Studio Server.
+
+```
+!wget https://download2.rstudio.org/server/jammy/amd64/rstudio-server-2024.12.1-563-amd64.deb
+!gdebi -n rstudio-server-2024.12.1-563-amd64.deb
+```
+
+## Langkah VI
+
+_Install_ `localtunnel` ke dalam Google Colab.
+
+```
+!npm install -g npm
+!npm install -g localtunnel
+```
+
+## Langkah VII
+
+Cari tahu _ip address_ dan melakukan _forwarding_ _port_ 8787.
+
+```
+!curl https://loca.lt/mytunnelpassword
+!lt bypass-tunnel-reminder --port 8787
+```
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
+
+
+
+
+
+
+
