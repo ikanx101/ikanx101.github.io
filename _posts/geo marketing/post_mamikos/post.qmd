@@ -1,0 +1,116 @@
+---
+title: "Range Harga Kost di Sekitar Nutrihub Surabaya"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: false
+    toc-depth: 4
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: true
+  warning: false
+  error: false
+---
+
+Beberapa hari yang lalu, saya dihubungi oleh salah seorang rekan kantor yang bertanggung jawab terkait pekerjaan *general affairs* baik di *head office* dan *branch office*. Rekan saya tersebut meminta tolong untuk dicarikan *range* harga sewa kost bulanan di sekitar [Nutrihub Surabaya](https://linktr.ee/NutrihubSurabaya). Salah satu sumbernya adalah *website* [Mamikos](https://mamikos.com/).
+
+![](Screenshot%20from%202025-04-16%2008-26-38.png){width="650"}
+
+Oleh karena saya dan rekan saya tersebut tidak tahu nama area yang dijadikan target, maka saya akan ambil semua _listed_ kost yang ada di _website_ Mamikos dan akan saya hitung jaraknya ke Nutrihub Surabaya [menggunakan OSRM](https://ikanx101.com/blog/osrm-R/).
+
+![](mamikos.png)
+
+Data yang akan saya ambil adalah nama kost, area, dan harga bulanan.
+
+Berikut adalah sampel 10 baris data mentah yang saya dapatkan:
+
+```{r}
+#| include: false
+
+rm(list=ls())
+gc()
+
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+
+load("saved.rda")
+```
+
+```{r}
+#| echo: false
+#| warning: false
+
+df_raw %>% 
+  select(-nama_cari) %>% 
+  head(10) %>% 
+  knitr::kable()
+```
+
+Kemudian saya buatkan visualisasi sebagai berikut:
+
+```{r}
+#| echo: false
+
+df_sum %>% 
+  mutate(mean_jarak = round(mean_jarak,2)) %>% 
+  ggplot(aes(x = area,
+             y = mean_jarak)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = mean_jarak)) +
+  labs(title = "Rata-rata Jarak dari Area ... ke Nutrihub Surabaya",
+       subtitle = "Perhitungan Algoritma Jarak OpenStreetMaps",
+       caption = "Calculated and visualized using R\nikanx101.com",
+       y = "Dalam kilometer",
+       x = "Kecamatan")
+
+df_sum %>% 
+  mutate(mean_durasi = round(mean_durasi,2)) %>% 
+  ggplot(aes(x = area,
+             y = mean_durasi)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = mean_durasi)) +
+  labs(title = "Rata-rata Durasi dari Area ... ke Nutrihub Surabaya",
+       subtitle = "Perhitungan Algoritma Jarak OpenStreetMaps",
+       caption = "Calculated and visualized using R\nikanx101.com",
+       y = "Dalam menit",
+       x = "Kecamatan")
+
+df_final %>% 
+  group_by(area) %>% 
+  summarise(min_ = quantile(harga,.25),
+            max_ = quantile(harga,.75),
+            mean_ = mean(harga),
+            median_ = median(harga)) %>% 
+  ungroup() %>% 
+  ggplot() +
+  geom_errorbar(aes(x = area,ymin = min_,ymax = max_),width = .2,color = "darkred") +
+  geom_point(aes(x = area,y = median_),shape = 8,color = "steelblue") +
+  geom_point(aes(x = area,y = mean_),shape = 2,color = "darkgreen") +
+  ggrepel::geom_label_repel(aes(x = area,y = median_,
+                                label = paste0("Median: ",median_/10^6)),
+                            alpha = .4,
+                            size = 3) +
+  ggrepel::geom_label_repel(aes(x = area,y = mean_,
+                                label = paste0("Mean: ",round(mean_/10^6,2))),
+                            alpha = .4,
+                            size = 3) +
+  theme_minimal() +
+  labs(title = "Rata-rata dan Median Tarif Sewa Bulanan dari Area di Surabaya",
+       subtitle = "Dalam juta Rupiah",
+       caption = "Calculated and visualized using R\nikanx101.com",
+       x = "Kecamatan") +
+  theme(axis.text.y = element_blank(),
+        axis.title.y = element_blank())
+```
+
+Semoga hasilnya bisa membantu rekan saya tersebut _ya_.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
