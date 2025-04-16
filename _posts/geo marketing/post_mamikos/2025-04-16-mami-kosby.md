@@ -21,7 +21,7 @@ dicarikan *range* harga sewa kost bulanan di sekitar [Nutrihub
 Surabaya](https://linktr.ee/NutrihubSurabaya). Salah satu sumbernya
 adalah *website* [Mamikos](https://mamikos.com/).
 
-<img src="Screenshot%20from%202025-04-16%2008-26-38.png" width="650" />
+<img src="https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/geo%20marketing/post_mamikos/Screenshot%20from%202025-04-16%2008-26-38.png" width="650" />
 
 Oleh karena saya dan rekan saya tersebut tidak tahu nama area yang
 dijadikan target, maka saya akan ambil semua *listed* kost yang ada di
