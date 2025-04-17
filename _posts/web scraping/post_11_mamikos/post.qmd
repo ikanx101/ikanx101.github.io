@@ -1,0 +1,235 @@
+---
+title: "Fasilitas Kost di Sekitar Nutrihub Surabaya dari Situs Mamikos"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: false
+    toc-depth: 4
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: true
+  warning: false
+  error: false
+---
+
+Masih lanjutan dari [_post_ saya sebelumnya](https://ikanx101.com/blog/mami-kosby/), kali ini saya akan membahas tentang fasilitas apa saja yang ditawarkan oleh semua _listed_ kost yang ada di Mamikos di kota Surabaya.
+
+> Perlu saya ingatkan sekali lagi bahwa ini adalah data yang sama dengan yang saya ambil pada tulisan sebelumnya.
+
+Pertama-tama saya akan infokan berapa banyak kost yang _listed_ per area sebagai berikut:
+
+```{r}
+#| include: false
+
+rm(list=ls())
+gc()
+
+setwd("~/ikanx101.github.io/_posts/web scraping/post_11_mamikos")
+
+library(dplyr)
+library(tidyr)
+library(tidytext)
+library(ggplot2)
+
+load("raw.rda")
+
+df_raw = 
+  df_raw %>% 
+  mutate(fasilitas = gsub("star-glyph(.*)","",fasilitas),
+         fasilitas = gsub("star-glyph","",fasilitas)) %>% 
+  distinct()
+
+```
+
+```{r}
+#| echo: false
+
+df_raw %>% 
+  group_by(area) %>% 
+  tally() %>% 
+  ungroup() %>% 
+  ggplot(aes(x = reorder(area,-n),
+             y = n)) +
+  geom_col(color = "black",
+           fill = "steelblue") +
+  geom_label(aes(label = n)) +
+  theme_minimal() +
+  labs(title = "Berapa banyak kost yang di-listing di Mamikos",
+       subtitle = "sumber: 240 listed kost di situs Mamikos",
+       caption = "Scraped, calculated, and visualized using R\nikanx101.com") +
+  theme(axis.title = element_blank(),
+        axis.text.y = element_blank())
+```
+
+
+Hal ini luput pada tulisan sebelumnya, padahal hal ini penting dan seharusnya saya tulis.
+
+Oke sekarang kita akan lihat fasilitas apa saja yang ditawarkan oleh semua _lsited_ kost yang ada:
+
+```{r}
+#| echo: false
+df_raw %>% 
+  separate_rows(fasilitas,sep = "\\·") %>% 
+  mutate(fasilitas = stringr::str_trim(fasilitas)) %>% 
+  group_by(fasilitas) %>% 
+  tally() %>% 
+  ungroup() %>% 
+  filter(n>20) %>% 
+  mutate(persen = n/240*100,
+         persen = round(persen,2),
+         label = paste0(fasilitas,"\n",persen,"%")) %>% 
+  ggplot(aes(x = fasilitas,
+             y = persen)) +
+  geom_col(color = "black",
+           fill = "steelblue") +
+  geom_label(aes(label = label)) +
+  ylim(0,100) +
+  theme_minimal() +
+  coord_polar() +
+  theme(axis.title = element_blank(),
+        axis.text = element_blank()) +
+  labs(title = "Fasilitas yang diberikan",
+       subtitle = "sumber: 240 listed kost di situs Mamikos",
+       caption = "Scraped, calculated, and visualized using R\nikanx101.com")
+  
+```
+
+
+Perlu saya infokan bahwa satu _kost_ bisa memberikan satu atau lebih fasilitas (_multiple_) sehingga kalau persentase semua fasilitas tersebut dijumlah pasti __hasilnya di atas 100%__.
+
+Kita bisa lihat bahwa _top two facilites_ yang ditawarkan adalah __kasur dan akses 24 jam__. Sedangkan fasilitas lainnya memiliki persentase minimal 60%. Sekarang saya akan coba _cross_ per kecamatan kost yang ada:
+
+```{r}
+#| echo: false
+#| fig-width: 7
+#| fig-height: 10
+df_raw %>% 
+  separate_rows(fasilitas,sep = "\\·") %>% 
+  mutate(fasilitas = stringr::str_trim(fasilitas)) %>% 
+  group_by(area,fasilitas) %>% 
+  tally() %>% 
+  ungroup() %>% 
+  filter(n>1) %>%
+  group_by(area) %>% 
+  mutate(persen = n/sum(n)*100,
+         persen = round(persen,2),
+         label = paste0(fasilitas,"\n",persen,"%")) %>% 
+  ungroup() %>% 
+  ggplot(aes(x = fasilitas,
+             y = persen)) +
+  geom_col(color = "black",
+           fill = "steelblue") +
+  geom_label(aes(label = label),size = 1.8) +
+  # ylim(0,60) +
+  theme_minimal() +
+  coord_polar() +
+  theme(axis.title = element_blank(),
+        axis.text = element_blank()) +
+  labs(title = "Fasilitas yang diberikan",
+       subtitle = "sumber: 240 listed kost di situs Mamikos",
+       caption = "Scraped, calculated, and visualized using R\nikanx101.com") +
+  facet_wrap(~area,scales = "free")
+  
+```
+
+Ternyata jika kita _cross_ berdasarkan kecamatan, fasilitas yang ditawarkan menjadi agak berbeda urutannya.
+
+---
+
+Secara logis, seharusnya fasilitas yang membutuhkan perangkat tertentu atau konsumsi listrik lebih seharusnya lebih mahal. Untuk membuktikan itu, saya membuat visualisasi sebagai berikut untuk mengecek sebaran harga sewa berdasarkan fasilitas yang ditawarkan:
+
+```{r}
+#| echo: false
+df_raw %>% 
+  separate_rows(fasilitas,sep = "\\·") %>% 
+  mutate(fasilitas = stringr::str_trim(fasilitas)) %>% 
+  filter(fasilitas != "") %>% 
+  ggplot(aes(x = fasilitas,
+             y = harga)) +
+  geom_boxplot(fill = "steelblue") +
+  theme_minimal() +
+  labs(title = "Range tarif sewa berdasarkan fasilitas kost yang di-listing di Mamikos",
+       subtitle = "sumber: 240 listed kost di situs Mamikos",
+       caption = "Scraped, calculated, and visualized using R\nikanx101.com") +
+  theme(axis.title = element_blank()) +
+  scale_y_continuous(labels = scales::comma)
+```
+
+
+Secara visual bisa dilihat bahwa kost yang menawarkan AC, kloset duduk, dan WiFi memiliki harga sewa yang relatif lebih tinggi dibandingkan lainnya. Untuk mengkonfirmasinya, saya coba lakukan uji Kruskal-Wallis sebagai berikut:
+
+```{r}
+df_raw %>% 
+  separate_rows(fasilitas,sep = "\\·") %>% 
+  mutate(fasilitas = stringr::str_trim(fasilitas)) %>% 
+  filter(fasilitas != "") %>% 
+  kruskal.test(harga ~ fasilitas)
+```
+
+Didapatkan nilai $p_{value} = 2.2 \times 10^{-16} < \alpha$, dengan $\alpha = .05$ sehingga kita bisa menyimpulkan bahwa _mean_ harga sewa kost antar fasilitas yang ditawarkan __berbeda-beda__.
+
+Berikutnya saya akan menghitung ada berapa banyak kost berdasarkan banyaknya fasilitas yang ditawarkan:
+
+```{r}
+#| echo: false
+df_fasilitas = 
+  df_raw %>% 
+  separate_rows(fasilitas,sep = "\\·") %>% 
+  mutate(fasilitas = stringr::str_trim(fasilitas)) %>% 
+  filter(fasilitas != "") %>% 
+  group_by(nama_tempat) %>% 
+  tally() %>% 
+  ungroup() %>% 
+  rename(n_fasilitas = n)
+  
+df_fasilitas %>% 
+  group_by(n_fasilitas) %>% 
+  tally() %>% 
+  ungroup() %>% 
+  mutate(persen = n / sum(n) * 100,
+         persen = round(persen,2),
+         label = paste0(n_fasilitas," fasilitas\n",persen,"%")) %>% 
+  ggplot(aes(x = n_fasilitas,
+             y = persen)) +
+  geom_col(color = "black",
+           fill = "steelblue") +
+  geom_label(aes(label = label),size = 2.5) +
+  ylim(0,35) +
+  theme_minimal() +
+  coord_polar() +
+  theme(axis.title = element_blank(),
+        axis.text = element_blank()) +
+  labs(title = "Berapa banyak kost berdasarkan fasilitas yang diberikan",
+       subtitle = "sumber: 240 listed kost di situs Mamikos",
+       caption = "Scraped, calculated, and visualized using R\nikanx101.com")
+```
+
+Saya akan cek harga sewa bulanan berdasarkan berapa banyak fasilitas yang ditawarkan:
+
+```{r}
+#| echo: false
+merge(df_raw,df_fasilitas) %>% 
+  ggplot(aes(x = factor(n_fasilitas),
+             y = harga)) +
+  geom_boxplot(fill = "steelblue") +
+  theme_minimal() +
+  labs(title = "Range tarif sewa berdasarkan berapa banyak fasilitas kost yang diberikan",
+       subtitle = "sumber: 240 listed kost di situs Mamikos",
+       caption = "Scraped, calculated, and visualized using R\nikanx101.com",
+       x = "Berapa banyak fasilitas") +
+  theme(axis.title.y = element_blank()) +
+  scale_y_continuous(labels = scales::comma)
+```
+
+
+__Hasilnya sangat masuk akal!__
+
+Semakin banyak fasilitas yang diberikan, semakin mahal harga sewanya. Saya tak perlu melakukan analisa Kruskal-Wallis untuk ini ya.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
+
