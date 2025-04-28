@@ -1,0 +1,144 @@
+---
+title: "Dockerize Quarto Shiny Apps"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: false
+    toc-depth: 4
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: true
+  warning: false
+  error: false
+---
+
+Salah satu _disadvantage_ pengguna __R__ yang sering dikonsultasikan kepada saya adalah __kesulitan untuk mengubah model/algoritma ke versi *production*__. Hal tersebut yang justru menjadi _advantage_ pengguna _Python_. Sebenarnya kita bisa menyiasatinya dengan menggunakan `plumber` yang mengubah model dalam __R__ menjadi __API-based__.
+
+Namun jika algoritma yang kita miliki bukan berupa model prediksi / klasifikasi, maka akan sulit untuk menjadikannya __API-based__. Sebagai contoh, algoritma optimisasi tentang [penjadwalan tatap muka terbatas](https://ikanx101.com/blog/ptmt/). Akan susah bagi saya untuk mengkonversikannya ke dalam `plumber` tapi akan lebih mudah bagi saya membuatkan _Shiny Apps_.
+
+Dalam pekerjaan kantor, saya seringkali membuat _Shiny Apps_ untuk keperluan _dashboard_ dan _RPA_ _converter_.
+
+Masalahnya adalah _Shiny Apps_ memerlukan _Shiny Server_ untuk di-_run_ secara independen dari __R__. Sedangkan _Shiny Server_ gratisan dari situs [Shinyapps.io](https://www.shinyapps.io/) punya beberapa keterbatasan.
+
+Saya sendiri sudah hampir setahun menggunakan layanan _server_ dari situs [Railway.app](https://railway.com/). Alangkah baiknya jika saya bisa __menaruh__ _Shiny Apps_ buatan saya di sana.
+
+## _Dockerize_ _Shiny Apps_
+
+Salah satu solusi yang bisa dicoba adalah dengan membuat _docker_ _container_ dari _Shiny Apps_ yang ada. Setelah itu, saya tinggal menempelnya di _server_ manapun termasuk di [Railway.app](https://railway.com/). Bagaimana caranya? Begini caranya:
+
+### Langkah I
+
+Siapkan _Shiny Apps_ yang kita buat di `Quarto`. Perhatikan bahwa kita bekerja di satu _working directory_. Pada kasus ini, saya membuat satu _dashboard_ visualisasi Quarto dari data `mtcars`. Artinya saya hanya memiliki satu _file_ berformat `.qmd` saja di _working directory_ (tidak ada _files_ lainnya).
+
+_Shiny Apps_ ini saya beri nama `index.qmd`.
+
+### Langkah II
+
+Setelah itu, kita akan buat dua _files_, yakni:
+
+1. __Dockerfile__ yang akan berisi skrip yang akan meng-_contain_ _Shiny Apps_ tersebut.
+1. __shiny-server.conf__ yang akan berisi konfigurasi sederhana tentang bagaimana _working directory_ dan _port_ yang digunakan.
+
+### Langkah III
+
+Silakan buat satu file bernama __shiny-server.conf__ dengan isi berikut ini:
+
+```
+run_as shiny;
+
+server {
+  listen 3838;
+
+  location / {
+    site_dir /srv/shiny-server/dashboard;
+    log_dir /var/log/shiny-server;
+  }
+}
+```
+
+### Langkah IV
+
+Silakan buat __Dockerfile__ dengan isi berikut ini:
+
+```
+# shiny server dari base rocker
+FROM rocker/shiny
+
+# update dan upgrade versi linux
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    pandoc \
+    curl \
+    gdebi-core \
+    && rm -rf /var/lib/apt/lists/*
+
+# install quarto versi terbaru
+RUN curl -LO https://github.com/quarto-dev/quarto-cli/releases/download/v1.6.42/quarto-1.6.42-linux-amd64.deb
+RUN gdebi --non-interactive quarto-1.6.42-linux-amd64.deb
+
+# install libraries yang diperlukan
+RUN R -e "install.packages(c('shiny', 'quarto'))"
+RUN Rscript -e "install.packages(c('dplyr','tidyr','ggplot2'));"
+
+# membuat working directory yang diperlukan
+RUN mkdir -p /srv/shiny-server/dashboard && \
+    chown -R shiny:shiny /srv/shiny-server
+
+# kita copy server configuration ke dalam working directory
+COPY shiny-server.conf /etc/shiny-server/shiny-server.conf
+
+# membuat working directory yang diperlukan
+RUN mkdir -p /var/log/shiny-server && \
+    chown -R shiny:shiny /var/log/shiny-server
+
+# kita copy shiny apps ke dalam working directory
+COPY index.qmd /srv/shiny-server/dashboard/index.qmd
+
+# set working directory
+WORKDIR /srv/shiny-server/dashboard/
+
+# run quarto
+RUN quarto render index.qmd
+
+USER shiny
+CMD ["/usr/bin/shiny-server"]
+```
+
+### Langkah V
+
+Jika semua persiapan sudah dilakukan, kita bisa membuat langsung _container_-nya dengan perintah sebagai berikut:
+
+```
+# build dan berikan nama dashiny
+docker build -t ikanx101/dashiny . 
+```
+
+Sebenarnya pada tahap ini, _container_ sudah selesai kita buat. Jika kita hendak menaruhnya ke _cloud_ atau _docker hub_.
+
+### Langkah VI
+
+Kita bisa _run_ containernya langsung dengan perintah ini:
+
+```
+docker run -d --name sini ikanx101/r-shiny
+```
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
