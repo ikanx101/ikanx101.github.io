@@ -1,0 +1,168 @@
+---
+title: "Menghitung Curah Hujan (Warna Hijau) dari Laporan Bulanan BMKG"
+format: 
+  gfm:
+    html-math-method: webtex
+editor: visual
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+Data cuaca belakangan ini menjadi hal yang sangat krusial di beberapa analisa yang saya lakukan sehari-hari. Biasanya, saya [mengumpulkan data cuaca otomatis dari situs *open weather*](https://ikanx101.com/blog/cuaca-action/). Data yang saya dapatkan cukup lengkap **tapi ada satu variabel yang tidak saya dapatkan, yakni curah hujan**. Satu-satunya data curah hujan di Indonesia bisa kita dapatkan di situs BMKG.
+
+Untuk mendapatkan data curah hujan secara detail, kita perlu mendaftar di situs [*data online* BMKG](https://dataonline.bmkg.go.id/dataonline-home).
+
+![](data_onlen.png){fig-align="center" width="450"}
+
+Kita bisa melakukan *request* untuk mendapatkan data historikal bulanan.
+
+------------------------------------------------------------------------
+
+Suatu ketika, saya harus melakukan analisa perbandingan curah hujan bulanan pertahun dengan cepat. Pada saat itu, Saya belum terdaftar di situs *data online* BMKG. Maka saya memerlukan cara lain agar bisa mendapatkan data curah hujan tersebut.
+
+Salah seorang rekan saya menginformasikan bahwa BMKG memberikan laporan curah hujan bulanan yang dipublikasikan di situsnya dalam bentuk grafik berikut ini:
+
+![](bulanan.png){fig-align="center" width="450"}
+
+> *Semakin **hijau** petanya, berarti curah hujannya semakin tinggi*.
+
+Saya hanya ingin melakukan analisa perbandingan apakah curah hujan bulanan tahun 2023 lebih tinggi dibandingkan 2024. Maka saya bisa melakukan aproksimasi data curah hujan dengan __seberapa hijau grafik bulanan tersebut__. 
+
+Kemudian saya mengumpulkan semua gambar dari laporan bulanan di *website* BMKG sejak **Januari 2023 hingga Desember 2024**.
+
+## Cara Mengukur Seberapa Hijau 
+
+Setiap gambar digital memiliki setidaknya tiga *layers* yang terdiri dari *layer **Red***, ***Green***, dan ***Blue***. Ketiga nilai dari setiap *layer* ini bisa diekstrak dengan teknik tertentu dan disajikan dalam bentuk matriks. Ukuran dari matriks ini merupakan $n \times m$ yang berasal dari dimensi *pixel* gambar tersebut.
+
+Dari data berbentuk matriks tersebut, akan dihitung **tiga *metrics*** pengukuran, yakni:
+
+1.  `average_green_intensity`: merupakan nilai rata-rata dari matriks di *layer green*.
+2.  `proportion_high_green`: merupakan proporsi berapa banyak *pixel* di *layer green* yang memiliki tingkat hijau di atas *threhold* yang kita definisikan dibandingkan total *pixel* yang ada di *layer green* tersebut.
+3.  `average_green_dominance`: merupakan nilai rata-rata dominasi warna *green* dibandingkan warna *red* dan *blue*.
+
+
+```{r}
+#| include: false
+
+rm(list=ls())
+gc()
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(ggpubr)
+
+load("data.rda")
+
+df_hijau = 
+  df_hijau %>% 
+  mutate(tahun = lubridate::year(tgl)) %>% 
+  filter(tahun != 2022) %>% 
+  filter(tahun != 2025)
+
+```
+
+## Hasil Pembacaan Warna Hijau
+
+## `average_green_intensity` 
+
+```{r}
+#| echo: false
+#| message: false
+
+plt_1 = 
+  df_hijau %>% 
+  ggplot(aes(x = tgl,
+             y = average_green_intensity)) +
+  geom_line(group = 1,color = "darkgreen") +
+  ylim(.7,1) +
+  theme_minimal() +
+  theme(axis.title = element_blank()) +
+  labs(title = "Trend line bulanan") +
+  theme_cleveland()
+
+plt_2 = 
+  df_hijau %>% 
+  ggplot(aes(x = factor(tahun),y = average_green_intensity)) +
+  geom_boxplot() +
+  theme_minimal() +
+  theme(axis.title = element_blank()) +
+  labs(title = "Boxplot bulanan per tahun") +
+  theme_cleveland()
+
+ggarrange(plt_1,plt_2,ncol = 2)
+```
+
+
+## `proportion_high_green` {.center}
+
+```{r}
+#| echo: false
+#| message: false
+
+plt_1 = 
+  df_hijau %>% 
+  ggplot(aes(x = tgl,
+             y = proportion_high_green)) +
+  geom_line(group = 1,color = "darkgreen") +
+  ylim(.7,1) +
+  theme_minimal() +
+  theme(axis.title = element_blank()) +
+  labs(title = "Trend line bulanan") +
+  theme_cleveland()
+
+plt_2 = 
+  df_hijau %>% 
+  ggplot(aes(x = factor(tahun),y = proportion_high_green)) +
+  geom_boxplot() +
+  theme_minimal() +
+  theme(axis.title = element_blank()) +
+  labs(title = "Boxplot bulanan per tahun") +
+  theme_cleveland()
+
+ggarrange(plt_1,plt_2,ncol = 2)
+```
+
+## `average_green_dominance`
+
+```{r}
+#| echo: false
+#| message: false
+
+plt_1 = 
+  df_hijau %>% 
+  ggplot(aes(x = tgl,
+             y = average_green_dominance)) +
+  geom_line(group = 1,color = "darkgreen") +
+  ylim(0,.05) +
+  theme_minimal() +
+  theme(axis.title = element_blank()) +
+  labs(title = "Trend line bulanan") +
+  theme_cleveland()
+
+plt_2 = 
+  df_hijau %>% 
+  ggplot(aes(x = factor(tahun),y = average_green_dominance)) +
+  geom_boxplot() +
+  theme_minimal() +
+  theme(axis.title = element_blank()) +
+  labs(title = "Boxplot bulanan per tahun") +
+  theme_cleveland()
+
+ggarrange(plt_1,plt_2,ncol = 2)
+```
+
+## Analisa Perbandingan 2023 vs 2024
+
+Dari tiga _metrics_ yang saya hitung di atas, saya bisa melakukan _Wilcox Test_ untuk membandingkan rata-rata "curah hijau" bulanan pada 2023 dan 2024.
+
+# Kesimpulan
+
+> Dari data berupa gambar, kita bisa mengekstrak beberapa informasi yang bisa dijadikan aproksimasi untuk mendekati curah hujan.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
+
