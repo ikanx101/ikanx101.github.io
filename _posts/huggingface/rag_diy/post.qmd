@@ -1,0 +1,62 @@
+---
+title: "Membuat Sendiri (semisal) ChatGPT dari Data Sendiri"
+format: 
+  gfm:
+    html-math-method: webtex
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+Salah satu cita-cita luhur hampir semua perusahaan yang saya kenali adalah membuat ChatGPT versi lokal mereka sendiri. Maksudnya apa? Mereka hendak membuat suatu sistem semacam ChatGPT yang bisa menjawab pertanyaan-pertanyaan yang diajukan berdasarkan data internal yang di-_feed_ ke dalamnya.
+
+Kenapa harus dijalankan secara lokal? Karena beberapa data bersifat _confidential_ sehingga tidak bisa di-_share_ ke manapun (kadang sampai tidak boleh di-_save_ secara _cloud_).
+
+Jika kita _Googling_, ada beberapa _tools_ dan cara yang sebenarnya bisa digunakan. Jika perusahaan tersebut punya dana yang cukup, mereka bisa menggunakan layanan _Azure Cognitive Search_ atau _Google Vertex AI_. Namun, jika secara perhitungan _cost benefit_ ternyata __tidak masuk__, perusahaan bisa mempertimbangkan solusi dengan cara membuat sendiri menggunakan model-model _open source_ yang bisa diambil dari _Huggingface_.
+
+Seperti biasa, karena penasaran saya mencoba membuat __sistem semacam itu__ menggunakan __R__, sedikit _Py_, dan model-model _open source_ di __Huggingface__. Istilah untuk sistem semacam ini adalah __RAG-LLM__. Berikut adalah penjelasan singkat tentang RGA-LLM:
+
+---
+
+## Penjelasan RAG
+
+__RAG__ adalah singkatan dari _Retrieval-Augmented Generation_. Ini adalah sebuah arsitektur atau teknik dalam kecerdasan buatan (AI), khususnya pada _Large Language Models_ (__LLM__). Tujuan utama __RAG__ adalah untuk meningkatkan kualitas jawaban yang dihasilkan oleh __LLM__ dengan cara menggabungkan:
+
+- Kemampuan __LLM__ dalam menghasilkan teks dengan 
+- Kemampuan mengambil (_retrieve_) informasi relevan dari sumber data yang diberikan.
+
+---
+
+Untuk membuatnya secara ___DIY___, saya membuat sebuah kerangka kerja sebagai berikut:
+
+![](nomnoml.png){.center}
+
+Penjelasannya seperti ini:
+
+1. _Input_ pertama adalah _multiple text documents_. Menggunakan model _transformers_ saya akan mengubah semua dokumen yang ada dalam bentuk matriks.
+1. _Input_ berikutnya adalah pertanyaan yang berupa kalimat. Menggunakan model yang sama, saya mengubahnya menjadi vektor.
+1. Saya akan hitung kedekatan matriks dengan vektor untuk mendapatkan dokumen mana yang paling relevan dengan pertanyaan yang diajukan. Saya menggunakan formula _cosine_ untuk menentukan jarak.
+1. Menggunakan model _QnA_, saya akan menanyakan pertanyaan ke dalam dokumen tersebut.
+
+Cukup mudah kan?
+
+Model yang saya gunakan adalah:
+
+1. Model _transformers_: `naufalihsan/indonesian-sbert-large`.
+1. Model _QnA_: `Rifky/Indobert-QA`.
+
+Kedua model ini berjalan di Bahasa Indonesia.
+
+Untuk menjalankannya saya menggunakan `reticulate` di __R__.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
+
