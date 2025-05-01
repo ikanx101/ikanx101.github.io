@@ -138,7 +138,7 @@ kita hendak menaruhnya ke *cloud* atau *docker hub*.
 
 Kita bisa *run* containernya langsung dengan perintah ini:
 
-    docker run -d --name sini ikanx101/r-shiny
+    docker run -d --name sini ikanx101/dashiny
 
 ------------------------------------------------------------------------
 
