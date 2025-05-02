@@ -8,6 +8,7 @@ library(janitor)
 
 n_core = detectCores()
 
+setwd("~/ikanx101.github.io/_posts/web scraping/post_12_toreiger")
 load("data.rda")
 
 # function benerin rating dan sales
@@ -58,19 +59,25 @@ data_final =
          penjualan = as.numeric(penjualan)) %>% 
   mutate(kategori = case_when(
     grepl("SACK|ransel|waist|shoulder|bag|tas|backpack|pack|rucksack|carrier",nama_produk,ignore.case = T) ~ "Bag",
-    grepl("shirt|pant|short|baju|celana",nama_produk,ignore.case = T) ~ "Shirt, Pants & Shorts",
+    grepl("shirt|pant|short|baju|celana|tees",nama_produk,ignore.case = T) ~ "Shirt, Pants & Shorts",
     grepl("pouch|wallet|belt|dompet|pinggang",nama_produk,ignore.case = T) ~ "Pouch, Wallet & Belt",
     grepl("tent|cover|tenda",nama_produk,ignore.case = T) ~ "Tent & Cover",
     grepl("cap|bandana|glove|topi|sarung tangan",nama_produk,ignore.case = T) ~ "Cap, Bandana & Gloves",
-    grepl("jacket|sweater|vest|jaket",nama_produk,ignore.case = T) ~ "Jacket, Sweater, & vest",
+    grepl("jacket|sweater|vest|jaket",nama_produk,ignore.case = T) ~ "Jacket, Sweater & Vest",
     grepl("sandal|shoe|sock|sepatu",nama_produk,ignore.case = T) ~ "Sandals & Shoe",
     grepl("watch|case|jam",nama_produk,ignore.case = T) ~ "Watch & Cases",
-    grepl("mask|sunglass",nama_produk,ignore.case = T) ~ "Mask, & Sunglasses",
+    grepl("mask|sunglass",nama_produk,ignore.case = T) ~ "Mask & Sunglasses",
     grepl("mukena|sajadah|sarung",nama_produk,ignore.case = T) ~ "Mukena, Sajadah & Sarung"
   )) %>% 
-  mutate(kategori = ifelse(is.na(kategori),"Others",kategori))
+  mutate(kategori = ifelse(is.na(kategori),"Others",kategori)) %>% 
+  mutate(rating = as.numeric(rating))
 
 save(data_final,file = "clean.rda")
+
+
+data_final %>% 
+  filter(kategori == "Mukena, Sajadah & Sarung") %>% 
+  filter(grepl("eiger",nama_toko,ignore.case = T))
 
 
 

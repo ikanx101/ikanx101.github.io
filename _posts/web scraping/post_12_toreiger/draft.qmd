@@ -1,0 +1,379 @@
+---
+title: "Torch vs Eiger di Tokopedia"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: false
+    toc-depth: 4
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: true
+  warning: false
+  error: false
+---
+
+Beberapa lelaki hobi mengkoleksi sepatu, jam, kacamata, hingga motor dan mobil. Kalau kata istri saya: 
+
+> _Kamu tuh punya tas banyak banget lho_
+
+Karena saya tidak merasa mengkoleksi tas, maka saya coba hitung kembali semua tas yang saya punya. Setelah saya sadari, ternyata saya punya kecenderungan untuk membeli tas untuk __beberapa *occassion* tertentu__ __atau untuk *gadget* tertentu__. 
+
+Biar _gak kena_ hisab, beberapa tas sudah dihibahkan ke anggota keluarga yang lain. __Namun ada *fun fact* yang saya sadari lagi__, yakni ada dua _brands_ tas yang saya selalu pakai: ___Torch___ dan ___Eiger___.
+
+Beberapa tahun yang lalu Nutrifood pernah bekerja sama dengan ___Torch___ sebagai tas _official_ untuk kado ultah karyawan. Sedangkan ___Eiger___ merupakan merek yang sudah lama saya gunakan sejak SMA.
+
+Saat saya iseng melihat __Tokopedia__, saya mendapati kedua _brands_ tersebut memiliki _official stores_ dan beberapa _unofficial-reseller_-nya. Penasaran dengan kedua _official stores_ tersebut, pada tulisan ini saya akan mencoba melakukan analisa sederhana dari semua data _listed product_ yang berhasil saya _web scrape_.
+
+---
+
+___Torch___ _official store_ di Tokopedia bisa kita temukan dengan nama [__Torch.id__](https://www.tokopedia.com/torch-id/review). Toko ini sudah _join_ Tokopedia sejak Juli 2016. Sedangkan ___Eiger___ _official store_ di Tokopedia bisa kita temukan dengan nama [__Eiger Adventure Official__](https://www.tokopedia.com/eigeradventure/review). Toko ini sudah _join_ Tokopedia sejak Juli 2020.
+
+> Kita bisa melihat ada jeda empat tahun antara __Torch__ dan __Eiger__. Mari kita analisa, apakah jeda ini bisa tergambar melalui omset kedua toko atau tidak.
+
+```{r}
+#| include: false
+setwd("~/ikanx101.github.io/_posts/web scraping/post_12_toreiger")
+rm(list=ls())
+gc()
+
+load("clean.rda")
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(ggpubr)
+library(janitor)
+library(epoxy)
+library(expss)
+```
+
+## Data yang Digunakan
+
+Untuk melakukan analisa ini, saya mengambil __semua *listed products* dari kedua *official stores*__ pada 2 Mei 2025 pukul 10.00 WIB. Data yang saya ambil adalah:
+
+1. Nama produk: merupakan nama produk yang _listed_. Kelak dari nama produk ini saya akan ekstrak kategori produknya.
+1. Harga: merupakan harga final yang dilihat oleh konsumen di situs Tokopedia. Saya sengaja tidak mengambil berapa nilai diskon. Kenapa? Biar simpel saja, namanya juga iseng.
+1. _Rating_ dan penjualan: merupakan nilai _rating_ pembeli terhadap _listed product_. Nilai _rating_ memiliki skala 1-5 bintang. Penjualan merupakan nilai berapa _qty_ produk ini __terjual sejak produk ini pertama kali *listed* di Tokopedia__. _Jika mau_, kita bisa melihat pergerakan _sales qty_ harian, mingguan, atau bulanan jika _web scrape_ dilakukan periodik.
+1. Nama toko: merupakan nama toko _Torch.id_ atau _Eiger Adventure Official_.
+
+Selain data tersebut, sebenarnya saya bisa saja mengambil data lain seperti:
+
+- Banyak stok barang pada saat itu,
+- Diskon harga,
+- Lokasi toko, dll.
+
+Tapi karena ini hanya __iseng__, maka saya ambil yang paling cepat dan mudah saja.
+
+Berikut adalah kategori-kategori produk yang saya ekstrak dari nama-nama produk:
+
+```{r}
+#| include: false
+tes = data_final %>% select(kategori)  %>% distinct()
+```
+
+```{epoxy .data = tes}
+1. {kategori}
+```
+
+Mari kita mulai analisanya.
+
+Pertama-tama, saya hendak melihat berapa banyak _listed products_ di kedua toko tersebut.
+
+> Perlu saya informasikan bahwa _listed products_ merupakan semua produk yang ada di halaman Tokopedia toko tersebut. Terlepas dari masih ada atau tidak ada produk tersebut, selama _listed_ maka datanya bisa kita ambil.Toko juga punya wewenang penuh untuk menghapus produk yang sudah habis atau tetap me-_listing_-nya di Tokopedia. 
+
+```{r}
+#| echo: false
+#| message: false
+
+data_final %>% tabyl(nama_toko) %>% 
+  ggplot(aes(x = nama_toko,
+             y = n)) +
+  geom_col(color = "black",aes(fill = nama_toko)) +
+  scale_fill_manual(values = c("#cc8029","267c9e")) +
+  geom_label(aes(label = scales::comma(n))) +
+  theme_minimal() +
+  labs(title = "Berapa banyak listed products pada toko:",
+       subtitle = "sumber: web scrape Tokopedia",
+       caption = "Scraped, Cleaned, Visualized using R\nikanx101.com") +
+  theme(axis.title = element_blank(),
+        axis.text.y = element_blank(),
+        legend.position = "none")
+```
+
+
+Kita bisa melihat banyak _Eiger Adventure Official_ memiliki lebih _listed products_ lebih banyak (lebih dari tiga kalinya) dibandingkan _Torch.id_.
+
+
+```{r}
+#| echo: false
+#| message: false
+
+data_final %>% 
+  tabyl(kategori,nama_toko) %>% 
+  reshape2::melt(id.vars = "kategori") %>% 
+  ggplot(aes(x = reorder(kategori,value),
+             y = value)) +
+  geom_col(color = "black",aes(fill = variable)) +
+  scale_fill_manual(values = c("#cc8029","#267c9e")) +
+  geom_label(aes(label = scales::comma(value)),hjust = 0,size = 3) +
+  facet_wrap(~variable) +
+  theme_minimal() +
+  coord_flip() +
+  labs(title = "Berapa banyak listed products per kategori pada toko:",
+       subtitle = "sumber: web scrape Tokopedia",
+       caption = "Scraped, Cleaned, Visualized using R\nikanx101.com") +
+  theme(axis.title = element_blank(),
+        axis.text.x = element_blank(),
+        legend.position = "none",
+        strip.background = element_rect(color = "black")) +
+  ylim(0,2000)
+```
+
+Kita juga bisa melihat bahwa _Torch.id_ lebih fokus dalam menawarkan produk kategori _bags_. Sedangkan _Eiger Adventure Official_ menawarkan lini produk yang lebih beragam dengan _bags_ sebagai _backbone_-nya.
+
+```{r}
+#| echo: false
+#| message: false
+
+data_final %>% 
+  ggplot(aes(y = nama_toko,
+             x = rating)) +
+  geom_boxplot(aes(fill = nama_toko),alpha = .5) +
+  scale_fill_manual(values = c("#cc8029","#267c9e")) +
+  theme_minimal() +
+  labs(title = "Sebaran rating produk pada toko:",
+       subtitle = "sumber: web scrape Tokopedia",
+       caption = "Scraped, Cleaned, Visualized using R\nikanx101.com") +
+  theme(axis.title = element_blank(),
+        legend.position = "none")
+
+data_final %>% 
+  tab_cells(rating) %>% 
+  tab_cols(nama_toko) %>% 
+  tab_stat_mean_sd_n() %>% 
+  tab_stat_median() %>% 
+  tab_pivot() %>% 
+  tab_caption("Statistika deskriptif dari rating produk")
+```
+
+Jika kita lihat secara _overall_, baik _Torch_ dan _Eiger_ memiliki rata-rata dan median _rating_ produk yang sama. Kita bisa simpulkan sementara bahwa konsumen keduanya memberikan penilaian yang sama baiknya.
+
+```{r}
+#| echo: false
+#| message: false
+
+data_final %>% 
+  ggplot(aes(y = kategori,
+             x = rating)) +
+  geom_boxplot(aes(fill = nama_toko)) + 
+  facet_wrap(~nama_toko) +
+  scale_fill_manual(values = c("#cc8029","#267c9e")) +
+  labs(title = "Sebaran rating produk per kategori pada toko:",
+       subtitle = "sumber: web scrape Tokopedia",
+       caption = "Scraped, Cleaned, Visualized using R\nikanx101.com") +
+  theme_minimal() +
+  theme(axis.title = element_blank(),
+        legend.position = "none",
+        strip.background = element_rect(color = "black"))
+
+data_final %>% 
+  tab_cells(rating) %>%
+  tab_rows(kategori) %>% 
+  tab_cols(nama_toko) %>% 
+  tab_stat_mean() %>% 
+  tab_stat_median() %>% 
+  tab_pivot() %>% 
+  tab_caption("Statistika deskriptif dari rating produk per kategori")
+```
+
+> __Ternyata saat dihitung detail per kategori, *rating* produk antar kedua toko untuk masing-masing kategori masih sama baiknya__.
+
+
+Sekarang kita akan coba lihat analisa harga sebagai berikut:
+
+```{r}
+#| echo: false
+#| message: false
+
+data_final %>% 
+  ggplot(aes(y = kategori,
+             x = harga)) +
+  geom_boxplot(aes(fill = nama_toko)) + 
+  facet_wrap(~nama_toko) +
+  scale_fill_manual(values = c("#cc8029","#267c9e")) +
+  labs(title = "Sebaran harga produk per kategori pada toko:",
+       subtitle = "sumber: web scrape Tokopedia",
+       caption = "Scraped, Cleaned, Visualized using R\nikanx101.com") +
+  theme_minimal() +
+  theme(axis.title = element_blank(),
+        legend.position = "none",
+        strip.background = element_rect(color = "black")) +
+  scale_x_continuous(labels = scales::label_currency(prefix = "Rp")) 
+```
+
+Terlihat ada beberapa kategori yang memiliki harga yang mirip dan berbeda. Saya akan coba lakukan uji beda _mean_ harga berikut ini:
+
+```{r}
+#| echo: false
+#| message: false
+data_final %>% 
+  tab_cells(harga) %>%
+  tab_rows(kategori) %>% 
+  tab_cols(nama_toko) %>% 
+  tab_stat_mean_sd_n() %>% 
+  tab_last_sig_means() %>%  
+  tab_pivot() %>% 
+  tab_caption("Statistika deskriptif dari harga produk per kategori")
+```
+
+Saya mendapatkan kesimpulan berikut ini:
+
+1. Kategori-kategori di mana _Eiger_ memiliki rata-rata harga __lebih mahal__ dibandingkan _Torch_:
+    1. _Bag_,
+    1. _Jacket, Sweater, & vest_,
+    1. _Pouch, Wallet & Belt_,
+    1. _Sandals & Shoe_,
+    1. _Watch & Cases_.
+1. Kategori-kategori di mana _Torch_ memiliki rata-rata harga __lebih mahal__ dibandingkan _Eiger_:
+    1. _Mask & Sunglasses_,
+    1. _Mukena, Sajadah & Sarung_.
+
+
+Sekarang kita akan coba analisa omset _overall_ untuk semua produk:
+
+```{r}
+#| echo: false
+#| message: false
+
+data_final %>% 
+  mutate(omset = penjualan * harga) %>% 
+  group_by(nama_toko) %>% 
+  summarise(omset = sum(omset,na.rm = T)) %>% 
+  ungroup() %>% 
+  mutate(tes = scales::dollar(omset,prefix = "Rp")) %>% 
+  ggplot(aes(x = nama_toko,
+             y = omset)) +
+  geom_col(color = "black",aes(fill = nama_toko)) +
+  scale_fill_manual(values = c("#cc8029","#267c9e")) +
+  geom_label(aes(label = tes)) +
+  theme_minimal() +
+  labs(title = "Berapa total omset pada toko:",
+       subtitle = "sumber: web scrape Tokopedia",
+       caption = "Scraped, Cleaned, Visualized using R\nikanx101.com") +
+  theme(axis.title = element_blank(),
+        axis.text.y = element_blank(),
+        legend.position = "none")
+
+```
+
+Kita bisa lihat bahwa __*Eiger* memiliki omset yang *lebih besar dua kalinya* dibandingkan *Torch.id*__. Sekarang saya akan coba _cross_ dengan kategori produk:
+
+
+```{r}
+#| echo: false
+#| message: false
+
+data_final %>% 
+  mutate(omset = penjualan * harga) %>% 
+  group_by(nama_toko,kategori) %>% 
+  summarise(omset = sum(omset,na.rm = T)) %>% 
+  ungroup() %>% 
+  mutate(tes = scales::dollar(omset,prefix = "Rp")) %>% 
+  ggplot(aes(x = reorder(kategori,omset),
+             y = omset)) +
+  geom_col(color = "black",aes(fill = nama_toko)) +
+  scale_fill_manual(values = c("#cc8029","#267c9e")) +
+  geom_label(aes(label = tes,y = 0),hjust = 0,size = 3,alpha = .5) +
+  facet_wrap(~nama_toko) +
+  theme_minimal() +
+  coord_flip() +
+  labs(title = "Berapa banyak listed products per kategori pada toko:",
+       subtitle = "sumber: web scrape Tokopedia",
+       caption = "Scraped, Cleaned, Visualized using R\nikanx101.com") +
+  theme(axis.title = element_blank(),
+        axis.text.x = element_blank(),
+        legend.position = "none",
+        strip.background = element_rect(color = "black")) +
+  ylim(0,55*10^9)
+```
+
+Ternyata kita dapatkan bahwa pada kategori _bags_ total _omset_ _Torch.id_ lebih besar dibandingkan _Eiger_.
+
+> _Bags_ benar-benar menjadi satu-satunya _omset generator_ bagi _Torch_. Sedangkan _Eiger_ yang memiliki strategi produk yang lebih _diverse_ memiliki _omset driver_ yang juga beragam.
+
+Berikutnya saya akan hitung rasio total omset per banyaknya _listed product_ per kategori.
+
+$$rasio = \frac{\sum{\text{omset}}}{\text{n listed product}}$$
+
+Berikut adalah hasilnya:
+
+```{r}
+#| echo: false
+#| message: false
+
+data_final %>% 
+  mutate(omset = penjualan * harga) %>% 
+  group_by(nama_toko) %>% 
+  summarise(omset = sum(omset,na.rm = T)/length(nama_produk)) %>% 
+  ungroup() %>% 
+  mutate(tes = scales::dollar(omset,prefix = "Rp")) %>% 
+  ggplot(aes(x = nama_toko,
+             y = omset)) +
+  geom_col(color = "black",aes(fill = nama_toko)) +
+  scale_fill_manual(values = c("#cc8029","#267c9e")) +
+  geom_label(aes(label = tes)) +
+  theme_minimal() +
+  labs(title = "Rasio omset per banyaknya listed products pada toko:",
+       subtitle = "sumber: web scrape Tokopedia",
+       caption = "Scraped, Cleaned, Visualized using R\nikanx101.com") +
+  theme(axis.title = element_blank(),
+        axis.text.y = element_blank(),
+        legend.position = "none")
+```
+
+Sesuai dengan dugaan saya, oleh karena banyaknya _listed product_ _Eiger_ lebih banyak, (walaupun omsetnya lebih besar dibandingkan _Torch_) rasio _Eiger_ lebih rendah dibandingkan _Torch_. Saya akan coba _cross_ per kategori:
+
+```{r}
+#| echo: false
+#| message: false
+
+data_final %>% 
+  mutate(omset = penjualan * harga) %>% 
+  group_by(nama_toko,kategori) %>% 
+  summarise(omset = sum(omset,na.rm = T)/length(nama_produk)) %>% 
+  ungroup() %>% 
+  mutate(tes = scales::dollar(omset,prefix = "Rp")) %>% 
+  ggplot(aes(x = reorder(kategori,omset),
+             y = omset)) +
+  geom_col(color = "black",aes(fill = nama_toko)) +
+  scale_fill_manual(values = c("#cc8029","#267c9e")) +
+  geom_label(aes(label = tes,y = 0),hjust = 0,size = 3,alpha = .5) +
+  facet_wrap(~nama_toko) +
+  theme_minimal() +
+  coord_flip() +
+  labs(title = "Rasio omset per banyaknya listed products per kategori pada toko:",
+       subtitle = "sumber: web scrape Tokopedia",
+       caption = "Scraped, Cleaned, Visualized using R\nikanx101.com") +
+  theme(axis.title = element_blank(),
+        axis.text.x = element_blank(),
+        legend.position = "none",
+        strip.background = element_rect(color = "black")) 
+  # ylim(0,55*10^9)
+```
+
+Ternyata rasio terbesar bagi kedua toko ini bukan dari produk-produk di kategori _bags_. Rasio terbesar bagi _Torch.id_ berasal dari kategori _sandals & shoe_. Sedangkan rasio terbesar bagi _Eiger_ berasal dari kategori _watch & cases_.
+
+## Epilog
+
+Dari analisa-analisa sederhana di atas, saya merasa cara main kedua _brands_ ini di Tokopedia berbeda, yakni .....
+
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
+
