@@ -1,0 +1,1186 @@
+'https://www.tokopedia.com/torch-id/product','https://www.tokopedia.com/torch-id/product/page/2','https://www.tokopedia.com/torch-id/product/page/3','https://www.tokopedia.com/torch-id/product/page/4','https://www.tokopedia.com/torch-id/product/page/5','https://www.tokopedia.com/torch-id/product/page/6','https:          used (Mb) gc trigger  (Mb) max used  (Mb)
+Ncells 1207937 64.6    2160877 115.5  2160877 115.5
+Vcells 2770588 21.2    8388608  64.0  4210604  32.2
+[1] "1 done"
+[1] "2 done"
+[1] 1
+[1] 2
+[1] "tokopedia.com_eigeradventure_product_page_10_20250502025423994.html"
+[1] "tokopedia.com_eigeradventure_product_page_10_20250502025423994.html"
+[1] "tokopedia.com_eigeradventure_product_page_10_20250502025423994.html"
+          used (Mb) gc trigger  (Mb) max used  (Mb)
+Ncells 1389796 74.3    2160877 115.5  2160877 115.5
+Vcells 3064800 23.4    8388608  64.0  4210604  32.2
+          used (Mb) gc trigger  (Mb) max used  (Mb)
+Ncells 1403850 75.0    2160877 115.5  2160877 115.5
+Vcells 3099587 23.7    8388608  64.0  4210604  32.2
+          used (Mb) gc trigger  (Mb) max used  (Mb)
+Ncells 1403829 75.0    2160877 115.5  2160877 115.5
+Vcells 3099552 23.7    8388608  64.0  4210604  32.2
+{html_document}
+<html lang="id" translate="no" data-rh="lang,translate">
+[1] <head>\n<meta http-equiv="Content-Type" content ...
+[2] <body data-theme="default" data-rh="data-theme" ...
+ [1] "EIGER MOTO GARAGE 1.0 BANDANA"               
+ [2] "EIGER MF HEADWEAR CLIMBING TOOL BANDANA"     
+ [3] "EIGER RASTER LOGO T-SHIRT"                   
+ [4] "EIGER FINGER PRINT T-SHIRT"                  
+ [5] "EIGER LEATHER VERT STORMY 2L WALLET"         
+ [6] "EIGER HAT INFANTRY"                          
+ [7] "EIGER K. STRUIK 1989 SHIRT"                  
+ [8] "EIGER MOTO-HEAD HELMET LINER RD"             
+ [9] "EIGER J. WARMER MEN JACKET"                  
+[10] "EIGER ETHNIC KEYCHAIN"                       
+[11] "EIGER 28 GUNUNG LIST T-SHIRT"                
+[12] "EIGER HIMALAYAS 1.0 T-SHIRT"                 
+[13] "EIGER 176 RIBSTOP PANTS"                     
+[14] "EIGER RIBS TRANS CARGO SHORTS"               
+[15] "EIGER TROPEEZ MT T-SHIRT"                    
+[16] "EIGER NEBULOUS T-SHIRT"                      
+[17] "EIGER MOVE 1.3 SHORTS"                       
+[18] "EIGER YACARE SHOES"                          
+[19] "EIGER ILLINOIS CAP"                          
+[20] "EIGER X-RAPIDEZ 1.0 FF GLOVES"               
+[21] "EIGER TOMAHAWK PINCH STRAP PATTERN 2 SANDALS"
+[22] "EIGER COFETE MEN SANDALS"                    
+[23] "EIGER COMMANDO METAL 1.0 CAP"                
+[24] "EIGER CUSTOM MACHINE S/S TEES RD T-SHIRT"    
+[25] "EIGER CORDIAL BRACELET 89"                   
+[26] "EIGER BLANFORD SOCKS"                        
+[27] "EIGER NATIVO TRUCKER CAP"                    
+[28] "EIGER TRAVEL LOCK CABLE 1.0 GREEN"           
+[29] "EIGER TIBETAN SOCKS"                         
+[30] "EIGER SHADOW BALACLAVA BLACK"                
+[31] "EIGER INFLUENTIAL T-SHIRT"                   
+[32] "EIGER HIKING HIGH SOCKS GREY"                
+[33] "EIGER FENNEC SOCKS GREY"                     
+[34] "EIGER QUEST 20 PANTS"                        
+[35] "EIGER CLOUDRUN 2.0 SHOES"                    
+[36] "EIGER IN MOTION LEGGING"                     
+[37] "EIGER HOARY SOCKS"                           
+[38] "EIGER TREKKER 2.0 SOCKS"                     
+[39] "EIGER X-DUBLIN T-SHIRT"                      
+[40] "EIGER KINKAJOU PINCH 2.0 SANDALS"            
+[41] "EIGER KINKAJOU ROLL STRAP 2.0 SANDALS"       
+[42] "EIGER LANZAROTE SANDALS"                     
+[43] "EIGER STRIKE BEANIE"                         
+[44] "EIGER HALLER SUNGLASSES BLACK"               
+[45] "EIGER SATTLER SUNGLASSES NAVY"               
+[46] "EIGER VISION SUNGLASSES BLACK"               
+[47] "EIGER CRUISE WAYFARER SUNGLASSES"            
+[48] "EIGER VALLEJO T-SHIRT"                       
+[49] "EIGER X-MESSY STRIPER SS SHIRTS"             
+[50] "EIGER X-ZOMER T-SHIRT"                       
+[51] "EIGER X-CRYSTALLIN WS WAIST BAG"             
+[52] "EIGER X-VOYAGE 1.0 SOCKS"                    
+[53] "EIGER X-PATAGON SOCKS"                       
+[54] "EIGER X-BEANICITY BEANIE"                    
+[55] "EIGER X-BOULEVARD MID SOCKS"                 
+[56] "EIGER X-BARDENAS INVISIBLE SOCKS"            
+[57] "EIGER X-COARSE PANTS"                        
+[58] "EIGER COMMANDO CADET 1.0 CAP"                
+[59] "EIGER FLECKEN HAT 1.0"                       
+[60] "EIGER CORTINA 76 BEANIE"                     
+[61] "EIGER FLECKEN CARD WALLET"                   
+[62] "EIGER FLECKEN LANDSCAPE WALLET"              
+[63] "EIGER ECOSAVIOR 45 RUCKSACK OLIVE"           
+[64] "EIGER ECOSAVIOR 45 WS RUCKSACK WHITE"        
+[65] "EIGER SHIPTON 3P TENT ORANGE"                
+[66] "EIGER STOVER 4P TENT RED"                    
+[67] "EIGER SENARU 2P TENT ORANGE"                 
+[68] "EIGER NAVIGATOR COMPASS BLACK"               
+[69] "EIGER JAVELIN TREKKING POLE ORANGE"          
+[70] "EIGER FOLDING STOOL NAVY"                    
+[71] "EIGER SNELLER 1.0 FF GLOVES"                 
+[72] "EIGER SNELLER 1.5 HF GLOVES"                 
+[73] "EIGER PANONE RIDE GLOVES"                    
+[74] "EIGER NEW RIDING GLOVE BASIC FULL"           
+[75] "EIGER PHAETON 1.1 RIDING GLOVES"             
+[76] "EIGER EXCELSIOR 65 RUCKSACK"                 
+[77] "EIGER CRUX 16 BASIC DAYPACK"                 
+[78] "EIGER X-BIKE RIDERPACK SHOULDER BAG BLACK"   
+[79] "EIGER MF BANDANA LINES IN THE SAND"          
+[80] "EIGER PROVO WATCH"                           
+          used (Mb) gc trigger  (Mb) max used  (Mb)
+Ncells 1496892 80.0    2737637 146.3  2160877 115.5
+Vcells 3262446 24.9    8388608  64.0  4365811  33.4
+character(0)
+ [1] "4.9250+ terjual"  "4.9250+ terjual" 
+ [3] "5.0100+ terjual"  "4.9250+ terjual" 
+ [5] "4.9500+ terjual"  "4.9500+ terjual" 
+ [7] "5.070+ terjual"   "4.9250+ terjual" 
+ [9] "4.9250+ terjual"  "5.01rb+ terjual" 
+[11] "5.0100+ terjual"  "4.990+ terjual"  
+[13] "4.9100+ terjual"  "5.0250+ terjual" 
+[15] "4.970+ terjual"   "4.9100+ terjual" 
+[17] "4.960+ terjual"   "5.030+ terjual"  
+[19] "4.980+ terjual"   "4.9100+ terjual" 
+[21] "4.92rb+ terjual"  "4.9500+ terjual" 
+[23] "4.91rb+ terjual"  "5.0100+ terjual" 
+[25] "4.9250+ terjual"  "4.9500+ terjual" 
+[27] "4.9100+ terjual"  "5.070+ terjual"  
+[29] "5.0500+ terjual"  "5.0250+ terjual" 
+[31] "4.9250+ terjual"  "5.0100+ terjual" 
+[33] "4.9100+ terjual"  "4.9100+ terjual" 
+[35] "4.9250+ terjual"  "5.040+ terjual"  
+[37] "5.0100+ terjual"  "4.9250+ terjual" 
+[39] "4.9250+ terjual"  "4.910rb+ terjual"
+[41] "4.96rb+ terjual"  "4.91rb+ terjual" 
+[43] "4.9500+ terjual"  "4.9750+ terjual" 
+[45] "5.0500+ terjual"  "4.9500+ terjual" 
+[47] "4.9250+ terjual"  "4.960+ terjual"  
+[49] "4.823 terjual"    "4.950+ terjual"  
+[51] "4.9250+ terjual"  "4.9100+ terjual" 
+[53] "5.0100+ terjual"  "4.91rb+ terjual" 
+[55] "5.0250+ terjual"  "4.9500+ terjual" 
+[57] "5.0100+ terjual"  "4.9500+ terjual" 
+[59] "4.91rb+ terjual"  "4.9250+ terjual" 
+[61] "4.9750+ terjual"  "4.91rb+ terjual" 
+[63] "5.0250+ terjual"  "5.0100+ terjual" 
+[65] "5.070+ terjual"   "5.040+ terjual"  
+[67] "5.030+ terjual"   "4.9100+ terjual" 
+[69] "4.970+ terjual"   "4.930+ terjual"  
+[71] "4.9100+ terjual"  "4.9250+ terjual" 
+[73] "4.9750+ terjual"  "4.91rb+ terjual" 
+[75] "4.880+ terjual"   "5.021 terjual"   
+[77] "5.0750+ terjual"  "4.9250+ terjual" 
+[79] "4.91rb+ terjual"  "4.92rb+ terjual" 
+          used (Mb) gc trigger  (Mb) max used  (Mb)
+Ncells 1496841 80.0    2737637 146.3  2160877 115.5
+Vcells 3262353 24.9    8388608  64.0  4365811  33.4
+[1] 2
+$`(0.921,40.5]`
+ [1] 33 49 18 77  8 61 52 60 27 65 38  7  6 10 72  4
+[17] 32 75 12 31 47 57 41 11 78 55 64 79 26 14  5  2
+[33] 69 63 24  3 36 67 40 15
+
+$`(40.5,80.1]`
+ [1] 17 76 53 62 34 23 30 20 16 71 21 66 29 51 50 37
+[17]  1 68 74 48 59 80 39 46 45 56 58  9 35 70 42 73
+[33] 19 28 54 25 43 44 22 13
+
+ [1] 56 38 24 61 45 33 63 21 69 67 44 57 39 42 64 34
+[17]  8 47 14  7 26 27 55 60 54 29 20 32 51 66 31  5
+[33] 78 50 43 53 18 40 71 13 62  4  6 10 73 30 25 35
+[49] 74 52 36 28  3 37 16  2 68 46 75 70 19 48 77 76
+[65] 80 58 11  9 23 41 22 15 79  1 12 49 65 59 17 72
+          used (Mb) gc trigger  (Mb) max used  (Mb)
+Ncells 1499147 80.1    2737637 146.3  2202577 117.7
+Vcells 3265204 25.0    8388608  64.0  4365811  33.4
+ [1]  2 19 18 10 36 59  9 21 45  5 68 70 44 30 75  3
+[17] 55 48 66 77 71 24 11 34 49 69 38 13 16 42 22 27
+[33] 57 15 12 64 25 80 17 58 61  4 62 60 54  6 20 14
+[49] 65 52 26 40 78 63 46  8 28 41  1 47 29 51 39 76
+[65] 31 37 32 33 79 67 35  7 56 74 50 73 23 43 72 53
+          used (Mb) gc trigger  (Mb) max used  (Mb)
+Ncells 1499671 80.1    2737637 146.3  2287228 122.2
+Vcells 3266085 25.0    8388608  64.0  4365811  33.4
+                                    nama_produk
+1                 EIGER MOTO GARAGE 1.0 BANDANA
+2       EIGER MF HEADWEAR CLIMBING TOOL BANDANA
+3                     EIGER RASTER LOGO T-SHIRT
+4                    EIGER FINGER PRINT T-SHIRT
+5           EIGER LEATHER VERT STORMY 2L WALLET
+6                            EIGER HAT INFANTRY
+7                    EIGER K. STRUIK 1989 SHIRT
+8               EIGER MOTO-HEAD HELMET LINER RD
+9                    EIGER J. WARMER MEN JACKET
+10                        EIGER ETHNIC KEYCHAIN
+11                 EIGER 28 GUNUNG LIST T-SHIRT
+12                  EIGER HIMALAYAS 1.0 T-SHIRT
+13                      EIGER 176 RIBSTOP PANTS
+14                EIGER RIBS TRANS CARGO SHORTS
+15                     EIGER TROPEEZ MT T-SHIRT
+16                       EIGER NEBULOUS T-SHIRT
+17                        EIGER MOVE 1.3 SHORTS
+18                           EIGER YACARE SHOES
+19                           EIGER ILLINOIS CAP
+20                EIGER X-RAPIDEZ 1.0 FF GLOVES
+21 EIGER TOMAHAWK PINCH STRAP PATTERN 2 SANDALS
+22                     EIGER COFETE MEN SANDALS
+23                 EIGER COMMANDO METAL 1.0 CAP
+24     EIGER CUSTOM MACHINE S/S TEES RD T-SHIRT
+25                    EIGER CORDIAL BRACELET 89
+26                         EIGER BLANFORD SOCKS
+27                     EIGER NATIVO TRUCKER CAP
+28            EIGER TRAVEL LOCK CABLE 1.0 GREEN
+29                          EIGER TIBETAN SOCKS
+30                 EIGER SHADOW BALACLAVA BLACK
+31                    EIGER INFLUENTIAL T-SHIRT
+32                 EIGER HIKING HIGH SOCKS GREY
+33                      EIGER FENNEC SOCKS GREY
+34                         EIGER QUEST 20 PANTS
+35                     EIGER CLOUDRUN 2.0 SHOES
+36                      EIGER IN MOTION LEGGING
+37                            EIGER HOARY SOCKS
+38                      EIGER TREKKER 2.0 SOCKS
+39                       EIGER X-DUBLIN T-SHIRT
+40             EIGER KINKAJOU PINCH 2.0 SANDALS
+41        EIGER KINKAJOU ROLL STRAP 2.0 SANDALS
+42                      EIGER LANZAROTE SANDALS
+43                          EIGER STRIKE BEANIE
+44                EIGER HALLER SUNGLASSES BLACK
+45                EIGER SATTLER SUNGLASSES NAVY
+46                EIGER VISION SUNGLASSES BLACK
+47             EIGER CRUISE WAYFARER SUNGLASSES
+48                        EIGER VALLEJO T-SHIRT
+49              EIGER X-MESSY STRIPER SS SHIRTS
+50                        EIGER X-ZOMER T-SHIRT
+51              EIGER X-CRYSTALLIN WS WAIST BAG
+52                     EIGER X-VOYAGE 1.0 SOCKS
+53                        EIGER X-PATAGON SOCKS
+54                     EIGER X-BEANICITY BEANIE
+55                  EIGER X-BOULEVARD MID SOCKS
+56             EIGER X-BARDENAS INVISIBLE SOCKS
+57                         EIGER X-COARSE PANTS
+58                 EIGER COMMANDO CADET 1.0 CAP
+59                        EIGER FLECKEN HAT 1.0
+60                      EIGER CORTINA 76 BEANIE
+61                    EIGER FLECKEN CARD WALLET
+62               EIGER FLECKEN LANDSCAPE WALLET
+63            EIGER ECOSAVIOR 45 RUCKSACK OLIVE
+64         EIGER ECOSAVIOR 45 WS RUCKSACK WHITE
+65                 EIGER SHIPTON 3P TENT ORANGE
+66                     EIGER STOVER 4P TENT RED
+67                  EIGER SENARU 2P TENT ORANGE
+68                EIGER NAVIGATOR COMPASS BLACK
+69           EIGER JAVELIN TREKKING POLE ORANGE
+70                     EIGER FOLDING STOOL NAVY
+71                  EIGER SNELLER 1.0 FF GLOVES
+72                  EIGER SNELLER 1.5 HF GLOVES
+73                     EIGER PANONE RIDE GLOVES
+74            EIGER NEW RIDING GLOVE BASIC FULL
+75              EIGER PHAETON 1.1 RIDING GLOVES
+76                  EIGER EXCELSIOR 65 RUCKSACK
+77                  EIGER CRUX 16 BASIC DAYPACK
+78    EIGER X-BIKE RIDERPACK SHOULDER BAG BLACK
+79           EIGER MF BANDANA LINES IN THE SAND
+80                            EIGER PROVO WATCH
+         harga   rating_terjual
+1     Rp53.100  4.9250+ terjual
+2     Rp98.100  4.9250+ terjual
+3    Rp143.100  5.0100+ terjual
+4    Rp143.100  4.9250+ terjual
+5    Rp251.100  4.9500+ terjual
+6    Rp170.100  4.9500+ terjual
+7    Rp368.100   5.070+ terjual
+8    Rp159.000  4.9250+ terjual
+9    Rp449.100  4.9250+ terjual
+10    Rp59.000  5.01rb+ terjual
+11   Rp152.100  5.0100+ terjual
+12   Rp170.100   4.990+ terjual
+13   Rp395.100  4.9100+ terjual
+14   Rp319.000  5.0250+ terjual
+15   Rp233.100   4.970+ terjual
+16   Rp188.100  4.9100+ terjual
+17   Rp332.100   4.960+ terjual
+18   Rp664.300   5.030+ terjual
+19   Rp169.000   4.980+ terjual
+20   Rp199.000  4.9100+ terjual
+21   Rp197.100  4.92rb+ terjual
+22   Rp134.100  4.9500+ terjual
+23   Rp134.100  4.91rb+ terjual
+24   Rp188.100  5.0100+ terjual
+25   Rp107.100  4.9250+ terjual
+26    Rp79.000  4.9500+ terjual
+27   Rp134.100  4.9100+ terjual
+28   Rp107.100   5.070+ terjual
+29    Rp71.100  5.0500+ terjual
+30   Rp229.000  5.0250+ terjual
+31   Rp197.100  4.9250+ terjual
+32    Rp89.000  5.0100+ terjual
+33    Rp89.000  4.9100+ terjual
+34   Rp404.100  4.9100+ terjual
+35   Rp679.000  4.9250+ terjual
+36   Rp239.400   5.040+ terjual
+37    Rp71.100  5.0100+ terjual
+38    Rp89.100  4.9250+ terjual
+39   Rp143.100  4.9250+ terjual
+40   Rp206.100 4.910rb+ terjual
+41   Rp260.100  4.96rb+ terjual
+42   Rp152.100  4.91rb+ terjual
+43    Rp71.100  4.9500+ terjual
+44   Rp260.100  4.9750+ terjual
+45   Rp251.100  5.0500+ terjual
+46   Rp269.100  4.9500+ terjual
+47   Rp332.100  4.9250+ terjual
+48   Rp219.000   4.960+ terjual
+49   Rp155.400    4.823 terjual
+50   Rp179.100   4.950+ terjual
+51   Rp215.200  4.9250+ terjual
+52    Rp99.000  4.9100+ terjual
+53   Rp119.000  5.0100+ terjual
+54    Rp89.100  4.91rb+ terjual
+55    Rp79.000  5.0250+ terjual
+56    Rp59.000  4.9500+ terjual
+57   Rp485.100  5.0100+ terjual
+58   Rp134.100  4.9500+ terjual
+59   Rp169.000  4.91rb+ terjual
+60    Rp98.100  4.9250+ terjual
+61    Rp69.000  4.9750+ terjual
+62   Rp107.100  4.91rb+ terjual
+63 Rp2.249.000  5.0250+ terjual
+64 Rp2.299.000  5.0100+ terjual
+65 Rp2.239.000   5.070+ terjual
+66 Rp2.399.000   5.040+ terjual
+67 Rp1.669.000   5.030+ terjual
+68   Rp143.100  4.9100+ terjual
+69   Rp602.100   4.970+ terjual
+70   Rp152.100   4.930+ terjual
+71   Rp199.000  4.9100+ terjual
+72   Rp179.000  4.9250+ terjual
+73   Rp143.100  4.9750+ terjual
+74   Rp134.100  4.91rb+ terjual
+75   Rp170.000   4.880+ terjual
+76 Rp3.349.000    5.021 terjual
+77   Rp255.550  5.0750+ terjual
+78   Rp208.050  4.9250+ terjual
+79   Rp109.000  4.91rb+ terjual
+80   Rp569.000  4.92rb+ terjual
+                  nama_toko
+1  Eiger Adventure Official
+2  Eiger Adventure Official
+3  Eiger Adventure Official
+4  Eiger Adventure Official
+5  Eiger Adventure Official
+6  Eiger Adventure Official
+7  Eiger Adventure Official
+8  Eiger Adventure Official
+9  Eiger Adventure Official
+10 Eiger Adventure Official
+11 Eiger Adventure Official
+12 Eiger Adventure Official
+13 Eiger Adventure Official
+14 Eiger Adventure Official
+15 Eiger Adventure Official
+16 Eiger Adventure Official
+17 Eiger Adventure Official
+18 Eiger Adventure Official
+19 Eiger Adventure Official
+20 Eiger Adventure Official
+21 Eiger Adventure Official
+22 Eiger Adventure Official
+23 Eiger Adventure Official
+24 Eiger Adventure Official
+25 Eiger Adventure Official
+26 Eiger Adventure Official
+27 Eiger Adventure Official
+28 Eiger Adventure Official
+29 Eiger Adventure Official
+30 Eiger Adventure Official
+31 Eiger Adventure Official
+32 Eiger Adventure Official
+33 Eiger Adventure Official
+34 Eiger Adventure Official
+35 Eiger Adventure Official
+36 Eiger Adventure Official
+37 Eiger Adventure Official
+38 Eiger Adventure Official
+39 Eiger Adventure Official
+40 Eiger Adventure Official
+41 Eiger Adventure Official
+42 Eiger Adventure Official
+43 Eiger Adventure Official
+44 Eiger Adventure Official
+45 Eiger Adventure Official
+46 Eiger Adventure Official
+47 Eiger Adventure Official
+48 Eiger Adventure Official
+49 Eiger Adventure Official
+50 Eiger Adventure Official
+51 Eiger Adventure Official
+52 Eiger Adventure Official
+53 Eiger Adventure Official
+54 Eiger Adventure Official
+55 Eiger Adventure Official
+56 Eiger Adventure Official
+57 Eiger Adventure Official
+58 Eiger Adventure Official
+59 Eiger Adventure Official
+60 Eiger Adventure Official
+61 Eiger Adventure Official
+62 Eiger Adventure Official
+63 Eiger Adventure Official
+64 Eiger Adventure Official
+65 Eiger Adventure Official
+66 Eiger Adventure Official
+67 Eiger Adventure Official
+68 Eiger Adventure Official
+69 Eiger Adventure Official
+70 Eiger Adventure Official
+71 Eiger Adventure Official
+72 Eiger Adventure Official
+73 Eiger Adventure Official
+74 Eiger Adventure Official
+75 Eiger Adventure Official
+76 Eiger Adventure Official
+77 Eiger Adventure Official
+78 Eiger Adventure Official
+79 Eiger Adventure Official
+80 Eiger Adventure Official
+          used (Mb) gc trigger  (Mb) max used  (Mb)
+Ncells 1499122 80.1    2737637 146.3  2287228 122.2
+Vcells 3265150 25.0    8388608  64.0  4365811  33.4
+[1] "1 done"
+[1] "2 done"
+[1] "3 done"
+[1] 1
+[1] 2
+[1] 3
+          used (Mb) gc trigger  (Mb) max used  (Mb)
+Ncells 1508403 80.6    2737637 146.3  2737637 146.3
+Vcells 3272165 25.0    8388608  64.0  4436327  33.9
+                                                                                                                                                                    nama_produk
+1                                                                                                                                                        EIGER X-CORDOBA JACKET
+2                                                                                                                                                        EIGER CERVUS WAIST BAG
+3                                                                                                                                              EIGER X-FULL PRINT EIGER T-SHIRT
+4                                                                                                                                                     EIGER TWO PATH MT T-SHIRT
+5                                                                                                                                                     EIGER TROPIC TRIP 1.0 CAP
+6                                                                                                                                                          EIGER ASSAULT BEANIE
+7                                                                                                                                                EIGER TOPOGRAPHIC MAPS T-SHIRT
+8                                                                                                                                                      EIGER X-PARNASSUS WALLET
+9                                                                                                                                                EIGER AZTEC TRIFOLD 1.0 WALLET
+10                                                                                                                                                             EIGER ASKERI CAP
+11                                                                                                                                                      EIGER X-FLORENCE WALLET
+12                                                                                                                                     EIGER BHARDEV ROLLSTRAP SOL OLIVE SANDAL
+13                                                                                                                                                 EIGER MIST FOREST 1.1 WALLET
+14                                                                                                                                                EIGER NABAU 100 1F DUFFLE BAG
+15                                                                                                                                                             EIGER COVERBAG S
+16                                                                                                                                                             EIGER COVERBAG M
+17                                                                                                                                                            EIGER COVERBAG XL
+18                                                                                                                                                             EIGER COVERBAG L
+19                                                                                                                                                   EIGER FREEWAY 15L BACKPACK
+20                                                                                                                                        EIGER X ESCRAP LP MULTIFUNCTION PANTS
+21                                                                                                                                                         EIGER X-HONALO SHIRT
+22                                                                                                                                                         EIGER RANTEMARIO CAP
+23                                                                                                                                              EIGER CROSSBODY 7 2.0 SLING BAG
+24                                                                                                                                       EIGER BHARDEV PINCH SOLE BLACK SANDALS
+25                                                                                                                                       EIGER BHARDEV PINCH SOLE OLIVE SANDALS
+26                                                                                                                                                    EIGER WAIST BAG MEDIUM 3A
+27                                                                                                                                              EIGER K.CARTENZ PYRAMID T-SHIRT
+28                                                                                                                                                        EIGER K.POLO NEW LOGO
+29                                                                                                                                                    EIGER RANK BATTALION CAPS
+30                                                                                                                                         EIGER MICHIGAN HOODIE NONZIP SWEATER
+31                                                                                                                                                         EIGER BARRIER GLOVES
+32                                                                                                                                                     EIGER X-INVIERNO BEANIES
+33                                                                                                                                     EIGER IRON STEEL T-SHIRT (SHORT SLEEVES)
+34                                                                                                                                                      EIGER K. POLO TRAILHAWK
+35                                                                                                                                                  EIGER K.POLO LS ROCK & ROLL
+36                                                                                                                                                 EIGER MILESTONE TRUCKER CAPS
+37                                                                                                                                                  EIGER INDONESIA L/S T-SHIRT
+38                                                                                                                                           EIGER THUNDERSTRUCK S/S T-SHIRT RD
+39                                                                                                                                          EIGER ADVENTURE EXPLORATION T-SHIRT
+40                                                                                                                                                   EIGER X-ARISE RIDE T-SHIRT
+41                                                                                                                                                EIGER CHROMATIC WAVES T-SHIRT
+42                                                                                                                                            EIGER OUTSIDERS NON-HOODIE NONZIP
+43                                                                                                                                            EIGER LS.COMMANDO LEVERSSIBLE CAP
+44                                                                                                                                                              EIGER NOVIS CAP
+45                                                                                                                                                        EIGER TRAVEL POUCH 2F
+46                                                                                                                                              EIGER WANDERDRIFT 4.0 WAIST BAG
+47                                                                                                                                                EIGER DOBERAI 3 1.0 WAIST BAG
+48                                                                                                                                           EIGER HYPERLITE SUMMIT 35 RUCKSACK
+49                                                                                                                                                    EIGER COMPACT 1.0 DAYPACK
+50                                                                                                                                                 EIGER CONSERVE 2.0 WAIST BAG
+51                                                                                                                                          EIGER SHOULDER BAG SIMPLE MEDIUM 2F
+52                                                                                                                                                EIGER GRADIENT L 1F WAIST BAG
+53                                                                                                                                            EIGER RAMBLER 2.0 CROSS SLING BAG
+54                                                                                                                                                    EIGER VESSEL 1F WAIST BAG
+55                                                                                                                                                 EIGER CITYROUTE 10L BACKPACK
+56                                                                                                                                                           EIGER WAIST BAG 4A
+57                                                                                                                                                 EIGER CRYSTALIN 2A WAIST BAG
+58                                                                                                                                                      EIGER CHRONO 18 DAYPACK
+59                                                                                                                                                            EIGER TRAVER BELT
+60                                                                                                                                                      EIGER FLEXION BELT 1989
+61                                                                                                                                                    EIGER SHASTA WS-MDW WATCH
+62                                                                                                                                                       EIGER BLANCA-MDW WATCH
+63                                                                                                                                               DESCENT 3.0 BASIC SHOULDER BAG
+64                                                                                                                                                                       ANTERO
+65                                                                                                                                                 EIGER LAKE SIDE SLEEPING BAG
+66                                                                                                                                                            EIGER C.RIPS C089
+67                                                                                                                                                       EIGER HIDDEN BALACLAVA
+68                                                                                                                                               EIGER CRUISER 2.0 BACKPACK 25L
+69                                                                                                                                                     EIGER PTS ENAMEL 2.0 CUP
+70                                                                                                                                           EIGER EAGLE PLUM 2.0 MID CUT SHOES
+71                                                                                                                                                     EIGER GRAVEL 8.0 LEGPACK
+72                                                                                                                                                 EIGER IRIDIUM 2L FOLDABLE WB
+73                                                                                                                                                  EIGER EMISSARY 3L WAIST BAG
+74                                                                                                                                                EIGER X-GONIO 03 TRAVEL POUCH
+75                                                                                                                                           EIGER BAMARS MULTIFUNCTION BANDANA
+76                                                                                                                                               EIGER WINDWARD AVIATOR GLASSES
+77                                                                                                                                                         EIGER MOTION GLASSES
+78                                                                                                                                                          EIGER PERCHA WALLET
+79                                                                                                                                                           EIGER NEOGA WALLET
+80                                                                                                                                                EIGER CAMPERS PARACORD BOTTLE
+81                      TORCH x Kahf Kanzaki Tas Ransel Light Travel Backpack  + Seoha Alat Mandi Kosmetik + Parfum Pria 35ml Oud Forest EDT EDP Eau de Toilette Eau de Perfume
+82                                                                                       TORCH Ziyad Sarung Travel Motif Mudik Lebaran x Alif Mukena Motif Lipat Travel Premium
+83                                                                                       TORCH Ziyad Sarung Travel Motif Mudik Lebaran x Alif Mukena Polos Lipat Travel Premium
+84                                                                                       TORCH Zahir Sarung Travel Polos Mudik Lebaran x Alif Mukena Motif Lipat Travel Premium
+85                                                                                       TORCH Zahir Sarung Travel Polos Mudik Lebaran x Alif Mukena Polos Lipat Travel Premium
+86                                                              TORCH Kashiba 3L Tas Selempang Bahu + Almazan Sajadah Lipat Travelling x Alif Mukena Motif Lipat Travel Premium
+87                                                              TORCH Kashiba 3L Tas Selempang Bahu + Almazan Sajadah Lipat Travelling x Alif Mukena Polos Lipat Travel Premium
+88                                                                                                                             Torch x Alif Mukena Jasmine Travel Mudik Tarawih
+89                                                                                                                                         [FREE] Tumbler Farra Botol Minum LED
+90                                                                                           [FREE] TORCH Isha Pouch Charger Pack Headset Handsfree Kabel Multifungsi Anti Noda
+91                                                                                       [KOLEKSI MUDIK] Torch Tas Pinggang Selempang Anti Air Ringan - Waist Slingbag Koriyama
+92                                                                                          [BUNDLING] Paket Tas Traveling Mudik Duffle Bag Multifungsi Praktis- TORCH LAZUARDI
+93                                                                                                  TORCH Isha Pouch Charger Pack Headset Handsfree Kabel Multifungsi Anti Noda
+94                                                                    [LIVE] Torch Takahagi Ransel Punggung Traveling + Prabu Pouch Charger x KiiP Headphone Bluetooth Wireless
+95                                                                          Tas Duffle Bag - Tas Jinjing Olahraga Staycation Travelling Simpel Praktis Serbaguna Torch Lazuardi
+96                                                                                           TORCH Paraguas Payung Lipat Eksklusif 10th Anti Sinar UV - Folding Travel Umbrella
+97                                                                                 Torch Aichi Waist Bag Tas Pinggang + Prabu Pouch Charger x KiiP Headphone Bluetooth Wireless
+98                                                                           Torch Takahagi Ransel Punggung Traveling + Prabu Pouch Charger x KiiP Headphone Bluetooth Wireless
+99                                                                                        [FREE] TORCH Prabu Pouch Charger Pack Kabel Headset Organizer Multifungsi Muat Banyak
+100                                                                                              [FREE] TORCH Lavita Cloth Pack Pouch Organizer Bag Multifungsi Mini Travel Bag
+101                                                                                                                                Torch Calendar 2025 Tahun Baru Kalender Meja
+102                                                                                                                                Torch Calendar Tahun Baru 2025 Kalender Meja
+103                                                                                                                                TORCH Calendar Tahun Baru 2025 Kalender Meja
+104                                                                                                                       TORCH Tejaz Pengait Gantungan Air Minum Botol Mineral
+105                                                                                              TORCH Prabu Pouch Charger Pack Kabel Headset Organizer Multifungsi Muat Banyak
+106                                                                                           Torch X Tiento Hyochang Tas Selempang Pinggang lari Pria - Waist Bag Running Belt
+107                                                                                                     TORCH Lavita Cloth Pack Pouch Organizer Bag Multifungsi Mini Travel Bag
+108                                                                                             Torch X Tiento Fitz Waist Bag Running Tas Pinggang Olahraga Jogging Pria Wanita
+109                                                                                                      Torch Daypack Backpack Waterproof Tas Laptop 14 inch Pria Wanita Anora
+110                                             [BUNDLING] Torch Ran Sling Bag Tas Lari Olahraga Jogging Running Pria Wanita Ringan Simpel Kecil + Free Oder Wallet Card Holder
+111                                                            [BUNDLING] Torch Fitz Waist Bag Running Tas Pinggang Olahraga Jogging Pria Wanita + Free Oder Wallet Card Holder
+112                                                            [BUNDLING] Torch Estater Waist Bag Running Pria Wanita Waterproof Tas Olahraga Outdoor + Oder Wallet Card Holder
+113                                                                                                       Tas Jinjing Lipat Olahraga Gym Sport Outdoor Yesan - Torch Duffle Bag
+114                                                                                                        Torch Duffle Bag Stylish - Tas Jinjing Baju Olahraga Gym Lipat Yesan
+115                                                                                                                      Torch Dedo Half Gloves Sarung Tangan Motor Pria Wanita
+116                                                                                                                           Torch Rexa Tote Bag Besar Ringan Kuat Pria Wanita
+117                                                                                                          Torch Levity Mini Backpack 10L Tas Kecil Simpel Ringan Pria Wanita
+118                                                                                                                    Torch Kompe Expandable Duffle Bag Tas Travel Muat Banyak
+119                                                                                                Torch GripFlex Half Gloves Sarung Tangan Barbel Fitness Olahraga Pria Wanita
+120                                                                                                Torch Rangku Sling Bag Daily OlahPinggang Olahraga Jogging Pria Wanita Kerja
+121                                                                                                               Torch Kabera Key Chain Gantungan Kunci Aesthetic Kecil Ringan
+122                                                                                                Torch Jabs Sling Bag Running Tas Selempang Olahraga Ringan Kerja Pria Wanita
+123                                                                                                      Torch Fitz Waist Bag Running Tas Pinggang Olahraga Jogging Pria Wanita
+124                                                                                                 Torch Estater Waist Bag Running Pria Wanita Waterproof Tas Olahraga Outdoor
+125                                                                                                      Torch Anora Daypack Backpack Pria Wanita Waterproof Tas Laptop 14 inch
+126                                                               [BUNDLING] Torch Ishikari Tas Ransel Laptop Sekolah Pria Backpack 22L Rain Cover + Free Musu Stationery Pouch
+127                                                                                          Torch Daramista Mini Backpack - Tas 2 in 1 Tablet 9 Inch Unisex Pria Wanita Kantor
+128                                                                               Torch Daily Essential Set 4 Tas Selempang Kerja messenger bag laptop x SEIKABUDS PRO Earphone
+129                                                                                       Torch Daily Essential Set 1 Tas Selempang Travel pria wanita x SEIKABUDS PRO Earphone
+130                                                                                        Torch Campus Essential Set 3 Tas Ransel Kerja waterproof pria wanita x DBE Headphone
+131                                                                                         Torch Campus Essential Set 2 Tas Ransel Kuliah backpack pria wanita x DBE Headphone
+132                                                                                         Torch Traveler Compact Set 2 Tas Backpack Travel bag pack organizer x DBE Headphone
+133                                                                                 Tas Ransel Torch Dinam Travelling Backpack Laptop Water Resistant Outdoor Kerja Pria Wanita
+134       Office Flex Set 2 (Backpack + Neck Wallet + TWS): Torch Gradaz X dbE acoustics tws bluetooth earphone bundling tas ransel kantor Ritm hanging neck wallet pria wanita
+135             Office Flex Set 1 (Backpack + Charger Pack + TWS): Torch Gradaz X dbE acoustics tws bluetooth earphone bundling tas kerja kantor pria wanita Komsi charger pack
+136 Urban Explorer Set 2 (Backpack + Charger Pack + TWS): Torch Ishikari X dbE acoustics tws bluetooth earphone bundling tas ransel urban state pria Wanita  Komsi charger pack
+137   Daily Duty Set 1 (Backpack + Charger Pack + TWS): Torch Hwado X dbE acoustics tws bluetooth earphone bundling tas ransel backpack pria wanita backpack Komsi charger pack
+138                                                                                                    TORCH Datm Organizer Tas Baju Expandable Bag Anti Air Travelling Stylish
+139                                                                                       Torch Datm Expandable Bag Pouch Organizer Anti Air Traveling Packing Activity Outdoor
+140                                                                                                    Torch Latr Crossbody Bag Tablet Ipad Laptop 13 Inch Kerja Kuliah Outdoor
+141                                                                               Torch Latr Crossbody Bag Tas Selempang Tablet 13 Inch Transparan Kerja Kuliah Sekolah Stylish
+142                                                                                            Torch Rane Tas Pinggang Waist Bag Slim Multifungsi Kerja Travel Outdoor Anti Air
+143                                                                                              Tas Pinggang Torch Rane Slim Waist Bag Anti Air untuk Aktivitas Harian Stylish
+144                                                                                                     Tas Mini Backpack Torch Harsa 2 in 1 Travel Pria Wanita Outdoor Stylish
+145                                                                                           Torch Padar Tote Bag Backpack 2 in 1 Laptop 15 inci Travel Sekolah Kuliah Stylish
+146                                                                                    Tas Ransel Laptop Torch Padar 2 in 1 Tote Bag Up To 15 Inch Sekolah Travel Kerja Outdoor
+147                                                                                                                        [Not For Sale] Earphone TWS100NC dbE Acoustics Black
+148                                                                                                    Tas Ransel Tote Bag Tablet Torch Daramista 2 in 1 Travel Outdoor Stylish
+149                                                                TORCH Latr Office Bundle Crossbody Bag Tas Selempang Ipad Tablet Laptop Keychain Gantungan Kunci Dompet STNK
+150                                                          TORCH Gradaz Office Bundle Tas Ransel Kerja Backpack Laptop Tas Selempang Ipad Organizer Charger Pouch Multifungsi
+151                                                                    TORCH Rane Tas Pinggang Selempang Pria Wanita Slim Waist Bag Crossbody Multifungsi Kerja Konser Anti Air
+152                                                                                         TORCH Gradaz Backpack Kerja Kuliah Tas Ransel Laptop Pria Wanita Organizer Anti Air
+153                                                                      TORCH Balans Toiletries Kit Organizer Pouch Make Up Travel Bag Organizer Tas Kosmetik Washbag Anti Air
+154                                                                               TORCH Dinam Travel Bag Tas Kerja Traveling Backpack Laptop Ransel Pria Wanita Water Resistant
+155                                                                            TORCH Datm Expandable Bag Organizer Travelling Packing Cube Koper Pouch Travel Tas Baju Anti Air
+156                                                                          TORCH Latr Crossbody Bag Tas Selempang Tablet Ipad 13 Inch Organizer Transparan Kerja Kuliah Keren
+157                                                                                            TORCH Harma Shoulder Pads Bantalan Bahu Busa Tambahan Empuk Nyaman Aksesoris Tas
+158                                                                                                        Torch Dafi Cloth Pack Tas Baju Waterproof Travel Bag Pouch Organizer
+159                                                                                                                                     TORCH Erlen Merdeka Tumbler Botol Minum
+160                                                                                      Torch Paket Kemerdekaan Backpack Tas Punggung Ishikari + Travel Set Pouch & Toiletries
+161                                                                                                                                                    EIGER HOOLIGAN JACKET RD
+162                                                                                                                                                EIGER QUESTER 3.0 SHORTPANTS
+163                                                                                                                                           EIGER S1-D3 CFP 141 RUST KEYCHAIN
+164                                                                                                                                       EIGER MILESTONE BERMUDA SHORTPANTS 89
+165                                                                                                                                                  EIGER DAENA JACKET (WS) RD
+166                                                                                                                                                   EIGER TRACKER 1 LONGPANTS
+167                                                                                                                                             EIGER TRAVA TEES S/S 89 T-SHIRT
+168                                                                                                                                                 EIGER ENDURA L/S T-SHIRT RD
+169                                                                                                                                         EIGER ENDURA LONGPANTS RD BASELAYER
+170                                                                                                                                                 EIGER ENDURA S/S T-SHIRT RD
+171                                                                                                                                                       EIGER AZIMUTH BEANIES
+172                                                                                                                                              EIGER FEARLESS PANTS SOFTSHELL
+173                                                                                                                                            EIGER SCRAMBLING PANTS HARDSHELL
+174                                                                                                                                              EIGER HANDLEBAR S/S T-SHIRT RD
+175                                                                                                                                                  EIGER TRACKER 2 SHORTPANTS
+176                                                                                                                                                    EIGER TRIGIS JACKET 1989
+177                                                                                                                                                  EIGER GRAVEL 2.0 L/S SHIRT
+178                                                                                                                                               EIGER VOYAGIRO S/S SHIRT (JS)
+179                                                                                                                                                     EIGER MACHINE S/S SHIRT
+180                                                                                                                                                     EIGER HEMLOCK L/S SHIRT
+181                                                                                                                                          EIGER SEARCHER SHIRT 2.0 L/S SHIRT
+182                                                                                                                                                          EIGER PINNACLE CAP
+183                                                                                                                                                   EIGER TARANTULA 2.0 SHOES
+184                                                                                                                                           EIGER TIMBER MOUNTAINEERING SOCKS
+185                                                                                                                                            EIGER SILVERSTONE DAYRIDE JACKET
+186                                                                                                                                                 EIGER COLLEGIAL BRACELET 89
+187                                                                                                                                             EIGER FINDERS INSULATION JACKET
+188                                                                                                                                               EIGER LUSCIOUS S/S SHIRT (WS)
+189                                                                                                                                   EIGER UGIMBA ROLL STRAP PATTERN 1 SANDALS
+190                                                                                                                                       EIGER UGIMBA ROLL STRAP SANDALS BLACK
+191                                                                                                                                                     EIGER REGIE L/S T-SHIRT
+192                                                                                                                                                 EIGER WS REGIE SPORTY HIJAB
+193                                                                                                                                                           EIGER DERNY SOCKS
+194                                                                                                                                                  EIGER MAKASSAR S/S T-SHIRT
+195                                                                                                                                                     EIGER HIJAB RECTANGULAR
+196                                                                                                                                                   EIGER ABS TRAVEL LOCK RED
+197                                                                                                                                             EIGER CURIOSITY ADV PANTS BLACK
+198                                                                                                                                             EIGER AMBITION TROPIC X28 SHIRT
+199                                                                                                                                     EIGER LIGHTSPEED 2.0 ROLL SANDALS BLACK
+200                                                                                                                                                         EIGER KNIEVEL PANTS
+201                                                                                                                                                         EIGER MESTIZO PANTS
+202                                                                                                                                                     EIGER JACK STEEL SHORTS
+203                                                                                                                                                   EIGER QUESTER XT-28 PANTS
+204                                                                                                                                                    EIGER BOULDER REEF PANTS
+205                                                                                                                                                   EIGER MOUNTAIN PINE PATCH
+206                                                                                                                                                          EIGER RUPPEL SOCKS
+207                                                                                                                                                      EIGER SECTOR-MT SHORTS
+208                                                                                                                                                         EIGER GEORGIA SHIRT
+209                                                                                                                                                      EIGER CORE IRON SHORTS
+210                                                                                                                                                      EIGER KLENOVIK PANTS-X
+211                                                                                                                                                       EIGER MINNESOTA SHIRT
+212                                                                                                                                                    EIGER LINEVENTURE JACKET
+213                                                                                                                                                   EIGER SWIFTNESS X T-SHIRT
+214                                                                                                                                                       EIGER BHUTAN LP PANTS
+215                                                                                                                                            EIGER WATERMAN-X POLO SHIRT NAVY
+216                                                                                                                                                  EIGER BRUISER SWEATPANTS-X
+217                                                                                                                                                     EIGER ATHENA WTP JACKET
+218                                                                                                                                                       EIGER JANGGI LS SHIRT
+219                                                                                                                                                     EIGER CAMPGEAR 1.0 BELT
+220                                                                                                                                               EIGER TABOYAN SS MT 1.1 SHIRT
+221                                                                                                                                                 EIGER LIVE FAST T-SHIRT RED
+222                                                                                                                                                         EIGER MEKONGGA HATS
+223                                                                                                                                                   EIGER ACTIEVE HIJAB SPORT
+224                                                                                                                                                        EIGER ARBARO T-SHIRT
+225                                                                                                                                                     EIGER METTLE SS T-SHIRT
+226                                                                                                                                               EIGER MARIJOA POLO SHIRT X WS
+227                                                                                                                                                    EIGER WAKATOBI MT SHORTS
+228                                                                                                                                             EIGER HIKING MID SOCKS 1.0 GREY
+229                                                                                                                        EIGER KINKAJOU PINCH 1.0 SOL BLK SANDALS STRAP OLIVE
+230                                                                                                                      EIGER KINKAJOU PINCH 1.0 SOL DGR P1 SANDALS STRAP GREY
+231                                                                                                                    EIGER KINKAJOU ROLL 1.0 SOL DGR PAT 1 SANDALS STRAP GREY
+232                                                                                                                                                         EIGER TAHOMA TSHIRT
+233                                                                                                                                                     EIGER ARUNA LS SHIRT WS
+234                                                                                                                                                    EIGER ANACONDA 2.5 SHOES
+235                                                                                                                                         EIGER SHOOTER LIGHT WEIGHT-X JACKET
+236                                                                                                                                                       EIGER CAMOTRUCK X CAP
+237                                                                                                                                                 EIGER GAMKONORA NECK GAITER
+238                                                                                                                                                     EIGER VENNSKAP BRACELET
+239                                                                                                                                           EIGER LEEWARD WAYFARER SUNGLASSES
+240                                                                                                                                            EIGER TWO SIDE COLOUR MT T-SHIRT
+241                                                                                                                                                EIGER NETRA SUNGLASSES BLACK
+242                                                                                                                                                          EIGER LIGNUM SHIRT
+243                                                                                                                                                     EIGER UPLAND MT T-SHIRT
+244                                                                                                                                            EIGER SAVE RAINFOREST SS T-SHIRT
+245                                                                                                                                           EIGER TARSIUS 2.0 1F TRAVEL POUCH
+246                                                                                                                                                        EIGER X-ACCONA SOCKS
+247                                                                                                                                                    COGHLANS THERMAL BLANKET
+248                                                                                                                                         EIGER X-KURINDA PANTS JUNIOR SERIES
+249                                                                                                                                                      EIGER HOMETOWN T-SHIRT
+250                                                                                                                                        EIGER MIGRATE 2.0 DIGI L.BACKPACK 89
+          harga  rating_terjual
+1     Rp539.100  5.070+ terjual
+2     Rp189.050 4.92rb+ terjual
+3     Rp170.100 5.0100+ terjual
+4     Rp161.100 4.9250+ terjual
+5     Rp134.100 4.9750+ terjual
+6      Rp79.000 4.9250+ terjual
+7     Rp152.100 4.9250+ terjual
+8      Rp62.100 4.9250+ terjual
+9     Rp107.100 4.9250+ terjual
+10    Rp152.100 4.9250+ terjual
+11    Rp129.000 4.91rb+ terjual
+12    Rp278.100 4.91rb+ terjual
+13    Rp129.000 4.91rb+ terjual
+14  Rp1.234.050  4.990+ terjual
+15     Rp62.100 4.92rb+ terjual
+16     Rp71.100 5.01rb+ terjual
+17     Rp89.100 5.0500+ terjual
+18     Rp80.100 4.9750+ terjual
+19    Rp303.050 4.9750+ terjual
+20    Rp557.100  5.090+ terjual
+21    Rp323.100 4.9100+ terjual
+22    Rp161.100 4.9500+ terjual
+23    Rp293.550 4.9500+ terjual
+24    Rp215.100 4.93rb+ terjual
+25    Rp224.100 4.91rb+ terjual
+26    Rp179.550 4.91rb+ terjual
+27    Rp161.100 4.7100+ terjual
+28    Rp224.100 4.8100+ terjual
+29    Rp134.100 4.9250+ terjual
+30    Rp499.000 4.9250+ terjual
+31    Rp143.100 4.9500+ terjual
+32     Rp71.100 4.9500+ terjual
+33    Rp188.100  5.070+ terjual
+34    Rp206.100 4.9250+ terjual
+35    Rp195.300  4.690+ terjual
+36    Rp134.100 4.9500+ terjual
+37    Rp188.100 4.9100+ terjual
+38    Rp161.100 4.9100+ terjual
+39    Rp179.100  4.980+ terjual
+40    Rp197.100  4.770+ terjual
+41    Rp152.100 4.9250+ terjual
+42    Rp332.100 4.7100+ terjual
+43    Rp152.100  4.990+ terjual
+44    Rp116.100 4.9500+ terjual
+45    Rp189.050 4.9750+ terjual
+46    Rp246.050 4.91rb+ terjual
+47    Rp236.550 5.01rb+ terjual
+48  Rp1.599.000  5.060+ terjual
+49    Rp521.550 4.9250+ terjual
+50    Rp170.050 4.91rb+ terjual
+51    Rp236.550 5.0750+ terjual
+52    Rp198.550 4.9750+ terjual
+53    Rp274.550 4.9500+ terjual
+54    Rp189.050 5.0750+ terjual
+55    Rp236.550 4.91rb+ terjual
+56    Rp229.000 4.9100+ terjual
+57    Rp236.550 4.9500+ terjual
+58    Rp399.000 4.9250+ terjual
+59    Rp329.000 5.0250+ terjual
+60    Rp299.000 4.9250+ terjual
+61    Rp509.000 4.91rb+ terjual
+62    Rp509.000 4.91rb+ terjual
+63    Rp331.550 4.9250+ terjual
+64    Rp829.000 5.0500+ terjual
+65    Rp593.100 4.9100+ terjual
+66    Rp368.100 4.8250+ terjual
+67    Rp189.000 4.9500+ terjual
+68    Rp599.000 4.9750+ terjual
+69     Rp80.100 5.0500+ terjual
+70  Rp1.502.100 5.0100+ terjual
+71    Rp289.000 4.8100+ terjual
+72    Rp227.050 4.91rb+ terjual
+73    Rp255.550 4.9750+ terjual
+74    Rp284.050 4.9250+ terjual
+75    Rp149.000 5.0100+ terjual
+76    Rp296.100 5.0750+ terjual
+77    Rp278.100 4.9500+ terjual
+78    Rp107.100 4.9100+ terjual
+79    Rp107.100 4.9750+ terjual
+80    Rp161.100 4.9250+ terjual
+81    Rp896.400    5.02 terjual
+82    Rp420.810       2 terjual
+83    Rp366.860    5.01 terjual
+84    Rp404.210    4.52 terjual
+85    Rp350.260    4.03 terjual
+86    Rp394.250    5.01 terjual
+87    Rp225.760       1 terjual
+88    Rp220.150    5.02 terjual
+89     Rp91.800 5.0100+ terjual
+90    Rp117.300       3 terjual
+91    Rp358.700    5.01 terjual
+92    Rp504.900       1 terjual
+93    Rp117.300   5.014 terjual
+94  Rp1.432.580    5.01 terjual
+95    Rp328.860    5.08 terjual
+96    Rp176.800    5.03 terjual
+97    Rp396.740    5.02 terjual
+98  Rp1.285.670    5.02 terjual
+99    Rp117.300  4.950+ terjual
+100    Rp78.000       3 terjual
+101    Rp98.000    5.03 terjual
+102    Rp98.000    5.02 terjual
+103    Rp98.000    5.08 terjual
+104    Rp23.800   5.016 terjual
+105   Rp117.300   4.711 terjual
+106   Rp293.250       2 terjual
+107    Rp66.300    5.06 terjual
+108   Rp445.400    5.01 terjual
+109   Rp491.300   5.014 terjual
+110   Rp251.600    5.02 terjual
+111   Rp226.100    5.01 terjual
+112   Rp217.600    5.01 terjual
+113   Rp363.800    5.05 terjual
+114   Rp547.400   5.017 terjual
+115    Rp66.300   5.014 terjual
+116   Rp355.300   5.019 terjual
+117   Rp227.800   5.016 terjual
+118   Rp465.800   5.017 terjual
+119    Rp66.300  5.050+ terjual
+120   Rp210.800   5.015 terjual
+121    Rp91.800  4.970+ terjual
+122   Rp202.300    5.08 terjual
+123   Rp168.300   5.026 terjual
+124   Rp159.800    5.09 terjual
+125   Rp726.000   5.016 terjual
+126   Rp540.600  5.070+ terjual
+127   Rp287.300    5.03 terjual
+128   Rp565.250       1 terjual
+129   Rp505.750       3 terjual
+130   Rp643.450    5.03 terjual
+131   Rp626.450    5.01 terjual
+132 Rp1.886.150    5.02 terjual
+133 Rp1.120.300   5.012 terjual
+134 Rp1.316.000    5.02 terjual
+135 Rp1.366.000       1 terjual
+136   Rp356.000       3 terjual
+137   Rp906.100       1 terjual
+138   Rp253.300    5.07 terjual
+139   Rp253.300    3.77 terjual
+140   Rp312.800    4.55 terjual
+141   Rp312.800    4.99 terjual
+142   Rp185.300    4.74 terjual
+143   Rp185.300    4.57 terjual
+144   Rp278.800    4.36 terjual
+145   Rp397.800    5.04 terjual
+146   Rp397.800       2 terjual
+147   Rp776.000    5.01 terjual
+148   Rp287.300       2 terjual
+149   Rp379.100   4.920 terjual
+150   Rp966.000   5.015 terjual
+151   Rp185.300   5.017 terjual
+152   Rp648.000   5.026 terjual
+153   Rp178.000  4.730+ terjual
+154 Rp1.120.300   5.027 terjual
+155   Rp253.300  5.050+ terjual
+156   Rp312.800    5.06 terjual
+157    Rp98.000  5.030+ terjual
+158   Rp138.000  2.050+ terjual
+159    Rp98.000  5.070+ terjual
+160   Rp768.000       1 terjual
+161   Rp499.000    4.86 terjual
+162   Rp359.000  4.980+ terjual
+163    Rp39.000  5.040+ terjual
+164   Rp319.000    5.01 terjual
+165   Rp895.000    4.01 terjual
+166   Rp390.000    4.53 terjual
+167   Rp179.000   4.421 terjual
+168   Rp425.000    5.02 terjual
+169   Rp425.000    5.03 terjual
+170   Rp390.000    5.03 terjual
+171    Rp79.000 4.9500+ terjual
+172   Rp725.000   4.815 terjual
+173 Rp1.250.000   4.826 terjual
+174   Rp199.000  4.850+ terjual
+175   Rp269.000    5.06 terjual
+176   Rp489.000  4.730+ terjual
+177   Rp309.000   5.013 terjual
+178   Rp245.000    5.06 terjual
+179   Rp349.000   4.313 terjual
+180   Rp369.000    5.03 terjual
+181   Rp339.000  4.640+ terjual
+182   Rp129.000 4.8100+ terjual
+183 Rp1.249.000    4.88 terjual
+184    Rp59.000 4.9250+ terjual
+185   Rp450.000    5.04 terjual
+186    Rp99.000 4.9100+ terjual
+187   Rp875.000    5.01 terjual
+188   Rp295.000       1 terjual
+189   Rp229.000   5.010 terjual
+190   Rp229.000    5.06 terjual
+191   Rp165.000    4.01 terjual
+192   Rp135.000   5.013 terjual
+193    Rp69.000  5.050+ terjual
+194   Rp149.000  4.960+ terjual
+195   Rp135.000  4.980+ terjual
+196    Rp79.000 4.9100+ terjual
+197 Rp2.499.000    5.01 terjual
+198   Rp389.000 4.9100+ terjual
+199   Rp229.000   5.012 terjual
+200   Rp460.000    5.03 terjual
+201   Rp459.000   4.927 terjual
+202   Rp389.000   3.912 terjual
+203   Rp509.000    5.01 terjual
+204   Rp459.000    5.03 terjual
+205    Rp30.000    4.52 terjual
+206    Rp59.000  5.050+ terjual
+207   Rp249.000  4.990+ terjual
+208   Rp399.000       1 terjual
+209   Rp359.000   5.012 terjual
+210   Rp359.000    5.01 terjual
+211   Rp349.000    5.01 terjual
+212   Rp559.000    4.76 terjual
+213   Rp249.000   4.721 terjual
+214   Rp319.000   4.923 terjual
+215   Rp295.000    5.08 terjual
+216   Rp399.000    5.03 terjual
+217 Rp1.200.000  5.040+ terjual
+218   Rp419.000  4.850+ terjual
+219   Rp209.000  4.870+ terjual
+220   Rp319.000    5.02 terjual
+221   Rp269.900   4.914 terjual
+222   Rp119.000   5.022 terjual
+223   Rp139.000  5.050+ terjual
+224   Rp165.000       2 terjual
+225   Rp149.000    5.03 terjual
+226   Rp199.000    5.07 terjual
+227   Rp219.000  4.730+ terjual
+228    Rp59.000 4.8250+ terjual
+229    Rp94.500  4.940+ terjual
+230    Rp94.500  4.940+ terjual
+231   Rp149.000    5.09 terjual
+232   Rp189.000  4.970+ terjual
+233   Rp349.900   4.820 terjual
+234 Rp1.195.080  4.940+ terjual
+235   Rp429.000   4.920 terjual
+236   Rp139.000 4.8100+ terjual
+237    Rp79.000   5.012 terjual
+238    Rp79.000    5.07 terjual
+239   Rp285.000 4.9100+ terjual
+240   Rp189.000 4.9100+ terjual
+241   Rp279.000 4.9100+ terjual
+242   Rp325.000    5.01 terjual
+243   Rp159.000  5.060+ terjual
+244   Rp169.000   5.027 terjual
+245   Rp219.000  4.850+ terjual
+246    Rp69.000 4.9100+ terjual
+247   Rp279.000   5.025 terjual
+248   Rp239.000  4.930+ terjual
+249   Rp219.000    4.78 terjual
+250   Rp475.000       4 terjual
+                   nama_toko
+1   Eiger Adventure Official
+2   Eiger Adventure Official
+3   Eiger Adventure Official
+4   Eiger Adventure Official
+5   Eiger Adventure Official
+6   Eiger Adventure Official
+7   Eiger Adventure Official
+8   Eiger Adventure Official
+9   Eiger Adventure Official
+10  Eiger Adventure Official
+11  Eiger Adventure Official
+12  Eiger Adventure Official
+13  Eiger Adventure Official
+14  Eiger Adventure Official
+15  Eiger Adventure Official
+16  Eiger Adventure Official
+17  Eiger Adventure Official
+18  Eiger Adventure Official
+19  Eiger Adventure Official
+20  Eiger Adventure Official
+21  Eiger Adventure Official
+22  Eiger Adventure Official
+23  Eiger Adventure Official
+24  Eiger Adventure Official
+25  Eiger Adventure Official
+26  Eiger Adventure Official
+27  Eiger Adventure Official
+28  Eiger Adventure Official
+29  Eiger Adventure Official
+30  Eiger Adventure Official
+31  Eiger Adventure Official
+32  Eiger Adventure Official
+33  Eiger Adventure Official
+34  Eiger Adventure Official
+35  Eiger Adventure Official
+36  Eiger Adventure Official
+37  Eiger Adventure Official
+38  Eiger Adventure Official
+39  Eiger Adventure Official
+40  Eiger Adventure Official
+41  Eiger Adventure Official
+42  Eiger Adventure Official
+43  Eiger Adventure Official
+44  Eiger Adventure Official
+45  Eiger Adventure Official
+46  Eiger Adventure Official
+47  Eiger Adventure Official
+48  Eiger Adventure Official
+49  Eiger Adventure Official
+50  Eiger Adventure Official
+51  Eiger Adventure Official
+52  Eiger Adventure Official
+53  Eiger Adventure Official
+54  Eiger Adventure Official
+55  Eiger Adventure Official
+56  Eiger Adventure Official
+57  Eiger Adventure Official
+58  Eiger Adventure Official
+59  Eiger Adventure Official
+60  Eiger Adventure Official
+61  Eiger Adventure Official
+62  Eiger Adventure Official
+63  Eiger Adventure Official
+64  Eiger Adventure Official
+65  Eiger Adventure Official
+66  Eiger Adventure Official
+67  Eiger Adventure Official
+68  Eiger Adventure Official
+69  Eiger Adventure Official
+70  Eiger Adventure Official
+71  Eiger Adventure Official
+72  Eiger Adventure Official
+73  Eiger Adventure Official
+74  Eiger Adventure Official
+75  Eiger Adventure Official
+76  Eiger Adventure Official
+77  Eiger Adventure Official
+78  Eiger Adventure Official
+79  Eiger Adventure Official
+80  Eiger Adventure Official
+81                  Torch.id
+82                  Torch.id
+83                  Torch.id
+84                  Torch.id
+85                  Torch.id
+86                  Torch.id
+87                  Torch.id
+88                  Torch.id
+89                  Torch.id
+90                  Torch.id
+91                  Torch.id
+92                  Torch.id
+93                  Torch.id
+94                  Torch.id
+95                  Torch.id
+96                  Torch.id
+97                  Torch.id
+98                  Torch.id
+99                  Torch.id
+100                 Torch.id
+101                 Torch.id
+102                 Torch.id
+103                 Torch.id
+104                 Torch.id
+105                 Torch.id
+106                 Torch.id
+107                 Torch.id
+108                 Torch.id
+109                 Torch.id
+110                 Torch.id
+111                 Torch.id
+112                 Torch.id
+113                 Torch.id
+114                 Torch.id
+115                 Torch.id
+116                 Torch.id
+117                 Torch.id
+118                 Torch.id
+119                 Torch.id
+120                 Torch.id
+121                 Torch.id
+122                 Torch.id
+123                 Torch.id
+124                 Torch.id
+125                 Torch.id
+126                 Torch.id
+127                 Torch.id
+128                 Torch.id
+129                 Torch.id
+130                 Torch.id
+131                 Torch.id
+132                 Torch.id
+133                 Torch.id
+134                 Torch.id
+135                 Torch.id
+136                 Torch.id
+137                 Torch.id
+138                 Torch.id
+139                 Torch.id
+140                 Torch.id
+141                 Torch.id
+142                 Torch.id
+143                 Torch.id
+144                 Torch.id
+145                 Torch.id
+146                 Torch.id
+147                 Torch.id
+148                 Torch.id
+149                 Torch.id
+150                 Torch.id
+151                 Torch.id
+152                 Torch.id
+153                 Torch.id
+154                 Torch.id
+155                 Torch.id
+156                 Torch.id
+157                 Torch.id
+158                 Torch.id
+159                 Torch.id
+160                 Torch.id
+161 Eiger Adventure Official
+162 Eiger Adventure Official
+163 Eiger Adventure Official
+164 Eiger Adventure Official
+165 Eiger Adventure Official
+166 Eiger Adventure Official
+167 Eiger Adventure Official
+168 Eiger Adventure Official
+169 Eiger Adventure Official
+170 Eiger Adventure Official
+171 Eiger Adventure Official
+172 Eiger Adventure Official
+173 Eiger Adventure Official
+174 Eiger Adventure Official
+175 Eiger Adventure Official
+176 Eiger Adventure Official
+177 Eiger Adventure Official
+178 Eiger Adventure Official
+179 Eiger Adventure Official
+180 Eiger Adventure Official
+181 Eiger Adventure Official
+182 Eiger Adventure Official
+183 Eiger Adventure Official
+184 Eiger Adventure Official
+185 Eiger Adventure Official
+186 Eiger Adventure Official
+187 Eiger Adventure Official
+188 Eiger Adventure Official
+189 Eiger Adventure Official
+190 Eiger Adventure Official
+191 Eiger Adventure Official
+192 Eiger Adventure Official
+193 Eiger Adventure Official
+194 Eiger Adventure Official
+195 Eiger Adventure Official
+196 Eiger Adventure Official
+197 Eiger Adventure Official
+198 Eiger Adventure Official
+199 Eiger Adventure Official
+200 Eiger Adventure Official
+201 Eiger Adventure Official
+202 Eiger Adventure Official
+203 Eiger Adventure Official
+204 Eiger Adventure Official
+205 Eiger Adventure Official
+206 Eiger Adventure Official
+207 Eiger Adventure Official
+208 Eiger Adventure Official
+209 Eiger Adventure Official
+210 Eiger Adventure Official
+211 Eiger Adventure Official
+212 Eiger Adventure Official
+213 Eiger Adventure Official
+214 Eiger Adventure Official
+215 Eiger Adventure Official
+216 Eiger Adventure Official
+217 Eiger Adventure Official
+218 Eiger Adventure Official
+219 Eiger Adventure Official
+220 Eiger Adventure Official
+221 Eiger Adventure Official
+222 Eiger Adventure Official
+223 Eiger Adventure Official
+224 Eiger Adventure Official
+225 Eiger Adventure Official
+226 Eiger Adventure Official
+227 Eiger Adventure Official
+228 Eiger Adventure Official
+229 Eiger Adventure Official
+230 Eiger Adventure Official
+231 Eiger Adventure Official
+232 Eiger Adventure Official
+233 Eiger Adventure Official
+234 Eiger Adventure Official
+235 Eiger Adventure Official
+236 Eiger Adventure Official
+237 Eiger Adventure Official
+238 Eiger Adventure Official
+239 Eiger Adventure Official
+240 Eiger Adventure Official
+241 Eiger Adventure Official
+242 Eiger Adventure Official
+243 Eiger Adventure Official
+244 Eiger Adventure Official
+245 Eiger Adventure Official
+246 Eiger Adventure Official
+247 Eiger Adventure Official
+248 Eiger Adventure Official
+249 Eiger Adventure Official
+250 Eiger Adventure Official
+ [ reached 'max' / getOption("max.print") -- omitted 5991 rows ]
