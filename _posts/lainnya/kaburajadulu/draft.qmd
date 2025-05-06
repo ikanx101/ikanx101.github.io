@@ -71,6 +71,7 @@ Ternyata kita dapatkan hal menarik.
 - Empat area teratas berasal dari Asia sedangkan sisanya baru berasal dari Afrika, Eropa, dan Amerika. 
 - Area _South-Eastern Asia_ memiliki jumlah emigran terbanyak di tahun 2024. Hal ini mungkin cukup _obvious_ karena Indonesia masih serumpun dengan beberapa negara di Asia Tenggara (ASEAN) sehingga tidak perlu banyak _effort_ bagi WNI untuk beradaptasi. 
     - Angkanya sendiri sangat tinggi dan mungkin tidak akan bisa disalip oleh area lain dalam waktu dekat. 
+    - Jika saya _deep dive_, berikut adalah jumlah emigran di negara-negara _South-Eastern Asia_:
 
 ```{r}
 df %>% 
@@ -94,7 +95,7 @@ df %>%
 
 ```
 
-Grafik di atas merupakan kondisi saat ini. Sekarang saya akan coba melihat tren banyaknya emigran Indonesia di _top 5 area_ tersebut sejak tahun 1990 hingga 2024.
+Grafik-grafik di atas merupakan kondisi saat ini. Sekarang saya akan coba melihat tren banyaknya emigran Indonesia di _top 5 area_ tersebut sejak tahun 1990 hingga 2024.
 
 ```{r}
 sel_area = 
@@ -164,7 +165,8 @@ df_growth %>%
 
 Saat kita melihat persen _growth_, kita bisa dapatkan:
 
-- _Southern Asia_ menjadi area dengan persen _growth_ tertinggi.
+- Walaupun pada grafik pertama area _South-Eastern Asia_ memiliki jumlah emigran terbanyak pada 2024, tapi ternyata _growth_-nya tidak setinggi itu. 
+- Area dengan persen _growth_ terbanyak adalah area _Southern Asia_. Kemudian disusul oleh _Central America_, _Eastern Asia_, _Eastern Europe_, dan _Northern Europe_.
 
 ```{r}
 df_growth %>% 
