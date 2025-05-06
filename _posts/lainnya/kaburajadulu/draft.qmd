@@ -1,0 +1,36 @@
+---
+title: "Untitled"
+format: 
+  gfm:
+    html-math-method: webtex
+editor: visual
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+```{r}
+rm(list=ls())
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(ggpubr)
+
+load("data.rda")
+```
+
+
+```{r}
+#| fig-width: 15
+df %>% 
+  mutate(jumlah = as.numeric(jumlah)) %>% 
+  filter(grepl("(UN)",entity,fixed = T)) %>% 
+  ggplot(aes(x = year,y = jumlah)) +
+  geom_col() +
+  facet_wrap(~entity,scales = "free")
+
+```
+
+
