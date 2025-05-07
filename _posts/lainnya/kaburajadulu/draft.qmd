@@ -10,21 +10,21 @@ execute:
   error: false
 ---
 
-Beberapa bulan belakangan ini, saya seringkali melihat tagar __#KaburAjaDulu__ berseliweran di semua sosial media yang saya ikuti. Jika saya coba lakukan _mini research_ di _Google_, tagar __#KaburAjaDulu__ pertama kali muncul dan diangkat oleh akun `@hrdbacot` di platform __X__ pada tanggal 14 Januari 2025. Namun, tagar ini mulai menjadi viral dan tren setelah diangkat oleh akun tersebut. Ismail Fahmi, pendiri Drone Emprit, juga turut menyebutkan bahwa tagar ini muncul sejak September 2023.
+Beberapa bulan belakangan ini, saya seringkali melihat tagar **#KaburAjaDulu** berseliweran di semua sosial media yang saya ikuti. Jika saya coba lakukan *mini research* di *Google*, tagar **#KaburAjaDulu** pertama kali muncul dan diangkat oleh akun `@hrdbacot` di platform **X** pada tanggal 14 Januari 2025. Namun, tagar ini mulai menjadi viral dan tren setelah diangkat oleh akun tersebut. Ismail Fahmi, pendiri Drone Emprit, juga turut menyebutkan bahwa tagar ini muncul sejak September 2023.
 
 Bahkan tagar ini sudah memiliki halaman Wikipedia-nya sendiri. Saya bisa mengutip satu paragraf dari halaman berikut:
 
-> Tagar ini digunakan oleh warganet Indonesia untuk mengekspresikan keinginan meninggalkan Indonesia demi mencari peluang kerja, pendidikan, atau kehidupan yang lebih baik di luar negeri. Fenomena ini mencerminkan keresahan terhadap kondisi sosial dan ekonomi dalam negeri, seperti tingginya biaya pendidikan, minimnya lapangan kerja, serta upah yang dianggap rendah. Melalui #KaburAjaDulu, banyak pengguna berbagi informasi tentang lowongan kerja, beasiswa, dan kesempatan berkarier di luar negeri. 
+> Tagar ini digunakan oleh warganet Indonesia untuk mengekspresikan keinginan meninggalkan Indonesia demi mencari peluang kerja, pendidikan, atau kehidupan yang lebih baik di luar negeri. Fenomena ini mencerminkan keresahan terhadap kondisi sosial dan ekonomi dalam negeri, seperti tingginya biaya pendidikan, minimnya lapangan kerja, serta upah yang dianggap rendah. Melalui #KaburAjaDulu, banyak pengguna berbagi informasi tentang lowongan kerja, beasiswa, dan kesempatan berkarier di luar negeri.
 
-Saya sendiri memiliki beberapa teman SMA dan kuliah yang saat ini sedang bekerja dan menetap di luar negeri. Saya sempat penasaran apakah saya bisa mendapatkan data terkait hal ini? 
+Saya sendiri memiliki beberapa teman SMA dan kuliah yang saat ini sedang bekerja dan menetap di luar negeri. Saya sempat penasaran apakah saya bisa mendapatkan data terkait hal ini?
 
-Untuk "mendekati"-nya, saya mendapatkan data dari situs [_Our World in Data_](https://ourworldindata.org/explorers/migration-flows?tab=table&country=~IDN&Country=Indonesia&Metric=Emigrants%3A+People+moving+away+from+country&Gender=All+migrants) terkait ke mana emigran asal Indonesia pergi?
+Untuk "mendekati"-nya, saya mendapatkan data dari situs [*Our World in Data*](https://ourworldindata.org/explorers/migration-flows?tab=table&country=~IDN&Country=Indonesia&Metric=Emigrants%3A+People+moving+away+from+country&Gender=All+migrants) terkait ke mana emigran asal Indonesia pergi?
 
 Definisi dari data emigran ini adalah:
 
-> ___The number of people who were born in Indonesia and now live abroad. This is a measure of emigrant stocks at mid-year, not the annual flow of emigrants.___
+> ***The number of people who were born in Indonesia and now live abroad. This is a measure of emigrant stocks at mid-year, not the annual flow of emigrants.***
 
-Seharusnya dari definisi tersebut, saya bisa "mendekati" berapa banyak orang yang __#KaburAjaDulu__.
+Seharusnya dari definisi tersebut, saya bisa "mendekati" berapa banyak orang yang **#KaburAjaDulu**.
 
 ```{r}
 #| include: false
@@ -66,12 +66,12 @@ df %>%
 
 ```
 
-Ternyata kita dapatkan hal menarik. 
+Ternyata kita dapatkan hal menarik.
 
-- Empat area teratas berasal dari Asia sedangkan sisanya baru berasal dari Afrika, Eropa, dan Amerika. 
-- Area _South-Eastern Asia_ memiliki jumlah emigran terbanyak di tahun 2024. Hal ini mungkin cukup _obvious_ karena Indonesia masih serumpun dengan beberapa negara di Asia Tenggara (ASEAN) sehingga tidak perlu banyak _effort_ bagi WNI untuk beradaptasi. 
-    - Angkanya sendiri sangat tinggi dan mungkin tidak akan bisa disalip oleh area lain dalam waktu dekat. 
-    - Jika saya _deep dive_, berikut adalah jumlah emigran di negara-negara _South-Eastern Asia_:
+-   Empat area teratas berasal dari Asia sedangkan sisanya baru berasal dari Afrika, Eropa, dan Amerika.
+-   Area *South-Eastern Asia* memiliki jumlah emigran terbanyak di tahun 2024. Hal ini mungkin cukup *obvious* karena Indonesia masih serumpun dengan beberapa negara di Asia Tenggara (ASEAN) sehingga tidak perlu banyak *effort* bagi WNI untuk beradaptasi.
+    -   Angkanya sendiri sangat tinggi dan mungkin tidak akan bisa disalip oleh area lain dalam waktu dekat.
+    -   Jika saya *deep dive*, berikut adalah jumlah emigran di negara-negara *South-Eastern Asia*:
 
 ```{r}
 df %>% 
@@ -95,7 +95,7 @@ df %>%
 
 ```
 
-Grafik-grafik di atas merupakan kondisi saat ini. Sekarang saya akan coba melihat tren banyaknya emigran Indonesia di _top 5 area_ tersebut sejak tahun 1990 hingga 2024.
+Grafik-grafik di atas merupakan kondisi saat ini. Sekarang saya akan coba melihat tren banyaknya emigran Indonesia di *top 5 area* tersebut sejak tahun 1990 hingga 2024.
 
 ```{r}
 sel_area = 
@@ -131,9 +131,9 @@ df %>%
 
 ```
 
-Ternyata laju penambahan / pengurangan untuk masing-masing area di atas cukup berbeda. Misalnya pada area _Western Europe_ yang punya kecenderungan menurun. Sedangkan area lainnya punya kecenderungan naik walau berbeda-beda tingkatnya.
+Ternyata laju penambahan / pengurangan untuk masing-masing area di atas cukup berbeda. Misalnya pada area *Western Europe* yang punya kecenderungan menurun. Sedangkan area lainnya punya kecenderungan naik walau berbeda-beda tingkatnya.
 
-Berbicara mengenai laju perubahan, saya akan coba hitung perubahan atau _growth_ jumlah emigran dari tahun 2020 dan 2024. Grafik berikut ini memperlihatkan berapa persen _growth_ emigran Indonesia per area dari tahun 2020 ke 2024:
+Berbicara mengenai laju perubahan, saya akan coba hitung perubahan atau *growth* jumlah emigran dari tahun 2020 dan 2024. Grafik berikut ini memperlihatkan berapa persen *growth* emigran Indonesia per area dari tahun 2020 ke 2024:
 
 ```{r}
 df_growth = 
@@ -163,10 +163,102 @@ df_growth %>%
         axis.text.x = element_blank())
 ```
 
-Saat kita melihat persen _growth_, kita bisa dapatkan:
+Saat kita melihat persen *growth*, kita bisa dapatkan:
 
-- Walaupun pada grafik pertama area _South-Eastern Asia_ memiliki jumlah emigran terbanyak pada 2024, tapi ternyata _growth_-nya tidak setinggi itu. 
-- Area dengan persen _growth_ terbanyak adalah area _Southern Asia_. Kemudian disusul oleh _Central America_, _Eastern Asia_, _Eastern Europe_, dan _Northern Europe_.
+-   Walaupun pada grafik pertama area *South-Eastern Asia* memiliki jumlah emigran terbanyak pada 2024, tapi ternyata *growth*-nya tidak setinggi itu. Dari grafik berikut ini, _growth_ per negara berkisar antara 4-7% saja.
+
+```{r}
+# df %>% tabyl(entity)
+
+df %>% 
+  filter(entity %in% c("Malaysia","Singapore","Brunei","Cambodia",
+                       "East Timor")) %>% 
+  filter(year %in% c(2020,2024)) %>% 
+  reshape2::dcast(entity ~ year,value.var = "jumlah") %>% 
+  mutate(growth = (`2024` - `2020`)/`2020`,
+         growth = round(growth,3)) %>% 
+  mutate(delta = `2024` - `2020`) %>% 
+  ggplot(aes(x = reorder(entity,growth),y = growth)) +
+  geom_col(color = "black",alpha = .5) +
+  coord_flip() +
+  geom_label(aes(label = scales::percent(growth,decimal.mark = ".")),
+             size = 2.5,
+             y = 0,
+             hjust = 0) +
+  theme_bw() +
+  labs(title = "Growth emigran Indonesia per area pada 2020-2024?",
+       subtitle = "Southern-East ASIA\nsumber: Our World in Data",
+       caption = "Scraped and visualized using R\nikanx101.com") +
+  theme(axis.title = element_blank(),
+        axis.text.x = element_blank())
+
+```
+
+-   Area dengan persen *growth* terbanyak adalah area *Southern Asia*. Kemudian disusul oleh *Central America*, *Eastern Asia*, *Eastern Europe*, dan *Northern Europe*. Mari kita lihat jika saya detailkan _growth_ negara-negara di _Southern Asia_ berikut ini:
+
+```{r}
+# df %>% tabyl(entity)
+
+df %>% 
+  filter(entity %in% c("Afghanistan", "Bangladesh", 'Bhutan', 
+                       "India", "Maladewa", "Nepal", 'Pakistan', 
+                       "Sri Lanka")) %>% 
+  filter(year %in% c(2020,2024)) %>% 
+  reshape2::dcast(entity ~ year,value.var = "jumlah") %>% 
+  mutate(growth = (`2024` - `2020`)/`2020`,
+         growth = round(growth,3)) %>% 
+  mutate(delta = `2024` - `2020`) %>% 
+  ggplot(aes(x = reorder(entity,growth),y = growth)) +
+  geom_col(color = "black",alpha = .5) +
+  coord_flip() +
+  geom_label(aes(label = scales::percent(growth,decimal.mark = ".")),
+             size = 2.5,
+             y = 0,
+             hjust = 0) +
+  theme_bw() +
+  labs(title = "Growth emigran Indonesia per area pada 2020-2024?",
+       subtitle = "Southern ASIA\nsumber: Our World in Data",
+       caption = "Scraped and visualized using R\nikanx101.com") +
+  theme(axis.title = element_blank(),
+        axis.text.x = element_blank())
+
+```
+
+_Surprisingly_, _growth_ terbesar di _Southern Asia_ disumbangkan dari Bangladesh.
+
+
+```{r}
+# df %>% tabyl(entity)
+
+df %>% 
+  filter(entity %in% c("Belize", "Guatemala", "Honduras", 
+                       "El Salvador", "Nicaragua", "Costa Rica", 
+                       "Panama")) %>% 
+  filter(year %in% c(2020,2024)) %>% 
+  reshape2::dcast(entity ~ year,value.var = "jumlah") %>% 
+  mutate(growth = (`2024` - `2020`)/`2020`,
+         growth = round(growth,3)) %>% 
+  mutate(delta = `2024` - `2020`) %>% 
+  ggplot(aes(x = reorder(entity,growth),y = growth)) +
+  geom_col(color = "black",alpha = .5) +
+  coord_flip() +
+  geom_label(aes(label = scales::percent(growth,decimal.mark = ".")),
+             size = 2.5,
+             y = 0,
+             hjust = 0) +
+  theme_bw() +
+  labs(title = "Growth emigran Indonesia per area pada 2020-2024?",
+       subtitle = "Central America\nsumber: Our World in Data",
+       caption = "Scraped and visualized using R\nikanx101.com") +
+  theme(axis.title = element_blank(),
+        axis.text.x = element_blank())
+
+```
+
+
+> ___Namun perlu saya tekankan sekali lagi bahwa persentase bisa saja menipu saat pembaginya kecil sehingga seolah-olah nilainya besar.___
+
+Maka dari itu, saya akan coba hitung $\Delta$ emigran dari 2020 ke 2024. Berikut hasilnya:
 
 ```{r}
 df_growth %>% 
@@ -186,4 +278,75 @@ df_growth %>%
         axis.text.x = element_blank())
 ```
 
+Empat area dengan $\Delta$ tertinggi adalah _Eastern Asia_, _South-eastern_ _Asia_, _Southern Asia_, dan _Western Asia_. Sedangkan penurunan terjadi pada _Western Europe_.
+
+Pada bagian sebelumnya, kita sudah membahas _South-eastern_ _Asia_ dan _Southern Asia_. Sekarang saya akan keluarkan detail $\Delta$ pada negara-negara _Eastern Asia_ dan _Western Asia_.
+
+```{r}
+# df %>% tabyl(entity)
+
+df %>% 
+  filter(entity %in% c("China", "Japan", "North Korea", "South Korea",
+                       "Taiwan","Hong Kong","Kuwait",
+                       "Qatar","Saudi Arabia","United Arab Emirates")) %>% 
+  filter(year %in% c(2020,2024)) %>% 
+  reshape2::dcast(entity ~ year,value.var = "jumlah") %>% 
+  mutate(growth = (`2024` - `2020`)/`2020`,
+         growth = round(growth,3)) %>% 
+  mutate(delta = `2024` - `2020`) %>% 
+  ggplot(aes(x = reorder(entity,delta),y = delta)) +
+  geom_col(color = "black",alpha = .5) +
+  coord_flip() +
+  geom_label(aes(label = scales::number(delta,big.mark = ",")),
+             size = 2.5,
+             y = 0,
+             hjust = 0) +
+  theme_bw() +
+  labs(title = "Delta emigran Indonesia per area pada 2020-2024?",
+       subtitle = "Eastern Asia dan Western Asia\nsumber: Our World in Data",
+       caption = "Scraped and visualized using R\nikanx101.com") +
+  theme(axis.title = element_blank(),
+        axis.text.x = element_blank())
+```
+
+Ternyata ada beberapa hal menarik:
+
+- Ternyata ada penurunan emigran di Saudi Arabia dan Korea Selatan. Awalnya saya menduga $\Delta$ di kedua negara ini tinggi tapi malah sebaliknya.
+- Justru $\Delta$ tertinggi dimiliki oleh Jepang. Hipotesis penyebabnya:
+    - Jepang mengalami penurunan populasi yang signifikan. Pada Oktober 2024, populasi warga negara Jepang turun menjadi 120,3 juta jiwa, mengalami penurunan rekor sebanyak 898.000 orang dibandingkan tahun sebelumnya. Penurunan ini disebabkan oleh angka kelahiran yang rendah, yang termasuk yang terendah di dunia. 
+    - Akibatnya Jepang mulai "terbuka" dengan warga asing terutama WNI.
+- UAE dan Taiwan memiliki $\Delta$ yang serupa.
+
+```{r}
+df %>% 
+  mutate(jumlah = as.numeric(jumlah)) %>% 
+  filter(entity %in% c("Japan","Taiwan","United Arab Emirates")) %>% 
+  ggplot(aes(x = factor(year),y = jumlah)) +
+  geom_col(color = "black",alpha = .5) +
+  facet_wrap(~entity) +
+  theme_minimal() +
+  theme(strip.text = element_text(size = 10)) +
+  geom_label(aes(label = scales::number(jumlah,big.mark = ",")),
+             size = 2.5,
+             y = 0,
+             hjust = 0,
+             angle = 90,
+             alpha = .4) +
+  theme_bw() +
+  labs(title = "Trend banyak emigran Indonesia pada 1990-2024 per area",
+       subtitle = "sumber: Our World in Data",
+       caption = "Scraped and visualized using R\nikanx101.com") +
+  theme(axis.title = element_blank(),
+        axis.text.y = element_blank(),
+        axis.text.x = element_text(angle = 90))
+```
+
+Lonjakan di Jepang baru terjadi beberapa tahun ini sedangkan lonjakan yang sama pernah terjadi di Taiwan dan UAE sudah terjadi sejak lama.
+
+
+_So_, apa yang bisa kita simpulkan dari paparan analisa data ini?
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
 
