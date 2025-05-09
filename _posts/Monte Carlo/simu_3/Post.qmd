@@ -1,0 +1,487 @@
+---
+title: "Math and Computational Science for Business part 3: Simulasi Monte Carlo untuk Perencanaan Marketing Activites"
+format: 
+  gfm:
+    html-math-method: webtex
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+Beberapa pekan ini saya mendapat _request_ pekerjaan yang agak _riweuh_. Yakni untuk membuat simulasi Monte Carlo yang berguna untuk basis pembuatan dan perencanaan _marketing activities_ di tahun depan. Sebenarnya ini bukan hal pertama buat saya karena saya pernah menuliskan pekerjaan yang mirip-mirip untuk [usaha cafe / restoran teman saya dulu](https://ikanx101.com/blog/planning-omset-mc/).
+
+Jadi bagaimana caranya? Saya akan coba berikan satu _case_ yang bisa menggambarkan prosesnya. _Cekidot_.
+
+---
+
+# Latar Belakang
+
+Suatu _brand_ telah melakukan survey dan memetakan target marketnya menjadi dua kelompok utama, yakni: 
+
+1. Kelompok _loyal user_, yang kemudian dipecah menjadi:
+    - _High-medium user_.
+    - _Low-medium user_.
+1. Kelompok _non user_, yang kemudian dipecah menjadi:
+    - _Potential non user-to-trialist_.
+    - _No potential at all_.
+
+Berdasarkan peta tersebut, maka _brand_ tersebut hendak merencanakan tiga _marketing activities_ yang ditujukan kepada tiga kelompok _target market_:
+
+1. _High-medium user_.
+1. _Low-medium user_.
+1. _Potential non user-to-trialist_.
+
+## _Marketing Activity I_
+
+_Marketing activity_ pertama ditujukan kepada _high-medium user_. Tujuan dari _activity_ ini adalah untuk menaikkan frekuensi dan _quantity_ pembelian _user_.
+
+## _Marketing Activity II_
+
+_Marketing activity_ kedua ditujukan kepada _low-medium user_. Tujuan dari _activity_ ini adalah untuk menjaga persentase _user_ ini tidak berubah signifikan (jika memungkinkan tidak berkurang).
+
+## _Marketing Activity III_
+
+_Marketing activity_ ketiga ditujukan kepada _non user_ yang potensial menjadi _trialist_. Caranya dengan melakukan program khusus.
+
+---
+
+# Membuat Simulasi 
+
+Tujuan utama dari simulasi ini adalah menghitung berapa omset yang bisa dihasilkan dari ketiga _marketing activities_ tersebut. Oleh karena itu, cara kita menghitung omset menjadi __krusial__.
+
+Dasar perhitungan omset yang digunakan cukup mudah, yakni:
+
+$$\text{omset} = \sum{(\text{freq} \times \text{qty} \times {harga})}_{i = 1}^N$$
+
+> __Total pembelian yang dilakukan oleh semua konsumen.__
+
+Berdasarkan formula di atas, maka titik kritis pada simulasi ini adalah:
+
+1. Penentuan $N$ atau seberapa banyak konsumen (per kelompok _target market_) yang membeli produk tersebut.
+1. Berapa frekuensi dan _quantity_ pembelian per kelompok _target market_?
+1. Berapa harga per unit pembelian?
+
+Untuk menyelesaikan ketiga titik kritis ini, tim _brand_ sudah memiliki __data-data survey untuk kelompok *high-medium user* dan *low-medium user*__.
+
+Masalah yang saya hadapi adalah saya tidak punya data yang cukup untuk kelompok _potential non user-to-trialist_. Maka dari itu, saya bisa membuat beberapa asumsi atau tebakan. Inilah kelebihan dari simulasi Monte Carlo di mana kita bisa memberikan "tebakan" kita ke dalam simulasi yang kemudian akan divalidasi seiring dengan waktu sehingga simulasi yang dihasilkan akan semakin mendekati realita yang ada.
+
+## _Flow_ Simulasi
+
+Berikut adalah _flow_ simulasi dari ketiga _marketing activites_:
+
+![Flow Monte Carlo](nomnoml 5.png)
+
+```{r}
+#| include: false
+
+#direction = down,
+# [populasi] -> [target market]
+# [populasi] +- [input 1|jumlah penduduk*|persentase SES*|persentase usia*]
+# [target market] -> [user]
+# [target market] -> [non user]
+# [target market] +- [input 2|persentase user**|persentase non user**]
+# 
+# [user] +- [input 3|proporsi heavy, medium, low**|qty beli**|freq beli**]
+# [user] -> [heavy-medium user]
+# [user] -> [low-medium user]
+# 
+# [heavy-medium user] o-> [activity I] 
+# [low-medium user] o-> [activity II] 
+# 
+# [activity I] --> [omset I]
+# [activity II] --> [omset II]
+# 
+# [non user] -> [potensial]
+# [non user] -> [no potensial]
+# [non user] +- [input 4|persentase potensial**|persentase non potensial**]
+# 
+# [potensial] o-> [activity III]
+# [activity III] --> [omset III]
+# [potensial] +- [input 5|prob conversion**|qty beli**|freq beli**]
+# 
+# [omset I] -> [total omset]
+# [omset II] -> [total omset]
+# [omset III] -> [total omset]
+# 
+# [Keterangan|
+#  [*]--[certain]
+#  [**]--[uncertain]
+#  ]
+```
+
+Simulasi Monte Carlo memiliki dua jenis _input_, yakni:
+
+1. Parameter _certain_: merupakan parameter-parameter simulasi yang memiliki nilai pasti.
+1. Parameter _uncertain_: merupakan parameter-parameter simulasi yang memiliki nilai tak pasti. Parameter-parameter ini akan di-_input_ berupa _range_ (bisa berupa __min-max__ ATAU __mean dan standar deviasinya__).
+
+Sebagai catatan simulasi ini akan dilakukan untuk perhitungan omset bulanan. Maka besaran nilai frekuensi pembelian merupakan frekuensi pembelian bulanan.
+
+Asumsi harga yang digunakan Rp1.500 per unit produk.
+
+# Skrip Simulasi di __R__
+
+Berikut adalah skrip yang saya gunakan untuk membuat simulasi ini:
+
+```
+# Menghapus semua objek dari lingkungan kerja saat ini
+rm(list = ls())
+# Memaksa pengumpulan sampah (garbage collection) untuk membebaskan memori
+gc()
+
+# Memuat paket dplyr untuk manipulasi data
+library(dplyr)
+# Memuat paket tidyr untuk merapikan data
+library(tidyr)
+# Memuat paket ggplot2 untuk membuat grafik
+library(ggplot2)
+# Memuat paket ggpubr untuk membuat grafik siap publikasi
+library(ggpubr)
+
+# Menentukan jumlah iterasi untuk simulasi, diatur menjadi 1 juta
+n_simulasi  = 10^6
+# Menentukan ukuran populasi total
+populasi    = 10^8
+# Menentukan probabilitas status sosial ekonomi (SES) dalam persen
+prob_ses    = 60
+# Menentukan persentase populasi dalam rentang usia tertentu
+persen_usia = 73
+# Menentukan harga produk
+harga       = 1500
+
+# Menghitung target pasar berdasarkan populasi, probabilitas SES, dan persentase usia
+target_market = populasi * (prob_ses / 100) * (persen_usia / 100)
+
+# Menentukan rentang persentase pengguna (minimal dan maksimal)
+persen_user = c(65,70)
+
+# Menghasilkan sejumlah pengguna secara acak untuk setiap simulasi
+# Angka acak diambil dari distribusi uniform antara persentase pengguna minimal dan maksimal,
+# kemudian dikalikan dengan populasi total
+n_user     = (runif(n_simulasi,
+                    min = persen_user[1],
+                    max = persen_user[2]) / 100) * populasi
+# Menghitung jumlah non-pengguna dengan mengurangkan jumlah pengguna dari populasi total
+n_non_user = populasi - n_user
+
+# Menentukan rentang persentase pengguna kategori heavy dan medium (minimal dan maksimal)
+persen_heavy_medium = c(25,35)
+
+# Menghasilkan sejumlah pengguna kategori heavy dan medium secara acak untuk setiap simulasi
+# Angka acak diambil dari distribusi uniform antara persentase pengguna heavy/medium minimal dan maksimal,
+# kemudian dikalikan dengan jumlah pengguna total (n_user)
+n_heavy_medium = (runif(n_simulasi,
+                         min = persen_heavy_medium[1],
+                         max = persen_heavy_medium[2])/100) * n_user
+# Menghitung jumlah pengguna kategori low dan medium dengan mengurangkan jumlah pengguna heavy/medium dari jumlah pengguna total
+n_low_medium   = n_user - n_heavy_medium
+
+# marketing I
+# Menentukan rentang frekuensi pembelian (minimal dan maksimal) berdasarkan data survei, marketing I bertujuan menaikkan 1 kali beli
+freq_beli = c(4,6)
+# Menentukan rentang kuantitas pembelian (minimal dan maksimal) berdasarkan data survei, marketing I bertujuan menaikkan 1 unit produk
+qty_beli  = c(5,7)
+
+# Membuat dataframe bernama df_act_1 untuk simulasi marketing I
+df_act_1 =
+  # Memulai dengan data frame yang berisi jumlah pengguna heavy/medium dan harga
+  data.frame(n_heavy_medium,harga) %>%
+  # Menambahkan kolom freq_beli dengan nilai acak dari distribusi uniform
+  # berdasarkan rentang freq_beli yang telah ditentukan untuk setiap simulasi
+  mutate(freq_beli = runif(n_simulasi,
+                           min = freq_beli[1],
+                           max = freq_beli[2])) %>%
+  # Menambahkan kolom qty_beli dengan nilai acak dari distribusi uniform
+  # berdasarkan rentang qty_beli yang telah ditentukan untuk setiap simulasi
+  mutate(qty_beli = runif(n_simulasi,
+                          min = qty_beli[1],
+                          max = qty_beli[2])) %>%
+  # Menambahkan kolom omset yang dihitung dari perkalian jumlah pengguna heavy/medium,
+  # frekuensi beli, kuantitas beli, dan harga
+  mutate(omset = n_heavy_medium * freq_beli * qty_beli * harga) %>%
+  # Menambahkan kolom 'ket' untuk menandai bahwa ini adalah hasil dari "marketing 1"
+  mutate(ket = "marketing 1")
+
+# marketing II
+# Menentukan rentang frekuensi pembelian (minimal dan maksimal) berdasarkan data survei
+freq_beli = c(1,4)
+# Menentukan rentang kuantitas pembelian (minimal dan maksimal) berdasarkan data survei
+qty_beli  = c(1,3)
+
+# Menghasilkan kembali jumlah pengguna low/medium dari distribusi normal
+# dengan rata-rata dari n_low_medium sebelumnya dan standar deviasi 10^6.
+# Marketing II bertujuan untuk mengecilkan deviasi (kode ini tampaknya menghasilkan ulang nilai n_low_medium dengan deviasi tertentu).
+n_low_medium = rnorm(n_simulasi,
+                     mean = mean(n_low_medium),
+                     sd   = 10^6)
+
+# Membuat dataframe bernama df_act_2 untuk simulasi marketing II
+df_act_2 =
+  # Memulai dengan data frame yang berisi jumlah pengguna low/medium (yang baru dihasilkan) dan harga
+  data.frame(n_low_medium,harga) %>%
+  # Menambahkan kolom freq_beli dengan nilai acak dari distribusi uniform
+  # berdasarkan rentang freq_beli yang telah ditentukan untuk setiap simulasi
+  mutate(freq_beli = runif(n_simulasi,
+                           min = freq_beli[1],
+                           max = freq_beli[2])) %>%
+  # Menambahkan kolom qty_beli dengan nilai acak dari distribusi uniform
+  # berdasarkan rentang qty_beli yang telah ditentukan untuk setiap simulasi
+  mutate(qty_beli = runif(n_simulasi,
+                          min = qty_beli[1],
+                          max = qty_beli[2])) %>%
+  # Menambahkan kolom omset yang dihitung dari perkalian jumlah pengguna low/medium,
+  # frekuensi beli, kuantitas beli, dan harga
+  mutate(omset = n_low_medium * freq_beli * qty_beli * harga) %>%
+  # Menambahkan kolom 'ket' untuk menandai bahwa ini adalah hasil dari "marketing 2"
+  mutate(ket = "marketing 2")
+
+# marketing III
+# Menentukan rentang probabilitas konversi (minimal dan maksimal) yang diusahakan pada marketing III
+prob_conversion = c(.05,.2)
+# Menentukan rentang frekuensi pembelian (minimal dan maksimal) yang diusahakan pada marketing III
+freq_beli       = c(1,2)
+# Menentukan rentang kuantitas pembelian (minimal dan maksimal) yang diusahakan pada marketing III
+qty_beli        = c(1,2)
+
+# Membuat dataframe bernama df_act_3 untuk simulasi marketing III
+df_act_3 =
+  # Memulai dengan data frame yang berisi jumlah non-pengguna dan harga
+  data.frame(n_non_user,harga) %>%
+  # Menambahkan kolom conver_rate (tingkat konversi) dengan nilai acak dari distribusi uniform
+  # berdasarkan rentang prob_conversion yang telah ditentukan untuk setiap simulasi
+  mutate(conver_rate = runif(n_simulasi,
+                             min = prob_conversion[1],
+                             max = prob_conversion[2])) %>%
+  # Menambahkan kolom freq_beli dengan nilai acak dari distribusi uniform
+  # berdasarkan rentang freq_beli yang telah ditentukan untuk setiap simulasi
+  mutate(freq_beli = runif(n_simulasi,
+                           min = freq_beli[1],
+                           max = freq_beli[2])) %>%
+  # Menambahkan kolom qty_beli dengan nilai acak dari distribusi uniform
+  # berdasarkan rentang qty_beli yang telah ditentukan untuk setiap simulasi
+  mutate(qty_beli = runif(n_simulasi,
+                          min = qty_beli[1],
+                          max = qty_beli[2])) %>%
+  # Menambahkan kolom omset yang dihitung dari perkalian jumlah non-pengguna,
+  # tingkat konversi, frekuensi beli, kuantitas beli, dan harga
+  mutate(omset = n_non_user * conver_rate * freq_beli * qty_beli * harga) %>%
+  # Menambahkan kolom 'ket' untuk menandai bahwa ini adalah hasil dari "marketing 3"
+  mutate(ket = "marketing 3")
+
+# Menggabungkan hasil dari ketiga data frame (df_act_1, df_act_2, df_act_3) ke dalam satu list
+hasil  = list(df_act_1,df_act_2,df_act_3)
+# Menggabungkan list dari data frame menjadi satu data frame besar menggunakan rbindlist dari paket data.table
+# Parameter fill = T memastikan kolom yang tidak ada di semua data frame diisi dengan NA
+# Kemudian dikonversi kembali menjadi data frame standar R
+df_sim = data.table::rbindlist(hasil,fill = T) %>% as.data.frame()
+
+```
+
+# _Result_ Simulasi
+
+Berikut ini adalah visualisasi dari simulasinya:
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+rm(list=ls())
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(ggpubr)
+library(ggridges)
+
+load("simu_liu.rda")
+
+df_sim %>% 
+  group_by(ket) %>% 
+  summarise(omset = mean(omset)) %>% 
+  ungroup() %>% 
+  mutate(persen = omset / sum(omset) * 100,
+         persen = round(persen,2),
+         label = paste0(ket,"\n",
+                        paste0(persen,"%"))
+         ) %>% 
+  ggplot(aes(x = "",y = persen,fill = ket)) +
+    geom_bar(stat="identity", width=1, color="black") +
+    coord_polar("y", start=0) +
+    geom_label(aes(label = label),color = "white",size = 3,
+               position = position_stack(vjust = .5)) +
+    theme_minimal() +
+    labs(title = "Omset Share Hasil Simulasi",
+         subtitle = "Berapa persen kontribusi masing-masing campaign ke total omset?",
+         caption = "Simulasi dan visualisasi dengan R\nikanx101.com") +
+    theme(axis.title = element_blank(),
+          axis.text = element_blank(),
+          legend.position = "none") +
+    scale_fill_manual(values = c("darkgreen","steelblue","grey"))
+```
+
+Dari ketiga _marketing activities_, kita bisa lihat bahwa _marketing activity_ I memiliki hasil omset yang tertinggi baru setelah itu _marketing activity_ II. Sedangkan _marketing activity_ III memiliki hasil omset yang terendah.
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+df_sim %>% 
+  ggplot(aes(x = omset,y = ket,fill = ket)) +
+  geom_density_ridges(alpha = .3) +
+  scale_x_continuous(labels = scales::number_format(prefix = "Rp",
+                                                    big.mark = ",")) + 
+  theme_minimal() +
+  labs(x = "Omset",
+       y = "Marketing Activity",
+       caption = "Simulasi dan visualisasi dengan R\nikanx101.com",
+       title = "Sebaran Omset Hasil Simulasi di Setiap Marketing Activities",
+       subtitle = "Berdasarkan simulasi Monte Carlo dari flow di atas") +
+  theme(legend.position = "none")
+```  
+
+
+grafik di atas memberikan gambaran terkait _range_ omset yang bisa diraih. kedua grafik ini bisa dijadikan perhatian oleh tim _brand_ tentang bagaimana _effort_ yang aka dilakukan kelak. 
+
+> __Oleh karena marketing III memiliki hasil yang terendah, kita bisa saja melakukan simulasi ulang untuk mencoba mengubah *prob conversion*. Akibatnya tim *brand* bisa mengukur *effort* yang kelak dilakukan. Jika *effort* yang dilakukan tak sebanding, sebaiknya tim *brand* mencari dan mencoba titik optimal di setiap *marketing activities*.__
+
+Dari simulasi di atas, saya akan coba hitung 3 hal berikut ini:
+
+1. __*p80 omset*__ : merupakan nilai omset yang punya peluang 80% akan terpenuhi. Artinya, saya bisa memandang nilai ini sebagai __nilai optimis omset bisa diraih__.
+1. __*expected omset*__ : merupakan nilai omset rata-rata hasil simulasi.
+1. __*p20 omset*__ : merupakan nilai omset yang punya peluang 20% akan terpenuhi. Artinya, saya bisa memandang nilai ini sebagai __nilai target atas jika diusahakan se-maksimal mungkin__.
+
+Berikut adalah tabelnya:
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+df_sim %>% 
+  group_by(ket) %>% 
+  summarise(expected_omset = mean(omset),
+            p80_omset = quantile(omset,.2),
+            p20_omset = quantile(omset,.8)) %>% 
+  ungroup() %>% 
+  janitor::adorn_totals("row") %>% 
+  mutate(expected_omset = scales::number(expected_omset,
+                                         prefix = "Rp",
+                                         big.mark = ",")) %>% 
+  mutate(p80_omset = scales::number(p80_omset,
+                                    prefix = "Rp",
+                                    big.mark = ",")) %>% 
+  mutate(p20_omset = scales::number(p20_omset,
+                                    prefix = "Rp",
+                                    big.mark = ",")) %>% 
+  select(ket,p80_omset,expected_omset,p20_omset) %>% 
+  rename("marketing activity" = ket) %>% 
+  knitr::kable()
+```
+
+
+Sekarang saya akan bahas tentang __p20 omset__. Apakah memungkinkan bagi tim _brand_ untuk mencapai nilai tersebut?
+
+Misalkan saya mengisolasi hasil simulasi agar minimal omsetnya itu senilai __p20 omset__. Saya buatkan visualisasi seperti ini lagi:
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+df_split = df_sim %>% group_split(ket)
+
+df_camp_1 = 
+  df_split[[1]] %>% 
+  select(freq_beli,qty_beli,omset) %>% 
+  rename(freq_beli_1 = freq_beli,
+         qty_beli_1  = qty_beli,
+         omset_1     = omset)
+
+df_camp_2 = 
+  df_split[[2]] %>% 
+  select(freq_beli,qty_beli,omset) %>% 
+  rename(freq_beli_2 = freq_beli,
+         qty_beli_2  = qty_beli,
+         omset_2     = omset)
+
+df_camp_3 = 
+  df_split[[3]] %>% 
+  select(freq_beli,qty_beli,conver_rate,omset) %>% 
+  rename(freq_beli_3 = freq_beli,
+         qty_beli_3  = qty_beli,
+         omset_3     = omset)
+
+df_rekap = 
+  data.frame(df_camp_1,df_camp_2,df_camp_3) %>% 
+  mutate(omtot = omset_1 + omset_2 + omset_3) %>% 
+  filter(omtot >= 158500559491) %>% 
+  select(contains(c("freq","conver","qty"))) %>% 
+  reshape2::melt() %>% 
+  mutate(variable = case_when(
+    variable == "freq_beli_1" ~ "Freq act 1",
+    variable == "freq_beli_2" ~ "Freq act 2",
+    variable == "freq_beli_3" ~ "Freq act 3",
+    variable == "qty_beli_1" ~ "Qty act 1",
+    variable == "qty_beli_2" ~ "Qty act 2",
+    variable == "qty_beli_3" ~ "Qty act 3",
+    variable == "conver_rate" ~ "Conversion rate act 3"
+  )) 
+
+data.frame(df_camp_1,df_camp_2,df_camp_3) %>% 
+  mutate(omtot = omset_1 + omset_2 + omset_3) %>% 
+  filter(omtot >= 158500559491) %>% 
+  select(contains("omset_")) %>% 
+  reshape2::melt() %>% 
+  ggplot(aes(x = value,y = variable,fill = variable)) +
+  geom_density_ridges(alpha = .3) +
+  scale_x_continuous(labels = scales::number_format(prefix = "Rp",
+                                                    big.mark = ",")) + 
+  theme_minimal() +
+  labs(x = "Omset",
+       y = "Marketing Activity",
+       caption = "Simulasi dan visualisasi dengan R\nikanx101.com",
+       title = "Sebaran Omset Hasil Simulasi di Setiap Marketing Activities",
+       subtitle = "Agar minimal p20 omset terpenuhi") +
+  theme(legend.position = "none")
+```
+
+
+Untuk memenuhi __p20 omset__ (`Rp158,500,559,491`), ternyata omset hasil _marketing activity_ I tidak bisa berdiri sendiri. Harus dibantu dengan dorongan omset hasil _marketing activity_ II. Sedangkan _marketing activity_ III menjadi __tidak signifikan__.
+
+Tim _brand_ bisa fokus untuk mengusahakan _marketing activities_ I dan II dengan berbagai macam cara agar menaikkan frekuensi pembelian dan _quantity_ pembelian menjadi seperti ini:
+
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+df_rekap %>% 
+  filter(!grepl("3",variable)) %>% 
+  ggplot(aes(x = variable,
+             y = value)) +
+  geom_boxplot() +
+  labs(x = "Frekuensi dan Qty pembelian",
+       y = "",
+       title = "Sebaran Frekuensi dan Qty Pembelian",
+       subtitle = "Agar minimal p20 omset terpenuhi") +
+  theme_minimal()
+
+
+```
+
+
+
+
+
+
+
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
