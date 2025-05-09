@@ -1,6 +1,19 @@
-# Math and Computational Science for Business part 3: Simulasi Monte
-Carlo untuk Perencanaan Marketing Activites
-
+---
+date: 2025-05-09T14:40:00-04:00
+title: "Math and Computational Science for Business part 3: Simulasi Monte Carlo untuk Perencanaan Marketing Activites"
+categories:
+  - Blog
+tags:
+  - Artificial Intelligence
+  - Machine Learning
+  - Simulasi
+  - Monte Carlo
+  - Simulasi Monte Carlo
+  - Omset
+  - Planning
+  - Marketing
+  - Brand
+---
 
 Beberapa pekan ini saya mendapat *request* pekerjaan yang agak *riweuh*.
 Yakni untuk membuat simulasi Monte Carlo yang berguna untuk basis
@@ -89,7 +102,7 @@ simulasi yang dihasilkan akan semakin mendekati realita yang ada.
 
 Berikut adalah *flow* simulasi dari ketiga *marketing activites*:
 
-![Flow Monte Carlo](nomnoml%205.png)
+![Flow Monte Carlo](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Monte%20Carlo/simu_3/nomnoml%205.png)
 
 Simulasi Monte Carlo memiliki dua jenis *input*, yakni:
 
@@ -265,14 +278,14 @@ Berikut adalah skrip yang saya gunakan untuk membuat simulasi ini:
 
 Berikut ini adalah visualisasi dari simulasinya:
 
-![](Post_files/figure-commonmark/unnamed-chunk-2-1.png)
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Monte%20Carlo/simu_3/Post_files/figure-commonmark/unnamed-chunk-2-1.png)
 
 Dari ketiga *marketing activities*, kita bisa lihat bahwa *marketing
 activity* I memiliki hasil omset yang tertinggi baru setelah itu
 *marketing activity* II. Sedangkan *marketing activity* III memiliki
 hasil omset yang terendah.
 
-![](Post_files/figure-commonmark/unnamed-chunk-3-1.png)
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Monte%20Carlo/simu_3/Post_files/figure-commonmark/unnamed-chunk-3-1.png)
 
 grafik di atas memberikan gambaran terkait *range* omset yang bisa
 diraih. kedua grafik ini bisa dijadikan perhatian oleh tim *brand*
@@ -305,9 +318,24 @@ Berikut adalah tabelnya:
 | marketing 3        | Rp816,012,808    | Rp1,366,933,335   | Rp1,876,077,388   |
 | Total              | Rp96,929,824,902 | Rp128,561,580,141 | Rp158,500,559,491 |
 
-![](Post_files/figure-commonmark/unnamed-chunk-5-1.png)
+Sekarang saya akan bahas tentang **p20 omset**. Apakah memungkinkan bagi
+tim *brand* untuk mencapai nilai tersebut?
 
-![](Post_files/figure-commonmark/unnamed-chunk-5-2.png)
+Misalkan saya mengisolasi hasil simulasi agar minimal omsetnya itu
+senilai **p20 omset**. Saya buatkan visualisasi seperti ini lagi:
+
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Monte%20Carlo/simu_3/Post_files/figure-commonmark/unnamed-chunk-5-1.png)
+
+Untuk memenuhi **p20 omset** (`Rp158,500,559,491`), ternyata omset hasil
+*marketing activity* I tidak bisa berdiri sendiri. Harus dibantu dengan
+dorongan omset hasil *marketing activity* II. Sedangkan *marketing
+activity* III menjadi **tidak signifikan**.
+
+Tim *brand* bisa fokus untuk mengusahakan *marketing activities* I dan
+II dengan berbagai macam cara agar menaikkan frekuensi pembelian dan
+*quantity* pembelian menjadi seperti ini:
+
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/Monte%20Carlo/simu_3/Post_files/figure-commonmark/unnamed-chunk-6-1.png)
 
 ------------------------------------------------------------------------
 
