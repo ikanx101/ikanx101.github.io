@@ -289,7 +289,7 @@ hasil omset yang terendah.
 
 grafik di atas memberikan gambaran terkait *range* omset yang bisa
 diraih. kedua grafik ini bisa dijadikan perhatian oleh tim *brand*
-tentang bagaimana *effort* yang aka dilakukan kelak.
+tentang bagaimana *effort* yang akan dilakukan kelak.
 
 > **Oleh karena marketing III memiliki hasil yang terendah, kita bisa
 > saja melakukan simulasi ulang untuk mencoba mengubah *prob
