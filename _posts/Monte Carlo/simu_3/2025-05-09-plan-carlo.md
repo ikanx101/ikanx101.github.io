@@ -209,7 +209,7 @@ Berikut adalah skrip yang saya gunakan untuk membuat simulasi ini:
 
     # Menghasilkan kembali jumlah pengguna low/medium dari distribusi normal
     # dengan rata-rata dari n_low_medium sebelumnya dan standar deviasi 10^6.
-    # Marketing II bertujuan untuk mengecilkan deviasi (kode ini tampaknya menghasilkan ulang nilai n_low_medium dengan deviasi tertentu).
+    # Marketing II bertujuan untuk mengecilkan deviasi (kode ini akan menghasilkan ulang nilai n_low_medium dengan deviasi tertentu).
     n_low_medium = rnorm(n_simulasi,
                          mean = mean(n_low_medium),
                          sd   = 10^6)
