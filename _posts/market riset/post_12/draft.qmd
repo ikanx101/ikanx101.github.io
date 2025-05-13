@@ -1,0 +1,97 @@
+---
+title: "Membuat Algoritma Cluster Sampling di R"
+format:
+  gfm:
+    html-math-method: webtex
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+    editor: visual
+execute:
+  warning: false
+  error: false
+---
+
+Melanjutkan tulisan saya sebelumnya terkait [teknik _sampling_](https://ikanx101.com/blog/sist-samp/) di market riset, kali ini saya akan membahas tentang teknik _sampling_ bernama _cluster sampling_. Berdasarkan pengalaman saya sampai saat ini di industri market riset, saya sebenarnya sangat jarang sekali menggunakan teknik _sampling_ ini.
+
+---
+
+Misalkan kita ingin meneliti pendapat siswa SMA di seluruh Jakarta tentang kurikulum baru. Akan sangat sulit dan mahal jika kita harus mendatangi setiap sekolah dan memilih siswa secara acak satu per satu.
+
+_Nah_, *cluster sampling* hadir sebagai solusi yang lebih praktis. Caranya adalah dengan membagi populasi besar (seluruh siswa SMA di Jakarta) menjadi kelompok-kelompok kecil yang disebut _cluster_. _Cluster_ ini biasanya sudah terbentuk secara alami, misalnya berdasarkan sekolah.
+
+**Langkah-langkahnya begini:**
+
+1.  **Bagi Populasi menjadi _Cluster_:** Pertama, kamu bagi seluruh populasi penelitianmu menjadi beberapa _cluster_ yang berbeda. Dalam contoh kita, setiap SMA di Jakarta adalah satu _cluster_. Sehingga kita dapatkan banyaknya _cluster_ adalah sebanyak SMA yang ada di Jakarta.
+
+2.  **Pilih Beberapa _Cluster_ Secara Acak:** Kemudian, kamu tidak memilih siswa secara acak dari *semua* sekolah, tapi kamu memilih *beberapa* sekolah (_cluster_) secara acak. Misalnya, dari ratusan SMA di Jakarta, kamu memilih 10 _cluster_ (sekolah) secara acak.
+
+3.  **Ambil Sampel dari Klaster yang Terpilih:** Setelah _cluster_ (sekolah) terpilih, kamu bisa melakukan salah satu dari dua hal:
+    * **Mengambil sampel acak dari setiap _cluster_ terpilih:** Di setiap 10 sekolah yang terpilih tadi, kamu bisa memilih beberapa siswa secara acak untuk menjadi sampelmu. __ATAU__
+    * **Mengambil semua anggota dari klaster terpilih:** Kamu bisa menjadikan **semua** siswa di 10 sekolah yang terpilih sebagai sampel penelitianmu. Cara ini lebih sederhana tapi mungkin kurang efisien jika ukuran _cluster_-nya sangat besar.
+
+**Sederhananya, kamu memilih beberapa kelompok secara acak, lalu mengambil sampel dari kelompok-kelompok yang terpilih tersebut.**
+
+**Kelebihan *Cluster Sampling*:**
+
+* **Lebih efisien dan murah** terutama untuk populasi yang tersebar geografis. Kamu tidak perlu menjangkau setiap individu, tapi cukup beberapa kelompok saja.
+* **Lebih praktis** ketika sulit untuk mendapatkan daftar lengkap seluruh anggota populasi, tapi daftar kelompoknya tersedia.
+
+**Kekurangan *Cluster Sampling*:**
+
+* **Potensi *sampling error* lebih besar** dibandingkan *simple random sampling* jika antar _cluster_ memiliki perbedaan yang signifikan. Jika sekolah-sekolah yang kamu pilih secara kebetulan memiliki karakteristik siswa yang sangat berbeda dari rata-rata, maka hasil penelitianmu bisa _bias_.
+
+
+## Algoritma *Cluster Sampling* di **R**
+
+Berdasarkan penjelasan di atas, kita bisa membuat algoritma sederhananya dengan `library(dplyr)` di **R** sebagai berikut:
+
+```{r}
+# panggil library(dplyr)
+library(dplyr)
+
+# total semua murid di jakarta
+N_murid = 10^4
+
+# total semua sekolah di jakarta
+N_skul  = 80
+
+# berapa banyak cluster yang akan dipilih
+selected_skul = 5
+
+# pemilihan cluster
+selected_cluster = sample(1:N_skul,selected_skul) %>% sort()
+selected_cluster
+```
+
+Terlihat di atas adalah lima _clusters_ (sekolah-sekolah) yang terpilih. Kita bisa lihat sampel data siswa yang terpilih sebagai berikut:
+
+```{r}
+# kita buat data frame nya
+id_murid = 1:N_murid
+id_skul  = sample(1:N_skul,N_murid,replace = T)
+
+
+df_sel = data.frame(id_murid,id_skul,
+           nama_skul = paste0("Sekolah ",id_skul)) %>% 
+  filter(id_skul %in% selected_cluster)
+
+head(df_sel,20)
+```
+
+Berikut adalah _summary_-nya:
+
+```{r}
+df_sel %>% 
+  group_by(nama_skul) %>% 
+  tally() %>% 
+  ungroup() %>% 
+  arrange(nama_skul) %>% 
+  rename("n siswa" = n)
+```
+
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
+
