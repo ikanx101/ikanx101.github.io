@@ -1,0 +1,20 @@
+---
+title: "Memahami Distribusi Poisson dari Kasus Saat Training Karyawan Baru"
+format:
+  gfm:
+    html-math-method: webtex
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+    editor: visual
+execute:
+  warning: false
+  error: false
+---
+
+Dalam rentang setahun, biasanya Nutrifood membuka dua sampai tiga rekrutmen _management trainee_
+
+Distribusi _Poisson_ adalah salah satu distribusi probabilitas diskrit yang digunakan untuk __memodelkan sejumlah kejadian dalam suatu interval waktu atau area tertentu__. Distribusi ini dinamai dengan nama matematikawan __Prancis Siméon Denis Poisson__ (1781–1840).
+
+## _Appendix_
+
