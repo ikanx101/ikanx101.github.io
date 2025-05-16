@@ -188,7 +188,7 @@ Kapan Distribusi Poisson Tidak Berlaku?
 
 ## *Appendix*
 
-**Hubungan Distribusi *Poisson* dengan Distribusi Normal**
+**Hubungan Distribusi *Poisson* dengan Distribusi Binomial**
 
 Distribusi Poisson dapat menjadi pendekatan untuk Binomial jika:
 
