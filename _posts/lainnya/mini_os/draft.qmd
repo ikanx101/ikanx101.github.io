@@ -1,0 +1,71 @@
+---
+title: "Mini OS: Distro Linux Ringan yang Gagal Jadi Daily Driver Baru Saya"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: visual
+execute:
+  warning: false
+error: false
+---
+
+Seminggu terakhir ini, Youtube merekomendasikan video-video terkait [__Mini OS__](https://minios.dev/). Sebuah distro Linux yang diklaim sangat ringan tapi telah _pre-installed_ dengan berbagai aplikasi khas Linux yang sangat berguna seperti __OBS, Audacity, LibreOffice, GIMP, Render, dan banyak lagi__. 
+
+![](minos.png)
+
+Dari video-video tersebut, saya coba rangkum dulu kesimpulan sementara sebelum saya _install_ sebagai berikut:
+
+---
+
+**Mini OS** adalah sebuah distribusi Linux yang dirancang untuk menjadi sangat ringan, cepat, dan minimalis. Distro ini biasanya digunakan untuk keperluan khusus seperti sistem _embedded_, _recovery_, atau perangkat dengan spesifikasi _hardware_ yang __kentang__.
+
+## Karakteristik dan Kelebihan Mini OS Linux
+
+- **Ukuran Kecil**: Mini OS biasanya memiliki ukuran file `ISO` yang sangat kecil. Ada tiga pilihan, yakni:
+    - _Standard_ (~700 MB)
+    - _Toolbox_ (~900 MB)
+    - _Ultra_ (~1.5 GB)
+- **Minimalis**: Hanya menyertakan paket-paket esensial. _Desktop environment_ yang digunakan adalah __XFCE__. Berbeda dengan __POP OS__ yang selama ini saya pakai (menggunakan __GNOME__).
+- **Cepat**: Karena minim _resource_, Mini OS bisa boot dan berjalan sangat cepat bahkan di komputer lama.
+- **Fleksibel**: Dapat digunakan sebagai live OS, sistem pemulihan, atau dasar untuk membangun distro kustom.
+
+---
+
+## Pre Instalasi
+
+Perlu saya ingatkan, bahwa saya menggunakan [__POP OS__ sebagai _daily driver_](https://ikanx101.com/blog/pop-os25/). Setelah dicekoki video-video yang menampilkan seberapa ringannya Mini OS, saya jadi __kena racun__ untuk mencoba Mini OS.
+
+Sebelum saya melangkah jauh, saya akan coba install di _VirtualBox_ terlebih dahulu. Saya memilih Mini OS Ultra yang memiliki _software tools_ yang lebih banyak.
+
+Proses instalasi ke _VirtualBox_ sangat mudah dan cepat. _Desktop environment_ nya menggunakan __XFCE__. Sebagai pengguna __GNOME__, saya perlu berdaptasi. __Namun saya terkejut dengan seberapa asyiknya kustomisasi di XFCE__.
+
+Setelah itu saya coba _install_ __Docker dan Google Chrome__. Saya coba bekerja dari sana dan saya sangat puas dengan performanya. 
+
+> _Bismillah_, saya akan coba _install_ _full_ di laptop. Begitu pikir saya.
+
+## _Install_ di Laptop
+
+Selasa malam, saya coba _install_ ke laptop dan semua proses berjalan sangat _smooth_. Dalam waktu setengah jam, saya sudah berhasil meng-_copy_ semua _working directory_ dan _environment_ (makanya pake Git dan Docker... _hehe_).
+
+Masalah timbul saat saya coba ngoprek kustomisasi tampilan __XFCE__ nya. Entah kenapa saya merasa bagian ini kurang stabil dan menjadi masalah bagi OS nya. Akibatnya laptop saya sempat _brick_ dan tidak bisa di-_boot_ sama sekali.
+
+> Setelah saya _install_ ulang berkali-kali dengan Mini OS, ternyata ketakstabilan ini membuat saya menyerah. 
+
+__Akhirnya saya kembali ke POP OS dengan meng-*install* XFCE ke dalamnya__.
+
+Saya bisa melakukan kustomisasi yang lebih stabil di __POP OS__. Begini tampilan _desktop_ saya saat ini.
+
+![](desktop.png)
+
+Saya menggunakan _theme_ [___Windows 95 Classic___](https://github.com/grassmunk/Chicago95) biar bernuansa retro. _Theme_ ini berlaku sampai semua tampilan di sistem berubah ya. Jadi gak setengah-setengah _theme_-nya.
+
+
+## Kesimpulan
+
+Setelah saya pikirkan lagi, hal yang saya inginkan ternyata __bukan mengganti OS yang selama ini saya gunakan. Tapi sekedar mengganti tampilan OS tersebut__. Oleh karena itu, saya sekarang sedang mencoba _ngoprek_ _desktop environment_ selain bawaan POP OS (GNOME).
+
+
+
