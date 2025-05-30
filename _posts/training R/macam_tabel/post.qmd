@@ -1,5 +1,9 @@
 ---
+<<<<<<< HEAD
 title: "Berbagai Macam Tampilan Tabel Menarik di R Menggunakan gtExtras"
+=======
+title: "Berbagai Format Tabel di R Menggunakan gtExtras"
+>>>>>>> 70bac6220dd0e8c1d4d057ca78793ef59a48ba34
 format:
   gfm:
     html-math-method: webtex
@@ -12,6 +16,7 @@ execute:
 error: false
 ---
 
+<<<<<<< HEAD
 
 ## Quarto
 
@@ -31,3 +36,43 @@ When you click the **Render** button a presentation will be generated that inclu
 ```{r}
 1 + 1
 ```
+=======
+Beberapa waktu yang lalu, saya sempat menuliskan bagaimana [menyajikan data dalam berbagai bentuk](https://ikanx101.com/blog/3-waysgraph/), salah satunya adalah dalam format tabel. Di __R__ sendiri, ada berbagai macam format tabel dan cara penyajiannya. Kali ini saya akan coba _share_ salah satu _library_ yang biasa digunakan untuk _formatting_ tabel, yakni `gt` dan `gtExtras`.
+
+Data yang hendak saya gunakan adalah data `mtcars` yang saya modifikasi sebagai berikut:
+
+```{r}
+#| include: false
+
+rm(list=ls())
+gc()
+library(dplyr)
+library(tidyr)
+
+df = mtcars
+
+df_ = 
+  df %>% 
+  mutate(merek = row.names(df)) %>% 
+  separate(merek,
+           sep = " ",
+           into = c("merek","dummy")) %>% 
+  select(-dummy) %>% 
+  relocate(merek,.before = "mpg")
+
+row.names(df_) = NULL
+
+df_ = 
+  df_ %>% 
+  group_by(merek) %>% 
+  summarise_all(mean) %>% 
+  ungroup() %>% 
+  mutate_if(is.numeric,floor)
+```
+
+```{r}
+df_
+```
+
+https://themockup.blog/posts/2022-06-13-gtextras-cran/
+>>>>>>> 70bac6220dd0e8c1d4d057ca78793ef59a48ba34
