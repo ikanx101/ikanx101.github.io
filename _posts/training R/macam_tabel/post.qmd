@@ -1,9 +1,5 @@
 ---
-<<<<<<< HEAD
 title: "Berbagai Macam Tampilan Tabel Menarik di R Menggunakan gtExtras"
-=======
-title: "Berbagai Format Tabel di R Menggunakan gtExtras"
->>>>>>> 70bac6220dd0e8c1d4d057ca78793ef59a48ba34
 format:
   gfm:
     html-math-method: webtex
@@ -16,28 +12,39 @@ execute:
 error: false
 ---
 
-<<<<<<< HEAD
+Beberapa waktu yang lalu, saya sempat menuliskan bagaimana [menyajikan data dalam berbagai bentuk](https://ikanx101.com/blog/3-waysgraph/), salah satunya adalah dalam format tabel. 
 
-## Quarto
+Walaupun terlihat sederhana, namun tabel sejatinya memiliki kelebihan dibandingkan grafik dalam menyajikan data. Apa saja? Berikut kelebihan-kelebihannya:
 
-Quarto enables you to weave together content and executable code into a finished presentation. To learn more about Quarto presentations see <https://quarto.org/docs/presentations/>.
+1. **Presisi Data**  
+   - Tabel bisa menampilkan nilai/data secara akurat dan detail, termasuk desimal, sedangkan grafik biasanya membulatkan nilai (karena keterbatasan _space_ grafik) atau hanya menunjukkan tren visual.  
+   - Cocok untuk data yang memerlukan ketepatan, seperti laporan keuangan atau statistik teknis.
+2. **Menyajikan Banyak Variabel Sekaligus**  
+   - Tabel bisa menampilkan banyak kolom dan baris dalam satu tampilan, sementara grafik menjadi rumit jika terlalu banyak variabel (misalnya, garis atau batang yang tumpang-tindih).
+3. **Mudah Dibandingkan (Untuk Data Spesifik)**  
+   - Pembaca dapat langsung membandingkan angka antar sel tanpa interpretasi visual.  
+   - Contoh: Membandingkan harga produk dalam daftar lebih mudah dilihat di tabel daripada di grafik batang.
+4. **Tidak Memerlukan Interpretasi Visual**  
+   - Grafik rentan terhadap kesalahan interpretasi (misalnya, skala sumbu yang tidak proporsional), sementara tabel bersifat objektif.
+5. **Efisien untuk Data Kategorikal atau Teks**  
+   - Jika data mengandung banyak kategori atau deskripsi (misalnya, nama, kode), tabel lebih praktis daripada grafik yang terbatas pada representasi visual.
 
-## Bullets
+Namun tentu saja grafik memiliki beberapa kekurangan seperti:
 
-When you click the **Render** button a document will be generated that includes:
+1. **Sulit Menunjukkan Pola atau Tren**  
+   - Grafik (seperti garis atau batang) lebih cepat menunjukkan kenaikan/penurunan, sedangkan tren dalam tabel harus dianalisis manual.
+2. **Kurang Menarik Secara Visual**  
+   - Tabel cenderung monoton dan kurang menarik bagi audiens umum, sementara grafik lebih mudah dipahami sekilas.
+3. **Rentan Kebosanan untuk Data Besar**  
+   - Jika data sangat panjang (ratusan baris), tabel menjadi sulit dibaca, sedangkan grafik bisa meringkasnya dengan histogram atau box plot.
+4. **Tidak Efektif untuk Perbandingan Relatif**  
+   - Perbandingan proporsi (misalnya, 30% vs 70%) lebih jelas ditampilkan dalam pie chart atau bar chart daripada deretan angka di tabel.
+5. **Bergantung pada Literasi Numerik**  
+   - Pembaca harus paham angka, sementara grafik bisa dipahami oleh orang dengan literasi numerik rendah.
 
--   Content authored with markdown
--   Output from executable code
+---
 
-## Code
-
-When you click the **Render** button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this:
-
-```{r}
-1 + 1
-```
-=======
-Beberapa waktu yang lalu, saya sempat menuliskan bagaimana [menyajikan data dalam berbagai bentuk](https://ikanx101.com/blog/3-waysgraph/), salah satunya adalah dalam format tabel. Di __R__ sendiri, ada berbagai macam format tabel dan cara penyajiannya. Kali ini saya akan coba _share_ salah satu _library_ yang biasa digunakan untuk _formatting_ tabel, yakni `gt` dan `gtExtras`.
+Di __R__ sendiri, ada berbagai macam format tabel dan cara penyajiannya sehingga __kita bisa melakukan kustomisasi agar tampilan tabel menjadi lebih menarik__. Kali ini saya akan coba _share_ salah satu _library_ yang biasa digunakan untuk _formatting_ tabel, yakni `gt` dan `gtExtras`.
 
 Data yang hendak saya gunakan adalah data `mtcars` yang saya modifikasi sebagai berikut:
 
@@ -67,12 +74,132 @@ df_ =
   group_by(merek) %>% 
   summarise_all(mean) %>% 
   ungroup() %>% 
-  mutate_if(is.numeric,floor)
+  mutate_if(is.numeric,floor) %>% 
+  head(10)
 ```
 
 ```{r}
 df_
 ```
 
-https://themockup.blog/posts/2022-06-13-gtextras-cran/
->>>>>>> 70bac6220dd0e8c1d4d057ca78793ef59a48ba34
+## `gt` dan `gtExtras`
+
+Dalam `library(gtExtras)`, ada beberapa _custom themes_ yang bisa kita coba:
+
+```{r}
+#| include: false
+
+library(gt)
+library(gtExtras)
+
+df_ %>% 
+  gt() %>% 
+  gt_theme_538() %>% 
+  tab_header(title = "Grafik Theme I",
+             subtitle = "The FiveThirtyEight")
+
+df_ %>% 
+  gt() %>% 
+  gt_theme_dark() %>% 
+  tab_header(title = "Grafik Theme II",
+             subtitle = "The Dark")
+
+df_ %>% 
+  gt() %>% 
+  gt_theme_dot_matrix() %>% 
+  tab_header(title = "Grafik Theme III",
+             subtitle = "The DotMatrix")
+
+df_ %>% 
+  gt() %>% 
+  gt_theme_espn() %>% 
+  tab_header(title = "Grafik Theme IV",
+             subtitle = "The ESPN")
+
+df_ %>% 
+  gt() %>% 
+  gt_theme_excel() %>% 
+  tab_header(title = "Grafik Theme V",
+             subtitle = "The Ms. Excel")
+
+df_ %>% 
+  gt() %>% 
+  gt_theme_guardian() %>% 
+  tab_header(title = "Grafik Theme VI",
+             subtitle = "The Guardian")
+
+df_ %>% 
+  gt() %>% 
+  gt_theme_nytimes() %>% 
+  tab_header(title = "Grafik Theme VII",
+             subtitle = "The NewYorkTimes")
+
+```
+
+![](tb1.png)
+![](tb2.png)
+![](tb3.png)
+![](tb4.png)
+![](tb5.png)
+![](tb6.png)
+![](tb7.png)
+
+Selain itu, kita bisa membuat pewarnaan kolom bertema __Hulk (dari ungu ke hijau)__ berikut ini:
+
+```{r}
+#| include: false
+
+df_ %>% 
+  gt() %>% 
+  gt_hulk_col_numeric(mpg) %>% 
+  gt_theme_538() %>% 
+  tab_header(title = "Grafik Theme I",
+             subtitle = "The FiveThirtyEight")
+```
+
+![](tb8.png)
+
+Atau kita buat menjadi _custom colors_ seperti ini:
+
+```{r}
+#| include: false
+
+df_ %>% 
+  gt() %>% 
+  gt_hulk_col_numeric(mpg) %>% 
+  gt::data_color(
+    columns = gear:carb, colors = c("blue", "red")
+  ) %>% 
+  gt_theme_538() %>% 
+  tab_header(title = "Grafik Theme I",
+             subtitle = "The FiveThirtyEight")
+```
+
+![](tb9.png)
+
+Selain itu, kita bisa menampilkan grafik _line_ dan _density_ untuk data kategorik dalam tabel sebagai berikut:
+
+```{r}
+#| echo: false
+
+mtcars %>%
+   dplyr::group_by(cyl) %>%
+   # must end up with list of data for each row in the input dataframe
+   dplyr::summarize(mpg_data = list(mpg), .groups = "drop") %>%
+   gt() %>%
+   gt_plt_sparkline(mpg_data)
+
+mtcars %>%
+   dplyr::group_by(cyl) %>%
+   # must end up with list of data for each row in the input dataframe
+   dplyr::summarize(mpg_data = list(mpg), .groups = "drop") %>%
+   gt() %>%
+   gt_plt_dist(mpg_data)
+```
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
+
