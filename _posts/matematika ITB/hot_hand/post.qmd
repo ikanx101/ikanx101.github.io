@@ -1,44 +1,62 @@
 ---
-title: "Hot Hand Fallacy: Ilusi 'Lagi Beruntung' yang Statistik Bantah"
-format: html
+title: "Hot Hand Fallacy: Ilusi 'Lagi Beruntung' yang Dibantah Secara Statistik"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
 editor: visual
+execute:
+  warning: false
+error: false
 ---
 
+Beberapa pekan ini, tim HR di kantor sedang gencar-gencarnya melakukan *campaign* edukasi kepada karyawan terkait judol yang berujung pinjol. Hal ini mengingatkan saya kepada tulisan yang pernah saya tulis sebelumnya terkait [togel](https://ikanx101.com/blog/lotere/) dan [*binary option*](https://ikanx101.com/blog/bin-omo/). Inti kedua tulisan tersebut adalah **judi tak akan membuat kalian untung!**.
 
+Namun pada kenyataannya, masih banyak orang yang masih saja tertarik untuk melakukan judi. Orang-orang yang kecanduan judi sering kali tidak bisa berhenti karena **sifat serakah** yang didorong oleh faktor psikologis, emosional, dan neurologis.
 
-**_Hot Hand Fallacy_** adalah keyakinan bahwa seseorang yang sedang "beruntung" atau "panas" (misal: pemain basket yang beberapa kali berhasil mencetak skor berturut-turut) akan lebih mungkin berhasil lagi pada percobaan berikutnya. Padahal, secara statistik, keberhasilan ini seringkali hanya **kebetulan acak** (random chance), bukan bukti adanya __"momentum"__.  
+Sebelum pandemi, saya dan [rekan saya Herman](https://www.linkedin.com/in/herman-yosef-paryono-826b2a25/?originalSubdomain=nl) pernah membuat materi *training* terkait bias dan *fallacies* dalam pengambilan keputusan. Salah satunya adalah *gambler's fallacy*.
 
-Fenomena ini pertama kali diteliti secara formal oleh **Gilovich, Vallone, & Tversky (1985)** dalam konteks permainan basket, tetapi aplikasinya bisa ditemui di banyak hal:  
-- Judi (misal: meja roulette "panas")  
-- Investasi ("saham yang naik terus pasti akan lanjut naik")  
-- Olahraga e-sports ("streak headshot" dalam game FPS).  
+> **Gambler's Fallacy** adalah kesalahan logika yang terjadi ketika seseorang percaya bahwa hasil acak di masa depan dipengaruhi oleh hasil acak di masa lalu, padahal sebenarnya tidak ada hubungannya.
 
----
+Contohnya adalah pada pelemparan koin. Jika muncul "gambar" 5 kali berturut-turut, seseorang mungkin berpikir "angka" lebih mungkin muncul berikutnya. Padahal, peluangnya munculnya "gambar" dan "angka" tetap 50-50 (tak berubah). Saya menduga banyak orang **termakan** *fallacy* ini sehingga **tak mau berhenti judi walau sudah kalah berkali-kali**.
 
-## **Contoh Sederhana**  
-Misalkan seorang pemain basket memiliki **probabilitas konsisten** 50% untuk mencetak skor (*hit*) setiap kali menembak. Jika dia sudah berhasil 3 kali berturut-turut (*HHH*), banyak orang akan percaya bahwa tembakan ke-4 lebih mungkin berhasil karena "lagi panas".  
+Selain *grambler's fallacy*, ternyata ada satu lagi *fallacy* yang menurut saya banyak muncul di diri seorang penjudi, yakni: *hot hand fallacy*. *Hot hand fallacy* adalah keyakinan bahwa seseorang yang sedang "beruntung" akan lebih mungkin berhasil lagi pada percobaan berikutnya. Padahal, secara statistik, keberhasilan ini seringkali hanya **kebetulan acak** (*random chance*), bukan bukti adanya **"momentum"**.
 
-**Realitanya**: Probabilitas tembakan ke-4 tetap **50%** (asumsi tembakan independen). Urutan sebelumnya (*HHH*) tidak memengaruhi hasil selanjutnya.  
+Fenomena ini pertama kali diteliti secara formal oleh **Gilovich, Vallone, & Tversky (1985)** dalam konteks permainan basket, tetapi aplikasinya bisa ditemui di banyak hal:
 
----
+-   Judi (misal: meja *hot roulette*)\
+-   Investasi ("saham yang naik terus pasti akan lanjut naik")\
+-   Olahraga *e-sports* (*streak headshot* dalam game FPS).
 
-## **Langkah-Langkah Perhitungan**  
-Untuk membuktikan ini, kita bisa:  
-1. **Simulasikan data tembakan** dengan probabilitas sukses 50%.  
-2. **Hitung frekuensi "streak"** (contoh: *HHH* diikuti *H* lagi).  
-3. **Bandingkan** dengan probabilitas teoritis.  
+Sadar atau tidak, *fallacy* ini sering dimanfaatkan oleh bandar dengan cara memberikan kemenangan berturutan terus-menerus untuk sehingga penjudi merasa **sedang beruntung**. Saat waktunya tiba, maka penjudi akan dibuat kalah.
 
-Berikut **skrip R** untuk simulasi:  
+------------------------------------------------------------------------
+
+## Contoh Sederhana
+
+Misalkan seorang pemain basket memiliki **probabilitas konsisten** 50% untuk mencetak skor (*hit*) setiap kali menembak. Jika dia sudah berhasil 3 kali berturut-turut (*HHH*), banyak orang akan percaya bahwa tembakan ke-4 lebih mungkin berhasil karena pemain tersebut sedang *"panas"*.
+
+**Realitanya**: Probabilitas tembakan ke-4 tetap **50%** (asumsi tembakan independen). Urutan sebelumnya (*HHH*) tidak mempengaruhi hasil selanjutnya.
+
+Untuk membuktikan hal ini, kita bisa:
+
+1.  **Simulasikan data tembakan** dengan probabilitas sukses 50%.\
+2.  **Hitung frekuensi *streak*** (contoh: *HHH* diikuti *H* lagi).\
+3.  **Bandingkan** dengan probabilitas teoritis.
+
+Saya akan gunakan skrip **R** untuk melakukan simulasi:
 
 ```{r}
 # Simulasi Hot Hand Fallacy
-set.seed(123)  # Agar hasil reproducible
-n_shots <- 1000  # Jumlah tembakan
-shots <- sample(c("H", "M"), size = n_shots, replace = TRUE, prob = c(0.5, 0.5))  # H = Hit, M = Miss
+
+n_shots = 3000  # Jumlah tembakan
+shots   = sample(c("H", "M"), size = n_shots, replace = TRUE, prob = c(0.5, 0.5))  # H = Hit, M = Miss
 
 # Identifikasi streak HHH dan lihat hasil tembakan setelahnya
-streak_length <- 3  # Panjang streak yang diuji (HHH)
-next_shot_results <- c()
+streak_length     = 3  # Panjang streak yang diuji (HHH)
+next_shot_results = c()
 
 for (i in 1:(n_shots - streak_length)) {
   if (all(shots[i:(i + streak_length - 1)] == "H")) {
@@ -47,87 +65,42 @@ for (i in 1:(n_shots - streak_length)) {
 }
 
 # Hitung probabilitas H setelah streak HHH
-prob_h_after_streak <- sum(next_shot_results == "H") / length(next_shot_results)
+prob_h_after_streak = sum(next_shot_results == "H") / length(next_shot_results)
 print(paste("Probabilitas H setelah streak HHH:", prob_h_after_streak))
 
 # Bandingkan dengan probabilitas teoritis (50%)
-theoretical_prob <- 0.5
+theoretical_prob = 0.5
 print(paste("Selisih dengan probabilitas teoritis:", abs(prob_h_after_streak - theoretical_prob)))
+
+prob_h_after_streak_1 = prob_h_after_streak
 ```
 
-### **Output Contoh**  
-```
-[1] "Probabilitas H setelah streak HHH: 0.472868217054264"
-[1] "Selisih dengan probabilitas teoritis: 0.0271317829457365"
-```  
-**Interpretasi**:  
-- Probabilitas *H* setelah *HHH* adalah **~47.3%**, mendekati 50%.  
-- Tidak ada bukti "hot hand" (jika ada, seharusnya probabilitas >50%).  
+Kita dapatkan bahwa dari `3000` kali simulasi tembakan, probabilitas *hit* setelah *streak* *hit* 3 kali adalah **`r round(prob_h_after_streak,5)`**. Hanya berbeda tipis dari probabilitas teoritis yang sebesar **0.5**.
 
----
+> **Tidak ada bukti terjadinya *hot hand* karena jika ada seharusnya probabilitas *hit* setelah *streak* harusnya di atas 50%).**
 
-## **Mengapa Orang Percaya Hot Hand?**  
-1. **Cognitive Bias**: Otak manusia suka mencari pola dalam kejadian acak.  
-2. **Selection Bias**: Kita cenderung ingat streak sukses (tapi lupa streak gagal).  
-3. **Misinterpretasi Peluang**: Mengira "independen" = harus bergantian (*H* lalu *M* lalu *H*).  
+Lantas kenapa banyak sekali orang percaya dengan *hot hand?*
 
----
+1.  **Cognitive Bias**: Otak manusia suka mencari pola dalam kejadian acak.\
+2.  **Selection Bias**: Kita cenderung ingat *streak* sukses (tapi lupa *streak* gagal).\
+3.  **Misinterpretasi Peluang**: Mengira "independen" = harus bergantian (*H* lalu *M* lalu *H*).
 
-## **Aplikasi di Dunia Nyata**  
-- **Investasi**: Saham yang naik 5 hari berturut-turut belum tentu akan lanjut naik.  
-- **Game Design**: Developer game sering manipulasi persepsi ini (misal: sistem "pity" di gacha).  
-- **Marketing**: "Produk laris 1.000x hari ini!" belum tentu lebih baik dari rata-rata.  
+# Simulasi Kondisi Lain
 
----
+Bagaimana jika probabilitas pemain sukses *hit* sebesar 70%? **Streak sukses (contoh: HHH)** akan lebih sering muncul karena peluang sukses lebih tinggi.
 
-### **Referensi**  
-- Gilovich, T., Vallone, R., & Tversky, A. (1985). *The hot hand in basketball: On the misperception of random sequences*. Cognitive Psychology.  
-- Dataset simulasi R di atas bisa di-*customize* untuk eksperimen lain (misal: ganti probabilitas *H* jadi 70%).  
+> Apakah setelah streak *HHH*, probabilitas sukses tetap **70%** atau justru lebih tinggi (misal 80%) karena *hot hand*?
 
-**Kode tambahan untuk visualisasi streak**:  
+Mari kita simulasikan:
 
 ```{r}
-# Visualisasi 20 tembakan pertama
-library(ggplot2)
-df <- data.frame(
-  shot_number = 1:20,
-  result = shots[1:20]
-)
-ggplot(df, aes(x = shot_number, y = 1, fill = result)) +
-  geom_tile() +
-  scale_fill_manual(values = c("H" = "green", "M" = "red")) +
-  labs(title = "Contoh Streak Hit (H) dan Miss (M)", x = "Tembakan ke-", y = "") +
-  theme_minimal()
-```  
+# Simulasi Hot Hand Fallacy
+n_shots = 3000  # Jumlah tembakan
+shots   = sample(c("H", "M"), size = n_shots, replace = TRUE, prob = c(0.7, 0.3))  # H = Hit, M = Miss
 
-Grafik akan menunjukkan bahwa *H* dan *M* tersebar acak, tanpa pola jelas.  
-
-Semoga membantu! Tertarik bahas fallacy statistik lain? 😊
-
-
-Berikut simulasi ulang **Hot Hand Fallacy** dengan probabilitas sukses dinaikkan menjadi **70%**, termasuk analisis dan kode R yang diperbarui:
-
----
-
-### **Perubahan yang Terjadi**  
-1. **Probabilitas dasar sukses (H)** sekarang **70%** (bukan 50%).  
-2. **Streak sukses (contoh: HHH)** akan lebih sering muncul karena peluang sukses lebih tinggi.  
-3. **Pertanyaan kritis**: Apakah setelah streak *HHH*, probabilitas sukses tetap **70%** (independen) atau justru lebih tinggi (misal 80%) karena "hot hand"?  
-
----
-
-### **Simulasi dengan Probabilitas 70%**  
-Berikut kode R yang dimodifikasi:  
-
-```r
-# Simulasi Hot Hand Fallacy dengan Probabilitas Sukses 70%
-set.seed(123)
-n_shots <- 1000
-shots <- sample(c("H", "M"), size = n_shots, replace = TRUE, prob = c(0.7, 0.3))  # 70% H, 30% M
-
-# Identifikasi streak HHH dan hasil tembakan setelahnya
-streak_length <- 3
-next_shot_results <- c()
+# Identifikasi streak HHH dan lihat hasil tembakan setelahnya
+streak_length     = 3  # Panjang streak yang diuji (HHH)
+next_shot_results = c()
 
 for (i in 1:(n_shots - streak_length)) {
   if (all(shots[i:(i + streak_length - 1)] == "H")) {
@@ -136,86 +109,44 @@ for (i in 1:(n_shots - streak_length)) {
 }
 
 # Hitung probabilitas H setelah streak HHH
-prob_h_after_streak <- sum(next_shot_results == "H") / length(next_shot_results)
+prob_h_after_streak = sum(next_shot_results == "H") / length(next_shot_results)
 print(paste("Probabilitas H setelah streak HHH:", prob_h_after_streak))
 
-# Bandingkan dengan probabilitas teoritis (70%)
-theoretical_prob <- 0.7
+# Bandingkan dengan probabilitas teoritis (50%)
+theoretical_prob = 0.7
 print(paste("Selisih dengan probabilitas teoritis:", abs(prob_h_after_streak - theoretical_prob)))
 
-# Visualisasi 20 tembakan pertama
-library(ggplot2)
-df <- data.frame(
-  shot_number = 1:20,
-  result = shots[1:20]
-)
-ggplot(df, aes(x = shot_number, y = 1, fill = result)) +
-  geom_tile() +
-  scale_fill_manual(values = c("H" = "green", "M" = "red")) +
-  labs(title = "Contoh Streak dengan Probabilitas Sukses 70%", x = "Tembakan ke-", y = "") +
-  theme_minimal()
+prob_h_after_streak_2 = prob_h_after_streak
 ```
 
----
+Kita dapatkan bahwa dari `3000` kali simulasi tembakan, probabilitas *hit* setelah *streak* *hit* 3 kali adalah **`r round(prob_h_after_streak,5)`**. Hanya berbeda tipis dari probabilitas teoritis yang sebesar **0.7**.
 
-### **Hasil Simulasi**  
-Contoh output:  
-```
-[1] "Probabilitas H setelah streak HHH: 0.70873786407767"
-[1] "Selisih dengan probabilitas teoritis: 0.00873786407766999"
-```  
-**Interpretasi**:  
-- Probabilitas sukses setelah *HHH* adalah **~70.9%**, sangat mendekati probabilitas dasar (**70%**).  
-- **Tidak ada bukti Hot Hand Fallacy**, karena hasil setelah streak konsisten dengan probabilitas independen.  
+> **Tidak ada bukti Hot Hand Fallacy**, karena hasil setelah *streak* konsisten dengan probabilitas independen.
 
----
+------------------------------------------------------------------------
 
-### **Perbandingan dengan Probabilitas 50%**  
-| Probabilitas Dasar | Probabilitas setelah *HHH* | Kesimpulan |  
-|--------------------|---------------------------|------------|  
-| 50%                | ~47.3%                    | Tidak ada hot hand |  
-| 70%                | ~70.9%                    | Tidak ada hot hand |  
+### Tabel Perbandingan dengan Probabilitas 50%
 
-**Pola Kunci**:  
-- Jika tembakan **independen**, probabilitas setelah streak akan selalu mendekati probabilitas dasar.  
-- Hot Hand Fallacy terjadi ketika orang **salah mengira** ada peningkatan peluang setelah streak.  
+| Probabilitas Dasar | Probabilitas setelah *HHH*         | Kesimpulan         |
+|--------------------|--------------------------------|--------------------|
+| 50%                | `r round(prob_h_after_streak_1,3)` | Tidak ada hot hand |
+| 70%                | `r round(prob_h_after_streak_2,3)` | Tidak ada hot hand |
 
----
 
-### **Apa yang Terjadi Jika Hot Hand Benar Ada?**  
-Misalnya, jika ada **efek psikologis** yang membuat pemain lebih percaya diri setelah streak:  
-1. **Modifikasi simulasi**: Setiap *H* dalam streak meningkatkan probabilitas sukses berikutnya (contoh: +5% per *H*).  
-2. **Kode tambahan**:  
-   ```r
-   # Simulasi dengan Hot Hand "Nyata" (probabilitas meningkat setelah streak)
-   set.seed(123)
-   n_shots <- 1000
-   shots <- character(n_shots)
-   prob <- 0.7  # Probabilitas dasar
-   
-   for (i in 1:n_shots) {
-     shots[i] <- sample(c("H", "M"), size = 1, prob = c(prob, 1 - prob))
-     if (i >= 3 && all(shots[(i-2):i] == "H")) {
-       prob <- min(prob + 0.05, 0.95)  # Probabilitas naik 5% setelah HHH
-     } else {
-       prob <- 0.7  # Reset ke dasar
-     }
-   }
-   
-   # Hitung probabilitas setelah HHH
-   # (...gunakan kode sebelumnya untuk analisis...)
-   ```  
-   **Hasil**: Probabilitas setelah *HHH* akan **>70%** (misal 75-80%), mengkonfirmasi efek hot hand.  
+------------------------------------------------------------------------
+
+# Kesimpulan
+
+-   **Hot Hand Fallacy adalah ilusi**: Dalam simulasi independen, tidak ada peningkatan peluang setelah streak.
+-   **Probabilitas tinggi (70%)** hanya membuat streak *HHH* lebih sering muncul, tetapi tidak mengubah peluang setelahnya.
+-   **Untuk mendeteksi hot hand nyata**, kita perlu memodelkan **ketergantungan antar-tembakan** (misal: efek psikologis).
+
+Jika kita kembalikan ke kasus judi, apa _key take points_ yang bisa kita ambil?
 
 ---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
 
-### **Kesimpulan**  
-- **Hot Hand Fallacy adalah ilusi**: Dalam simulasi independen, tidak ada peningkatan peluang setelah streak.  
-- **Probabilitas tinggi (70%)** hanya membuat streak *HHH* lebih sering muncul, tetapi tidak mengubah peluang setelahnya.  
-- **Untuk mendeteksi hot hand nyata**, kita perlu memodelkan **ketergantungan antar-tembakan** (misal: efek psikologis).  
 
-**Contoh dunia nyata**:  
-- Pemain basket yang konsisten mencetak skor 70% akan sering memiliki streak *HHH*, tetapi ini **bukan bukti hot hand**.  
-- Jika setelah *HHH* success rate-nya menjadi 80%, barulah ada indikasi hot hand.  
 
-Semoga jelas! Mau uji skenario lain? 😊
+
