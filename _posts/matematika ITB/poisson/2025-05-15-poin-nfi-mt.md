@@ -154,8 +154,8 @@ orientasi karyawan. Begini hasilnya:
 - Peluang terjadinya sesi diskusi yang “ramai”:
   1.  Peluang terjadi **persis 9 pertanyaan** dalam *session*:
       ![P(X = 9) = 3.63\\](https://latex.codecogs.com/svg.latex?P%28X%20%3D%209%29%20%3D%203.63%5C%25 "P(X = 9) = 3.63\%")
-  2.  Peluang terjadi **9 pertanyaan atau lebih** dalam *session*:
-      ![P(X \geq 9) = 3.18\\](https://latex.codecogs.com/svg.latex?P%28X%20%5Cgeq%209%29%20%3D%203.18%5C%25 "P(X \geq 9) = 3.18\%")
+  2. Peluang terjadi **lebih dari 9 pertanyaan** dalam *session*:
+      ![P(X \> 9) = 3.18\\](https://latex.codecogs.com/svg.latex?P%28X%20%3E%209%29%20%3D%203.18%5C%25 "P(X > 9) = 3.18\%")
 - Peluang terjadinya sesi diskusi yang “sepi”:
   1.  Peluang terjadi **persis 3 pertanyaan** dalam *session*:
       ![P(X = 3) = 14.04\\](https://latex.codecogs.com/svg.latex?P%28X%20%3D%203%29%20%3D%2014.04%5C%25 "P(X = 3) = 14.04\%")

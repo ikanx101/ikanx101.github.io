@@ -1,0 +1,127 @@
+---
+title: "Optimization Story: Berapa Kali Sebaiknya Kita Mencuci Handuk?"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: visual
+execute:
+  warning: false
+error: false
+---
+
+Beberapa kali saya menulis tentang [optimisasi di _blog_ ini](https://ikanx101.com/tags/#optimization-story) dengan berbagai tema. Mulai dari industrial, olahraga, hingga politik. Kali ini saya akan mencoba menuliskan satu tema optimisasi lain yang berhubungan dengan keseharian. Tentunya teknik optimisasinya juga berbeda dengan yang pernah saya tuliskan sebelumnya.
+
+---
+
+> Mencuci handuk terlalu sering bisa boros air, energi, dan waktu tetapi jika mencuci terlalu jarang bisa menyebabkan penumpukan bakteri dan bau tidak sedap pada handuk. 
+
+Mari buat model matematika sederhana untuk __menentukan frekuensi optimal mencuci handuk berdasarkan beberapa parameter yang kita tentukan__.
+
+### Variabel dan Parameter
+
+1. $n$ : Frekuensi mencuci handuk per minggu.
+2. $C$ : Biaya mencuci sekali (air, deterjen, listrik).
+3. $H$ : Tingkat ketidaknyamanan (skala 1-10) karena handuk kotor/bau.
+4. $T$ : Waktu pemakaian handuk sejak pencucian terakhir (hari).
+5. $\alpha$ : Faktor pertumbuhan bakteri/bau (misal: 0,5 per hari).
+6. $\beta$ : Toleransi maksimum ketidaknyamanan yang bisa diterima.
+
+### Membuat Model Matematika
+
+Mari kita definisikan beberapa formula berikut ini:
+
+1. $B$: Biaya Total
+
+   Biaya mencuci per minggu adalah frekuensi dikali biaya per cucian: $B(n) = n \cdot C$.
+
+2. $K$ Ketidaknyamanan
+
+   Ketidaknyamanan meningkat seiring waktu sejak pencucian terakhir. Misalkan:  
+   
+   $$K(T) = H \cdot e^{\alpha T}$$
+   
+   Jika handuk dicuci $n$ kali per minggu, maka waktu antara pencucian adalah $T = \frac{7}{n}$ hari.  
+   Sehingga:  
+   
+   $$K(n) = H \cdot e^{\alpha \cdot \frac{7}{n}}$$
+
+3. _Objective function_
+
+   Kita ingin meminimalkan total _cost_, yakni biaya cuci dan rasa ketidaknyamanan tetapi dengan batasan bahwa ketidaknyamanan tidak melebihi $\beta$.
+   
+   $$\text{Minimalkan } f(n) = B(n) + K(n) = nC + H \cdot e^{\alpha \cdot \frac{7}{n}}$$
+   
+   Dengan batasan:  
+   
+   $$K(n) \leq \beta \implies H \cdot e^{\alpha \cdot \frac{7}{n}} \leq \beta$$
+
+### Mencari Solusi Optimal
+
+Kita hendak mencari nilai $n$ yang optimal. Pada kasus ini, setidaknya ada dua cara untuk menentukan nilai $n$.
+
+1. Cara pertama adalah dengan mencari $n$ yang memenuhi batasan ketidaknyamanan.  
+   
+   $$H \cdot e^{\alpha \cdot \frac{7}{n}} \leq \beta \implies n \geq \frac{7\alpha}{\ln(\beta / H)}$$
+    
+   Jika $\beta \leq H$, tidak ada solusi karena handuk sudah tidak nyaman sejak awal. Cara ini memastikan $n$ yang dihasilkan tak akan melanggar _constraint_. 
+
+2. Cara kedua adalah dengan mencari solusi eksak, yakni menggunakan prinsip kalkulus dengan menurunkan $f(n)$.  
+   
+   Turunan pertama terhadap $n$:
+   
+   $$f'(n) = C - \frac{7\alpha H}{n^2} \cdot e^{\alpha \cdot \frac{7}{n}}$$
+   
+   Set $f'(n) = 0$ untuk titik optimal:  
+   
+   $$C = \frac{7\alpha H}{n^2} \cdot e^{\alpha \cdot \frac{7}{n}}$$
+    
+   Pencarian solusi secara eksak mungkin akan sulit dilakukan berdasarkan formula di atas. Ada cara yang lebih mudah yakni dengan melakukan pendekatan numerik sebagai berikut.
+
+### Contoh Numerik Menggunakan Nilai-Nilai Parameter Tertentu
+
+Misal:
+
+- $C = 5$ (biaya cuci Rp5.000 sekali),
+- $H = 1$ (ketidaknyamanan awal minimal),
+- $\alpha = 0.5$ (pertumbuhan bau/bakteri yang cepat),
+- $\beta = 5$ (toleransi ketidaknyamanan maksimal 5).
+
+Maka kita bisa mencari nilai $n$
+1. Langkah pertama, kita akan cari $n$ dari _constraint_ ketidaknyamanan:  
+   
+   $$n \geq \frac{7 \cdot 0,5}{\ln(5/1)} \approx \frac{3,5}{1,609} \approx 2,17$$
+     
+   Karena nilai $n$ berupa bulangan bulat, maka kita simpulkan nilai minimal $n = 3$, yakni mencuci 3 kali/minggu.
+
+2. Sekarang kita akan cek nilai $f(n)$ dengan beberapa opsi berikut:
+
+   - $n = 2 \implies f(2) = 10 + e^{1,75} \approx 10 + 5,75 = 15.75$
+   - $n = 3 \implies f(3) = 15 + e^{1,167} \approx 15 + 3,21 = 18.21$
+   - $n = 4 \implies f(4) = 20 + e^{0,875} \approx 20 + 2,40 = 22.40$
+
+   Walaupun $f(n = 2)$ memiliki nilai _objective function_ yang lebih rendah, tetapi melanggar batasan ketidaknyamanan ($K(n=2) \approx 5,75 > 5$). Jadi, kita harus memilih $n = 3$ kali perminggu.
+
+### Kesimpulan
+
+Dari model optimisasi di atas, frekuensi optimal tergantung pada:
+
+1. Seberapa cepat handuk menjadi tidak nyaman ($\alpha$),
+2. Biaya mencuci ($C$),
+3. Toleransi ketidaknyamanan ($\beta$).
+
+Oleh karena itu, kita bisa memberikan saran sebagai berikut:
+
+- Jika handuk cepat bau ($\alpha$ besar), cucilah lebih sering (2-3 kali/minggu).  
+- Jika biaya cuci tinggi ($C$ besar), toleransi ketidaknyamanan bisa dinaikkan ($\beta$).  
+- Untuk kebanyakan orang, **mencuci handuk 1-2 kali/minggu** sudah cukup optimal.  
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
+
+
