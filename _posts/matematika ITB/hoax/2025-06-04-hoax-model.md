@@ -62,11 +62,8 @@ berikut:
 \frac{dS}{dt} = -\beta \cdot S \cdot I & \text{(Berkurangnya orang rentan)} \\
 \frac{dI}{dt} = \beta \cdot S \cdot I - \gamma \cdot I & \text{(Meningkatnya orang "terinfeksi")} \\
 \frac{dR}{dt} = \gamma \cdot I & \text{(Meningkatnya orang yang "sadar")}
-\end{cases}](https://latex.codecogs.com/svg.latex?%5Cbegin%7Bcases%7D%0A%5Cfrac%7BdS%7D%7Bdt%7D%20%3D%20-%5Cbeta%20%5Ccdot%20S%20%5Ccdot%20I%20%26%20%5Ctext%7B%28Berkurangnya%20orang%20rentan%29%7D%20%5C%5C%0A%5Cfrac%7BdI%7D%7Bdt%7D%20%3D%20%5Cbeta%20%5Ccdot%20S%20%5Ccdot%20I%20-%20%5Cgamma%20%5Ccdot%20I%20%26%20%5Ctext%7B%28Meningkatnya%20orang%20%22terinfeksi%22%29%7D%20%5C%5C%0A%5Cfrac%7BdR%7D%7Bdt%7D%20%3D%20%5Cgamma%20%5Ccdot%20I%20%26%20%5Ctext%7B%28Meningkatnya%20orang%20yang%20%22sadar%22%29%7D%0A%5Cend%7Bcases%7D "\begin{cases}
-\frac{dS}{dt} = -\beta \cdot S \cdot I & \text{(Berkurangnya orang rentan)} \\
-\frac{dI}{dt} = \beta \cdot S \cdot I - \gamma \cdot I & \text{(Meningkatnya orang "terinfeksi")} \\
-\frac{dR}{dt} = \gamma \cdot I & \text{(Meningkatnya orang yang "sadar")}
-\end{cases}")
+\end{cases}](https://latex.codecogs.com/svg.latex?%5Cbegin%7Bcases%7D%0A%5Cfrac%7BdS%7D%7Bdt%7D%20%3D%20-%5Cbeta%20%5Ccdot%20S%20%5Ccdot%20I%20%26%20%5Ctext%7B%28Berkurangnya%20orang%20rentan%29%7D%20%5C%5C%0A%5Cfrac%7BdI%7D%7Bdt%7D%20%3D%20%5Cbeta%20%5Ccdot%20S%20%5Ccdot%20I%20-%20%5Cgamma%20%5Ccdot%20I%20%26%20%5Ctext%7B%28Meningkatnya%20orang%20%22terinfeksi%22%29%7D%20%5C%5C%0A%5Cfrac%7BdR%7D%7Bdt%7D%20%3D%20%5Cgamma%20%5Ccdot%20I%20%26%20%5Ctext%7B%28Meningkatnya%20orang%20yang%20%22sadar%22%29%7D%0A%5Cend%7Bcases%7D "
+
 
 dengan:
 
