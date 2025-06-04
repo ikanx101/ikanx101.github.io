@@ -1,0 +1,83 @@
+---
+title: "Bagaimana Tim Market Research Saya Memakai GenAI?"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: visual
+execute:
+  warning: false
+error: false
+---
+
+Pada beberapa pekan lalu, sebagian _managerial_ di kantor dikumpulkan untuk diberikan arahan terkait visi perusahaan terkait aplikasi __AI__. Setelah itu, beberapa rekan yang ikut kumpul tersebut mengajak saya diskusi.
+
+> ___Apa ya aplikasi AI buat _market research_ ya Mas?___
+
+Begitulah kira-kira pertanyaan yang diajukan di awal diskusi.
+
+Terus terang saya bingung saat ditanyakan hal ini. Kenapa? Karena (hampir) semua pekerjaan sehari-hari di market riset selalu bersinggungan dengan AI. Termasuk _blog_ ini pun saya banyak berbicara tentang AI.
+
+---
+
+Dalam beberapa tahun belakang ini, sebagaimana fungsi dasarnya, tim _market research_ berusaha memasok _market insights_ utk tim _brand_ dan _sales_. Untuk menopang fungsi tersebut, kami biasanya melakukan ___XAI___ (___explainable AI___) di beberapa _projects_.
+
+## Apa itu ___XAI___?
+
+Istilah ___XAI___ mungkin kalah populer dibandingkan dengan __GenAI__. _Explainable AI_ bergelut di _exploratory model analysis_ (__EMA__).
+
+Apa bedanya dengan _exploratory data analysis_?
+
+Alih-alih menganalisa data, kami lebih fokus ke pembuatan model _machine learning_ dan melakukan analisa terhadap model tersebut.
+
+Memang hasilnya berbeda?
+
+> Jelas beda. Saat kami melakukan analisa terhadap model, kami bisa mendapatkan gambaran utuh tentang hubungan kausalitas dan interaksi antar variabel. Kadang kami menemukan beberapa variabel memang saling mempengaruhi. Kadang kami menemukan variabel-variabel yang ada tidak cukup konklusif hubungannya. Kedua temuan tersebut tetap bernilai karena bisa terus dikembangkan untuk _next iteration projects_.
+
+## Lantas bagaimana dengan pemanfaatan __GenAI__?
+
+Dari cerita saya di atas, bukan berarti kami meninggalkan __GenAI__ sama sekali. Setidaknya masing-masing _member_ di tim _market research_ sudah memanfaatkan __GenAI__ di beberapa lini pekerjaannya. Untuk menjelaskannya, saya akan coba gambarkan dulu beberapa proses kritis di _market research_ sebagai berikut:
+
+1. _Brainstorming_ awal dengan klien terkait _objective research_.
+1. Pembuatan kuesioner dan penentuan metode (termasuk dengan target responden survey).
+1. Pencarian responden (_fieldwork_).
+1. _Pre processing_ dan analisa data.
+1. Pembuatan laporan.
+
+Dari proses kritis tersebut, pemanfaatan __GenAI__ yang sudah dan akan dilakukan adalah untuk:
+
+1. Pembuatan skrip web scrape. 
+    - Salah satu pekerjaan yang saya sukai adalah membuat skrip _web scrape. hehe._ Saya sudah memiliki satu _killer method_ yang bisa digunakan untuk (hampir semua) jenis _web_. 
+    - Namun ada kalanya untuk membunuh sapi, saya tidak perlu menggunakan bom atom. Namun pisau dapur pun tak cukup efektif untuk membunuh sapi tersebut.
+    - Untuk kasus seperti ini, saya biasa meminta tolong Gemini utk membuatkan javascript untuk proses save pages. Kemudian datanya saya ekstrak tetap pakai __R__.
+1. _Pre-processing data_.
+    - Sebelum jadi _report_, data hasil _interview_ harus dilakukan _pre-processing_ terlebih dahulu.
+    - Percaya _gak_ bahwa salah satu pekerjaan yang melelahkan adalah _bebersih_ data?
+    - Kami sudah coba eksplor beberapa fitur dari __GenAI__ yang bisa mempercepat proses ini di beberapa lini _input_-an data. 
+    - PR-nya tinggal memilih __GenAI__ mana yang hasilnya lebih akurat dan _acceptable_.
+1. Pembuatan transkrip riset kualitatif.
+    - Saat pelaksanaan IDI atau FGD, pembuatan transkrip bisa jadi hal yang melelahkan.
+    - Kami sudah menggunakan teknologi AI untuk membuat transkrip secara otomatis.
+    - Beberapa waktu yang lalu, kami sudah coba eksplor kemungkinan transkrip tersebut dijadikan info _feeding_ semacam GPT.
+1. Pembuatan istilah di _report_.
+    - Kadangkala di beberapa _report_ survey, kami membutuhkan istilah atau penamaan atas beberapa hal.
+    - Emang kenapa dengan penamaan ini? Walau terkesan simpel, tapi istilah ini bisa memudahkan dan mempersingkat penyampaian informasi / _insight_.
+1. Membantu menemukan _objectives_ dan pembuatan kuesioner.
+    - Hal ini yang hendak dieksplor dalam waktu dekat. 
+1. Simulasi MonteCarlo.
+    - Untuk membantu merancang _plan_ yang lebih terperinci dan akuntabel. 
+1. _On going project chatbot market research_.
+    - Semacam GPT _local_ yang bisa digunakan untuk tanya jawab seputar hasil survey _market research_.
+    - Konsepnya adalah dengan _build custom_ __RAG-LLM__ (seperti yang pernah saya [_post_ di sini](https://ikanx101.com/blog/rag-rpy/)).
+
+Perlu diinformasikan kembali bahwa kelima hal di atas tetap perlu supervisi manusia karena __GenAI__ tidak mengerti konteks sehingga tetap harus diawasi penggunaannya.
+
+Salah satu titik kritis yang mungkin akan jadi _breakthrough_ adalah jika __GenAI__ bisa membantu kami menemukan calon responden di berbagai kota tujuan survey. Ya, semoga saja ke depannya ada solusi untuk hal ini.
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
