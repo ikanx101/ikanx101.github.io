@@ -89,6 +89,7 @@ Kita hendak mencari nilai
 kasus ini, setidaknya ada dua cara untuk menentukan nilai
 ![n](https://latex.codecogs.com/svg.latex?n "n").
 
+
 1.  Cara pertama adalah dengan mencari
     ![n](https://latex.codecogs.com/svg.latex?n "n") yang memenuhi
     batasan ketidaknyamanan.
