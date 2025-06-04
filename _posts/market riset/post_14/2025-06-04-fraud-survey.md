@@ -35,7 +35,7 @@ hasil *online survey*:
 2.  *Straightliners*: mengisi semua pertanyaan secara seragam.
 3.  *Random clickers*: mengisi semua pertanyaan secara acak.
 4.  *Flip-flopers*: jawaban kontradiktif dalam satu survei.  
-5.  \*Duplicate Responses\*\*: satu orang responden mengisi survey
+5.  *Duplicate Responses*: satu orang responden mengisi survey
     berkali-kali.
 
 Oleh karena itu, tantangan terbesarnya adalah bagaimana melakukan
