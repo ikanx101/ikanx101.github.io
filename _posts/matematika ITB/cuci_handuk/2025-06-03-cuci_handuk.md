@@ -135,16 +135,15 @@ Misal:
   (toleransi ketidaknyamanan maksimal 5).
 
 Maka kita bisa mencari nilai
-![n](https://latex.codecogs.com/svg.latex?n "n") 1. Langkah pertama,
-kita akan cari ![n](https://latex.codecogs.com/svg.latex?n "n") dari
-*constraint* ketidaknyamanan:
+![n](https://latex.codecogs.com/svg.latex?n "n") 
 
-![n \geq \frac{7 \cdot 0,5}{\ln(5/1)} \approx \frac{3,5}{1,609} \approx 2,17](https://latex.codecogs.com/svg.latex?n%20%5Cgeq%20%5Cfrac%7B7%20%5Ccdot%200%2C5%7D%7B%5Cln%285%2F1%29%7D%20%5Capprox%20%5Cfrac%7B3%2C5%7D%7B1%2C609%7D%20%5Capprox%202%2C17 "n \geq \frac{7 \cdot 0,5}{\ln(5/1)} \approx \frac{3,5}{1,609} \approx 2,17")
 
-Karena nilai ![n](https://latex.codecogs.com/svg.latex?n "n") berupa
-bulangan bulat, maka kita simpulkan nilai minimal
-![n = 3](https://latex.codecogs.com/svg.latex?n%20%3D%203 "n = 3"),
-yakni mencuci 3 kali/minggu.
+1. Langkah pertama,
+    kita akan cari ![n](https://latex.codecogs.com/svg.latex?n "n") dari *constraint* ketidaknyamanan:
+
+    ![n \geq \frac{7 \cdot 0,5}{\ln(5/1)} \approx \frac{3,5}{1,609} \approx 2,17](https://latex.codecogs.com/svg.latex?n%20%5Cgeq%20%5Cfrac%7B7%20%5Ccdot%200%2C5%7D%7B%5Cln%285%2F1%29%7D%20%5Capprox%20%5Cfrac%7B3%2C5%7D%7B1%2C609%7D%20%5Capprox%202%2C17 "n \geq \frac{7 \cdot 0,5}{\ln(5/1)} \approx \frac{3,5}{1,609} \approx 2,17")
+
+    Karena nilai ![n](https://latex.codecogs.com/svg.latex?n "n") berupa bulangan bulat, maka kita simpulkan nilai minimal ![n = 3](https://latex.codecogs.com/svg.latex?n%20%3D%203 "n = 3"), yakni mencuci 3 kali/minggu.
 
 2.  Sekarang kita akan cek nilai
     ![f(n)](https://latex.codecogs.com/svg.latex?f%28n%29 "f(n)") dengan
