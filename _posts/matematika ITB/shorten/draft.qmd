@@ -1,0 +1,197 @@
+---
+title: "Bagaimana Matematika Bisa Membantu Memperpendek URL Suatu Situs"
+format:
+  gfm:
+    html-math-method: webtex
+    mermaid-format: png
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: visual
+execute:
+  warning: false
+error: false
+---
+
+```{r}
+#| include: false
+
+rm(list=ls())
+
+library(dplyr)
+library(tidyr)
+```
+
+Saya kira rekan-rekan semua sudah familiar dengan [bit.ly](https://bitly.com/) atau [tinyurl](https://tinyurl.com/). Suatu situs yang berfungsi untuk memperpendek URL yang panjang sehingga mudah untuk dibagikan di berbagai media. Selain itu, layanan URL _shortener_ menyediakan fitur pelacakan untuk membantu pemilik URL mendapatkan informasi seperti:
+
+- Berapa banyak klik?  
+- Dari mana sumber _traffic_?  
+- Perangkat yang digunakan?  
+
+Saya dulu penasaran bagaimana cara situs-situs ini memperpendek URL yang panjang tersebut. Beberapa situs menggunakan sistem _database_ sederhana. Jadi saat _user_ memasukkan URL, situs penyedia tinggal memasangkan alamat URL yang pendek untuk di-_re-route_ ke URL aslinya.
+
+Namun, ada juga konsep matematika yang bisa digunakan untuk memperpendek sekumpulan bilangan atau karakter (_string_). Dulu sih waktu kuliah S1, ada mata kuliah kriptografi tapi saya tidak ikut. Entah apakah apa yang hendak saya jelaskan berikut ini termasuk ke dalamnya atau bukan. Jadi begini konsepnya:
+
+---  
+
+URL _shortener_ menggunakan **algoritma hashing** atau **basis bilangan tinggi** untuk mengubah URL panjang menjadi pendek. Algoritma yang hendak dibangun menggunakan sistem basis-62 (alfanumerik). Maksudnya karakter penyingkat yang digunakan berisikan: `A-Z, a-z, 0-9` (totalnya ada **62 karakter**).
+
+Sebelum masuk ke URL yang kompleks, saya akan coba jelaskan menggunakan contoh sederhana terlebih dahulu.
+
+## Contoh I: Menyingkat Numerik  
+
+Misalkan kita punya sekumpulan angka numerik, yakni `1010407420921004` (kelak angka numerik ini akan saya tulis sebagai __id__). Algoritma penyingkatannya adalah sebagai berikut:
+
+![](mermaid.png)
+
+```
+1. Input: 
+   - id (integer positif)
+   - chars (string berisi karakter 0-9, A-Z, a-z)
+
+2. Inisialisasi:
+   - base      = panjang(chars)
+   - short_url = string kosong
+
+3. Selama id > 0:
+   - remainder = id % base  # Hitung sisa pembagian (modulus)
+   - short_url = chars[remainder] + short_url  # Tambahkan karakter sesuai indeks
+   - id        = id // base  # Pembagian bilangan bulat
+
+4. Output: short_url
+```
+
+Di sini ada dua jenis pembagian yang digunakan, yakni:
+
+1. Operator __modulus__, maksudnya operator ini akan mengembalikan __sisa dari pembagian dua angka__. Misalnya, `5 %% 2` akan mengembalikan 1, karena sisa dari 5 dibagi 2 adalah 1
+1. Operator __pembagian bilangan bulat__. Operator ini mengembalikan hasil pembagian tanpa memperhatikan sisa pembagiannya, dengan membuang bagian desimal dari hasil pembagian. Contohnya `5 %/% 2` akan menghasilkan nilai 2 (bagian bulat dari bilangan 2.5).
+
+
+Ini akan saya berikan gambaran iterasi prosesnya:
+
+```{r}
+id = 1010407420921004
+
+chars = c(0:9, LETTERS, letters)
+base  = length(chars)
+
+short_url = c()
+id_df     = c()
+remain_df = c()
+
+while (id > 0) {
+  id_df = c(id_df,id)
+  
+  remainder = id %% base
+  remain_df = c(remain_df,remainder)
+  
+  short_url = c(chars[remainder + 1],short_url) 
+  id        = id %/% base
+}
+```
+
+berikut adalah tabel iterasinya:
+
+```{r}
+#| echo: false
+data.frame(iterasi = 1:9,
+           id = scales::number(id_df,big.mark = ""),
+           remainder = remain_df,
+           url = short_url) %>% knitr::kable()
+```
+
+Hasil dari semua iterasi tersebut bahwa `id = 1010407420921004` bisa disingkat menjadi `4cumvvage`.
+
+Dari skrip iterasi di atas, saya buat _function_-nya dalam bahasa __R__ berikut:
+
+```{r}
+id_to_shorturl = function(id) {
+  # Karakter yang digunakan (0-9, A-Z, a-z)
+  chars = c(0:9, LETTERS, letters)
+  base  = length(chars)  # 62
+  
+  short_url = ""
+  
+  # Konversi ID ke basis-62
+  while (id > 0) {
+    remainder = id %% base
+    short_url = paste0(chars[remainder + 1], short_url) 
+    id        = id %/% base
+  }
+  
+  return(short_url)
+}
+```
+
+Berikut ini adalah hasilnya:
+
+```{r}
+id        = 1010407420921004
+short_url = id_to_shorturl(id)
+print(paste("Short URL:", short_url)) 
+```
+
+> Pertanyaannya, apakah hasil singkatan ini bisa di-_reverse_ kembali ke id numerik?
+
+Tentu saja bisa _donk_. Tinggal kita balik saja _function_-nya:
+
+```{r}
+shorturl_to_id <- function(short_url) {
+  chars = c(0:9, LETTERS, letters)
+  base  = length(chars)  # 62
+  
+  id = 0
+  
+  # Konversi setiap karakter ke nilai desimal
+  for (i in 1:nchar(short_url)) {
+    char  = substr(short_url, i, i)
+    value = which(chars == char) - 1  # -1 karena indeks R dimulai dari 1
+    id    = id * base + value
+  }
+  return(id)
+}
+```
+
+Kita coba kembalikan hasil singkatan yang sudah ada tadi:
+
+```{r}
+original_id = shorturl_to_id("4cumvvage")
+print(paste("id hasil:", original_id))
+```
+
+Untuk kasus sederhana berupa id numerik, prosesnya relatif mudah. Namun bagaimana untuk id berupa gabungan numerik dan karakter?
+
+Untuk itu, kita perlu mengubah karakter tersebut menjadi **nilai numerik** terlebih dahulu (misal dengan *hashing*), lalu menerapkan konversi basis-62. Namun perlu diperhatikan bahwa _hash_ yang dihasilkan harusnya _unique_ sehingga `id` yang berbeda tidak menghasilkan _short_ URL yang sama.
+
+Berikut adalah modifikasi skrip di **R** untuk mengubah id numerik dan karakter menjadi id numerik kemudian menyingkat idnya:
+
+```{r}
+library(digest)
+
+# Fungsi baru dengan hash MD5
+hash_to_shorturl = function(text) {
+  # Hasilkan hash hex (contoh: "d077f..."), lalu ambil 6 digit pertama
+  hash     = digest(text, algo = "md5", serialize = FALSE)
+  hash_num = strtoi(substr(hash, 1, 6), 16L)  # Hex to integer
+  return(id_to_shorturl(hash_num))
+}
+
+# Contoh
+hash_to_shorturl("ikanx101com")
+hash_to_shorturl("HariIniCerahSekaliYaa")
+```
+
+Apakah hasil _short_ URL ini bisa di-_reverse_? 
+
+> __Ternyata TIDAK!__
+
+Khusus untuk id numerik dan karakter kita tidak bisa membuat _function_ untuk melakukan _reverse_ _shortener_. Lantas yang perlu dilakukan adalah membuat _database_ antara id asli dengan _short_ URL.
+
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
+
+
