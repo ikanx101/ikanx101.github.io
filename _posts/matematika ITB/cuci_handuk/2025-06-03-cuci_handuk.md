@@ -43,7 +43,7 @@ tentukan**.
 5.  ![\alpha](https://latex.codecogs.com/svg.latex?%5Calpha "\alpha") :
     Faktor pertumbuhan bakteri/bau (misal: 0,5 per hari).
 6.  ![\beta](https://latex.codecogs.com/svg.latex?%5Cbeta "\beta") :
-    Toleransi maksimum ketidaknyamanan yang bisa diterima.
+    Toleransi maksimum ketidaknyamanan yang bisa diterima. Diisi secara kualitatif personal.
 
 ### Membuat Model Matematika
 
