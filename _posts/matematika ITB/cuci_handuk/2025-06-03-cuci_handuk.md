@@ -158,9 +158,9 @@ Maka kita bisa mencari nilai
     memiliki nilai *objective function* yang lebih rendah, tetapi
     melanggar batasan ketidaknyamanan
     (![K(n=2) \approx 5,75 \> 5](https://latex.codecogs.com/svg.latex?K%28n%3D2%29%20%5Capprox%205%2C75%20%3E%205 "K(n=2) \approx 5,75 > 5")).
-    Jadi, kita harus memilih
+    Jadi, kita bisa memilih
     ![n = 3](https://latex.codecogs.com/svg.latex?n%20%3D%203 "n = 3")
-    kali perminggu.
+    kali perminggu secara konklusif.
 
 ### Kesimpulan
 
