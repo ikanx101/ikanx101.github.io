@@ -1,0 +1,230 @@
+---
+title: "xxx"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: visual
+execute:
+  warning: false
+error: false
+---
+
+
+```{r}
+setwd("~/ikanx101.github.io/_posts/matematika ITB/antrian_kasir")
+```
+
+Pernah merasa antrian yang Anda pilih di supermarket justru lebih lambat daripada yang lain? Ini bukan kebetulan—fenomena ini bisa dijelaskan dengan **matematika antrian (queueing theory)** dan psikologi manusia. Berikut analisisnya:
+
+---
+
+### **1. Queueing Theory: Matematika di Balik Antrian**
+Queueing theory adalah cabang matematika terapan yang mempelajari aliran antrian, digunakan di supermarket, bandara, hingga jaringan komputer. Beberapa konsep kuncinya:
+- **Kedatangan (Arrival Rate - λ)**: Rata-rata pelanggan yang masuk antrian per waktu.
+- **Layanan (Service Rate - μ)**: Rata-rata pelanggan yang dilayani kasir per waktu.
+- **Variabilitas (σ)**: Ketidakpastian dalam waktu pelayanan (misal: ada pelanggan yang bayar pakai koin vs. yang pakai kartu butuh waktu lebih lama).
+
+**Rumus Dasar**:  
+Waktu tunggu rata-rata = \( \frac{\lambda}{\mu (\mu - \lambda)} \) (dalam model antrian sederhana).
+
+---
+
+### **2. Kenapa Garis "Cepat" Justru Lambat?**
+#### **A. Efek Variabilitas (Hukum Kingman)**
+- **Prinsip**: Variabilitas waktu pelayanan (σ) memperlambat antrian lebih dari yang diperkirakan.  
+- **Contoh**:  
+  - 1 kasir cepat (μ tinggi) tapi melayani 1 pelanggan dengan 50 item + voucher → waktu layanan meledak (σ tinggi).  
+  - 3 kasir lambat (μ rendah) dengan pelanggan beritem sedikit → justru lebih stabil.  
+- **Matematis**: Waktu tunggu dipengaruhi oleh \( \frac{\sigma^2}{\mu^2} \). Variansi tinggi = antrian tak terduga.
+
+#### **B. "Fast Lane" yang Tidak Benar-Benar Cepat**
+- Banyak supermarket punya jalur "10 item atau kurang", tetapi:  
+  - Orang mengabaikan aturan (membawa 15 item).  
+  - Beberapa transaksi tetap lambat (misal: masalah kartu, refund).  
+
+#### **C. Pemilihan Antrian yang Bias (Psikologi)**
+- **Bias Optimisme**: Kita cenderung memilih antrian yang "kelihatan" cepat (misal: lebih pendek), tapi mengabaikan faktor lain (seperti μ dan σ).  
+- **Bias Konfirmasi**: Jika pernah mengalami antrian lambat, kita akan selalu merasa pilihan kita salah.
+
+---
+
+### **3. Simulasi Sederhana: Kasus 3 Antrian**
+Misal di supermarket ada 3 antrian:  
+- **Antrian A**: 1 kasir cepat (μ=3 pelanggan/menit), tapi ada 1 pelanggan dengan 100 item (σ tinggi).  
+- **Antrian B**: 2 kasir lambat (μ=1 pelanggan/menit), pelanggan rata-rata 5 item (σ rendah).  
+- **Antrian C**: 1 kasir sedang (μ=2 pelanggan/menit), tidak ada variabilitas.  
+
+**Hasil**:  
+- Antrian A bisa lebih lambat karena 1 pelanggan "penyebab delay" memblokir seluruh antrian.  
+- Antrian B justru lebih cepat karena beban terdistribusi.  
+
+---
+
+### **4. Strategi Matematika untuk Memilih Antrian Tercepat**
+1. **Hindari Antrian dengan Variabilitas Tinggi**:  
+   - Cek keranjang belanjaan orang di depan (banyak item? banyak kupon?).  
+   - Hindari antrian dengan orang tua (biasanya butuh waktu lebih lama untuk bayar).  
+2. **Pilih Antrian dengan Multiple Servers**:  
+   - Antrian tunggal yang mengarah ke beberapa kasir (seperti di bank) lebih efisien.  
+3. **Perhatikan Service Rate (μ)**:  
+   - Kasir yang terlihat berpengalaman biasanya lebih cepat.  
+
+---
+
+### **5. Solusi Supermarket: Sistem Antrian Cerdas**
+Beberapa supermarket modern menggunakan:  
+- **Single Queue + Multiple Cashiers**: Semua pelanggan mengantri di 1 garis, lalu diarahkan ke kasir yang tersedia (mengurangi σ).  
+- **Dynamic Queueing**: Algoritma real-time mengalokasikan pelanggan ke kasir berdasarkan μ dan σ (contoh: sistem "virtual queue" di IKEA).  
+
+---
+
+### **Kesimpulan**
+Antrian yang "kelihatan" cepat justru lambat karena:  
+1. **Variabilitas waktu pelayanan** (Hukum Kingman).  
+2. **Ketidaksempurnaan aturan "fast lane"**.  
+3. **Bias psikologis dalam memilih antrian**.  
+
+Solusinya? **Pahami μ dan σ**, lalu pilih antrian dengan distribusi beban merata. Atau... gunakan self-checkout! 🛒⚡  
+
+*"Antrian terpendek bukan selalu tercepat—yang terbaik adalah yang paling stabil."*
+
+
+Berikut adalah simulasi antrian supermarket dalam **bahasa R** yang menggambarkan mengapa antrian yang "kelihatan cepat" justru bisa lebih lambat karena variabilitas waktu pelayanan.  
+
+### **Simulasi 3 Jenis Antrian**  
+Kita akan membandingkan:  
+1. **Antrian Cepat (1 kasir cepat, tetapi dengan variabilitas tinggi)**  
+2. **Antrian Sedang (1 kasir stabil, variabilitas rendah)**  
+3. **Antrian Multi-Kasir (2 kasir lambat, variabilitas rendah)**  
+
+---
+
+### **Kode Simulasi dalam R**
+
+```{r}
+# ---------------------------
+# SIMULASI ANTRIAN SUPERMARKET
+# ---------------------------
+
+library(dplyr)
+library(ggplot2)
+set.seed(123)  # Agar hasil reproducible
+
+# Fungsi untuk mensimulasikan antrian
+simulate_queue <- function(n_customers, service_rate_mean, service_rate_sd) {
+  service_times <- rnorm(n_customers, service_rate_mean, service_rate_sd)
+  service_times <- pmax(service_times, 0.1)  # Waktu tidak boleh negatif
+  cumulative_time <- cumsum(service_times)
+  return(data.frame(
+    customer = 1:n_customers,
+    service_time = service_times,
+    exit_time = cumulative_time
+  ))
+}
+
+# Parameter simulasi
+n_customers <- 50  # Jumlah pelanggan
+
+# 1. Antrian Cepat (1 kasir cepat, tapi variabilitas tinggi)
+queue_fast <- simulate_queue(
+  n_customers,
+  service_rate_mean = 1,    # Rata-rata 1 menit/pelanggan
+  service_rate_sd = 1.5     # Variabilitas tinggi (beberapa pelanggan sangat lama)
+)
+
+# 2. Antrian Sedang (1 kasir stabil, variabilitas rendah)
+queue_medium <- simulate_queue(
+  n_customers,
+  service_rate_mean = 1.5,  # Rata-rata 1.5 menit/pelanggan
+  service_rate_sd = 0.3     # Variabilitas rendah
+)
+
+# 3. Antrian Multi-Kasir (2 kasir lambat, variabilitas rendah)
+# Simulasikan 2 antrian paralel
+queue_multi_1 <- simulate_queue(
+  ceiling(n_customers / 2),
+  service_rate_mean = 2,    # Rata-rata 2 menit/pelanggan
+  service_rate_sd = 0.3
+)
+queue_multi_2 <- simulate_queue(
+  floor(n_customers / 2),
+  service_rate_mean = 2,
+  service_rate_sd = 0.3
+)
+queue_multi <- rbind(
+  transform(queue_multi_1, queue_id = "Kasir 1"),
+  transform(queue_multi_2, queue_id = "Kasir 2")
+)
+
+# Hitung waktu total antrian terakhir
+total_time_fast <- max(queue_fast$exit_time)
+total_time_medium <- max(queue_medium$exit_time)
+total_time_multi <- max(queue_multi$exit_time)
+
+# Plot hasil
+ggplot() +
+  geom_step(
+    data = queue_fast,
+    aes(x = exit_time, y = customer, color = "Antrian Cepat (1 kasir, σ tinggi)"),
+    linewidth = 1
+  ) +
+  geom_step(
+    data = queue_medium,
+    aes(x = exit_time, y = customer, color = "Antrian Sedang (1 kasir, σ rendah)"),
+    linewidth = 1
+  ) +
+  geom_step(
+    data = queue_multi,
+    aes(x = exit_time, y = customer, color = paste("Antrian Multi (2 kasir, σ rendah)"), group = queue_id),
+    linewidth = 1,
+    linetype = "dashed"
+  ) +
+  labs(
+    title = "Perbandingan Kecepatan Antrian Supermarket",
+    subtitle = paste(
+      "Total waktu Antrian Cepat:", round(total_time_fast, 1), "menit |",
+      "Antrian Sedang:", round(total_time_medium, 1), "menit |",
+      "Antrian Multi:", round(total_time_multi, 1), "menit"
+    ),
+    x = "Waktu (menit)",
+    y = "Pelanggan ke-",
+    color = "Jenis Antrian"
+  ) +
+  theme_minimal() +
+  scale_color_manual(values = c("red", "blue", "darkgreen"))
+```
+
+---
+
+### **Hasil Simulasi**  
+- **Antrian Cepat (1 kasir, σ tinggi)**:  
+  - *Kasir cepat*, tetapi beberapa pelanggan memakan waktu sangat lama (misal: bayar pakai koin, voucher ribet).  
+  - **Hasil**: Total waktu lebih lama karena **efek variabilitas (σ tinggi)**.  
+
+- **Antrian Sedang (1 kasir, σ rendah)**:  
+  - *Kasir stabil* dengan waktu pelayanan konsisten.  
+  - **Hasil**: Lebih cepat daripada antrian "cepat" karena tidak ada delay ekstrem.  
+
+- **Antrian Multi-Kasir (2 kasir, σ rendah)**:  
+  - *Dua kasir lambat* tetapi konsisten.  
+  - **Hasil**: Paling cepat karena beban terdistribusi.  
+
+---
+
+### **Interpretasi Grafik**  
+- Garis merah (Antrian Cepat) akan terlihat **terkadang datar (delay) lalu melonjak**.  
+- Garis biru (Antrian Sedang) naik **stabil**.  
+- Garis hijau (Antrian Multi) naik **paling cepat** karena paralelisasi.  
+
+---
+
+### **Kesimpulan Matematis**  
+- **Variabilitas (σ) lebih berpengaruh daripada kecepatan rata-rata (μ)**.  
+- **Multi-kasir + σ rendah** adalah kombinasi terbaik.  
+- **Antrian "cepat" bisa menipu** jika tidak memperhitungkan σ.  
+
+Coba jalankan kode di R, dan Anda akan melihat sendiri mengapa "garis lebih cepat" seringkali lambat! 🛒⏱️
+
