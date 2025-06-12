@@ -1,0 +1,235 @@
+---
+title: "Mengukur Kompetisi di Pasar dari Data Market Share"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: visual
+execute:
+  warning: false
+error: false
+---
+
+Sebagai seorang _market researcher_, ada saatnya saya harus menghitung _market share_ dari suatu industri tertentu. Biasanya market share disajikan dalam bentuk _pie chart_. Kemudian dilakukan analisa sederhana seperti:
+
+1. Berapa pemain dalam _market_ tersebut? 
+1. Analisa pareto untuk melihat siapa saja _market leader_-nya dan kenapa mereka bisa menjadi _market leader_.
+
+Kali ini, saya mau _share_ salah satu metode untuk mengukur kompetisi yang ada di suatu _market_ dengan bermodalkan data _market share_, yakni dengan menghitung suatu metrik bernama **Herfindahl-Hirschman Index (HHI)**.
+
+---
+
+**Herfindahl-Hirschman Index (HHI)** adalah alat pengukuran konsentrasi _market_ yang dikembangkan untuk menilai tingkat persaingan dalam suatu industri. Indeks ini pertama kali diperkenalkan oleh ekonom __Orris C. Herfindahl__ pada tahun 1950 dalam disertasinya tentang konsentrasi di industri pertambangan, kemudian dikembangkan lebih lanjut oleh __Albert O. Hirschman__ pada tahun 1964. Awalnya, __Hirschman__ menggunakan indeks serupa dalam bukunya *The Paternity of an Index*, yang menginspirasi penggabungan konsep keduanya. Pada 1982, _U.S. Department of Justice_ dan _Federal Trade Commission (FTC)_ secara resmi mengadopsi HHI sebagai standar untuk mengevaluasi _merger_ dan akuisisi, menjadikannya alat kunci dalam kebijakan _antitrust_.  
+
+Secara matematis, HHI dihitung dengan menjumlahkan kuadrat pangkat _market share_ setiap perusahaan dalam industri. Nilainya berkisar dari mendekati nol (pasar sangat tersebar) hingga 10.000 (monopoli murni). Berikut adalah formulanya:
+
+$$HHI = \sum_{i=1}^n{\text{share}_i^2}$$
+
+Di mana: $n$ menunjukkan berapa banyak pemain dalam _market_ tersebut dan $\text{share}_i$ menunjukkan persentase _market share_ pemain $i$.
+
+Misalnya, industri dengan empat perusahaan masing-masing memegang 25% _market share_ memiliki HHI __25² + 25² + 25² + 25² = 2.500__. 
+
+> Semakin tinggi nilainya, semakin terkonsentrasi _market_ tersebut, yang berpotensi mengurangi persaingan. 
+
+_Regulator_ sering menggunakan HHI untuk mengklasifikasikan _market_ menjadi tiga kategori: 
+
+1. Tidak terkonsentrasi (HHI di bawah 1.500), 
+1. _Moderately concentrated_ (HHI di antara 1.500–2.500), dan 
+1. _Highly concentrated_ (HHI di atas 2.500).  
+
+Sekarang akan saya coba jelaskan masing-masing kategori _market_ di atas:
+
+## **_Market_ yang Tidak Terkonsentrasi**  
+
+_Market_ yang tidak terkonsentrasi (*unconcentrated market*) adalah struktur _market_ di mana tidak ada satu atau beberapa perusahaan yang mendominasi. _Market share_ tersebar merata di antara banyak pesaing, sehingga tingkat persaingan tinggi. Dalam **Herfindahl-Hirschman Index (HHI)**, _market_ ini memiliki nilai **di bawah 1.500**, menunjukkan fragmentasi yang sehat. 
+
+**Kelebihan _Market_ Tidak Terkonsentrasi**  
+
+1. **Persaingan Sehat**  
+   - Perusahaan bersaing secara adil melalui inovasi, harga, dan kualitas, yang menguntungkan konsumen.  
+2. **Rendahnya Risiko Monopoli**  
+   - Tidak ada pemain dominan yang bisa memanipulasi harga atau _supply_, mengurangi eksploitasi terhadap konsumen.  
+3. **Peluang bagi Pendatang Baru**  
+   - Hambatan masuk rendah, memungkinkan _startup_ atau usaha kecil berkembang. 
+4. **Resiliensi Ekonomi**  
+   - Ketika satu perusahaan gagal, dampaknya tidak sistemik karena ketergantungan pada satu entitas minimal.  
+
+**Kekurangan _Market_ Tidak Terkonsentrasi**  
+
+1. **Efisiensi Terbatas**  
+   - Perusahaan kecil mungkin kurang mampu mencapai *economies of scale*, berpotensi meningkatkan biaya produksi.  
+2. **Inovasi Lambat**  
+   - Perusahaan kecil sering kekurangan sumber daya untuk riset dan pengembangan (R&D) dibanding pemain besar.  
+3. **Ketidakstabilan Pasar**  
+   - Persaingan ketat bisa memicu perang harga yang tidak sehat, mengurangi profitabilitas dan keberlanjutan bisnis.  
+4. **Fragmentasi Layanan**  
+   - Konsumen mungkin menghadapi ketidakkonsistenan kualitas (misalnya: layanan logistik dari banyak vendor kecil).  
+
+## ***Moderately Concentrated Market***  
+
+*Moderately concentrated market* (cukup terkonsentrasi) adalah struktur _market_ di mana beberapa perusahaan memegang _market share_ signifikan, tetapi tidak mendominasi secara ekstrem. Dalam **Herfindahl-Hirschman Index (HHI)**, pasar ini memiliki nilai di antara _range_ **1.500–2.500**, menunjukkan adanya persaingan terbatas dengan beberapa pemain kunci. 
+
+**Kelebihan *Moderately Concentrated Market***  
+
+1. **Keseimbangan antara Persaingan dan Efisiensi**  
+   - Perusahaan besar bisa mencapai *economies of scale*, menekan biaya produksi, sementara persaingan tetap terjaga.  
+2. **Stabilitas Pasar**  
+   - Dominasi terbatas oleh beberapa pemain mengurangi volatilitas dibanding _market_ yang sangat tersebar (*unconcentrated*).  
+3. **Inovasi Terkendali**  
+   - Perusahaan punya sumber daya untuk berinovasi tetapi tetap terpacu oleh pesaing.  
+4. **Kemudahan Regulasi**  
+   - _Regulator_ lebih mudah memantau risiko monopoli dibanding pasar *highly concentrated*, sekaligus mendorong kompetisi.  
+
+**Kekurangan *Moderately Concentrated Market***  
+
+1. **Risiko Kolusi Terselubung**  
+   - Perusahaan dominan mungkin bersekongkol secara tidak resmi (misalnya: menetapkan harga mirip tanpa kesepakatan terbuka).  
+2. **Hambatan Masuk untuk Pendatang Baru**  
+   - Pangsa pasar yang sudah terbagi di antara pemain mapan menyulitkan _startup_ atau pesaing kecil untuk berkembang.  
+3. **Ketergantungan pada Beberapa Pemain**  
+   - Gangguan pada satu perusahaan besar (misalnya: krisis finansial) bisa berdampak sistemik pada pasar.  
+4. **Potensi Eksploitasi Konsumen**  
+   - Jika persaingan tidak diawasi ketat, perusahaan bisa menaikkan harga atau mengurangi kualitas layanan.  
+
+## ***Highly Concentrated Market***  
+
+*Highly concentrated market* (sangat terkonsentrasi) adalah struktur _market_ di mana sebagian besar _market share_ dikuasai oleh sedikit perusahaan, bahkan mendekati monopoli atau oligopoli murni. Dalam **Herfindahl-Hirschman Index (HHI)**, pasar ini memiliki nilai **di atas 2.500**, menunjukkan dominasi ekstrem oleh beberapa pemain. 
+
+**Kelebihan *Highly Concentrated Market***
+
+1. **Efisiensi Tinggi melalui *Economies of Scale***  
+   - Perusahaan besar bisa memproduksi massal dengan biaya per unit lebih rendah.
+2. **Stabilitas Pasokan dan Harga**  
+   - Kontrol terpusat mengurangi fluktuasi harga.
+3. **Kemampuan Investasi dalam Inovasi Besar**  
+   - Perusahaan dominan punya sumber daya untuk riset mahal.
+4. **Simplifikasi Regulasi**  
+   - Pemerintah lebih mudah mengawasi beberapa aktor kunci dibanding banyak pemain kecil.  
+
+**Kekurangan *Highly Concentrated Market***  
+
+1. **Risiko Monopoli dan Eksploitasi**  
+   - Perusahaan bisa menetapkan harga tinggi atau mengurangi kualitas layanan.2. **Hambatan Masuk Tinggi**  
+   - _Startup_ atau pesaing baru sulit bersaing.  
+3. **Inovasi Terhambat**  
+   - Kurangnya persaingan mengurangi insentif untuk berinovasi (contoh: lambatnya pengembangan layanan baru di pasar oligopoli).  
+4. **Kerentanan Sistemik**  
+   - Gagalnya satu pemain dominan bisa melumpuhkan sektor strategis.  
+
+## Indeks Beberapa _Market_ di Indonesia
+
+Dari paparan di atas, saya akan hitung HHI di dua _market_ di Indonesia sebagai berikut:
+
+```{r}
+#| echo: false
+# Install dan load library (jika belum ada)
+# install.packages("ggplot2")
+# install.packages("dplyr")
+library(ggplot2)
+library(dplyr)
+
+rm(list=ls())
+
+# Data
+provider_data <- data.frame(
+  Provider = c("Telkomsel", "Indosat", "XL Axiata", "Smartfren"),
+  Market_Share = c(44.7, 28.1, 16.5, 10.8)
+)
+
+hhi_1 = provider_data %>% pull(Market_Share)
+hhi_1 = sum(hhi_1^2)
+
+# Hitung posisi label
+provider_data <- provider_data %>%
+  arrange(desc(Provider)) %>%
+  mutate(prop = Market_Share / sum(Market_Share) * 100,
+         ypos = cumsum(prop) - 0.5 * prop)
+
+# Warna custom (opsional)
+colors <- c("#FFB81C","darkred","#E5331A","#009FDF")
+
+# Donut chart
+donut_plot <- ggplot(provider_data, aes(x = 2, y = prop, fill = Provider)) +
+  geom_bar(stat = "identity", color = "white") +
+  geom_label(aes(y = ypos, label = paste0(Provider,
+                                          "\n",
+                                          Market_Share, "%")), 
+             color = "white", size = 3) +
+  coord_polar(theta = "y", start = 0) +
+  xlim(0.5, 2.5) +  # Membuat lubang di tengah (donut)
+  scale_fill_manual(values = colors) +
+  labs(title = "Market Share Provider Telekomunikasi Indonesia (2023)",
+       subtitle = "Sumber: Data Publik",
+       caption = "Visualized using R\nikanx101.com") +
+  theme_void() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"),
+        legend.position = "none")
+
+# Tampilkan plot
+donut_plot
+print(paste0("HHI dari market ini adalah: ",hhi_1))
+
+
+# Data
+provider_data <- data.frame(
+  Provider = c("Toyota", "Daihatsu", "Honda", "Mitsubishi","Suzuki","Hyundai","Isuzu","Wuling"),
+  Market_Share = c(33.7,18.7,13.8,10.8,8,3.5,3.1,2.3)
+)
+
+hhi_2 = provider_data %>% pull(Market_Share)
+hhi_2 = sum(hhi_2^2)
+
+# Hitung posisi label
+provider_data <- provider_data %>%
+  arrange(desc(Provider)) %>%
+  mutate(prop = Market_Share / sum(Market_Share) * 100,
+         ypos = cumsum(prop) - 0.5 * prop)
+
+# Warna custom (opsional)
+colors <- c("red", "green", "blue", "orange", "yellow", "#e8e2e1", "lightgreen", "cyan")
+
+# Donut chart
+donut_plot <- ggplot(provider_data, aes(x = 2, y = prop, fill = Provider)) +
+  geom_bar(stat = "identity", color = "white") +
+  ggrepel::geom_label_repel(aes(y = ypos, label = paste0(Provider,
+                                          "\n",
+                                          Market_Share, "%")), 
+             color = "black", size = 3) +
+  coord_polar(theta = "y", start = 0) +
+  xlim(0.5, 2.5) +  # Membuat lubang di tengah (donut)
+  scale_fill_manual(values = colors) +
+  labs(title = "Market Share Otomotif (mobil) Indonesia (2023)",
+       subtitle = "Sumber: Gaikindo",
+       caption = "Visualized using R\nikanx101.com") +
+  theme_void() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"),
+        legend.position = "none")
+
+# Tampilkan plot
+donut_plot
+print(paste0("HHI dari market ini adalah: ",hhi_2))
+
+```
+
+Kira-kira dari nilai HHI di atas, apa yang bisa kita simpulkan dari kedua _market_ tersebut?
+
+
+---
+
+## Penerapan HHI
+
+HHI memiliki aplikasi luas dalam kebijakan _antitrust_ dan analisis pasar. Di Amerika Serikat, _regulator_ menggunakan HHI untuk menilai dampak _merger_ terhadap persaingan. Jika suatu _merger_ meningkatkan HHI lebih dari 200 poin di _market_ yang sudah terkonsentrasi, transaksi tersebut mungkin ditolak atau memerlukan revisi. Contohnya, pada 2016, Departemen Kehakiman AS menggugat untuk mencegah _merger_ antara __Halliburton__ dan __Baker Hughes__ karena HHI di beberapa segmen industri perminyakan akan melonjak drastis, berpotensi memonopoli layanan tertentu.  
+
+Selain di AS, HHI juga digunakan di berbagai negara, termasuk Uni Eropa dan Jepang, dengan penyesuaian sesuai konteks lokal. Di sektor perbankan, HHI membantu mengukur risiko sistemik jika terlalu banyak aset terkonsentrasi di beberapa bank. Namun, indeks ini memiliki keterbatasan, seperti mengabaikan hambatan masuk pasar atau dinamika persaingan global. Misalnya, pasar dengan HHI tinggi mungkin tetap kompetitif jika ada ancaman pendatang baru atau inovasi disruptif.  
+
+Perkembangan terbaru HHI mencakup adaptasi di era digital, di mana dominasi perusahaan teknologi seperti Google atau Amazon menantang pengukuran tradisional. Beberapa ekonom menyarankan modifikasi HHI dengan memasukkan metrik seperti data pengguna atau kapitalisasi pasar. Meski demikian, HHI tetap menjadi pilar penting dalam analisis pasar, menggabungkan kesederhanaan matematis dengan wawasan mendalam tentang struktur industri. Keberadaannya terus relevan seiring evolusi pasar global dan kompleksitas persaingan bisnis modern.
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
+
+
