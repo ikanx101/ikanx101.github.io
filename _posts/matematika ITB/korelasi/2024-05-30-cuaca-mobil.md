@@ -126,22 +126,17 @@ Dari proses berpikir, pencarian artikel, pengumpulan data, hingga
 pembuatan model dan pengambilan kesimpulan menurut saya ada beberapa
 *flaws* yang berujung fatal. Apa saja? Mari kita bahas satu per satu:
 
-1.  Kita sebenarnya tidak bisa menghubungkan kausalitas antara **cuaca**
-    dan ***sales*** mobil secara langsung. Kenapa? Secara logika,
-    terlalu banyak *middle factors* bagi konsumen untuk membeli mobil.
-    1.Jangan pernah bertanya seperti ini pada *Gemini*, *ChatGPT*,
-    *Bing*, dan sejenisnya. Kenapa? Kalian hanya akan mendapatkan
-    artikel *very optimist* yang sejatinya belum jelas kebenarannya.
-    Maksudnya, kalian akan mendapatkan artikel-artikel yang bernada *Yes
+1.  Kita sebenarnya tidak bisa menghubungkan kausalitas antara **cuaca**dan ***sales*** mobil secara langsung. Kenapa? Secara logika, terlalu banyak *middle factors* bagi konsumen untuk membeli mobil.
+1.  Jangan pernah bertanya seperti ini pada *Gemini*, *ChatGPT*, *Bing*, dan sejenisnya. Kenapa? Kalian hanya akan mendapatkan jawaban yang *very optimistic* yang sejatinya belum jelas kebenarannya. Maksudnya, kalian akan mendapatkan artikel-artikel yang bernada *Yes
     Man!* di mana semua hal yang kita tanyakan bisa dilakukan dan
     dibuat.
-2.  Perhatikan banyaknya baris data saat membuat model *machine
+1.  Perhatikan banyaknya baris data saat membuat model *machine
     learning*! Jangan membuat model dengan baris data yang sedikit dan
     terbatas!
-3.  Jangan tergiur untuk membuat model yang memiliki akurasi dan presisi
+1.  Jangan tergiur untuk membuat model yang memiliki akurasi dan presisi
     yang **sempurna**! Lebih baik kita membuat model yang bisa dengan
     mudah diinterpretasikan.
-4.  Penarikan kesimpulan berdasarkan model yang dibangun dari data terbatas bisa sangat berbahaya! Apalagi penarikan kesimpulan dilakukan tanpa ada konteks yang dalam.
+1.  Penarikan kesimpulan berdasarkan model yang dibangun dari data terbatas bisa sangat berbahaya! Apalagi penarikan kesimpulan dilakukan tanpa ada konteks yang dalam.
 
 Selain poin-poin di atas, apa lagi *flaws* yang bisa kalian dapatkan
 dari cerita di atas?
