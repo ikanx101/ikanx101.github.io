@@ -13,273 +13,573 @@ error: false
 ---
 
 ```{r}
+#| include: false
 setwd("~/ikanx101.github.io/_posts/matematika ITB/antrian_kasir")
 ```
 
-Salah satu supermarket favorit saya dan istri dalam berbelanja adalah __Diamond Supermarket__ yang terletak di salah satu pusat perbelanjaan yang direjuvenasi setahun belakangan ini di Kota Bekasi. Alasan kami memilih supermarket ini sebagai supermarket favorit adalah:
+Mengantri itu adalah suatu aktivitas yang tidak kita senangi. Di satu sisi kita tidak ingin menunggu lama-lama namun di sisi lain kita ingin dilayani secara ramah, prima, dan baik. 
 
-1. Barangnya lengkap,
-1. Harga sayur organiknya _oke banget_, dan
-1. Antrian kasirnya relatif cepat.
+Setiap kali mengantri di suatu tempat, saya selalu bertanya-tanya:
 
-> Untuk alasan ketiga, saya merasa ini sangat signifikan karena sangat jarang sekali kami mengantri lebih dari dua pelanggan di depan kami.
-
-Setiap kali mengantri di kasir, saya selalu bertanya-tanya:
-
-1. __Berapa lama__ Anda harus mengantri?
-1. __Berapa banyak__ orang biasanya ada di antrian?
-1. Apa yang terjadi jika __kasir tambahan__ dibuka?
+1.  **Berapa lama** saya harus mengantri?
+2.  **Berapa banyak** orang yang mengantri?
+3.  Apa yang terjadi jika ada **jalur antrian baru** yang dibuka?
 
 ---
 
-Pertanyaan-pertanyaan tersebut membuat saya teringat salah satu topik yang dulu sempat dibahas saat kuliah di matematika, yakni: __teori antrian__. Sayang sekali saya tidak mengambil mata kuliah tersebut tapi kali ini saya akan mencoba membahasnya tipis-tipis di _blog_ ini.
+Pertanyaan-pertanyaan tersebut membuat saya teringat salah satu topik yang dulu sempat dibahas saat kuliah di matematika, yakni: **teori antrian**. Sayang sekali saya tidak mengambil mata kuliah tersebut tapi kali ini saya akan mencoba membahasnya tipis-tipis di *blog* ini.
 
-# **_Queueing Theory_: Matematika di Balik Antrian**
+# ***Queueing Theory*****: Matematika di Balik Antrian**
 
-_Queueing theory_ adalah cabang matematika terapan yang mempelajari aliran antrian, digunakan di supermarket, bandara, hingga jaringan komputer. Tujuannya adalah untuk __menganalisis dan mengoptimalkan sistem antrian__ agar lebih efisien.
+*Queueing theory* adalah cabang matematika terapan yang mempelajari aliran antrian, digunakan di supermarket, bandara, hingga jaringan komputer. Tujuannya adalah untuk **menganalisis dan mengoptimalkan sistem antrian** agar lebih efisien.
 
-Dalam kasus saat saya mengantri di kasir, beberapa konsep kunci dalam teori antrian bisa dituliskan sebagai berikut:
+Beberapa konsep kunci dalam teori antrian bisa dituliskan sebagai berikut:
 
-- **Kedatangan (_Arrival Rate_ - $\lambda$)**: Rata-rata konsumen yang masuk antrian kasir pada rentang waktu tertentu. 
-    - _Arrival rate_ mengikuti [distribusi _Poisson_](https://ikanx101.com/blog/poin-nfi-mt/).
-- **Layanan (_Service Rate_ - $\mu$)**: Rata-rata pelanggan yang dilayani kasir per rentang waktu tertentu. 
-    - Nilai ini tidak terbatas pada distribusi tertentu. 
-    - Bisa jadi bernilai konstan atau dinamis mengikuti distribusi tertentu.
-- **Jumlah pelayan (servers)**: Berapa banyak kasir yang bertugas. 
-    - Suatu sistem antrian bisa memiliki satu atau banyak _server_ (_single server_ / _multi server_).
-- **Intensitas antrian ($\rho$)**
-- **Variabilitas ($\sigma$)**: Ketidakpastian dalam waktu pelayanan (misal: ada konsumen yang membayar menggunakan uang koin sehingga membutuhkan waktu lebih lama).
+-   **Kedatangan (*Arrival Rate* -** $\lambda$): Rata-rata banyaknya orang yang masuk antrian pada rentang waktu tertentu.
+    -   *Arrival rate* mengikuti [distribusi *Poisson*](https://ikanx101.com/blog/poin-nfi-mt/).
+-   **Layanan (*Service Rate* -** $\mu$): Rata-rata banyaknya orang yang dilayani per rentang waktu tertentu.
+    -   Nilai ini tidak terbatas pada distribusi tertentu.
+    -   Bisa jadi bernilai konstan atau dinamis mengikuti distribusi tertentu.
+-   **Jumlah pelayan (servers)**: Berapa banyak pelayan yang bertugas.
+    -   Suatu sistem antrian bisa memiliki satu atau banyak *server* (*single server* / *multi server*).
+-   **Intensitas _traffic_ antrian ($\rho$)**: Merupakan rasio dari _arrival rate_ dan _service rate_.
+    - Dituliskan secara matematis $\rho = \frac{\lambda}{\mu}$.
+    - Nilai ini menentukan seberapa padat sistem antrian.
+    - Jika $\rho < 1$, sistem antrian akan stabil (antrian akan terbatas).
+    - Jika $\rho \geq 1$, sistem antrian akan terus memanjang tak terbatas.
+-   **Variabilitas (**$\sigma$): Ketidakpastian dalam waktu pelayanan (misal: ada konsumen yang membayar menggunakan uang koin sehingga membutuhkan waktu lebih lama).
 
 Sekarang berbekal konsep kunci tersebut, mari kita telaah sistem antrian berdasarkan beberapa model berikut ini:
 
-## __Model I__ - Model Antrian Sederhana (M/M/1)
+## **Model I** - Model Antrian Sederhana (M/M/1)
 
-Model __M/M/1__ menggambarkan saat kasir yang bertugas hanya ada satu dan melayani semua konsumen yang berbelanja.
+Model **M/M/1** menggambarkan situasi antrian saat hanya ada satu _server_ yang bertugas melayani semua orang yang datang.
 
-- "M" = Kedatangan pelanggan acak (_Poisson_),
-- "M" = Waktu pelayanan acak (eksponensial),
-- "1" = 1 kasir.
+-   "M" = Kedatangan pelanggan acak (*Poisson*). Nilainya mengikuti distribusi _Poisson_ dengan tingkat kedatangan $\lambda$.
+-   "M" = Waktu pelayanan. Mengikuti distribusi eksponensial dengan tingkat pelayanan $\mu$.
+-   "1" = 1 _server_.
+
+Misalkan suatu minimarket yang buka selama 15 jam hanya memiliki satu kasir dengan:
+
+1. Tingkat kedatangan pelanggan: 5 pelanggan per jam ($\lambda = 5$).
+1. Tingkat pelayanan: 8 pelanggan per jam ($\mu = 8$).
+
+Dari parameter di atas, kita bisa menghitung intensitas _traffic_ antrian sebagai berikut:
+
+$$\rho = \frac{5}{8} = 0.625$$
+
+Kita bisa menyimpulkan bahwa sistem antrian akan stabil. Saya akan simulasikan antrian yang terjadi selama satu minggu (15 jam x 7 hari) di minimarket tersebut.
+
+```{r}
+#| include: false
+
+rm(list=ls())
+gc()
+
+set.seed(123)    # Untuk reproduktibilitas
+
+library(dplyr)
+library(tidyr)
+
+# Fungsi simulasi
+simulate_mm1 = function(lambda, mu, sim_time) {
+  # Inisialisasi
+  time           = 0
+  queue_length   = 0
+  server_busy    = FALSE
+  next_arrival   = rexp(1, rate = lambda)
+  next_departure = Inf
+  events         = data.frame(time = numeric(), event = character(), queue = numeric())
+  
+  # Simulasi
+  while (time < sim_time) {
+    if (next_arrival < next_departure) {
+      time = next_arrival
+      # Catat kedatangan
+      events       = rbind(events, data.frame(time = time, event = "Arrival", queue = queue_length))
+      queue_length = queue_length + 1
+      
+      if (!server_busy) {
+        server_busy    = TRUE
+        next_departure = time + rexp(1, rate = mu)
+      }
+      next_arrival = time + rexp(1, rate = lambda)
+    } else {
+      time = next_departure
+      # Catat keberangkatan
+      events       = rbind(events, 
+                           data.frame(time = time, 
+                                      event = "Departure", 
+                                      queue = queue_length))
+      queue_length = queue_length - 1
+      
+      if (queue_length > 0) {
+        next_departure <- time + rexp(1, rate = mu)
+      } else {
+        server_busy    = FALSE
+        next_departure = Inf
+      }
+    }
+  }
+  return(events)
+}
+
+```
 
 
+```{r}
+# Simulasi Antrian M/M/1
+
+# Parameter
+lambda   = 5     # Tingkat kedatangan (pelanggan per jam)
+mu       = 8     # Tingkat pelayanan (pelanggan per jam)
+sim_time = 15*7  # Waktu simulasi (jam)
+```
+
+```{r}
+#| echo: false
+
+# Jalankan simulasi
+sim_results = simulate_mm1(lambda, mu, sim_time)
+
+# Analisis hasil
+arrivals   = subset(sim_results, event == "Arrival")
+departures = subset(sim_results, event == "Departure")
+
+# Hitung metrik kinerja
+avg_queue_length = mean(sim_results$queue)
+utilization      = sum(sim_results$queue > 0) / nrow(sim_results)
+
+# Teori vs Simulasi
+rho      = lambda/mu  # Faktor utilisasi teoritis
+L_theory = rho/(1-rho)  # Jumlah pelanggan rata-rata dalam sistem
+W_theory = 1/(mu - lambda)  # Waktu rata-rata dalam sistem (jam)
+
+cat("Hasil Simulasi:\n")
+cat("Rata-rata panjang antrian:", avg_queue_length, "\n")
+cat("Utilisasi server (ρ simulasi):", utilization, "\n\n")
+
+cat("Hasil Teoritis (M/M/1):\n")
+cat("Faktor utilisasi (ρ):", rho, "\n")
+cat("Jumlah pelanggan rata-rata dalam sistem (L):", L_theory, "\n")
+cat("Waktu rata-rata dalam sistem (W):", W_theory, "jam atau", W_theory*60, "menit\n")
+
+# Visualisasi panjang antrian
+plot(sim_results$time, sim_results$queue, type = "s", 
+     xlab = "Waktu (jam)", ylab = "Panjang Antrian",
+     main = "Simulasi Antrian M/M/1")
+```
+
+Kita bisa lihat dari simulasi tersebut bahwa kasir minimarket bisa memberikan layanan antrian yang terkendali. Walaupun sempat terjadi antrian panjang di rentang waktu tertentu tapi tak akan membengkak semakin besar.
+
+Apa yang terjadi jika nilai $\lambda = \mu$?
+
+Coba kita simulasikan kembali:
+
+```{r}
+# Simulasi Antrian M/M/1
+
+# Parameter
+lambda   = 5     # Tingkat kedatangan (pelanggan per jam)
+mu       = 5     # Tingkat pelayanan (pelanggan per jam)
+sim_time = 15*7  # Waktu simulasi (jam)
+```
+
+```{r}
+#| echo: false
+
+# Jalankan simulasi
+sim_results = simulate_mm1(lambda, mu, sim_time)
+
+# Analisis hasil
+arrivals   = subset(sim_results, event == "Arrival")
+departures = subset(sim_results, event == "Departure")
+
+# Hitung metrik kinerja
+avg_queue_length = mean(sim_results$queue)
+utilization      = sum(sim_results$queue > 0) / nrow(sim_results)
+
+# Teori vs Simulasi
+rho      = lambda/mu  # Faktor utilisasi teoritis
+L_theory = rho/(1-rho)  # Jumlah pelanggan rata-rata dalam sistem
+W_theory = 1/(mu - lambda)  # Waktu rata-rata dalam sistem (jam)
+
+cat("Hasil Simulasi:\n")
+cat("Rata-rata panjang antrian:", avg_queue_length, "\n")
+cat("Utilisasi server (ρ simulasi):", utilization, "\n\n")
+
+cat("Hasil Teoritis (M/M/1):\n")
+cat("Faktor utilisasi (ρ):", rho, "\n")
+cat("Jumlah pelanggan rata-rata dalam sistem (L):", L_theory, "\n")
+cat("Waktu rata-rata dalam sistem (W):", W_theory, "jam atau", W_theory*60, "menit\n")
+
+# Visualisasi panjang antrian
+plot(sim_results$time, sim_results$queue, type = "s", 
+     xlab = "Waktu (jam)", ylab = "Panjang Antrian",
+     main = "Simulasi Antrian M/M/1")
+```
+
+Terlihat bahwa antrian akan selalu ada dan tak ada tanda-tanda pelanggan akan selesai dilayani.
+
+Sekarang saya akan eksplor sistem antrian lain saat ada _multiple server_.
+
+## **Model II** - Model Antrian _Multiple Server_ (M/M/c)
+
+Model **M/M/c** menggambarkan situasi antrian saat ada satu antrian tunggal yang dialirkan ke _multiple server_. Asumsi dasar dari model ini adalah __tingkat pelayanan setiap *server* adalah sama__ (konsisten antar _server_). 
+
+Kita akan simulasikan sistem antrian di minimarket tadi jika ada tiga kasir yang melayani konsumen. Agar menarik, kita akan buat skenario seperti ini:
+
+__Skenario I__: _Underload_ yakni sumber daya berlebih, tapi minimarket sepi. 
+    
+- Tingkat kedatangan pelanggan rendah 0.1 pelanggan per jam ($\lambda = 0.1$).
+- Ada sepuluh kasir dengan tingkat pelayanan masing-masing 10 pelanggan per jam ($\mu = 10$).
+
+```{r}
+#| echo: false
+
+library(queuecomputer)
+library(ggplot2)
+
+library(queuecomputer)
+
+# Parameter
+lambda <- 0.1  # sangat jarang kedatangan
+mu <- 10       # sangat cepat pelayanan
+c <- 10        # banyak server
+n_customers <- 5000  # jumlah pelanggan
+
+# Simulasi
+set.seed(123)
+arrivals <- cumsum(rexp(n_customers, lambda))
+services <- rexp(n_customers, mu)
+
+mmc_underload <- queue_step(arrivals, services, servers = c)
+
+# Hasil
+summary(mmc_underload)
+plot(mmc_underload, main = "M/M/10 Underload Ekstrem (ρ ≈ 0)")[[2]]
+```
+
+Hasilnya adalah sistem antrian selalu kosong. Hampir tidak ada antrian yang terbentuk.
+
+
+__Skenario II__: _Overload_ yakni sumber daya terbatas, minimarket ramai, dan _server_ lamban. 
+
+- Tingkat kedatangan pelanggan tinggi 20 pelanggan per jam ($\lambda = 20$).
+- Ada dua kasir dengan tingkat pelayanan masing-masing 1 pelanggan per jam ($\mu = 1$).
+
+```{r}
+#| echo: false
+
+# Parameter
+lambda <- 20  # sangat padat kedatangan
+mu <- 1       # sangat lambat pelayanan
+c <- 2        # sedikit server
+n_customers <- 5000  # jumlah pelanggan
+
+# Simulasi
+set.seed(123)
+arrivals <- cumsum(rexp(n_customers, lambda))
+services <- rexp(n_customers, mu)
+
+mmc_overload <- queue_step(arrivals, services, servers = c)
+
+# Hasil
+summary(mmc_overload)
+plot(mmc_overload, main = "M/M/2 Overload Ekstrem (ρ → ∞)")[[2]]
+```
+
+Hasilnya adalah antrian tumbuh tak terbatas, waktu tunggu semakin lama, semua _server_ selalu sibuk, dan sistem tidak stabil.
+
+__Skenario III__: _Critical load_ yakni sistem antrian berada di batas stabilitas. 
+
+- Tingkat kedatangan pelanggan 5 pelanggan per jam ($\lambda = 5$).
+- Ada lima kasir dengan tingkat pelayanan masing-masing 1 pelanggan per jam ($\mu = 1$).
+
+```{r}
+#| echo: false
+
+# Parameter
+lambda <- 5   # kedatangan = kapasitas pelayanan
+mu <- 1       # pelayanan normal
+c <- 5        # jumlah server
+n_customers <- 5000  # jumlah pelanggan
+
+# Simulasi
+set.seed(123)
+arrivals <- cumsum(rexp(n_customers, lambda))
+services <- rexp(n_customers, mu)
+
+mmc_critical <- queue_step(arrivals, services, servers = c)
+
+# Hasil
+summary(mmc_critical)
+plot(mmc_critical, main = "M/M/5 Critical Load (ρ = 1)")[[2]]
+```
+
+Berikut adalah komparasi ketiga skenarionya:
+
+```{r}
+#| echo: false
+
+# Membandingkan ketiga kasus
+comparison <- data.frame(
+  Scenario = c("Underload", "Overload", "Critical"),
+  `Mean Waiting Time` = c(
+    summary(mmc_underload)$mwt,
+    summary(mmc_overload)$mwt,
+    summary(mmc_critical)$mwt
+  ),
+  `Mean Queue Length` = c(
+    summary(mmc_underload)$qlength_mean,
+    summary(mmc_overload)$qlength_mean,
+    summary(mmc_critical)$qlength_mean
+  ),
+  Utilization = c(
+    summary(mmc_underload)$utilization,
+    summary(mmc_overload)$utilization,
+    summary(mmc_critical)$utilization
+  )
+) %>% 
+  mutate_if(is.numeric,scales::number)
+
+print(comparison)
+```
+
+
+Masih ada beberapa model lagi yang bisa kita eksplor, jadi _stay tuned_ _ya_.
+
+## **Model III** - Model Antrian _General Multiple Server_ (M/G/c)
+
+Model kedua di atas tidak memperhitungkan variasi yang terjadi antar layanan _server_. Karena _server_ juga manusia yang kadang bisa cepat atau lambat. Model M/G/c adalah model antrian dengan karakteristik:
+
+1. Kedatangan (M): Mengikuti proses Poisson dengan tingkat $\lambda$.
+1. Pelayanan (G): Waktu pelayanan mengikuti distribusi umum (_General_) dengan _mean_: $\frac{1}{\mu}$ dan variansi $\sigma^2$.
+1. $c$ _server_: Terdapat $c$ _server_ paralel.
+
+Perbedaan utama dengan M/M/c:
+
+- M/M/c mengasumsikan waktu pelayanan eksponensial
+- M/G/c lebih fleksibel dengan berbagai distribusi waktu pelayanan (normal, uniform, konstan, atau lainnya).
+
+Contoh Aplikasi M/G/c:
+
+1. Bandara (_Check-in Counter_):
+    - Kedatangan penumpang: Poisson.
+    - Waktu pelayanan: Distribusi normal (karena proses check-in relatif konsisten).
+    - Banyak counter paralel.
+1. Rumah Sakit (IGD):
+    - Kedatangan pasien: Acak (Poisson).
+    - Waktu pelayanan: Distribusi Weibull (beberapa kasus cepat, beberapa lama).
+    - Beberapa dokter jaga.
+1. _Call Center_:
+    - Panggilan masuk: Poisson.
+    - Durasi panggilan: Distribusi log-normal (banyak panggilan singkat, beberapa sangat panjang).
+    - Banyak operator.
+
+Berikut adalah contoh simulasi saat parameter:
+
+1. $\lambda = 15$, tingkat kedatangan (pelanggan/jam).
+1. $\mu = 7$, tingkat pelayanan rata-rata (pelanggan/jam per _server_).
+1. $\sigma = 0.1$, variasi pelayanan.
+1. $c = 3$, jumlah _server_.
+
+```{r}
+#| echo: false
+
+rm(list=ls())
+
+# Parameter simulasi
+lambda <- 15 # tingkat kedatangan (pelanggan/jam)
+mu <- 7 # tingkat pelayanan rata-rata (pelanggan/jam per server)
+c <- 3 # jumlah server
+sigma <- 0.1 # standar deviasi waktu pelayanan
+sim_time <- 200 # jam simulasi
+n_customers <- lambda * sim_time # estimasi jumlah pelanggan
+
+# Generate waktu kedatangan
+arrivals <- cumsum(rexp(n_customers, lambda))
+
+# Generate waktu pelayanan (distribusi normal positif)
+services <- rnorm(n_customers, mean = 1/mu, sd = sigma)
+services <- abs(services) # pastikan tidak negatif
+
+# Simulasi antrian
+queue_result <- queue_step(arrivals, services, servers = c)
+
+# Hasil summary
+summary(queue_result)
+
+# Visualisasi
+plot(queue_result, main = "Simulasi M/G/3 dengan Waktu Pelayanan Normal")[[2]]
+
+```
+
+## **Model IV** - Model Antrian _General Multiple Server with Capacity_ (M/G/c/K)
+
+Model terakhir yang hendak saya bahas adalah pengembangan dari model sebelumnya. Salah satu pengembangan kuncinya adalah adanya __kapasitas dari sistem antrian__. Model M/G/c/K adalah model antrian yang lebih realistis dengan karakteristik:
+
+1. Kedatangan (M): Mengikuti proses Poisson dengan tingkat $\lambda$.
+1. Pelayanan (G): Waktu pelayanan mengikuti distribusi umum (_General_) dengan _mean_: $\frac{1}{\mu}$ dan variansi $\sigma^2$.
+1. $c$ _server_: Terdapat $c$ _server_ paralel.
+4. **Kapasitas (K)**: Kapasitas sistem terbatas (antrian + pelayanan ≤ K).
+
+**Perbedaan utama dengan M/G/c**:
+
+- M/G/c/K memiliki kapasitas terbatas (K).
+- Pelanggan yang datang saat sistem penuh akan **ditolak/dibuang** (_blocked_).
+
+Contoh Aplikasi M/G/c/K:
+
+1. **Call Center dengan Antrian Terbatas**:
+   - Maksimal 20 panggilan dalam sistem (15 menunggu + 5 sedang dilayani).
+   - Panggilan baru ditolak jika sistem penuh.
+2. **Parkir Mobil**:
+   - Kapasitas 50 mobil.
+   - Kedatangan acak, waktu parkir bervariasi.
+   - Mobil ditolak jika parkir penuh.
+3. **Sistem ICU Rumah Sakit**:
+   - 10 tempat tidur ICU.
+   - Kedatangan pasien emergensi acak.
+   - Lama perawatan bervariasi.
+   - Pasien dirujuk ke rumah sakit lain jika ICU penuh.
+
+Sekarang kita akan lakukan simulasi dengan parameter berikut:
+
+Berikut adalah contoh simulasi saat parameter:
+
+1. $\lambda = 4$, tingkat kedatangan (pelanggan/jam).
+1. $\mu = 3$, tingkat pelayanan rata-rata (pelanggan/jam per _server_).
+1. $\sigma = 0.2$, variasi pelayanan.
+1. $c = 2$, jumlah _server_.
+1. $K = 5$, kapasitas sistem antrian.
+
+
+```{r}
+#| echo: false
+
+library(simmer)
+library(simmer.plot)
+library(ggplot2)
+
+rm(list=ls())
+
+# Parameter simulasi
+lambda <- 4 # tingkat kedatangan (pelanggan/jam)
+mu <- 4 # tingkat pelayanan rata-rata (pelanggan/jam per server)
+c <- 2 # jumlah server
+K <- 5 # kapasitas sistem (antrian + pelayanan)
+sim_time <- 200 # jam simulasi
+seed <- 123 # seed untuk reproduktibilitas
+
+# Setup lingkungan simulasi
+set.seed(seed)
+env <- simmer("M/G/c/K Queue Simulation")
+
+# Definisi trajektori pelanggan
+customer <- trajectory("Customer's path") %>%
+  seize("server", 1) %>% # meminta server
+  timeout(function() rnorm(1, mean = 1/mu, sd = 0.2)) %>% # waktu pelayanan
+  release("server", 1) # melepaskan server
+
+# Setup sumber daya sistem
+env %>%
+  add_resource("server", 
+               capacity = c, # jumlah server
+               queue_size = K - c) %>% # ukuran antrian (K - c)
+  add_generator("Customer", 
+                customer, 
+                function() rexp(1, lambda), # interval kedatangan
+                mon = 2) # monitoring level 2
+
+# Jalankan simulasi
+env %>% run(until = sim_time)
+
+# Analisis hasil
+## Data kedatangan dan keberangkatan
+arrivals <- get_mon_arrivals(env)
+resources <- get_mon_resources(env)
+
+## Hitung probabilitas blocking
+n_total <- nrow(arrivals)
+n_blocked <- sum(arrivals$finished == FALSE)
+p_block <- n_blocked/n_total
+
+## Hitung metrik kinerja
+served <- arrivals[arrivals$finished == TRUE, ]
+avg_wait <- mean(served$end_time - served$start_time - served$activity_time)
+avg_queue <- mean(resources$queue)
+utilization <- mean(resources$server / c)
+
+# Visualisasi
+## Plot utilisasi resources
+# plot(resources, "usage", "server", items = "server") +
+#   ggtitle("Utilisasi Server")
+
+## Plot panjang antrian
+# plot(resources, "queue", "server") +
+#   ggtitle("Panjang Antrian")
+
+# Hasil
+cat("=== Hasil Simulasi M/G/", c, "/", K, " dengan simmer ===\n", sep="")
+cat("Total kedatangan:", n_total, "\n")
+cat("Total dilayani:", n_total - n_blocked, "\n")
+cat("Total blocked:", n_blocked, "\n")
+cat("Probabilitas blocking:", round(p_block, 3), "\n")
+cat("Rata-rata waktu tunggu:", round(avg_wait, 3), "jam\n")
+cat("Rata-rata panjang antrian:", round(avg_queue, 2), "\n")
+cat("Utilisasi server:", round(utilization, 3), "\n")
+
+# Waktu respon sistem
+hist(served$end_time - served$start_time, 
+     main = "Distribusi Waktu Respon Sistem",
+     xlab = "Waktu (jam)")
+
+# Hubungan waktu tunggu vs waktu pelayanan
+ggplot(served, aes(x = activity_time, y = end_time - start_time - activity_time)) +
+  geom_point() +
+  labs(title = "Waktu Tunggu vs Waktu Pelayanan",
+       x = "Waktu Pelayanan",
+       y = "Waktu Tunggu")
+
+```
 
 ---
 
-## Model Sederhana: Saat kasir bertindak seperti robot
+Apa faedahnya jika kita bisa memodelkan sistem antrian dengan teori antrian? Kita bisa melakukan beberapa hal berikut ini:
 
-Salah satu keinginan saya adalah semua kasir melayani dengan _service rate_ yang sama. 
+### 1. **Optimasi Biaya Operasional**
+- **Contoh**: Supermarket menentukan jumlah optimal kasir.
+- **Manfaat**:
+  - Menyeimbangkan biaya _server_ (kasir/staf) vs biaya antrian (_customer dissatisfaction_)
+  - Mengidentifikasi titik optimal dimana penambahan _server_ tidak lagi ekonomis
+  - Studi kasus: _Call center_ mengurangi 15% biaya operasional dengan model M/M/c
 
-Misalkan pada model sederhana dimana tidak ada variabilitas
+### 2. **Peningkatan Kepuasan Pelanggan**
+- **Metric**: Waktu tunggu (Wq) dan panjang antrian (Lq)
+- **Aplikasi**:
+  - Restoran cepat saji mengatur jadwal karyawan berdasarkan prediksi antrian
+  - Rumah sakit mengurangi waktu tunggu pasien IGD dari 60 menit menjadi 25 menit
+- **Data**: Setiap 10% penurunan waktu tunggu meningkatkan NPS 5 poin (_retail_)
+
+### 3. **Manajemen Kapasitas yang Data-Driven**
+- **Tools**: Model M/M/c/K untuk sistem kapasitas terbatas
+- **Implementasi**:
+  - Parkir mal dengan 200 slot → model menentukan 95% probability tersedia slot
+  - Bandara mengoptimalkan _security check lanes_
+- **Impact**: Mengurangi _lost sales_ 20% pada _peak hours_
+
+Teori antrian memberikan _framework_ kuantitatif untuk:
+
+- Mengkonversi _customer pain points_ (antrian) ke metrik terukur
+- Mengevaluasi ROI penambahan sumber daya
+- Membuat keputusan berbasis data bukan asumsi
+- Memprediksi perilaku sistem dibawah berbagai kondisi
+
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
 
 
 
-**Rumus Dasar**:
-
-$$\text{Waktu tunggu rata-rata} = \frac{\lambda}{\mu (\mu - \lambda)}$$
-
-
-------------------------------------------------------------------------
-
-### **2. Kenapa Garis "Cepat" Justru Lambat?**
-
-#### **A. Efek Variabilitas (Hukum Kingman)**
-
--   **Prinsip**: Variabilitas waktu pelayanan (σ) memperlambat antrian lebih dari yang diperkirakan.\
--   **Contoh**:
-    -   1 kasir cepat (μ tinggi) tapi melayani 1 pelanggan dengan 50 item + voucher → waktu layanan meledak (σ tinggi).\
-    -   3 kasir lambat (μ rendah) dengan pelanggan beritem sedikit → justru lebih stabil.\
--   **Matematis**: Waktu tunggu dipengaruhi oleh ( \frac{\sigma^2}{\mu^2} ). Variansi tinggi = antrian tak terduga.
-
-#### **B. "Fast Lane" yang Tidak Benar-Benar Cepat**
-
--   Banyak supermarket punya jalur "10 item atau kurang", tetapi:
-    -   Orang mengabaikan aturan (membawa 15 item).\
-    -   Beberapa transaksi tetap lambat (misal: masalah kartu, refund).
-
-#### **C. Pemilihan Antrian yang Bias (Psikologi)**
-
--   **Bias Optimisme**: Kita cenderung memilih antrian yang "kelihatan" cepat (misal: lebih pendek), tapi mengabaikan faktor lain (seperti μ dan σ).\
--   **Bias Konfirmasi**: Jika pernah mengalami antrian lambat, kita akan selalu merasa pilihan kita salah.
-
-------------------------------------------------------------------------
-
-### **3. Simulasi Sederhana: Kasus 3 Antrian**
-
-Misal di supermarket ada 3 antrian:\
-- **Antrian A**: 1 kasir cepat (μ=3 pelanggan/menit), tapi ada 1 pelanggan dengan 100 item (σ tinggi).\
-- **Antrian B**: 2 kasir lambat (μ=1 pelanggan/menit), pelanggan rata-rata 5 item (σ rendah).\
-- **Antrian C**: 1 kasir sedang (μ=2 pelanggan/menit), tidak ada variabilitas.
-
-**Hasil**:\
-- Antrian A bisa lebih lambat karena 1 pelanggan "penyebab delay" memblokir seluruh antrian.\
-- Antrian B justru lebih cepat karena beban terdistribusi.
-
-------------------------------------------------------------------------
-
-### **4. Strategi Matematika untuk Memilih Antrian Tercepat**
-
-1.  **Hindari Antrian dengan Variabilitas Tinggi**:
-    -   Cek keranjang belanjaan orang di depan (banyak item? banyak kupon?).\
-    -   Hindari antrian dengan orang tua (biasanya butuh waktu lebih lama untuk bayar).\
-2.  **Pilih Antrian dengan Multiple Servers**:
-    -   Antrian tunggal yang mengarah ke beberapa kasir (seperti di bank) lebih efisien.\
-3.  **Perhatikan Service Rate (μ)**:
-    -   Kasir yang terlihat berpengalaman biasanya lebih cepat.
-
-------------------------------------------------------------------------
-
-### **5. Solusi Supermarket: Sistem Antrian Cerdas**
-
-Beberapa supermarket modern menggunakan:\
-- **Single Queue + Multiple Cashiers**: Semua pelanggan mengantri di 1 garis, lalu diarahkan ke kasir yang tersedia (mengurangi σ).\
-- **Dynamic Queueing**: Algoritma real-time mengalokasikan pelanggan ke kasir berdasarkan μ dan σ (contoh: sistem "virtual queue" di IKEA).
-
-------------------------------------------------------------------------
-
-### **Kesimpulan**
-
-Antrian yang "kelihatan" cepat justru lambat karena:\
-1. **Variabilitas waktu pelayanan** (Hukum Kingman).\
-2. **Ketidaksempurnaan aturan "fast lane"**.\
-3. **Bias psikologis dalam memilih antrian**.
-
-Solusinya? **Pahami μ dan σ**, lalu pilih antrian dengan distribusi beban merata. Atau... gunakan self-checkout! 🛒⚡
-
-*"Antrian terpendek bukan selalu tercepat—yang terbaik adalah yang paling stabil."*
-
-Berikut adalah simulasi antrian supermarket dalam **bahasa R** yang menggambarkan mengapa antrian yang "kelihatan cepat" justru bisa lebih lambat karena variabilitas waktu pelayanan.
-
-### **Simulasi 3 Jenis Antrian**
-
-Kita akan membandingkan:\
-1. **Antrian Cepat (1 kasir cepat, tetapi dengan variabilitas tinggi)**\
-2. **Antrian Sedang (1 kasir stabil, variabilitas rendah)**\
-3. **Antrian Multi-Kasir (2 kasir lambat, variabilitas rendah)**
-
-------------------------------------------------------------------------
-
-### **Kode Simulasi dalam R**
-
-```{r}
-# ---------------------------
-# SIMULASI ANTRIAN SUPERMARKET
-# ---------------------------
-
-library(dplyr)
-library(ggplot2)
-set.seed(123)  # Agar hasil reproducible
-
-# Fungsi untuk mensimulasikan antrian
-simulate_queue <- function(n_customers, service_rate_mean, service_rate_sd) {
-  service_times <- rnorm(n_customers, service_rate_mean, service_rate_sd)
-  service_times <- pmax(service_times, 0.1)  # Waktu tidak boleh negatif
-  cumulative_time <- cumsum(service_times)
-  return(data.frame(
-    customer = 1:n_customers,
-    service_time = service_times,
-    exit_time = cumulative_time
-  ))
-}
-
-# Parameter simulasi
-n_customers <- 50  # Jumlah pelanggan
-
-# 1. Antrian Cepat (1 kasir cepat, tapi variabilitas tinggi)
-queue_fast <- simulate_queue(
-  n_customers,
-  service_rate_mean = 1,    # Rata-rata 1 menit/pelanggan
-  service_rate_sd = 1.5     # Variabilitas tinggi (beberapa pelanggan sangat lama)
-)
-
-# 2. Antrian Sedang (1 kasir stabil, variabilitas rendah)
-queue_medium <- simulate_queue(
-  n_customers,
-  service_rate_mean = 1.5,  # Rata-rata 1.5 menit/pelanggan
-  service_rate_sd = 0.3     # Variabilitas rendah
-)
-
-# 3. Antrian Multi-Kasir (2 kasir lambat, variabilitas rendah)
-# Simulasikan 2 antrian paralel
-queue_multi_1 <- simulate_queue(
-  ceiling(n_customers / 2),
-  service_rate_mean = 2,    # Rata-rata 2 menit/pelanggan
-  service_rate_sd = 0.3
-)
-queue_multi_2 <- simulate_queue(
-  floor(n_customers / 2),
-  service_rate_mean = 2,
-  service_rate_sd = 0.3
-)
-queue_multi <- rbind(
-  transform(queue_multi_1, queue_id = "Kasir 1"),
-  transform(queue_multi_2, queue_id = "Kasir 2")
-)
-
-# Hitung waktu total antrian terakhir
-total_time_fast <- max(queue_fast$exit_time)
-total_time_medium <- max(queue_medium$exit_time)
-total_time_multi <- max(queue_multi$exit_time)
-
-# Plot hasil
-ggplot() +
-  geom_step(
-    data = queue_fast,
-    aes(x = exit_time, y = customer, color = "Antrian Cepat (1 kasir, σ tinggi)"),
-    linewidth = 1
-  ) +
-  geom_step(
-    data = queue_medium,
-    aes(x = exit_time, y = customer, color = "Antrian Sedang (1 kasir, σ rendah)"),
-    linewidth = 1
-  ) +
-  geom_step(
-    data = queue_multi,
-    aes(x = exit_time, y = customer, color = paste("Antrian Multi (2 kasir, σ rendah)"), group = queue_id),
-    linewidth = 1,
-    linetype = "dashed"
-  ) +
-  labs(
-    title = "Perbandingan Kecepatan Antrian Supermarket",
-    subtitle = paste(
-      "Total waktu Antrian Cepat:", round(total_time_fast, 1), "menit |",
-      "Antrian Sedang:", round(total_time_medium, 1), "menit |",
-      "Antrian Multi:", round(total_time_multi, 1), "menit"
-    ),
-    x = "Waktu (menit)",
-    y = "Pelanggan ke-",
-    color = "Jenis Antrian"
-  ) +
-  theme_minimal() +
-  scale_color_manual(values = c("red", "blue", "darkgreen"))
-```
-
-------------------------------------------------------------------------
-
-### **Hasil Simulasi**
-
--   **Antrian Cepat (1 kasir, σ tinggi)**:
-    -   *Kasir cepat*, tetapi beberapa pelanggan memakan waktu sangat lama (misal: bayar pakai koin, voucher ribet).\
-    -   **Hasil**: Total waktu lebih lama karena **efek variabilitas (σ tinggi)**.
--   **Antrian Sedang (1 kasir, σ rendah)**:
-    -   *Kasir stabil* dengan waktu pelayanan konsisten.\
-    -   **Hasil**: Lebih cepat daripada antrian "cepat" karena tidak ada delay ekstrem.
--   **Antrian Multi-Kasir (2 kasir, σ rendah)**:
-    -   *Dua kasir lambat* tetapi konsisten.\
-    -   **Hasil**: Paling cepat karena beban terdistribusi.
-
-------------------------------------------------------------------------
-
-### **Interpretasi Grafik**
-
--   Garis merah (Antrian Cepat) akan terlihat **terkadang datar (delay) lalu melonjak**.\
--   Garis biru (Antrian Sedang) naik **stabil**.\
--   Garis hijau (Antrian Multi) naik **paling cepat** karena paralelisasi.
-
-------------------------------------------------------------------------
-
-### **Kesimpulan Matematis**
-
--   **Variabilitas (σ) lebih berpengaruh daripada kecepatan rata-rata (μ)**.\
--   **Multi-kasir + σ rendah** adalah kombinasi terbaik.\
--   **Antrian "cepat" bisa menipu** jika tidak memperhitungkan σ.
-
-Coba jalankan kode di R, dan Anda akan melihat sendiri mengapa "garis lebih cepat" seringkali lambat! 🛒⏱️
