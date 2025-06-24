@@ -1,0 +1,108 @@
+---
+title: "Mengapa Penjudi Pasti Bangkrut Walau Peluang Menang-Kalah Sebesar 50-50"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: visual
+execute:
+  warning: false
+error: false
+---
+
+Di _blog_ ini, saya telah menuliskan tiga tulisan yang terkait dengan judi seperti:
+
+1. Simulasi [togel atau lotere](https://ikanx101.com/blog/lotere/).
+1. Simulasi [_binary option_](https://ikanx101.com/blog/bin-omo/).
+1. Pembuktian [_hot hand fallacy_](https://ikanx101.com/blog/hot-hands/).
+
+Kali ini saya hendak menulis kembali tentang judi. Kenapa? Karena ada hipotesis bahwa __hilangnya sebagian besar uang masyarakat disebabkan oleh judi__.
+
+---
+
+> Misalkan dalam suatu permainan judi, ada dua pihak yang terlibat, yakni bandar (rumah judi) dan penjudi. Permainan dilakukan secara __adil__ dengan peluang menang dan kalah sama-sama __50:50__.
+
+Meskipun sebuah permainan tampak adil dengan peluang __50:50__, ada dua pilar fundamental yang tak terlihat yang memastikan bandar (rumah judi) selalu menang dalam jangka panjang: ___House Edge___ dan ___Bankroll Disparity___ (__Kesenjangan Modal__). Keduanya bekerja secara sinergis untuk menjamin kebangkrutan penjudi. Mari kita telaah keduanya sebagai berikut:
+
+## _House Edge_
+
+Ini adalah mekanisme yang paling halus namun paling kuat bagi bandar. _House Edge_ adalah keuntungan matematis yang ditanamkan bandar ke dalam setiap permainan melalui struktur pembayaran yang tidak adil. Maksudnya apa? Mari kita simulasikan permainan lempar koin yang dimodifikasi oleh bandar.
+
+__Aturan Permainan:__
+
+1. Modal Awal Penjudi: Rp 1.000.000
+1. Taruhan per Putaran: Rp 10.000
+1. Peluang Menang (Angka): 50%
+1. Peluang Kalah (Gambar): 50%
+1. Struktur Pembayaran (Di sinilah letak kuncinya):
+    - Jika Menang: Bandar hanya membayar Rp 9.500 (_Payout_ 0.95 banding 1).
+    - Jika Kalah: Penjudi kehilangan Rp 10.000 secara penuh.
+
+> Selisih Rp500 inilah yang menjadi __keuntungan bandar__. Dalam kasus ini, _House Edge_-nya adalah 0.05%. 
+
+Mari kita lihat dampaknya.
+
+__Simulasi 100 Lemparan Koin (Dengan Hasil Sempurna 50-50):__
+
+Untuk membuktikan kekuatan _House Edge_, mari kita asumsikan penjudi mendapatkan keberuntungan yang sempurna, yakni 50 kali menang dan 50 kali kalah.
+
+1. Total Uang dari Kemenangan: 50 kali menang × Rp9.500/kemenangan = Rp475.000
+1. Total Uang dari Kekalahan: 50 kali kalah × Rp10.000/kekalahan = Rp500.000
+1. Hasil Akhir (_Netto_): Rp475.000 (Pemasukan) - Rp500.000 (Pengeluaran) = __- Rp25.000__
+
+Dari simulasi di atas, bahkan dengan keberuntungan yang seimbang sempurna (50 menang, 50 kalah), penjudi tetap kehilangan uang. Modalnya sekarang menjadi Rp975.000. _House Edge_ bekerja seperti pajak tak terlihat pada setiap kemenangan Anda, yang secara perlahan tapi pasti menggerogoti modal Anda. Semakin lama Anda bermain, semakin banyak "pajak" ini terkumpul untuk bandar.
+
+Hal ini memperlihatkan kepada kita ketika penjudi beruntung secara statistik tapi penjudi secara finansial tetap merugi. Ini mengubah permainan dari "peluang" menjadi "kepastian matematis" bagi bandar seiring berjalannya waktu.
+
+## _Bankroll Disparity_ 
+
+Sekarang, mari kita abaikan sejenak _House Edge_ dan bayangkan sebuah permainan yang benar-benar adil (pembayaran 1 banding 1). Di sinilah faktor __Kesenjangan Modal__ menjadi penentu utama.
+
+Bayangkan ini sebagai duel:
+
+- Penjudi: Memiliki modal terbatas (misalnya, Rp100.000). Setiap kekalahan terasa signifikan.
+- Bandar: Memiliki modal yang secara fungsional tak terbatas dari sudut pandang penjudi (miliaran atau triliunan rupiah).
+
+Konsep statistik yang relevan di sini adalah "_Gambler's Ruin_" (Kebangkrutan Penjudi). 
+
+> Teori ini menyatakan bahwa dalam permainan yang adil, pemain dengan modal terbatas akan selalu bangkrut jika bermain melawan pemain dengan modal tak terbatas.
+
+__Simulasi Duel (Permainan Adil, *Payout* 1:1):__
+
+1. Modal Penjudi: Rp100.000.
+1. Modal Bandar: "Tak Terbatas".
+1. Taruhan: Rp10.000.
+
+Mari kita lihat sebuah hasil simulasi dari rangkaian hasil acak yang sangat mungkin terjadi dalam jangka pendek, yang disebut "_statistical variance_" (variansi statistik) atau rentetan nasib buruk.
+
+- Putaran 1: Kalah (Modal: Rp90.000)
+- Putaran 2: Kalah (Modal: Rp80.000)
+- Putaran 3: Menang (Modal: Rp90.000)
+- Putaran 4: Kalah (Modal: Rp80.000)
+- Putaran 5: Kalah (Modal: Rp70.000) dan seterusnya.
+
+Sekarang, bayangkan penjudi mengalami rentetan 10 kekalahan beruntun. Peluangnya memang kecil di setiap putaran, tetapi dalam ribuan putaran, rentetan seperti ini secara statistik pasti akan terjadi.
+
+- Jika penjudi mengalami 10 kekalahan beruntun, modalnya habis. _Game Over_. Dia tidak bisa lagi bermain untuk "mengejar" kekalahannya.
+1. Jika bandar mengalami 10 kekalahan beruntun (artinya penjudi menang 10 kali), modal bandar hanya berkurang sedikit. Bandar tidak merasakan apa-apa dan hanya perlu menunggu statistik kembali normal.
+
+
+Dari secercah simulasi di atas, kita bisa melihat perbedaan cara bermain antara bandar dan penjudi. Penjudi bermain dalam mode "_survival_" (bertahan hidup) dengan tujuan untuk tidak bangkrut. Sedangkan bandar bermain dalam mode "_probabilitas_". Mereka hanya perlu menunggu fluktuasi statistik normal untuk menghabisi modal terbatas lawannya. Bandar bisa menahan "badai" kekalahan beruntun, sedangkan penjudi akan "tenggelam".
+
+Poin kunci dari _Bankroll Disparity_ adalah memastikan bahwa penjudi akan tersingkir dari permainan oleh fluktuasi statistik normal (nasib buruk jangka pendek) jauh sebelum mereka memiliki kesempatan untuk menang secara signifikan.
+
+## Gabungan Keduanya
+
+Sekarang, gabungkan kedua konsep tersebut di dunia nyata:
+
+- _House Edge_ secara perlahan dan pasti menguras modal Anda, membuat Anda lebih rentan. Ini seperti racun yang bekerja lambat.
+- _Bankroll Disparity_ memastikan bahwa ketika nasib buruk yang tak terhindarkan datang, Anda tidak akan punya cukup modal untuk bertahan, lalu Anda akan bangkrut. Ini adalah pukulan knockout saat Anda sudah lemah.
+
+Jadi, bahkan jika peluang menang dan kalah dalam satu putaran adalah 50-50, sistemnya dirancang sedemikian rupa sehingga risiko Anda tidak pernah sepadan dengan imbalannya, dan daya tahan finansial Anda tidak sebanding dengan lawan Anda. Pertanyaannya bukanlah apakah penjudi akan kalah, melainkan seberapa cepat mereka akan kalah.
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
+
