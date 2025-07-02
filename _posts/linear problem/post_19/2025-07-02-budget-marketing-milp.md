@@ -32,7 +32,7 @@ mau *share* contoh kasus MILP sederhana dalam dunia *marketing*.
 Sebuah perusahaan ingin mengalokasikan *marketing budget* ke tiga jenis
 promosi:
 
-1.  iklan TV,
+1.  Iklan TV,
 2.  Sosial Media, dan
 3.  *Email*.
 
@@ -103,7 +103,7 @@ Berikut adalah *objective function* dari masalah ini.
     ![x_1 + x_2 \geq 3](https://latex.codecogs.com/svg.latex?x_1%20%2B%20x_2%20%5Cgeq%203 "x_1 + x_2 \geq 3")
 
 3.  **Email Marketing Hanya Jika Dipilih
-    (![y](https://latex.codecogs.com/svg.latex?y "y")) binary):**
+    (![y](https://latex.codecogs.com/svg.latex?y "y")) binary:**
 
     ![x_3 \leq My \quad \text{(M = bilangan besar, misal 10)}](https://latex.codecogs.com/svg.latex?x_3%20%5Cleq%20My%20%5Cquad%20%5Ctext%7B%28M%20%3D%20bilangan%20besar%2C%20misal%2010%29%7D "x_3 \leq My \quad \text{(M = bilangan besar, misal 10)}")
 
