@@ -1,0 +1,163 @@
+---
+title: "Optimization Story: Optimisasi Alokasi Budget Marketing Perusahaan"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: false
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+Kemarin ada seorang rekan kerja dari departemen yang berbeda bertanya kepada saya:
+
+> _"Kang, kamu familiar dengan MILP?"_
+
+Say tentu jawab: __iya__. Tesis saya merupakan contoh kasus MILP dan hampir semua _post_ dengan _tag_ [_optimization story_](https://ikanx101.com/tags/#optimization-story) merupakan contoh-contoh kasus _mixed integer linear programming_. Kali ini saya mau _share_ contoh kasus MILP sederhana dalam dunia _marketing_.
+
+---
+
+Sebuah perusahaan ingin mengalokasikan _marketing budget_ ke tiga jenis promosi: 
+
+1. iklan TV, 
+1. Sosial Media, dan 
+1. _Email_.
+
+Ketiga jenis promosi ini bertujuan untuk memaksimalkan total omset. Namun perlu diperhatikan bahwa perusahaan pasti memiliki keterbatasan _budget_ dan harus memilih minimal satu jenis promosi berbayar berupa TV atau sosial media. Perusahaan memiliki _budget_ maksimum sebesar Rp 10 juta.
+
+Jadi jenis promosi apa yang harus dipilih? Kita akan mencarinya menggunakan optimisasi matematika.
+
+Pertama-tama kita akan memformulasikan masalah di atas menjadi bahasa optimisasi berikut ini:
+
+### **Variabel Keputusan**  
+
+Kita akan mendefinisikan _decision variable_ (variabel keputusan), yakni inti keputusan yang akan diambil kelak.
+
+- $x_1$ : _Budget_ untuk iklan TV (dalam juta rupiah). Nilai $x_1$ kita definisikan bertipe **continuous**.
+- $x_2$ : _Budget_ untuk iklan sosial media (dalam juta rupiah), variabel ini juga kita definisikan bertipe **continuous**.
+- $x_3$ : _Budget_ untuk iklan melalui _email marketing_, variabel ini jugat didefinisikan bertipe **continuous**.
+- $y$ : _Binary_ (1 jika memilih _email marketing_ atau 0 jika tidak).
+
+### **Parameter**
+
+Setiap _known values_ dari masalah ini disebut dengan __parameter__. Pada kasus ini, kita memiliki informasi berikut ini:
+
+- __ROI__ (_Return on Investment_) setiap jenis promosi:  
+  - TV: 3x (setiap Rp1 _spending_ iklan menghasilkan Rp3 penjualan).  
+  - Sosial Media: 2x  
+  - _Email_: 5x (tetapi hanya aktif jika $y = 1$).  
+- _Budget_ total: Rp10,000,000.
+- Biaya tetap untuk _email marketing_: Rp2,000,000 (jika dipilih).
+- Minimal alokasi untuk TV atau Sosial Media: Rp3,000,000.
+
+### **Formulasi Matematika**  
+
+Tujuan masalah ini adalah memaksimalkan ROI dari _spending_ promosi.
+
+**Fungsi Tujuan (Maksimalkan Penjualan)**  
+
+Berikut adalah _objective function_ dari masalah ini.
+
+$$\max{\text{(omset)}}= 3x_1 + 2x_2 + 5 x_3 \cdot y$$
+
+**Batasan (Constraints):**  
+
+1. **Budget Total:**  
+   
+   $x_1 + x_2 + y \cdot (x_3 + 2) \leq 10$
+   
+   _Budget_ dalam juta rupiah, biaya Email termasuk jika ia dipilih.
+
+2. **Minimal Alokasi TV atau Sosial Media:**  
+   
+   $x_1 + x_2 \geq 3$
+  
+3. **Email Marketing Hanya Jika Dipilih ($y$) binary):**  
+   
+   $x_3 \leq My \quad \text{(M = bilangan besar, misal 10)}$  
+    
+   Jika $y = 0$ maka $x_3 = 0$.  
+
+4. **Non-negatif dan Binary:**  
+   
+   $x_1, x_2, x_3 \geq 0, \quad y \in \{0,1\}$
+
+Untuk menyelesaikan masalah ini, saya akan membuat skripnya di __R__ menggunakan `library(ompr)` sebagai berikut:
+
+```{r}
+#| include: false
+
+rm(list=ls())
+gc()
+
+library(dplyr)
+library(tidyr)
+library(ompr)
+library(ompr.roi)
+library(ROI.plugin.glpk)
+
+bin_prog = 
+  MIPModel() %>%
+  # menambah variabel
+  add_variable(x[i],
+	       i = 1:3,
+	       type = "continuous",
+	       lb = 0) %>%
+  add_variable(y,
+               type = "binary") %>% 
+  # membuat objective function
+  set_objective(3*x[1] + 2*x[2] + 5*x[3], "max") %>%
+  # menambah constraints
+  # max budget total
+  add_constraint(x[1] + x[2] + x[3] + 2 <= 10) %>%
+  # min tv dan sosmed
+  add_constraint(x[1] + x[2] >= 3) %>% 
+  # khususon untuk x3
+  add_constraint(x[3] <= 10*y)
+```
+
+```{r}
+bin_prog 
+
+hasil = 
+  bin_prog %>%
+  solve_model(with_ROI(solver = "glpk",
+		       verbose = T))
+
+```
+
+Solusi yang dihasilkan adalah:
+
+```{r}
+hasil
+```
+
+Max omset yang didapatkan sebesar Rp34 juta dengan konfigurasi:
+
+```{r}
+hasil %>% 
+  get_solution(x[i]) %>% 
+  select(i,value) %>% 
+  rename(jenis_promosi   = i,
+         budget_dlm_juta = value) %>% 
+  mutate(jenis_promosi = case_when(
+    jenis_promosi == 1 ~ "TV",
+    jenis_promosi == 2 ~ "Sosial media",
+    jenis_promosi == 3 ~ "Email marketing"
+  )) %>% 
+  knitr::kable()
+```
+
+_Expected_ ROI dari:
+
+- TV: budget sebesar Rp3 juta menghasilkan omset Rp9 juta.  
+- _Email marketing_: Rp5juta menghasilkan omset Rp25 juta.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
