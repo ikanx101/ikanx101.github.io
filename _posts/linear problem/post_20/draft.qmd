@@ -1,0 +1,128 @@
+---
+title: "Optimization Story: Optimisasi Alokasi Budget Marketing Perusahaan II"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: false
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+Masih melanjutkan *post* saya [sebelumnya terkait pemilihan alokasi *budget* *marketing*](https://ikanx101.com/blog/budget-marketing-milp/). Kali ini saya akan menuliskan kembali kasus kedua terkait optimisasi perusahaan saat mengalokasikan *budget marketing*-nya.
+
+------------------------------------------------------------------------
+
+## **Latar Belakang**
+
+Sebuah perusahaan ingin memilih kombinasi promosi dari tiga *channel* berikut ini:
+
+1.  Radio,
+2.  Koran,
+3.  Spanduk.
+
+Dengan biaya seminimal mungkin tapi harus menjangkau (*reach*) minimal **150.000 orang pelanggan**. Setiap *channel* memiliki *fixed cost* (jika dipilih) dan memiliki tingkat jangkauan berbeda-beda.
+
+| Channel | Biaya Tetap (\$) | Biaya per Unit (\$) | Jangkauan per Unit (ribu pelanggan) |
+|-----------------|-----------------|-----------------|-----------------------|
+| Radio | 500 | \- | 40 |
+| Koran | 300 | \- | 25 |
+| Spanduk | 100 | 50 | 10 (per spanduk) |
+
+Berbeda dengan radio dan koran, spanduk memiliki dua jenis biaya yakni **biaya tetap** dan **biaya per unit** (karena bisa ditaruh di beberapa tempat yang berbeda-beda).
+
+Agar bisa melakukan formulasi model matematikanya, saya perlu menuliskan beberapa hal berikut ini:
+
+### **Variabel Keputusan:**
+
+-   $x_1$ : *Binary* (1 jika memilih radio, 0 jika tidak).
+-   $x_2$ : *Binary* (1 jika memilih koran, 0 jika tidak).
+-   $x_3$ : *Binary* (1 jika memilih spanduk, 0 jika tidak).
+-   $y$ : Jumlah unit spanduk (integer ≥ 0) *(karena Spanduk bisa dipasang lebih dari satu lokasi)*
+
+### **Formulasi Matematika:**
+
+*Objective function* bisa dituliskan sebagai berikut:
+
+$$\min{\text{budget}} = 500x_1 + 300x_2 + 100x_3 + 50y$$
+
+Yakni meminimumkan *budget* *marketing* dengan *constraints*:
+
+1.  **Target Jangkauan Pelanggan:** $40x_1 + 25x_2 + 10y >= 150$.
+2.  **Spanduk Hanya Digunakan Jika Dipilih (**$x_3 = 1$): Maka untuk menghubungkan $x_3$ dan $y$ kita bisa menggunakan hubungan sebagai berikut: $y \leq M x_3 \quad \text{(M = bilangan besar, misal 100)}$.
+3.  **Non-negatif dan Integer:** $x_1, x_2, x_3 \in \{0,1\}, \quad y \in \mathbb{Z}^+$.
+
+Model tersebut akan saya _solve_ menggunakan __R__ sebagai berikut:
+
+```{r}
+#| include: false
+rm(list=ls())
+gc()
+
+library(dplyr)
+library(tidyr)
+library(ompr)
+library(ompr.roi)
+library(ROI.plugin.glpk)
+
+bin_prog = 
+  MIPModel() %>%
+  # menambah variabel
+  add_variable(x[i],
+	       i = 1:3,
+	       type = "binary",
+	       lb = 0) %>%
+  add_variable(y,
+               type = "integer",
+               lb = 0) %>% 
+  # membuat objective function
+  set_objective(500*x[1] + 300*x[2] + 100*x[3] + 50*y, "min") %>%
+  # menambah constraints
+  # min reach
+  add_constraint(40*x[1] + 25*x[2] + 10*y >= 150) %>%
+  # menghubungkan x3 dan y
+  add_constraint(y <= 100 * x[3])
+```
+
+
+```{r}
+bin_prog 
+
+hasil = 
+  bin_prog %>%
+  solve_model(with_ROI(solver = "glpk",
+		       verbose = T))
+```
+
+```{r}
+hasil
+```
+
+__R__ menghasilkan _total spending budget_ sebesar 850$ saja dengan cara:
+
+```{r}
+hasil %>% 
+  get_solution(x[i]) %>% 
+  mutate(channel = c("Radio","Koran","Spanduk")) %>% 
+  rename(decision = value) %>% 
+  select(channel,decision) %>% 
+  knitr::kable()
+
+hasil %>% 
+  get_solution(y)
+```
+
+Hanya menggunakan spanduk dan menggunakan 15 unit spanduk saja agar tepat _reach_ 150.000 orang pelanggan.
+
+Perlu diperhatikan bahwa tujuan dari masalah ini adalah meminimumkan _budget_ _marketing_ sehingga mendapatkan _reach_ yang pas dengan _constraint_ tidaklah mengapa.
+
+------------------------------------------------------------------------
+
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
