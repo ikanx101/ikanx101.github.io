@@ -239,6 +239,7 @@ Nilai 11 adalah bobot: **seorang petugas *lane* setara dengan 11 orang
 
 Nilai ini diambil dari *expected service rate* data.
 
+
 ### Semua *Constraints* yang Ada
 
 ![l_i \leq 17, \space \forall i \in \[1,12\]](https://latex.codecogs.com/svg.latex?l_i%20%5Cleq%2017%2C%20%5Cspace%20%5Cforall%20i%20%5Cin%20%5B1%2C12%5D "l_i \leq 17, \space \forall i \in [1,12]")
@@ -246,6 +247,7 @@ Nilai ini diambil dari *expected service rate* data.
 ![p_i \leq sr_i \times l_i, \space \forall i \in \[1,12\]](https://latex.codecogs.com/svg.latex?p_i%20%5Cleq%20sr_i%20%5Ctimes%20l_i%2C%20%5Cspace%20%5Cforall%20i%20%5Cin%20%5B1%2C12%5D "p_i \leq sr_i \times l_i, \space \forall i \in [1,12]")
 
 ![u_i = \hat{N}\_i - p_i , \space \forall i \in \[1,12\]](https://latex.codecogs.com/svg.latex?u_i%20%3D%20%5Chat%7BN%7D_i%20-%20p_i%20%2C%20%5Cspace%20%5Cforall%20i%20%5Cin%20%5B1%2C12%5D "u_i = \hat{N}_i - p_i , \space \forall i \in [1,12]")
+
 
 ## *Solving the Model*
 
@@ -313,6 +315,8 @@ Pencarian solusi optimal dari model menggunakan **R** dengan metode
     max_lane    15.00
     mean_lane    8.25
     total_antri 66.00
+
+
 
 ## *Further Discussion: Sensitivity Analysis*
 
