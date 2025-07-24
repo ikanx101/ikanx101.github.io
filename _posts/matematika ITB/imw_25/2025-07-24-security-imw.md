@@ -234,11 +234,9 @@ Ada dua skenario yang mungkin terjadi:
 <div style="font-size: 90%;">
 
 Nilai 11 adalah bobot: **seorang petugas *lane* setara dengan 11 orang
-*passengers* dalam selang waktu
-![i](https://latex.codecogs.com/svg.latex?i "i")**.
+*passengers* dalam selang waktu** ![i](https://latex.codecogs.com/svg.latex?i "i").
 
 Nilai ini diambil dari *expected service rate* data.
-
 
 ### Semua *Constraints* yang Ada
 
