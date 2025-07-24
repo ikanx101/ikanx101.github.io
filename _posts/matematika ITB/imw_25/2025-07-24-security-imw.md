@@ -231,10 +231,8 @@ Ada dua skenario yang mungkin terjadi:
 
 ![\min{\sum\_{i=1}^{12}{ (u_i + 11 \times l_i) }}](https://latex.codecogs.com/svg.latex?%5Cmin%7B%5Csum_%7Bi%3D1%7D%5E%7B12%7D%7B%20%28u_i%20%2B%2011%20%5Ctimes%20l_i%29%20%7D%7D "\min{\sum_{i=1}^{12}{ (u_i + 11 \times l_i) }}")
 
-<div style="font-size: 90%;">
-
 Nilai 11 adalah bobot: **seorang petugas *lane* setara dengan 11 orang
-*passengers* dalam selang waktu** ![i](https://latex.codecogs.com/svg.latex?i "i").
+*passengers* dalam selang waktu** ***i***.
 
 Nilai ini diambil dari *expected service rate* data.
 
