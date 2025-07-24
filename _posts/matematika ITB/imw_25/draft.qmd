@@ -1,0 +1,310 @@
+---
+title: "Optimisasi Antrian Lane Security Checking di Bandara"
+format: 
+  gfm:
+    html-math-method: webtex
+    toc: false
+    toc-depth: 4
+    fig-dpi: 500
+    fig-width: 8
+    fig-height: 4.5
+editor: visual
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+```{r}
+#| include: false
+
+library(dplyr)
+library(ggplot2)
+library(gt)
+library(gtExtras)
+```
+
+## Pendahuluan
+
+Pada pertengahan Juli 2025 ini, saya berkesempatan mengikuti _event_ ___Industrial Mathematics Week 2025___ (IMW 2025) di program studi Matematika ITB. _Event_ ini berlangsung selama 5 hari di mana 2 hari pertama diisi dengan seminar dan 3 hari sisanya diisi dengan _workshop_ menyelesaikan masalah _real_. Topik IMW pada tahun ini menitikberatkan pada optimisasi, _vector-borne desease_, dan _deep learning_.
+
+Ada tiga masalah yang bisa dipilih untuk dikerjakan secara berkelompok selama _workshop_, yakni:
+
+1. Optimisasi portofolio saham,
+1. Penanganan penyebaran penyakit _vector-borne_, dan
+1. Optimisasi antrian _lane security checking_ di bandara.
+
+Saya pribadi memilih _problem_ ketiga karena lebih dekat dengan pekerjaan saya sehari-hari. Singkat cerita, kelompok saya lebih memilih mengerjakan dengan metode _deep learning_ tapi saya coba membuat satu model lain menggunakan _linear programming_ sederhana. 
+
+Model ini sempat saya presentasikan di hari terakhir IMW dan mendapatkan sambutan baik dari si empunya _problem_ sehingga diskusi berlangsung setelah _event_ berakhir secara _online_.
+
+Begini masalahnya:
+
+---
+
+## Masalah
+
+Di suatu bandara, setiap kali _passengers_ hendak masuk ke _waiting lounge_, mereka harus melewati _security checking_. Petugas _security_ terbatas sehingga _lane_ yang tersedia hanya ada 17 _lanes_ saja. Masing-masing _security_ memiliki _service rate_ tertentu. 
+
+_Service rate_ didefinisikan sebagai berapa banyak _passengers_ yang bisa diproses oleh seorang petugas _security_ selama rentang waktu tertentu.
+
+Perhatikan ilustrasi ini:
+
+![](IMG_1061.jpeg)
+
+Setiap baris menandakan rentang waktu per 5 menit.
+
+Pada rentang waktu 1, ada 100 orang _passengers_ yang masuk ke area _security checking_. Oleh karena _service rate_-nya adalah 15 dan _lane_ yang buka ada 3, maka _processed passengers_ maksimum adalah sebesar 45 orang. Di akhir, akan ada sisa 55 orang _unprocessed passengers_.
+
+Kemudian pada rentang waktu 2, ada 90 orang _passengers_ yang masuk ke area plus 55 orang _unprocessed passengers_ dari rentang waktu 1. Sehingga total _passengers_ yang harus diproses adalah sebesar 145 orang. Oleh karena _service rate_-nya adalah 15 dan _lane_ yang buka ada 2, maka _processed passengers_ maksimum adalah sebesar 30 orang. Di akhir, akan ada sisa 115 orang _unprocessed passengers_.
+
+Kemudian pada rentang waktu 3, ada 212 orang _passengers_ yang masuk ke area plus 115 orang _unprocessed passengers_ dari rentang waktu 2. Sehingga total _passengers_ yang harus diproses adalah sebesar 327 orang. Oleh karena _service rate_-nya adalah 15 dan _lane_ yang buka ada 5, maka _processed passengers_ maksimum adalah sebesar 75 orang. Di akhir, akan ada sisa 252 orang _unprocessed passengers_.
+
+Begitu seterusnya hingga baris ke 12.
+
+> Oleh karena antrian bersifat __FIFO__ (___first in - first out___), artinya jika saya bisa mengoptimalkan berapa banyak lane yang terbuka, maka saya bisa __meminimumkan__ _unprocessed passenger_ sehingga waktu tunggu antrian akan kurang dari dua rentang waktu (kurang dari 10 menit).
+
+## _Modelling_
+
+Pertama-tama saya akan definisikan _decision variables_ dan beberapa parameter berikut ini:
+
+- $i \in \mathbb{Z}^+, 1 \leq i \leq 12$ menandakan rentang waktu satu jam yang dibagi per 5 menit sehingga ada 12 belas kelas.
+- $l_i \in \mathbb{Z}^+, 1 \leq i \leq 17$ menandakan berapa banyak _lane_ dibuka pada waktu $i$.
+- $sr_i \in \mathbb{Z}^+$ menandakan _mean service rate_ semua _lane_ pada waktu $i$. 
+    - Artinya: __rata-rata banyaknya penumpang yang bisa diperiksa oleh satu orang petugas selama rentang waktu 5 menit__. 
+    - _Service rate_ ini akan dicari dari data yang diberikan.
+- $N_i \in \mathbb{Z}^+$ menandakan berapa banyak penumpang yang datang ke _security check_ pada waktu $i$.
+- $p_i \in \mathbb{Z}^+$ menandakan berapa banyak penumpang yang __bisa dan selesai diproses__ pada waktu $i$.
+- $u_i \in \mathbb{Z}^+$ menandakan berapa banyak penumpang yang __tidak bisa diproses__ pada waktu $i$.
+    - Akibatnya jika $u_i > 0$ akan menambahkan banyaknya penumpang pada $i+1$.
+- $\hat{N}_i \in \mathbb{Z}^+$ pada $i \in [2,12]$ menandakan banyaknya penumpang _real_ yang dilayani pada waktu $i$.
+    - Perhatikan bahwa saat $i=1$ kita dapatkan $\hat{N}_1 = N_1$.
+    - Sedangkan pada $i \in [2,12]$, jika $u_{i-1}>0$ maka $\hat{N}_i = N_i + u_{i-1}$.
+
+## Tujuan Optimisasi
+
+Tujuan dari model optimisasi ini adalah __meminimalkan *lane* yang dibuka dan *unprocessed passengers*__.
+
+Kelak akan dicoba beberapa _objective functions_ dan akan dibandingkan hasilnya.
+
+## _Constraints_ 
+
+Maksimal _lane_ yang bisa dibuka setiap waktu $i$ adalah 17.
+
+$$l_i \leq 17, \space \forall i \in [1,12]$$
+
+Banyaknya _processed passengers_ bisa jadi __kurang dari atau setara dengan__ _service rate_ dikalikan dengan _lane_ yang dibuka.
+
+$$p_i \leq sr_i \times l_i, \space \forall i \in [1,12]$$
+
+Banyaknya _unprocessed passengers_ itu adalah banyaknya _passengers_ masuk dikurangi dengan _processed passengers_.
+
+$$u_i = \hat{N}_i - p_i , \space \forall i \in [1,12]$$
+
+## Pencarian _Service Rate_ ($sr_i$)
+
+Salah satu pertanyaan terbesar pada masalah ini adalah bagaimana mendekati nilai $sr_i$. 
+
+- Apakah $sr_i$ tergantung dari jam berapa petugas _lane_ bekerja?
+- Apakah $sr_i$ tergantung dari berapa banyak orang _passengers_ yang datang?
+
+Untuk menjawabnya, saya coba analisa sederhana _service rate_ dari data yang diberikan dan buat visualisasi sebagai berikut:
+
+__Sebaran *Service Rate*__
+
+```{r}
+rm(list=ls())
+load("data.rda")
+
+df %>% 
+  ggplot(aes(x = hari,
+             y = service_rate)) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(title = "Sebaran Service Rate per Day",
+       subtitle = "Hitungan dalam menit") +
+  theme(axis.title = element_blank())
+```
+
+Berikut adalah hubungan antara _Service Rate_ dan total _passengers_ yang masuk:
+
+```{r}
+#| fig-height: 15
+
+df %>% 
+  ggplot(aes(x = time,
+             y = service_rate)) +
+  geom_boxplot() +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "Sebaran Service Rate per 5 Menit",
+       subtitle = "Hitungan dalam menit",
+       y = "Jam"
+       ) +
+  theme(axis.title.x = element_blank())
+```
+
+```{r}
+#| fig-height: 15
+
+df %>% 
+  ggplot(aes(x = time,
+             y = total_in)) +
+  geom_boxplot() +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "Sebaran Passengers yang Masuk per 5 Menit",
+       subtitle = "Hitungan dalam orang",
+       y = "Jam") +
+  theme(axis.title.x = element_blank())
+```
+
+Dari dua grafik yang ditampilkan di atas, kita melihat bahwa ada pola yang mirip antara _service rate_ dengan _total passengers_ jika disajikan dalam _timeline_ yang sama. Dari sini kita bisa mengeliminasi faktor _timeline_ dan bisa menghubungkan langsung antara _service rate_ dan _total passengers_.
+
+> Saat _passengers_ yang masuk antrian membludak, _security manager_ akan memaksa para petugas _lane_ "mempercepat" pekerjaannya (meningkatkan _service rate_-nya). Namun _service rate_ akan __mentok__ di suatu nilai tertentu dan tak akan bisa naik lagi (manusiawi).
+
+### Hubungan _Service Rate_ dengan _Total Passengers_ 
+
+```{r}
+df %>% 
+  filter(total_in > 0) %>% 
+  ggplot(aes(x = total_in,
+             y = service_rate)) +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "Sebaran Service Rate per 5 menit",
+       subtitle = "Hitungan dalam menit") +
+  theme(axis.title = element_blank()) +
+  theme_minimal() +
+  geom_smooth(method = "loess") +
+  labs(title = "Service Rate vs Total Passengers In",
+       x = "passengers_in") 
+```
+
+Saya bisa membuat model _machine learning_ prediksinya sebagai berikut:
+
+### Model Hubungan _Service Rate_ dengan _Total Passengers_ 
+
+```{r}
+df_temp = df %>% filter(total_in > 0)
+model = 
+  lm(service_rate ~ poly(total_in,degree = 7,raw = T),
+     data = df_temp)
+
+sr_pred = predict(model,df_temp)
+
+mae = MLmetrics::MAE(df_temp$service_rate,sr_pred)
+
+# save(model,file = "model_sr.rda")
+
+df_temp %>% 
+  mutate(pred = sr_pred) %>% 
+  filter(total_in <= 600) %>% 
+  ggplot(aes(x = total_in,
+             y = pred)) +
+  # geom_line(color = "darkblue") +
+  geom_smooth(method = "loess") +
+  theme_minimal() +
+  labs(y = "service rate",
+       x = "passengers in") 
+```
+
+Model ini menghasilkan _mean absolute error_ sebesar `r mae`.
+
+## Dua _Objective Functions_ yang Dicoba 
+
+Ada dua skenario yang mungkin terjadi:
+
+### Skenario I
+
+_Security manager_ berkata:
+
+> Jangan sampai ada antrian yang panjang. ___Atur saja___ berapa _lane_ yang dibuka atau ditutup!
+
+$$\min{\sum_{i=1}^{12}{ u_i }}$$
+
+### Skenario II
+
+_Security manager_ berkata:
+
+> Dengan petugas seminimal mungkin, ___pokoknya saya tidak mau tahu___, antrian yang ada tidak boleh panjang!
+
+$$\min{\sum_{i=1}^{12}{ (u_i + 11 \times l_i) }}$$
+
+::: {style="font-size: 90%;"}
+
+Nilai 11 adalah bobot: __seorang petugas *lane* setara dengan 11 orang *passengers* dalam selang waktu $i$__.
+
+Nilai ini diambil dari _expected service rate_ data.
+
+### Semua _Constraints_ yang Ada
+
+$$l_i \leq 17, \space \forall i \in [1,12]$$
+
+$$p_i \leq sr_i \times l_i, \space \forall i \in [1,12]$$
+
+$$u_i = \hat{N}_i - p_i , \space \forall i \in [1,12]$$
+
+## _Solving the Model_ 
+
+Pencarian solusi optimal dari model menggunakan __R__ dengan metode _simplex_ di `library(ompr)`:
+
+```{r}
+#| echo: false
+citation("ompr")
+```
+
+## Hasil Model Skenario I
+
+```{r}
+rm(list=ls())
+load("ompr_1.rda")
+
+output %>% 
+  gt() %>%
+  tab_header(title = md("*Optimized Lane Planning*"),
+             subtitle = md("*Objective function I*")) %>% 
+  gt_theme_espn()
+
+output %>% summarise(min_lane = min(lane),
+                     max_lane = max(lane),
+                     mean_lane = mean(lane),
+                     total_antri = sum(unprocessed)) %>% 
+  t()
+```
+
+## Hasil Model Skenario II
+
+```{r}
+rm(list=ls())
+load("ompr_2.rda")
+
+output %>% 
+  gt() %>%
+  tab_header(title = md("*Optimized Lane Planning*"),
+             subtitle = md("*Objective function II*")) %>% 
+  gt_theme_espn()
+
+output %>% summarise(min_lane = min(lane),
+                     max_lane = max(lane),
+                     mean_lane = mean(lane),
+                     total_antri = sum(unprocessed)) %>% 
+  t()
+```
+
+## _Further Discussion: Sensitivity Analysis_ {.center .smaller}
+
+Dari paparan model di atas, kita bisa melakukan _sensitivity analysis_ untuk beberapa variabel yang bisa diatur oleh sang _security manager_.
+
+- Menurunkan atau menaikkan berapa __maksimal *lane*__ agar didapatkan nilai optimal secara bisnis.
+    - Contoh: tak semua hari petugas yang bertugas bisa lengkap 17 _lanes_. Barangkali ada yang cuti atau izin bekerja sehingga $\leq 17$ orang.
+- Menyeragamkan atau membuat standar _range_ nilai _service rate_ sehingga lebih seragam dan "tinggi".
+- Definisikan berapa banyak _unprocessed_ yang masih diperbolehkan sehingga _lane_ yang digunakan bisa lebih "sedikit".
+- Menambahkan _multi objective optimization_ sehingga menemukan _balance_ antara _lane_ dan _unprocessed_.
+    - Misalkan mengubah _minimize lane_ menjadi $\epsilon - constraint$.
+
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
+
