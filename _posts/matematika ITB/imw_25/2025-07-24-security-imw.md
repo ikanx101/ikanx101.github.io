@@ -260,15 +260,6 @@ Pencarian solusi optimal dari model menggunakan **R** dengan metode
       Programs_. R package version 1.0.4,
       <https://github.com/dirkschumacher/ompr>.
 
-    A BibTeX entry for LaTeX users is
-
-      @Manual{,
-        title = {ompr: Model and Solve Mixed Integer Linear Programs},
-        author = {Dirk Schumacher},
-        year = {2023},
-        note = {R package version 1.0.4},
-        url = {https://github.com/dirkschumacher/ompr},
-      }
 
 ## Hasil Model Skenario I
 
@@ -341,5 +332,3 @@ untuk beberapa variabel yang bisa diatur oleh sang *security manager*.
 ------------------------------------------------------------------------
 
 `if you find this article helpful, support this blog by clicking the ads.`
-
-</div>
