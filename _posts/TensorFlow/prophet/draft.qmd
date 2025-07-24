@@ -1,0 +1,140 @@
+---
+title: "Untitled"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: visual
+execute:
+  warning: false
+error: false
+---
+
+```{r}
+#| include: false
+
+setwd("~/ikanx101.github.io/_posts/TensorFlow/prophet")
+
+rm(list=ls())
+
+library(dplyr)
+library(tidyr)
+library(prophet)
+library(ggplot2)
+
+load("data.rda")
+
+df = df %>% mutate(omset = omset / 10^9)
+
+# kita save dulu omset pada 2023
+omset_real = 
+  df %>% 
+  filter(tahun >= 2023) %>% 
+  pull(omset)
+
+```
+
+Tahun 2023 yang lalu, saya pernah menuliskan bagaimana _model deep learning_ yang dibangun menggunakan _TensorFlow_ bisa digunakan untuk melakukan [_forecast_ dari data _time series_](https://ikanx101.com/blog/keras-forecast/). Kali ini saya akan melakukan hal yang sama dengan metode yang berbeda.
+
+Sebagaimana yang pernah saya tulis di [sini](https://ikanx101.com/blog/meta-rob1n/), Meta memiliki beberapa _libraries_ yang bisa digunakan oleh semua _data scientist_. Salah satunya adalah _prophet_ yang biasa digunakan untuk melakukan analisa _time series_ seperti dekomposisi dan _forecast_.
+
+---
+
+Data yang saya gunakan masih sama dengan tulisan saya yang lama.
+
+```{r}
+#| echo: false
+
+df %>% knitr::kable()
+```
+
+Saya memiliki 53 baris data omset bulanan mulai dari Januari 2019 hingga Mei 2023.
+
+Saya akan lakukan hal yang serupa, yakni melakukan _forecast_ untuk omset Januari - Mei 2023 dan kita bandingkan seberapa baik hasilnya.
+
+
+Pertama-tama dari data di atas, saya akan ubah dulu menjadi bentuk seperti ini:
+
+```{r}
+#| echo: false
+df_ = 
+  df %>% 
+  filter(tahun < 2023) %>% 
+  mutate(date = paste(1,bulan,tahun,sep = "-"),
+         date = as.Date(date,"%d-%m-%Y")) %>% 
+  select(-bulan,-tahun,-timeline) %>% 
+  rename(ds = date,
+         y  = omset) %>%   
+  select(ds,y)
+
+df_ %>% knitr::kable()
+```
+
+Berikutnya saya akan buat model dan prediksinya dengan skrip yang sederhana:
+
+```{r}
+#| message: false
+#| warning: false
+
+model        = prophet(df_)
+df_2023      = make_future_dataframe(model, periods = 5, freq='month')
+predict_2023 = predict(model, df_2023)
+```
+
+Ini adalah _plot_ hasilnya:
+
+```{r}
+#| echo: false
+
+plot(model, predict_2023)
+```
+
+_Mean absolute error_ yang dihasilkan adalah:
+
+```{r}
+Metrics::mae(df$omset,
+             predict_2023$yhat)
+```
+
+Ternyata hasil MAE-nya relatif lebih rendah dari model LSTM yang saya buat di [tulisan yang lalu](https://ikanx101.com/blog/keras-forecast/).
+
+Berikut adalah hasil perbandingan antara hasil prediksi dan real omset pada Januari - Mei 2023:
+
+```{r}
+#| echo: false
+
+df_hasil = 
+  predict_2023 %>% 
+  select(ds,yhat) %>% 
+  mutate(tahun = lubridate::year(ds)) %>% 
+  filter(tahun >= 2023) %>% 
+  rename(prediksi = yhat) %>% 
+  mutate(omset_real = omset_real) %>% 
+  select(-tahun)
+
+df_hasil %>% 
+  reshape2::melt(id.vars = "ds") %>% 
+  ggplot(aes(x = ds,y = value)) +
+  geom_line(aes(color = variable)) +
+  scale_color_manual(values = c("darkred","darkblue")) +
+  labs(title = "Nilai Forecast vs Realisasi Omset",
+       x = "Timeline",
+       y = "Omset",
+       color = "Keterangan") +
+  theme_minimal()
+```
+
+Namun secara visual, kita bisa dapatkan nilai prediksinya relatif lebih besar dibandingkan nilai _real_-nya dan pola yang dihasilkan tidak cukup merepresentasikan pola _real_-nya.
+
+Rekan-rekan bisa membandingkannya dengan grafik pada tulisan yang lama, bahwa LSTM lebih baik mengenal pola _time series_ pada kasus ini.
+
+## Kesimpulan
+
+Pada kasus ini, model yang dibangun menggunakan LSTM _deep learning_ di _TensorFlow_ lebih baik dalam mengenali pola namun `prophet` menawarkan proses skrip yang lebih mudah dan sederhana.
+
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
