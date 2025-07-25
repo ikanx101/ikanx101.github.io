@@ -1,0 +1,122 @@
+---
+title: "Tutorial Statistika Deskriptif Secara Otomatis dengan R"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: visual
+execute:
+  warning: false
+error: false
+---
+
+Saya ingat dulu waktu zaman kuliah, setidaknya membutuhkan waktu 30 menit untuk melakukan dan membuat _report_ berisi analisa statistika deskriptif dari suatu data. Di zaman sekarang, untuk melakukan hal yang sama, saya hanya butuh waktu tak lebih dari 1 menit saja.
+
+Berikut ini akan saya tunjukkan beberapa alternatif melakukan dan membuat analisa statistika deskriptif sederhana dengan __R__. Sebagai contoh, saya akan gunakan data `mtcars` dari bawaan __R__ sebagai berikut:
+
+```{r}
+#| include: false
+
+rm(list=ls())
+gc()
+
+library(dplyr)
+library(tidyr)
+library(skimr)
+
+df = mtcars
+```
+
+```{r}
+df %>% knitr::kable()
+```
+
+Oke, saya mulai _ya!_
+
+## Menggunakan _base_ __R__
+
+Kita bisa menggunakan _function_ `summary()` untuk mendapatkan _summary statistic_ berikut:
+
+```{r}
+df %>% summary()
+```
+
+Kita bisa menggunakan _function_ `str()` untuk mendapatkan informasi struktur data berikut:
+
+```{r}
+df %>% str()
+```
+
+## Menggunakan _library(dplyr)_
+
+Berikut adalah _summary statistics_ menggunakan `library(dplyr)`.
+
+```{r}
+df %>% glimpse()
+```
+
+## Menggunakan _library(skimr)_
+
+Jika kalian hendak mendapatkan analisa yang lebih lengkap, kita bisa memanfaatkan `library(skimr)` berikut ini:
+
+```{r}
+df %>% skim()
+```
+
+## Menggunakan _library(psych)_
+
+Alternatif lain mendapatkan _summary statistics_ dalam bentuk tabel adalah dengan memanfaatkan `library(psych)`.
+
+```{r}
+psych::describe(df)
+```
+
+## Menggunakan _library(Hmisc)_
+
+Alternatif lain mendapatkan _summary statistics_ dalam bentuk narasi per variabel adalah dengan memanfaatkan `library(Hmisc)`.
+
+
+```{r}
+Hmisc::describe(df)
+```
+
+## Menggunakan _library(GGally)_
+
+Jika kita membutuhkan _summary statistics_ berupa _density plot_ dan korelasi antar variabel, kita bisa menggunakan `library(GGally)`.
+
+
+```{r}
+#| warning: false
+#| message: false
+
+GGally::ggpairs(df)
+```
+
+## Menggunakan _library(DataExplorer)_
+
+Ada satu _library_ yang bisa digunakan untuk mendapatkan satu _file_ _report_ berformat `.html` yakni bernama `library(DataExplorer)`.
+
+Hasilnya meng-_cover_ analisa sebagai berikut:
+
+- _Basic Statistics_
+    - _Raw Counts_
+    - _Percentages_
+- _Data Structure_
+- _Missing Data Profile_
+- _Univariate Distribution_
+    - _Histogram_
+    - _QQ Plot_
+- _Correlation Analysis_
+- _Principal Component Analysis_
+
+Mohon maaf saya tak bisa menampilkannya dalam _blog_ ini tapi kalian bisa mencobanya sendiri dengan skrip:
+
+```
+DataExplorer::create_report(df)
+```
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
