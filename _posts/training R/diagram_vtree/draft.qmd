@@ -1,0 +1,106 @@
+---
+title: "Visualisasi Tree Diagram untuk Data Survey dengan vtree"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+error: false
+---
+
+```{r}
+#| include: false
+
+rm(list=ls())
+gc()
+
+library(dplyr)
+library(tidyr)
+library(vtree)
+library(ggplot2)
+
+load("data_survey.rda")
+```
+
+Beberapa bulan yang lalu, saya pernah menuliskan tentang [tiga cara melakukan visualisasi](https://ikanx101.com/blog/3-waysgraph/) dari data. Setelah itu, beberapa klien internal di kantor menjadi sering _request_ untuk memvisualisasikan data survey menggunakan _sankey diagram_.
+
+Namun, setelah didiskusikan lebih lanjut, kebutuhan analisa yang diperlukan sebenarnya lebih tepat jika divisualkan dengan grafik lain.
+
+Kali ini saya akan _share_ satu jenis visualisasi, yakni _tree diagram_ menggunakan `library(vtree)` di __R__. Tentunya _tree diagram_ yang saya bahas kali ini bukan termasuk ke dalam _regression tree_. Sebagai contoh, saya akan menggunakan data _survey_ yang sempat saya tulis di [_blog_ ini](https://ikanx101.com/blog/data-sintetis/).
+
+Berikut adalah struktur dari data yang saya gunakan:
+
+```{r}
+str(df_survey)
+```
+
+Ada empat variabel utama, yakni:
+
+1. `gender`,
+1. `ses`,
+1. `usia`, dan
+1. `aware`.
+
+Skrip dan bentuk visualisasi standar dati `vtree` adalah sebagai berikut:
+
+```{r}
+vtree(df_survey,"aware gender ses",showlegend=TRUE,sameline=TRUE)
+```
+
+Kita bisa melakukan beberapa modifikasi sebagai berikut:
+
+## Hanya menampilkan grafik dengan batas _n_ tertentu
+
+Misalkan saya hendak menampilkan grafik dengan banyaknya responden $n \geq 30$, maka:
+
+```{r}
+vtree(df_survey,"aware gender ses",showlegend=TRUE,sameline=TRUE,
+      prunesmaller=30,
+      title = "All responden")
+```
+
+
+## Hanya menampilkan grafik sesuai pilihan
+
+Sedangkan berikut ini adalah skrip untuk menampilkan atau tidak menampilkan grafik tertentu. Misalkan, saya hendak memfilter responden yang `tidak` _aware_.
+
+```{r}
+vtree(df_survey,"aware gender ses",showlegend=TRUE,sameline=TRUE,
+      prune=list(aware=c("tidak")))
+```
+
+## Menghentikan garis grafik pada titik tertentu
+
+Misalkan saya hendak menghentikan garis grafik dari _nodes_ `pria`.
+
+```{r}
+vtree(df_survey,"aware gender ses",showlegend=TRUE,sameline=TRUE,
+      prunebelow=list(gender=c("Pria")))
+```
+
+
+Atau saya hanya
+
+```{r}
+vtree(df_survey,"aware gender ses",showlegend=TRUE,sameline=TRUE,
+      follow=list(gender=c("Pria")))
+```
+
+
+## Hanya menampilkan grafik dari _nodes_ tertentu
+
+Misalkan saya hendak menampilkan `pria` saja.
+
+```{r}
+vtree(df_survey,"aware gender ses",showlegend=TRUE,sameline=TRUE,
+      keep=list(gender=c("Pria")))
+```
+
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
