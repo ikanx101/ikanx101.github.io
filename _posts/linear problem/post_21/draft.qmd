@@ -1,0 +1,289 @@
+---
+title: "Optimization Story: Perencanaan Produksi pada Industri Mebel"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+error: false
+---
+
+```{r}
+#| include: false
+rm(list=ls())
+setwd("~/ikanx101.github.io/_posts/linear problem/post_21")
+
+library(dplyr)
+```
+
+## Masalah
+
+Suatu industri UMKM "Mebel Jaya Selalu" memproduksi dua jenis produk unggulan:
+
+1.  Meja Belajar dan
+2.  Rak Buku.
+
+Untuk memproduksi kedua *items* tersebut, mereka membutuhkan tiga sumber daya utama yang terbatas:
+
+-   Kayu mahoni,
+-   Kayu pinus, dan
+-   Jam kerja tukang kayu.
+
+Pemilik UMKM ingin menentukan berapa banyak meja dan rak yang harus diproduksi __dalam satu minggu__ untuk memaksimalkan total keuntungan.
+
+Masalah ini termasuk ke dalam *Mixed Integer Linear Programming* (_MILP_) karena untuk memulai produksi salah satu jenis produk (meja atau rak), ada biaya persiapan (*setup cost*). Biaya ini hanya muncul satu kali jika produk tersebut diputuskan untuk diproduksi, tidak peduli berapa banyak unit yang dibuat. Misalnya, biaya untuk menyiapkan mesin potong khusus, membeli mata bor ukuran tertentu, dan lainnya.
+
+Jika UMKM memutuskan tidak memproduksi meja sama sekali, maka biaya persiapan untuk meja tidak perlu dikeluarkan.
+
+## Data dan Asumsi
+
+Berikut adalah data yang dimiliki oleh UMKM "Mebel Jaya Selalu":
+
+| Keterangan | Meja Belajar | Rak Buku | Ketersediaan Sumber Daya (per minggu) |
+|----|----|----|----|
+| **Keuntungan per Unit** | Rp 400.000 | Rp 250.000 | \- |
+| **Kebutuhan Kayu Mahoni** | 4 meter | 2 meter | 100 meter |
+| **Kebutuhan Kayu Pinus** | 2 meter | 3 meter | 90 meter |
+| **Kebutuhan Jam Kerja** | 5 jam | 3 jam | 120 jam |
+| **Biaya Persiapan (Setup Cost)** | Rp 500.000 | Rp 300.000 | \- |
+
+: Data Kebutuhan dan Persiapan Produksi
+
+Tujuannya adalah untuk memaksimalkan __(Total Keuntungan dari Penjualan) - (Total Biaya Persiapan)__.
+
+## Perumusan Model Matematika _MILP_
+
+Untuk menyelesaikan masalah ini, kita perlu merumuskannya ke dalam model matematika.
+
+__Variabel Keputusan__; kita membutuhkan dua jenis variabel:
+
+- Variabel Kontinu/Integer (untuk jumlah produksi):
+    - $x_1$ = Jumlah Meja Belajar yang akan diproduksi.
+    - $x_2$ = Jumlah Rak Buku yang akan diproduksi. (Kita asumsikan $x_1$ dan $x_2$ harus bilangan bulat, karena tidak mungkin memproduksi setengah meja).
+- Variabel Biner (untuk keputusan produksi "ya/tidak"):
+    - $y_1$ = Variabel keputusan untuk Meja Belajar.
+        - $y_1 = 1$ jika Meja Belajar diproduksi ($x_1 > 0$).
+        - $y_1 = 0$ jika Meja Belajar tidak diproduksi ($x_1 = 0$).
+    - $y_2$ = Variabel keputusan untuk Rak Buku.
+        - $y_2 = 1$ jika Rak Buku diproduksi ($x_2 > 0$).
+        - $y_2 = 0$ jika Rak Buku tidak diproduksi ($x_2 = 0$).
+        
+__Fungsi Tujuan__; Tujuannya adalah memaksimalkan keuntungan total ($Z$). Keuntungan total dihitung dari keuntungan penjualan dikurangi biaya persiapan.
+
+$$\text{Maksimalkan } Z = (400000 \cdot x_1 + 250000 \cdot x_2) - (500000 \cdot y_1 + 300000 \cdot y_2)$$
+
+__Fungsi Kendala__; Kendala adalah batasan-batasan sumber daya yang ada.
+
+- Kendala Kayu Mahoni: Total kayu mahoni yang digunakan tidak boleh melebihi yang tersedia. 
+    - $4x_1 + 2x_2 \le 100$
+- Kendala Kayu Pinus: Total kayu pinus yang digunakan tidak boleh melebihi yang tersedia. 
+    - $2x_1 + 3x_2 \le 90$
+- Kendala Jam Kerja: Total jam kerja yang digunakan tidak boleh melebihi yang tersedia.
+    - $5x_1 + 3x_2 \le 120$
+- Kendala Penghubung (_Linking Constraints_): Ini adalah bagian terpenting yang menghubungkan jumlah produksi ($x$) dengan keputusan produksi ($y$). 
+    - Kita perlu memastikan jika $x_1 > 0$, maka $y_1$ harus bernilai 1. Caranya adalah dengan menggunakan __Big M Method__. 
+        - $x_1 \le M \cdot y_1$
+        - $x_2 \le M \cdot y_2$
+    - Penjelasan: $M$ adalah angka yang sangat besar (misalnya 1000, yang jelas lebih besar dari jumlah meja atau rak yang mungkin diproduksi).
+        - Jika $y_1 = 0$, maka kendala menjadi $x_1 \le 0$. Karena $x_1$ tidak bisa negatif, ini memaksa $x_1 = 0$. Artinya, tidak ada meja yang diproduksi.
+        - Jika $y_1 = 1$, maka kendala menjadi $x_1 \le M$. Ini menjadi kendala yang tidak mengikat (_redundant_), sehingga $x_1$ bisa mengambil nilai berapapun selama masih memenuhi kendala sumber daya lain.
+- Kendala Non-Negatif dan Tipe Variabel: 
+    - $x_1, x_2 \ge 0 \text{ dan merupakan bilangan bulat (integer)}$
+    - $y_1, y_2 \text{ adalah biner (0 atau 1)}$
+    
+## Model Optimisasi
+
+$$\text{Maksimalkan } Z = (400000 \cdot x_1 + 250000 \cdot x_2) - (500000 \cdot y_1 + 300000 \cdot y_2)$$
+
+_Subject to_:
+
+- $4x_1 + 2x_2 \le 100$ (Kayu Mahoni).
+- $2x_1 + 3x_2 \le 90$ (Kayu Pinus).
+- $5x_1 + 3x_2 \le 120$ (Jam Kerja).
+- $x_1 \le 1000y_1$ (Kendala penghubung Meja).
+- $x_2 \le 1000y_2$ (Kendala penghubung Rak).
+- $x_1, x_2 \ge 0$ dan integer.
+- $y_1, y_2 biner$ (0 atau 1).
+
+__Solusi dari model__ ini akan memberi tahu pemilik UMKM secara pasti:
+
+1. Apakah mereka harus memproduksi meja belajar? (nilai $y_1$).
+1. Apakah mereka harus memproduksi rak buku? (nilai $y_2$).
+1. Jika ya, berapa unit masing-masing yang harus diproduksi? (nilai $x_1$ dan $x_2$).
+1. Berapa keuntungan maksimal yang bisa didapat? (nilai $Z$).
+
+## Menyelesaikan Model
+
+Untuk menyelesaikan model di atas, kita akan menggunakan dua pendekatan yakni `ompr` dengan __R__ dan `or tools` dengan __Python__.
+
+### `ompr` di __R__
+
+Berikut adalah skripnya:
+
+```{r}
+#| include: false
+#| message: false
+#| warning: false
+rm(list=ls())
+gc()
+```
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(ompr)
+library(ompr.roi)
+library(ROI.plugin.glpk)
+
+bin_prog = 
+  MIPModel() %>%
+  # menambah variabel
+  add_variable(x[i],i = 1:2,type = "integer",lb = 0) %>%
+  add_variable(y[i],i = 1:2,type = "binary")  |> 
+  # membuat objective function
+  set_objective((400000*x[1]) + (250000*x[2]) - (500000*y[1]) - (300000*y[2]), 
+                "max") |> 
+  # menambah constraints
+  add_constraint((4*x[1]) + (2*x[2]) <= 100) |> 
+  add_constraint((2*x[1]) + (3*x[2]) <= 90) |> 
+  add_constraint((5*x[1]) + (3*x[2]) <= 120) |> 
+  add_constraint(x[1] <= 1000*y[1]) |> 
+  add_constraint(x[2] <= 1000*y[2])
+```
+
+
+```{r}
+#| include: false
+bin_prog 
+
+hasil = 
+  bin_prog %>%
+  solve_model(with_ROI(solver = "glpk",
+		       verbose = T))
+
+hasil
+```
+
+Berikut adalah hasilnya:
+
+```{r}
+#| echo: false
+hasil %>% 
+  get_solution(y[i]) |> 
+  rename(jenis = i,
+         produksi = value) |> 
+  select(jenis,produksi) |> 
+  mutate(jenis = ifelse(jenis == 1,"Meja","Rak")) |> 
+  knitr::kable()
+hasil %>% 
+  get_solution(x[i]) |> 
+  rename(jenis = i,
+         unit = value) |> 
+  select(jenis,unit) |> 
+  mutate(jenis = ifelse(jenis == 1,"Meja","Rak")) |> 
+  knitr::kable()
+```
+
+Ternyata dengan memproduksi meja sebanyak __24 unit__ akan memaksimalkan keuntungan UMKM tersebut.
+
+### `or tools` di __Python__
+
+__OR-Tools__ (___Operations Research Tools___) adalah _library_ _open-source_ buatan Google yang dikembangkan untuk menyelesaikan masalah optimasi kombinatorial dan pemrograman matematika. Diluncurkan sekitar tahun 2010, _library_ ini dirancang untuk menjadi alat yang _scalable_ dan efisien dalam menyelesaikan masalah kompleks seperti _routing_ kendaraan, penjadwalan, penugasan, dan optimasi linear. __OR-Tools__ dibangun berdasarkan pengalaman internal Google dalam menangani masalah optimasi skala besar dan menggabungkan berbagai _state-of-the-art solver_ serta algoritma heuristik.
+
+Yang membuat __OR-Tools__ istimewa adalah dukungannya terhadap _multiple programming_ _languages_ (C++, Python, Java, C#), fleksibilitas dalam pemodelan masalah, dan kemampuan untuk menangani berbagai tipe masalah optimasi seperti _linear programming_, _constraint programming_, dan _mixed-integer programming_. _Library_ ini tidak hanya menyediakan _solver_ internal yang powerful tetapi juga dapat terintegrasi dengan _solver_ eksternal seperti `SCIP`, `GLPK`, dan `CP-SAT`, menjadikannya pilihan populer baik untuk penelitian akademis maupun aplikasi industri skala enterprise.
+
+Jangan lupa untuk menginstall `ortools` di `terminal`:
+
+```
+pip install ortools
+```
+
+Berikut adalah skrip di __Python__ nya:
+
+```
+from ortools.linear_solver import pywraplp
+
+def solve_milp():
+    # Membuat solver
+    solver = pywraplp.Solver.CreateSolver('SCIP')
+    
+    # Membuat variabel
+    x = {}
+    y = {}
+    for i in range(1, 3):
+        x[i] = solver.IntVar(0, solver.infinity(), f'x_{i}')
+        y[i] = solver.BoolVar(f'y_{i}')
+    
+    # Membuat objective function
+    objective = solver.Objective()
+    objective.SetCoefficient(x[1], 400000)
+    objective.SetCoefficient(x[2], 250000)
+    objective.SetCoefficient(y[1], -500000)
+    objective.SetCoefficient(y[2], -300000)
+    objective.SetMaximization()
+    
+    # Menambah constraints
+    # Constraint 1: 4*x1 + 2*x2 <= 100
+    constraint1 = solver.Constraint(-solver.infinity(), 100)
+    constraint1.SetCoefficient(x[1], 4)
+    constraint1.SetCoefficient(x[2], 2)
+    
+    # Constraint 2: 2*x1 + 3*x2 <= 90
+    constraint2 = solver.Constraint(-solver.infinity(), 90)
+    constraint2.SetCoefficient(x[1], 2)
+    constraint2.SetCoefficient(x[2], 3)
+    
+    # Constraint 3: 5*x1 + 3*x2 <= 120
+    constraint3 = solver.Constraint(-solver.infinity(), 120)
+    constraint3.SetCoefficient(x[1], 5)
+    constraint3.SetCoefficient(x[2], 3)
+    
+    # Constraint 4: x1 <= 1000*y1
+    constraint4 = solver.Constraint(-solver.infinity(), 0)
+    constraint4.SetCoefficient(x[1], 1)
+    constraint4.SetCoefficient(y[1], -1000)
+    
+    # Constraint 5: x2 <= 1000*y2
+    constraint5 = solver.Constraint(-solver.infinity(), 0)
+    constraint5.SetCoefficient(x[2], 1)
+    constraint5.SetCoefficient(y[2], -1000)
+    
+    # Solve the problem
+    status = solver.Solve()
+    
+    # Print results
+    if status == pywraplp.Solver.OPTIMAL:
+        print('Solution:')
+        print('Objective value =', solver.Objective().Value())
+        for i in range(1, 3):
+            print(f'x[{i}] =', x[i].solution_value())
+        for i in range(1, 3):
+            print(f'y[{i}] =', int(y[i].solution_value()))
+    else:
+        print('The problem does not have an optimal solution.')
+
+# Run the solver
+solve_milp()
+```
+
+Kita dapatkan hasil yang sama, yakni:
+
+```
+Solution:
+Objective value = 9100000.000000002
+x[1] = 24.0
+x[2] = 0.0
+y[1] = 1
+y[2] = 0
+```
+
+
+
+
+
+
+
