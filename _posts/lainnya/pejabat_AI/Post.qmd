@@ -33,7 +33,7 @@ library(tidyverse)
 library(stringr)
 library(ellmer)
 
-Sys.setenv(DEEPSEEK_API_KEY="sk-7c7aaaef704e486c8d971e72a9ee5c4a")
+Sys.setenv(DEEPSEEK_API_KEY="skck")
 ```
 
 Oke, saya buat dulu _agent_-nya sebagai berikut:
