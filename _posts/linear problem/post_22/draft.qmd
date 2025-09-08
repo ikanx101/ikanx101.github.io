@@ -1,0 +1,147 @@
+---
+title: "Optimization Story: Menyelesaikan Knapsack Problem"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  message: false
+  echo: false
+error: false
+---
+
+Misalkan kita ingin bepergian dengan suatu tas ransel yang tentunya memiliki keterbatasan. Kita ingin bawa laptop, kamera, baju, celana, jaket favorit, _snack_, _chargers_, dan buku tapi tidak muat semuanya. Kita harus memilih barang mana saja yang paling _worth it_ untuk dimasukkan ke dalam ransel tersebut.
+
+> _Nah_, dalam dunia matematika dan ilmu komputer, situasi ini dikenal sebagai ___Knapsack Problem___.
+
+## Latar Belakang: Dari Perjalanan sampai ke Algoritma
+
+___Knapsack Problem___ bukan cuma teori _random_. _Problem_ ini pertama kali diformalkan oleh matematikawan pada abad ke-19, tapi konsepnya sudah ada sejak orang mulai memikirkan cara mengemas barang dengan efisien. Istilah _"knapsack"_ sendiri berasal dari bahasa Jerman untuk "ransel".
+
+Hal yang membuat masalah ini menarik adalah kesederhanaannya tapi _powerful_. 
+
+> ___Kita hanya cuma punya satu tas dengan kapasitas terbatas, dan beberapa barang dengan berat dan nilai yang berbeda. Tujuannya? Memilih kombinasi barang yang nilainya maksimal, tanpa melebihi kapasitas tas.___
+
+## Masalah Klasik yang Wajib Diketahui
+
+Tidak berlebihan kalau dibilang _knapsack problem_ adalah ___"hello world"___ -nya optimisasi. Siapa pun yang baru belajar optimalisasi, baik di kampus, _bootcamp_, atau otodidak pasti akan bertemu dengan _problem_ ini. Alasannya?
+
+1. Simpel tapi _challenging_.
+    - Formulasinya mudah dipahami, tapi _solving_-nya tidak trivial (bahkan termasuk NP-hard!).
+1. Relevan.
+    - Aplikasinya mulai dari manajemen inventori, financial portfolio, _resource allocation_, sampai ke pengaturan _bandwidth_ di jaringan.
+    - Saya pernah menuliskan hal yang serupa, yakni bagaimana memilih [portofolio diskon](https://ikanx101.com/blog/binary-marketplace/) produk di _e-commerce_ beberapa tahun lalu.
+1. Dasar teknik algoritma.
+    - Melalui _problem_ ini, kita bisa belajar konsep _greedy method_, _dynamic programming_, dan lainnya.
+
+Jadi, kalau kita mau belajar optimisasi, memahami _knapsack problem_ menjadi suatu kewajiban. 
+
+## Contoh _Problem_
+
+Misalkan ada __50 buah *items*__ dengan bobot dan _values_ masing-masing. Dari 50 _items_ tersebut, kita akan memilih sebanyak-banyak _items_ yang bisa masuk ke _container_ dengan batasan total bobot _item_ terpilih sebesar __850__.
+
+```{r}
+rm(list=ls())
+
+library(ompr)
+library(ompr.roi)
+library(ROI.plugin.glpk)
+library(tidyverse)
+
+# Data values dan weights
+values <- c(
+  360, 83, 59, 130, 431, 67, 230, 52, 93, 125, 670, 892, 600, 38, 48, 147,
+  78, 256, 63, 17, 120, 164, 432, 35, 92, 110, 22, 42, 50, 323, 514, 28,
+  87, 73, 78, 15, 26, 78, 210, 36, 85, 189, 274, 43, 33, 10, 19, 389, 276, 312
+)
+
+weights <- c(
+  7, 0, 30, 22, 80, 94, 11, 81, 70, 64, 59, 18, 0, 36, 3, 8, 15, 42, 9, 0,
+  42, 47, 52, 32, 26, 48, 55, 6, 29, 84, 2, 4, 18, 56, 7, 29, 93, 44, 71,
+  3, 86, 66, 31, 65, 0, 79, 20, 65, 52, 13
+)
+```
+Misalkan berikut ini adalah datanya:
+
+```{r}
+data.frame(item = paste0("Item ke-",1:50),
+           values,weights) |> 
+  knitr::kable()
+```
+
+_Mathematical modelling_-nya adalah sebagai berikut:
+
+_Decision variables_ didefinisikan sebagai $x_i \in \{0,1\},i = 1,..,50$ merupakan _binary variable_. Jika produk ke _i_ terpilih ke _container_, maka nilainya __1__. Sedangkan jika produk tersebut tidak terpilih, maka nilainya __0__.
+
+_Constraints_-nya total semua bobot _item_ terpilih tak boleh melebihi 850. Bisa dituliskan sebagai berikut: $\sum_{i=1}^{50} weights_i \times x_i \le 850$.
+
+_Objective function_-nya adalah memaksimalkan total _values_ dari _item_ terpilih. Bisa dituliskan sebagai berikut: $\sum_{i=1}^{50} values_i \times x_i$.
+
+Jika dituliskan dalam skrip __R__ dengan `library(ompr)`:
+
+```{r}
+#| echo: true
+
+capacity = 850
+n        = length(values)
+
+# Membuat model knapsack
+model =
+  MIPModel() %>%
+  # Variabel biner: 1 jika item dipilih, 0 jika tidak
+  add_variable(x[i], i = 1:n, type = "binary") %>%
+  # Fungsi objektif: maksimalkan total value
+  set_objective(sum_expr(values[i] * x[i], i = 1:n), "max") %>%
+  # Constraint: total weight tidak boleh melebihi kapasitas
+  add_constraint(sum_expr(weights[i] * x[i], i = 1:n) <= capacity)
+
+# Menyelesaikan model
+solution =
+  model %>% 
+  solve_model(with_ROI(solver = "glpk"))
+
+# Mengekstrak hasil
+total_value    = solution$objective_value
+selected_items = which(solution$solution[1:n] > 0.5)  # Ambil item dengan nilai > 0.5
+packed_weights = weights[selected_items]
+total_weight   = sum(packed_weights)
+```
+
+Berikut adalah solusi yang dihasilkan:
+
+```{r}
+# Menampilkan hasil
+cat("Total value =", total_value, "\n")
+cat("Total weight:", total_weight, "\n")
+cat("Packed items:", selected_items, "\n")
+cat("Packed weights:", packed_weights, "\n")
+```
+
+Ini adalah hasilnya dalam bentuk tabel:
+
+```{r}
+# Tampilkan dalam bentuk dataframe yang lebih rapi
+results = tibble(
+  Item = selected_items,
+  Value = values[selected_items],
+  Weight = packed_weights
+)
+
+print("Detailed results:")
+results |> 
+  janitor::adorn_totals() |> 
+  knitr::kable()
+```
+
+## _Conclusion_
+
+Secara pemodelan matematika, membangun model dari _knapsack problem_ cukup mudah karena hanya memiliki satu _constraint_ dan satu _objective function_ saja.
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
+
