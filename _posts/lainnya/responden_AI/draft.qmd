@@ -1,0 +1,145 @@
+---
+title: "Seandainya Ada AI Agent yang Menjadi Responden Survey? Sebuah Analisa Eksploratif"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  message: false
+  echo: false
+error: false
+---
+
+Beberapa waktu yang lalu, salah seorang [rekan saya di kantor](https://id.linkedin.com/in/endy-the?trk=org-employees) membawakan materi saat _learning forum_ di internal market riset terkait pemanfaatan genAI di market riset. Berbeda dengan pemanfaatan yang pernah saya tulis sebelumnya di [tulisan ini](https://ikanx101.com/blog/ai-riset/), rekan saya tersebut menginformasikan bahwa genAI bisa __dijadikan responden survey virtual__.
+
+Saya coba rangkum dengan kalimat sederhana:
+
+> Jika kita bisa membuat _AI agents_ yang diberi persona tertentu, kita bisa memanfaatkan _AI agents_ tersebut untuk diinterview dan diambil jawabannya.
+
+Sebuah ide yang menarik dan tentunya __kontroversial__. Kenapa? Masih ada peluang bias yang mungkin muncul. Selain itu, saya menduga ada __tiga titik kritis__ jika hal ini dilakukan, yakni:
+
+1. Seberapa dalam persona yang diberikan kepada _AI agents_ tersebut? Apakah kedalaman persona ini bisa memberikan jawaban yang berbeda?
+1. Apakah jawaban _AI agents_ pada persona yang sama konsisten?
+1. Seandainya persona _AI agents_ tersebut ada manusia _real_-nya. Apakah jawaban manusia dan _AI agents_ tersebut sama?
+
+Jika saya bisa menjawab semua titik kritis tersebut, mungkin pendekatan _AI agent as survey respondent_ bisa dipertimbangkan untuk membantu _market researcher_.
+
+> TAPI ingat ya, saya mengatakan hal ini bisa dipakai untuk membantu DAN TIDAK UNTUK MENGGANTI responden manusia.
+
+Oke, saya akan coba eksplor tiga titik kritis di atas. Mungkin tulisan ini akan panjang, _so stay tuned_ sampai selesai.
+
+# Membuat _AI Agents_
+
+Saya akan membuat beberapa _AI agents_ menggunakan beberapa persona. Saya akan membuatnya menggunakan basis `library(ellmer)` di __R__ dengan model _Deepseek chat_.
+
+```{r}
+rm(list=ls())
+library(epoxy)
+
+load("titik_1.rda")
+```
+
+## Titik Kritis I: Seberapa dalam persona?
+
+Oke, pada kasus ini saya akan mencoba membuat beberapa _AI Agents_ dengan kedalaman persona yang berbeda-beda. Kemudian para _AI agents_ akan ditanyakan satu pertanyaan survey yang sama. 
+
+Pertanyaan survey yang ditanyakan: ___"Bagaimana pendapat Anda tentang produk minuman buah rendah gula? Apakah Anda ingin mengkonsumsi produk tersebut?"___
+
+### __Responden I__ akan diberikan _persona full_ sebagai berikut:
+
+```{epoxy}
+{persona_1}
+```
+
+### Sedangkan __responden II__ akan diberikan persona yang _less information_:
+
+```{epoxy}
+{persona_2}
+```
+
+### Sedangkan __responden III__ akan diberikan persona yang _less information_:
+
+```{epoxy}
+{persona_3}
+```
+
+### Sedangkan __responden IV__ akan diberikan persona yang _less information_:
+
+```{epoxy}
+{persona_4}
+```
+
+Sekarang kita akan tanyakan pertanyaan surveynya dan kita lihat dan bandingkan jawabannya:
+
+### Jawaban atas pertanyaan survey
+
+```{r}
+output |> knitr::kable()
+```
+
+Kita bisa melihat bahwa masing-masing persona bisa memberikan jawaban yang berbeda. Semakin detail persona yang diberikan, _AI agents_ tak perlu berimprovisasi untuk melengkapi kekurangan informasi di persona.
+
+### Bagaimana jika saya memberikan persona yang lebih lengkap lagi?
+
+Misalkan ada __responden V__ dengan persona lengkap sebagai berikut:
+
+```{epoxy}
+{persona_5}
+```
+
+### Berikut adalah jawaban dari persona lengkap:
+
+```{epoxy}
+`{jawab_5}`
+```
+
+### _Conlusion_ pada Titik Kritis I
+
+> Kedalaman persona sedikit banyak berpengaruh pada jawaban yang di-_generate_ oleh _AI Agents_. Semakin detail persona yang diberikan, akan semakin spesifik jawaban yang dihasilkan karena _AI agents_ __tidak perlu halu__ dan membuat pengandaian atas informasi yang hilang.
+
+## Titik Kritis II: Seberapa konsisten jawaban dalam satu persona?
+
+Sekarang saya akan cari tahu apakah jawaban dari _AI agents_ konsisten atau tidak.
+
+Saya akan bandingkan isi jawaban dari __responden I, responden IV, dan responden V__. Saya akan lakukan 5 kali iterasi dari pertanyaan yang sama. Mari kita lihat bagaimana hasilnya:
+
+```{r}
+rm(list=ls())
+load("titik_2.rda")
+```
+
+### Jawaban __responden I__
+
+```{r}
+output_resp_1 |> knitr::kable()
+```
+
+### Jawaban __responden IV__
+
+```{r}
+output_resp_4 |> knitr::kable()
+```
+
+### Jawaban __responden V__
+
+```{r}
+output_resp_5 |> knitr::kable()
+```
+
+## _Conclusion_
+
+> Kita bisa melihat ada __konsistensi jawaban__ di semua iterasi. Namun hal yang menarik adalah persona yang digunakan untuk membangun _AI agents_ benar-benar mempengaruhi cara _AI agents_ __berpikir__.
+
+
+## Titik Kritis III: Seberapa berbeda _AI agents_ dengan persona manusia _real_-nya?
+
+Untuk titik kritis III ini, akan saya lanjutkan di tulisan berikutnya karena harus melalui kaidah penelitian yang baik dan benar _hehe_.
+
+Kenapa? Karena butuh proses validasi dari beberapa orang yang personanya akan diadikan basis pembuatan _AI agents_. Saya tidak bisa serta merta membuat _AI agent_ _based on_ persona saya pribadi. Bisa jadi akan bias sehingga diperlukan orang lain yang lebih "netral".
+
+
+
