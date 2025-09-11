@@ -1,0 +1,263 @@
+---
+title: "Tutorial R: Bagaimana Ellmer (bisa) Mengubah Cara Saya Bekerja"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  error: false
+  message: false
+---
+
+Sejak 2017, saya memulai menggunakan **R** dan tak henti-hentinya mendapatkan momen **AHA** dengan cara menemukan *libraries* atau *frameworks* yang mengubah sejarah hidup saya. *Lebay ya, hehe*.
+
+![](IMG_1167.png){width="650"}
+
+Belakangan ini, saya mendapatkan momen **AHA** kembali saat mengoprek `ellmer` di **R**. Keberadaan `ellmer` cukup banyak mengubah cara saya melakukan *coding* di **R**. Saya pribadi seperti merasa punya *partner* dalam membuat algoritma dan *codes*. Selain itu, saya sekarang suka membuat *AI agents* *based on* `ellmer` untuk beberapa *tasks*.
+
+Sebagai contoh, saya membuat [*AI-powered data viz tools*](https://www.linkedin.com/posts/ikanx_dataviz-shiny-r-activity-7371748198941569024-6UYl?utm_source=share&utm_medium=member_ios&rcm=ACoAAAY-arwBGNEgGLwtDEtTOyOXFvbV_TIWE70) dengan *framework* seperti ini:
+
+![](IMG_1164.png){width="450"}
+
+Pada tulisan ini, saya akan coba _share_ beberapa _functions_ di `ellmer` yang saya gunakan sehari-hari. Dari _functions_ ini, rekan-rekan bisa berkreasi sedemikian sehingga pekerjaan sehari-hari bisa dilakukan dengan lebih cepat, tepat, dan akurat. Saya sudah mencobanya untuk suatu pekerjaan yang pada tahun lalu membutuhkan waktu 3-4 hari kerja tapi dengan bantuan `ellmer` bisa selesai kurang dari satu jam saja.
+
+Oh iya, pastikan kalian sudah memiliki `API Key` dari salah satu __*AI provider*__ _ya_. Saya pribadi menggunakan DeepSeek sebagai basis model saya.
+
+Oke, kita mulai:
+
+```{r}
+#| include: false
+rm(list=ls())
+gc()
+
+library(tidyverse)
+library(ellmer)
+library(jsonlite)
+library(rvest)
+
+# api key
+API_key = "15bf60709629b9e58a377841ff80480b"
+
+url = "https://www.detik.com"
+
+```
+
+## Membuat _object_ AI
+
+Jika rekan-rekan membaca tulisan saya terkait [responden survey](https://ikanx101.com/blog/agen-responden-survey/) dan [anggota DPR](https://ikanx101.com/blog/agen-DPR/) kemarin, _object_ AI (selanjutnya akan saya sebut sebagai _AI agent_) dibuat berdasarkan persona tertentu. Persona ini yang disebut dengan _system prompt_. _System prompt_ ini yang sebaiknya kita _inject_ di awal kita membuat _object_ AI.
+
+```{r}
+si_prompt = glue::glue(
+  "Kamu adalah asisten yang menjawab pertanyaan sesingkat mungkin."
+)
+
+model = "deepseek-chat"
+
+chat = chat_deepseek(system_prompt = si_prompt,
+                     model         = model)
+```
+
+## _Programming_ dengan `ellmer`
+
+_Agent_ bernama `chat` ini kemudian akan kita berikan informasi seperti ini:
+
+```{r}
+chat$chat("Perkenalkan saya Roberto Hongo dan saya seorang pemain sepak bola asal Brazil.")
+```
+
+Kemudian kita akan tanya sebagai berikut:
+
+```{r}
+chat$chat("Siapakah saya?")
+```
+
+_Agent_ telah mengenali saya.
+
+### _Cloning an Agent_
+
+Misalkan kita hendak meng-_cloning_ _agent_ `chat` yang sudah diberikan informasi sebelumnya menjadi `chat_2`.
+
+```{r}
+chat_2 = chat$clone()
+```
+
+Sekarang saya akan tanyakan kepada `chat_2` hal sebagai berikut:
+
+```{r}
+chat_2$chat("apa profesi saya??")
+```
+
+### _Resetting an Agent_
+
+Misalkan saya ingin menghilangkan informasi (atau _reset_) dari `chat_2`, saya lakukan hal berikut ini:
+
+```{r}
+chat_2$set_turns(list())
+chat_2$chat("siapa saya?")
+```
+
+Terlihat bahwa `chat_2` sudah tak mengenali informasi sebelumnya.
+
+### Melihat _History_ dari _Agent_
+
+Kita bisa menggunakan _function_ `get_turns()` untuk melihat _history_ dari suatu _agent_.
+
+```{r}
+chat$get_turns()
+chat_2$get_turns()
+```
+
+### Menambahkan _Custom Functions_ pada _Agent_
+
+Sebagai sebuah _agent_, sebenarnya `chat` sudah cukup _powerful_ untuk menjawab dan memberikan _assist_. Namun ada saatnya kita perlu memperkaya _agent_ dengan _custom function_.
+
+Beberapa minggu yang lalu, saya membuat sistem RAG sederhana (videonya bisa dilihat [di sini](https://youtu.be/WZwdS35iPBA?si=QlhIRKm7QGC69RJG)). Prinsip _custom function_ ini yang dimanfaatkan sedemikian sehingga _agent_ bisa membaca _local source_ yang diberikan.
+
+Nah, kali ini saya akan tunjukan satu _custom function_ sederhana untuk mendapatkan informasi cuaca dari situs [_open weather_](https://ikanx101.com/blog/cuaca-action/). Karena secara _default_ `chat` tidak memiliki informasi cuaca. Misalkan:
+
+
+```{r}
+chat$chat("Bagaimana cuaca di Bandung saat ini?")
+```
+
+
+Sekarang saya akan buatkan _custom function_ untuk mendapatkan cuaca _realtime_ sebagai berikut:
+
+```{r}
+cuaca_kota = function(city){
+  # tempel kota dan api key ke dalam link API
+    api = paste0("http://api.openweathermap.org/data/2.5/weather?q=",
+                 city,
+                 "&appid=",
+                 API_key,
+                 "&units=metric")
+    
+    # baca data
+    data = fromJSON(api)
+
+    # kita akan buat datanya
+    suhu      = data$main$temp
+    humidity  = data$main$humidity
+    feel_like = data$main$feels_like
+    kota      = data$name
+    pressure  = data$main$pressure
+    wind_spd  = data$wind$speed
+    kondisi   = data$weather$main
+    kondisi_d = data$weather$description
+    
+    # kita buat outputnya
+    output = data.frame(kota,kondisi,detail_kondisi = kondisi_d,
+                        suhu,feel_like,
+                        pressure,wind_spd,
+                        humidity)
+
+    return(output)
+}
+```
+
+
+Kita coba dulu dengan memasukkan __Bandung__ sebagai _input_:
+
+```{r}
+cuaca_kota("Bandung") |> knitr::kable()
+```
+
+_Function_ sudah bekerja, sekarang kita tinggal me-_register_-kan _function_ tersebut _as a tool_ kepada _agent_ `chat`.
+
+
+```{r}
+# membuat as a tool
+get_cuaca = tool(
+  cuaca_kota,
+  name = "cuaca_kota",
+  description = "Mendapatkan informasi cuaca real time dari suatu kota",
+  arguments = list(
+    city = type_string(
+      "Nama kota",
+      required = T
+    )
+  )
+)
+
+# register ke cuaca
+chat$register_tool(get_cuaca)
+```
+
+Sekarang kita akan cek apakah `chat` bisa mengenali cuaca _realtime_ di Bandung saat ini atau tidak.
+
+```{r}
+chat$chat("Bagaimana cuaca di Bandung saat ini?")
+```
+
+
+Kita coba dengan kota lainnya:
+
+```{r}
+chat$chat("Carikan saya informasi cuaca di Bekasi!")
+```
+
+#### Membuat _Tools_ _Webscrape_ untuk _Agent_
+
+Sebagaimana yang saya informasikan sebelumnya: _agent_ memang pintar tapi belum tentu tahu hal-hal yang sifatnya _real time_. Oleh karena itu, kita harus memasukkan _custom function_. 
+
+Sebagai contoh saya akan tanyakan berita kepada _agent_:
+
+```{r}
+chat$chat("Ada berita apa pada sore hari ini?")
+```
+
+Kali ini saya akan membuat _function_ yang berfungsi untuk mencari ___top 7 updated news___ dari situs detik.com.
+
+```{r}
+cari_berita = function(){
+  berita = url |> read_html() |> html_nodes("a") |> html_text()
+  link   = url |> read_html() |> html_nodes("a") |> html_attr("href")
+
+  data.frame(berita,link) |> 
+    filter(grepl("news.detik.com/berita",link,fixed = T)) |> 
+    mutate(berita = stringr::str_squish(berita)) |> 
+    filter(stringr::str_length(berita) > 3) |> 
+    head(7) |> 
+    pull(berita)
+}
+
+```
+
+Berbeda dengan _function_ sebelumnya, `cari_berita()` tidak memiliki _input_ sama sekali.
+
+```{r}
+# membuat as a tool
+get_detik = tool(
+  cari_berita,
+  name = "cari_berita",
+  description = "Mendapatkan lima berita terupdate dari situs portal detik.com"
+)
+
+# register ke cuaca
+chat$register_tool(get_detik)
+```
+
+Sekarang kita akan coba kepada _agent_:
+
+```{r}
+chat$chat("Ada berita apa pada sore hari ini?")
+```
+
+Mari kita coba dengan pertanyaan lain:
+
+```{r}
+chat$chat("apakah ada berita tentang korupsi sore hari ini?")
+```
+
+__Menarik ya hasilnya__.
+
+## _Conclusion_
+
+Dari paparan yang saya buat di atas, _agent_ yang saya buat dengan `ellmer` berpotensi menjadi _one stop solution_ untuk meningkatkan produktivitas tergantung seberapa kreatif kitanya.
+
+
+
