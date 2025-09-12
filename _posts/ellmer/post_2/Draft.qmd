@@ -1,0 +1,220 @@
+---
+title: "xxx"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  error: false
+  message: false
+---
+
+Tulisan ini masih lanjutan dari tulisan saya sebelumnya tentang bagaimana `ellmer` bisa [mengubah cara saya bekerja](https://ikanx101.com/blog/agentic-ellmer/). Kali ini saya akan memberikan satu tutorial membuat _AI agents_ yang bertugas untuk mengekstrak informasi dari suatu _plot_ film. Sebagai contoh, saya akan menggunakan _plot_ film [Superman 2025 yang saya ambil dari halaman Wikipedia-nya](https://en.wikipedia.org/wiki/Superman_(2025_film)). 
+
+Saya akan mencari dua data berikut ini:
+
+1. Tabel pertama berisi:
+    - Karakter utama,
+    - Karakter pendukung, dan
+    - Randkuman jalan cerita.
+1. Tabel kedua berisi:
+    - Nama karakter, dan
+    - Deskripsi kepribadian karakter.
+    
+Seperti biasa, saya akan membuat _AI agents_ dengan basis __DeepSeek__.
+
+```{r}
+#| include: false
+
+rm(list=ls())
+
+library(tidyverse)
+library(ellmer)
+library(epoxy)
+
+txt_cerita = readLines("Sups.txt")
+
+prompt_viz =
+  glue::glue("Kamu adalah extractor AI.
+              User akan memberikan cerita plot dari film.
+              Berikan informasi dari cerita tersebut berupa:
+                      
+              1. peran utama: nama tokoh utama dalam film.
+              2. peran lain: nama-nama supporting character dalam film. Gunakan koma sebagai pembatas.
+              3. rangkum: rangkuman jalan cerita film dalam 1 kalimat padat dan jelas.
+              
+              Buat output dalam struktur list terpisah antar ketiga informasi yang didapatkan.
+                      ")
+model_1 = "deepseek-chat"
+
+```
+
+
+## Tabel Pertama
+
+Saya akan membuat satu _agent_ dengan _system prompt_ berikut:
+
+```{epoxy}
+`{prompt_viz}`
+```
+
+```{r}
+chat_1 = chat_deepseek(system_prompt = prompt_viz,
+                      model          = model_1)
+```
+
+Sekarang kita akan lihat hasilnya:
+
+```{r}
+tbl_1 = chat_1$chat(txt_cerita,echo = "none")
+tbl_1
+```
+
+_Nah_, _output_ dari __Deepseek__ itu masih berupa _character_. Bagaimana mengubahnya menjadi tabel? Saya akan buat _function_ berikut ini:
+
+```{r}
+# fungsi yang merapikan
+buat_df = function(input){
+  data.frame(ket = input) |> 
+    separate(ket,
+             into = c("utama","support","rangkum"),
+             sep = "\\\n") |> 
+    mutate(utama = gsub("1. peran utama: ","",utama,fixed = T),
+           support = gsub("2. peran lain: ","",support,fixed = T),
+           rangkum = gsub("3. rangkum: ","",rangkum,fixed = T))
+}
+```
+
+```{r}
+buat_df(tbl_1) |> knitr::kable()
+```
+
+
+## Tabel Kedua
+
+```{r}
+#| include: false
+sis_prom = glue::glue("Kamu ada extractor AI.
+                      User akan memberikan plot film. Tugas kamu adalah memberikan rangkuman informasi berikut ini:
+                      
+                      1. nama karakter = nama-nama karakter yang ada pada plot.
+                      2. kepribadian = kepribadian karakter tersebut yang dijelaskan dalam satu kalimat.
+                      
+                      buat output dalam bentuk list.
+                      ")
+```
+
+Untuk mengekstrak tabel kedua, saya akan buat satu _agent_ lagi dengan _system prompt_ sebagai berikut:
+
+```{epoxy}
+`{sis_prom}`
+```
+
+```{r}
+chat_2 = chat_deepseek(system_prompt = sis_prom,
+                       model          = model_1)
+
+```
+
+Berikut adalah hasilnya:
+
+```{r}
+tbl_2 = chat_2$chat(txt_cerita,echo = "none")
+tbl_2
+```
+
+Format _output_ yang dihasilkan masih sangat jelek. Oleh karena itu saya akan rapikan menjadi seperti ini:
+
+```{r}
+data.frame(all = tbl_2) |> 
+  separate_rows(all,sep = "\\\n") |> 
+  separate(all,
+           into = c("a1","a2","a3","a4"),
+           sep = "\\:") |> 
+  select(a2,a3) |> 
+  mutate(a2 = gsub('", "kepribadian"','',a2,fixed = T),
+         a2 = gsub('\\"','',a2),
+         a3 = gsub('\\"','',a3),
+         a3 = gsub("},","",a3)) |> 
+  filter(!is.na(a2)) |> 
+  mutate(a2 = stringr::str_squish(a2),
+         a3 = stringr::str_squish(a3)) |> 
+  rename(karakter = a2,
+         kepribadian = a3) |> 
+  knitr::kable()
+```
+
+Bagaimana hasilnya? Cukup bagus dan tepat _yah_. Sebagai informasi, data ini didapatkan dalam waktu _under 30 seconds_.
+
+## _Bonus part: AI Agents_ Menggunakan OpenAI
+
+Jika pada skrip di atas, saya membuat _agent based on_ __DeepSeek__. Maka kali ini saya akan membuat _agents_ berbasis __OpenAI__. Lantas apa perbedaannya? Pada __OpenAI__, kita bisa melakukan ekstraksi data ke dalam bentuk _data frame_ dengan sangat mudah.
+
+```{r}
+#| include: false
+rm(list=ls())
+txt_cerita = readLines("Sups.txt")
+```
+
+Saya mulai dengan membuat _agent_ berikut:
+
+```{r}
+# pake open ai itu bisa langsung otomatis
+prompt_viz =
+  stringr::str_squish("Kamu adalah extractor AI.
+                      User akan memberikan cerita plot dari film.
+                      Berikan informasi dari cerita tersebut menggunakan bahasa Indonesia
+                      ")
+chat_2 = chat_openai(system_prompt = prompt_viz)
+```
+
+### Tabel Pertama
+
+Berikut adalah hasil untuk tabel pertama:
+
+```{r}
+output_struktur = type_object(
+  peran_utama = type_string(description = "Nama tokoh utama"),
+  peran_support = type_string(description = "Nama-nama supporting character, gunakan koma sebagai pembatas"),
+  cerita = type_string(description = "rangkuman jalan cerita film dalam 1 kalimat padat dan jelas.")
+)
+
+tes_2 = chat_2$chat_structured(txt_cerita,type = output_struktur)
+
+tes_2 |> as_tibble() |> knitr::kable()
+```
+
+### Tabel Kedua
+
+Berikut adalah hasil tabel kedua:
+
+```{r}
+tabel_2_struktur = type_object(
+  nama_karakter = type_string(description = "nama-nama karakter yang ada pada plot cerita film"),
+  kepribadian = type_string(description = "kepribadian karakter tersebut yang dijelaskan dalam satu kalimat")
+)
+
+tes_3 = chat_2$chat_structured(txt_cerita,
+                               type = type_array(items = tabel_2_struktur))
+
+tes_3 |> as_tibble() |> knitr::kable()
+
+```
+
+
+# _Conclusion_
+
+- _AI agents_ bisa digunakan untuk mengubah _unstructured data_ menjadi _structured data_.
+- _AI agents_ dengan basis __OpenAI__ memiliki _function_ yang berfungsi langsung untuk mengambil struktur dalam data dibandingkan __DeepSeek__ yang harus dibuat sendiri _function_-nya.
+
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
+
