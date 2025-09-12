@@ -28,7 +28,7 @@ Saya akan mencari dua data berikut ini:
 1.  Tabel pertama berisi:
     - Karakter utama,
     - Karakter pendukung, dan
-    - Randkuman jalan cerita.
+    - Rangkuman jalan cerita.
 2.  Tabel kedua berisi:
     - Nama karakter, dan
     - Deskripsi kepribadian karakter.
