@@ -1,0 +1,68 @@
+---
+title: "Seandainya AI Agents Menjadi Data Analyst"
+format: 
+  gfm:
+    html-math-method: webtex
+editor: source
+execute:
+  echo: false
+  warning: false
+  error: false
+--- 
+
+Beberapa hari ini, saya masih penasaran _ngoprek_ _AI agents_ menggunakan `ellmer`. Jika pada tulisan sebelumnya, saya sempat menjelaskan bagaimana _AI agents_ bisa dilengkapi dengan [_custom function_ untuk melakukan _web scraping_](https://ikanx101.com/blog/agent-film-ai/). _Nah_, kali ini saya mencoba untuk melengkapi _AI agents_ dengan data.
+
+Prinsip kerjanya masih sama dengan [tulisan sebelumnya](https://ikanx101.com/blog/agentic-ellmer/), jadi saya akan _inject_ data ke dalam _AI agents_.
+
+Sebagai contoh, saya akan membuat _AI agent_ berbasis _DeepSeek_ yang di-_inject_ data survey yang dulu pernah saya pakai saat menjelaskan [_Simpson Paradox_](https://ikanx101.com/blog/simpson-paradox/).
+
+Kemudian, saya akan tanyakan tiga _business questions_ sebagai berikut:
+
+- __PERTANYAAN I__: _Buat analisa profil responden meliputi gender, usia, dan ses (sosial ekonomi status)_.
+- __PERTANYAAN II__: _Buat analisa tentang kolom awareness! Buat juga crosstabulasinya dengan profil responden!_
+- __PERTANYAAN III__: _Jika saya hendak meningkatkan awareness, responden tipe apa yang harus saya jadikan target marketing campaign?_
+
+Berikut adalah jawaban dari _AI agent_ tanpa saya edit sama sekali:
+
+```{r}
+library(epoxy)
+rm(list=ls())
+load("tes.rda")
+```
+
+# JAWABAN PERTANYAAN I
+
+```{epoxy}
+{hasil_1}
+```
+
+# JAWABAN PERTANYAAN II
+
+```{epoxy}
+{hasil_2}
+```
+
+# JAWABAN PERTANYAAN III
+
+```{epoxy}
+{hasil_3}
+```
+
+# _Conclusion_
+
+Secara mudah, saya bisa simpulkan bahwa hasil analisa _AI agent_ cukup menjawab pertanyaan bisnis pertama dan kedua. Sedangkan untuk pertanyaan bisnis ketiga, saya merasa jawaban yang dihasilkan masih ___kureng___. Namun jika diberikan perintah yang lebih detail _step by step_-nya, kita bisa mendapatkan jawaban yang lebih baik lagi.
+
+Seperti ini hasilnya:
+
+```{r}
+load("best.rda")
+```
+
+```{epoxy}
+{hasil_4}
+```
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
+
