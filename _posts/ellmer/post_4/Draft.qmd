@@ -1,0 +1,73 @@
+---
+title: "Tutorial: Cara Mengekstrak Informasi Google Maps Menggunakan AI"
+format: 
+  gfm:
+    html-math-method: webtex
+editor: source
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+Belakangan ini saya sedang banyak meng-eksplor GenAI dan *Ai agents* menggunakan `ellmer` dan `btw` di **R** sampai-sampai saya lupa bahwa perusahaan tempat saya bekerja saat ini memiliki *subscription* **Microsoft 365** yang sudah *include* dengan GenAI-nya sendiri, yakni **Microsoft Copilot**.
+
+> Secara tak sengaja, saya menemukan satu cara yang simpel untuk melakukan ekstraksi informasi dari Google Maps menggunakan Copilot.
+
+Biasanya untuk melakukan hal ini, saya perlu *develop custom algorithm* menggunakan **R** dan *Selenium*. Tapi menggunakan Copilot, prosesnya cukup mudah. Saya membuat video terkait ini di [*link* Youtube berikut ini](https://youtu.be/q_XYig1bWRM). Bahkan saya hanya menggunakan __iPad *9th gen*__ untuk melakukan hal ini.
+
+Nah, saya akan jelaskan langkah-langkahnya juga di *blog* ini:
+
+## Langkah I
+
+Buka situs _Google Maps_ dari *Safari* dan saya akan mencari _cafe_ dari area tertentu.
+
+![](IMG_1230.png){width="450"}
+
+## Langkah II
+
+Kemudian saya akan _copy-paste_ satu-persatu _link_ dari masing-masing _cafe_ yang hendak diambil datanya. Saya akan simpan _links_ tersebut dalam _notes_. 
+
+![](IMG_1232.png){width="450"}
+
+Jika saya menggunakan PC / laptop, saya bisa melakukan hal ini secara otomatis menggunakan _extensions_ yang ada di __Google Chrome__ atau __Mozilla Firefox__.
+
+## Langkah III
+
+Buka _Copilot_ dan saya berikan _prompts_ berisi _links_ yang tadi saya simpan.
+
+![](IMG_1234.png){width="450"}
+
+Tunggu beberapa saat, hasilnya akan seperti ini:
+
+![](IMG_1235.png){width="450"}
+
+## Langkah IV
+
+Selanjutnya saya akan tambahnya _prompts_ untuk menambahkan beberapa kolom seperti _longlat_.
+
+![](IMG_1236.png){width="450"}
+
+Kita bisa dengan mudah menyimpan hasilnya dalam format `.xlsx`. Berikut adalah tabel finalnya:
+
+```{r}
+#| echo: false
+
+rm(list=ls())
+library(readxl)
+library(dplyr)
+
+file = "informasi_kafe_bekasi_lengkap.xlsx"
+df   = read_excel(file)
+
+df %>% knitr::kable()
+
+```
+
+## *Remarks*
+
+Untuk melakukan hal seperti ini di Copilot, rekan-rekan harus memiliki akun di Microsoft 365. Namun, saya sempat coba menggunakan GenAI lain seperti Gemini dan bisa mengeluarkan *output* yang sama.
+
+------------------------------------------------------------------------
+
+`if you find this article helpful, support this blog by clicking the ads.`
