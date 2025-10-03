@@ -1,0 +1,67 @@
+---
+title: "xxx"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+error: false
+---
+
+Tahun lalu, saya pernah menulis tentang [analisa teks pertanyaan-pertanyaan *netizen* seputar diabetes yang saya ambil dari situs alodokter](https://ikanx101.com/blog/wd-d/). Pagi ini saya terpikir untuk melakukan satu analisa psikologi publik terhadap diabetes secara sederhana.
+
+Bagaimana caranya? Yakni dengan menilai semua pertanyaan yang saya ambil tersebut apakah termasuk ke dalam **bingung**, **cemas**, atau **optimis**. Untuk melakukan ini, saya akan menggunakan *AI agent* untuk menilai semua pertanyaan tersebut. Setelah itu, saya akan coba kaitkan dengan strategi komunikasi kesehatan.
+
+Bagaimana hasilnya?
+
+## Penilaian Psikologi Publik
+
+```{r}
+#| include: false
+
+rm(list=ls())
+
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(janitor)
+library(epoxy)
+
+load("hasil.rda")
+
+df_new = df %>% tabyl(psikologi)
+```
+
+```{r}
+# Load function
+source("donut_chart_function.R")
+
+# Dengan customisasi
+donut_plot <- create_donut_chart(
+  data = df_new,
+  title = "Distribusi Kondisi Psikologis Pertanyaan",
+  subtitle = "Based: data web scrape ikanx101.com",
+  colors = c("#E74C3C", "#3498DB"),
+  show_labels = TRUE,
+  label_size = 3.5
+) +
+  theme(legend.position = "none")
+donut_plot
+```
+
+
+## Alasan Cemas
+
+```{epoxy}
+{alasan_cemas}
+```
+
+## Alasan Bingung
+
+```{epoxy}
+{alasan_bingung}
+```
