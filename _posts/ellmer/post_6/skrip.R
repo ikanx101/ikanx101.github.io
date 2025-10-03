@@ -122,7 +122,7 @@ alasan_bingung = chat$chat(tanya)
 
 # bikin prompt awal
 prompt_viz =
-  stringr::str_squish("Kamu adalah marketing guru yang ahli dan berpengalaman. User akan memberikan input berupa hasil analisa dari target market. Berikan saran lengkap bagaimana membuat marketing campaign dari informasi itu.
+  stringr::str_squish("Kamu adalah marketing guru yang ahli dan berpengalaman. Saat ini kamu memiliki client yang merupakan brand produk diabetes. User akan memberikan input berupa hasil analisa dari target market. Berikan saran lengkap bagaimana membuat marketing campaign dari informasi itu.
   
   Jawab secara singkat dalam maksimal 5 poin saja.
                       ")
