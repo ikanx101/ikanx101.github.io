@@ -69,7 +69,7 @@ df$psikologi = hasil_analisa
 prompt_viz =
   stringr::str_squish("Kamu adalah expert dalam bahasa Indonesia. User akan memberikan kumpulan dari banyak pertanyaan. Tugas kamu adalah:
   
-  Gunakan teknik seperti keyword extraction, topic modeling, atau clustering untuk menemukan tema dominan. Cari tahu apa yang membuat orang merasa cemas dari pertanyaan-pertanyaan yang diajukan!
+  Gunakan teknik seperti keyword extraction, topic modeling, atau clustering untuk menemukan tema dominan. Cari tahu apa yang membuat orang merasa cemas dari pertanyaan-pertanyaan yang diajukan! Jangan dicampur antara cemas dan bingung!
   
   Jawab secara singkat maksimum dalam 5 poin-poin saja.
                       ")
@@ -97,7 +97,7 @@ alasan_cemas = chat$chat(tanya)
 prompt_viz =
   stringr::str_squish("Kamu adalah expert dalam bahasa Indonesia. User akan memberikan kumpulan dari banyak pertanyaan. Tugas kamu adalah:
   
-  Gunakan teknik seperti keyword extraction, topic modeling, atau clustering untuk menemukan tema dominan. Cari tahu apa yang membuat orang merasa bingung dari pertanyaan-pertanyaan yang diajukan!
+  Gunakan teknik seperti keyword extraction, topic modeling, atau clustering untuk menemukan tema dominan. Cari tahu apa yang membuat orang merasa bingung dari pertanyaan-pertanyaan yang diajukan! Jangan dicampur antara cemas dan bingung!
   
   Jawab secara singkat maksimum dalam 5 poin-poin saja.
                       ")
