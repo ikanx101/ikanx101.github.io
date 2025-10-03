@@ -4,6 +4,7 @@ library(dplyr)
 library(tidyr)
 library(parallel)
 library(ellmer)
+library(janitor)
 ncore = 5
 
 # ==============================================================================
@@ -57,4 +58,6 @@ for(ikanx in 1:nrow(df)){
   print(ikanx)
 }
 
+df$psikologi = hasil_analisa
 
+save(df,file = "hasil.rda")
