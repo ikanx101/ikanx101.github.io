@@ -1,5 +1,5 @@
 ---
-title: "xxx"
+title: "Menangkap Kecemasan dan Kebingungan Netizen Seputar Diabetes"
 format:
   gfm:
     html-math-method: webtex
@@ -14,7 +14,7 @@ error: false
 
 Tahun lalu, saya pernah menulis tentang [analisa teks pertanyaan-pertanyaan *netizen* seputar diabetes yang saya ambil dari situs alodokter](https://ikanx101.com/blog/wd-d/). Pagi ini saya terpikir untuk melakukan satu analisa psikologi publik terhadap diabetes secara sederhana.
 
-Bagaimana caranya? Yakni dengan menilai semua pertanyaan yang saya ambil tersebut apakah termasuk ke dalam **bingung**, **cemas**, atau **optimis**. Untuk melakukan ini, saya akan menggunakan *AI agent* untuk menilai semua pertanyaan tersebut. Setelah itu, saya akan coba kaitkan dengan strategi komunikasi kesehatan.
+Bagaimana caranya? Yakni dengan menilai semua pertanyaan yang saya ambil tersebut apakah termasuk ke dalam **bingung**, **cemas**, atau **optimis**. Untuk melakukan ini, saya akan menggunakan *AI agent* untuk menilai semua pertanyaan tersebut. Setelah itu dengan bantuan _AI agent_ lainnya saya akan buat strategi _health campaign_ dari informasi yang ada.
 
 Bagaimana hasilnya?
 
@@ -36,7 +36,11 @@ load("hasil.rda")
 df_new = df %>% tabyl(psikologi)
 ```
 
+dari __453 pertanyaan__ _netizen_, berikut adalah penilaian psikologisnya:
+
 ```{r}
+#| echo: false
+
 # Load function
 source("donut_chart_function.R")
 
@@ -53,15 +57,43 @@ donut_plot <- create_donut_chart(
 donut_plot
 ```
 
+Kita dapatkan __59.2%__ pertanyaan _netizen_ bernada bingung dan sisanya bernada cemas. Menggunakan fitur _extraction_, saya akan coba gali _keywords_ dan alasan kecemasan atau kebingungan _netizen_. 
 
-## Alasan Cemas
+## Analisa Kecemasan
+
+### Alasan dan _Keywords_ Kecemasan
 
 ```{epoxy}
 {alasan_cemas}
 ```
 
-## Alasan Bingung
+### _Health Campaign_ dari Kecemasan
+
+Dari informasi di atas, berikut adalah _health campaign_ yang bisa dilakukan:
+
+```{epoxy}
+{marketing_cemas}
+```
+
+## Analisa Kebingungan
+
+### Alasan dan _Keywords_ Kebingungan
 
 ```{epoxy}
 {alasan_bingung}
 ```
+### _Health Campaign_ dari Kebingungan
+
+Dari informasi di atas, berikut adalah _health campaign_ yang bisa dilakukan:
+
+```{epoxy}
+{marketing_bingung}
+```
+
+## _Remarks_
+
+Bagaimana menurut kalian?
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`

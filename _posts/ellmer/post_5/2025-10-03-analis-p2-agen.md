@@ -9,12 +9,11 @@ tags:
   - R
   - Agentic AI
   - GenAI
-  - Copilot
-  - Microsoft
-  - Market Research
-  - Google Maps
-  - Geocoding
-  - Web Scrape
+  - Analysis
+  - Marketing Activities
+  - Revenue
+  - Growth
+  - Sales Marketing
 ---
 
 Beberapa waktu yang lalu, saya menuliskan bagaimana saya membuat *AI
