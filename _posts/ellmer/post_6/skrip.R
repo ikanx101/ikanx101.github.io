@@ -117,10 +117,34 @@ alasan_bingung = chat$chat(tanya)
 # ==============================================================================
 
 
+# ==============================================================================
+# ALASAN BINGUNG
+
+# bikin prompt awal
+prompt_viz =
+  stringr::str_squish("Kamu adalah marketing guru yang ahli dan berpengalaman. User akan memberikan input berupa hasil analisa dari target market. Berikan saran lengkap bagaimana membuat marketing campaign dari informasi itu.
+  
+  Jawab secara singkat dalam maksimal 5 poin saja.
+                      ")
+
+# kita bikin agent
+model_1 = "deepseek-chat"
+chat = chat_deepseek(system_prompt = prompt_viz,
+                     model         = model_1)
+
+marketing_cemas   = chat$chat(alasan_cemas)
+marketing_bingung = chat$chat(alasan_bingung)
+
+# ==============================================================================
+
+
 
 save(df,tanya,
      alasan_bingung,
-     alasan_cemas,file = "hasil.rda")
+     alasan_cemas,
+     marketing_cemas,
+     marketing_bingung,
+     file = "hasil.rda")
 
 
 
