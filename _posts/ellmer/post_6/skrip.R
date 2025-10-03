@@ -60,4 +60,15 @@ for(ikanx in 1:nrow(df)){
 
 df$psikologi = hasil_analisa
 
-save(df,file = "hasil.rda")
+save(df,tanya,file = "hasil.rda")
+
+tanya = 
+  df |> 
+  filter(psikologi == "CEMAS") |> 
+  summarise(gabung = paste(konten,collapse = ". ")) |> 
+  pull(gabung)
+
+
+
+
+
