@@ -59,8 +59,25 @@ for(ikanx in 1:nrow(df)){
 }
 
 df$psikologi = hasil_analisa
+# ==============================================================================
 
-save(df,tanya,file = "hasil.rda")
+
+# ==============================================================================
+# ALASAN CEMAS
+
+# bikin prompt awal
+prompt_viz =
+  stringr::str_squish("Kamu adalah expert dalam bahasa Indonesia. User akan memberikan kumpulan dari banyak pertanyaan. Tugas kamu adalah:
+  
+  Gunakan teknik seperti keyword extraction, topic modeling, atau clustering untuk menemukan tema dominan. Cari tahu apa yang membuat orang merasa cemas dari pertanyaan-pertanyaan yang diajukan!
+  
+  Jawab secara singkat maksimum dalam 5 poin-poin saja.
+                      ")
+
+# kita bikin agent
+model_1 = "deepseek-chat"
+chat = chat_deepseek(system_prompt = prompt_viz,
+                     model         = model_1)
 
 tanya = 
   df |> 
@@ -68,6 +85,42 @@ tanya =
   summarise(gabung = paste(konten,collapse = ". ")) |> 
   pull(gabung)
 
+alasan_cemas = chat$chat(tanya)
+# ==============================================================================
+
+
+
+# ==============================================================================
+# ALASAN BINGUNG
+
+# bikin prompt awal
+prompt_viz =
+  stringr::str_squish("Kamu adalah expert dalam bahasa Indonesia. User akan memberikan kumpulan dari banyak pertanyaan. Tugas kamu adalah:
+  
+  Gunakan teknik seperti keyword extraction, topic modeling, atau clustering untuk menemukan tema dominan. Cari tahu apa yang membuat orang merasa bingung dari pertanyaan-pertanyaan yang diajukan!
+  
+  Jawab secara singkat maksimum dalam 5 poin-poin saja.
+                      ")
+
+# kita bikin agent
+model_1 = "deepseek-chat"
+chat = chat_deepseek(system_prompt = prompt_viz,
+                     model         = model_1)
+
+tanya = 
+  df |> 
+  filter(psikologi == "BINGUNG") |> 
+  summarise(gabung = paste(konten,collapse = ". ")) |> 
+  pull(gabung)
+
+alasan_bingung = chat$chat(tanya)
+# ==============================================================================
+
+
+
+save(df,tanya,
+     alasan_bingung,
+     alasan_cemas,file = "hasil.rda")
 
 
 
