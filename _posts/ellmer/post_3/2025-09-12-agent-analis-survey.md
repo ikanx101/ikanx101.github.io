@@ -1,6 +1,6 @@
 ---
 date: 2025-09-12T21:51:00-04:00
-title: "Seandainya AI Agents Menjadi Data Analyst"
+title: "Seandainya AI Agents Menjadi Data Analyst I"
 categories:
   - Blog
 tags:

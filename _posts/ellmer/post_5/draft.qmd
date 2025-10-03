@@ -1,0 +1,154 @@
+---
+title: "xxx"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+error: false
+---
+
+```{r}
+#| include: false
+
+rm(list=ls())
+gc()
+
+library(tidyverse)
+library(ellmer)
+library(Robyn)
+library(ggplot2)
+library(scales)
+library(epoxy)
+
+df = 
+  dt_simulated_weekly %>% 
+  rename(tv_ads_spending = tv_S,
+         out_of_home_spending = ooh_S,
+         print_ads_spending = print_S,
+         facebook_ads_spending = facebook_S,
+         internet_ads_spending = search_S,
+         competitor_sales_value = competitor_sales_B) %>% 
+  select(!contains("_I")) %>%
+  select(!contains("_P")) %>%
+  as.data.frame()
+
+load("buat blog.rda")
+```
+
+Beberapa waktu yang lalu, saya menuliskan bagaimana saya membuat *AI agents* menggunakan `ellmer` untuk [menganalisa data survey](https://ikanx101.com/blog/agent-analis-survey/). Kali ini saya akan menambahkan *function* dari `library(btw)` untuk menyempurnakan *AI agents* ini. Rekan-rekan bisa melihat dokumentasi `library(btw)` di [*link* ini](https://posit-dev.github.io/btw/).
+
+Proses kerjanya adalah seperti ini:
+
+![](Blank%20diagram.png){width="450"}
+
+Saya akan menggunakan data yang berasal dari `library(Robyn)` yang pernah saya jelaskan tentang [Mixed Marketing Model](https://ikanx101.com/blog/practical-mmm/). 
+
+Data tersebut berisi __208 baris data mingguan yang berisi *revenue* dan *marketing activities spending* dari suatu perusahaan__. Di sana juga diberikan data _competitor sales value_. Berikut adalah gambaran dari data yang saya gunakan.
+
+## Statistika Deskriptif
+
+```{r}
+#| echo: false
+#| fig-dpi: 450
+#| fig-height: 9
+df |> 
+  arrange(DATE) |> 
+  select(DATE,revenue,contains("spending"),newsletter,competitor_sales_value) |> 
+  reshape2::melt(id.vars = "DATE") |> 
+  ggplot(aes(x = DATE,
+             y = value,
+             color = variable,
+             group = variable)) +
+  geom_line() +
+  facet_wrap(~variable,ncol = 2,scales = "free") +
+  labs(x = "Timeline",
+       y = "Value (dalam Rp)",
+       title = "Revenue dan Spending",
+       subtitle = "Data revenue dan spending dari data Robyn") +
+  theme_minimal() +
+  scale_y_continuous(
+    labels = function(x) {
+      paste0("Rp", scales::number(x, big.mark = ".", decimal.mark = ","))
+    }
+  ) +
+  theme(legend.position = "none",
+        strip.background = element_rect(linewidth = 1.25),
+        plot.title = element_text(size = 25),
+        plot.subtitle = element_text(size = 15))
+
+df |> 
+  select(revenue,contains("spending"),newsletter,competitor_sales_value) |> 
+  PerformanceAnalytics::chart.Correlation(histogram = TRUE, pch=19)
+
+
+```
+
+Kita bisa melihat bahwa hampir semua _marketing activities spending_ memiliki korelasi positif dengan kekuatan __lemah - sedang__. Sedangkan _competitor sales value_ ternyata berkorelasi positif dan sangat kuat.
+
+## _Business Question_
+
+Sekarang saya akan membuat _AI agent_ yang kemudian diberikan wewenang untuk membaca data tersebut. Pertanyaan bisnis yang saya berikan adalah:
+
+___Dari data yang ada bagaimana cara meningkatkan revenue?___
+
+
+## Jawaban _AI Agent_ (tanpa _edit_ sama sekali)
+
+Untuk bisa menjawab pertanyaan tersebut, _AI agent_ membuat beberapa analisa berikut ini secara otomatis:
+
+### Korelasi terhadap _Revenue_
+
+```{r}
+#| echo: false
+analysis_results$correlation
+```
+
+### Analisa Keberadaan _Events_
+
+```{r}
+#| echo: false
+analysis_results$events |> 
+  knitr::kable()
+```
+
+### Analisa ROI _Marketing Activities_
+
+```{r}
+#| echo: false
+analysis_results$roi
+```
+
+### Analisa Kompetitor
+
+```{r}
+#| echo: false
+analysis_results$competitor
+```
+
+### Analisa _Budget Optimization_
+
+```{r}
+#| echo: false
+analysis_results$budget_optimization
+```
+
+Dari semua analisa yang dilakukan oleh _AI agent_, kini ia akan men-sintesa jawaban finalnya seperti ini:
+
+### Jawaban FINAL Hasil Sintesa dari Analisa-Analisa di Atas
+
+```{epoxy}
+{hasil}
+```
+
+## _Remarks_
+
+Bagaimana menurut kalian?
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
