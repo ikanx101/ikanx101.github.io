@@ -1,0 +1,82 @@
+---
+title: "Membahas Frequent Collaborators dari Christopher Nolan"
+format: 
+  gfm:
+    html-math-method: webtex
+editor: source
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+Semalam, saya tidak sengaja melihat video yang dibuat oleh seorang Youtuber luar negeri yang menggabungkan adegan perkelahian di bandara dari film [TENET](https://en.wikipedia.org/wiki/Tenet_(film)) karya [Christopher Nolan](https://en.wikipedia.org/wiki/Christopher_Nolan). Menurut saya, film ini adalah salah satu _masterpiece_ karya Nolan. Seandainya tidak terjadi pandemi, saya rasa film ini akan menjadi _major success_.
+
+Setidaknya sudah ada dua belas film yang disutradai oleh Chris Nolan, yakni:
+
+1. **Following** (1998) - Debut film fitur.
+2. **Memento** (2000) - Film yang membuatnya dikenal internasional.
+3. **The Dark Knight Trilogy** (2005-2012) 
+    - Batman Begins, 
+    - The Dark Knight, 
+    - The Dark Knight Rises.
+4. **The Prestige** (2006).
+5. **Inception** (2010).
+6. **Interstellar** (2014).
+7. **Dunkirk** (2017).
+8. **Tenet** (2020).
+9. **Oppenheimer** (2023) - Film yang memenangkan Academy Award untuk Best Picture dan Best Director
+
+Saya sendiri __mulai membiasakan diri untuk menonton__ filmnya Chris Nolan setelah menonton __Batman Begins__. Hanya __Memento__ dan __Following__ yang belum saya tonton sampai saat ini.
+
+"Kecintaan" saya dengan film Chris Nolan didasari oleh beberapa alasan sederhana:
+
+- Gaya narasi yang non-linear. Hampir semua filmnya memiliki alur yang maju-mundur (apalagi TENET yang luar biasa maju mundurnya _hehe_).
+- Chris Nolan lebih menyukai _practical effect_ dibandingkan CGI. Coba perhatikan berbagai _scenes_ gila di _Dark Knight Trilogy_ yang hanya bermodalkan _practical effect_. Coba perhatikan lagi _Interstellar_ yang juga hanya menggunakan _practical effect_!
+- Keberadaan _plot twist_ dalam filmnya yang seringkali membuat penonton menjadi saling debat tentang bagaimana film itu dilihat. Bahkan hampir semua _film_ memiliki _ending_ yang membuat para penonton berteori sendiri.
+
+Ada satu hal yang lain yang membuat film Chris Nolan unik, yakni pemilihan _cast_. Pada film terbarunya nanti (berjudul __The Odyssey__), Chris Nolan tetap bekerja sama dengan beberapa aktor/aktris yang sudah biasa muncul dalam setiap filmnya.
+
+> Saya bisa menyebutnya sebagai _frequent collaborator_.
+
+Karena penasaran siapa saja _frequent collaborator_, maka saya mengambil semua nama _cast_ dalam semua film Chris Nolan dari halaman Wikipedia dan melakukan analisa sederhana.
+
+
+```{r}
+#| include: false
+rm(list=ls())
+library(dplyr)
+load("info.rda")
+```
+
+## _Frequent Collaborator_
+
+
+
+## _Frequent Collaborator_ yang Lain
+
+Ada satu tambahan terkait _frequent collaborator_ Chris Nolan. Ternyata tidak hanya aktor/aktris saja, saya bisa melihat bahwa ada beberapa nama lain yang menjadi _frequent collaborator_ seperti:
+
+1. Hans Zimmer. Dimulai dari _The Dark Knight Trilogy_ hingga _Inception_, _Interstellar_ dan _Dunkirk_. Musik yang paling berpengaruh menurut saya adalah saat _docking scene_ di _Interstellar_.
+1. Hoyte Van Hoytema. Ia adalah sinematografer yang membuat tampilan film-film Chris Nolan terasa megah dan mewah. Film kolaborasinya adalah: _Interstellar_, _Dunkirk_, _Tenet_, dan _Oppenheimer_. Coba lihat lagi bagaimana ada perbedaan _scene_ __hitam putih dan warna__ dalam film _Oppenheimer_.
+1. Emma Thomas. Ia adalah sitri dari Chris Nolan. Kerjasama antara keduanya adalah Emma selau menjadi produser daris etiap film Chris Nolan. Keduanya mendirikan [__Syncopy Inc__](https://en.wikipedia.org/wiki/Syncopy_Inc.).
+1. Jonathan Nolan. Ia adalah saudara dari Chris Nolan. _Role_-nya adalah sebagai penulis skenario film. Kita bisa melihat kualitas skrip skenarionya dari film-film tersebut.
+
+
+## Apa Implikasi _Frequent Collaborator_?
+
+_Frequent collaborators_ ini membentuk _brain trust_ kreatif bagi Chris Nolan sehingga memungkinkannya untuk mengeksekusi visinya yang kompleks sambil mempertahankan kualitas dan konsistensi di semua filmnya.
+
+Bagi saya pribadi, bekerja dengan _frequent collabolators_ lebih menyenangkan dibandingkan membentuk tim baru di setiap _data science project_ di kantor. Betul bahwa klien berganti-ganti tapi siapa saja yang berada dalam tim saya biasanya si dia-dia saja.
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
+
+
+
+
+
+
