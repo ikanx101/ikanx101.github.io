@@ -1,5 +1,19 @@
-# Membahas Frequent Collaborators dari Christopher Nolan
-
+---
+date: 2025-10-14T09:05:00-04:00
+title: "Membahas Frequent Collaborators dari Christopher Nolan"
+categories:
+  - Blog
+tags:
+  - Machine Learning
+  - Artificial Intelligence
+  - R
+  - Agentic AI
+  - Film
+  - Movie
+  - Christophen Nolan
+  - Batman
+  - TENET
+---
 
 Semalam, saya tidak sengaja melihat video yang dibuat oleh seorang
 Youtuber luar negeri yang menggabungkan adegan perkelahian di bandara
@@ -61,7 +75,7 @@ Saya dapatkan setidaknya ada 176 orang aktor/aktris yang pernah bekerja
 bersama Chris Nolan. Saya akan hitung *frequent collaborator*-nya
 sebagai berikut:
 
-![](Draft_files/figure-commonmark/unnamed-chunk-2-1.png)
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/lainnya/kris_nolan/Draft_files/figure-commonmark/unnamed-chunk-2-1.png)
 
 Kita bisa menebak dari awal bahwa Michael Caine adalah satu-satunya
 aktor yang pernah bekerja sama sebanyak 8 film. Kemudian diikuti oleh
@@ -70,7 +84,7 @@ Cillian Murphy, Christian Bales, dan Gary Oldman.
 Jika saya filter berdasarkan aktor/aktris yang pernah bermain minimal 2
 kali, saya bisa melihat kolaborasinya sebagai berikut:
 
-![](Draft_files/figure-commonmark/unnamed-chunk-3-1.png)
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/lainnya/kris_nolan/Draft_files/figure-commonmark/unnamed-chunk-3-1.png)
 
 ## *Frequent Collaborator* yang Lain
 

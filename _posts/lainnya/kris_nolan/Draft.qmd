@@ -39,19 +39,62 @@ Ada satu hal yang lain yang membuat film Chris Nolan unik, yakni pemilihan _cast
 
 > Saya bisa menyebutnya sebagai _frequent collaborator_.
 
-Karena penasaran siapa saja _frequent collaborator_, maka saya mengambil semua nama _cast_ dalam semua film Chris Nolan dari halaman Wikipedia dan melakukan analisa sederhana.
+Karena penasaran siapa saja _frequent collaborator_, maka saya mengambil semua nama _cast_ dalam semua film Chris Nolan dari berbagai halaman Wikipedia dan melakukan analisa sederhana.
 
 
 ```{r}
 #| include: false
 rm(list=ls())
+
 library(dplyr)
+library(ggplot2)
+library(tidyr)
+
 load("info.rda")
 ```
 
 ## _Frequent Collaborator_
 
+Saya dapatkan setidaknya ada 176 orang aktor/aktris yang pernah bekerja bersama Chris Nolan. Saya akan hitung _frequent collaborator_-nya sebagai berikut:
 
+```{r}
+freq_actor %>% 
+  arrange(desc(n)) %>% 
+  filter(n > 2) %>% 
+  ggplot(aes(x = reorder(actor,n),y = n)) +
+  geom_col(color = "black",fill = "steelblue") +
+  coord_flip() +
+  labs(y = "Banyaknya film",
+       x = "Nama aktor/aktris",
+       title = "Frequent Collaborator Film Chris Nolan",
+       subtitle = "Aktor/Aktris yang pernah min 3 kali bekerja sama\nSumber data: wikipedia.org",
+       caption = "Scraped, Pre-processed, and Analyze using R\nikanx101.com")
+```
+
+Kita bisa menebak dari awal bahwa Michael Caine adalah satu-satunya aktor yang pernah bekerja sama sebanyak 8 film. Kemudian diikuti oleh Cillian Murphy, Christian Bales, dan Gary Oldman.
+
+Jika saya filter berdasarkan aktor/aktris yang pernah bermain minimal 2 kali, saya bisa melihat kolaborasinya sebagai berikut:
+
+```{r}
+nama_sel = 
+  freq_actor %>% 
+  filter(n >= 2) %>% 
+  pull(actor)
+
+frequent_collaborator %>% 
+  filter(actor %in% nama_sel) %>% 
+  reshape2::melt(id.vars = "actor") %>% 
+  # mutate(value = ifelse(value == 0,NA,value)) %>% 
+  mutate(value = as.factor(value)) %>% 
+  ggplot(aes(y = actor,x = variable,fill = value)) +
+  geom_tile(color = "black") +
+  scale_fill_manual(values = c("white","steelblue")) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90),
+        legend.position = "none") +
+  labs(x = "Nama Film",
+       y = "Nama Aktor/Aktris")
+```
 
 ## _Frequent Collaborator_ yang Lain
 
