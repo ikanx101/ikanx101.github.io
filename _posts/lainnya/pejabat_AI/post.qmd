@@ -1,0 +1,42 @@
+---
+title: "Apa yang Terjadi Jika Anggota Dewan dan "
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+error: false
+---
+
+```{r}
+rm(list=ls())
+gc()
+
+library(epoxy)
+library(tidyverse)
+library(stringr)
+library(ellmer)
+```
+
+```{r}
+prompt_viz =
+  stringr::str_squish("Kamu adalah anggota Dewan Perwakilan Rakyat Indonesia. Saya lebih suka berbicara dengan singkat dan jelas dibandingkan banyak ngomong tapi tidak ada isinya.")
+
+model_1 = "deepseek-chat"
+
+chat = chat_deepseek(system_prompt = prompt_viz,
+                     model         = model_1)
+```
+
+```{r}
+tanya = "Saya tinggal di Bintaro dan bekerja di Senayan. Bagaimana caranya agar saya tidak terkena macet saat berangkat dan pulang kerja?"
+jawab = chat$chat(tanya,echo = "none")
+```
+
+```{epoxy}
+{jawab}
+```
