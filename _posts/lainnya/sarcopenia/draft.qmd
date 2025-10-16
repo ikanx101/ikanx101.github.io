@@ -1,0 +1,76 @@
+---
+title: "Lawan Sarcopenia dengan Susu HiLo!"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+error: false
+---
+
+Pada _corporate meeting_ beberapa hari yang lalu, saya baru menyadari bahwa pada sepanjang tahun 2025 ini, _brand_ susu HiLo mengambil tema _campaign_ seputar _fight sarcopenia_. Bagi orang awam, mungkin istilah _sarcopenia_ merupakan istilah yang belum dimengerti.
+
+## Apa itu _Sarcopenia_?
+
+_Sarcopenia_ adalah kondisi medis yang ditandai dengan hilangnya massa otot rangka secara degeneratif yang terjadi seiring dengan bertambahnya usia dan atau imobilisasi. Kondisi ini melibatkan penurunan kualitas, massa, dan kekuatan otot rangka.
+
+
+- Kehilangan massa otot: penurunan progresif dalam jumlah serat otot.
+- Penurunan kualitas otot: perubahan dalam komposisi dan fungsi otot.
+- Pengurangan kekuatan otot: kemampuan kontraksi otot yang menurun.
+
+Selain _sarcopenia_, ada kondisi lain yang bisa menyebabkan penurunan massa otot, yakni bernama _Cachexia_. Perbedaannya, _cachexia_ merupakan degradasi otot yang dimediasi sitokin dan sering terjadi pada penyakit kronis seperti kanker.
+
+## Apa penyebab _Sarcopenia_?
+
+Ada beberapa faktor yang menyebabkan _sarcopenia_, antara lain:
+
+1. Penuaan: proses alami yang mempercepat kehilangan otot
+1. Imobilisasi: kurangnya aktivitas fisik
+1. Nutrisi yang tidak memadai
+
+## Data Seputar _Sarcopenia_
+
+Saya meminta _AI agent_ untuk mencari data seputar _sarcopenia_ dan ini adalah temuannya.
+
+### Prevalensi Global
+
+- _Sarcopenia_ mempengaruhi 5-13% populasi usia 60-70 tahun.
+- Diprediksi akan meningkat hingga 11% - 50% pada populasi usia di atas 80 tahun.
+- Diperkirakan 50 juta orang hidup dengan sarcopenia saat ini.
+- Diproyeksikan meningkat menjadi 200 juta orang dalam 40 tahun ke depan.
+
+### Distribusi Geografis
+
+- Asia: Variasi prevalensi berkisar antara 10% - 25% (Asia Timur), 11% - 30% (Asia Tenggara), 20% - 40% (Asia Selatan), dan 15% - 25% (Asia Barat).
+- Eropa: Variasi prevalensi berbeda-beda berdasarkan negara dan kriteria diagnosis (sekitar 4% - 27%).
+- Amerika: Data menunjukkan peningkatan seiring populasi yang menua.
+
+## _Campaign_ yang Dilakukan HiLo
+
+Seperti yang kita tahu, beberapa tahun belakangan ini _brand_ susu HiLo mengubah _marketing campaign_-nya menjadi tak hanya _high calcium_ tapi juga _high protein_.
+
+> Apa hubungannya dengan protein?
+
+Setidaknya ada dua cara bagi kita untuk mencegah _sarcopenia_, yakni:
+
+1. Latihan fisik yang teratur.
+    - _Brand_ HiLo secara konsisten sejak awal kelahirannya memiliki tema gerak yang aktif. Kalian bisa secara mandiri melihat semua iklan dan _marketing campaing_ di Youtube dan media sosial sejak awal tahun 2000-an. 
+1. Nutrisi yang memadai (terutama protein).
+    - Protein memainkan peran kritis dalam perkembangan dan pencegahan _sarcopenia_ melalui beberapa mekanisme:
+        - Protein merupakan bahan baku utama untuk sintesis protein otot. Dengan bertambahnya usia, terjadi resistensi anabolik - tubuh menjadi kurang responsif terhadap stimulasi sintesis protein. Asupan protein yang memadai membantu mengatasi resistensi anabolik ini.
+        - _Sarcopenia_ terjadi akibat ketidakseimbangan antara sintesis protein dan degradasi protein. Asupan protein yang cukup membantu mempertahankan keseimbangan positif protein otot.
+
+
+> Berdasarkan informasi tersebut, maka _brand_ HiLo pada tahun ini membuat berbagai macam _event_ _fight sarcopenia_ yakni dengan memadukan aktivitas fisik dengan asupan protein yang diberikan oleh HiLo.
+
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
