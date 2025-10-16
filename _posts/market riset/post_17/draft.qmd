@@ -1,0 +1,142 @@
+---
+title: "xxx"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+error: false
+echo: true
+---
+
+```{r}
+#| include: false
+
+rm(list=ls())
+library(dplyr)
+library(ggplot2)
+
+```
+
+
+Sudah beberapa tahun ini saya sering mendengar istilah __Bayesian__ berseliweran di berbagai artikel. Konon, statistika yang selama ini dipelajari oleh kita semua itu termasuk ke dalam __frequestist__. __Bayesian__ ini bisa mengubah cara pandang kita terhadap statistik karena memiliki perubahan cara pandang terhadap pengambilan keputusannya.
+
+__Bayesian__ adalah filosofi dan metodologi dalam statistika yang dinamai dari __Teorema Bayes__ (ditemukan oleh Thomas Bayes). Inti dari pendekatan ini adalah __memperbarui keyakinan kita tentang suatu hal berdasarkan bukti atau data baru__.
+
+Bayangkan kita memiliki sebuah hipotesis atau asumsi awal (disebut dengan __Prior__). Ketika data baru datang, kita menggunakan data tersebut untuk memperbarui keyakinan awal (hasil pembaruannya disebut __Posterior__).
+
+Formula perhitungan __posterior__ cukup sederhana, yakni:
+
+$$Posterior = Likelihood \times Prior$$
+
+Dimana:
+
+1. __Prior__: Keyakinan awal kita tentang suatu parameter (misalnya, rata-rata tinggi badan) sebelum melihat data. Ini bisa berdasarkan pengetahuan ahli, penelitian sebelumnya, atau asumsi yang masuk akal.
+1. __Likelihood__: Probabilitas untuk mengamati data yang kita miliki jika hipotesis kita benar. Ini mirip dengan konsep dalam statistika __frequestist__.
+1. __Posterior__: Keyakinan yang telah diperbarui tentang parameter tersebut setelah kita menggabungkan keyakinan awal (__Prior__) dengan bukti dari data baru (__Likelihood__). Ini adalah hasil akhir yang kita cari.
+
+## Contoh Sederhana: Mendiagnosa Penyakit
+
+Misalkan secara umum kita mengetahui bahwa ada suatu penyakit langka yang hanya diderita oleh 1% populasi. 
+
+> Ini adalah keyakinan awal (prior).
+
+Kemudian ada seseorang pasien yang hendak dites untuk mengetahui apakah pasien tersebut mengidap penyakit langka atau tidak. Suatu tes digunakan dengan akurasi `99%` (baik untuk orang sakit maupun sehat). Ternyata hasil tes tersebut menyatakan __positif__.
+
+__Bagi frequentist, probabilitas seseorang tersebut mengidap penyakit adalah sebesar `99%`__.
+
+__Namun bagi Bayesian, probabilitas seseorang tersebut mengidap penyakit adalah sebesar `50%`__. _Lho kok bisa?_
+
+Begini menghitungnya:
+
+Mari kita definisikan:
+
+$P(S)$ : Probabilitas sakit = 1% = 0.01.
+
+$P(T+|S)$ : Probabilitas tes positif jika pasien sakit = 99% = 0.99.
+
+$P(T-|S)$ : Probabilitas tes negatif jika pasien sehat = 99% = 0.99.
+
+Kita ingin mencari: $P(S|T+)$, yakni probabilitas pasien sakit jika tes positif.
+
+```{r}
+# Probabilitas prior
+P_S              = 0.01  # Probabilitas sakit
+P_Tplus_given_S  = 0.99  # Probabilitas tes positif jika sakit
+P_Tminus_given_H = 0.99  # Probabilitas tes negatif jika sehat
+
+# Probabilitas sehat
+P_H = 1 - P_S  # 0.99
+
+# Probabilitas tes positif jika sehat (False Positive)
+P_Tplus_given_H = 1 - P_Tminus_given_H  # 1 - 0.99 = 0.01
+
+# Probabilitas marginal tes positif
+P_Tplus = (P_Tplus_given_S * P_S) + (P_Tplus_given_H * P_H)
+
+# Teorema Bayes: P(S|T+) = [P(T+|S) × P(S)] / P(T+)
+P_S_given_Tplus = (P_Tplus_given_S * P_S) / P_Tplus
+P_S_given_Tplus
+```
+
+Kita dapatkan probabilitasnya sebesar __`50%`__.
+
+Sekarang kita akan lakukan simulasi untuk populasi sebanyak 10.000 orang.
+
+```{r}
+# Analisis dengan populasi 10,000 orang
+populasi = 10000
+
+# Jumlah yang sakit dan sehat
+sakit = populasi * P_S      
+sehat = populasi * P_H      
+
+# Tes positif pada orang sakit (True Positive)
+TP <- sakit * P_Tplus_given_S 
+
+# Tes positif pada orang sehat (False Positive)
+FP <- sehat * P_Tplus_given_H  
+
+# Total tes positif
+total_positif <- TP + FP
+
+# Probabilitas sakit jika tes positif
+prob_sakit_jika_positif <- TP / total_positif
+
+cat("Analisis Populasi 10.000 orang:\n")
+cat("Jumlah sakit:", sakit, "orang\n")
+cat("Jumlah sehat:", sehat, "orang\n")
+cat("True Positive (sakit dan tes positif):", TP, "orang\n")
+cat("False Positive (sehat tapi tes positif):", FP, "orang\n")
+cat("Total tes positif:", total_positif, "orang\n")
+cat("Probabilitas sakit jika tes positif:", round(prob_sakit_jika_positif, 4), "=", round(prob_sakit_jika_positif * 100, 1), "%\n")
+```
+
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+# Data untuk visualisasi
+data_visual <- data.frame(
+  Kategori = c("Sakit & Tes +", "Sakit & Tes -", "Sehat & Tes +", "Sehat & Tes -"),
+  Jumlah = c(TP, sakit - TP, FP, sehat - FP),
+  Warna = c("TP", "FN", "FP", "TN")
+)
+
+data.frame(status  = c("Sakit","Sakit","Sehat","Sehat"),
+           tes     = c("+","-","+","-"),
+           jml_org = c(TP, sakit - TP, FP, sehat - FP),
+           warna   = c("TP", "FN", "FP", "TN")) |> 
+  mutate(jml_org = floor(jml_org)) |> 
+  ggplot(aes(x = status,
+             y = tes,
+             fill = warna)) +
+  geom_tile(color = "black") +
+  geom_label(aes(label = jml_org))
+```
+
