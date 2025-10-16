@@ -1,0 +1,185 @@
+---
+title: "Mengenal K-Prototype Clustering untuk Mengelompokkan Data Campuran (Numerik dan Kategorik)"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+error: false
+echo: false
+---
+
+Sebagai *market researcher*, saya sering menemukan kasus di mana saya harus melakukan pengelompokan konsumen berdasarkan informasi atau data yang ada. Di *blog* ini, saya juga sudah pernah menjelaskan bagaimana melakukan [*k-modes clustering*](https://ikanx101.com/blog/k-modes/), [*k-means clustering*, *hierarchical clustering*, dan *DBScan clustering*](https://ikanx101.com/blog/clustering-R/). Sebelum lanjut membaca tulisan ini, saya sarankan agar rekan-rekan bisa membaca terlebih dahulu tulisan saya sebelumnya.
+
+> Tentu masing-masing teknik *clustering* tersebut memiliki kelebihan dan kekurangan tergantung dari tujuan yang dicapai dan format data yang digunakan.
+
+Kali ini, saya hendak membahas satu teknik *clustering* lain yang bernama **k-prototype clustering**. Secara singkat, saya bisa mendefinisikan teknik *clustering* ini sebagai perkawinan antara **k-means** dan **k-modes**. Artinya, teknik ini sangat berguna jika dihadapkan pada data yang mengandung numerik dan kategorik di dalamnya (data campuran).
+
+> **Artinya kita tidak perlu melakukan konversi seperti *one hot encoding* pada data kategorik!**
+
+Teknik *clustering* ini menggunakan fungsi jarak yang menggabungkan:
+
+-   **Jarak Euclidean** untuk variabel numerik.
+-   **Jarak Hamming** untuk variabel kategorik.
+
+Sehingga penentuan *cluster centers* menggunakan:
+
+-   Untuk variabel numerik: menggunakan *mean* (seperti *k-means*).
+-   Untuk variabel kategorikal: menggunakan modus (nilai yang paling sering muncul)
+
+## Implementasi di R
+
+*Library* di **R** untuk melakukan *k-prototype clustering* di R adalah **`library(clustMixType)`**, yang mengimplementasikan algoritma berdasarkan penelitian Z. Huang (1998).
+
+Seperti pada *k-means* dan *k-modes*, maka **penentuan nilai `k` menjadi hal yang paling krusial**. Untuk menentukan nilai `k`, kita bisa menggunakan prinsip yang sama, yakni dengan menggunakan *elbow method*, *silhouette method*, atau *gap-stat method*.
+
+Penentuan `k` ini saya bisa bilang sebagai "seni" karena ada dua pertimbangan utama seperti:
+
+1. Nilai `k` tidak boleh terlalu sedikit karena akan membuat _cluster_ yang terlalu umum (heterogen). Data yang berbeda bisa dipaksa masuk ke _cluster_ yang sama.
+1. Nilai `k` tidak boleh terlalu banyak karena akan membuat beberapa _clusters_ sangat eksklusif sehingga hanya berisi sedikit _member_.
+
+------------------------------------------------------------------------
+
+## Contoh Data
+
+Oke, sekarang saya akan mencoba membuat analisa *clustering* dari data berikut ini:
+
+```{r}
+rm(list=ls())
+
+library(dplyr)
+library(ggplot2)
+
+load("data.rda")
+
+df %>% head(10) %>% knitr::kable()
+```
+
+Di atas adalah sampel 10 baris data dari total 265 data orang. Dari data di atas, kita bisa melihat `TingkatEkonomi`, `TingkatPendidikan`, dan `Gender` merupakan **variabel kategorik** sedangkan `Usia`, `NilaiAkademis`, dan `NilaiBahasaInggris` termasuk **variabel numerik**.
+
+Sebagai catatan, data di atas merupakan data rekaan saja _ya_.
+
+Langkah pertama adalah menentukan nilai **`k`**.
+
+```{r}
+load("cluster.rda")
+
+# Plot elbow method
+metrics %>% 
+  ggplot(aes(x = k,y = wss)) +
+  geom_point(size = 1,color = "steelblue") +
+  geom_line(color = "lightblue") +
+  theme_minimal() +
+  labs(x = "Berapa banyak k",
+       y = "Total within SS")
+
+```
+
+Secara visual, kita bisa melihat *elbow* berada pada **`k = 4`**. Mari kita analisa 4 *clusters* yang terbentuk:
+
+```{r}
+final = results[[4]]
+
+final$size %>% 
+  as.data.frame() %>% 
+  rename(observasi = Freq,
+         cluster = clusters) %>% 
+  mutate(persen = observasi / sum(observasi) * 100,
+         persen = round(persen,2)) %>% 
+  mutate(label = paste0(persen,"%\nn = ",observasi)) %>% 
+  ggplot(aes(x = factor(cluster),
+             y = persen)) +
+  geom_col(fill = "steelblue",color = "black") +
+  geom_label(aes(label = label),size = 2.5) +
+  theme_minimal() +
+  coord_flip() +
+  labs(x = "Cluster ke ",
+       y = "Berapa banyak responden per cluster?",
+       title = "Cluster Membership",
+       subtitle = "Base: all responden (n = 265)") +
+  theme(axis.text.x = element_blank())
+```
+
+Berikut adalah *clusters center* yang dihasilkan:
+
+```{r}
+final$centers %>% 
+  mutate_if(is.numeric,round) %>% 
+  knitr::kable()
+```
+
+Kita bisa melihat dengan detail profil setiap *cluster* yang terbentuk.
+
+### **CLUSTER 1: "Generasi Muda Menengah"** (71 orang)
+
+-   **Usia**: 28.4 tahun
+-   **Ekonomi**: Menengah
+-   **Pendidikan**: Sarjana
+-   **Gender**: Laki-laki
+-   **Nilai Akademis**: 73.7
+-   **Nilai Bahasa Inggris**: 70.0
+
+**Interpretasi**: Kelompok profesional muda dengan latar belakang ekonomi menengah, berpendidikan sarjana, dengan performa akademis dan bahasa Inggris yang cukup baik.
+
+![](cluster_1.png){width="250"}
+
+### **CLUSTER 2: "Elite Senior"** (70 orang)
+
+-   **Usia**: 39.7 tahun
+-   **Ekonomi**: Atas
+-   **Pendidikan**: Magister
+-   **Gender**: Perempuan
+-   **Nilai Akademis**: 90.5
+-   **Nilai Bahasa Inggris**: 88.3
+
+**Interpretasi**: Kelompok *elite* dengan usia lebih matang, ekonomi atas, pendidikan tinggi (magister), dan performa akademis serta bahasa Inggris yang sangat baik.
+
+![](cluster_2.png){width="250"}
+
+### **CLUSTER 3: "Generasi Muda Terbatas"** (56 orang)
+
+-   **Usia**: 24.1 tahun
+-   **Ekonomi**: Rendah
+-   **Pendidikan**: SMA
+-   **Gender**: Perempuan
+-   **Nilai Akademis**: 61.5
+-   **Nilai Bahasa Inggris**: 55.0
+
+**Interpretasi**: Kelompok usia sangat muda dengan latar belakang ekonomi terbatas, pendidikan menengah, dan performa akademis serta bahasa Inggris yang rendah.
+
+![](cluster_3.png){width="250"}
+
+### **CLUSTER 4: "Profesional Menengah-Atas"** (67 orang)
+
+-   **Usia**: 32.3 tahun
+-   **Ekonomi**: Menengah-Keatas
+-   **Pendidikan**: Sarjana
+-   **Gender**: Perempuan
+-   **Nilai Akademis**: 82.3
+-   **Nilai Bahasa Inggris**: 79.5
+
+**Interpretasi**: Kelompok profesional dengan ekonomi menengah-keatas, pendidikan sarjana, dan performa akademis serta bahasa Inggris yang baik.
+
+![](cluster_4.png){width="250"}
+
+## Pola pada _Clusters_
+
+Dari *clusters* yang terbentuk, kita bisa melihat beberapa pola seperti ini:
+
+1.  Pola antara usia dengan "performa" (atau nilai-nilai).
+    -   Usia lebih tua cenderung memiliki performa yang lebih tinggi
+    -   Usia muda cenderung memiliki performa yang bervariasi tergantung latar belakang ekonomi dan pendidikan.
+2.  Pengaruh latar belakang ekonomi dan pendidikan.
+    -   Responden dengan ekonomi atas dan berpendidikan tinggi cenderung memiliki performa yang lebih optimal.
+    -   Responden dengan ekonomi rendah dan pendidikan menengah cenderung memiliki keterbatasan performa.
+
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
