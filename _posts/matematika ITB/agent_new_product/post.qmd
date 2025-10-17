@@ -1,0 +1,359 @@
+---
+title: "xxx"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+error: false
+---
+
+```{r}
+#| echo: false
+
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+
+# Kode untuk visualisasi pengaruh sosial
+rm(list=ls())
+set.seed(42)
+
+```
+
+Beberapa malam yang lalu, saya melihat kembali video presentasi Steve Jobs saat pertama kali memperkenalkan iPhone. Saya bertanya-tanya, apakah pada saat itu Apple sudah memprediksi bahwa kemunculan iPhone ternyata mengubah _landscape_ pasar _smartphone_. Setiap kali produk baru _launching_ di _market_, salah satu analisa yang biasa dilakukan adalah memprediksi apakah produk tersebut akan laku atau tidak. Ada berbagai pendekatan dan metode untuk melakukan analisa ini. Namun berdasarkan pengalaman saya, [_agent based modelling_](https://ikanx101.com/blog/simple-economy/) sangat jarang digunakan.
+
+_Nah_, kali ini saya hendak menggunakan _agent based modelling_ untuk memodelkan perilaku konsumen saat suatu produk _launching_. Untuk memudahkan penjelasan, saya akan membuat beberapa asumsi dan kondisi tertentu.
+
+---
+
+## Simulasi _Launching_ Produk Baru
+
+Misalkan suatu produk _smartphone_ dengan harga _high-end_ hendak _launching_ di pasaran. Di _market_ ada 10.000 orang konsumen dengan profil yang berbeda-beda. Konsumen memutuskan untuk membeli _smartphone_ tersebut berdasarkan pengaruh sosial, preferensi pribadi, dan strategi pemasaran.
+
+### Desain Agen
+
+Setiap agen merepresentasikan satu konsumen dengan atribut:
+
+- **Preferensi konsumen terhadap produk**: tinggi, sedang, rendah.
+- **Daya beli**: mampu beli atau tidak.
+- **Pengaruh sosial**: seberapa besar dipengaruhi oleh agen lain.
+- **Status adopsi**: belum beli, tertarik, sudah beli.
+
+### _Environment_ Simulasi
+
+- **Jumlah konsumen (agen)**: 10.000 orang.
+- **Interaksi sosial**: agen bisa melihat keputusan 10 agen lainnya (seperti teman-teman pada dunia nyata). Jika konsumen melihat 10 temannya membeli, maka akan meningkatkan peluang konsumen tersebut untuk ikut membeli _smartphone_.
+- **Waktu simulasi**: 30 hari.
+- **Strategi pemasaran**: Akan dilakukan diskon pada tiga hari berturut-turut pada hari ke 10, 11, dan 12. Diharapkan diskon tersebut akan meningkatkan peluang konsumen membeli _smartphone_.
+
+### Aturan Simulasi
+
+1. Agen dengan preferensi tinggi dan daya beli cenderung membeli lebih cepat.
+2. Agen yang melihat > 10 tetangga sudah membeli akan lebih tertarik.
+3. Diskon meningkatkan kemungkinan beli sebesar 10 - 20%.
+
+Hal yang akan saya amati dari simulasi ini adalah:
+
+- Jumlah agen yang membeli per hari.
+- Efek diskon dan iklan terhadap lonjakan pembelian.
+- Visualisasi jaringan pengaruh sosial.
+
+---
+
+## Implementasi di __R__
+
+Saya akan membuat kode __R__ untuk melakukan simulasi ini. Pertama-tama saya akan definisikan berapa banyak agen dan hari.
+
+```{r}
+# Jumlah agen dan hari simulasi
+num_agents <- 10000
+num_days   <- 30
+```
+
+Sekarang saya akan mendefinisikan beberapa atribut untuk semua agen.
+
+```{r}
+# Inisialisasi atribut agen
+preferensi      <- sample(c("tinggi", "sedang", "rendah"), num_agents, replace = TRUE, prob = c(0.2, 0.4, 0.4))
+daya_beli       <- sample(c(TRUE, FALSE), num_agents, replace = TRUE, prob = c(.9,.1))
+pengaruh_sosial <- runif(num_agents, 0.01, 0.5)
+status          <- rep("belum_beli", num_agents)
+
+# Data frame untuk menyimpan data pengaruh sosial
+pengaruh_data <- data.frame(
+  Hari = integer(),
+  Rata_rata_Pengaruh = numeric(),
+  SD_Pengaruh = numeric(),
+  Min_Pengaruh = numeric(),
+  Max_Pengaruh = numeric(),
+  Total_Pembeli = integer(),
+  Pembelian_Hari = integer()
+)
+
+# Fungsi probabilitas beli
+probabilitas_beli <- function(pref, pengaruh, tetangga_beli, hari) {
+  base_prob <- switch(pref,
+                      "tinggi" = runif(1,.2,.3),
+                      "sedang" = runif(1,.1,.2),
+                      "rendah" = runif(1,.05,.1))
+  base_prob <- base_prob + pengaruh * (tetangga_beli / 10)
+  if (hari == 10) base_prob <- base_prob + runif(1,.1,.2)
+  if (hari == 11) base_prob <- base_prob + runif(1,.1,.2)
+  if (hari == 12) base_prob <- base_prob + runif(1,.1,.2)
+  return(min(base_prob, 1))
+}
+```
+
+Saatnya saya _run_ simulasinya!
+
+```{r}
+# Simulasi dengan penyimpanan data pengaruh
+pembelian_per_hari <- numeric(num_days)
+pengaruh_pembeli_harian <- list()
+
+for (hari in 1:num_days) {
+  pembelian_hari_ini <- 0
+  pengaruh_pembeli <- numeric(0)
+  
+  for (i in 1:num_agents) {
+    if (status[i] == "belum_beli" && daya_beli[i]) {
+      tetangga <- sample(1:num_agents, 10)
+      tetangga_beli <- sum(status[tetangga] == "sudah_beli")
+      prob <- probabilitas_beli(preferensi[i], pengaruh_sosial[i], tetangga_beli, hari)
+      
+      if (runif(1) < prob) {
+        status[i] <- "sudah_beli"
+        pembelian_hari_ini <- pembelian_hari_ini + 1
+        pengaruh_pembeli <- c(pengaruh_pembeli, pengaruh_sosial[i])
+      }
+    }
+  }
+  
+  pembelian_per_hari[hari] <- pembelian_hari_ini
+  pengaruh_pembeli_harian[[hari]] <- pengaruh_pembeli
+  
+  # Simpan statistik pengaruh sosial
+  if (length(pengaruh_pembeli) > 0) {
+    pengaruh_data <- rbind(pengaruh_data, data.frame(
+      Hari = hari,
+      Rata_rata_Pengaruh = mean(pengaruh_pembeli),
+      SD_Pengaruh = sd(pengaruh_pembeli),
+      Min_Pengaruh = min(pengaruh_pembeli),
+      Max_Pengaruh = max(pengaruh_pembeli),
+      Total_Pembeli = sum(status == "sudah_beli"),
+      Pembelian_Hari = pembelian_hari_ini
+    ))
+  } else {
+    pengaruh_data <- rbind(pengaruh_data, data.frame(
+      Hari = hari,
+      Rata_rata_Pengaruh = 0,
+      SD_Pengaruh = 0,
+      Min_Pengaruh = 0,
+      Max_Pengaruh = 0,
+      Total_Pembeli = sum(status == "sudah_beli"),
+      Pembelian_Hari = pembelian_hari_ini
+    ))
+  }
+}
+```
+
+Simulasi sudah selesai. Sekarang saya akan lakukan beberapa analisa sebagai berikut:
+
+Pertama-tama saya akan melihat berapa banyak agen yang akhirnya membeli:
+
+```{r}
+#| echo: false
+
+# Segmentasi konsumen
+segment <- ifelse(preferensi == "tinggi" & daya_beli, "Pioneer",
+                  ifelse(preferensi == "sedang" & daya_beli, "Somehow interested",
+                         ifelse(preferensi == "rendah" & daya_beli, "Late adapter",
+                                "Non-target")))
+
+# Distribusi status akhir
+df_status <- data.frame(Status = status)
+
+df_status |> 
+  group_by(Status) |> 
+  tally() |> 
+  ungroup() |> 
+  ggplot(aes(x = Status,y = n)) +
+  geom_col(aes(fill = Status),color = "black") +
+  scale_fill_manual(values = c("gray","steelblue")) +
+  geom_label(aes(label = n)) +
+  theme_minimal() +
+  labs(title = "Berapa banyak agen yang akhirnya membeli smartphone?",
+       subtitle = "Hasil simulasi agent based modelling") +
+  theme(legend.position = "none",
+        axis.title = element_blank(),
+        axis.text.y = element_blank())
+```
+
+Sekitar __`90%`__ dari agen akhirnya membeli _smartphone_ tersebut. Saya bisa menggali lebih dalam dengan melihat segmentasi agen yang di-_generate_ sebagai berikut:
+
+```{r}
+#| echo: false
+
+# Distribusi pembelian berdasarkan segmen
+df_segmen <- data.frame(Segment = segment, Status = status)
+df_segmen |> 
+  group_by(Segment,Status) |> 
+  tally() |> 
+  ungroup() |> 
+  ggplot(aes(y = Segment,x = Status)) +
+  geom_tile(aes(fill = n)) +
+  geom_label(aes(label = n)) +
+  theme_minimal() +
+  labs(title = "Berapa banyak agen yang akhirnya membeli smartphone per segment?",
+       subtitle = "Hasil simulasi agent based modelling") +
+  theme(legend.position = "none")
+
+```
+
+Sekarang saya akan membuat grafik berapa banyak agen yang membeli _smartphone_ per hari.
+
+```{r}
+#| echo: false
+
+pengaruh_data |> 
+  janitor::clean_names() |> 
+  ggplot(aes(x = factor(hari),y = pembelian_hari)) +
+  geom_line(color = "steelblue",group = 1) +
+  geom_point(size = 1,color = "black") +
+  theme_minimal() +
+  labs(title = "Berapa banyak agen yang akhirnya membeli smartphone?",
+       subtitle = "Hasil simulasi agent based modelling") +
+  theme(legend.position = "none")
+```
+
+
+```{r}
+#| echo: false
+
+pengaruh_data |> 
+  janitor::clean_names() |> 
+  ggplot(aes(x = factor(hari),y = total_pembeli)) +
+  geom_line(color = "steelblue",group = 1) +
+  geom_point(size = 1,color = "black") +
+  theme_minimal() +
+  labs(title = "Kumulatif agen yang akhirnya membeli smartphone?",
+       subtitle = "Hasil simulasi agent based modelling") +
+  theme(legend.position = "none")
+```
+
+
+```{r}
+# Visualisasi 1: Tren Pengaruh Sosial vs Pembelian
+library(ggplot2)
+library(gridExtra)
+
+# Plot 1: Rata-rata pengaruh sosial pembeli per hari
+p1 <- ggplot(pengaruh_data, aes(x = Hari)) +
+  geom_line(aes(y = Rata_rata_Pengaruh), color = "red", size = 1) +
+  geom_ribbon(aes(ymin = Rata_rata_Pengaruh - SD_Pengaruh, 
+                  ymax = Rata_rata_Pengaruh + SD_Pengaruh), 
+              alpha = 0.2, fill = "red") +
+  geom_point(aes(y = Rata_rata_Pengaruh), color = "red", size = 2) +
+  labs(title = "Rata-rata Tingkat Pengaruh Sosial Pembeli per Hari",
+       y = "Rata-rata Pengaruh Sosial",
+       x = "Hari") +
+  theme_minimal() +
+  ylim(0, 1)
+
+# Plot 2: Perbandingan pengaruh sosial dengan jumlah pembelian
+p2 <- ggplot(pengaruh_data, aes(x = Hari)) +
+  geom_col(aes(y = Pembelian_Hari), fill = "lightblue", alpha = 0.7) +
+  geom_line(aes(y = Rata_rata_Pengaruh * max(Pembelian_Hari)), 
+            color = "red", size = 1) +
+  scale_y_continuous(
+    name = "Jumlah Pembelian",
+    sec.axis = sec_axis(~./max(pengaruh_data$Pembelian_Hari), 
+                       name = "Rata-rata Pengaruh Sosial")
+  ) +
+  labs(title = "Perbandingan Jumlah Pembelian dan Pengaruh Sosial",
+       x = "Hari") +
+  theme_minimal()
+
+# Plot 3: Akumulasi pengaruh sosial
+pengaruh_data$Rata_rata_Kumulatif <- cumsum(pengaruh_data$Rata_rata_Pengaruh) / 
+  seq_along(pengaruh_data$Rata_rata_Pengaruh)
+
+p3 <- ggplot(pengaruh_data, aes(x = Hari)) +
+  geom_line(aes(y = Rata_rata_Pengaruh), color = "red", linetype = "dashed", alpha = 0.7) +
+  geom_line(aes(y = Rata_rata_Kumulatif), color = "darkred", size = 1) +
+  geom_point(aes(y = Rata_rata_Kumulatif), color = "darkred", size = 2) +
+  labs(title = "Rata-rata Pengaruh Sosial Kumulatif",
+       y = "Rata-rata Pengaruh Sosial",
+       subtitle = "Garis solid: kumulatif, Garis putus-putus: harian") +
+  theme_minimal() +
+  ylim(0, 1)
+
+# Plot 4: Distribusi pengaruh sosial semua pembeli
+semua_pembeli <- data.frame(
+  Pengaruh_Sosial = unlist(pengaruh_pembeli_harian),
+  Hari = rep(1:num_days, sapply(pengaruh_pembeli_harian, length))
+)
+
+p4 <- ggplot(semua_pembeli, aes(x = Pengaruh_Sosial)) +
+  geom_histogram(aes(y = ..density..), bins = 20, fill = "steelblue", alpha = 0.7) +
+  geom_density(color = "darkblue", size = 1) +
+  geom_vline(aes(xintercept = mean(Pengaruh_Sosial)), 
+             color = "red", linetype = "dashed", size = 1) +
+  labs(title = "Distribusi Tingkat Pengaruh Sosial Semua Pembeli",
+       x = "Tingkat Pengaruh Sosial",
+       y = "Densitas") +
+  theme_minimal()
+
+# Tampilkan semua plot
+grid.arrange(p1, p2, p3, p4, ncol = 2)
+
+# Visualisasi tambahan: Heatmap pengaruh sosial per hari
+if (nrow(semua_pembeli) > 0) {
+  p5 <- ggplot(semua_pembeli, aes(x = Hari, y = Pengaruh_Sosial)) +
+    geom_bin2d(bins = 20) +
+    scale_fill_viridis_c(name = "Jumlah Pembeli") +
+    labs(title = "Heatmap: Pengaruh Sosial vs Waktu Pembelian",
+         x = "Hari",
+         y = "Tingkat Pengaruh Sosial") +
+    theme_minimal()
+  
+  print(p5)
+}
+
+# Statistik ringkasan
+cat("=== STATISTIK PENGARUH SOSIAL ===\n")
+cat("Rata-rata pengaruh sosial semua pembeli:", 
+    round(mean(semua_pembeli$Pengaruh_Sosial), 3), "\n")
+cat("Rata-rata pengaruh sosial populasi:", 
+    round(mean(pengaruh_sosial), 3), "\n")
+cat("Korelasi hari dengan pengaruh sosial:", 
+    round(cor(semua_pembeli$Hari, semua_pembeli$Pengaruh_Sosial), 3), "\n")
+
+# Tampilkan data pengaruh per hari
+print(pengaruh_data)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
