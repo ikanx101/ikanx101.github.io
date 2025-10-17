@@ -19,25 +19,25 @@ echo: true
 rm(list=ls())
 library(dplyr)
 library(ggplot2)
-
 ```
 
 
-Sudah beberapa tahun ini saya sering mendengar istilah __Bayesian__ berseliweran di berbagai artikel. Konon, statistika yang selama ini dipelajari oleh kita semua itu termasuk ke dalam __frequestist__. __Bayesian__ ini bisa mengubah cara pandang kita terhadap statistik karena memiliki perubahan cara pandang terhadap pengambilan keputusannya.
+Sudah beberapa tahun ini saya sering mendengar istilah __Bayesian__ berseliweran di berbagai artikel. Konon, statistika yang selama ini dipelajari oleh kita semua itu termasuk ke dalam __frequentist__. __Bayesian__ ini bisa mengubah cara pandang kita terhadap statistik karena memiliki perubahan cara pandang terhadap pengambilan keputusannya.
 
 __Bayesian__ adalah filosofi dan metodologi dalam statistika yang dinamai dari __Teorema Bayes__ (ditemukan oleh Thomas Bayes). Inti dari pendekatan ini adalah __memperbarui keyakinan kita tentang suatu hal berdasarkan bukti atau data baru__.
 
 Bayangkan kita memiliki sebuah hipotesis atau asumsi awal (disebut dengan __Prior__). Ketika data baru datang, kita menggunakan data tersebut untuk memperbarui keyakinan awal (hasil pembaruannya disebut __Posterior__).
 
-Formula perhitungan __posterior__ cukup sederhana, yakni:
-
-$$Posterior = Likelihood \times Prior$$
-
-Dimana:
-
 1. __Prior__: Keyakinan awal kita tentang suatu parameter (misalnya, rata-rata tinggi badan) sebelum melihat data. Ini bisa berdasarkan pengetahuan ahli, penelitian sebelumnya, atau asumsi yang masuk akal.
 1. __Likelihood__: Probabilitas untuk mengamati data yang kita miliki jika hipotesis kita benar. Ini mirip dengan konsep dalam statistika __frequestist__.
 1. __Posterior__: Keyakinan yang telah diperbarui tentang parameter tersebut setelah kita menggabungkan keyakinan awal (__Prior__) dengan bukti dari data baru (__Likelihood__). Ini adalah hasil akhir yang kita cari.
+
+
+Analogi _Bayesian_ itu seperti:
+
+1. Memasak dengan resep (_prior_ = bumbu dasar).
+1. Mencicipi terus (data baru).
+1. Menyesuaikan rasa (_posterior_ = resep yang disesuaikan).
 
 ## Contoh Sederhana: Mendiagnosa Penyakit
 
@@ -49,19 +49,22 @@ Kemudian ada seseorang pasien yang hendak dites untuk mengetahui apakah pasien t
 
 __Bagi frequentist, probabilitas seseorang tersebut mengidap penyakit adalah sebesar `99%`__.
 
-__Namun bagi Bayesian, probabilitas seseorang tersebut mengidap penyakit adalah sebesar `50%`__. _Lho kok bisa?_
+__Namun bagi Bayesian, probabilitas seseorang tersebut mengidap penyakit adalah sebesar `50%`__. _Lho kok bisa? Kenapa bukan 99%?_ 
+Pada kasus ini _Bayesian_ menggunakan _confusion matrix_ untuk menghitung peluang bersyarat __seorang pasien sakit jika hasil tesnya positif__. Intuisi di balik hasil ini:
 
-Begini menghitungnya:
+1. Penyakit sangat langka (hanya 1% populasi)
+1. Meskipun tes sangat akurat (99%), _false positive_-nya 1%.
+1. Karena populasi sehat sangat besar (99%), jumlah _false positive_ menjadi signifikan
 
-Mari kita definisikan:
+Begini perhitungannya:
 
-$P(S)$ : Probabilitas sakit = 1% = 0.01.
+Dari informasi yang ada pada, kita bisa definisikan:
 
-$P(T+|S)$ : Probabilitas tes positif jika pasien sakit = 99% = 0.99.
+1. $P(S)$ : Probabilitas sakit = 1% = 0.01.
+1. $P(T+|S)$ : Probabilitas tes positif jika pasien sakit = 99% = 0.99.
+1. $P(T-|S)$ : Probabilitas tes negatif jika pasien sehat = 99% = 0.99.
 
-$P(T-|S)$ : Probabilitas tes negatif jika pasien sehat = 99% = 0.99.
-
-Kita ingin mencari: $P(S|T+)$, yakni probabilitas pasien sakit jika tes positif.
+Kita ingin mencari: $P(S|T+)$, yakni __probabilitas pasien sakit jika tes positif__.
 
 ```{r}
 # Probabilitas prior
@@ -106,6 +109,34 @@ total_positif <- TP + FP
 
 # Probabilitas sakit jika tes positif
 prob_sakit_jika_positif <- TP / total_positif
+```
+
+```{r}
+#| echo: false
+
+# Data untuk visualisasi
+data_visual <- data.frame(
+  Kategori = c("Sakit & Tes +", "Sakit & Tes -", "Sehat & Tes +", "Sehat & Tes -"),
+  Jumlah = c(TP, sakit - TP, FP, sehat - FP),
+  Warna = c("TP", "FN", "FP", "TN")
+)
+
+data.frame(status  = c("Sakit","Sakit","Sehat","Sehat"),
+           tes     = c("Positif","Negatif","Positif","Negatif"),
+           jml_org = c(TP, sakit - TP, FP, sehat - FP),
+           warna   = c("TP", "FN", "FP", "TN")) |> 
+  mutate(jml_org = floor(jml_org)) |> 
+  ggplot(aes(x = status,
+             y = tes,
+             fill = warna)) +
+  geom_tile(color = "black") +
+  geom_label(aes(label = jml_org)) +
+  theme_minimal() +
+  labs(title = "Confusion Matrix",
+       subtitle = "Data simulasi",
+       x = "Status orang",
+       y = "Hasil tes") +
+  theme(legend.position = "none")
 
 cat("Analisis Populasi 10.000 orang:\n")
 cat("Jumlah sakit:", sakit, "orang\n")
@@ -116,27 +147,369 @@ cat("Total tes positif:", total_positif, "orang\n")
 cat("Probabilitas sakit jika tes positif:", round(prob_sakit_jika_positif, 4), "=", round(prob_sakit_jika_positif * 100, 1), "%\n")
 ```
 
+### Kesimpulan Penting
+
+1. Bayesian mempertimbangkan _base rate_ (prevalensi penyakit).
+1. Untuk penyakit langka, bahkan tes yang sangat akurat bisa menghasilkan banyak _false positive_.
+1. Hasil tes harus diinterpretasi dalam konteks prevalensi.
+1. Inilah mengapa tes diagnostik sering dikonfirmasi dengan tes kedua.
+
+__Bagaimana? Cukup membingungkan ya? _Hehe_. Sama!__
+
+Awalnya mungkin kita belum terbiasa dengan proses logikanya. Sekarang saya akan berikan contoh kasus lain yang relevan dengan bisnis, yakni kasus _A/B Testing_.
 
 ```{r}
-library(ggplot2)
-library(dplyr)
+#| include: false
+rm(list=ls())
 
-# Data untuk visualisasi
-data_visual <- data.frame(
-  Kategori = c("Sakit & Tes +", "Sakit & Tes -", "Sehat & Tes +", "Sehat & Tes -"),
-  Jumlah = c(TP, sakit - TP, FP, sehat - FP),
-  Warna = c("TP", "FN", "FP", "TN")
+# Data dummy A/B test selama 30 hari
+set.seed(123) # untuk reproducibility
+
+# Versi A (control)
+data_A <- data.frame(
+  nama = "Campaign A",
+  hari = 1:30,
+  pengunjung = rep(100, 30),
+  konversi = rbinom(30, 100, 0.03) # true conversion rate 3%
 )
 
-data.frame(status  = c("Sakit","Sakit","Sehat","Sehat"),
-           tes     = c("+","-","+","-"),
-           jml_org = c(TP, sakit - TP, FP, sehat - FP),
-           warna   = c("TP", "FN", "FP", "TN")) |> 
-  mutate(jml_org = floor(jml_org)) |> 
-  ggplot(aes(x = status,
-             y = tes,
-             fill = warna)) +
-  geom_tile(color = "black") +
-  geom_label(aes(label = jml_org))
+# Versi B (variation) 
+data_B <- data.frame(
+  nama = "Campaign B",
+  hari = 1:30,
+  pengunjung = rep(100, 30),
+  konversi = rbinom(30, 100, 0.045) # true conversion rate 4.5%
+)
 ```
 
+
+## Contoh Lainnya: _A/B Testing_
+
+> _A/B testing_ adalah sebuah metode eksperimen yang sangat sederhana untuk membandingkan dua versi dari sesuatu. Misalnya dua judul _email_, dua desain iklan, atau dua tata letak halaman _web_. Tujuannya adalah untuk melihat mana yang memberikan hasil lebih baik. 
+
+Misalkan kita memiliki dua ide dan ingin tahu mana yang paling disukai oleh audiens. Alih-alih menebak, kita membagi audiens menjadi dua kelompok secara acak. Kelompok A melihat ide pertama dan Kelompok B melihat ide kedua. Dengan mengukur respons dari masing-masing kelompok, seperti berapa banyak yang mengklik tautan atau melakukan pembelian, kita bisa mendapatkan bukti nyata tentang versi mana yang lebih efektif dalam mencapai tujuan Anda.
+
+_Frequentist_ akan memastikan bahwa perbedaan hasil yang Anda lihat antara Versi A dan Versi B bukanlah karena kebetulan semata. Metode yang digunakan adalah konsep signifikansi statistik untuk memberikan keyakinan bahwa jika Anda memilih versi pemenang, keputusan tersebut didasarkan pada data yang kuat, bukan keberuntungan acak. 
+
+Dalam _A/B testing_ __Bayesian__, kita tidak hanya melihat __mana yang lebih baik__ tetapi __seberapa yakin kita bahwa B lebih baik daripada A (vice versa)__ dan __berapa besar perkiraan improvement-nya__.
+
+__Mulai bingung ya?__ Oke, saya coba simulasikan contoh _A/B testing_ sederhana ya. Misalkan ada dua buah _marketing campaigns_ (A dan B) yang diuji coba selama 30 hari kepada dua kelompok dalam suatu target market. Sudah dipastikan bahwa tidak ada orang yang melihat kedua _marketing campaigns_ tersebut (hanya salah satu saja).
+
+
+```{r}
+#| echo: false
+
+data_A |> knitr::kable()
+data_B |> knitr::kable()
+
+
+# Ringkasan data
+cat("Ringkasan Data A/B Test:\n")
+cat("Versi A - Total konversi:", sum(data_A$konversi), "dari", sum(data_A$pengunjung), 
+    "pengunjung (", round(mean(data_A$konversi/data_A$pengunjung), 4), ")\n")
+cat("Versi B - Total konversi:", sum(data_B$konversi), "dari", sum(data_B$pengunjung), 
+    "pengunjung (", round(mean(data_B$konversi/data_B$pengunjung), 4), ")\n")
+```
+
+Bagi saya yang seorang _frequentist_, saya biasanya cukup melihat apakah _conversion rate_ _campaign B_ __lebih tinggi signifikan__ dibandingkan _campaign A_.
+
+Nah, bagaimana cara analisa _Bayesian_? Kita mulai dengan menentukan _prior_. _Prior_ bisa ditentukan dengan:
+
+1. Data historikal sebelumnya, atau
+1. Dugaan atau hipotesis dari _expert_, atau
+1. Diasumsikan _random_ berdasarkan distribusi beta.
+
+Banyak kasus _Bayesian_ menggunakan __distribusi beta__ untuk menggambarkan distribusi dari posterior. Bagaimana penjelasannya? Analoginya seperti ini:
+
+> Bayangkan saya hendak menebak seberapa jago seorang teman bermain basket, khususnya dalam melakukan lemparan bebas. "Jago" di sini adalah sebuah probabilitas (nilai antara 0 sampai 1, atau 0% sampai 100%). Saya belum pernah melihat teman saya bermain, jadi tebakan awal saya mungkin sangat luas. 
+
+> Di sinilah _Distribusi Beta_ berperan. Anggap saja _Distribusi Beta_ adalah sebuah __wadah keyakinan__ yang fleksibel untuk menampung tebakan saya tentang probabilitas. Wadah ini memiliki dua _inputs_ untuk mengatur bentuknya, yaitu $\alpha$ dan $\beta$.
+
+> $\alpha$ sebagai jumlah lemparan "masuk" yang sudah saya saksikan (atau saya duga). $\beta$ sebagai jumlah lemparan "gagal" yang sudah saya saksikan (atau saya duga). 
+
+> Karena saya buta sama sekali terhadap seberapa "jago" teman saya, Anda bisa _set_ $\alpha=1$ dan $\beta=1$. Ini membuat __wadah keyakinan__ saya _flat_, artinya semua kemungkinan (dari 0% jago sampai 100% jago) sama masuk akalnya bagi saya.
+
+> Sekarang, teman saya mulai melempar bola. Dia melakukan 10 lemparan, 7 masuk (sukses) dan 3 gagal. Di sinilah keajaiban Bayesian dan Distribusi Beta terjadi. Untuk memperbarui keyakinan saya, prosesnya sangat mudah: Saya cukup menambahkan data baru ke pegangan wadah!
+
+- Alpha baru = $\alpha$ lama + lemparan masuk = 1 + 7 = 8
+- Beta baru = $\beta$ lama + lemparan gagal = 1 + 3 = 4
+
+> __Wadah keyakinan__ saya yang tadinya datar, sekarang bentuknya berubah. Puncaknya bergeser ke arah 8 / (8+4) = 0.67 atau 67%. 
+
+__Ini adalah keyakinan baru Saya: kemungkinan besar teman saya punya tingkat keberhasilan sekitar 67%.__
+
+__Oke kita kembali ke kasus _A/B Testing_ awal__. Misalkan saya asumsikan _prior_ untuk _campaign A_ dan _campaign B_ __sama__.
+
+```{r}
+# Prior non-informatif (tidak ada asumsi awal)
+# Beta(1,1) = Uniform distribution
+alpha_prior = 1
+beta_prior  = 1
+```
+
+Kemudian dari data pada kedua tabel di atas, saya akan memperbarui _posterior_ untuk _campaign A_ dan _campaign B_.
+
+```{r}
+# Hitung posterior parameters
+posterior_A = c(
+  alpha = alpha_prior + sum(data_A$konversi),
+  beta  = beta_prior + (sum(data_A$pengunjung) - sum(data_A$konversi))
+)
+
+posterior_B = c(
+  alpha = alpha_prior + sum(data_B$konversi),
+  beta = beta_prior + (sum(data_B$pengunjung) - sum(data_B$konversi))
+)
+```
+
+```{r}
+#| echo: false
+
+cat("Parameter Posterior:\n")
+cat("Versi A: Beta(", posterior_A["alpha"], ",", posterior_A["beta"], ")\n")
+cat("Versi B: Beta(", posterior_B["alpha"], ",", posterior_B["beta"], ")\n")
+```
+
+Setelah itu, saya akan buat _density plot_ dari _conversion rate_ _campaign A_ dan _campaign B_.
+
+```{r}
+#| echo: false
+
+# Generate data untuk plotting
+x <- seq(0.01, 0.08, length.out = 1000)
+
+plot_data <- data.frame(
+  conversion_rate = x,
+  A = dbeta(x, posterior_A["alpha"], posterior_A["beta"]),
+  B = dbeta(x, posterior_B["alpha"], posterior_B["beta"])
+) %>%
+  tidyr::pivot_longer(cols = c(A, B), names_to = "Versi", values_to = "density")
+
+# Plot distribusi posterior
+ggplot(plot_data, aes(x = conversion_rate, y = density, color = Versi)) +
+  geom_line(size = 1.2) +
+  labs(
+    title = "Distribusi Posterior Conversion Rate",
+    subtitle = "A/B Testing Bayesian",
+    x = "Conversion Rate",
+    y = "Density",
+    color = "Campaign"
+  ) +
+  scale_color_manual(values = c("A" = "red", "B" = "blue")) +
+  theme_minimal()
+```
+
+Terlihat dari grafik di atas bahwa secara distribusi, _campaign B_ relatif lebih baik _conversion rate_-nya. Pertanyaan selanjutnya adalah: seberapa baik _campaign B_?
+
+_Bayesian_ bisa melakukan analisis perbandingan menggunakan simulasi Monte Carlo. Saya akan coba membuat 100 ribu simulasi dan akan membandingkan berapa banyak kejadian _conversion rate campaign B_ lebih tinggi dibandingkan _campaign A_.
+
+
+```{r}
+# Simulasi Monte Carlo
+n_simulations = 100000
+
+# Sample dari posterior distributions
+samples_A = rbeta(n_simulations, posterior_A["alpha"], posterior_A["beta"])
+samples_B = rbeta(n_simulations, posterior_B["alpha"], posterior_B["beta"])
+
+# Probabilitas B > A
+prob_B_better = mean(samples_B > samples_A)
+
+# Berapa kali B better
+berapa_kali_B = sum(samples_B > samples_A)
+```
+
+```{r}
+#| echo: false
+
+cat("\nBerapa kali kejadian conversion rate campaign B lebih baik daripada conversion rate campaign A:", berapa_kali_B, "kali")
+
+cat("\nProbabilitas B lebih baik daripada A:", round(prob_B_better, 4), 
+    "(", round(prob_B_better * 100, 2), "% )\n")
+```
+
+Selanjutnya kita bisa menghitung _lift_, yaitu perbedaan _conversion rate_ antara _campaign B_ dan _campaign A_.
+
+```{r}
+# Hitung lift (improvement)
+lift          = (samples_B - samples_A) / samples_A
+relative_lift = samples_B - samples_A
+
+# Analisis lift
+lift_summary <- data.frame(
+  metric = c("Mean Lift", "Median Lift", "95% CI Lower", "95% CI Upper"),
+  value = c(
+    mean(lift),
+    median(lift),
+    quantile(lift, 0.025),
+    quantile(lift, 0.975)
+  )
+)
+```
+
+```{r}
+#| echo: false
+
+lift_summary |> knitr::kable()
+```
+
+
+Interpretasinya:
+
+1. **Mean Lift**: **19.54%**.
+   - Rata-rata peningkatan _conversion rate campaign B_ dibandingkan _campaign A_.
+   - Artinya _campaign B_ secara rata-rata **19.54% lebih baik** dari _campaign A_.
+2. **Median Lift**: **18.44%**
+   - Nilai tengah dari distribusi _lift_.
+   - Lebih _robust_ terhadap _outlier_ dibanding _mean_.
+3. **95% Credible Interval Lower**: **-8.49%**
+   - Batas bawah interval kepercayaan 95%.
+   - Dalam skenario terburuk, _conversion rate campaign B_ bisa **8.49% lebih buruk** dari _conversion rate campaign A_.
+4. **95% Credible Interval Upper**: **53.77%**
+   - Batas atas interval kepercayaan 95%.
+   - Dalam skenario terbaik, _conversion rate campaign B_ bisa **53.77% lebih baik** dari _conversion rate campaign A_.
+
+Berikut adalah _density plot_ dari _lift_ yang sudah saya hitung di atas:
+
+```{r}
+#| echo: false
+
+lift_data = data.frame(lift = lift)
+
+ggplot(lift_data, aes(x = lift)) +
+  geom_density(fill = "lightblue", alpha = 0.7) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
+  geom_vline(xintercept = mean(lift), linetype = "solid", color = "blue") +
+  labs(
+    title = "Distribusi Relative Lift (B vs A)",
+    subtitle = paste("Probabilitas B > A:", round(prob_B_better * 100, 2), "%"),
+    x = "Relative Lift (B/A - 1)",
+    y = "Density"
+  ) +
+  annotate("text", x = mean(lift), y = 1, 
+           label = paste("Mean Lift:", round(mean(lift), 3)), 
+           color = "blue", vjust = -1) +
+  theme_minimal()
+```
+
+Dari distribusi _relative lift_ di atas, kita bisa melihat bahwa kemungkinan _conversion rate campaign B_ lebih rendah dibandingkan _conversion rate campaign A_ __cukup kecil__.
+
+_Bayesian_ juga bisa digunakan untuk menghitung _expected loss_. Apa maksudnya? Kita bisa menghitung _loss_ saat memilih _campaign B_ tapi ternyata _campaign A_ lebih baik _conversion rate_-nya (_vice versa_).
+
+```{r}
+# Expected loss jika memilih salah satu versi
+expected_loss_A <- mean(pmax(samples_B - samples_A, 0))  # Loss jika pilih A padahal B lebih baik
+expected_loss_B <- mean(pmax(samples_A - samples_B, 0))  # Loss jika pilih B padahal A lebih baik
+```
+
+Berikut ini adalah hasil analisanya:
+
+```{r}
+#| echo: false
+
+cat("\nExpected Loss Analysis:\n")
+cat("Expected Loss jika pilih A:", round(expected_loss_A, 5), "\n")
+cat("Expected Loss jika pilih B:", round(expected_loss_B, 5), "\n")
+
+if(expected_loss_B < 0.001) {  # Threshold praktis
+  cat("Kesimpulan: B secara praktis lebih baik (expected loss lebih kecil)\n")
+} else if(prob_B_better > 0.95) {
+  cat("Kesimpulan: B kemungkinan besar lebih baik (prob > 95%)\n")
+} else {
+  cat("Kesimpulan: Perlu lebih banyak data\n")
+}
+```
+
+Salah satu keunggulan _Bayesian_ adalah, analisa-analisa di atas bisa dilakukan iteratif harian. __Jadi keputusan bisa diambil tanpa harus menunggu 30 hari__. Secara bisnis, hal ini sangat berguna untuk meminimalisir _budget_ dari eksperimen. Analisa ini disebut dengan _sequential analysis_.
+
+```{r}
+#| echo: false
+
+# Fungsi untuk sequential analysis
+sequential_bayesian_abtest <- function(data_A, data_B) {
+  n_days <- nrow(data_A)
+  results <- data.frame(
+    hari = 1:n_days,
+    prob_B_better = numeric(n_days),
+    mean_lift = numeric(n_days),
+    credible_interval_lower = numeric(n_days),
+    credible_interval_upper = numeric(n_days)
+  )
+  
+  for(day in 1:n_days) {
+    # Cumulative data sampai hari ke-i
+    cumul_A <- data_A[1:day, ]
+    cumul_B <- data_B[1:day, ]
+    
+    # Posterior parameters
+    post_A_alpha <- 1 + sum(cumul_A$konversi)
+    post_A_beta <- 1 + (sum(cumul_A$pengunjung) - sum(cumul_A$konversi))
+    
+    post_B_alpha <- 1 + sum(cumul_B$konversi)
+    post_B_beta <- 1 + (sum(cumul_B$pengunjung) - sum(cumul_B$konversi))
+    
+    # Sampling
+    samples_A <- rbeta(10000, post_A_alpha, post_A_beta)
+    samples_B <- rbeta(10000, post_B_alpha, post_B_beta)
+    
+    # Calculate metrics
+    results$prob_B_better[day] <- mean(samples_B > samples_A)
+    lift <- (samples_B - samples_A) / samples_A
+    results$mean_lift[day] <- mean(lift)
+    results$credible_interval_lower[day] <- quantile(lift, 0.025)
+    results$credible_interval_upper[day] <- quantile(lift, 0.975)
+  }
+  
+  return(results)
+}
+
+# Jalankan sequential analysis
+sequential_results <- sequential_bayesian_abtest(data_A, data_B)
+
+# Plot sequential results
+ggplot(sequential_results, aes(x = hari)) +
+  geom_ribbon(aes(ymin = credible_interval_lower, ymax = credible_interval_upper), 
+              fill = "lightblue", alpha = 0.3) +
+  geom_line(aes(y = mean_lift), color = "blue", size = 1) +
+  geom_line(aes(y = prob_B_better), color = "red", size = 1, linetype = "dashed") +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  geom_hline(yintercept = 0.95, linetype = "dotted", color = "red") +
+  labs(
+    title = "Sequential Bayesian A/B Test Monitoring",
+    subtitle = "Blue: Mean Lift, Red: Prob(B > A), Shaded: 95% Credible Interval",
+    x = "Hari",
+    y = "Value"
+  ) +
+  scale_y_continuous(
+    sec.axis = sec_axis(~., name = "Probability B > A")
+  ) +
+  theme_minimal()
+```
+
+_Insights_ dari grafik di atas adalah:
+
+1. _Campaign B_ konsisten menunjukkan probabilitas tinggi (>85%) untuk lebih baik dari _campaign A_.
+1. _Lift_ tertinggi di awal eksperimen (hari 1-4), kemudian stabil di sekitar 15-25%.
+    - Hari 1-4: _Lift_ sangat tinggi (100-345%) dengan interval kredibel lebar.
+    - Ini menunjukkan data awal yang tidak stabil.
+1. _Lift_ stabil di hari ke 15-30.
+    - Lift stabil di 10-25%.
+    - Interval kredibel semakin sempit.
+    - Probabilitas konsisten di 75-90%.
+
+Catatan untuk eksperimen berikutnya:
+
+- Pertimbangkan menghentikan eksperimen lebih awal (sekitar hari ke 15).
+- Data sudah cukup konklusif di tengah eksperimen.
+- Hemat waktu dan _resources_.
+
+---
+
+# KESIMPULAN
+
+_Bayesian_ memiliki keuntungan dibandingkan _frequentist_ karena bisa melakukan analisa yang lebih holistik karena melibatkan distribusi dari data simulasi yang ada. Kita juga bisa mengambil keputusan dengan lebih tepat dan cepat tanpa harus menunggu semua prosesnya selesai.
+
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
