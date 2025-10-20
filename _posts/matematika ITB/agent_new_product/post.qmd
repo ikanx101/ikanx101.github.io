@@ -18,6 +18,7 @@ error: false
 library(dplyr)
 library(ggplot2)
 library(tidyr)
+library(gridExtra)
 
 # Kode untuk visualisasi pengaruh sosial
 rm(list=ls())
@@ -79,7 +80,10 @@ Sekarang saya akan mendefinisikan beberapa atribut untuk semua agen.
 
 ```{r}
 # Inisialisasi atribut agen
-preferensi      <- sample(c("tinggi", "sedang", "rendah"), num_agents, replace = TRUE, prob = c(0.2, 0.4, 0.4))
+preferensi      <- sample(c("tinggi", "sedang", "rendah"), 
+                          num_agents, 
+                          replace = TRUE, 
+                          prob = c(0.1, 0.5, 0.4))
 daya_beli       <- sample(c(TRUE, FALSE), num_agents, replace = TRUE, prob = c(.9,.1))
 pengaruh_sosial <- runif(num_agents, 0.01, 0.5)
 status          <- rep("belum_beli", num_agents)
@@ -188,13 +192,14 @@ df_status |>
   geom_label(aes(label = n)) +
   theme_minimal() +
   labs(title = "Berapa banyak agen yang akhirnya membeli smartphone?",
-       subtitle = "Hasil simulasi agent based modelling") +
+       subtitle = "Hasil simulasi agent based modelling",
+       caption = "Simulated and Visualized using R\nikanx101.com") +
   theme(legend.position = "none",
         axis.title = element_blank(),
         axis.text.y = element_blank())
 ```
 
-Sekitar __`90%`__ dari agen akhirnya membeli _smartphone_ tersebut. Saya bisa menggali lebih dalam dengan melihat segmentasi agen yang di-_generate_ sebagai berikut:
+Sekitar __`90%`__ dari agen akhirnya membeli _smartphone_ tersebut sementara __10%__ lainnya belum membeli hingga pada hari ke 30. Kita bisa meihat pembagian konsumen yang saya _generate_ sebagai berikut:
 
 ```{r}
 #| echo: false
@@ -210,12 +215,13 @@ df_segmen |>
   geom_label(aes(label = n)) +
   theme_minimal() +
   labs(title = "Berapa banyak agen yang akhirnya membeli smartphone per segment?",
-       subtitle = "Hasil simulasi agent based modelling") +
+       subtitle = "Hasil simulasi agent based modelling",
+       caption = "Simulated and Visualized using R\nikanx101.com") +
   theme(legend.position = "none")
 
 ```
 
-Sekarang saya akan membuat grafik berapa banyak agen yang membeli _smartphone_ per hari.
+Ternyata __972__ agen tidak membeli _smartphone_ karena memang bukan merupakan target marketnya. Alasannya adalah agen-agen tersebut __tidak memiliki daya beli__. Sementara ada __12__ agen yang termasuk _late adapter_ belum sempat membeli _smartphone_. Sekarang saya akan membuat grafik berapa banyak agen yang membeli _smartphone_ per hari.
 
 ```{r}
 #| echo: false
@@ -227,10 +233,14 @@ pengaruh_data |>
   geom_point(size = 1,color = "black") +
   theme_minimal() +
   labs(title = "Berapa banyak agen yang akhirnya membeli smartphone?",
-       subtitle = "Hasil simulasi agent based modelling") +
+       subtitle = "Hasil simulasi agent based modelling",
+       x = "Hari",
+       y = "Banyaknya agen yang membeli",
+       caption = "Simulated and Visualized using R\nikanx101.com") +
   theme(legend.position = "none")
 ```
 
+Terlihat dari grafik di atas bahwa pembelian terbanyak terjadi pada saat 3 hari pertama. Setelah itu pembelian mulai melambat. Periode diskon pada hari ke 10-12 sedikit mendongkrak pembelian kemudian melambat lagi.
 
 ```{r}
 #| echo: false
@@ -242,118 +252,60 @@ pengaruh_data |>
   geom_point(size = 1,color = "black") +
   theme_minimal() +
   labs(title = "Kumulatif agen yang akhirnya membeli smartphone?",
-       subtitle = "Hasil simulasi agent based modelling") +
+       subtitle = "Hasil simulasi agent based modelling",
+       x = "Hari",
+       y = "Total pembeli",
+       caption = "Simulated and Visualized using R\nikanx101.com") +
   theme(legend.position = "none")
 ```
 
+Grafik di atas memperlihatkan kumulatif banyaknya agen yang membeli _smartphone_ selama periode 30 hari. Banyaknya agen yang membeli mulai _saturated_ pada hari ke 13 - 14. Sekarang saya akan memperlihatkan berapa besar pengaruh orang lain terhadap keputusan pembelian si agen.
 
 ```{r}
-# Visualisasi 1: Tren Pengaruh Sosial vs Pembelian
-library(ggplot2)
-library(gridExtra)
+#| echo: false
 
+# Visualisasi 1: Tren Pengaruh Sosial vs Pembelian
 # Plot 1: Rata-rata pengaruh sosial pembeli per hari
-p1 <- ggplot(pengaruh_data, aes(x = Hari)) +
-  geom_line(aes(y = Rata_rata_Pengaruh), color = "red", size = 1) +
+ggplot(pengaruh_data, aes(x = Hari)) +
+  geom_line(aes(y = Rata_rata_Pengaruh), color = "red", linewidth = 1) +
   geom_ribbon(aes(ymin = Rata_rata_Pengaruh - SD_Pengaruh, 
                   ymax = Rata_rata_Pengaruh + SD_Pengaruh), 
               alpha = 0.2, fill = "red") +
   geom_point(aes(y = Rata_rata_Pengaruh), color = "red", size = 2) +
   labs(title = "Rata-rata Tingkat Pengaruh Sosial Pembeli per Hari",
        y = "Rata-rata Pengaruh Sosial",
-       x = "Hari") +
+       x = "Hari",
+       caption = "Simulated and Visualized using R\nikanx101.com") +
   theme_minimal() +
   ylim(0, 1)
+```
 
-# Plot 2: Perbandingan pengaruh sosial dengan jumlah pembelian
-p2 <- ggplot(pengaruh_data, aes(x = Hari)) +
-  geom_col(aes(y = Pembelian_Hari), fill = "lightblue", alpha = 0.7) +
+Jika dilihat, pengaruh sosial terbesar terjadi pada 10 hari pertama _launching_. Setelah itu, karena __pembeli sudah _saturated_, maka pengaruh sosial menjadi turun dan hilang__.
+
+```{r}
+#| echo: false
+# plot 2: Perbandingan pengaruh sosial dengan jumlah pembelian
+ggplot(pengaruh_data, aes(x = Hari)) +
+  geom_col(aes(y = Pembelian_Hari), fill = "steelblue", alpha = 0.7) +
   geom_line(aes(y = Rata_rata_Pengaruh * max(Pembelian_Hari)), 
             color = "red", size = 1) +
   scale_y_continuous(
-    name = "Jumlah Pembelian",
+    name = "Banyak Agen yang Membeli",
     sec.axis = sec_axis(~./max(pengaruh_data$Pembelian_Hari), 
                        name = "Rata-rata Pengaruh Sosial")
   ) +
   labs(title = "Perbandingan Jumlah Pembelian dan Pengaruh Sosial",
-       x = "Hari") +
+       x = "Hari",
+       caption = "Simulated and Visualized using R\nikanx101.com") +
   theme_minimal()
-
-# Plot 3: Akumulasi pengaruh sosial
-pengaruh_data$Rata_rata_Kumulatif <- cumsum(pengaruh_data$Rata_rata_Pengaruh) / 
-  seq_along(pengaruh_data$Rata_rata_Pengaruh)
-
-p3 <- ggplot(pengaruh_data, aes(x = Hari)) +
-  geom_line(aes(y = Rata_rata_Pengaruh), color = "red", linetype = "dashed", alpha = 0.7) +
-  geom_line(aes(y = Rata_rata_Kumulatif), color = "darkred", size = 1) +
-  geom_point(aes(y = Rata_rata_Kumulatif), color = "darkred", size = 2) +
-  labs(title = "Rata-rata Pengaruh Sosial Kumulatif",
-       y = "Rata-rata Pengaruh Sosial",
-       subtitle = "Garis solid: kumulatif, Garis putus-putus: harian") +
-  theme_minimal() +
-  ylim(0, 1)
-
-# Plot 4: Distribusi pengaruh sosial semua pembeli
-semua_pembeli <- data.frame(
-  Pengaruh_Sosial = unlist(pengaruh_pembeli_harian),
-  Hari = rep(1:num_days, sapply(pengaruh_pembeli_harian, length))
-)
-
-p4 <- ggplot(semua_pembeli, aes(x = Pengaruh_Sosial)) +
-  geom_histogram(aes(y = ..density..), bins = 20, fill = "steelblue", alpha = 0.7) +
-  geom_density(color = "darkblue", size = 1) +
-  geom_vline(aes(xintercept = mean(Pengaruh_Sosial)), 
-             color = "red", linetype = "dashed", size = 1) +
-  labs(title = "Distribusi Tingkat Pengaruh Sosial Semua Pembeli",
-       x = "Tingkat Pengaruh Sosial",
-       y = "Densitas") +
-  theme_minimal()
-
-# Tampilkan semua plot
-grid.arrange(p1, p2, p3, p4, ncol = 2)
-
-# Visualisasi tambahan: Heatmap pengaruh sosial per hari
-if (nrow(semua_pembeli) > 0) {
-  p5 <- ggplot(semua_pembeli, aes(x = Hari, y = Pengaruh_Sosial)) +
-    geom_bin2d(bins = 20) +
-    scale_fill_viridis_c(name = "Jumlah Pembeli") +
-    labs(title = "Heatmap: Pengaruh Sosial vs Waktu Pembelian",
-         x = "Hari",
-         y = "Tingkat Pengaruh Sosial") +
-    theme_minimal()
-  
-  print(p5)
-}
-
-# Statistik ringkasan
-cat("=== STATISTIK PENGARUH SOSIAL ===\n")
-cat("Rata-rata pengaruh sosial semua pembeli:", 
-    round(mean(semua_pembeli$Pengaruh_Sosial), 3), "\n")
-cat("Rata-rata pengaruh sosial populasi:", 
-    round(mean(pengaruh_sosial), 3), "\n")
-cat("Korelasi hari dengan pengaruh sosial:", 
-    round(cor(semua_pembeli$Hari, semua_pembeli$Pengaruh_Sosial), 3), "\n")
-
-# Tampilkan data pengaruh per hari
-print(pengaruh_data)
 ```
 
+## Kesimpulan
 
+_Agent based modelling_ bisa menjadi salah satu _tools_ untuk memetakan strategi _marketing sales_ saat produk pertama kali _launching_. Model di atas bisa disempurnakan lagi dengan menambahkan beberapa asumsi dan interaksi yang ada.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
 
 
