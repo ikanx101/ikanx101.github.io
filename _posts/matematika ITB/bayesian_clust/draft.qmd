@@ -1,0 +1,222 @@
+---
+title: "xxx"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  error: false
+  echo: false
+---
+
+```{r}
+#| include: false
+
+rm(list=ls())
+gc()
+
+# Load required libraries
+library(mclust)
+library(ggplot2)
+library(bayesm)
+library(mvtnorm)
+library(coda)
+
+# Set seed untuk reproduktibilitas
+set.seed(123)
+
+# Fungsi untuk membuat data dummy
+create_dummy_data <- function(n_samples = 300) {
+  # Parameter untuk tiga cluster
+  mu1 <- c(2, 2)
+  mu2 <- c(8, 8)
+  mu3 <- c(5, 2)
+  
+  sigma1 <- matrix(c(1, 0.5, 0.5, 1), nrow = 2)
+  sigma2 <- matrix(c(1, -0.3, -0.3, 1), nrow = 2)
+  sigma3 <- matrix(c(0.8, 0, 0, 0.8), nrow = 2)
+  
+  # Generate data dari distribusi normal multivariat
+  cluster1 <- rmvnorm(n_samples/3, mean = mu1, sigma = sigma1)
+  cluster2 <- rmvnorm(n_samples/3, mean = mu2, sigma = sigma2)
+  cluster3 <- rmvnorm(n_samples/3, mean = mu3, sigma = sigma3)
+  
+  # Gabungkan data
+  data <- rbind(cluster1, cluster2, cluster3)
+  true_clusters <- rep(1:3, each = n_samples/3)
+  
+  return(list(data = data, true_clusters = true_clusters))
+}
+
+# Create dummy data
+dummy_data <- create_dummy_data()
+X <- dummy_data$data
+true_clusters <- dummy_data$true_clusters
+
+# Visualisasi data asli
+df_original <- data.frame(X1 = X[,1], X2 = X[,2], Cluster = as.factor(true_clusters))
+```
+
+Jika rekan-rekan membaca _blog_ saya beberapa minggu belakangan, kalian akan menyadari bahwa ada 3 topik yang sedang rajin saya tulis, yakni:
+
+1. _Agentic AI_ di __R__,
+1. _Bayesian statistics_, dan
+1. Analisa _clustering_.
+
+Kali ini saya akan membahas analisa _clustering_ dengan prinsip _Bayesian_. _Seru kan?_ Saya mulai _yah_.
+
+---
+
+## _Bayesian Clustering_
+
+**_Bayesian clustering_** adalah pendekatan probabilistik untuk _clustering_ yang menggunakan metode _Bayesian_ untuk mengelompokkan data. Prinsip dasarnya adalah:
+
+- **Model-based**: Mengasumsikan data berasal dari campuran distribusi probabilistik.
+- **Bayesian inference**: Menggunakan _prior_ dan _posterior_ untuk estimasi parameter.
+- **Uncertainty quantification**: Menyediakan ukuran ketidakpastian untuk setiap _cluster_.
+
+Keunggulan **_Bayesian clustering_** adalah:
+
+- **Flexible**: Dapat menangani berbagai jenis data dan struktur _cluster_.
+- **Automatic model selection**: Dapat menentukan jumlah kluster secara otomatis.
+- **Uncertainty estimates**: Menyediakan probabilitas keanggotaan _cluster_.
+- **Robust**: Lebih tahan terhadap _noise_ dan _outliers_.
+
+Lantas apa perbedaannya dengan _K-means clustering_?
+
+| Aspek | K-Means | Bayesian Clustering |
+|-------|---------|-------------------|
+| **Pendekatan** | Deterministik | Probabilistik |
+| **Jumlah Kluster** | Harus ditentukan sebelumnya | Dapat ditentukan otomatis |
+| **Keanggotaan** | _Hard assignment_ (satu kluster) | _Soft assignment_ (probabilitas) |
+| **Asumsi** | _Cluster_ berbentuk _spherical_ dengan ukuran sama | Fleksibel terhadap bentuk dan ukuran _cluster_ |
+| **Ketidakpastian** | Tidak ada ukuran ketidakpastian | Menyediakan posterior _probabilities_ |
+| **Komputasi** | Cepat dan sederhana | Lebih kompleks dan intensif |
+| **Model Selection** | Manual (_elbow method, silhouette_) | Otomatis (_Bayesian model comparison_) |
+| **Outliers** | Sensitif terhadap _outliers_ | Lebih _robust_ terhadap _outliers_ |
+
+Secara praktis, perbedaan penggunaannya adalah sebagai berikut:
+
+- **K-Means**: Cocok untuk data yang terpisah jelas dengan bentuk _spherical_. Hal ini pernah saya bahas di [tulisan _blog_ yang ini](https://ikanx101.com/blog/clustering-R/). Silakan dibaca _ya_.
+- **Bayesian**: Cocok untuk data kompleks dengan _overlap_, ketidakpastian tinggi, atau ketika ingin mengetahui probabilitas keanggotaan.
+
+Sekarang saya akan berikan contoh sederhana menggunakan data rekaan yang representatif. Saya akan buat sebuah data berisi dua variabel $X_1$ dan $X_2$. Saya juga definisikan masing-masing data tersebut masuk ke _cluster_ berapa. Hal ini sebagai informasi awal bagi kita agar untuk melihat apakah ada perubahan _cluster_ setelah dilakukan _Bayesian clustering_.
+
+Berikut adalah visualisasi datanya:
+
+```{r}
+ggplot(df_original, aes(x = X1, y = X2, color = Cluster)) +
+  geom_point(alpha = 0.7, size = 2) +
+  ggtitle("Data Asli dengan True Clusters") +
+  theme_minimal()
+```
+
+Kita bisa melihat bahwa _cluster_ 2 benar-benar terpisah dari _clusters_ yang lain. Ada beberapa titik data di _cluster_ 1 dan 3 yang saling tumpang tindih.
+
+Untuk melakukan _Bayesian clustering_ di __R__, prosesnya cukup mudah. Yakni:
+
+```{r}
+#| echo: true
+
+# Menggunakan mclust untuk Bayesian GMM
+fit_mclust <- Mclust(X, G = 1:5, modelNames = "VVV")
+
+# Hasil clustering
+mclust_clusters    <- fit_mclust$classification
+mclust_uncertainty <- fit_mclust$uncertainty
+
+# Summary model
+summary(fit_mclust)
+```
+
+Berikut adalah visualisasi hasil _clustering_-nya:
+
+```{r}
+# Visualisasi hasil clustering
+df_results <- data.frame(X1 = X[,1], X2 = X[,2], 
+                         Cluster = as.factor(mclust_clusters),
+                         Uncertainty = mclust_uncertainty)
+
+# Plot clusters
+p1 <- ggplot(df_results, aes(x = X1, y = X2, color = Cluster)) +
+  geom_point(alpha = 0.7, size = 2) +
+  ggtitle("Bayesian GMM Clustering (mclust)") +
+  theme_minimal()
+
+# Plot uncertainty
+p2 <- ggplot(df_results, aes(x = X1, y = X2, color = Uncertainty)) +
+  geom_point(alpha = 0.7, size = 2) +
+  scale_color_gradient(low = "blue", high = "red") +
+  ggtitle("Uncertainty in Cluster Assignment") +
+  theme_minimal()
+
+# Tampilkan plots
+library(gridExtra)
+grid.arrange(p1, p2, ncol = 2)
+```
+
+
+Secara visual, kita bisa melihat ada perbedaan _cluster member_ pada dua _clusters_ yang saling tumpang tindih. Kita juga bisa mendapatkan nilai _uncertainty_ dari masing-masing titik data.
+
+Sekarang, saya perlu mengevaluasi performa dari _clustering_-nya. Ada dua metrik evaluasi yang bisa dihitung: __internal dan eksternal__.
+
+Untuk metrik internal, kita bisa menghitung __BIC__ (_Bayesian Information Criterion_) untuk menentukan ada berapa banyak _clusters_ yang pas untuk data tersebut. Nilai __BIC__ yang lebih tinggi menunjukkan model yang lebih baik.
+
+```{r}
+# Evaluasi performa
+library(mclust)
+
+# Plot BIC untuk pemilihan model
+plot(fit_mclust, what = "BIC")
+```
+
+Dari grafik di atas, terlihat bahwa saat banyaknya **_clusters_ = 3** menghasilkan nilai __BIC__ yang paling tinggi dibandingkan yang lain.
+
+Untuk metrik eksternal, kita bisa menghitungnya dengan syarat __*ground truth* tersedia__. Pada awal saya _generate_ data, saya sudah memberikan _cluster_ awal. Jika _clusters_ tersebut kita yakini sebagai ___ground truth___, kita bisa menghitung ___Adjusted Rand Index___ (__ARI__).
+
+```{r}
+adjusted_rand_index <- adjustedRandIndex(true_clusters, mclust_clusters)
+cat("Adjusted Rand Index:", round(adjusted_rand_index, 3), "\n")
+```
+
+ARI mengukur kesamaan antara _clustering_ hasil dan _ground truth_. __ARI > 0.8__ menunjukkan hasil _clustering_ yang sangat baik.
+
+Di banyak kasus _real_, kita tidak selalu memiliki _ground truth_. Maka kita tidak perlu menghitung __ARI__. Kita bisa menghitung beberapa metrik lain seperti:
+
+_Silhouette analysis_: mengukur seberapa baik setiap observasi cocok dengan _cluster_-nya.
+
+```{r}
+#| echo: true
+
+library(cluster)
+sil <- silhouette(fit_mclust$classification, dist(X))
+cat("Mean Silhouette Width:", mean(sil[, 3]), "\n")
+
+```
+
+**Interpretasi**: 
+
+- $> 0.7$: Struktur kuat.
+- $0.5 - 0.7$: Struktur _reasonable_.  
+- $0.25 - 0.5$: Struktur lemah.
+- $< 0.25$: Tidak ada struktur.
+
+Selain itu, kita bisa menganalisa _uncertainty_ yang terjadi. _Clustering_ yang baik akan menghasilkan _uncertainty_ yang rendah. Kita bisa mendefinisikan __rendah jika proporsi *high uncertainty* sedikit__.
+
+Pada kasus ini, kita mendapatkan:
+
+```{r}
+#| echo: true
+cat("Proportion with high uncertainty (>0.1):", mean(fit_mclust$uncertainty > 0.1))
+```
+
+Ternyata hanya 0.08 persen proporsi _high uncertainty_ dan sangat rendah.
+
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
