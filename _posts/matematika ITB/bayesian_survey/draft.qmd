@@ -1,0 +1,566 @@
+---
+title: "xxx"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  error: false
+  echo: false
+---
+
+Pada 2024, saya melakukan _survey_ kepada 100 orang _target market_ __produk X__. Saya mendapatkan __35% dari responden tersebut *aware* dengan produk X__. Lalu pada 2025, saya melakukan _survey_ kembali kepada 100 orang _target market_ yang berbeda dengan tahun 2024. Saya mendapatkan __50% responden *aware* dengan produk X__.
+
+> Bagaimana cara kita menjelaskan apakah peningkatan yang terjadi sudah baik atau tidak?
+
+Sebagai _frequentist_, salah satu cara paling standar untuk menjawab pertanyaan ini adalah menggunakan __uji-2-proporsi__. Langkah-langkahnya masih sama, yakni:
+
+1. Tentukan $H_0$ dan $H_1$.
+    - $H_0: p_{2024} = p_{2025}$. Proporsi responden _aware_ pada 2024 __sama dengan__ proporsi di 2025.
+    - $H_0: p_{2024} \neq p_{2025}$. Proporsi responden _aware_ pada 2024 __tidak sama dengan__ proporsi di 2025.
+1. Hitung $p_{value}$ dan sandingkan dengan $\alpha = 0.05$.
+1. Tolak $H_0$ jika $p_{value} < \alpha$.
+
+```{r}
+uji = prop.test(c(35,50),c(100,100))
+
+uji
+```
+
+Oleh karena kita dapatkan $p_{value}=$ `r uji$p.value` dan nilainya lebih kecil daripada $\alpha$, maka __Tolak $H_0$__.
+
+> Proporsi _aware_ pada 2025 __lebih besar signifikan__ dibanding 2024.
+
+---
+
+
+__Pertanyaan selanjutnya adalah: bagaimana jawaban seorang _Bayesian_?__
+
+Alih-alih hanya mengatakan "50% lebih besar dari 35%", pendekatan Bayesian memungkinkan kita untuk menjawab pertanyaan yang jauh lebih kuat, yakni:
+
+> **"Berdasarkan data yang saya miliki, seberapa yakin (dalam persen) saya bahwa persentase *awareness* pada tahun 2025 benar-benar lebih tinggi daripada tahun 2024?"**
+
+Berikut adalah langkah-langkah untuk menjelaskannya menggunakan analisis Bayesian.
+
+## Konsep Dasar
+
+Pada _point of view_ seorang _Frequentist_, kita memiliki __poin estimasi__ sebesar __35% dan 50%__ dan kemudian menggunakan $p_{value}$ untuk melihat apakah perbedaan ini __signifikan secara statistik__ atau tidak.
+
+Dalam statistik Bayesian, kita memperlakukan _awareness rate_ (misal saya notasikan sebagai $\theta$) sebagai sesuatu yang tidak pasti dan memiliki *distribusi probabilitas*. Data survey yang dimiliki (35 dari 100 dan 50 dari 100) digunakan untuk *memperbarui* keyakinan kita tentang $\theta$.
+
+- Keyakinan awal kita disebut **Prior**.
+- Keyakinan yang telah diperbarui setelah melihat data disebut **Posterior**.
+
+Tujuan kita adalah membandingkan distribusi **Posterior** untuk $\theta_{2024}$ dengan distribusi **Posterior** untuk $\theta_{2025}$.
+
+Kita bisa melakukan dua cara analisa:
+
+1. Membuat __posterior 2024__ dan __posterior 2025__ __independen__, atau
+1. Membuat __posterior 2025__ sebagai _sequential_ dari __posterior 2025__.
+
+Saya akan melakukan analisa kedua karena saya meyakini ada hubungan antar tahun.
+
+### Langkah 1: Menentukan Model (_Prior_ dan _Likelihood_)
+
+Kita memodelkan jumlah orang yang *aware* sebagai data yang mengikuti distribusi Binomial, karena setiap responden adalah "sukses" (_aware_) atau "gagal" (tidak _aware_).
+
+- **Likelihood 2024:** $P(\text{data}_{2024} | \theta_{2024}) \sim \text{Binomial}(n=100, k=35)$
+- **Likelihood 2025:** $P(\text{data}_{2025} | \theta_{2025}) \sim \text{Binomial}(n=100, k=50)$
+
+Untuk **Prior**, karena kita tidak memiliki informasi sebelumnya tentang *awareness rate* sebelum survei 2024, kita akan menggunakan __*prior yang tidak informatif*__. Pilihan standar untuk proporsi adalah $\text{Beta}(1, 1)$, yang pada dasarnya adalah distribusi _uniform_ yang menyatakan bahwa semua *awareness rate* dari 0% hingga 100% sama-sama mungkin terjadi *sebelum* kita melihat data.
+
+### Langkah 2: Menghitung Distribusi _Posterior_
+
+Dengan menggunakan *conjugate prior*, matematika Bayesian memberi tahu kita bahwa:
+
+Jika _prior_ $\sim \text{Beta}(\alpha, \beta)$ dan _likelihood_ $\sim \text{Binomial}(n, k)$, maka _posterior_ $\sim \text{Beta}(\alpha + k, \beta + n - k)$.
+
+**Untuk Tahun 2024:**
+
+- Prior: $\text{Beta}(1, 1)$
+- Data: $k_1 = 35$, $n_1 = 100$
+*-**Posterior 2024:** $\text{Beta}(1 + 35, 1 + 100 - 35) = \textbf{Beta}(36, 66)$
+
+Distribusi ini mewakili keyakinan kita tentang *awareness rate* 2024. Puncaknya ada di sekitar $\frac{36}{36+66} \approx 35.3\%$.
+
+**Untuk Tahun 2025:**
+
+- Prior: $\text{Beta}(36, 66)$
+- Data: $k_2 = 50$, $n_2 = 100$
+- **Posterior 2025:** $\text{Beta}(36 + 50, 66 + 100 - 50) = \textbf{Beta}(86, 116)$
+
+Distribusi ini mewakili keyakinan kita tentang *true awareness rate* 2025. Puncaknya simetris tepat di $\frac{86}{66+50} \approx 74\%$.
+
+### Langkah 3: Membandingkan Kedua Distribusi _Posterior_
+
+Sekarang kita memiliki dua distribusi probabilitas yang _uncertain_:
+
+- $\theta_{2024} \sim \text{Beta}(36, 66)$
+- $\theta_{2025} \sim \text{Beta}(86, 116)$
+
+Kita ingin tahu: **"Apa probabilitas $\theta_{2025} > \theta_{2024}$?"**
+
+Cara termudah untuk menghitung ini adalah dengan simulasi Monte Carlo:
+
+1.  Kita ambil ribuan (atau jutaan) sampel acak dari $\text{Beta}(36, 66)$ (mari kita sebut `sampel_2024`).
+2.  Kita ambil jumlah sampel yang sama dari $\text{Beta}(86, 116)$ (mari kita sebut `sampel_2025`).
+3.  Kita hitung berapa persen dari sampel tersebut di mana `sampel_2025 > sampel_2024`.
+
+### Hasil dan Interpretasi
+
+Berikut adalah skrip untuk melakukan simulasinya:
+
+```{r}
+#| echo: true
+# Install package jika diperlukan
+# install.packages(c("ggplot2", "dplyr", "bayesAB"))
+
+rm(list=ls())
+
+# Load libraries
+library(ggplot2)
+library(dplyr)
+library(bayesAB)
+
+# Data
+n_2024 <- 100
+aware_2024 <- 35
+prop_2024 <- aware_2024/n_2024
+
+n_2025 <- 100
+aware_2025 <- 50
+prop_2025 <- aware_2025/n_2025
+```
+
+```{r}
+cat("Proporsi Awareness:\n")
+cat("2024:", prop_2024, "(", aware_2024, "/", n_2024, ")\n")
+cat("2025:", prop_2025, "(", aware_2025, "/", n_2025, ")\n")
+```
+
+```{r}
+#| echo: true
+# Prior non-informatif Beta(1,1)
+alpha_prior <- 1
+beta_prior <- 1
+
+# Posterior distributions
+alpha_2024 <- alpha_prior + aware_2024
+beta_2024 <- beta_prior + (n_2024 - aware_2024)
+
+alpha_2025 <- alpha_2024 + aware_2025
+beta_2025 <- beta_2024 + (n_2025 - aware_2025)
+```
+
+```{r}
+cat("\nPosterior Parameters:\n")
+cat("2024: Beta(", alpha_2024, ",", beta_2024, ")\n")
+cat("2025: Beta(", alpha_2025, ",", beta_2025, ")\n")
+```
+
+```{r}
+#| echo: true
+# Set seed untuk reproducibility
+set.seed(123)
+
+# Jumlah samples
+n_samples <- 100000
+
+# Sample dari posterior distributions
+samples_2024 <- rbeta(n_samples, alpha_2024, beta_2024)
+samples_2025 <- rbeta(n_samples, alpha_2025, beta_2025)
+
+# Hitung perbedaan
+difference <- samples_2025 - samples_2024
+
+# Probabilitas peningkatan
+prob_increase <- mean(samples_2025 > samples_2024)
+prob_meaningful_5pct <- mean(difference > 0.05)
+prob_meaningful_10pct <- mean(difference > 0.10)
+```
+
+Setelah menjalankan simulasi ini, Saya dapatkan hasil berikut ini:
+
+```{r}
+# Plot 1: Distribusi posterior untuk kedua tahun
+curve(dbeta(x, alpha_2024, beta_2024), from = 0, to = 1, 
+      col = "red", lwd = 2, main = "Posterior Distributions",
+      xlab = "Proportion Aware", ylab = "Density")
+curve(dbeta(x, alpha_2025, beta_2025), from = 0, to = 1, 
+      col = "blue", lwd = 2, add = TRUE)
+legend("topright", legend = c("2024", "2025"), 
+       col = c("red", "blue"), lwd = 2)
+
+
+cat("\nProbabilitas Bayesian:\n")
+cat("P(2025 > 2024):", round(prob_increase, 4), "\n")
+cat("P(Peningkatan > 5%):", round(prob_meaningful_5pct, 4), "\n")
+cat("P(Peningkatan > 10%):", round(prob_meaningful_10pct, 4), "\n")
+```
+
+Berdasarkan simulasi, **probabilitas _awareness rate_ pada tahun 2025 selalu berada di atas _awareness rate_ tahun 2024** adalah sebesar __89%__, dengan rincian:
+
+- Probabilitas kenaikan _awareness rate_ di atas 5% adalah sebesar __65%__.
+- Probabilitas kenaikan _awareness rate_ di atas 10% adalah sebesar __32% - 33%__.
+
+Ini adalah bukti yang **sangat kuat** sehingga kita bisa sangat yakin bahwa peningkatan yang terjadi bukanlah kebetulan melainkan cerminan dari peningkatan _awareness_ nyata di pasar.
+
+Selanjutnya, kita bisa menghitung seberapa besar peningkatan _awareness_ pada tahun 2025 dengan melihat *distribusi perbedaan* ($\delta = \theta_{2025} - \theta_{2024}$). 
+
+```{r}
+# Plot 2: Distribusi perbedaan
+hist(difference, breaks = 50, main = "Distribution of Difference",
+     xlab = "p_2025 - p_2024", col = "lightblue", 
+     xlim = c(-0.1, 0.3))
+abline(v = 0, col = "red", lwd = 2)
+abline(v = mean(difference), col = "darkgreen", lwd = 2)
+
+# Summary statistics
+diff_summary <- data.frame(
+  Metric = c("Mean", "Median", "SD", "2.5%", "97.5%"),
+  Value = c(
+    mean(difference),
+    median(difference),
+    sd(difference),
+    quantile(difference, 0.025),
+    quantile(difference, 0.975)
+  )
+)
+
+print(diff_summary)
+```
+
+_Expected value_ peningkatan _awareness rate_-nya adalah di sekitar __7%__.
+
+---
+
+# BAGAIMANA JIKA DATANYA _TRACKING_ TAHUNAN?
+
+Kasus di atas adalh contoh jika saya hanya punya dua titik data saja. Bagaimana jika kasusnya adalah mirip dengan [tulisan saya sebelumnya ini](https://ikanx101.com/blog/bayes-loyal/)? Jika pada tulisan tersebut saya menyelesaikannya dengan regresi _Bayesian_, sekarang saya akan gunakan analisa _Bayesian sequential_ seperti di atas.
+
+Misalkan saya punya data seperti ini:
+
+```{r}
+rm(list=ls())
+
+# Load libraries
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+
+# Data awareness tahun 2020-2025
+awareness_data <- data.frame(
+  year = 2020:2025,
+  respondents = c(100, 100, 100, 100, 100, 100),  # n per tahun
+  aware = c(20, 25, 28, 23, 35, 31)  # jumlah aware
+)
+
+awareness_data$proportion <- awareness_data$aware / awareness_data$respondents
+
+awareness_data %>% knitr::kable()
+
+awareness_data %>% 
+  ggplot(aes(x = year,y = proportion)) +
+  geom_line(group = 1,color = "darkgreen") +
+  geom_point(color = "steelblue") +
+  theme_minimal() +
+  labs(title = "Tracking Awareness Rate Tahunan",
+       subtitle = "Data Rekaan",
+       x = "Tahun",
+       y = "Awareness Rate")
+```
+
+Terlihat ada penurunan _awareness rate_ di tahun 2023 dan 2025. Bagaimana analisa _Bayesian_ terhadap perubahan angka _awareness rate_ ini? Bagaimana _Bayesian_ melihat penurunan ini?
+
+Pertama-tama, saya akan menghitung _prior_ dan _posterior_ lalu saya sajikan dalam bentuk tabel berikut ini:
+
+```{r}
+# Sequential Bayesian updating dari 2020 ke 2025
+sequential_update <- function(data) {
+  n_years <- nrow(data)
+  
+  # Initialize arrays untuk menyimpan parameter
+  alpha_prior <- numeric(n_years)
+  beta_prior <- numeric(n_years)
+  alpha_post <- numeric(n_years)
+  beta_post <- numeric(n_years)
+  
+  # Prior awal (non-informatif)
+  alpha_prior[1] <- 1
+  beta_prior[1] <- 1
+  
+  # Loop melalui setiap tahun
+  for(i in 1:n_years) {
+    # Hitung posterior
+    alpha_post[i] <- alpha_prior[i] + data$aware[i]
+    beta_post[i] <- beta_prior[i] + (data$respondents[i] - data$aware[i])
+    
+    # Set prior untuk tahun berikutnya (kecuali tahun terakhir)
+    if(i < n_years) {
+      alpha_prior[i + 1] <- alpha_post[i]
+      beta_prior[i + 1] <- beta_post[i]
+    }
+  }
+  
+  return(data.frame(
+    year = data$year,
+    aware = data$aware,
+    respondents = data$respondents,
+    proportion = data$proportion,
+    alpha_prior = alpha_prior,
+    beta_prior = beta_prior,
+    alpha_post = alpha_post,
+    beta_post = beta_post
+  ))
+}
+
+# Jalankan sequential updating
+results <- sequential_update(awareness_data)
+
+results %>% knitr::kable()
+```
+
+Saya akan membuat _density plot_ dari tabel hasil perhitungan di atas. Berikut adalah hasilnya:
+
+```{r}
+# Visualisasi evolusi posterior
+par(mfrow = c(2, 3))
+
+for(i in 1:nrow(results)) {
+  year <- results$year[i]
+  alpha_prior <- results$alpha_prior[i]
+  beta_prior <- results$beta_prior[i]
+  alpha_post <- results$alpha_post[i]
+  beta_post <- results$beta_post[i]
+  
+  curve(dbeta(x, alpha_post, beta_post), from = 0, to = 0.7,
+        main = paste("Tahun", year),
+        xlab = "Proportion Aware", ylab = "Density",
+        col = "blue", lwd = 2)
+  
+  # Tambahkan prior jika bukan tahun pertama
+  if(i > 1) {
+    curve(dbeta(x, alpha_prior, beta_prior), from = 0, to = 0.7,
+          col = "red", lwd = 2, lty = 2, add = TRUE)
+    legend("topright", legend = c("Posterior", "Prior"), 
+           col = c("blue", "red"), lwd = 2, lty = 1:2)
+  } else {
+    legend("topright", legend = "Posterior", col = "blue", lwd = 2)
+  }
+  
+  # Tambahkan proporsi observasi
+  abline(v = results$proportion[i], col = "green", lty = 2, lwd = 2)
+}
+```
+
+Kita bisa lihat secara visual semua distribusi _posterior_ berada di sebelah kanan dari distribusi _prior_. Kita lihat pada grafik sebelumnya, ada penurunan di 2023 dan 2025, namun _posterior_-nya relatif masih sama atau lebih tinggi dibandingkan _prior_-nya.
+
+> __Hal inilah yang membedakan *Bayesian* dengan *Frequentist*. Kita menggunakan _posterior_ tahun sebelumnya menjadi _prior_ pada tahun itu. Sehingga penurunan *awareness rate* yang terjadi pada tahun itu tidak serta merta menurunkan distribusi *posterior*.__
+
+Kita __bisa melihat dan menghitung probabilitas terjadinya perubahan *awareness rate*__ (baik kenaikan atau penurunan). Sehingga kita bisa menentukan __apakah variasi yang terjadi sebenarnya masih berada di area yang *aman atau tidak*__.
+
+Untuk itu, saya menggunakan __simulasi Monte Carlo__ dari informasi tabel sebelumnya. Berikut hasil perhitungannya:
+
+```{r}
+# Analisis perubahan sequential
+analyze_yearly_changes <- function(results) {
+  n_years <- nrow(results)
+  changes <- data.frame(
+    year_from = numeric(),
+    year_to = numeric(),
+    prob_increase = numeric(),
+    mean_increase = numeric(),
+    ci_lower = numeric(),
+    ci_upper = numeric()
+  )
+  
+  set.seed(123)
+  n_samples <- 50000
+  
+  for(i in 1:(n_years-1)) {
+    # Sample dari posterior tahun i dan i+1
+    samples_i <- rbeta(n_samples, results$alpha_post[i], results$beta_post[i])
+    samples_i1 <- rbeta(n_samples, results$alpha_post[i+1], results$beta_post[i+1])
+    
+    difference <- samples_i1 - samples_i
+    
+    changes <- rbind(changes, data.frame(
+      year_from = results$year[i],
+      year_to = results$year[i+1],
+      prob_increase = mean(samples_i1 > samples_i),
+      mean_increase = mean(difference),
+      ci_lower = quantile(difference, 0.025),
+      ci_upper = quantile(difference, 0.975)
+    ))
+  }
+  
+  return(changes)
+}
+
+yearly_changes <- analyze_yearly_changes(results)
+row.names(yearly_changes) = NULL
+yearly_changes %>% 
+  knitr::kable()
+```
+
+Perhatikan tabel di atas dengan seksama. Ternyata hampir setiap tahun, _probability awareness rate increase_ selalu berada di atas __60%__ kecuali pada tahun 2022 ke 2023.
+
+- Pada 2020 ke 2021, ada peluang __67%__ _awareness rate_ meningkat dengan _expected_ peningkatan sebesar __2.2%__.
+- Pada 2021 ke 2022, ada peluang __68%__ _awareness rate_ meningkat dengan _expected_ peningkatan sebesar __1.7%__.
+- Pada 2022 ke 2023, ada peluang __45%__ _awareness rate_ meningkat dengan _expected_ perubahan sebesar __-0.3%__.
+    - Pada tahun 2022 ke 2023, kita bisa menyimpulkan bahwa _awareness rate_ stagnan (tidak berubah).
+- Pada 2023 ke 2024, ada peluang __77%__ _awareness rate_ meningkat dengan _expected_ peningkatan sebesar __2.1%__.
+    - Pada tahun 2023 ke 2024 terjadi peluang peningkatan _awareness rate_ yang besar.
+- Pada 2024 ke 2025, ada peluang __61%__ _awareness rate_ meningkat dengan _expected_ peningkatan sebesar __0.8%__.
+    - Pada tahun 2024 ke 2025, kita bisa menyimpulkan bahwa _awareness rate_ stagnan (tidak berubah).
+    
+Berikut jika saya tampilan dalam bentuk grafik:
+
+```{r}
+# Plot trend awareness
+par(mfrow = c(1, 2))
+
+# Plot 1: Trend point estimates dengan uncertainty
+plot(results$year, results$proportion, type = "b", pch = 19, lwd = 2,
+     main = "Trend Awareness 2020-2025",
+     xlab = "Tahun", ylab = "Proportion Aware", 
+     ylim = c(0, 0.6), col = "blue")
+
+# Tambahkan interval kredibel 95%
+for(i in 1:nrow(results)) {
+  lower <- qbeta(0.025, results$alpha_post[i], results$beta_post[i])
+  upper <- qbeta(0.975, results$alpha_post[i], results$beta_post[i])
+  segments(results$year[i], lower, results$year[i], upper, col = "gray")
+  points(results$year[i], lower, pch = "-", cex = 2, col = "gray")
+  points(results$year[i], upper, pch = "-", cex = 2, col = "gray")
+}
+
+# Plot 2: Probabilitas peningkatan tahun ke tahun
+plot(yearly_changes$year_to, yearly_changes$prob_increase, type = "b", 
+     pch = 19, lwd = 2, col = "red",
+     main = "Probabilitas Peningkatan vs Tahun Sebelumnya",
+     xlab = "Tahun", ylab = "P(Peningkatan)",
+     ylim = c(0, 1))
+abline(h = 0.95, col = "green", lty = 2, lwd = 2)
+abline(h = 0.5, col = "gray", lty = 2)
+legend("topleft", legend = "95% Threshold", col = "green", lwd = 2, lty = 2)
+```
+
+Kita bisa melihat bahwa 2023 ke 2024, peningkatan _awareness rate_ yang terjadi berada di luar _credible interval_. Sedangkan penurunan pada 2023 dan 2025 masih masuk ke dalam _credible interval_.
+
+
+Berikutnya saya akan lakukan analisa peningkatan _awareness rate_ secara kumulatif dari 2020 ke 2025.
+
+```{r}
+# Analisis peningkatan kumulatif dari 2020
+analyze_cumulative_improvement <- function(results) {
+  set.seed(123)
+  n_samples <- 50000
+  
+  # Sample dari posterior 2020 dan 2025
+  samples_2020 <- rbeta(n_samples, results$alpha_post[1], results$beta_post[1])
+  samples_2025 <- rbeta(n_samples, results$alpha_post[6], results$beta_post[6])
+  
+  difference_5years <- samples_2025 - samples_2020
+  relative_increase <- samples_2025 / samples_2020
+  
+  cat("=== IMPROVEMENT 2020-2025 ===\n")
+  cat("Absolute Increase:\n")
+  cat("Mean:", round(mean(difference_5years), 3), "\n")
+  cat("95% CI: [", round(quantile(difference_5years, 0.025), 3), 
+      ",", round(quantile(difference_5years, 0.975), 3), "]\n")
+  cat("P(Increase > 0):", round(mean(difference_5years > 0), 4), "\n\n")
+  
+  cat("Relative Increase:\n")
+  cat("Mean:", round(mean(relative_increase), 3), "x\n")
+  cat("95% CI: [", round(quantile(relative_increase, 0.025), 3), 
+      ",", round(quantile(relative_increase, 0.975), 3), "]x\n")
+  
+  # Probabilitas berbagai threshold
+  thresholds <- c(0.10, 0.15, 0.20, 0.25)
+  cat("\nProbabilitas Melebihi Threshold:\n")
+  for(thresh in thresholds) {
+    prob <- mean(difference_5years > thresh)
+    cat(sprintf("P(Increase > %.2f): %.4f\n", thresh, prob))
+  }
+}
+
+analyze_cumulative_improvement(results)
+```
+
+Kita bisa lihat bahwa _expected value_ untuk peningkatan _awareness rate_ 2020 ke 2025 sebesar __6.5%__ dengan peluang terjadi peningkatan sebesar __92.43%__.
+
+_Expected value_ perubahan relatifnya sebesar __1.368 kali__. 
+
+> Artinya rata-rata _awareness rate_ pada tahun 2025 adalah 1.368 kali dar _awareness rate_ 2020.
+
+- Peluang peningkatan _awareness rate_ melebihi 10% adalah sebesar __21%__.
+- Peluang peningkatan _awareness rate_ melebihi 15% adalah sebesar __1.9%__.
+- Peluang peningkatan _awareness rate_ melebihi 20% ke atas adalah sebesar __0%__.
+    - Artinya kecil kemungkinan _awareness rate_ 2020 - 2025 naik melebihi 20% ke atas.
+
+## Bagaimana untuk _Forecast_ 2026?
+
+Dengan menggunakan _posterior_ 2025 sebagai _prior_ 2026, saya bisa menghitung _expected value_ untuk _awareness rate_ di tahun 2026. Lalu apakah mungkin kita memberikan _target_ _awareness rate_ 2026 sebesar 50%?
+
+Berikut analisanya:
+
+```{r}
+# Forecasting menggunakan sequential Bayesian
+forecast_2026 <- function(results) {
+  # Gunakan posterior 2025 sebagai prior 2026
+  alpha_prior_2026 <- results$alpha_post[6]
+  beta_prior_2026 <- results$beta_post[6]
+  
+  # Predictive distribution untuk 2026
+  n_samples <- 50000
+  predictive_2026 <- rbeta(n_samples, alpha_prior_2026, beta_prior_2026)
+  
+  cat("=== FORECAST 2026 ===\n")
+  cat("Expected Awareness:", round(mean(predictive_2026), 3), "\n")
+  cat("95% Predictive Interval: [", 
+      round(quantile(predictive_2026, 0.025), 3), ",",
+      round(quantile(predictive_2026, 0.975), 3), "]\n")
+  
+  # Probabilitas mencapai target
+  targets <- c(0.1,0.25,0.3, 0.40, 0.5)
+  cat("\nProbabilitas Mencapai Target 2026:\n")
+  for(target in targets) {
+    prob <- mean(predictive_2026 > target)
+    cat(sprintf("P(Awareness > %.2f): %.4f\n", target, prob))
+  }
+  
+  return(predictive_2026)
+}
+
+forecast_2026 <- forecast_2026(results)
+
+# Plot forecast
+hist(forecast_2026, breaks = 50, col = "lightblue",
+     main = "Predictive Distribution Awareness 2026",
+     xlab = "Proportion Aware", xlim = c(0.3, 0.7))
+abline(v = mean(forecast_2026), col = "red", lwd = 2)
+abline(v = 0.5, col = "blue", lwd = 2, lty = 2)
+legend("topright", legend = c("Mean 2026", "Target 50%"), 
+       col = c("red", "blue"), lwd = 2, lty = 1:2)
+
+```
+
+_Awareness rate_ pada 2026 diperkirakan sebesar __27.1%__ dengan _predictive interval_ antara __23.6% - 30.7%__.
+
+- Peluang _awareness rate_ 2026 berada di atas 10% adalah 100%.
+    - Artinya model sangat yakin bahwa _awareness rate_ pada 2026 minimal mencapai 10%.
+- Peluang _awareness rate_ 2026 berada di atas 25% adalah 87%.
+    - Artinya besar peluang _awareness rate_ 2026 berada di atas 25%.
+- Peluang _awareness rate_ 2026 berada di atas 30% adalah 5%.
+- Peluang _awareness rate_ 2026 berada di atas 40% adalah 0%.
+
+> __Tidak mungkin _awareness rate_ 2026 mencapai 50%__.
+
+
+
+
