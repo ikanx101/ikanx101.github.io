@@ -1,0 +1,179 @@
+---
+title: "xxx"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  error: false
+  echo: false
+  message: false
+---
+
+Sejak awal tahun ini, saya merasa sering membaca dan mendengar berita tentang harga emas yang memiliki tren kenaikan. Kenaikan harga emas tentunya dipengaruhi oleh berbagai macam faktor. Menurut apa yang saya baca, kenaikan ini justru menjadi salah satu indikator dari kondisi ekonomi yang tidak baik, misalnya:
+
+1. Ketidakpastian ekonomi global,
+1. Ketakutan akan resesi atau krisis keuangan,
+1. Inflasi tinggi.
+
+Salah seorang rekan kerja saya yang selama ini __menabung emas__ girang akan kondisi ini karena dia memiliki simpanan __emas batangan__ yang dibelinya pada harga Rp600.000 per gram. Kemarin dia bercerita bahwa ia menjual emasnya pada saat harga per gramnya mencapai Rp2.200.000. Walaupun untung, ternyata ia tetap menyesal karena di beberapa hari setelahnya, harga emas mencapai Rp2.500.000 per gram.
+
+Oleh karena itu, dia bertanya kepada saya:
+
+> Bisa gak sih kita punya model _forecast_ harga emas harian?
+
+Untuk menjawab hal tersebut, kita bisa memilih berbagai macam pendekatan. Misalkan kita bisa mempertimbangkan menggunakan _time series - based model_ seperti ARIMA, _exponential smoothing_, dan lain sebagainya. Kita juga bisa mempertimbangkan menggunakan _deep learning-based model_ seperti:
+
+1. [_Keras forecasting_](https://ikanx101.com/blog/keras-forecast/).
+1. [_Meta Prophet_](https://ikanx101.com/blog/prophet-forecasting/).
+
+Kali ini, saya akan mencoba metode lain untuk bisa _forecasting_ harga emas selama 7 hari ke depan. Metode yang digunakan adalah _Bayesian Time Series_.
+
+> Berhubung ini hanya untuk keperluan _blog_, jadi saya tak akan serius-serius _banget ya_. _hehe_.
+
+---
+
+## Data yang Digunakan
+
+Saya mengambil data harga emas per gram harian dari situs [_Bullion Rates_](https://www.bullion-rates.com/). Proses pengambilan data tersebut dibantu oleh [_Microsoft Copilot_](https://ikanx101.com/blog/geo-copilot/). Berikut adalah grafiknya:
+
+```{r}
+rm(list=ls())
+
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+library(tidyr)
+library(readxl)
+library(scales)
+library(bsts)
+
+# kita ambil datanya
+file = "harga_emas_bullion_rates_IDR_6bulan.xlsx"
+df =
+  read_excel(file) |>
+  janitor::clean_names() |>
+  rename(date = tanggal, price = harga_gram_idr) |>
+  select(date, price)
+
+df |> 
+  mutate(date = as.Date(date,"%Y-%m-%d")) |> 
+  ggplot(aes(x = date,y = price)) +
+  geom_line(color = "gold") +
+  geom_point(size = .5,color = "black") +
+  scale_y_continuous(labels = label_currency(
+      prefix = "Rp",
+      big.mark = ".",
+      decimal.mark = ","
+    )) +
+  theme_minimal() +
+  labs(title = "Pergerakan harga emas per gram harian",
+       sutitle = "Sumber: Bullion Rates",
+       caption = "Scraped and Visualized using R\nikanx101.com",
+       x = "Tanggal",
+       y = "Harga")
+```
+
+Melakukan _forecasting_ dengan _Bayesian Time Series_ tetap menggunakan prinsip _prior_ dan _posterior_.
+
+__Prinsip Dasar: Belajar dari Pengalaman__
+
+Metode Bayesian pada intinya adalah tentang memperbarui keyakinan (_belief_) ketika ada data baru. Misalkan kita punya toko kue:
+
+1. Keyakinan Awal (_Prior_): Sebelum toko buka, kita sudah punya "firasat" atau perkiraan berdasarkan pengalaman. Misalnya, "Biasanya kita bisa menjual 40-60 kue sehari (rata-rata 50)." Ini adalah _"Prior"_ — perkiraan awal sebelum melihat data hari itu.
+1. Data Nyata (_Evidence_): Hari ini, kita melihat cuaca mendung dan ada acara festival di dekat toko. Data baru ini akan mempengaruhi penjualan kita.
+1. Keyakinan yang Diperbarui (_Posterior_): Kita menggabungkan "firasat awal" dengan "data baru" tersebut. Akhirnya kita bisa menyimpulkan, "Oke, dengan kondisi seperti ini, kemungkinan besar kita akan menjual 70-90 kue hari ini." Keyakinan yang diperbarui inilah yang disebut "_Posterior_".
+
+
+__Menerapkannya pada Data Runtun Waktu (*Time Series*)__
+
+Data _time series_ pada kasus ini adalah data penjualan kue harian toko kita. Dalam _Bayesian Time Series_, kita melakukan proses **_update_ keyakinan** setiap kali ada data baru masuk.
+
+- __Hari 1__: Kita mulai dengan _Prior_ (misalnya, prediksi 50 kue). Saat toko tutup, ternyata terjual 55 kue. _Update keyakinan!_ Mungkin prediksi untuk besok menjadi 53 kue.
+- __Hari 2__: Dengan _Prior_ baru (53 kue), ternyata terjual 60 kue. _Update lagi!_ Prediksi untuk lusa mungkin naik jadi 57 kue.
+- __Hari 3, 4, 5, dan seterusnya__: Proses ini terus berulang. Setiap hari, model kita menjadi semakin "pintar" karena terus belajar dari data terbaru.
+
+Untuk melakukan _forecast_, saya membuat algoritma di __R__ menggunakan `library(bsts)`. Berikut adalah hasil _forecast_ yang saya lakukan:
+
+```{r}
+load("for_blog.rda")
+plot(bsts_pred, main = "Prediksi 7 Hari ke Depan")
+```
+
+Kelebihan dari Bayesian adalah _output_ yang dihasilkan merupakan _range_ (bukan _single point_). Berikut adalah forecast 7 hari ke depan:
+
+```{r}
+prediction_summary |> 
+  mutate(Mean_Price = scales::dollar(Mean_Price,prefix = "Rp"),
+         Median_Price = scales::dollar(Median_Price,prefix = "Rp"),
+         Lower_95 = scales::dollar(Lower_95,prefix = "Rp"),
+         Upper_95 = scales::dollar(Upper_95,prefix = "Rp")
+         ) |> 
+  knitr::kable()
+```
+
+Jika dilihat, masih ada tren kenaikan dari _expected price_-nya (_mean_ dan _median_). Namun jika kita lihat rentang _forecast_-nya (_lower_ dan _upper_), semakin hari semakin lebar. 
+
+> Saya menduga hal ini terjadi karena ketidakpastian saat _forecasting_ jarak jauh menjadi lebih tinggi dibandingkan jarak dekat.
+
+
+## Diagnostik Model
+
+__Seberapa bagus model saya?__
+
+Saya akan melihat beberapa parameter _goodness of fit_ dari model sebagai berikut:
+
+```{r}
+summary(bsts_model)[1:3]
+```
+
+__Bagaimana menginterpretasikan parameter tersebut?__
+
+Analoginya bayangkan kita seorang penembak jitu dan sedang latihan menembak target di lapangan tembak.
+
+- Targetnya adalah nilai sebenarnya (_actual value_) dari data.
+- Peluru kita adalah nilai prediksi (_forecasted value_) dari model tersebut.
+- Lubang peluru di papan target adalah titik di mana peluru kita kena.
+
+### Apa Itu _Residual Standard Deviation_ (_Residual SD_)?
+
+__Residual__ adalah jarak antara lubang peluru dengan titik pusat target. __Residual SD__ adalah ukuran sebaran atau konsistensi dari semua jarak kesalahan (_residual_) tebakan model kita.
+
+Misalkan ada dua penembak:
+
+1. Penembak A: Tembakannya tersebar acak, ada yang 1 cm dari pusat, ada yang 5 cm, ada yang 3 cm. Artinya residual SD-nya besar.
+1. Penembak B: Hampir semua tembakannya mengelompok rapat di sekitar _bullseye_, misalnya hanya berjarak 0.5 cm sampai 1.5 cm. Artinya residual SD-nya kecil.
+
+Jadi, Residual SD mengukur __tingkat akurasi dan konsistensi__ model kita.
+
+> __Model kita memiliki Residual SD sebesar Rp9.392.__
+
+
+### Apa Itu _Prediction Standard Deviation_? 
+
+_Prediction SD_ adalah ukuran ketidakpastian untuk prediksi masa depan.
+
+Bayangkan kita sedang memprediksi harga emas besok:
+
+- Model kita memberi prediksi: Rp1.200.000.
+- _Prediction SD_: Rp10.000.
+
+Artinya adalah prediksi terbaik yang bisa kita berikan adalah 
+
+Prediksi terbaik Anda adalah Rp 1.200.000 dengan ketidakpastian ± Rp10.000.
+
+> __Model kita memiliki Prediction SD sebesar Rp25.759.__
+
+
+### Apa itu R-square (R²) dalam _Bayesian Time Series_?
+
+_R-square_ adalah "persentase penjelasan". Analoginya adalah dari total variasi dalam harga emas harian, berapa persen yang bisa dijelaskan oleh model tersebut?
+
+> __Model kita memiliki _R-square_ sebesar 0.9972496.__
+
+
+
