@@ -120,8 +120,8 @@ berada di sana. Berikut adalah *forecast* 7 hari ke depan:
 |   6 | 2025-11-18     | Rp2,256,255 | Rp2,257,355  | Rp2,149,386 | Rp2,359,331 |
 |   7 | 2025-11-19     | Rp2,259,593 | Rp2,258,833  | Rp2,145,843 | Rp2,372,779 |
 
-Jika dilihat, masih ada tren kenaikan dari *expected price*-nya (*mean*
-dan *median*). Namun jika kita lihat rentang *forecast*-nya (*lower* dan
+Jika dilihat, masih ada tren harga stagnan dari *expected price*-nya (*mean*
+dan *median*). Kemudia jika kita lihat rentang *forecast*-nya (*lower* dan
 *upper*), semakin hari semakin lebar.
 
 > Saya menduga hal ini terjadi karena ketidakpastian saat *forecasting*
