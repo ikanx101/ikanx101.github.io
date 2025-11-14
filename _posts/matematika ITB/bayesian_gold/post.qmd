@@ -1,5 +1,5 @@
 ---
-title: "xxx"
+title: "Forecast Harga Emas Harian Menggunakan Bayesian Time Series"
 format:
   gfm:
     html-math-method: webtex
@@ -14,13 +14,13 @@ execute:
   message: false
 ---
 
-Sejak awal tahun ini, saya merasa sering membaca dan mendengar berita tentang harga emas yang memiliki tren kenaikan. Kenaikan harga emas tentunya dipengaruhi oleh berbagai macam faktor. Menurut apa yang saya baca, kenaikan ini justru menjadi salah satu indikator dari kondisi ekonomi yang tidak baik, misalnya:
+Pada enam bulan belakangan ini, saya merasa sering membaca dan mendengar berita tentang harga emas yang memiliki tren kenaikan. Kenaikan harga emas tentunya dipengaruhi oleh berbagai macam faktor. Menurut apa yang saya baca, kenaikan ini justru menjadi salah satu indikator dari kondisi ekonomi yang tidak baik, misalnya:
 
 1. Ketidakpastian ekonomi global,
 1. Ketakutan akan resesi atau krisis keuangan,
 1. Inflasi tinggi.
 
-Salah seorang rekan kerja saya yang selama ini __menabung emas__ girang akan kondisi ini karena dia memiliki simpanan __emas batangan__ yang dibelinya pada harga Rp600.000 per gram. Kemarin dia bercerita bahwa ia menjual emasnya pada saat harga per gramnya mencapai Rp2.200.000. Walaupun untung, ternyata ia tetap menyesal karena di beberapa hari setelahnya, harga emas mencapai Rp2.500.000 per gram.
+Salah seorang rekan kerja saya yang selama ini __menabung emas__ girang akan kondisi ini karena dia memiliki simpanan __emas batangan__ yang dibelinya pada harga Rp600.000 per gram. Kemarin dia bercerita bahwa ia menjual emasnya pada saat harga per gramnya mencapai Rp2.200.000. Walaupun untung, ternyata ia tetap menyesal karena di beberapa hari setelahnya, harga emas hampir mencapai Rp2.500.000 per gram.
 
 Oleh karena itu, dia bertanya kepada saya:
 
@@ -104,7 +104,7 @@ load("for_blog.rda")
 plot(bsts_pred, main = "Prediksi 7 Hari ke Depan")
 ```
 
-Kelebihan dari Bayesian adalah _output_ yang dihasilkan merupakan _range_ (bukan _single point_). Berikut adalah forecast 7 hari ke depan:
+Kelebihan dari Bayesian adalah _output_ yang dihasilkan merupakan _range_ (bukan _single point_). _Range tersebut_ memberikan kita interval di mana harga emas di hari ke depan kemungkinan besar (95%) berada di sana. Berikut adalah _forecast_ 7 hari ke depan:
 
 ```{r}
 prediction_summary |> 
@@ -174,6 +174,16 @@ Prediksi terbaik Anda adalah Rp 1.200.000 dengan ketidakpastian ± Rp10.000.
 _R-square_ adalah "persentase penjelasan". Analoginya adalah dari total variasi dalam harga emas harian, berapa persen yang bisa dijelaskan oleh model tersebut?
 
 > __Model kita memiliki _R-square_ sebesar 0.9972496.__
+
+---
+
+# Kesimpulan dan Penutup
+
+Jika kita perhatikan kembali data harga emas pada rentang waktu yang sangat lama, harga emas cenderung selalu meningkat seiring waktu. Hal ini juga tergambar dari hasil _forecast_ model secara singkat (7 hari). Namun bisa jadi ada fluktuatif dengan tren secara panjang tetap naik harganya.
+
+
+
+
 
 
 
