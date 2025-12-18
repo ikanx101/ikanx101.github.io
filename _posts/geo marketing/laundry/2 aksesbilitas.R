@@ -68,4 +68,25 @@ df_target =
   group_split(id)
 
 # multiple cores
-jarak = mclapply(df_target,hitung_jarak,mc.cores = ncore)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
