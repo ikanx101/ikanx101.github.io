@@ -1,0 +1,113 @@
+---
+title: "Seberapa Mudah Mencari Laundry di Kota Bekasi?"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  error: false
+  echo: false
+---
+
+```{r}
+#| include: false
+
+rm(list=ls())
+
+library(tidyverse)
+library(ggplot2)
+library(readxl)
+
+df = read_excel("laundry.xlsx") %>% janitor::clean_names()
+load("ready.rda")
+```
+
+Beberapa hari yang lalu, *nyonya* meminta saya untuk mencari *laundry* yang bisa "mencuci" sepatu dan tas sekolah anak-anak. *"Mumpung sedang liburan"*, katanya. Berdasarkan hasil *Googling* sana-sini, akhirnya saya memilih salah satu *laundry* modern yang ada di dekat rumah untuk mencuci tas dan sepatu tersebut.
+
+Sepanjang perjalanan dari rumah ke *laundry* itu, saya merasa melewati beberapa *laundry* lainnya. Mulai dari *laundry* rumahan hingga *self-service laundry* yang sedang *nge-trend* di Bekasi. Saya jadi berpikir, sangat mudah bagi saya untuk mengakses *laundry* di dekat rumah.
+
+> Tahun 2023 lalu, saya pernah melakukan [analisa *geomarketing*](https://ikanx101.com/blog/geomkt-bks/) untuk melihat seberapa *accessible* rumah makan padang, warteg, dan bakso-mie ayam di kota Bekasi.
+
+Kali ini saya akan melakukan hal yang sama, yakni menghitung seberapa mudah orang di Kota Bekasi mengakses *laundry*. Secara simpel, saya akan menghitung jarak tempuh seseorang ke *laundry* berdasarkan [jarak *real* di *Open Street Maps*](https://ikanx101.com/blog/osrm-R/) dengan moda sepeda motor.
+
+Untuk melakukannya, tahap pertama yang saya lakukan adalah mengambil (hampir) semua data *laundry* yang ada di kota Bekasi menggunakan [***Google Places API***](https://ikanx101.com/blog/google-places/). Saya mendapatkan sebanyak **237 titik *laundry*** di Kota Bekasi sebagai berikut:
+
+![](laundry.png){width="650"}
+
+Berikut adalah sampel 5 data _laundry_ yang saya dapatkan:
+
+```{r}
+df %>% 
+  select(nama,alamat,long,lat,rating,user_rating,neighborhood,city) %>% 
+  head(5) %>% 
+  knitr::kable()
+```
+
+Sekarang saya akan men-_generate_ ratusan titik pelanggan secara _random_ dan secara iteratif akan menghitung jarak antara titik pelanggan tersebut ke semua _laundry_ yang ada.
+
+Sebagai contoh seperti ini titik pelanggan yang saya _generate_ pada satu iterasi:
+
+![](pelanggan.png){width="650"}
+
+Berikut adalah contoh hasil perhitungan pelanggan pertama ke 5 _laundry_ yang ada di data ___Google Places___:
+
+```{r}
+df_final %>% 
+  select(-id) %>% 
+  filter(id_pelanggan == 1) %>% 
+  filter(id_laundry %in% 1:5) %>% 
+  rename("jarak (km)" = jarak) %>% 
+  knitr::kable()
+```
+
+__Aksesbilitas__ saya hitung dari jarak terpendek seorang pelanggan untuk mencapai _laundry_.
+
+```{r}
+df_pendek = 
+  df_final %>% 
+  group_by(id_pelanggan) %>% 
+  filter(jarak == min(jarak)) %>% 
+  ungroup()
+
+rata = mean(df_pendek$jarak)
+rata_lab = paste0(round(rata,2)," km")
+med  = median(df_pendek$jarak)
+med_lab = paste0(round(med,2)," km")
+puncak = "Puncak: 0.5 km"
+
+
+df_pendek %>% 
+  ggplot(aes(x = jarak)) +
+  geom_vline(xintercept = rata,color = "darkgreen") +
+  geom_vline(xintercept = med,color = "darkblue") +
+  geom_vline(xintercept = 0.5,color = "brown") +
+  geom_density() +
+  annotate("label",x = 1.5,y = .4,
+           label = paste("Mean:",rata_lab),
+           color = "darkgreen",
+           fill = "gray") +
+  annotate("label",x = .8,y = .2,
+           label = paste("Median:",med_lab),
+           color = "darkblue",
+           fill = "gray") +
+  annotate("label",x = .5,y = .65,
+           label = puncak,
+           color = "brown",
+           fill = "gray")
+```
+
+
+
+
+
+
+
+
+
+
+
+

@@ -67,26 +67,22 @@ df_target =
   mutate(id = 1:126665) %>% 
   group_split(id)
 
+# kita mulai
+temp = list()
 # multiple cores
+for(ix in 1:126665){
+  print(ix)
+  temp[[ix]] = hitung_jarak(df_target[[ix]])
+  cat("D O N E")
+}
 
+jarak = temp %>% unlist()
 
+df_final =
+  data.table::rbindlist(df_target) %>% 
+  as.data.frame() %>% 
+  mutate(jarak = jarak)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+save(df_final,file = "ready.rda")
 
 
