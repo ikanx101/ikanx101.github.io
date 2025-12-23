@@ -64,7 +64,7 @@ df_final %>%
   knitr::kable()
 ```
 
-__Aksesbilitas__ saya hitung dari jarak terpendek seorang pelanggan untuk mencapai _laundry_.
+__Aksesbilitas__ saya hitung dari [jarak terpendek](https://ikanx101.com/blog/geomkt-bks/) seorang pelanggan untuk mencapai _laundry_.
 
 ```{r}
 df_pendek = 
@@ -97,17 +97,105 @@ df_pendek %>%
   annotate("label",x = .5,y = .65,
            label = puncak,
            color = "brown",
-           fill = "gray")
+           fill = "gray") +
+  theme_minimal() +
+  labs(title = "Density Plot: Jarak Terpendek Pelanggan ke Tempat Laundry",
+       subtitle = "Sumber: Perhitungan Jarak Tempuh Real",
+       x = "Jarak real (dalam km)",
+       y = "Density",
+       caption = "Scraped, Calculated, and Visualized using R\nikanx101.com") +
+  theme(axis.text.y = element_blank())
+
+```
+
+Dari hasil perhitungan di atas, kita bisa dapatkan bahwa rata-rata jarak seseorang pelanggan di Bekasi mengakses _laundry_ adalah 1.2 km dengan median sekitar 850 meter.
+
+> Namun, dari _density plot_ di atas kita lihat puncak grafik berada pada jarak 500 meter. Artinya "sebagian besar" pelanggan bisa mengakses _laundry_ dalam jarak 500 meter saja.
+
+Dari grafik tersebut, Saya bisa menghitung peluang bahwa _laundry_ bisa diakses dengan jarak kurang dari 1 km sebesar:
+
+```{r}
+peluang = 
+  df_pendek %>% 
+  filter(jarak <= rata) %>% 
+  nrow() / 546
+
+peluang = round(peluang*100,2)
+paste0("Peluang seorang pelanggan mengakses laundry di bawah 1 km sebesar: ",peluang,"%")
+```
+
+## Voronoi Diagram
+
+Setelah membaca beberapa artikel, saya tertarik untuk melakukan analisa __diagram Voronoi__.
+
+### Apa Itu Diagram Voronoi?
+
+Saya kutip dari berbagai sumber: __Diagram Voronoi__ (atau __Tessellasi Voronoi__) adalah pembagian wilayah berdasarkan kedekatan dengan titik-titik tertentu. Dalam konteks ini:
+
+1. Setiap titik longlat _laundry_ menjadi pusat sel Voronoi.
+1. Setiap lokasi dalam sel tersebut akan lebih dekat ke _laundry_ di sel itu dibanding _laundry_ lain di titik mana pun.
+1. Garis-garis pada diagram adalah batas wilayah yang sama jauhnya dari dua _laundry_ terdekat.
+
+Secara sederhana diagram Voronoi bisa menjawab pertanyaan berikut ini:
+
+> _"Jika saya di titik X, laundry mana yang paling dekat?"_
+
+### Apa Saja _Insights_ yang Bisa Didapat dari Analisis Voronoi?
+
+1. Cakupan Layanan & Area Dominasi
+    - Setiap sel menunjukkan area teoretis yang dilayani _laundry_ tersebut.
+    - Kita bisa melihat _laundry_ mana yang wilayah layanannya:
+        - Luas (mungkin karena kurang kompetisi - indikasi jarangnya _laundry_ di sel tersebut) atau
+        - Sempit (karena daerah padat _laundry_).
+
+2. Potensi Konflik atau Persaingan Berdasarkan Jarak
+    - Dua _laundry_ yang berbagi batas Voronoi panjang adalah pesaing langsung untuk pelanggan di area perbatasan.
+    - Jika ada _laundry_ yang selnya dikelilingi banyak laundry lain, artinya dia di tengah persaingan ketat.
+
+3. Analisis Demografi & Potensi Pasar
+    - Jika kita gabungkan diagram Voronoi dengan peta kepadatan penduduk atau kelas ekonomi, kita bisa mendapatkan gambaran terkait strategi _marketing_.
+
+4. Perencanaan Ekspansi atau Pemindahan Lokasi
+    - Jika ingin membuka _laundry_ baru, tempatkan di pusat sel Voronoi yang sangat besar untuk maksimalkan cakupan.
+    - Jika ingin menghindari kompetisi, cari area yang jarak ke _laundry existing_ jauh.
+
+
+Ini adalah diagram Voronoi:
+
+```{r}
+library(ggmap)
+library(ggvoronoi)
+
+key = "AIzaSyBlZpsnqIhuJDHZ-nGo1VrU3PmKDW18-ls"
+
+register_google(key = key)
+
+lisbon_satellite <- get_map("Kota Bekasi", 
+                            source = "google", 
+                            api_key = api_secret,zoom=13)
+
+basis = 
+  df %>% 
+  select(lat,long) %>% 
+  distinct()
+
+ggmap(lisbon_satellite) +
+  geom_point(data = basis,aes(x = long,y = lat),
+             size = .9,
+             color = "steelblue") +
+  stat_voronoi(data = basis,aes(x = long,y = lat),
+               geom = "path",
+               alpha = .25,
+               linewidth = .5,
+               color = "darkgreen")
+
 ```
 
 
+__Kita bisa melihat ada beberapa sel yang ternyata luas di tengah kota.__
 
+Apa yang bisa kita simpulkan dari diagram ini?
 
-
-
-
-
-
-
-
-
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
