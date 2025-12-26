@@ -1,0 +1,205 @@
+---
+title: "Apakah Penjualan Naik Karena Promosi atau Kebetulan Saja?"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  error: false
+  echo: false
+---
+
+```{r}
+#| include: false
+
+rm(list=ls())
+
+library(dplyr)
+library(tidyr)
+library(CausalImpact)
+library(ggplot2)
+library(epoxy)
+
+setwd("~/ikanx101.github.io/_posts/matematika ITB/causal_impact")
+
+set.seed(101) # Biar hasilnya reproducible ala ikanx101
+
+
+```
+
+Sepanjang tahun ini, sebagai seorang _market researcher_, pertanyaan yang paling sering ditanyakan kepada saya (dan paling sulit) dijawab adalah:
+
+> ___"Apakah kenaikan sales bulan lalu murni karena campaign marketing kita, atau karena faktor lain (seasonal, tren, atau random event tertentu)?"___
+
+Untuk menjawab pertanyaan ini, biasanya kita bisa menggunakan beberapa alternatif seperti:
+
+- Menghitung korelasi dengan adanya _gap_ waktu.
+- Menggunakan _Granger-Causality_ untuk menemukan efek antar data _time series_.
+- Membandingkan nilai rata-rata _before-after_ iklan atau promosi lainnya.
+
+---
+
+Pada tulisan ini, saya akan memberikan satu alternatif cara menjawab yang lain. 
+
+Semalam saya tak sengaja menemukan satu _repository_ milik __Google__ di _Github_ bernama `Causal Impact`. `Causal Impact` merupakan _library_ di __R__ yang bertujuan untuk menyelesaikan permasalahan bisnis di atas dengan pendekatan Bayesian. 
+
+## Apa itu `Causal Impact`?
+
+**Causal Impact Analysis** adalah pendekatan statistik yang memungkinkan kita untuk **mengukur efektivitas sebenarnya** dari suatu intervensi, seperti _marketing campaign_, strategi harga, atau peluncuran produk baru. Metode ini dirancang untuk memisahkan dampak nyata dari faktor luar _noise_ yang dapat mengaburkan hasil, seperti tren pasar, efek musiman, dan peristiwa makroekonomi. Intinya, analisis ini mengevaluasi dampak dengan **membandingkan hasil aktual yang diobservasi dengan "counterfactual"**, yaitu sebuah simulasi atau prediksi tentang apa yang seharusnya terjadi jika intervensi tersebut tidak pernah dilakukan.
+
+Cara kerja analisis ini secara umum melibatkan penggunaan **model deret waktu struktural Bayesian (Bayesian structural time-series models)** untuk mengonstruksi prediksi _counterfactual_ tersebut. Prosesnya dimulai dengan menetapkan periode waktu sebelum intervensi (sebagai _baseline_) dan periode setelah intervensi untuk dianalisis. Model kemudian menggunakan data historis dan variabel kontrol (seperti data pasar yang tidak terkena intervensi) untuk membangun kelompok kontrol sintetis yang mencerminkan karakteristik kelompok intervensi. 
+
+> **Dampak kausal ditentukan dengan menghitung selisih antara data aktual yang diamati dan prediksi counterfactual** selama periode setelah intervensi, yang kemudian dapat divisualisasikan untuk melihat perkembangan efeknya secara bertahap maupun kumulatif.
+
+Penggunaan metode ini sangat bergantung pada beberapa asumsi kunci agar kesimpulan yang dihasilkan tetap valid. Asumsi yang paling utama adalah bahwa **variabel kontrol yang digunakan tidak ikut terpengaruh oleh intervensi** tersebut; jika variabel kontrol juga terdampak, maka model akan menghasilkan estimasi dampak yang salah. Selain itu, model mengasumsikan bahwa **hubungan antara variabel kontrol dan variabel target tetap stabil** sejak periode sebelum hingga periode sesudah intervensi dilakukan. Terakhir, efektivitas analisis ini sangat mensyaratkan adanya **data berkualitas tinggi, akurat, dan lengkap**, karena data yang hilang atau salah dapat menyebabkan bias pada hasil akhir dan melemahkan kekitalan model.
+
+Sebagai analogi untuk membantu pemahaman, bayangkan kita ingin mengetahui dampak nyata dari sebuah pupuk baru terhadap pertumbuhan satu tanaman tertentu. _Causal Impact_ bekerja seperti membandingkan tinggi tanaman yang diberi pupuk tersebut dengan "saudara kembarnya" yang dibesarkan dalam kondisi cahaya, tanah, dan air yang identik namun tanpa diberi pupuk; perbedaan tinggi di antara keduanya adalah dampak nyata yang disebabkan oleh pupuk tersebut.
+
+Inti dari `Causal Impact` adalah menemukan _Counterfactual_. Bayangkan sebuah dunia paralel (_multiverse_) di mana:
+
+- Dunia Nyata: Kita menjalankan diskon besar-besaran di suatu periode waktu sehingga terlihat _sales value_ naik.
+- Dunia _Counterfactual_: Di waktu yang sama, kita tidak menjalankan diskon.
+
+> Selisih antara _sales value_ Dunia Nyata dan _sales value_ Dunia _Counterfactual_ itulah yang disebut ___Causal Impact___.
+
+Oleh karena saya tidak punya mesin transportasi ke dunia paralel, saya harus memprediksinya menggunakan data statistik. Kita akan membuat _Synthetic Control_ (garis basis prediksi) berdasarkan data historis dan variabel kontrol.
+
+## Perbedaan dengan _A/B Testing_
+
+Berdasarkan penjelasan di atas, lantas apa perbedaannya dengan ___A/B Testing___?
+
+> Sebagai analogi, __A/B testing__ seperti melakukan uji laboratorium yang terkontrol ketat di mana kita membagi dua tanaman identik sejak awal, sedangkan __Causal Impact__ seperti melihat sebuah tanaman di hutan yang tumbuh pesat setelah diberi pupuk, lalu menggunakan data cuaca dan pertumbuhan tanaman di sekitarnya untuk mensimulasikan seberapa tinggi tanaman itu seharusnya tumbuh jika pupuk tersebut tidak pernah diberikan.
+
+
+## _Business Question_
+
+Dalam bisnis, seringkali kita memiliki pertanyaan:
+
+> _Apa hubungan antara budget promosi yang digelontorkan dengan sales yang diraih?_
+
+Jika kita sengaja menaikkan _budget_ promosi sebagai bagian dari intervensi untuk meningkatkan _sales_, __validitas analisis *Causal Impact* dapat terganggu jika *budget* tersebut digunakan sebagai variabel kontrol (kovariat)__. Hal ini dikarenakan salah satu asumsi paling krusial dalam metode ini adalah bahwa variabel kontrol (kovariat) tidak boleh terpengaruh oleh intervensi itu sendiri
+
+Oleh karena itu perlu dipilih variabel kontrol lainnya yang __tidak terpengaruh oleh promosi yang dilakukan__.
+
+Oke, saya akan coba gunakan satu contoh sebagai berikut:
+
+### _Case Study_
+
+Misalkan saya adalah memiliki dua toko retail di salah satu kota tertentu. Saya memiliki data _sales_ selama 100 hari untuk kedua toko tersebut. Pada hari ke-71 hingga 100, saya melakukan intervensi berupa _flash sale_ pada toko A. Sedangkan pada toko B tidak ada _flash sale_ sama sekali. Saya hendak mengetahui berapa _uplift_ murni yang disebabkan oleh _flash sale_ tersebut.
+
+Saya memiliki data tanggal, _sales toko A_, dan _sales toko B_.
+
+```{r}
+# 1. Membuat periode waktu (100 hari)
+time_points <- seq.Date(as.Date("2024-01-01"), by = 1, length.out = 100)
+
+# 2. Membuat Covariate (X) - Misal: Tren Pencarian Organik / Google Trends
+# Data ini berkorelasi dengan sales, tapi tidak kena dampak flash sale kita
+x1 <- 100 + arima.sim(model = list(ar = 0.999), n = 100)
+
+# 3. Membuat Data Sales (Y)
+# Sales dipengaruhi oleh X1 ditambah sedikit random noise
+y <- 1.1 * x1 + rnorm(100,8,3)
+
+# 4. Memasukkan "Intervensi" (Flash Sale)
+# Mulai hari ke-71, sales kita naikkan secara paksa sebesar 10 poin
+y[71:90] <- y[71:90] + rnorm(20,7,2)
+
+df = 
+  data.frame(time_points,y,x1) %>% 
+  rename(tanggal = time_points,
+         sales_A = y,
+         sales_B = x1)
+
+df %>% 
+  mutate(sales_A = as.numeric(sales_A),
+         sales_B = as.numeric(sales_B)) %>% 
+  reshape2::melt(id.vars = "tanggal") %>% 
+  ggplot(aes(x = tanggal,group = variable,y = value)) +
+  geom_line(aes(color = variable)) +
+  theme_minimal() +
+  labs(title = "Data Sales Dua Toko",
+       subtitle = "Data rekaan",
+       x = "Timeline",
+       y = "Dalam juta Rp",
+       color = "Keterangan",
+       caption = "Simulasi dan Visualisasi dengan R\nikanx101.com") +
+  theme(legend.position = "bottom") +
+  geom_vline(xintercept = as.Date("2024-03-11"),
+             color = "darkgreen") +
+  annotate("label",
+           x = as.Date("2024-03-25"),
+           y = 120,
+           label = "Periode Flash Sale",
+           alpha = .3)
+```
+
+
+Jika kita lihat, _sales_ pada toko B juga mengalami peningkatan pada periode _flash sale_ di toko A __padahal tidak dilakukan promosi sama sekali__. Analisa ini bisa membantu untuk melihat apakan _flash sale_ benar-benar _ngefek_ atau tidak.
+
+_Causal Impact_ bekerja dengan memodelkan hubungan antara _sales A_ dan _sales B_ selama periode sebelum _flash sale_ (intervensi) dilakukan. Model ini menggunakan _sales B_ sebagai prediktor untuk membangun _counterfactual_, yaitu estimasi penjualan yang seharusnya terjadi jika intervensi tersebut tidak ada.
+
+> Sebagai perumpamaan, variabel kontrol (budget) bertindak seperti "kompas" yang memberitahu model ke mana arah penjualan seharusnya pergi; jika penjualan tiba-tiba melonjak melampaui petunjuk kompas tersebut tepat saat promosi dimulai, itulah yang kita sebut sebagai dampak kausal.
+
+Di sini saya akan mendefinisikan kapan periode _Pre-Intervention_ (sebelum promo) dan _Post-Intervention_ (saat promo). Model akan belajar pola hubungan antara _sales A_ dan _sales B_ pada masa _Pre-Intervention_, lalu memproyeksikan apa yang seharusnya terjadi di masa _Post-Intervention_ jika promo tidak ada.
+
+```{r}
+#| echo: false
+
+# kita ulang definisi datanya
+data = zoo(cbind(y, x1), time_points)
+```
+
+```{r}
+#| echo: true
+
+# Tentukan periode sebelum dan sesudah intervensi
+pre.period <- as.Date(c("2024-01-01", "2024-03-10")) # Hari 1-70
+post.period <- as.Date(c("2024-03-11", "2024-04-09")) # Hari 71-100 (Flash Sale)
+
+# Jalankan model
+impact <- CausalImpact(data, pre.period, post.period)
+
+# Mari kita lihat hasilnya
+plot(impact)
+```
+
+
+Dari grafik _impact_ di atas, kita mendapatkan tiga panel grafik yang sangat informatif sebagai berikut:
+
+1. _Original_ (panel teratas):
+    - Garis Hitam Solid: Data _sales_ asli (yang terjadi).
+    - Garis Biru Putus-putus: Prediksi _sales_ __jika tidak ada *Flash Sale*__ (_counterfactual_).
+    - _Insights_: 
+        - Pada periode _flash sale_ kita bisa lihat bahwa hampir semua garis hitam  berada di atas garis biru. 
+        - Walaupun beberapa kali kedua garis tersebut merapat. 
+1. _Pointwise_ (panel tengah):
+    - Grafik ini menunjukkan selisih antara Garis Hitam dan Garis Biru per hari dari grafik panel teratas.
+    - Grafik ini menunjukkan seberapa besar _uplift_ harian yang kita dapatkan.
+1. _Cumulative_ (panel terbawah):
+    - Penjumlahan kumulatif dari _uplift_ harian.
+    - Grafik ini menunjukkan secara kumulatif harian berapa **_sales_ ekstra** yang di-_generate_ akibat _flash sale_.
+    
+Saya akan mengeluarkan _summary_ dari model sebagai berikut:
+
+```{r}
+summary(impact)
+```
+
+__Fitur terbaik__ dari `library(CausalImpact)` adalah saya bisa meminta _library_ ini memberikan penjelasan dari _summary_ di atas sebagai berikut:
+
+```{r}
+summary(impact,"report")
+
+```
+
+Kita bisa melihat seberapa besar dampak dari _flash sale_ yang dilakukan dan bisa memutuskan apakah _flash sale_ ini cukup _worth_ untuk dilakukan atau tidak.
+
+## Catatan Penting
+
+Analisa ini membutuhkan _covariate_ (variabel kontrol) yang bagus. Tanpa variabel kontrol yang bagus, model ini hanya akan menjadi _time-series forecasting_ biasa.
+
