@@ -1,0 +1,214 @@
+---
+title: "Mengumpulkan AI Agents sebagai Responden Mini FGD"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  error: false
+  echo: false
+---
+
+
+```{r}
+#| include: false
+
+rm(list=ls())
+
+library(dplyr)
+library(epoxy)
+
+load("data_fgd.rda")
+
+transkrip = 
+  transkrip %>% 
+  mutate(dialog = gsub("\\\n"," ",dialog),
+         dialog = stringr::str_squish(dialog))
+```
+
+
+Beberapa bulan yang lalu, saya sempat menuliskan bagaimana `library(ellmer)` di __R__ bisa diberdayakan untuk membuat _AI Agents_ yang kemudian diberikan persona untuk melakukan berbagai macam _tasks_. Mulai dari:
+
+1. [Menjadi responden survey](https://ikanx101.com/blog/agen-responden-survey/).
+1. [Menjadi anggota DPR](https://ikanx101.com/blog/agen-DPR/).
+1. Menjadi data analis ([_part_ I](https://ikanx101.com/blog/agent-analis-survey/) dan [_part_ II](https://ikanx101.com/blog/analis-p2-agen/)).
+
+Semenjak bereksperimen hingga merumuskan _best practice_ pembuatan persona, saya jadi kepikiran ide untuk membuat beberapa _AI Agents_ kemudian mengumpulkan "mereka" untuk diajak mini FGD (_focus group discussion_).
+
+> Metode ini __tidak untuk menggantikan FGD pada umumnya__ tapi bisa menjadi ajang uji coba perumusan _discussion guide_ agar lebih tajam.
+
+Bagaimana caranya? 
+
+Pertama-tama kita harus buat dulu persona untuk masing-masing _AI Agent_. __Ingat bahwa kita tidak boleh malas__ dalam membuat persona. Meminjam istilah _Hollywood_, __kita tidak boleh *lazy writing*__.
+
+Sebagai contoh, saya membuat persona per _AI Agent_ dengan struktur berikut:
+
+```
+## Identitas Dasar
+- Nama
+- Usia
+- Status
+- Pekerjaan
+- Lokasi domisili
+- Kelas Ekonomi (dengan rentang income tertentu)
+
+## Profil Keluarga
+### Anak-anak:
+1. Anak pertama: 
+   - Detail identitas
+   - Hobi
+   - Kondisi kesehatan
+   - Masalah yang sedang dihadapi
+   - Concern tertentu terkait topik tertentu
+2. Anak kedua.
+### Pasangan:
+   - Detail identitas
+   - Hobi
+   - Kondisi kesehatan
+   - Masalah yang sedang dihadapi
+   - Concern tertentu terkait topik tertentu
+
+## Karakteristik Psikologis
+### Nilai-nilai Inti
+### Motivasi
+### Sikap terhadap Pengeluaran
+
+## Kebiasaan dan Pola Hidup
+### Rutinitas Harian
+### Rutinitas Mingguan
+### Rutinitas Bulanan
+### Konsumsi Media
+   - Jenis media dan topik yang dilihat
+
+## Preferensi Produk dan Layanan
+### Kategori yang paling diperhatikan:
+1. Makanan dan minuman
+2. Produk rumah tangga
+3. Kesehatan dan kecantikan
+4. Pendidikan dan pengembangan
+
+## Pain Points (Masalah yang Dihadapi)
+### Tantangan sehari-hari
+### Frustrasi
+
+## Aspirasi dan Goals
+### Jangka pendek (1 tahun)
+### Jangka panjang (5 tahun)
+
+## Decision-Making Process
+### Proses pengambilan keputusan
+### Faktor penentu
+
+## Komunikasi dan Interaksi
+### Cara berkomunikasi
+### Harapan dari brand
+```
+
+Untuk satu _AI Agent_, saya bisa menuliskan setidaknya 200 baris personanya.
+
+Algoritma yang saya buat adalah:
+
+```
+TAHAP I
+Moderator memberikan pertanyaan kepada responden
+
+TAHAP II
+ - Agent I menjawab pertanyaan moderator
+    - Jawaban ini akan disimpan sebagai respond_1
+ - Agent II menjawab pertanyaan moderator sekaligus memberikan
+   komentar terhadap respond_2
+    - Jawaban ini akan disimpan sebagai respond_2
+ - Agent III menjawab pertanyaan moderator sekaligus memberikan
+   komentar terhadap respond_3
+    - Jawaban ini akan disimpan sebagai respond_3
+
+TAHAP II diulang tergantung dari seberapa banyak pertanyaan yang ada
+
+```
+
+Pada algoritma ini, urutan _agents_ __saya buat sama__ di setiap iterasi.
+
+---
+
+Saya membuat 3 _AI Agents_ dengan persona yang berbeda-beda, mereka adalah:
+
+1. Rita Repulsa,
+1. Sari Dewi, dan
+1. Larry Wijaya
+
+Saya membuat nama _AI Agents_ dan nama tokoh penunjang lain secara _random_. Jadi jika ada kesamaan dengan tokoh _real_, hal ini tidak ada hubungan dan tujuan apapun.
+
+
+---
+
+# Memulai Mini FGD
+
+Saya akan memulai diskusi dengan pertanyaan pembuka:
+
+```{epoxy}
+
+> __{transkrip$dialog[1]}__
+  
+```
+
+Berikut adalah responnya.
+
+```{epoxy}
+Respon dari: {transkrip$pemeran[3]}
+
+> {transkrip$dialog[3]}
+
+Tanggapan dari: {transkrip$pemeran[4]}
+
+> {transkrip$dialog[4]}
+
+Kemudian tanggapan dari: {transkrip$pemeran[5]}
+
+> {transkrip$dialog[5]}
+
+```
+
+
+# Pertanyaan Berikutnya
+
+Kemudian moderator akan bertanya pertanyaan berikutnya:
+
+```{epoxy}
+
+> __{transkrip$dialog[2]}__
+  
+```
+
+Kemudian berikut adalah responnya.
+
+```{epoxy}
+Respon dari: {transkrip$pemeran[6]}
+
+> {transkrip$dialog[6]}
+
+Tanggapan dari: {transkrip$pemeran[7]}
+
+> {transkrip$dialog[7]}
+
+Kemudian tanggapan dari: {transkrip$pemeran[8]}
+
+> {transkrip$dialog[8]}
+
+```
+
+# _Epilog_
+
+Dari hasil mini FGD tersebut, kita bisa melakukan analisa-analisa seperti biasanya pada riset kualitatif.
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
+
+
+
