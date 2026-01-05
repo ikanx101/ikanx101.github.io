@@ -1,0 +1,165 @@
+---
+title: "Mengenal Berkson's Paradox: Mengapa Restoran Mahal Seringkali Rasanya Biasa Saja? "
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  error: false
+  echo: false
+---
+
+Beberapa minggu belakangan ini, algoritma Instagram memberikan saya banyak sekali rekomendasi kuliner di Kota Bekasi yang ternyata lokasinya tidak jauh dari rumah. Setelah saya coba lihat, ternyata lokasi kuliner tersebut berbentuk warung makan biasa atau angkringan yang harganya lebih murah dan _surprisingly_ lebih enak dibandingkan rumah makan atau restoran yang harganya lebih mahal.
+
+> "Banyak _hidden gem_ ternyata di dekat rumah."
+
+Begitu pikiran saya.
+
+Saya jadi berpikir pernahkah kita merasa seperti ini:
+
+> ___"Kok kalau restoran yang harganya murah, rasanya enak banget (hidden gem). Tapi kalau restoran yang mahal dan estetik, rasanya seringkali cuma 'oke aja' atau malah mengecewakan?"___
+
+Hal ini merupakan salah satu contoh dari **Berkson's Paradox**. Apa itu __Berkson's Paradox__? Apakah berbeda dengan [__Simpson Paradox__ yang pernah saya tulis?](https://ikanx101.com/blog/simpson-paradox/)
+
+---
+
+Apakah kita pernah merasa dikhianati oleh harga? Kita pesan makanan di aplikasi *online* dari restoran yang harganya lumayan mahal dan tempatnya estetik tapi makanannya _"standar"_ alias _"begitu saja"_. Lalu di lain waktu, kita pesan dari warung pinggiran yang harganya lebih murah tapi rasanya malah _"juara dunia"_. Akhirnya kita membuat kesimpulan: 
+
+> __Makin mahal harga suatu tempat makan, biasanya yang dijual cuma tempat tapi rasanya pasti kalah dengan tempat makan yang lebih murah.__
+
+Nah, sebelum kita bikin teori __"Hukum Rasa vs Harga"__, mari kita bedah pakai statistik. Jangan-jangan, ini adalah fenomena **Berkson’s Paradox** yang lagi memainkan logika kita.
+
+## Logika Seleksi di Mulut Kita
+
+Kenapa kita merasa ada korelasi negatif antara **Harga** dan **Rasa**? Karena kita punya filter seleksi saat mau pesan makanan.
+
+Bayangkan ada ribuan restoran di Jakarta. Secara statistik, rasa dan harga itu harusnya _random_ atau malah seharusnya berkorelasi positif (bahan mahal = rasa lebih enak). Tapi, kita sebagai konsumen hanya akan memesan makanan yang:
+
+1. **Harganya Murah** (dengan prinsip: kalau rasa _"biasa saja"_ tidak jadi masalah karena _"yang penting kenyang"_).
+2. **Rasanya Enak Banget** (dengan prinsip: biarpun mahal, kita rela bayar demi *self-reward*).
+
+Akibat _filter_ yang secara tak sadar kita perbuat, hasilnya restoran yang **Harganya Mahal DAN Rasanya Gak Enak** tidak akan pernah kita pesan. Restoran-restoran seperti ini hilang dari _"radar"_ pengamatan kita.
+
+## Simulasi dengan __R__
+
+Untuk menunjukkan fenomena **Berkson’s Paradox**, saya akan buat simulasi 1.000 restoran fiktif dengan harga dan rasa yang acak (sesuai dengan kondisi _real_). Rasa dan harga akan saya buat dalam bentuk _normalized rating_ __-1 sampai 1__.
+
+```{r}
+#| include: false
+rm(list=ls())
+
+library(ggplot2)
+library(dplyr)
+library(patchwork)
+
+set.seed(2026) # Menggunakan tahun sekarang
+```
+
+```{r}
+#| include: false
+
+# 1. Membuat data 1.000 Restoran (Populasi Asli)
+# Kita asumsikan harga dan rasa tidak berhubungan (acak)
+n <- 1000
+restoran <- data.frame(
+  id = 1:n,
+  harga = rnorm(n, mean = 0, sd = 1),
+  rasa = rnorm(n, mean = 0, sd = 1)) 
+```
+
+Berikut adalah _scatterplot_ antara rasa dan harga dari semua restoran yang saya buat:
+
+```{r}
+restoran %>% 
+  ggplot(aes(x = rasa,
+             y = harga)) +
+  geom_point() +
+  ylim(-3.2,3.2) +
+  xlim(-3.2,3.2) +
+  labs(title = "Scatterplot: Harga vs Rasa",
+       x = "Kualitas Rasa (Makin ke kanan makin enak)",
+       y = "Harga Makanan (Makin ke atas makin mahal)",
+       caption = "Simulasi dan Visualisasi dengan R\nikanx101.com") +
+  theme_minimal() +
+  annotate("label",x = -2,y = 2,label ="Mahal tapi gak enak",fill = "darkred",
+           color = "white",alpha = .5) +
+  annotate("label",x = -1,y = -2,label ="Murah dan biasa aja",fill = "black",
+           color = "white",alpha = .5) +
+  annotate("label",x = 2,y = -2,label ="Murah tapi enak",fill = "darkgreen",
+           color = "white",alpha = .5) +
+  annotate("label",x = 2,y = 2,label ="Mahal dan enak",fill = "darkblue",
+           color = "white",alpha = .5)
+
+```
+
+Kita bisa lihat bahwa tak ada hubungan antara rasa dan harga (semua terjadi secara _random_ ~ tidak ada korelasi antara rasa dan harga). Kemudian, secara normal, kita hanya akan memilih restoran yang _"murah-murah"_ atau yang  _"enak-enak_ saja. Misalkan saya buat skrip untuk kita memilih restoran dengan kriteria perpaduan antara _"murah"_ dan _"enak"_.
+
+Berikut adalah plot hasil pemilihannya:
+
+```{r}
+#| include: false
+
+# 2. Filter Seleksi yang Lebih Ketat (The Berkson's Trap)
+# Kita hanya melirik restoran yang:
+restoran <- restoran %>%
+  mutate(skor = .5 * harga + 1.25 * rasa) %>% 
+  mutate(status = ifelse(skor >= .75, 
+                         "Kita Beli", "Gak Dilirik"))
+
+# 3. Ambil data yang pernah kita beli saja
+restoran <- 
+  restoran %>% 
+  mutate(pilih = sample(0:1,nrow(restoran),prob = c(.8,.2),replace = T)) %>% 
+  mutate(status_final = ifelse((status == "Kita Beli" & pilih == 1),
+                               "Selected","Not Selected")) 
+data_beli = 
+  restoran %>% 
+  filter(status_final == "Selected")
+
+# Cek korelasi pada data yang kita beli
+korelasi_palsu <- cor(data_beli$harga, data_beli$rasa)
+```
+
+
+```{r}
+# Plot Data yang Kita Beli
+ggplot(restoran, aes(x = rasa, y = harga)) +
+  geom_smooth(aes(x = rasa,y = harga),
+              data = data_beli,
+              method = "lm", color = "blue",
+              alpha = .15) +
+  geom_point(aes(color = as.factor(status_final),
+                 shape = as.factor(status_final)
+                 )
+             ) +
+  labs(title = "Korelasi Palsu: Harga vs Rasa dari Selected Restaurants",
+       subtitle = paste("Korelasi terlihat negatif sebesar:", round(korelasi_palsu, 2)),
+       y = "Harga Makanan (Makin ke Kanan Makin Mahal)",
+       x = "Kualitas Rasa (Makin ke Atas Makin Enak)",
+       color = "Status",
+       shape = "Status",
+       caption = "Simulasi dan Visualisasi dengan R\nikanx101.com") +
+  theme_minimal() +
+  scale_color_manual(values = c("#EC9192","steelblue"))
+
+```
+
+> Terlihat bahwa dari _selected restaurants_ kita dapatkan korelasi antara rasa dan harga menjadi __negatif dan kuat__.
+
+Fenomena ini muncul karena secara tak sadar kita memilih restoran yang memaksimalkan fungsi utilitas yang kita definisikan sendiri. Akibatnya terjadi korelasi negatif pada _selected data_ padahal secara populasi tak ada korelasi yang terjadi.
+
+## Kesimpulan
+
+_Berkson’s Paradox_ ini adalah pengingat bahwa **sampel yang kita ambil bisa jadi mengandung bias**.
+
+Kita sering menganggap dunia ini tidak adil (restoran yang mahal kok rasanya biasa saja), padahal itu karena kita secara sadar atau tidak telah mem-_filter_ pilihan kita. Restoran mahal yang *benar-benar enak banget* itu ada banyak tapi karena ekspektasi kita sudah terlanjur tinggi di harga mahal, _"rasa enak"_ yang standar jadi terlihat mengecewakan dibanding tempat makan murah yang rasanya _"di atas ekspektasi"_.
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
