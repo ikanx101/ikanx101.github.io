@@ -1,0 +1,205 @@
+---
+title: "Tutorial Membuat Library R Sendiri"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  error: false
+  echo: true
+---
+
+Selama bekerja dengan __R__, saya seringkali mengalami hal ini:
+
+> __"Eh, kayanya saya pernah bikin fungsi _cleaning data_ buat kasus ini di _project_ bulan lalu deh."__
+
+ATAU
+
+> __"Eh, kayanya saya pernah bikin fungsi _plot_ grafik untuk data mirip seperti ini di _project_ minggu lalu deh."__
+
+Akibatnya, saya harus selalu melakukan ritual berikut ini:
+
+1. Buka _folder_ _project_ lama.
+2. Buka satu per satu _file_ `.R` atau `.qmd` sampai ketemu _script_-nya.
+3. *Copy* fungsinya.
+4. *Paste* ke _script_ baru.
+
+Kalau hanya sekali atau dua kali mungkin tidak masalah tapi kalau hal ini berkali-kali terjadi, lumayan juga _effort_-nya. Belum lagi kalau saya *update* fungsinya di satu tempat, _script_ lain yang menggunakan fungsi itu jadi lupa untuk ter-*update*.
+
+Nah, sebagai pengguna __R__, solusi paling elegan untuk masalah ini adalah: **Membungkus fungsi-fungsi andalan kita menjadi sebuah _R_ _libraries_.**
+
+Hal ini mungkin terdengar *intimidating* karena terbayang proses yang rumit. Padahal membuat *R library* untuk pemakaian pribadi (atau tim kantor) itu tidak serumit yang dibayangkan. Kali ini saya akan _share_ cara membungkus fungsi-fungsi yang sering saya pakai menjadi `library(ikanx101)`.
+
+## Tahap I: Persiapan yang Dibutuhkan
+
+Untuk membuat _R library_, saat ini kita tidak perlu meng-_coding_ struktur _folder_ secara manual. Komunitas _R_ sudah menyediakan *tools* yang sangat memanjakan kita. Pastikan kalian sudah _install_ dua *libraries* ini:
+
+```r
+install.packages("devtools")
+install.packages("usethis")
+
+```
+
+* `devtools`: Untuk *build* dan *install* _library_ kita.
+* `usethis`: Untuk otomatisasi pembuatan struktur _folder_ dan _file_ (ini *game changer*-nya).
+
+## Tahap 2: Inisiasi _Project_
+
+Buka _R Studio_, lalu jalankan perintah ini di _console_. Ganti `path`-nya sesuai keinginan kalian.
+
+```r
+# Membuat struktur dasar package
+usethis::create_package("~/Documents/ikanx101")
+
+```
+
+Setelah di-_run_, _R Studio_ akan otomatis membuka sesi _R_ baru yang berisi _project package_ kita. Di tab **Files**, teman-teman akan melihat struktur folder standar R Package (`R/`, `DESCRIPTION`, `NAMESPACE`, dll). Jangan pusing dulu, biarkan `usethis` yang mengurus ini.
+
+## Tahap 3: Masukkan Fungsi Andalan
+
+Sekarang saatnya memasukkan fungsi ke dalam _folder_ _library_ kita. Misalnya, saya sering bikin plot dengan `ggplot2`, tapi malas mengetik `theme_minimal() + theme(legend.position = "bottom") + labs(caption = "Dibuat dengan R\nikanx101.com")` berulang-ulang. Oleh karena itu, Saya akan buat _theme_ sendiri.
+
+Jalankan perintah ini di _console_:
+
+```r
+usethis::use_r("tema_plot")
+
+```
+
+File baru bernama `tema_plot.R` akan muncul di folder `R/`. Di file inilah kita tulis fungsinya.
+
+```r
+#' Tema Plot ala Ikanx
+#'
+#' Fungsi ini adalah shortcut untuk theme_minimal dengan modifikasi font dan legenda.
+#'
+#' @return ggplot theme object
+#' @export
+#' @examples
+#' \dontrun{
+#' ggplot(mtcars, aes(mpg, wt)) + geom_point() + theme_ikanx()
+#' }
+theme_ikanx <- function() {
+  ggplot2::theme_minimal() +
+  ggplot2::labs(caption = "Dibuat dengan R\nikanx101.com")
+  ggplot2::theme(
+    legend.position = "bottom",
+    plot.title = ggplot2::element_text(face = "bold", size = 14),
+    axis.text = ggplot2::element_text(color = "grey20")
+  )
+}
+
+```
+
+**Perhatikan komentar dengan tanda `#'` di atas fungsi.** Itu adalah **roxygen skeleton**. Bagian ini yang nanti akan disulap jadi dokumentasi (_Help page_) saat kita ketik `?theme_ikanx`.
+
+Kemudian _tag_ `@export` akan berguna untuk memberi tahu __R__ bahwa fungsi ini boleh dipakai oleh *user*. Kalau tidak ada `@export`, fungsinya akan jadi *internal function* (tersembunyi).
+
+## Tahap 4: Dokumentasi dan _Build_
+
+Ini bagian magisnya. Kita tidak perlu menulis _file_ dokumentasi manual. Cukup jalankan:
+
+```r
+devtools::document()
+
+```
+
+Perintah ini akan membaca komentar `#'` tadi dan membuat file dokumentasi `.Rd` secara otomatis.
+
+Terakhir, kita _install library_-nya ke laptop kita:
+
+```r
+devtools::install()
+
+```
+
+```{r}
+#| include: false
+
+library(dplyr)
+library(ggplot2)
+```
+
+Tunggu sebentar sampai proses selesai kemudian _restart R session_!
+
+## Tahap 5: Uji Coba
+
+Sekarang, coba panggil _library_ buatan sendiri tadi selayaknya kita memanggil `tidyverse`.
+
+Ini adalah grafik standar sebelum memanggil `library(ikanx101)`.
+
+```r
+library(ggplot2)
+library(ikanx101) # Ini dia package kita!
+
+# Coba bikin plot awal
+ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
+  geom_point()
+  
+```
+
+```{r}
+#| echo: false
+
+# Coba bikin plot
+ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
+  geom_point() 
+```
+
+Sedangkan ini adalah hasil plot dengan _theme_ dari `library(ikanx101)`:
+
+```r
+# Coba bikin plot
+ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
+  geom_point() +
+  theme_ikanx() + # Memakai fungsi dari package sendiri
+  labs(title = "Tes Plot dengan Library Ikanx101")
+
+```
+
+```{r}
+#| echo: false
+
+# Coba bikin plot
+ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
+  geom_point() +
+  labs(title = "Tes Plot dengan Library Ikanx101") +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    plot.title = ggplot2::element_text(face = "bold", size = 14),
+    axis.text = ggplot2::element_text(color = "grey20"),
+    plot.caption = element_text(size = 10,face = "italic")
+  ) +
+  labs(caption = "Dibuat dengan R\nikanx101.com")
+```
+
+Setiap kali saya butuh _theme_ ini, saya tidak perlu _copy-paste_ kode panjang lagi dan cukup memanggil `library(ikanx101)`.
+
+## Tips Tambahan: Simpan di _GitHub_
+
+Kalau dibutuhkan, kita bisa menyimpan _library_ buatan kita ini di _Github_ agar orang lain bisa meng-_install_-nya juga. Ini adalah cara yang termudah daripada mempublikasikannya di __CRAN__.
+
+Caranya adalah:
+
+```r
+devtools::install_github("username_github/nama_repo")
+
+```
+
+## Kesimpulan
+
+Membuat _R library_ sendiri bukan soal gagah-gagahan biar terlihat jago _coding_ tapi ini soal **efisiensi** dan **_reproducibility_**. Mulailah dari fungsi-fungsi kecil yang sering dipakai seperti:
+
+* Fungsi *cleaning* seperti format mata uang (Rp).
+* Fungsi membuat tabulasi dari _data frame_.
+* Fungsi _palet_ warna favorit di `ggplot2`.
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
+
