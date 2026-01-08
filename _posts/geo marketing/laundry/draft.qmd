@@ -166,7 +166,7 @@ Ini adalah diagram Voronoi:
 library(ggmap)
 library(ggvoronoi)
 
-key = "AIzaSyBlZpsnqIhuJDHZ-nGo1VrU3PmKDW18-ls"
+key = "rahasia"
 
 register_google(key = key)
 
