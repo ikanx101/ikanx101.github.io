@@ -1,87 +1,104 @@
 ---
-title: "Untitled"
-format: html
-editor: visual
+title: "Bagaimana Jika Responden Survey di Kota Tertentu Sangat Sedikit Dibandingkan dengan Kota Lain?"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  error: false
+  echo: false
 ---
 
-Tentu, ini adalah draft tulisan yang mendalam namun tetap *approachable*, khas gaya **ikanx101.com**. Tulisan ini menggabungkan teori intuisi dengan simulasi teknis menggunakan R.
-
-Silakan disesuaikan dengan *tone* Anda.
-
----
-
-# Judul: Masalah Data Sedikit di Area Tertentu? Atasi dengan Hierarchical Bayesian Model (HBM)
-
-Pernahkah teman-teman mengalami situasi seperti ini saat melakukan *Market Research* atau analisa data operasional?
-
-Kita sedang melakukan survei *Brand Awareness* secara nasional.
-
-* Di **Jakarta**, kita dapat 1.000 responden. Hasilnya solid, *Margin of Error* kecil.
-* Di **Surabaya**, kita dapat 800 responden. Masih aman.
-* Tapi di **Kota Kecil X** (misal: satu kabupaten di pelosok), kita cuma berhasil dapat **10 responden** karena keterbatasan *budget* atau *field team*.
-
-Sialnya, dari 10 responden di Kota X tersebut, **tidak ada satupun** yang tahu brand kita.
-
-Jika kita pakai perhitungan rata-rata biasa (*No Pooling*), maka kesimpulannya: **Brand Awareness di Kota X adalah 0%**.
-
-Apakah ini masuk akal? Belum tentu. Bisa jadi sebenarnya ada yang tahu, tapi kita cuma apes saja mengambil sampel 10 orang yang tidak tahu. Menyimpulkan 0% (atau sebaliknya 100%) dari data yang sangat sedikit itu berbahaya.
-
-Di sinilah **Hierarchical Bayesian Model (HBM)** menjadi penyelamat.
-
-## Konsep: Meminjam Kekuatan (Borrowing Strength)
-
-Secara intuitif, HBM bekerja dengan prinsip kompromi.
-
-1. **Pendekatan Naif (No Pooling):** Kita percaya penuh pada data tiap kota. Kalau data Kota X bilang 0%, ya 0%. (Risiko: *Overfitting* pada sampel kecil).
-2. **Pendekatan Global (Complete Pooling):** Kita tidak peduli kota, kita pukul rata pakai angka Nasional. Kalau Nasional 30%, maka Kota X dianggap 30%. (Risiko: Mengabaikan karakteristik lokal).
-3. **Hierarchical Bayes (Partial Pooling):** Jalan tengahnya.
-* Jika data kota tersebut **banyak** (seperti Jakarta), model akan percaya pada data kota itu.
-* Jika data kota tersebut **sedikit** (seperti Kota X), model akan "ragu" dan menarik angkanya mendekati rata-rata nasional.
-
-
-
-Inilah yang disebut **Shrinkage**. Data yang tidak pasti "ditarik" ke arah *group mean* (nasional) untuk mendapatkan estimasi yang lebih *robust*. Kita "meminjam kekuatan" statistik dari data nasional untuk memperbaiki estimasi di level kota yang datanya sedikit.
-
-## Simulasi dengan R
-
-Mari kita buktikan dengan simulasi. Kita akan gunakan *library* `rstanarm` yang memudahkan kita membuat model Bayesian tanpa harus pusing menulis kode *Stan* dari nol.
-
-### 1. Siapkan Data Dummy
-
-Kita buat skenario:
-
-* **Jakarta & Surabaya**: Sampel besar, *Awareness* sekitar 50-60%.
-* **Bekasi**: Sampel sedang.
-* **Kota X (Niche)**: Sampel cuma 10 orang, dan kebetulan hasil surveinya 0 orang yang *aware* (0% success rate).
-
-```r
+```{r}
+setwd("~/ikanx101.github.io/_posts/matematika ITB/bayes_survey")
 library(tidyverse)
 library(rstanarm)
+rm(list=ls())
+```
+
+Sebagai *market researcher* yang melakukan survey di berbagai kota atau bahkan negara dalam suatu region, beberapa kali saya kesulitan untuk merekrut responden sesuai dengan jumlah minimum target responden yang awalnya sudah didefinisikan.
+
+Sebagai ilustrasi, misalkan saya sedang melakukan survey *brand awareness* di beberapa kota berikut ini:
+
+| No  | Kota      | Minimum target responden |
+|-----|-----------|--------------------------|
+| 1   | Jakarta   | 300                      |
+| 2   | Bogor     | 150                      |
+| 3   | Tangerang | 150                      |
+| 4   | Bekasi    | 150                      |
+
+Sepanjang *fieldwork* hingga selesai, saya berhasil mendapatkan responden di Jakarta, Bogor, dan Tangerang dengan jumlah yang cukup dan mendekati target. Namun khusus di Kota Bekasi, saya hanya mendapatkan 14 orang responden saja.
+
+Misalkan berikut adalah perhitungan berapa banyak responden yang *aware* terhadap *brand*:
+
+| No | Kota | Minimum Target Responden | Responden Didapatkan | Responden yang Aware | Persentase Awareness |
+|------------|------------|------------|------------|------------|------------|
+| 1 | Jakarta | 300 | 300 | 57 | 19% |
+| 2 | Bogor | 150 | 140 | 20 | 14.3% |
+| 3 | Tangerang | 150 | 137 | 16 | 11.7% |
+| 4 | Bekasi | 150 | 14 | 0 | 0 |
+|  | TOTAL | 650 | 591 | 93 | 15.7% |
+
+Kemudian setelah dicek, ternyata dari 14 responden di Kota Bekasi tersebut **tidak ada satupun** yang *aware* *brand* yang sedang disurvey. Jika saya pakai perhitungan biasa, kesimpulannya:
+
+> Ada indikasi bahwa **brand awareness di Kota Bekasi adalah 0%**.
+
+Apakah ini masuk akal? **Belum tentu**.
+
+Bisa jadi sebenarnya ada warga Bekasi yang *aware* tapi saya cuma *apes* saja mengambil sampel 14 orang yang tidak *aware*. Menyimpulkan **0%** (atau sebaliknya **100%**) dari data yang sangat sedikit itu berbahaya.
+
+*Nah*, kali ini saya akan menggunakan **Hierarchical Bayesian Model (HBM)** untuk memberikan alternatif analisa pada kejadian seperti ini.
+
+## Konsep: Meminjam Kekuatan (*Borrowing Strength*)
+
+Secara intuitif, **HBM** bekerja dengan prinsip kompromi. Perhatikan beberapa alternatif berikut ini:
+
+1.  **Pendekatan Naif (*No Pooling*):** Kita percaya penuh pada data tiap kota. Kalau data Kota Bekasi mengatakan bahwa *awareness* 0%, maka benar-benar 0%. (Risiko: ***Overfitting*** pada sampel kecil).
+2.  **Pendekatan Global (*Complete Pooling*):** Kita tidak peduli kota, kita pukul rata pakai **angka Nasional** (total). Kalau total 15.7%, maka Kota Bekasi dianggap 15.7% juga. (Risiko: **Mengabaikan karakteristik lokal**).
+3.  **Hierarchical Bayes (*Partial Pooling*):** Jalan tengahnya dengan cara:
+    -   Jika data kota tersebut **banyak** (seperti Jakarta), model akan percaya pada data kota itu.
+    -   Jika data kota tersebut **sedikit** (seperti Kota Bekasi), model akan "ragu" dan menarik angkanya mendekati rata-rata total.
+
+Inilah yang disebut *shrinkage*. Data yang tidak pasti "ditarik" ke arah *group mean* (total) untuk mendapatkan estimasi yang lebih *robust*. Kita "meminjam kekuatan" statistik dari data total untuk memperbaiki estimasi di level kota yang datanya sedikit.
+
+Sekarang saya akan hitung dan simulasikan **HBM** menggunakan **R** untuk melihat *brand awareness* di Kota Bekasi berapa nilainya.
+
+## Simulasi dengan **R**
+
+Saya akan gunakan *library* `rstanarm` yang memudahkan dalam membuat model Bayesian.
+
+### 1. Siapkan Data
+
+```{r}
+#| echo: true
 
 # Setting seed biar reproducible
-set.seed(101)
+set.seed(10104074)
 
 # Kita buat data agregat dulu
 data_simulasi <- tibble(
-  kota = c("Jakarta", "Surabaya", "Bekasi", "Kota_X"),
-  n_responden = c(1000, 800, 50, 10),
-  n_aware = c(600, 400, 20, 0) # Perhatikan Kota_X: 0 aware dari 10 orang
-) %>%
+  kota = c("Jakarta", "Bogor","Tangerang", "Bekasi"),
+  n_responden = c(300,140,137,14),
+  n_aware = c(57,20,16,0) 
+  ) %>%
   mutate(
     raw_awareness = n_aware / n_responden
   )
 
 print(data_simulasi)
-
 ```
-
-Jika kita lihat `raw_awareness` untuk Kota_X, hasilnya **0%**. Manajer marketing pasti panik melihat ini.
 
 ### 2. Membentuk Data untuk Model
 
-Model `stan_glmer` (Generalized Linear Mixed Model versi Bayesian) membutuhkan data per baris responden (0 atau 1). Kita *expand* data di atas.
+Model `stan_glmer` (*Generalized Linear Mixed Model* versi Bayesian) membutuhkan data per baris responden (0 atau 1) untuk *awareness*. Kita *expand* data di atas.
 
-```r
+```{r}
+#| echo: true
+
 # Expand data menjadi per responden (row-level data)
 data_long <- data_simulasi %>%
   uncount(n_responden, .id = "id") %>%
@@ -93,15 +110,15 @@ data_long <- data_simulasi %>%
 
 # Cek struktur data
 glimpse(data_long)
-
 ```
 
-### 3. Modelling dengan Hierarchical Bayes
+### 3. *Modelling* dengan *Hierarchical Bayes*
 
-Di sini kita menggunakan formula `(1 | kota)`.
-Artinya: Setiap kota punya *intercept* (tingkat awareness) sendiri-sendiri, tapi mereka berasal dari distribusi populasi yang sama (Normal Distribution).
+Di sini kita menggunakan formula `(1 | kota)`. Artinya: Setiap kota punya *intercept* (tingkat *awareness*) sendiri-sendiri, tapi mereka berasal dari distribusi populasi yang sama (*Normal Distribution*).
 
-```r
+```{r}
+#| echo: true
+
 # Fitting model Bayesian
 # family = binomial karena outcome-nya 0 atau 1 (Bernoulli)
 model_hbm <- stan_glmer(
@@ -110,20 +127,40 @@ model_hbm <- stan_glmer(
   family = binomial(link = "logit"),
   prior = normal(0, 2.5), # Prior standar yang weakly informative
   prior_intercept = normal(0, 2.5),
-  chains = 4, iter = 2000, seed = 101,
-  refresh = 0 # Supaya tidak berisik di console
+  chains = 4, iter = 2000, seed = 10104074,
+  refresh = 0 
 )
 
 # Melihat ringkasan hasil
 summary(model_hbm)
-
 ```
 
-### 4. Membandingkan Hasil: Raw vs Bayesian
+Model yang dihasilkan sudah baik. Bisa dilihat dari:
 
-Sekarang, mari kita ambil hasil estimasi dari model Bayesian (Posterior Mean) dan bandingkan dengan hitungan manual biasa.
+1. Nilai kolom __Rhat__ yang berkisar antara __1.0 - 1.05__.
+    - __Rhat__ merupakan indikator apakah rantai simulasi (_chains_) sudah "sepakat" atau konvergen.
+1. Cek _Traceplot_: Kita perlu melihat visualisasi pergerakan _sampling_-nya. Kita ingin melihat grafik yang acak dan tercampur sempurna, bukan grafik yang punya pola naik-turun lambat.
+1. _Posterior Predictive Check (PPC)_: _Kalau model ini baik maka model bisa membuat data simulasi yang mirip dengan data asli."_
 
-```r
+
+```{r}
+print("Traceplot")
+plot(model_hbm, "trace", pars = "(Intercept)")
+
+# Pastikan library bayesplot terinstall/terload
+library(bayesplot)
+
+print("Posterior Predictive Check")
+pp_check(model_hbm)
+```
+
+### 4. Membandingkan Hasil: *Raw* vs Bayesian
+
+Sekarang, mari kita ambil hasil estimasi dari model Bayesian (*Posterior Mean*) dan bandingkan dengan hitungan manual biasa.
+
+```{r}
+#| echo: true
+
 # Ambil fitted values (probabilitas)
 # Kita ambil rata-rata posterior untuk tiap kota
 hasil_bayes <- data_long %>%
@@ -142,43 +179,41 @@ final_comparison <- data_simulasi %>%
     bayes_perc = scales::percent(bayes_awareness, accuracy = 0.1),
     diff = bayes_awareness - raw_awareness
   )
+```
 
-print(final_comparison)
-
+```{r}
+final_comparison %>% 
+  select(kota,raw_perc,bayes_perc,diff) %>% 
+  mutate(diff = round(diff*100,2),
+         diff = paste0(diff,"%")) %>% 
+  rename(persen_real = raw_perc,
+         persen_bayes = bayes_perc,
+         perbedaan = diff) %>% 
+  knitr::kable()
 ```
 
 ### Apa yang Terjadi?
 
-Kemungkinan besar teman-teman akan melihat hasil seperti ini (angka pastinya tergantung *random seed*):
+Kita bisa melihat bahwa di Jakarta, Bogor, dan Tangerang angka persentase _brand awareness_ versi Bayesian sudah mendekati nilai persentase _real_-nya. Sedangkan angka persentase _brand awareness_ di Kota Bekasi naik menjadi sekitar 11%.
 
-1. **Jakarta (N=1000):** Angka `raw` dan `bayes` akan sangat mirip (misal ~60%). Karena datanya banyak, model percaya pada data Jakarta.
-2. **Kota X (N=10):**
-* **Raw:** 0.0%
-* **Bayes:** Mungkin sekitar **15% - 25%**.
+> Inilah yang disebut dengan *shrinkage*. 
 
+Model "berpikir": 
 
+> *"Oke, di Kota Bekasi datanya mengatakan 0% yang hanya berasal dari 14 orang. Sedangkan rata-rata total (Jakarta, Bogor, dan Tangerang) itu sekitar 15.7%. Tak mungkin _awareness_ di Kota Bekasi benar-benar 0%. Sepertinya surveyor belum ketemu responden orang yang _aware_ saja. Maka dari itu model akan menggeser angkanya mendekati rata-rata total tapi tak sampai 15.7% juga."*
 
-Lho, kok jadi naik?
+Estimasi **11%** ini jauh lebih aman dan masuk akal secara statistik daripada kita menelan mentah-mentah angka **0%**.
 
-Inilah *Shrinkage*. Model "berpikir": *"Oke, di Kota X datanya bilang 0%. Tapi ini cuma 10 orang. Sedangkan rata-rata nasional (Jakarta, Surabaya, dll) itu sekitar 50%. Gak mungkin deh Kota X bener-bener 0%. Kayanya dia cuma belum ketemu orang yang tau aja. Aku geser angkanya mendekati rata-rata nasional ya, tapi gak sampe 50% juga."*
+### Kapan Harus Menggunakan _HBM_?
 
-Estimasi **15-25%** ini jauh lebih aman dan masuk akal secara statistik daripada kita menelan mentah-mentah angka **0%**.
+Metode _Hierarchical Bayes_ ini sangat *powerful* digunakan saat:
 
-### Kapan Harus Pakai Ini?
+1.  **Market Research Multi-Area:** Terutama jika _budget_ survey tidak merata di semua kota.
+2.  **Analisa Performa Salesman:** Jangan buru-buru memecat *sales* baru yang konversinya 0% padahal dia baru prospek ke 3 orang.
+3.  **AB Testing:** Ketika trafik di varian B masih sangat sedikit.
 
-Metode Hierarchical Bayes ini sangat *powerful* digunakan saat:
-
-1. **Market Research Multi-Area:** Terutama jika budget survei tidak merata di semua kota.
-2. **Analisa Performa Salesman:** Jangan buru-buru memecat *sales* baru yang konversinya 0% padahal dia baru prospek ke 3 orang.
-3. **AB Testing:** Ketika trafik di varian B masih sangat sedikit.
-
-Bayesian stats bukan cuma soal rumus yang rumit, tapi soal bagaimana kita memasukkan "common sense" (bahwa area-area ini punya kemiripan) ke dalam model matematika.
-
-Tertarik mencoba di data kantor besok?
+> Analisa Bayesian bukan cuma soal rumus yang rumit, tapi soal bagaimana kita memasukkan _"common sense"_ (bahwa area-area ini punya kemiripan) ke dalam model matematika.
 
 ---
-
-### Langkah Selanjutnya untuk Anda
-
-* **Visualisasi:** Di R, Anda bisa tambahkan plot *dumbbell chart* (`geom_segment` + `geom_point`) yang menunjukkan pergeseran dari titik `Raw` ke titik `Bayes` untuk memvisualisasikan efek *shrinkage* tersebut.
-* **Formula:** Tidak perlu LaTeX yang rumit, cukup jelaskan konsep `(1|Group)` seperti di atas agar pembaca yang biasa pakai `lme4` langsung paham.
+  
+`if you find this article helpful, support this blog by clicking the ads.`
