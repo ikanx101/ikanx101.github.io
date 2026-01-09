@@ -1,0 +1,158 @@
+---
+title: "Mengukur Potensi Cuan Lapangan Padel di Bekasi: Analisa Geospasial dengan Voronoi"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  error: false
+  echo: false
+---
+
+Beberapa tahun terakhir, olahraga padel benar‑benar jadi buah bibir. Lapangannya bermunculan di mana‑mana—mulai dari pusat kota sampai pinggiran yang sebelumnya tidak pernah kita pikirkan bakal ada arena olahraga kekinian. Olahraga yang mirip gabungan tenis dan _squash_ ini kini sudah naik level: bukan cuma tren musiman, tapi sudah jadi bagian dari gaya hidup, mirip seperti *mini soccer* saat sempat _booming_ dulu.
+
+Dengan perkembangan secepat ini, wajar kalau banyak investor mulai melirik kota‑kota satelit sebagai target berikutnya. Bekasi, misalnya, punya jumlah penduduk besar, kawasan hunian yang terus tumbuh, dan mobilitas warganya yang tinggi. Tapi muncul pertanyaan penting: 
+
+> **Apakah Bekasi masih cukup “seksi” untuk dibangun lapangan padel baru?** 
+
+Jangan‑jangan, justru beberapa area sudah mulai penuh dan suplai lapangan hampir mengejar jumlah pemain.
+
+Tantangannya bukan cuma soal “Bekasi layak atau tidak,” tapi lebih ke **di mana lokasi yang belum tersentuh dan masih punya peluang besar?** Kota seluas Bekasi tentu tak seragam; beberapa kecamatan mungkin sudah punya fasilitas olahraga modern, sementara area lain, terutama yang sedang berkembang pesat—masih kosong melompong. Menemukan *titik buta* inilah yang bikin perbedaan antara investasi yang strategis dan yang sekadar ikut tren.
+
+Alih-alih menggunakan *feeling*, kita akan menggunakan data lokasi lapangan _existing_ dan algoritma matematika sederhana bernama **Diagram Voronoi**.
+
+## Konsep Dasar _Diagram Voronoi_
+
+_Diagram Voronoi_ membagi sebuah bidang menjadi beberapa wilayah (poligon) berdasarkan jarak terdekat ke titik tertentu (dalam hal ini, lapangan Padel). Artinya: Setiap titik di dalam poligon lebih dekat ke lapangan padel tertentu daripada ke lapangan padel lainnya. Dari area poligon, kita bisa mendapatkan:
+
+* **Poligon Besar:** Area layanan luas (kompetisi rendah, potensi *underserved*).
+* **Poligon Kecil:** Area layanan sempit (kompetisi tinggi, pasar jenuh).
+
+Untuk data lokasi lapangan padel di Bekasi, saya mengambil dan mengumpulkannya menggunakan __Google Places API__. Saya dapatkan 28 buah titik lapangan yang ada di Kota Bekasi.
+
+```{r}
+rm(list=ls())
+setwd("~/ikanx101.github.io/_posts/geo marketing/padel")
+
+load("final.rda")
+
+library(tidyverse)
+library(sf)
+library(ggmap)
+library(ggvoronoi) # Untuk geom_voronoi
+library(ggforce)
+
+city_boundary   = st_read("gadm41_IDN_2.shp")
+
+bekasi <- city_boundary %>% filter(NAME_2 == "Kota Bekasi")
+
+padel_sf <- st_as_sf(hasil, coords = c("long", "lat"), crs = 4326)
+padel_data = hasil |> rename(lon = long)
+
+plot_voronoi <- ggplot() + 
+  # Layer 1: Peta Dasar Bekasi
+  geom_sf(data = bekasi, fill = "grey95", color = "grey50") +
+  
+  # Layer 2: Voronoi Polygons
+  # Kita gunakan outline='geometry' agar terpotong sesuai bentuk peta Bekasi
+  geom_voronoi_tile(data = padel_data, 
+                    aes(x = lon, y = lat, fill = nama, group = -1L),
+                    alpha = 0.4, 
+                    color = "white", 
+                    size = 0.5,
+                    bound = bekasi) + # Kunci: bound ke peta Bekasi
+  
+  # Layer 3: Titik Lokasi Lapangan
+  geom_point(data = padel_data, aes(x = lon, y = lat), 
+             color = "black", size = 2) +
+  
+  # Formatting
+  scale_fill_viridis_d(option = "turbo", guide = "none") + # Warna random beda-beda
+  theme_void() +
+  labs(title = "Peta Sebaran Lapangan Padel di Kota Bekasi",
+       subtitle = "Sumber: Google Places API",
+       caption = "Pengambilan data oleh ikanx101.com")
+
+print(plot_voronoi)
+```
+
+Jika kita lihat, memang beberapa lapangan padel berkumpul di "tengah" kota. Dari peta di atas, saya akan hitung dan buat visualisasi _diagram Voronoi_ berikut ini:
+
+```{r}
+# 1. Pastikan data padel sudah jadi objek sf
+padel_sf <- st_as_sf(padel_data, coords = c("lon", "lat"), crs = 4326)
+
+# 2. Membuat Voronoi
+# Note: st_voronoi butuh geometri yang digabung (union) dulu
+voronoi_raw <- st_voronoi(st_union(padel_sf), envelope = st_geometry(bekasi))
+
+# 3. Konversi hasil (Geometry Collection) menjadi Poligon terpisah
+voronoi_cast <- st_cast(voronoi_raw) %>% 
+  st_cast("POLYGON") %>% 
+  st_sf()
+
+# 4. PENTING: Mengembalikan Nama Lapangan ke Poligon
+# Karena urutan st_voronoi bisa acak, kita pakai spatial join
+voronoi_joined <- st_join(voronoi_cast, padel_sf, join = st_contains)
+
+# 5. Potong (Clip) sesuai bentuk Peta Bekasi
+voronoi_final <- st_intersection(voronoi_joined, bekasi)
+
+# [Opsional] Hitung Luas Area (km2) untuk bahan tulisan blog
+voronoi_final$luas_km2 <- as.numeric(st_area(voronoi_final)) / 1000000
+
+plot_voronoi_analisis <- ggplot() +
+  # Layer 1: Peta Dasar Bekasi (Background)
+  geom_sf(data = bekasi, fill = "grey95", color = "grey50") +
+  
+  # Layer 2: Poligon Voronoi yang sudah di-clip
+  # Kita beri warna fill berdasarkan Nama Lapangan dan transparansi
+  geom_sf(data = voronoi_final, 
+          aes(fill = nama), 
+          alpha = 0.5, 
+          color = "white") + # Garis batas antar wilayah putih
+  
+  # Layer 3: Titik Lokasi Lapangan Asli (Agar tahu pusatnya dimana)
+  geom_point(data = padel_data, 
+             aes(x = lon, y = lat), 
+             color = "black", 
+             size = 1.5) +
+  
+  # Layer 4: Label Nama (Opsional, agar lebih informatif)
+  ggrepel::geom_text_repel(data = padel_data,
+            aes(x = lon, y = lat, label = nama),
+            size = 3, nudge_y = 0.005, check_overlap = TRUE) +
+
+  # Formatting
+  scale_fill_viridis_d(option = "turbo") +
+  theme_void() +
+  theme(legend.position = "none") +
+  labs(title = "Analisa Diagram Voronoi Padel Bekasi",
+       subtitle = "Wilayah kekuasaan (Voronoi) vs Batas Administrasi",
+       caption = "Analisa oleh ikanx101.com",
+       fill = "Nama Lapangan")
+
+print(plot_voronoi_analisis)
+```
+
+Dari perhitungan _Diagram Voronoi_ yang saya lakukan, __Hans Padel Court__ di Cimuning, Mustika Jaya memiliki "area kekuasaan" terbesar dengan luas sebesar $23.7 \space \text{km}^2$. Sedangkan __Spin Padel__ di Marga Jaya, Bekasi Selatan hanya memiliki "area kekuasaan" sebesar $0.59 \space \text{km}^2$.
+
+Untuk sebagian investor, mungkin bersaing langsung di tengah kota yang sudah padat untuk berebut "area kekuasaan" menjadi hal yang menarik untuk dilakukan. **_Cluster_ persaingan** seperti pada area-area di mana banyak titik berkumpul (misal Summarecon atau Galaxy), poligonnya akan kecil-kecil. Ini tanda *Red Ocean*. Investor yang mau masuk ke area ini biasanya sudah punya atau menawarkan diferensiasi kuat (harga, fasilitas, komunitas).
+
+Sedangkan untuk sebagian investor lain, mereka mungkin akan melihat area-area kekuasaan yang lebih luas untuk di-"ambil" dan di-"pecah" kekuasaannya. Sekarang kita lihat kembali bagian peta Bekasi yang poligonnya paling besar. Apakah itu daerah padat penduduk atau justru area sepi? Sebagai contoh kita bisa melihat "area kekuasaan" __Main Padel Pro__ di Cikunir dan __Hans Padel Court__ di Cimuning. _Diagram Voronoi_ hanya menghitung jarak geometris dan belum tentu berarti potensial secara langsung. Kita perlu melihat kondisi _target market_ di area tersebut. 
+
+> Poligon besar di area _target market_ padat adalah **tambang emas**.
+
+Selain itu, kita bisa melihat beberapa lapangan padel di perbatasan Jakarta Timur atau Bogor yang mungkin memiliki *catchment area* yang terpotong oleh batas administrasi, padahal realitanya mereka juga melayani warga Jakarta.
+
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
+
