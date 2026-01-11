@@ -1,10 +1,17 @@
 ---
-date: 2026-01-09T16:07:00-04:00
+date: 2026-01-11T20:15:00-04:00
 title: "Analisa Geospasial Lapangan Padel di Bekasi"
 categories:
   - Blog
 tags:
   - Market Riset
+  - Geomarketing
+  - Geospasial
+  - Google Maps
+  - Padel
+  - Olahraga
+  - Futsal
+  - Bekasi
 ---
 
 Beberapa tahun terakhir, olahraga padel benar‑benar jadi buah bibir.
@@ -35,7 +42,8 @@ sekadar ikut tren.
 
 Alih-alih menggunakan *feeling*, kita akan menggunakan data lokasi
 lapangan eksisting dan algoritma matematika sederhana namun *powerful*:
-**Voronoi Diagram**.
+**Voronoi Diagram**. Tentu hasil temuan dari __Voroni Diagram__ akan lebih bagus 
+lagi jika digabungkan dengan data _target market_ per area.
 
 ## Konsep Dasar *Diagram Voronoi*
 
@@ -54,22 +62,13 @@ Untuk data lokasi lapangan padel di Bekasi, saya mengambil dan
 mengumpulkannya menggunakan **Google Places API**. Saya dapatkan 28 buah
 titik lapangan yang ada di Kota Bekasi.
 
-    Reading layer `gadm41_IDN_2' from data source 
-      `/home/rstudio/ikanx101.github.io/_posts/geo marketing/padel/gadm41_IDN_2.shp' 
-      using driver `ESRI Shapefile'
-    Simple feature collection with 502 features and 13 fields
-    Geometry type: MULTIPOLYGON
-    Dimension:     XY
-    Bounding box:  xmin: 95.00971 ymin: -11.00761 xmax: 141.0194 ymax: 6.076941
-    Geodetic CRS:  WGS 84
-
-![](draft_files/figure-commonmark/unnamed-chunk-1-1.png)
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/geo%20marketing/padel/draft_files/figure-commonmark/unnamed-chunk-1-1.png)
 
 Jika kita lihat, memang beberapa lapangan padel berkumpul di “tengah”
 kota. Dari peta di atas, saya akan hitung dan buat visualisasi *diagram
 Voronoi* berikut ini:
 
-![](draft_files/figure-commonmark/unnamed-chunk-2-1.png)
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/geo%20marketing/padel/draft_files/figure-commonmark/unnamed-chunk-2-1.png)
 
 Dari perhitungan *Diagram Voronoi* yang saya lakukan, **Hans Padel
 Court** di Cimuning, Mustika Jaya memiliki “area kekuasaan” terbesar
