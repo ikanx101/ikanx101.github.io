@@ -1,0 +1,247 @@
+---
+title: "Memodelkan Customer Churn Menggunakan Survival Analysis"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  error: false
+  echo: false
+---
+
+Pada tulisan kali ini saya akan melanjutkan satu topik yang sama dengan [tulisan sebelumnya](https://ikanx101.com/blog/surv-lamp/), yakni _survival analysis_. Saya akan memberikan satu contoh bagaimana _survival analysis_ bisa digunakan untuk memodelkan _customer churn_ untuk suatu _platform_ layanan _streaming_. Untuk menyederhanakan masalah (tanpa mengurangi kompleksitas), saya akan buat data _dummy_ yang punya batasan-batasan tertentu.
+
+---
+
+```{r}
+rm(list=ls())
+
+library(dplyr)
+library(tidyr)
+library(survival)
+library(survminer)
+
+load("sample_data.rda")
+
+id_acak = sample(100,15)
+
+sampel = data_marketing[id_acak,]
+```
+
+## _Study Case_ _Platform Layanan Streaming_
+
+Misalkan saya membuat suatu layanan _platform_ _streaming_ film dan hendak mencari tahu kapan _customer_ saya akan "hilang" (berhenti berlangganan) dan apa penyebabnya. Data yang saya miliki adalah seperti ini:
+
+Saya mengumpulkan 100 data bulanan _customer_ sejak Januari 2023 hingga Desember 2025. Pada rentang tersebut, saya mengambil:
+
+1. ___Usage___; rata-rata jam menonton per bulan.
+1. __Umur__ _customer_, 
+1. __Promo__; apakah saat pertama kali _customer_ berlangganan dikarenakan promo diskon atau harga normal.
+1. __Komplain__; apakah _customer_ pernah komplain atau tidak selama rentang waktu tersebut.
+1. ___Tenure___; pada bulan ke berapa _customer_ berhenti berlangganan. Jika sampai Desember 2025 _customer_ tetap bertahan, maka nilainya diisi __24__.
+1. ___Churn___; status akhir _customer_. Apakah _churn_ (`1`) atau tidak _churn_ (`2`).
+
+
+Berikut ini adalah sampel data yang saya kumpulkan:
+
+```{r}
+sampel %>% knitr::kable()
+```
+
+Sekarang saya akan membuat kurva _survival_ sebagai berikut:
+
+```{r}
+data_marketing_ = data_marketing %>% select(-promo,-komplain)
+surv_obj <- Surv(time = data_marketing_$tenure, event = data_marketing_$churn)
+
+fit_km <- survfit(surv_obj ~ 1, data = data_marketing)
+fit_km
+```
+
+```{r}
+#| fig-height: 7
+#| fig-width: 9
+ggsurvplot(fit_km, 
+           data = data_marketing,
+           pval = TRUE,             # P-value Log-rank test [15, 16]
+           conf.int = TRUE, 
+           risk.table = TRUE,
+           xlab = "Bulan Berlangganan",
+           ylab = "Probabilitas Retensi Customer",
+           title = "Kurva Retensi: Seluruh Customer")
+
+```
+
+
+Saya dapatkan _median survival time_ sebesar __7.3 bulan__. Artinya pada waktu median tersebut, 50% dari _customer_ mulai berhenti berlangganan.
+
+Sekarang dari variabel-variabel yang ada, saya akan tentukan variabel mana saja yang paling berpengaruh untuk _customer churn_. Saya menggunakan __regresi Cox__ dan menghitung ___hazard ratio___.
+
+> ___Hazard ratio___ (HR) adalah ukuran efek yang digunakan dalam analisis regresi Cox untuk membandingkan risiko kegagalan (atau kejadian tertentu) antara kelompok independen pada titik waktu tertentu. 
+
+Secara matematis, __HR__ merupakan eksponensial dari koefisien regresi yang dihasilkan. Interpretasi nilai __HR__ adalah sebagai berikut:
+
+- HR = 1: Prediktor tidak mempengaruhi _survival_ (tidak ada perbedaan risiko antar kelompok).
+- HR > 1: Prediktor dikaitkan dengan peningkatan risiko kejadian atau penurunan peluang _survival_.
+- HR < 1: Prediktor bersifat protektif, yang berarti dikaitkan dengan peningkatan peluang _survival_ atau penurunan risiko kejadian.
+
+Berikut adalah hasil regresinya:
+
+```{r}
+#| echo: true
+#| fig-height: 7
+#| fig-width: 7
+
+fit_cox <- coxph(surv_obj ~ promo + umur + usage + komplain, data = data_marketing)
+broom::tidy(fit_cox,exponentiate = T) %>% knitr::kable()
+```
+
+Berdasarkan hasil regresi di atas, saya dapatkan dua variabel memiliki koefisien yang __signifikan__. Terlihat dari nilai _p-value_ yang dibawah __0.05__. Kedua variabel tersebut adalah:
+
+1. Promo __harga normal__ dengan __HR__ sebesar __0.585__. Artinya variabel ini merupakan variabel __protektif__ yang meningkatkan peluang _survival_ dari _customer_.
+    - _Customer_ dengan harga normal memiliki risiko _churn_ __41.5%__ lebih rendah dibandingkan dengan _customer_ diskon
+1. ___Usage___ dengan __HR__ sebesar __1.028__. 
+    - Setiap peningkatan 1 unit dalam _usage_ meningkatkan risiko _churn_ sebesar 2.8%.
+   - Strategi yang harus saya lakukan adalah fokus pada _customer_ dengan _usage_ tinggi.
+
+Sebagai analisa lebih lanjut, saya akan _cross_ kurva _survival_ dengan variabel __promo__ dan variabel __komplain__.
+
+
+```{r}
+#| echo: true
+#| fig-height: 7
+#| fig-width: 9
+
+surv_obj <- Surv(time = data_marketing$tenure, event = data_marketing$churn)
+fit_km <- survfit(surv_obj ~ promo, data = data_marketing)
+ggsurvplot(fit_km, 
+           data = data_marketing,
+           pval = TRUE,             # P-value Log-rank test [15, 16]
+           conf.int = TRUE, 
+           risk.table = TRUE,
+           xlab = "Bulan Berlangganan",
+           ylab = "Probabilitas Retensi Customer",
+           title = "Kurva Retensi: Diskon vs Harga Normal")
+
+```
+
+
+Dari grafik di atas, kita bisa lihat bahwa _customer_ yang berlangganan berasal dari promo diskon memiliki waktu _survival_ yang lebih singkat dibandingkan _customer_ yang berasal dari harga normal. 
+
+```{r}
+#| echo: true
+#| fig-height: 7
+#| fig-width: 9
+
+fit_km <- survfit(surv_obj ~ komplain, data = data_marketing)
+ggsurvplot(fit_km, 
+           data = data_marketing,
+           pval = TRUE,             # P-value Log-rank test [15, 16]
+           conf.int = TRUE, 
+           risk.table = TRUE,
+           xlab = "Bulan Berlangganan",
+           ylab = "Probabilitas Retensi Customer",
+           title = "Kurva Retensi: Pernah vs Tidak pernah komplain")
+
+```
+
+
+Dari grafik di atas, kita bisa dapatkan _customer_ yang pernah komplain memiliki waktu _survival_ yang lebih singkat dibandingkan _customer_ yang tidak pernah komplain. Oke, sekarang saya akan coba membuat beberapa langkah strategis untuk menurunkan _customer churn_.
+
+## Langkah Strategis untuk Menurunkan _Customer Churn_
+
+### Segmentasi Pelanggan Berisiko Tinggi
+
+Salah satu kelebihan _regresi cox_, kita bisa menghitung _risk score_ dari masing-masing _customer_. Akibatnya kita bisa membagi _customer_ berdasarkan sebaran _risk score_ tersebut.
+
+```{r}
+# Identifikasi pelanggan berisiko tinggi
+data_risk_score = 
+  data_marketing %>%
+  mutate(
+    risk_score = predict(fit_cox, type = "risk"),
+    risk_category = case_when(
+      risk_score > quantile(risk_score, 0.75) ~ "High Risk",
+      risk_score > quantile(risk_score, 0.5) ~ "Medium Risk",
+      TRUE ~ "Low Risk"
+    )
+  )
+
+batas_1 = quantile(data_risk_score$risk_score, 0.75) %>% as.numeric()
+batas_2 = quantile(data_risk_score$risk_score, 0.5) %>% as.numeric()
+
+data_risk_score %>% 
+  ggplot(aes(x = risk_score)) +
+  geom_density() +
+  geom_vline(xintercept = batas_1, color = "darkred") +
+  geom_vline(xintercept = batas_2, color = "darkgreen") +
+  annotate("label",x = 1,y = .75,label = "High RISK") +
+  annotate("label",x = .575,y = .5,label = "Medium\nRISK") +
+  annotate("label",x = .25,y = .25,label = "Low RISK") +
+  theme_minimal() +
+  labs(title = "Sebaran Risk Score dari Semua Customer",
+       subtitle = "base: Berdasarkan perhitungan model regresi Cox",
+       caption = "Model dan Perhitungan menggunakan R\nikanx101.com")
+
+data_risk_score %>% 
+  group_by(risk_category) %>%
+  summarise(
+    n = n(),
+    avg_usage = mean(usage),
+    promo_discount_pct = mean(promo == "Diskon") * 100,
+    churn_rate = mean(churn) * 100
+  ) %>% 
+  arrange(avg_usage)
+```
+
+_Customer_ yang memiliki masuk ke dalam kelompok _high risk_ memiliki rata-rata _usage_ tinggi dan berasal dari promo diskon. Maka khusus _customer_ selanjutnya (di masa depan) dengan karakteristik seperti ini, saya bisa membuat program retensi khusus.
+
+- **Program _Loyalty_**: Konversi dari diskon sementara ke program loyalitas permanen.
+- **_Upselling_**: Tawarkan produk/layanan tambahan dengan nilai lebih.
+- **_Personalized Engagement_**: Kontak proaktif sebelum masa diskon berakhir.
+- Untuk pengguna dengan _usage_ tinggi:
+    - **_Onboarding_ Intensif**: Pastikan mereka memahami semua fitur produk.
+    - **Success Management**: _Assign customer success manager_ untuk pengguna berat.
+    - **Feedback Loop**: Kumpulkan _feedback_ untuk meningkatkan pengalaman.
+
+
+Setelah itu, kita perlu mengetahui _timing_ yang pas untuk melakukan intervensi kepada _customer_. Dari _survival curve_ yang ada di atas, saya bisa dapatkan _survival median time_ berikut:
+
+```{r}
+# Tentukan titik kritis intervensi
+critical_points <- data_marketing %>%
+  group_by(promo) %>%
+  summarise(
+    median_survival = median(tenure[churn == 1]),
+    q25_survival = quantile(tenure[churn == 1], 0.25)
+  )
+
+critical_points
+```
+
+Dari sini saya membuat program pencegahan proaktif yang disesuaikan dengan _survival time_:
+
+1. **Bulan 1-3** (_Tenure_ rendah) _onboarding_ intensif.
+2. **Bulan 3-6**: _Check-in_ pertama, tawarkan bantuan.
+3. **Bulan 6-12**: Program loyalitas untuk pelanggan diskon.
+4. **>12 bulan**: Program retensi untuk pengguna berat.
+
+## **Kesimpulan Strategis:**
+
+Berdasarkan analisis _regresi Cox_, **fokus utama harus pada**:
+
+1. **Pelanggan diskon dengan usage tinggi** - _Segment_ paling berisiko.
+2. **Intervensi pada bulan 3-6** - Periode kritis berdasarkan _tenure_.
+3. **Konversi dari diskon ke program loyalitas** - Kurangi ketergantungan pada diskon.
+
+
+**Actionable Insight**: Setiap peningkatan 10 unit dalam _usage_ meningkatkan risiko _churn_ sebesar 28%. Prioritaskan pengguna dengan _usage_ > 30 untuk program retensi khusus.
+
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
