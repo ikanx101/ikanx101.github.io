@@ -66,14 +66,14 @@ df_clean <- df %>%
 # ============================================
 
 # Metode 1: Menggunakan Lexicon Bahasa Indonesia 
-(SentiWordNet)
+# (SentiWordNet)
 # Catatan: Untuk analisis lebih akurat, Anda perlu
-lexicon Bahasa Indonesia
+# lexicon Bahasa Indonesia
 # Berikut contoh dengan lexicon Inggris sebagai 
-alternatif
+# alternatif
 
 # Load lexicon sentimen (Bahasa Inggris sebagai 
-contoh)
+# contoh)
 afinn <- get_sentiments("afinn")
 bing <- get_sentiments("bing")
 nrc <- get_sentiments("nrc")
@@ -81,8 +81,7 @@ nrc <- get_sentiments("nrc")
 # Tokenisasi judul untuk analisis lexicon
 title_tokens <- df_clean %>%
   unnest_tokens(word, title_clean) %>%
-  anti_join(stop_words, by = "word")  # Hapus 
-stopwords Bahasa Inggris
+  anti_join(stop_words, by = "word")  # Hapus stopwords Bahasa Inggris
 
 # Analisis sentimen dengan AFINN (skor numerik)
 sentiment_afinn <- title_tokens %>%
@@ -114,8 +113,7 @@ sentiment_bing <- title_tokens %>%
     )
   )
 
-# Metode 2: Menggunakan sentimentr (lebih cocok 
-untuk kalimat lengkap)
+# Metode 2: Menggunakan sentimentr (lebih cocok untuk kalimat lengkap)
 sentiment_sentimentr <- df_clean %>%
   mutate(
     sentimentr_score = 
@@ -127,8 +125,7 @@ sentiment_sentimentr <- df_clean %>%
     )
   )
 
-# Metode 3: Menggunakan syuzhet (NRC Emotion 
-Lexicon)
+# Metode 3: Menggunakan syuzhet (NRC Emotion Lexicon)
 sentiment_syuzhet <- df_clean %>%
   mutate(
     # Ekstrak berbagai emosi
