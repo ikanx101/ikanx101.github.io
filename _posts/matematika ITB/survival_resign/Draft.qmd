@@ -1,0 +1,337 @@
+---
+title: "Untitled"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  error: false
+  echo: false
+---
+
+Beberapa tahun yang lalu, saya sempat diajak berdiskusi oleh salah seorang rekan saya yang berprofesi di bidang _human resources_. Salah satu topik diskusinya adalah _bagaimana mengukur keberhasilan program __management trainee__ yang ada di perusahaannya_.
+
+> Rekan saya bercerita bahwa _MT_ merupakan rekrutan _fresh graduate_ yang kemudian diberikan kesempatan "berkeliling" area kerja yang ada di perusahaannya. Mulai dari _head office_, _plant_ (pabrik), hingga ke _area_ (luar kota sebagai _sales_ atau _promotion_). Proses "keliling" ini berdurasi tiga bulan yang kemudian akan dievaluasi. Bisa jadi _MT_ tersebut dipindahkan ke tempat lain atau dibiarkan menetap di sana. _MT_ kemudian bisa diangkat menjadi karyawan tetap setelah dilakukan evaluasi atas kinerjanya selama setahun.
+
+Rekan saya juga bercerita bahwa sebagian karyawan _ex-MT_ kemudian _resign_ sebelum 4 tahun bekerja. Tentu dia sudah melakukan studi kualitatif dengan melakukan _exit interview_ kepada semua _MT_ yang _resign_. Namun dia ingin mendapatkan _insights_ lain dengan pendekatan lain.
+
+Berhubung tema beberapa tulisan terakhir saya adalah tentang _survival analysis_, maka saya akan coba lakukan analisa ini terhadap masalah rekan saya tersebut.
+
+---
+
+```{r}
+#| include: false
+
+library(dplyr)
+library(tidyr)
+library(janitor)
+library(ggplot2)
+library(ggpubr)
+library(survival)
+library(survminer)
+
+rm(list=ls())
+
+load("ready.rda")
+
+df_hr = 
+  df_hr %>% 
+    mutate(status_resign = ifelse(status_resign == 1,"Resign","Stay"))
+```
+
+Pertama-tama, saya memiliki data 400 orang karyawan yang masuk sebagai _MT_ dari berbagai _batches_. Setiap orang di-_track_ datanya selama 48 bulan dan akan dilihat berapa bulan sampai akhirnya orang tersebut _resign_. Berikut ini adalah sampel datanya:
+
+
+```{r}
+nama = randomNames::randomNames(10)
+df_hr %>% 
+  head(10) %>% 
+  mutate(nama = nama) %>% 
+  select(id,nama,salary,dept,rotation,asal,masa_kerja,status_resign) %>% 
+  mutate(status_resign = ifelse(status_resign == 1,"Resign","Stay")) %>% 
+  knitr::kable()
+```
+
+Berikut adalah penjelasan setiap kolom dari data di atas:
+
+1. `salary` menandakan tingkat gaji bulanan karyawan tersebut. Hanya ada dua kategori `salary`, yakni `low` dan `high`.
+1. `dept` menandakan lokasi kerja terakhir si karyawan. Bisa jadi di `HQ` (_headquarter_), `plant` (pabrik), atau di `area`.
+1. `rotation` menandakan berapa kali si karyawan dirotasi lokasi kerja.
+1. `asal` menandakan asal domisili si karyawan. Apakah berasal dari `kota` yang sama dengan _headquarter_ atau `luar kota`?
+1. `masa kerja` menandakan berapa bulan hingga si karyawan ___resign___ atau ___stay___.
+
+## Analisa Deskriptif
+
+Sekarang kita akan lihat beberapa analisa deskriptif penting:
+
+```{r}
+tab = 
+  df_hr %>% 
+  group_by(dept,status_resign) %>% 
+  tally() %>% 
+  ungroup() %>% 
+  group_by(dept) %>% 
+  mutate(persen = n / sum(n) * 100,
+         persen = round(persen,2),
+         label = paste0(persen,"%")) %>% 
+  ungroup()
+
+tab %>% 
+  ggplot(aes(x = dept,y = persen,fill = status_resign)) +
+  geom_col(color = "black") +
+  scale_fill_manual(values = c("gray","darkgreen")) +
+  theme_pubclean() +
+  labs(title = "Crosstabulasi antara Lokasi Kerja dan Status Resign",
+       x = "Lokasi Kerja",
+       y = "Persentase",
+       caption = "Visualisasi dengan R\nikanx101.com",
+       fill = "Status")
+```
+
+Karyawan yang saat ini di-_assign_ di `area` memiliki proporsi terbesar untuk _resign_ dibandingkan lokasi kerja lainnya.
+
+```{r}
+tab = 
+  df_hr %>% 
+  group_by(salary,status_resign) %>% 
+  tally() %>% 
+  ungroup() %>% 
+  group_by(salary) %>% 
+  mutate(persen = n / sum(n) * 100,
+         persen = round(persen,2),
+         label = paste0(persen,"%")) %>% 
+  ungroup()
+
+tab %>% 
+  ggplot(aes(x = salary,y = persen,fill = status_resign)) +
+  geom_col(color = "black") +
+  scale_fill_manual(values = c("gray","darkgreen")) +
+  theme_pubclean() +
+  labs(title = "Crosstabulasi antara Kelompok Salary dan Status Resign",
+       x = "Kelompok Salary",
+       y = "Persentase",
+       caption = "Visualisasi dengan R\nikanx101.com",
+       fill = "Status")
+```
+
+Karyawan dengan kategori _low salary_ juga memiliki proporsi _resign_ besar.
+
+```{r}
+tab = 
+  df_hr %>% 
+  group_by(asal,status_resign) %>% 
+  tally() %>% 
+  ungroup() %>% 
+  group_by(asal) %>% 
+  mutate(persen = n / sum(n) * 100,
+         persen = round(persen,2),
+         label = paste0(persen,"%")) %>% 
+  ungroup()
+
+tab %>% 
+  ggplot(aes(x = asal,y = persen,fill = status_resign)) +
+  geom_col(color = "black") +
+  scale_fill_manual(values = c("gray","darkgreen")) +
+  theme_pubclean() +
+  labs(title = "Crosstabulasi antara Asal Domisili dan Status Resign",
+       x = "Kelompok Salary",
+       y = "Persentase",
+       caption = "Visualisasi dengan R\nikanx101.com",
+       fill = "Status")
+
+```
+
+Karyawan yang berasal dari kota yang sama dengan _headquarter_ memiliki kecenderungan _resign_ lebih tinggi.
+
+
+```{r}
+tab = 
+  df_hr %>% 
+  group_by(rotation,status_resign) %>% 
+  tally() %>% 
+  ungroup() %>% 
+  group_by(rotation) %>% 
+  mutate(persen = n / sum(n) * 100,
+         persen = round(persen,2),
+         label = paste0(persen,"%")) %>% 
+  ungroup()
+
+tab %>% 
+  ggplot(aes(x = rotation,y = persen,fill = status_resign)) +
+  geom_col(color = "black") +
+  scale_fill_manual(values = c("gray","darkgreen")) +
+  theme_pubclean() +
+  labs(title = "Crosstabulasi antara Banyaknya Rotasi dan Status Resign",
+       x = "Kelompok Salary",
+       y = "Persentase",
+       caption = "Visualisasi dengan R\nikanx101.com",
+       fill = "Status")
+```
+
+Semakin banyak dirotasi, karyawan akan berpeluang _resign_ lebih tinggi.
+
+Perhatikan bahwa analisa-analisa di atas adalah analisa jika setiap variabel di-_cross_ dengan _status resign_. 
+
+Saya sekarang akan mencoba menghubungkan 3 variabel sebagai berikut sesuai dengan hipotesis dari rekan saya.
+
+## Hipotesis I
+
+_MT_ yang berasal dari dalam `kota` dan ditempatkan di `area` punya kecenderungan untuk _resign_.
+
+```{r}
+library(flowchart)
+
+flow = df_hr %>% as_fc(label = "Data MT")
+
+flow %>% 
+  fc_split(asal) %>%
+  fc_split(dept) %>% 
+  # fc_split(rotation) %>% 
+  # fc_split(salary) %>% 
+  fc_filter(status_resign == "Resign",label = "Resign") %>%  
+  # fc_split(status_resign) %>% 
+  fc_draw()
+```
+
+Berdasarkan grafik di atas, kita dapatkan bahwa __semua _MT_ yang berasal dari kota dan ditempatkan di `area` (85 orang) akhirnya _resign___.
+
+
+## Hipotesis II
+
+_MT_ yang terlalu banyak dirotasi dengan _low salary_ akan _resign_.
+
+```{r}
+flow %>% 
+  # fc_split(asal) %>%
+  # fc_split(dept) %>% 
+  fc_split(rotation) %>%
+  fc_split(salary) %>%
+  fc_filter(status_resign == "Resign",label = "Resign") %>%  
+  # fc_split(status_resign) %>% 
+  fc_draw()
+```
+
+Berdasarkan grafik di atas, kita dapatkan bahwa __semua MT yang dirotasi 3 kali dengan _low salary_ (sebanyak 21 orang) akhirnya _resign___.
+
+
+# _Survival Analysis_
+
+Pertama-tama, saya akan membuat model untuk semua data:
+
+```{r}
+#| fig-height: 7
+#| fig-width: 9
+
+
+rm(list=ls())
+
+load("ready.rda")
+
+print(fit_overall)
+
+ggsurvplot(fit_overall, data = df_hr, 
+           pval = TRUE,             # Menampilkan hasil Log-rank test [30, 31]
+           conf.int = TRUE, 
+           risk.table = TRUE, 
+           xlab = "Bulan Masa Kerja",
+           ylab = "Probabilitas Tetap Bertahan",
+           title = "Kurva Retensi Karyawan")
+
+```
+
+Dari analisa di atas, _median survival time_ untuk _MT_ adalah sekitar 26 bulan atau sekitar 2 tahun saja.
+
+Berikut akan saya coba buat model berdasarkan kategori _salary_.
+
+```{r}
+#| fig-height: 7
+#| fig-width: 9
+
+
+print(fit_salary)
+
+ggsurvplot(fit_salary, data = df_hr, 
+           pval = TRUE,             # Menampilkan hasil Log-rank test [30, 31]
+           conf.int = TRUE, 
+           risk.table = TRUE, 
+           xlab = "Bulan Masa Kerja",
+           ylab = "Probabilitas Tetap Bertahan",
+           title = "Kurva Retensi Karyawan: Berdasarkan Kelompok Salary")
+
+```
+
+
+_Median survival time_ untuk _MT_ dengan _low salary_ jauh lebih pendek dibandingkan _higher salary_. Berikut adalah model untuk rotasi:
+
+
+```{r}
+#| fig-height: 7
+#| fig-width: 9
+
+
+print(fit_rotation)
+
+ggsurvplot(fit_rotation, data = df_hr, 
+           pval = TRUE,             # Menampilkan hasil Log-rank test [30, 31]
+           conf.int = TRUE, 
+           risk.table = TRUE, 
+           xlab = "Bulan Masa Kerja",
+           ylab = "Probabilitas Tetap Bertahan",
+           title = "Kurva Retensi Karyawan: Berdasarkan Berapa Kali Dirotasi")
+
+```
+
+
+_Median survival time_ dari _MT_ yang lebih sering dirotasi lebih pendek. Berikut adalah model untuk asal domisili:
+
+```{r}
+#| fig-height: 7
+#| fig-width: 9
+
+
+print(fit_asal)
+
+ggsurvplot(fit_asal, data = df_hr, 
+           pval = TRUE,             # Menampilkan hasil Log-rank test [30, 31]
+           conf.int = TRUE, 
+           risk.table = TRUE, 
+           xlab = "Bulan Masa Kerja",
+           ylab = "Probabilitas Tetap Bertahan",
+           title = "Kurva Retensi Karyawan: Berdasarkan Domisili Asal")
+
+```
+
+_MT_ yang berasal dari kota memiliki _median survival time_ terpendek.
+
+## Faktor Penentu _Resign_
+
+Dari data tersebut, saya akan membuat model _regresi Cox_ untuk menentukan variabel mana saja yang berpengaruh terhadap _resign_ dari _MT_.
+
+```{r}
+summary(fit_cox)
+```
+
+
+Beberapa temuan dari model tersebut:
+
+1. **Likelihood ratio test**: 93.44 dengan 5 derajat kebebasan, dan _p-value_ sangat kecil. Kita bisa simpulkan bahwa model secara keseluruhan _statistically significant_.
+1. **Variabel yang signifikan (catatan: yang memiliki _p-value_ < 0.05):**
+    1. **salaryLow** (HR = 2.08, p = 1.55e-10)
+        - _MT_ dengan _low salary_ memiliki risiko keluar 2.08 kali lebih tinggi dibanding _MT_ dengan _higher salary_.
+    2. **Lokasi HQ** (HR = 0.44, p = 1.89e-08)
+        - Karyawan di _headquarter_ memiliki risiko keluar 56% lebih rendah.
+    3. **Lokasi Plant** (HR = 0.38, p = 8.03e-12)
+        - Karyawan di _plant_ memiliki risiko keluar 62% lebih rendah.
+    4. **Rotasi** (HR = 1.28, p = 0.0023)
+        - Setiap peningkatan 1 unit rotasi meningkatkan risiko keluar sebesar 28%.
+    5. **Asal Luar kota** (HR = 0.63, p = 0.0005)
+        - _MT_ yang berasal dari luar kota memiliki risiko keluar 37% lebih rendah.
+
+# _Epilog_
+
+__Menurut keyakinan saya__, _resign_ merupakan hak setiap karyawan dan alasan yang diberikan tidak selalu harus bisa dijelaskan.
+
