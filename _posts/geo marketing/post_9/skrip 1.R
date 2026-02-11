@@ -37,9 +37,9 @@ p1 <- ggplot(df_sel, aes(x = user_rating, y = rating)) +
   labs(
     title = "Kuadran Rating vs Jumlah User (Nilai Asli)",
     subtitle = "Analisis Hubungan antara Popularitas dan Kualitas 
-Restoran",
+Tempat Makan",
     x = "Jumlah User yang Memberikan Rating",
-    y = "Rating Restoran (0-5)",
+    y = "Rating Tempat Makan (0-5)",
     caption = "Garis putus-putus menunjukkan median rating dan jumlah
 user\nikanx101.com"
   ) +
@@ -75,11 +75,10 @@ p2 <- ggplot(df_sel, aes(x = log10(user_rating + 1), y = rating)) +
   labs(
     title = "Kuadran Rating vs Jumlah User (Transformasi 
 Logaritmik)",
-    subtitle = "Transformasi log10(user_rating + 1) untuk visualisasi
-yang lebih baik",
+    subtitle = "Transformasi logaritmik",
     x = "Jumlah User (skala logaritmik)",
-    y = "Rating Restoran (0-5)",
-    caption = "Transformasi log10 membantu menangani distribusi data 
+    y = "Rating Tempat Makan (0-5)",
+    caption = "Transformasi log membantu menangani distribusi data 
 yang skewed\nikanx101.com"
   ) +
   theme_minimal() +
@@ -135,13 +134,13 @@ p3 <- ggplot(df_sel, aes(x = log10(user_rating + 1), y = rating,
                                   ",")
   ) +
   labs(
-    title = "Analisis Kuadran Restoran",
+    title = "Analisis Kuadran Tempat Makan",
     subtitle = "Segmentasi berdasarkan Rating dan Popularitas",
     x = "Jumlah User (skala logaritmik)",
-    y = "Rating Restoran (0-5)",
+    y = "Rating Tempat Makan (0-5)",
     color = "Kuadran",
     caption = "Setiap kuadran merepresentasikan strategi berbeda 
-untuk restoran\nikanx101.com"
+untuk Tempat Makan\nikanx101.com"
   ) +
   theme_minimal() +
   theme(
@@ -175,7 +174,7 @@ p4 <- ggplot(df_sel, aes(x = log10(user_rating + 1), y = rating)) +
     title = "Distribusi Density Rating vs User",
     subtitle = "Kepadatan data menunjukkan pola konsentrasi",
     x = "Jumlah User (skala logaritmik)",
-    y = "Rating Restoran (0-5)",
+    y = "Rating Tempat Makan (0-5)",
     caption = "ikanx101.com"
   ) +
   theme_minimal() +

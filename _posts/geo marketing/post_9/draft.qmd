@@ -9,73 +9,123 @@ fig-height: 4.5
 editor: visual
 execute:
   warning: false
+  echo: false
 error: false
 ---
 
-Beberapa minggu belakangan, beberapa departemen meminta kepada saya untuk melakukan _web scraping_ beberapa kategori _point of interest_ dari __Google Maps__ dan __Google Places__. Tujuan mereka sederhana, yakni:
+```{r}
+#| include: false
+
+setwd("~/ikanx101.github.io/_posts/geo marketing/post_9")
+
+rm(list=ls())
+gc()
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(ggpubr)
+```
+
+Beberapa minggu belakangan, beberapa departemen meminta kepada saya untuk melakukan *web scraping* beberapa kategori *point of interest* dari **Google Maps** dan **Google Places**. Tujuan mereka sederhana, yakni:
 
 > Menentukan area atau POI mana yang harus digarap pada tahun ini. Syukur-syukur penggarapan ini akan meningkatkan omset perusahaan.
 
-Setelah saya _scrape_ dan berikan data kepada mereka, artinya __sudah menjadi kewajiban mereka__ untuk menentukan area dan POI mana yang harus digarap. Lantas bagaimana caranya? _Jujurly_, saya kurang mengetahui hal tersebut tapi saya yakin mereka sudah punya pakem tersendiri.
+Setelah saya *scrape* dan berikan data kepada mereka, artinya **sudah menjadi kewajiban mereka** untuk menentukan area dan POI mana yang harus digarap. Lantas bagaimana caranya? *Jujurly*, saya kurang mengetahui hal tersebut tapi saya yakin mereka sudah punya pakem tersendiri.
 
----
+------------------------------------------------------------------------
 
-Sampai saat ini, saya sudah menuliskan [12 _posts_ di blog saya ini terkait _geo marketing_](https://ikanx101.com/tags/#geomarketing). Jika saya hendak membantu rekan-rekan di kantor untuk __menentukan area dan POI yang hendak digarap__, apakah bisa digunakan cara seperti yang pernah saya tulis dari salah satu dari 12 _posts_ tersebut? __Jawabannya *TENTU BISA!*__.
+Sampai saat ini, saya sudah menuliskan [12 *posts* di blog saya ini terkait *geo marketing*](https://ikanx101.com/tags/#geomarketing). Jika saya hendak membantu rekan-rekan di kantor untuk **menentukan area dan POI yang hendak digarap**, apakah bisa digunakan cara seperti yang pernah saya tulis dari salah satu dari 12 *posts* tersebut? **Jawabannya *TENTU BISA!***.
 
-> Saya pernah menuliskan beberapa analisa di _geo marketing_ yang bisa jadi basis pengambilan keputusan tersebut.
+> Saya pernah menuliskan beberapa analisa di *geo marketing* yang bisa jadi basis pengambilan keputusan tersebut.
 
-_Nah_, pada _post_ kali ini saya akan melakukan beberapa alternatif analisa lain yang belum pernah saya lakukan sebelumnya pada topik _geo marketing_. Beberapa analisa ini sebenarnya sudah pernah saya lakukan di topik lainnya tapi ternyata _works well_ juga di _geo marketing_. Apa saja? _Cekidot!_
+*Nah*, pada *post* kali ini saya akan melakukan beberapa alternatif analisa lain yang belum pernah saya lakukan sebelumnya pada topik *geo marketing*. Beberapa analisa ini sebenarnya sudah pernah saya lakukan di topik lainnya tapi ternyata *works well* juga di *geo marketing*.
+
+Sebagai contoh, saya akan melakukan analisa untuk POI berupa **tempat makan kategori tertentu** di Kota Surabaya, tepatnya di Kecamatan Gubeng dan Genteng.
+
+Apa saja analisanya? *Cekidot!*
+
+## Alternatif Analisa I: Kuadran *Rating* vs *User*
+
+Analisa pertama yang hendak saya lakukan sebenarnya sangat sederhana, yakni cukup dengan membuat *scatter plot* antara *rating* dan berapa banyak *user* yang memberikan *rating*. Tujuannya adalah memetakan tempat makan mana yang termasuk ke dalam kuadran-kuadran sebagai berikut:
+
+|                   | Review sedikit         | Review Banyak        |
+|-------------------|------------------------|----------------------|
+| **Rating tinggi** | *The Hidden gems*      | *The Populars*       |
+| **Rating rendah** | *The Under performers* | *The Public critics* |
+
+Dari peta ini, tentu strategi yang dijalankan per masing-masing kuadran akan berbeda. Mari kita lihat plot pertama sebagai berikut ini:
 
 ```{r}
-key = "rahasia"
+load("analisa_1.rda")
 
-register_google(key = key)
+p1
+```
 
-lisbon_satellite <- get_map("Kota Bekasi", 
-                            source = "google", 
-                            api_key = api_secret,zoom=13)
+Kita bisa melihat bahwa kuadran yang dihasilkan secara visual sangat _mepet_ dan tidak tersebar secara proporsional. Hal ini terjadi karena _range_ dari data banyaknya _user_ yang memberikan _rating_ sangat jauh besar dan _skewed_ ke salah satu sisi. Oleh karena itu, saya bisa melakukan transformasi dengan menggunakan fungsi logaritmik. Berikut adalah grafik kedua:
 
-basis = 
-  df %>% 
-  select(lat,long) %>% 
-  distinct()
+```{r}
+p2
+```
 
-ggmap(lisbon_satellite) +
-  geom_point(data = basis,aes(x = long,y = lat),
-             size = .9,
-             color = "steelblue") +
-  stat_voronoi(data = basis,aes(x = long,y = lat),
-               geom = "path",
-               alpha = .25,
-               linewidth = .5,
-               color = "darkgreen")
+Setelah ditransformasi, sumbu _x_ sudah relatif menyebar rata __tapi__ data pada _rating_ yang masih _skewed_. Jika dibuat kuadran, maka bentuknya seperti ini:
+
+```{r}
+p3
+```
+
+```{r}
+library(janitor)
+df_sel %>% 
+  tabyl(kuadran) %>% 
+  adorn_pct_formatting() %>% 
+  adorn_totals() %>% 
+  knitr::kable()
+```
+
+Dari analisa ini, tim terkait bisa memilih kuadran tertentu sebagai target POI yang hendak diajak kerja sama.
+
+__TAPI menurut keyakinan saya__, untuk data dengan rentang yang terlalu mepet atau terlalu lebar dan tergambarkan sebagai _skewed distribution_, alternatif analisa ini bisa menimbulkan bias dan kurang tepat untuk digunakan.
+
+## Alternatif Analisa II: _Spatial Clustering >< K-Means Clustering_
+
+
+```{r}
+# key = "rahasia"
+# 
+# register_google(key = key)
+# 
+# lisbon_satellite <- get_map("Kota Bekasi", 
+#                             source = "google", 
+#                             api_key = api_secret,zoom=13)
+# 
+# basis = 
+#   df %>% 
+#   select(lat,long) %>% 
+#   distinct()
+# 
+# ggmap(lisbon_satellite) +
+#   geom_point(data = basis,aes(x = long,y = lat),
+#              size = .9,
+#              color = "steelblue") +
+#   stat_voronoi(data = basis,aes(x = long,y = lat),
+#                geom = "path",
+#                alpha = .25,
+#                linewidth = .5,
+#                color = "darkgreen")
 
 ```
 
 ### **5. Jawaban untuk Pertanyaan Penelitian:**
 
-**1. Apakah restoran dengan rating tinggi cenderung berkumpul di area
-elit tertentu?**
-- Skrip akan menganalisis distribusi cluster rating tinggi di cluster
-spasial
-- Plot kombinasi (p5) akan menunjukkan pola konsentrasi
-- Jika cluster rating tinggi terkonsentrasi di area spasial tertentu,
-itu mengindikasikan area elit
+**1. Apakah restoran dengan rating tinggi cenderung berkumpul di area elit tertentu?** - Skrip akan menganalisis distribusi cluster rating tinggi di cluster spasial - Plot kombinasi (p5) akan menunjukkan pola konsentrasi - Jika cluster rating tinggi terkonsentrasi di area spasial tertentu, itu mengindikasikan area elit
 
-**2. Apakah ada pusat kuliner baru yang terbentuk secara organik?**
-- DBSCAN akan mengidentifikasi cluster spasial yang terbentuk alami
-- Analisis karakteristik cluster (proporsi restoran baru, rating, 
-lokasi)
-- Cluster di lokasi non-tradisional dengan pola rating unik dapat 
-mengindikasikan pusat kuliner baru
+**2. Apakah ada pusat kuliner baru yang terbentuk secara organik?** - DBSCAN akan mengidentifikasi cluster spasial yang terbentuk alami - Analisis karakteristik cluster (proporsi restoran baru, rating, lokasi) - Cluster di lokasi non-tradisional dengan pola rating unik dapat mengindikasikan pusat kuliner baru
 
 ### **6. Keunggulan Skrip:**
-- **Reproduktibilitas**: Menggunakan set.seed untuk hasil konsisten
-- **Optimasi Parameter**: Metode objektif untuk menentukan parameter 
-optimal
-- **Visualisasi Komprehensif**: 8 plot dengan tema yang konsisten dan
-menarik
-- **Interpretasi Bisnis**: Analisis yang dapat ditindaklanjuti untuk 
-keputusan bisnis
-- **Ekspor Otomatis**: Semua hasil diekspor dalam format yang mudah 
-digunakan
+
+-   **Reproduktibilitas**: Menggunakan set.seed untuk hasil konsisten
+-   **Optimasi Parameter**: Metode objektif untuk menentukan parameter optimal
+-   **Visualisasi Komprehensif**: 8 plot dengan tema yang konsisten dan menarik
+-   **Interpretasi Bisnis**: Analisis yang dapat ditindaklanjuti untuk keputusan bisnis
+-   **Ekspor Otomatis**: Semua hasil diekspor dalam format yang mudah digunakan
