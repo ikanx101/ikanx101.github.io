@@ -214,6 +214,39 @@ ggmap(lisbon_satellite) +
 
 **Apakah ada pusat kuliner baru yang terbentuk secara organik?** 
 
+Saya akan membuat definisi __tempat makan baru__ berdasarkan banyak _user_ yang memberikan _rating_. Jika "sedikit", maka saya asumsikan tempat makan tersebut merupakan tempat makan baru. Berikut ini adalah _cluster_ spasial yang memiliki tempat-tempat makan baru terbanyak di antara _clusters_ yang lain:
+
+```{r}
+cluster_baru = 
+  df_sel %>% 
+  mutate(baru = ifelse(user_rating < 30,T,F)) %>% 
+  group_by(dbscan_cluster) %>% 
+  summarise(new = sum(baru) / length(baru)) %>% 
+  ungroup() %>% 
+  arrange(desc(new)) %>% 
+  head(3) %>% pull(dbscan_cluster)
+  
+
+lisbon_satellite <- get_map("Universitas Airlangga Kampus B, Kota Surabaya",
+                            source = "google",
+                            api_key = api_secret,zoom=14)
+
+basis =
+  df_sel %>%
+  filter(dbscan_cluster %in% cluster_baru) %>% 
+  select(lat,long,dbscan_cluster) %>%
+  distinct()
+
+ggmap(lisbon_satellite) +
+  geom_point(data = basis,aes(x = long,y = lat,color = dbscan_cluster),
+             size = 1.2) +
+  scale_color_manual(values = c("blue","green","purple")) +
+  theme_void() +
+  coord_equal() +
+  labs(color = "Cluster Spasial ke-")
+
+```
+
 colnames(df_sel)
 
 
