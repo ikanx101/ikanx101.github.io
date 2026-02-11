@@ -25,6 +25,8 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(ggpubr)
+library(ggmap)
+library(janitor)
 ```
 
 Beberapa minggu belakangan, beberapa departemen meminta kepada saya untuk melakukan *web scraping* beberapa kategori *point of interest* dari **Google Maps** dan **Google Places**. Tujuan mereka sederhana, yakni:
@@ -43,6 +45,32 @@ Sampai saat ini, saya sudah menuliskan [12 *posts* di blog saya ini terkait *geo
 
 Sebagai contoh, saya akan melakukan analisa untuk POI berupa **tempat makan kategori tertentu** di Kota Surabaya, tepatnya di Kecamatan Gubeng dan Genteng.
 
+
+```{r}
+load("analisa_1.rda")
+
+key = "AIzaSyBlZpsnqIhuJDHZ-nGo1VrU3PmKDW18-ls"
+
+register_google(key = key)
+
+lisbon_satellite <- get_map("Kota Surabaya",
+                            source = "google",
+                            api_key = api_secret,zoom=13)
+
+basis =
+  df_sel %>%
+  select(lat,long) %>%
+  distinct()
+
+ggmap(lisbon_satellite) +
+  geom_point(data = basis,aes(x = long,y = lat),
+             size = .9,
+             color = "steelblue") +
+  theme_void() +
+  coord_equal()
+
+```
+
 Apa saja analisanya? *Cekidot!*
 
 ## Alternatif Analisa I: Kuadran *Rating* vs *User*
@@ -57,25 +85,22 @@ Analisa pertama yang hendak saya lakukan sebenarnya sangat sederhana, yakni cuku
 Dari peta ini, tentu strategi yang dijalankan per masing-masing kuadran akan berbeda. Mari kita lihat plot pertama sebagai berikut ini:
 
 ```{r}
-load("analisa_1.rda")
-
 p1
 ```
 
-Kita bisa melihat bahwa kuadran yang dihasilkan secara visual sangat _mepet_ dan tidak tersebar secara proporsional. Hal ini terjadi karena _range_ dari data banyaknya _user_ yang memberikan _rating_ sangat jauh besar dan _skewed_ ke salah satu sisi. Oleh karena itu, saya bisa melakukan transformasi dengan menggunakan fungsi logaritmik. Berikut adalah grafik kedua:
+Kita bisa melihat bahwa kuadran yang dihasilkan secara visual sangat *mepet* dan tidak tersebar secara proporsional. Hal ini terjadi karena *range* dari data banyaknya *user* yang memberikan *rating* sangat jauh besar dan *skewed* ke salah satu sisi. Oleh karena itu, saya bisa melakukan transformasi dengan menggunakan fungsi logaritmik. Berikut adalah grafik kedua:
 
 ```{r}
 p2
 ```
 
-Setelah ditransformasi, sumbu _x_ sudah relatif menyebar rata __tapi__ data pada _rating_ yang masih _skewed_. Jika dibuat kuadran, maka bentuknya seperti ini:
+Setelah ditransformasi, sumbu *x* sudah relatif menyebar rata **tapi** data pada *rating* yang masih *skewed*. Jika dibuat kuadran, maka bentuknya seperti ini:
 
 ```{r}
 p3
 ```
 
 ```{r}
-library(janitor)
 df_sel %>% 
   tabyl(kuadran) %>% 
   adorn_pct_formatting() %>% 
@@ -85,42 +110,114 @@ df_sel %>%
 
 Dari analisa ini, tim terkait bisa memilih kuadran tertentu sebagai target POI yang hendak diajak kerja sama.
 
-__TAPI menurut keyakinan saya__, untuk data dengan rentang yang terlalu mepet atau terlalu lebar dan tergambarkan sebagai _skewed distribution_, alternatif analisa ini bisa menimbulkan bias dan kurang tepat untuk digunakan.
+**TAPI menurut keyakinan saya**, untuk data dengan rentang yang terlalu mepet atau terlalu lebar dan tergambarkan sebagai *skewed distribution*, alternatif analisa ini bisa menimbulkan bias dan kurang tepat untuk digunakan.
 
-## Alternatif Analisa II: _Spatial Clustering >< K-Means Clustering_
+## Alternatif Analisa II: *Spatial Clustering \>\< K-Means Clustering*
 
+Pada analisa ini, saya akan melakukan [dua teknik *clustering* yang berbeda](https://ikanx101.com/blog/clustering-R/), yakni:
+
+1.  DBscan untuk mengelompokkan tempat-tempat makan yang berdekatan di suatu area berdasarkan data *longlat*-nya.
+2.  K-Means untuk mengelompokkan tempat-tempat makan berdasarkan *rating* dan berapa banyak *user* yang memberikan rating.
+
+Tujuannya adalah menjawab pertanyaan berikut ini:
+
+1.  Apakah tempat-tempat makan dengan *rating* tinggi cenderung berkumpul di area elit tertentu?
+2.  Apakah ada pusat kuliner baru yang terbentuk secara organik?
+
+Berikut adalah *summary* hasilnya:
+
+![](dashboard_clustering.png){width="550"}
 
 ```{r}
-# key = "rahasia"
-# 
-# register_google(key = key)
-# 
-# lisbon_satellite <- get_map("Kota Bekasi", 
-#                             source = "google", 
-#                             api_key = api_secret,zoom=13)
-# 
-# basis = 
-#   df %>% 
-#   select(lat,long) %>% 
-#   distinct()
-# 
-# ggmap(lisbon_satellite) +
-#   geom_point(data = basis,aes(x = long,y = lat),
-#              size = .9,
-#              color = "steelblue") +
-#   stat_voronoi(data = basis,aes(x = long,y = lat),
-#                geom = "path",
-#                alpha = .25,
-#                linewidth = .5,
-#                color = "darkgreen")
-
+rm(list=ls())
+load("analisa_2.rda")
+colnames(df_sel)
+df_sel %>% tabyl(kmeans_cluster)
 ```
 
-### **5. Jawaban untuk Pertanyaan Penelitian:**
+1. Ada 13 _clusters_ spasial plus 1 _noise cluster_ spasial.
+1. Ada empat _clusters_ berdasarkan _rating_ dan berapa banyak _user_ yang memberikan _rating_. _Cluster_ __*The Popular*__ dan __*The Exclusive*__ akan menjadi poin penting untuk menentukan area spasial kelak.
 
-**1. Apakah restoran dengan rating tinggi cenderung berkumpul di area elit tertentu?** - Skrip akan menganalisis distribusi cluster rating tinggi di cluster spasial - Plot kombinasi (p5) akan menunjukkan pola konsentrasi - Jika cluster rating tinggi terkonsentrasi di area spasial tertentu, itu mengindikasikan area elit
+```{r}
+kmeans_summary <- df_sel %>%
+  group_by(kmeans_cluster_label) %>%
+  summarise(
+    n_restoran = n(),
+    avg_rating = mean(rating, na.rm = TRUE),
+    avg_user_rating = mean(user_rating, na.rm = TRUE),
+    median_rating = median(rating, na.rm = TRUE),
+    median_user_rating = median(user_rating, na.rm = TRUE),
+    prop_high_rating = sum(rating >= 4.5) / n(),
+    prop_popular = sum(user_rating >= 100) / n()
+  )
 
-**2. Apakah ada pusat kuliner baru yang terbentuk secara organik?** - DBSCAN akan mengidentifikasi cluster spasial yang terbentuk alami - Analisis karakteristik cluster (proporsi restoran baru, rating, lokasi) - Cluster di lokasi non-tradisional dengan pola rating unik dapat mengindikasikan pusat kuliner baru
+kmeans_summary %>% knitr::kable()
+```
+
+Sekarang kita akan menjawab kedua pertanyaan yang ada dari grafik dan perhitungan yang sudah saya lakukan.
+
+**Apakah restoran dengan _rating_ tinggi cenderung berkumpul di area elit tertentu?** 
+
+Perhatikan grafik berikut ini:
+
+![](plot_5.png){width="550"}
+
+Plot ini adalah gabungan dari analisa _clustering spatial_ dengan _clustering_ berdasarkan _rating_ dan _user_. Jika tempat-tempat makan yang termasuk ke dalam _the Viral Venues_ dan _the Exclusive_ terkonsentrasi di area spasial tertentu, itu mengindikasikan suatu area termasuk ke dalam elit. Untuk menentukannya, saya akan membuat skor dengan membobotkan proporsi jenis tempat makan yang ada. 
+
+Bobot tertinggi untuk tempat makan _the Viral Venues_, kemudian _the Exclusive_, lalu _the Trusted_. Sebagai contoh, bobot yang saya gunakan __tergantung dari keyakinan saya *ya*__.
+
+```{r}
+df_skor = 
+  df_sel %>% 
+  tabyl(dbscan_cluster,kmeans_cluster_label) %>% 
+  adorn_percentages("row") %>% 
+  mutate(skor = 2 * `The Viral Venues` + `The Exclusive` + .5 * `The Trusted`) %>% 
+  arrange(desc(skor)) %>% 
+  select(dbscan_cluster,skor) %>% 
+  mutate(skor = skor * 100,
+         skor = round(skor,2)) 
+
+df_sel %>% 
+  tabyl(dbscan_cluster,kmeans_cluster_label) %>% 
+  adorn_percentages("row") %>%
+  adorn_totals("col") %>% 
+  adorn_pct_formatting() %>% 
+  merge(df_skor) %>% 
+  arrange(desc(skor)) %>% knitr::kable()
+```
+
+Saya dapatkan _cluster spasial_ ke 5 dan 9 memiliki skor tertinggi, yakni mereka yang berada pada:
+
+```{r}
+key = "AIzaSyBlZpsnqIhuJDHZ-nGo1VrU3PmKDW18-ls"
+
+register_google(key = key)
+
+lisbon_satellite <- get_map("Tunjungan Plaza, Kota Surabaya",
+                            source = "google",
+                            api_key = api_secret,zoom=15)
+
+basis =
+  df_sel %>%
+  filter(dbscan_cluster %in% c(9,5)) %>% 
+  select(lat,long,dbscan_cluster) %>%
+  distinct()
+
+ggmap(lisbon_satellite) +
+  geom_point(data = basis,aes(x = long,y = lat,color = dbscan_cluster),
+             size = 1.2) +
+  scale_color_manual(values = c("blue","green")) +
+  theme_void() +
+  coord_equal() +
+  labs(color = "Cluster Spasial ke-")
+```
+
+**Apakah ada pusat kuliner baru yang terbentuk secara organik?** 
+
+colnames(df_sel)
+
+
+- DBSCAN akan mengidentifikasi cluster spasial yang terbentuk alami - Analisis karakteristik cluster (proporsi restoran baru, rating, lokasi) - Cluster di lokasi non-tradisional dengan pola rating unik dapat mengindikasikan pusat kuliner baru
 
 ### **6. Keunggulan Skrip:**
 
