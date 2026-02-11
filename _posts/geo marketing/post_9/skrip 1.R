@@ -15,7 +15,7 @@ df_sel =
   filter(kota == "Surabaya") %>% 
   filter(kecamatan %in% c("Gubeng","Genteng")) %>% 
   filter(!is.na(rating)) %>% 
-  select(nama,rating,user_rating,long,lat)
+  select(nama,rating,user_rating)
 
 save(df_sel,file = "data_awal.rda")
 

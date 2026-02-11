@@ -131,12 +131,10 @@ Berikut adalah *summary* hasilnya:
 ```{r}
 rm(list=ls())
 load("analisa_2.rda")
-colnames(df_sel)
-df_sel %>% tabyl(kmeans_cluster)
 ```
 
 1. Ada 13 _clusters_ spasial plus 1 _noise cluster_ spasial.
-1. Ada empat _clusters_ berdasarkan _rating_ dan berapa banyak _user_ yang memberikan _rating_. _Cluster_ __*The Popular*__ dan __*The Exclusive*__ akan menjadi poin penting untuk menentukan area spasial kelak.
+1. Ada empat _clusters_ berdasarkan _rating_ dan berapa banyak _user_ yang memberikan _rating_. _Cluster_ __*The Viral Venues*__ dan __*The Exclusive*__ akan menjadi poin penting untuk menentukan area spasial kelak.
 
 ```{r}
 kmeans_summary <- df_sel %>%
@@ -247,15 +245,35 @@ ggmap(lisbon_satellite) +
 
 ```
 
-colnames(df_sel)
+Dari analisa alternatif ini, saya bisa mendapatkan beberapa area yang bisa digarap dengan definisi yang sudah saya tentukan. Tentunya definisi ini bisa disesuaikan dengan kebutuhan yang diperlukan (jika mau).
+
+## Alternatif Analisa III: Koreksi _Bayesian Rating_
+
+__Menurut keyakinan saya__, tempat makan yang:
+
+1. Punya _rating_ 5 dari penilaian 10 orang _user_.
+1. Punya _rating_ 5 dari penilaian 1.000 orang _user_.
+
+__punya derajat (atau *rating*) yang berbeda__. Lantas agar _rating_ yang digunakan _fair enough_, apa yang harus saya lakukan?
+
+Konsep _Bayesian Rating_ adalah menggabungkan informasi dari _rating_ individu dengan _prior_ untuk mendapatkan _rating_ yang lebih akurat. Saya pernah menuliskan [beberapa topik terkait analisa Bayesian](https://ikanx101.com/tags/#bayesian) di _blog_ saya.
+
+Analisis Hubungan Jarak dan Kualitas (Spatial Correlation)
+
+Apakah restoran yang letaknya berdekatan cenderung memiliki rating yang mirip?
+
+Analisis: Hitung jarak antar restoran (Euclidean atau Haversine). Apakah ada pola di mana di satu jalan tertentu semua restorannya punya rating tinggi? Atau justru di area pusat wisata, rating cenderung lebih rendah karena "yang penting laku"?
+
+Angle Blog: "Hukum Tetangga: Apakah Kualitas Restoran Menular ke Sebelahnya?"
+
+5. Analisis "Bayesian Surprise" atau Anomali
+
+Mencari restoran yang melawan arus di wilayahnya.
+
+Analisis: Misalnya, di area yang rata-rata ratingnya 3.5, tiba-tiba ada satu restoran dengan rating 4.7.
+
+Insight: Mengapa restoran ini bisa sangat unggul dibanding kompetitor di sekitarnya? (Bisa dikaitkan dengan jenis masakan atau harga jika ada datanya).
+
+Angle Blog: "Melawan Arus: Menemukan Restoran Anomali di Tengah Rata-rata."
 
 
-- DBSCAN akan mengidentifikasi cluster spasial yang terbentuk alami - Analisis karakteristik cluster (proporsi restoran baru, rating, lokasi) - Cluster di lokasi non-tradisional dengan pola rating unik dapat mengindikasikan pusat kuliner baru
-
-### **6. Keunggulan Skrip:**
-
--   **Reproduktibilitas**: Menggunakan set.seed untuk hasil konsisten
--   **Optimasi Parameter**: Metode objektif untuk menentukan parameter optimal
--   **Visualisasi Komprehensif**: 8 plot dengan tema yang konsisten dan menarik
--   **Interpretasi Bisnis**: Analisis yang dapat ditindaklanjuti untuk keputusan bisnis
--   **Ekspor Otomatis**: Semua hasil diekspor dalam format yang mudah digunakan
