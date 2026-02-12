@@ -298,6 +298,22 @@ Untuk analisa ini, saya menggunakan [perhitungan jarak *real* dari *Openstreetma
 
 Dari hampir enam ratus data tempat makan yang ada, saya mendapatkan xx pasang tempat makan yang masuk ke dalam definisi **berdekatan**. Jika saya hitung korelasi rating antar kedua tempat makan yang berdekatan, saya dapatkan:
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Alternatif Analisa V: Analisis Anomali
 
 Tujuan dari analisa ini adalah mencari tempat makan yang **melawan arus** di wilayahnya.
