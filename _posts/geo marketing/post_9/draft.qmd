@@ -321,3 +321,8 @@ p4
 ```
 
 Dari analisa ini, kita bisa mengubah asumsi-asumsi yang saya gunakan tadi untuk mendapatkan tempat makan yang __melawan arus__.
+
+# _EPILOG_
+
+Dari lima alternatif analisa yang saya tuliskan di atas, kita bisa memilih satu atau lebih analisa dengan tujuan yang tentunya berbeda-beda tergantung kebutuhan. Perlu saya ingatkan kembali bahwa analisa ini murni berdasarkan data terbatas seperti longlat, _rating_, dan banyaknya _user_ yang memberikan _rating_. Sedangkan pada kondisi _real_, ada banyak data yang tak tergambarkan dari analisa ini.
+
