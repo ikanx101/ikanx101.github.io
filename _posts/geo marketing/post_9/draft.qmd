@@ -43,6 +43,8 @@ Sampai saat ini, saya sudah menuliskan [12 *posts* di blog saya ini terkait *geo
 
 *Nah*, pada *post* kali ini saya akan melakukan beberapa alternatif analisa lain yang belum pernah saya lakukan sebelumnya pada topik *geo marketing*. Beberapa analisa ini sebenarnya sudah pernah saya lakukan di topik lainnya tapi ternyata *works well* juga di *geo marketing*.
 
+__Rekan-rekan bisa melihat setiap analisa yang kelak saya tuliskan di bawah sebagai analisa-analisa yang terpisah__ sehingga tidak ada kewajiban untuk disangkutpautkan sama sekali antar hasilnya.
+
 Sebagai contoh, saya akan melakukan analisa untuk POI berupa **tempat makan kategori tertentu** di Kota Surabaya, tepatnya di Kecamatan Gubeng dan Genteng.
 
 
@@ -289,11 +291,24 @@ df %>%
 
 ## Alternatif Analisa IV: Analisis Hubungan Jarak dan Kualitas (_Spatial Correlation_)
 
-Apakah restoran yang letaknya berdekatan cenderung memiliki rating yang mirip?
+Tujuan dari analisa ini adalah:
+
+1. Apakah tempat-tempat makan yang letaknya __berdekatan__ cenderung memiliki _rating_ yang mirip?
+1. Apakah kualitas tempat makan menular ke sebelahnya?
+
+Untuk analisa ini, saya menggunakan [perhitungan jarak _real_ dari _Openstreetmaps_ pada mode __berjalan kaki__](https://ikanx101.com/blog/osrm-R/). Kemudian dua tempat makan disebut __berdekatan__ jika jaraknya maksimum 50 meter berjalan kaki. Perlu saya akui bahwa proses membentuk matriks jarak antar tempat makan menggunakan _Openstreetmaps_ membutuhkan waktu yang sangat amat lama.
+
+Dari hampir enam ratus data tempat makan yang ada, saya mendapatkan xx pasang tempat makan yang masuk ke dalam definisi __berdekatan__. Jika saya hitung korelasi rating antar kedua tempat makan yang berdekatan, saya dapatkan:
+
+
+
+
+
+
 
 Analisis: Hitung jarak antar restoran (Euclidean atau Haversine). Apakah ada pola di mana di satu jalan tertentu semua restorannya punya rating tinggi? Atau justru di area pusat wisata, rating cenderung lebih rendah karena "yang penting laku"?
 
-Angle Blog: "Hukum Tetangga: Apakah Kualitas Restoran Menular ke Sebelahnya?"
+Angle Blog: "Hukum Tetangga: "
 
 5. Analisis "Bayesian Surprise" atau Anomali
 
