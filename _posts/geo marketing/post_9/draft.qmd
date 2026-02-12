@@ -305,19 +305,8 @@ Dari hampir enam ratus data tempat makan yang ada, saya mendapatkan xx pasang te
 
 
 
+## Alternatif Analisa V: Analisis Anomali
 
-Analisis: Hitung jarak antar restoran (Euclidean atau Haversine). Apakah ada pola di mana di satu jalan tertentu semua restorannya punya rating tinggi? Atau justru di area pusat wisata, rating cenderung lebih rendah karena "yang penting laku"?
-
-Angle Blog: "Hukum Tetangga: "
-
-5. Analisis "Bayesian Surprise" atau Anomali
-
-Mencari restoran yang melawan arus di wilayahnya.
-
-Analisis: Misalnya, di area yang rata-rata ratingnya 3.5, tiba-tiba ada satu restoran dengan rating 4.7.
-
-Insight: Mengapa restoran ini bisa sangat unggul dibanding kompetitor di sekitarnya? (Bisa dikaitkan dengan jenis masakan atau harga jika ada datanya).
-
-Angle Blog: "Melawan Arus: Menemukan Restoran Anomali di Tengah Rata-rata."
+Tujuan dari analisa ini adalah mencari tempat makan yang __melawan arus__ di wilayahnya.
 
 
