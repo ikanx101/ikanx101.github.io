@@ -1,0 +1,2 @@
+n_restaurants,mean_original,mean_bayesian,sd_original,sd_bayesian,min_original,min_bayesian,max_original,max_bayesian,median_user_count,mean_user_count
+242,4.479958677685951,4.480827481261655,0.2469338916250643,0.12282999593283818,3,3.954282134249569,5,4.800405786657263,319.5,978.7706611570248

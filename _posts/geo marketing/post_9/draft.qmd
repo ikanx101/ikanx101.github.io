@@ -249,16 +249,45 @@ Dari analisa alternatif ini, saya bisa mendapatkan beberapa area yang bisa digar
 
 ## Alternatif Analisa III: Koreksi _Bayesian Rating_
 
-__Menurut keyakinan saya__, tempat makan yang:
+__Menurut keyakinan saya__, jika ada dua tempat makan yang:
 
-1. Punya _rating_ 5 dari penilaian 10 orang _user_.
+1. Punya _rating_ 5 dari penilaian 50 orang _user_.
 1. Punya _rating_ 5 dari penilaian 1.000 orang _user_.
 
-__punya derajat (atau *rating*) yang berbeda__. Lantas agar _rating_ yang digunakan _fair enough_, apa yang harus saya lakukan?
+__punya derajat (atau *rating*) yang berbeda__. Lebih banyak _user_ yang memberikan _rating_ membuat derajat kepercayaan atas penilaian lebih tinggi. Lantas agar _rating_ yang digunakan _fair enough_, apa yang harus saya lakukan? Saya akan melakukan perhitungan _Bayesian Rating Correction_ untuk mendapatkan estimasi _rating_ yang lebih _fair_ memanfaatkan informasi _prior_ berupa rata-rata _rating_ tempat makan populasi data saya.
 
-Konsep _Bayesian Rating_ adalah menggabungkan informasi dari _rating_ individu dengan _prior_ untuk mendapatkan _rating_ yang lebih akurat. Saya pernah menuliskan [beberapa topik terkait analisa Bayesian](https://ikanx101.com/tags/#bayesian) di _blog_ saya.
+> Konsep _Bayesian Rating_ adalah menggabungkan informasi dari _rating_ individu dengan _prior_ untuk mendapatkan _rating_ yang lebih akurat. Saya pernah menuliskan [beberapa topik terkait analisa Bayesian](https://ikanx101.com/tags/#bayesian) di _blog_ saya.
 
-Analisis Hubungan Jarak dan Kualitas (Spatial Correlation)
+Untuk melakukan koreksi ini, saya hanya akan memilih tempat makan yang memiliki _rating_ dengan banyaknya _user_ lebih dari 30 orang. Kenapa? Karena jika terlalu kecil, koreksi yang dihasilkan punya _error_ lebih tinggi.
+
+
+![](bayesian_rating_analysis.png){width="550"}
+
+Dari 242 tempat makan yang saya proses, saya mendapatkan _mean rating original_ sebesar __4.479959__. Setelah dikoreksi, _mean rating Bayesian_-nya menjadi __4.480827__. Terlihat tidak ada perubahan yang signifikan dari nilai _mean_-nya namun sebaran data hasil koreksi menjadi lebih _compact_ di mana standar deviasinya berubah dari _original_ __0.2469339__ menjadi _Bayesian_ __0.12283__.
+
+Ada satu hal yang perlu saya sampaikan juga: __tempat makan dengan *user* yang lebih banyak memberikan hasil *confidence* pengoreksian yang lebih tinggi juga__. Maka dari itu, saya coba kategorikan tiap tempat makan menjadi kelompok:
+
+1. _Confidence_ koreksi __sangat rendah__, tempat makan dengan _user_ 30 - 50 orang.
+1. _Confidence_ koreksi __rendah__, tempat makan dengan _user_ 50 - 100 orang.
+1. _Confidence_ koreksi __sedang__, tempat makan dengan _user_ 100 - 150 orang.
+1. _Confidence_ koreksi __tinggi__, tempat makan dengan _user_ 150 - 200 orang.
+1. _Confidence_ koreksi __sangat tinggi__, tempat makan dengan _user_ di atas 200 orang.
+
+Grafik di atas menampilkan perubahan _rating_ signifikan (baik meningkat atau turun) yang dialami oleh beberapa tempat makan. Sedangkan tabel berikut ini adalah __top 10__ tempat-tempat makan yang memiliki _rating_ tertinggi hasil koreksi:
+
+```{r}
+rm(list=ls())
+
+df = read.csv("restaurant_ratings_bayesian_corrected.csv") %>% janitor::clean_names()
+
+df %>% 
+  arrange(desc(bayesian_rating)) %>% 
+  head(10) %>% 
+  select(nama,original_rating,bayesian_rating,user_count,confidence_category) %>% 
+  knitr::kable()
+```
+
+## Alternatif Analisa IV: Analisis Hubungan Jarak dan Kualitas (_Spatial Correlation_)
 
 Apakah restoran yang letaknya berdekatan cenderung memiliki rating yang mirip?
 

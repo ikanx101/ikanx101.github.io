@@ -18,8 +18,13 @@ df_sel =
   filter(kota == "Surabaya") %>% 
   filter(kecamatan %in% c("Gubeng","Genteng")) %>% 
   filter(!is.na(rating)) %>% 
-  select(nama,rating,user_rating) %>% 
-  filter(user_rating > 0)
+  select(nama,long,lat,rating,user_rating) %>% 
+  group_by(nama,long,lat) %>% 
+  summarise(user_rating = mean(user_rating),
+            rating = mean(rating)) %>% 
+  ungroup() %>% 
+  select(-long,-lat) %>% 
+  filter(user_rating > 30)
 
 
 # Load library yang diperlukan
@@ -32,7 +37,7 @@ library(patchwork)
 calculate_bayesian_rating <- function(rating, user_count, 
                                      prior_mean = NULL, 
                                      prior_weight = NULL,
-                                     min_user_threshold = 10) {
+                                     min_user_threshold = 30) {
   
   # Menghitung Bayesian rating yang dikoreksi.
   # 
@@ -63,10 +68,9 @@ calculate_bayesian_rating <- function(rating, user_count,
   
   # Tentukan kategori kepercayaan berdasarkan jumlah user
   confidence_category <- case_when(
-    user_count == 0 ~ "Tidak ada rating",
-    user_count < 5 ~ "Sangat rendah",
-    user_count < 10 ~ "Rendah",
-    user_count < 50 ~ "Sedang",
+    user_count < 50 ~ "Sangat rendah",
+    user_count < 100 ~ "Rendah",
+    user_count < 150 ~ "Sedang",
     user_count < 200 ~ "Tinggi",
     TRUE ~ "Sangat tinggi"
   )
@@ -79,7 +83,7 @@ calculate_bayesian_rating <- function(rating, user_count,
     user_count = user_count,
     bayesian_rating = bayesian_rating,
     confidence_category = factor(confidence_category, 
-                                 levels = c("Tidak ada rating", "Sangat rendah", "Rendah", 
+                                 levels = c("Sangat rendah", "Rendah", 
                                             "Sedang", "Tinggi", "Sangat tinggi")),
     is_reliable = is_reliable,
     rating_difference = bayesian_rating - rating
