@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Beberapa Analisa Lain yang Bisa Diaplikasikan pada Geo Marketing"
 format:
   gfm:
     html-math-method: webtex
@@ -299,20 +299,27 @@ Untuk analisa ini, saya menggunakan [perhitungan jarak *real* dari *Openstreetma
 Dari hampir enam ratus data tempat makan yang ada, saya mendapatkan xx pasang tempat makan yang masuk ke dalam definisi **berdekatan**. Jika saya hitung korelasi rating antar kedua tempat makan yang berdekatan, saya dapatkan:
 
 
+```
+Restoran yang Berdekatan (<50 m):
 
+  - Jumlah pasangan: 274
+  - Korelasi rating = -0.003
+  - Rata-rata selisih rating: 0.491
+```
 
+```{r}
+rm(list=ls())
 
+load("analisa_4.rda")
 
+p4
+```
 
+Ternyata __tidak ada korelasi__ antara _rating_ dari dua tempat makan berdekatan yang berjarak maksimum 50 meter.
 
+Hasil __Moran Test__ juga menunjukkan tidak ada pola spasial yang signifikan dalam distribusi _rating_.
 
-
-
-
-
-
-
-
+Jadi kedua pertanyaan bisnis di atas bisa kita jawab dengan tegas bahwa __kualitas restoran tidak dipengaruhi oleh lokasi tetangga__.
 
 ## Alternatif Analisa V: Analisis Anomali
 

@@ -64,22 +64,23 @@ cat("Menghitung jarak antar restoran...\n")
 
 # Gunakan pendekatan Euclidean untuk efisiensi (bisa diganti dengan OSRM jika perlu)
 n <- nrow(df_clean)
-jarak_matrix <- matrix(0, n, n)
+# jarak_matrix <- matrix(0, n, n)
 
-for (i in 1:(n-1)) {
-  print(i)
-  for (j in (i+1):n) {
-    jarak <- hitung_jarak_euclidean(
-      df_clean$long[i], df_clean$lat[i],
-      df_clean$long[j], df_clean$lat[j]
-    )
-    jarak_matrix[i, j] <- jarak
-    jarak_matrix[j, i] <- jarak
-    cat(j)
-  }
-}
+# for (i in 1:(n-1)) {
+#   print(i)
+#   for (j in (i+1):n) {
+#     jarak <- hitung_jarak_euclidean(
+#       df_clean$long[i], df_clean$lat[i],
+#       df_clean$long[j], df_clean$lat[j]
+#     )
+#     jarak_matrix[i, j] <- jarak
+#     jarak_matrix[j, i] <- jarak
+#     cat(j)
+#   }
+# }
 
-save(jarak_matrix,file = "matrix_jarak.rda")
+# save(jarak_matrix,file = "matrix_jarak.rda")
+load("matrix_jarak.rda")
 
 # 4.2 Identifikasi pasangan restoran yang dekat (< 50 meter)
 threshold_jarak <- 50  # meter
@@ -311,6 +312,8 @@ Berdekatan",
   print(p4)
 }
 
+save(p4,file = "analisa_4.rda")
+
 # 6.5 Visualisasi 5: Heatmap kerapatan restoran
 p5 <- ggplot(df_clean, aes(x = long, y = lat)) +
   stat_density_2d(aes(fill = ..level..), geom = 
@@ -338,7 +341,7 @@ print(p5)
 # --------------------------------------------------------------
 cat("KESIMPULAN ANALISIS HUBUNGAN JARAK DAN 
 KUALITAS RESTORAN\n")
-cat(strrep("=", 60) + "\n\n")
+# cat(strrep("=", 60) + "\n\n")
 
 if (nrow(pasangan_dekat) > 0) {
   cat("1. RESTORAN YANG BERDEKATAN (< 50m):\n")
