@@ -1,0 +1,183 @@
+---
+title: "Cara Membuat Web Apps dengan Google AI Studio, Github, dan Railway"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+error: false
+---
+
+_Weekend_ ini, linimasa saya dipenuhi oleh pembahasan terkait _vibe coding_. Apa _sih_ yang dimaksud dengan _vibe coding_? Berikut penjelasannya:
+
+> _Vibe coding_ adalah cara membuat _software_ atau _apps_ di mana kita tidak lagi menulis baris kode (_ngoding_) yang rumit secara manual, melainkan cukup menjadi __"sutradara"__ yang memberikan instruksi kepada AI. Analoginya seperti memesan kopi di kafe yang sangat canggih: kita tidak perlu tahu cara kerja mesin _espreso_ atau suhu dan tekanan air yang tepat, kita cukup mendeskripsikan _vibe_ atau rasa kopi yang kita inginkan. Kemudian AI akan meracik seluruh resep serta menyajikannya untuk kita. 
+
+Fokus utama dari _vibe coding_ ini adalah bukan pada penguasaan kode pemrograman, melainkan pada kemampuan kita untuk menyampaikan ide dan visi secara jelas agar AI bisa mewujudkannya menjadi _apps_ nyata.
+
+Sebenarnya pada awal tahun lalu saya sempat mencoba-coba melakukan _vibe coding_ dari salah satu situs yang _viral_ tapi hasilnya masih bisa dibilang jauh dari kata memuaskan. Menurut saya, saat ini __bisa jadi layanan *vibe coding* yang ditawarkan situs-situs tersebut sudah jauh berkembang dan *reliable*__. Oleh karena itu, saya akan coba membuat satu _web apps_ yang akan saya pakai.
+
+Ketika sedang merenung _apps_ apa yang hendak saya buat, saya berpikir:
+
+> Sebentar lagi kan bulan _Ramadhan_, kenapa _gak_ bikin _web apps_ untuk _tracking_ kuantitas ibadah harian saja?
+
+Inspirasinya berasal dari pengalaman saat sekolah SD - SMA, dimana dulu saya (dan mungkin banyak anak-anak lainnya) disuruh mengisi lembar kerja Ramadhan yang berisi rekap puasa, shalat, infaq, dan ibadah harian lainnya. Lembar tersebut kemudian akan dikumpulkan setelah lebaran.
+
+Walau sekarang sudah dewasa tapi menurut saya lembar tersebut masih sangat berguna sebagai _tracking_ ibadah agar semangat tidak lekas turun di pertengahan hingga akhir Ramadhan. Berdasarkan ini, _bismillah_ saya coba buat _web apps_-nya.
+
+Rencananya saya akan menggunakan tiga layanan yang berbeda sesuai dengan peruntukannya:
+
+1. _Google AI Studio_ untuk membuat _coding_ dan _struktur_ dari _apps_-nya.
+1. _Github_ untuk menyimpan _coding_-nya.
+1. _Railway_ untuk _build web apps_ berdasarkan _repository_ di _Github_ tersebut.
+
+---
+
+# Langkah I: Google AI Studio
+
+Ada banyak situs yang menyediakan jasa _vibe coding_ namun pilihan saya awalnya jatuh kepada __Google Gemini__. Saya melihat beberapa video dan _shorts_ yang memperlihatkan kapabilitas dari Gemini untuk _build apps_. Namun setelah saya coba, ternyata saya baru menyadari bahwa layanan Google yang benar-benar diperuntukkan untuk _vibe coding_ adalah [__Google AI Studio__](https://aistudio.google.com/).
+
+![](gb1.png)
+
+> Jadi ini adalah kali __pertama__ saya menggunakan __Google AI Studio__.
+
+Cukup dengan akun _Google_, kita sudah bisa mendapatkan layanan _vibe coding_ yang mumpuni. Berdasarkan pengalaman saya, layanan ini _free_ jika kita menggunakan model Gemini yang standar (bukan _pro_) dan tidak membangun _apps_ skala _enterprise_. Beberapa keunggulan _Google AI Studio_ ini adalah:
+
+1. _Free_ untuk membuat _apps_ kecil-menengah.
+1. Bisa dikoneksikan langsung ke _Github_ dan dibuatkan _repository_-nya.
+1. Bisa dikoneksikan juga ke __Google Cloud Console__ untuk langsung di-_deploy_ di _web_.
+    - Khusus untuk _deploying apps_, saya memilih untuk men-_deploy_ di _Railway_ karena sudah _familiar_ dan memang berlangganan sejak beberapa tahun silam.
+
+Tampilan awal setelah kita _login_ (atau _getting started_) adalah sebagai berikut ini:
+
+![](gb2.png)
+
+Saya langsung memberikan _prompt_ di _input_ sebagai berikut:
+
+```
+Buat program berjudul "My Ramadhan Tracker" yang berfungsi untuk memberikan jadwal imsakiyah pada bulan Ramadhan di tahun 2026 ini. Aplikasi berisi:
+
+1. Jadwal sholat dan tracker apakah sholat dilakukan secara jamaah atau sendiri,
+2. Lembar pengisian progress tilawah user. User bisa mengisi ayat terakhir yang dia baca. Berikan dropdown list nama surat dalam Al Quran dan numerikal input untuk ayat,
+3. Berapa banyak infaq yang dilakukan user pada hari tersebut.
+
+Program ini akan secara otomatis berganti tanggal setiap kali tanggal berubah.
+```
+
+Setelah _11 seconds_, kita sudah bisa mendapatkan tampilan _web apps_ yang (hampir) jadi. Oleh karena saya merasa secara tampilan dan fitur masih _kureng_, kemudian saya melakukan beberapa perubahan sebagai berikut di _prompt_:
+
+```
+buat fitur berikut:
+
+1. buat shading berwarna lebih gelap pada menu progres tilawah
+2. buat mode agar user memilih dark atau day mode
+3. Rapikan tulisan mutiara hikmah agar tidak berformat markdown.
+```
+
+Hasilnya tidak serta-merta saya terima. Saya akan coba _prompt_ lagi agar si AI bisa bekerja dengan lebih baik membangun _apps_ yang saya mau:
+
+### Iterasi I:
+
+```
+berikan pilihan waktu shalat yang dinamis mengikuti lokasi user. waktu shalat mengikuti waktu resmi dari kemenag RI
+
+```
+
+### Iterasi II:
+
+```
+Pada menu progress tilawah, tambahkan tombol "simpan" sehingga setelah user menekan tombolnya, histori tilawahnya baru tersimpan
+```
+
+### Iterasi III:
+
+```
+hilangkan kebutuhan atas API apapun pada program ini
+```
+
+### Iterasi IV:
+
+```
+tambahkan tombol simpan pada menu infaq hari ini
+```
+
+### Iterasi V:
+
+```
+revisi awal ramadhan jadi besok tanggal 19 februari
+
+lalu atur waktu shalatnya menjadi urutan: maghrib, isya, subuh, dzuhur, ashar
+
+update pergantian hari bukan pada jam 00.00 tapi pada jam 18.00 setiap harinya
+
+update permulaan 1 ramadhan menjadi tanggal 18 februari jam 18.00
+```
+
+### Iterasi VI
+
+```
+tambahkan fitur untuk melihat data historikal ibadah sejak hari pertama ramadhan. tambahkan juga fitur mendownload data tersebut ke dalam format excel!
+```
+
+Ternyata dibutuhkan iterasi sampai sekian kali sehingga saya bisa puas dan bisa aman memakai _apps_ ini.
+
+![](gb3.png)
+
+Intinya adalah kita harus bisa mendeskripsikan apa yang kita mau kepada si AI agar dia bisa menyelesaikan apa yang kita inginkan.
+
+Setelah selesai, kita tinggal memindahkan _coding_ yang dihasilkan ke dalam _Github_. _Nah_ kali ini saya tidak menggunakan fitur _auto connect to Github_ dari _Google AI Studio_ dan memilih cara kuno yakni dengan cara:
+
+1. _Download_ _coding_-nya dalam format __zip__.
+1. _Unzip_ ke ke dalam _repository_ _Github_ yang sudah disiapkan.
+
+# Langkah II: Github
+
+Di _Github_ saya membuat satu _repository_ baru. 
+
+![](gb4.png)
+
+Kemudian saya masukkan semua _coding_ yang dihasilkan ke sana. Proses ini sangat mudah, cukup _unzip the zipped files_, _add_, _commit_, dan _push_. Hasilnya seperti ini:
+
+![](gb5.png)
+
+# Langkah III: Railway
+
+Saya sendiri sudah memakai _Railway_ beberapa tahun belakangan ini untuk men-_deploy_ berbagai macam _apps_ yang saya butuhkan dan juga _Shinyapps_ yang saya buat. Prosesnya sangat mudah, saya pernah menuliskan [dua artikel terkait ini di _blog_](https://ikanx101.com/tags/#railway).
+
+![](gb6.png)
+
+Saya berlangganan _hobby plan_ dengan _usage_ per bulan 5 USD. Sangat _worth_ bagi saya!
+
+Oke, bagaimana cara men-_deploy_ _coding_ yang ada di _repository Github_?
+
+Pertama-tama, kita _start new project_ dan hubungkan _Railway_ ke _Github_. Pastikan _Railway_ mendapatkan akses ke _repository_ kita. Setelah itu tinggal klik nama _repository_-nya lalu proses _deploy_ akan berjalan secara otomatis.
+
+Hanya ada dua _setting_ yang harus dilakukan, yakni: tambahkan __PORT 8080__ pada _variables_.
+
+![](gb7.png)
+
+Kemudian tambahkan _custom domain_ yang diarahkan ke _port_ 8080.
+
+![](gb8.png)
+
+Lalu klik _deploy_ dan tunggu hingga selesai.
+
+Kira-kira begini hasilnya:
+
+![](gb9.png)
+
+Rekan-rekan bisa mencoba menggunakan _apps_-nya di situs ini: [ramadhan.up.railway.app](https://ramadhan.up.railway.app/).
+
+# Bagaimana terkait datanya?
+
+Beberapa rekan mungkin bertanya, bagaimana dengan data yang saya masukkan ke dalam _apps_? Apakah saya bisa melihat data ibadah semua _user_?
+
+Saya jawab: __tidak__ karena data disimpan di _cache_ di _local browser_ masing-masing _gadget_.
+
+---
+
+`if you find this article helpful, support this blog by clicking the ads.`
+
