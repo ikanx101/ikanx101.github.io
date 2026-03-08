@@ -39,7 +39,7 @@ df_survey %>% tabyl(ses,aware) %>% adorn_percentages("row") %>% adorn_pct_format
 df_survey %>% tabyl(usia,aware) %>% adorn_percentages("row") %>% adorn_pct_formatting()
 df_survey %>% tabyl(gender,aware) %>% adorn_percentages("row") %>% adorn_pct_formatting()
 
-# save(df_survey,file = "data_survey.rda")
+save(df_survey,file = "data_survey.rda")
 
 
 
@@ -61,7 +61,6 @@ mysyn$visit.sequence
 mysyn$cont.na
 
 multi.compare(mysyn, df_survey, var = "ses", by = "gender")
-
 
 
 

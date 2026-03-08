@@ -1,0 +1,105 @@
+---
+title: "Membuat Data Survey Sintetis dengan synthpop di R"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  error: false
+  echo: false
+---
+
+Beberapa tahun yang lalu, saya pernah menuliskan tentang bagaimana cara [membuat data survey sintetis](https://ikanx101.com/blog/data-sintetis/) untuk keperluan *training* pengolahan data. Pada tulisan kali ini, saya akan memberikan contoh satu alternatif cara untuk membuat data sintetis berdasarkan data *real* yang dimiliki.
+
+> Jadi perbedaan mendasarnya adalah kali ini saya tidak membuat data dari nol tapi membuat data sintetis hasil **"*copy*-an"** dari data sebenarnya.
+
+Untuk melakukannya, saya menggunakan [`library(synthpop)`](https://www.synthpop.org.uk/get-started.html) sehingga *coding* dan prosesnya sangat cepat dan mudah.
+
+Oke, misalkan saya punya data hasil survey dari **365 orang responden** berisi informasi seperti:
+
+1.  *Gender*,
+2.  *Social economy status*,
+3.  Kelompok usia,
+4.  *Awareness* (ya / tidak).
+
+dengan tabulasi sebagai berikut:
+
+```{r}
+rm(list=ls())
+library(dplyr)
+library(janitor)
+
+load("data_survey.rda")
+
+cat("Tabulasi Jenis Kelamin")
+df_survey %>% tabyl(gender) %>% adorn_pct_formatting()
+
+cat("\n\nTabulasi SES")
+df_survey %>% tabyl(ses) %>% adorn_pct_formatting()
+
+cat("\n\nTabulasi Usia")
+df_survey %>% tabyl(usia) %>% adorn_pct_formatting()
+
+cat("\n\nTabulasi Awareness")
+df_survey %>% tabyl(aware) %>% adorn_pct_formatting()
+
+```
+
+Kemudian saya hendak membuat data sintetis sebanyak **365 baris** juga. Sebelumnya saya harus memastikan bahwa semua variabel dalam *dataframe* tersebut sudah bertipe *factor*.
+
+Misalkan data survey asli saya simpan dengan nama `df_survey`. Kemudian saya cukup menggunakan perintah sebagai berikut:
+
+```{r}
+#| echo: true
+
+library(synthpop)
+
+mysyn = syn(df_survey)
+summary(mysyn)
+```
+
+Oke, datanya sudah jadi. Mari kita bandingkan dengan data aslinya:
+
+```{r}
+#| echo: true
+
+compare(mysyn, df_survey, stat = "counts")
+
+```
+
+Untuk menunjukkan seberapa baik data sintesis, kita bisa melihat parameter *goodness of fit* bernama **S_pMSE** (*Standardized Propensity Mean Squared Error*).
+
+> **Standardized Propensity Mean Squared Error** (*S_pMSE*) adalah metrik untuk mengevaluasi kualitas data sintetis dengan membandingkan seberapa mirip distribusinya dengan data asli.
+
+**Cut Off Nilai S_pMSE**
+
+| Nilai *S_pMSE* | Interpretasi | Kesimpulan |
+|----|----|----|
+| 0.5 - 2.0 | Sangat tinggi | Data sintetis sudah siap digunakan untuk analisis |
+| 2.0 - 10.0 | Baik / cukup | Masih bisa diterima dengan beberapa catatan |
+| \> 10.0 | Rendah | Model data sintesis perlu diperbaiki |
+
+Jika kita lihat grafik di atas, kita bisa simpulkan bahwa data sintesis yang dihasilkan sudah baik. 
+
+Coba saya bandingkan kembali data _real_ vs sintesis pada variabel __SES__ dan _gender_:
+
+```{r}
+multi.compare(mysyn, df_survey, var = "ses", by = "gender")
+```
+
+Secara visual proporsi yang dihasilkan sangat mirip. Berikut adalah sampel data yang dihasilkan:
+
+```{r}
+mysyn$syn %>% head(20) %>% knitr::kable()
+```
+
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
