@@ -1,0 +1,473 @@
+---
+title: "xxx"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+editor: source
+execute:
+  warning: false
+  error: false
+  echo: false
+---
+
+Dalam dua tahun terakhir, salah satu pekerjaan saya adalah membuat _mixed marketing models_ untuk beberapa _brands_ dan _sub brands_ di kantor. Hal ini juga sudah pernah saya tuliskan dalam [beberapa artikel di _blog_](https://ikanx101.com/tags/#mix-marketing-model). Jika biasanya saya menggunakan _framework_ __Robyn__ buatan __META__, kali ini saya akan gunakan pendekatan __Bayesian Mixed Marketing Model (Bayesian MMM)__ untuk membuat modelnya. Bagaimana caranya? _Yuk_ kita mulai.
+
+---
+
+## __R__ dan _Stan_
+
+Saya akan menggunakan `library(brms)` di __R__ untuk membuat _Bayesian MMM_. Singkatnya, brms (singkatan dari _Bayesian Regression Models using 'Stan'_) adalah _library_ di __R__ yang memungkinkan kita membangun model statistik kompleks menggunakan logika _Bayesian_ dengan _code_ yang simpel dan familiar. Oleh karena `brms` melakukan simulasi (_MCMC_), proses _running_ model biasanya memakan waktu lebih lama (beberapa detik hingga hitungan jam) dibandingkan fungsi `lm()` yang instan.
+
+_Stan_ adalah bahasa pemrograman tersendiri (berbasis __C++__) yang dirancang khusus untuk mendefinisikan model statistik. Ia tidak hanya digunakan di __R__, tapi juga di Python, Julia, dan MATLAB. Saat kita menjalankan model di __R__ menggunakan _Stan_, kode tersebut sebenarnya dikompilasi menjadi program __C++__ yang efisien. Inilah alasan mengapa proses _running_ model _Bayesian_ seringkali membutuhkan waktu (karena ada proses "memasak" kode terlebih dahulu).
+
+## Contoh Kasus
+
+Misalkan suatu _brand_ melakukan tiga jenis _campaign_, yakni:
+
+1. TV _campaign_,
+1. _Social media_ / _digital_ _campaign_, dan
+1. _Offline campaign_.
+
+Ketiga jenis campaign tersebut dicatat berapa besar _spending_-nya per pekan dan dikumpulkan selama setahun (52 minggu). Kemudian data tersebut disandingkan dengan data penjualan (_sales_) per pekan. Berikut adalah datanya:
+
+```{r}
+#| include: false
+
+rm(list=ls())
+library(dplyr)
+library(ggplot2)
+
+load("raw.rda")
+
+data_mmm$week = 1:52
+
+```
+
+```{r}
+# Load library yang diperlukan
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(scales)
+library(tidyverse)
+library(brms)
+
+
+data_mmm %>% relocate(week,.before = "tv_spend") %>% knitr::kable()
+```
+
+Berikut adalah grafik analisa deskriptif yang sudah dibuat:
+
+```{r}
+#| fig-width: 13
+#| fig-height: 18
+
+# 1. Timeline chart untuk semua channel marketing spending
+# Transform data dari wide format ke long format untuk visualisasi
+data_mmm_long <- data_mmm %>%
+  pivot_longer(
+    cols = c(tv_spend, digital_spend, offline_spend),
+    names_to = "channel",
+    values_to = "spending"
+  ) %>%
+  mutate(
+    channel = case_when(
+      channel == "tv_spend" ~ "TV",
+      channel == "digital_spend" ~ "Digital",
+      channel == "offline_spend" ~ "Offline",
+      TRUE ~ channel
+    ),
+    channel = factor(channel, levels = c("TV", "Digital", "Offline"))
+  )
+
+# Plot timeline untuk marketing spending
+p1 <- ggplot(data_mmm_long, aes(x = week, y = spending, color = channel)) +
+  geom_line(size = 1.2, alpha = 0.8) +
+  geom_point(size = 2) +
+  scale_color_manual(
+    values = c("TV" = "#E41A1C", "Digital" = "#377EB8", "Offline" = 
+"#4DAF4A")
+  ) +
+  labs(
+    title = "Marketing Spending Timeline (52 Weeks)",
+    subtitle = "Breakdown by Channel: TV, Digital, and Offline",
+    x = "Week",
+    y = "Spending ($)",
+    color = "Channel"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold", size = 16, hjust = 0.5),
+    plot.subtitle = element_text(size = 12, hjust = 0.5, color = "gray40"),
+    axis.title = element_text(face = "bold"),
+    legend.position = "bottom",
+    legend.title = element_text(face = "bold"),
+    panel.grid.minor = element_blank(),
+    plot.background = element_rect(fill = "white", color = NA)
+  ) +
+  scale_x_continuous(breaks = seq(0, 52, 4)) +
+  scale_y_continuous(labels = dollar_format())
+
+# print(p1)
+
+# 2. Timeline chart untuk sales
+p2 <- ggplot(data_mmm, aes(x = week, y = sales)) +
+  geom_line(color = "#984EA3", size = 1.5, alpha = 0.8) +
+  geom_area(fill = "#984EA3", alpha = 0.2) +
+  geom_point(color = "#984EA3", size = 2.5) +
+  labs(
+    title = "Sales Timeline (52 Weeks)",
+    subtitle = "Weekly Sales Performance",
+    x = "Week",
+    y = "Sales ($)"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold", size = 16, hjust = 0.5),
+    plot.subtitle = element_text(size = 12, hjust = 0.5, color = "gray40"),
+    axis.title = element_text(face = "bold"),
+    panel.grid.minor = element_blank(),
+    plot.background = element_rect(fill = "white", color = NA)
+  ) +
+  scale_x_continuous(breaks = seq(0, 52, 4)) +
+  scale_y_continuous(labels = dollar_format())
+
+# print(p2)
+
+# 3. Visualisasi hubungan antara total spending dan sales
+# Hitung total spending per minggu
+data_mmm <- data_mmm %>%
+  mutate(
+    total_spend = tv_spend + digital_spend + offline_spend,
+    spend_sales_ratio = total_spend / sales
+  )
+
+# Plot hubungan spending vs sales
+p3 <- ggplot(data_mmm, aes(x = week)) +
+  geom_line(aes(y = sales, color = "Sales"), size = 1.2) +
+  geom_line(aes(y = total_spend * 4, color = "Total Spend (scaled)"), size 
+= 1.2) +
+  scale_y_continuous(
+    name = "Sales ($)",
+    sec.axis = sec_axis(~./4, name = "Total Spending ($)", labels = 
+dollar_format()),
+    labels = dollar_format()
+  ) +
+  scale_color_manual(
+    values = c("Sales" = "#984EA3", "Total Spend (scaled)" = "#FF7F00")
+  ) +
+  labs(
+    title = "Sales vs Marketing Spending Timeline",
+    subtitle = "Sales (purple) vs Total Marketing Spending (orange, scaled 
+for comparison)",
+    x = "Week",
+    color = "Metric"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold", size = 16, hjust = 0.5),
+    plot.subtitle = element_text(size = 12, hjust = 0.5, color = "gray40"),
+    axis.title = element_text(face = "bold"),
+    axis.title.y.right = element_text(color = "#FF7F00"),
+    axis.title.y.left = element_text(color = "#984EA3"),
+    legend.position = "bottom",
+    legend.title = element_text(face = "bold"),
+    panel.grid.minor = element_blank(),
+    plot.background = element_rect(fill = "white", color = NA)
+  ) +
+  scale_x_continuous(breaks = seq(0, 52, 4))
+
+# print(p3)
+
+# 4. Stacked area chart untuk breakdown spending
+p4 <- ggplot(data_mmm_long, aes(x = week, y = spending, fill = channel)) +
+  geom_area(alpha = 0.8, position = "stack") +
+  scale_fill_manual(
+    values = c("TV" = "#E41A1C", "Digital" = "#377EB8", "Offline" = 
+"#4DAF4A")
+  ) +
+  labs(
+    title = "Marketing Spending Composition (Stacked Area)",
+    subtitle = "Breakdown of Marketing Budget Allocation Over Time",
+    x = "Week",
+    y = "Spending ($)",
+    fill = "Channel"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold", size = 16, hjust = 0.5),
+    plot.subtitle = element_text(size = 12, hjust = 0.5, color = "gray40"),
+    axis.title = element_text(face = "bold"),
+    legend.position = "bottom",
+    legend.title = element_text(face = "bold"),
+    panel.grid.minor = element_blank(),
+    plot.background = element_rect(fill = "white", color = NA)
+  ) +
+  scale_x_continuous(breaks = seq(0, 52, 4)) +
+  scale_y_continuous(labels = dollar_format())
+
+# print(p4)
+
+# 5. Heatmap untuk melihat pola mingguan
+# Buat data untuk heatmap (mengelompokkan per bulan)
+data_mmm <- data_mmm %>%
+  mutate(
+    month = ceiling(week / 4.33),  # Approximate month from weeks
+    week_in_month = week - (month - 1) * 4.33
+  )
+
+# Heatmap untuk sales
+p5 <- ggplot(data_mmm, aes(x = week, y = 1, fill = sales)) +
+  geom_tile() +
+  scale_fill_gradient2(
+    low = "#FDE725",
+    mid = "#21918C",
+    high = "#440154",
+    midpoint = median(data_mmm$sales),
+    labels = dollar_format()
+  ) +
+  labs(
+    title = "Sales Heatmap Timeline",
+    subtitle = "Color intensity represents sales amount",
+    x = "Week",
+    y = "",
+    fill = "Sales ($)"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold", size = 16, hjust = 0.5),
+    plot.subtitle = element_text(size = 12, hjust = 0.5, color = "gray40"),
+    axis.title = element_text(face = "bold"),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    legend.position = "bottom",
+    legend.title = element_text(face = "bold"),
+    panel.grid = element_blank(),
+    plot.background = element_rect(fill = "white", color = NA)
+  ) +
+  scale_x_continuous(breaks = seq(0, 52, 4))
+
+# print(p5)
+
+# 6. Facet plot untuk melihat semua metrics bersama-sama
+# Buat data untuk facet plot
+data_mmm_facet <- data_mmm %>%
+  select(week, tv_spend, digital_spend, offline_spend, sales) %>%
+  pivot_longer(
+    cols = -week,
+    names_to = "metric",
+    values_to = "value"
+  ) %>%
+  mutate(
+    metric = case_when(
+      metric == "tv_spend" ~ "TV Spending",
+      metric == "digital_spend" ~ "Digital Spending",
+      metric == "offline_spend" ~ "Offline Spending",
+      metric == "sales" ~ "Sales",
+      TRUE ~ metric
+    ),
+    metric = factor(metric, levels = c("TV Spending", "Digital Spending", 
+"Offline Spending", "Sales"))
+  )
+
+p6 <- ggplot(data_mmm_facet, aes(x = week, y = value)) +
+  geom_line(aes(color = metric), size = 1) +
+  geom_point(aes(color = metric), size = 1) +
+  facet_wrap(~metric, scales = "free_y", ncol = 2) +
+  scale_color_manual(
+    values = c("TV Spending" = "#E41A1C", 
+               "Digital Spending" = "#377EB8", 
+               "Offline Spending" = "#4DAF4A",
+               "Sales" = "#984EA3")
+  ) +
+  labs(
+    title = "Marketing Mix Model - All Metrics Timeline",
+    subtitle = "Weekly trends across all channels and sales",
+    x = "Week",
+    y = "Value ($)",
+    color = "Metric"
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(
+    plot.title = element_text(face = "bold", size = 16, hjust = 0.5),
+    plot.subtitle = element_text(size = 12, hjust = 0.5, color = "gray40"),
+    axis.title = element_text(face = "bold"),
+    strip.text = element_text(face = "bold", size = 10),
+    legend.position = "none",
+    panel.grid.minor = element_blank(),
+    plot.background = element_rect(fill = "white", color = NA)
+  ) +
+  scale_x_continuous(breaks = seq(0, 52, 13)) +
+  scale_y_continuous(labels = dollar_format())
+
+# print(p6)
+
+library(ggpubr)
+
+ggarrange(p1,p2,p3,p4,p5,p6,ncol = 2,nrow = 3)
+```
+
+Berikut adalah beberapa _summary statistics_:
+
+```{r}
+# Tampilkan summary statistics
+cat("\n=== SUMMARY STATISTICS ===\n")
+cat("Total Observations:", nrow(data_mmm), "weeks\n")
+cat("\nAverage Weekly Spending:\n")
+cat("  TV:", round(mean(data_mmm$tv_spend), 2), "\n")
+cat("  Digital:", round(mean(data_mmm$digital_spend), 2), "\n")
+cat("  Offline:", round(mean(data_mmm$offline_spend), 2), "\n")
+cat("  Total:", round(mean(data_mmm$total_spend), 2), "\n")
+cat("\nAverage Weekly Sales:", round(mean(data_mmm$sales), 2), "\n")
+cat("Average Spend-to-Sales Ratio:", 
+round(mean(data_mmm$spend_sales_ratio), 4), "\n")
+
+# Korelasi antara spending dan sales
+cor_matrix <- cor(data_mmm %>% select(tv_spend, digital_spend, 
+offline_spend, total_spend, sales))
+cat("\nCorrelation Matrix:\n")
+print(cor_matrix)
+```
+
+Temuan dari matriks korelasi:
+
+- **Sales vs Digital**: 0.688 (korelasi kuat).
+- **Sales vs TV**: 0.547 (korelasi sedang).
+- **Sales vs Offline**: 0.039 (korelasi sangat lemah).
+
+Untuk membangun model _Bayesian_ MMM, saya akan menggunakan _Bayesian linear regression_. Salah satu pembeda utama dari regresi ini dibandingkan regresi linear biasa adalah __kita bisa memasukkan informasi *prior* saat membangun model regresinya__.
+
+Pada kasus ini, saya akan memasukkan _prior_ sebagai berikut:
+
+1. _Intercept_ atau nilai konstanta regresi berada pada rentang 100 - 1000.
+1. Koefisien atau bobot masing-masing _campaign_ dalam formula regresi berdistribusi lognormal.
+
+**Rumus Model**: `sales ~ tv_spend + digital_spend + offline_spend`
+
+Berikut adalah model MMM yang dihasilkan:
+
+```{r}
+load("model.rda")
+summary(model_mmm)
+```
+
+Sebelum membahas interpretasi dari model, saya akan bahas terlebih dahulu _goodness of fit_ dari model ini.
+
+### Konvergensi Model (Diagnostik MCMC)
+
+#### **R-hat Values (Semua _spending campaign_ memberikan nilai 1.00)**
+
+- **Interpretasi**: **Sempurna!**.
+- **Implikasi**: Keempat _chain_ _MCMC_ telah konvergen ke distribusi _posterior_ yang sama
+- **Standar**: R-hat < 1.1 dianggap konvergen; 1.00 adalah hasil ideal.
+
+#### **Effective Sample Size (ESS)**
+
+- **Bulk ESS**: Semua > 3991 (sangat tinggi).
+- **Tail ESS**: Semua > 2164 (cukup tinggi).
+- **Interpretasi**: Sample size efektif sangat memadai untuk estimasi yang _reliable_.
+- **Rekomendasi**: ESS > 400 per _chain_ (kita punya > 1000 per _chain_).
+
+
+Setelah mengetahui bahwa model _Bayesian_ MMM yang dihasilkan sudah sangat baik performanya, berikut adalah interpretasi modelnya:
+
+### Parameter Model yang Dihasilkan
+
+#### **Intercept (972.90)**
+
+- **Interpretasi**: Ketika semua pengeluaran marketing = 0, _baseline sales_ adalah sekitar **973 unit**
+- **Credible Interval 95%**: [916.51, 1029.59]. Dengan probabilitas 95%, _baseline sales_ berada dalam rentang ini.
+- **Stabilitas**: __Rhat = 1.00__ menunjukkan konvergensi sempurna.
+
+#### **Koefisien Marketing Mix**
+
+**a. Social Media / Digital Spending (2.59)**
+
+- **Interpretasi**: Setiap **$1** peningkatan pengeluaran digital menghasilkan peningkatan **2.59 unit** _sales_.
+- **Efektivitas**: **Paling efektif** di antara semua _campaign_ (koefisien tertinggi).
+- **Credible Interval 95%**: [2.42, 2.77] - Efeknya sangat konsisten dan positif.
+- **ROI Implisit**: Jika harga per unit diketahui, bisa dihitung ROI spesifik.
+
+**b. TV Spending (1.26)**
+
+- **Interpretasi**: Setiap **$1** peningkatan pengeluaran TV menghasilkan peningkatan **1.26 unit** _sales_.
+- **Efektivitas**: Peringkat kedua setelah digital.
+- **Credible Interval 95%**: [1.16, 1.37] - Efek positif dan signifikan.
+
+**c. Offline Spending (0.66)**
+
+- **Interpretasi**: Setiap **$1** peningkatan pengeluaran offline menghasilkan peningkatan **0.66 unit** _sales_.
+- **Efektivitas**: **Paling rendah** di antara semua channel.
+- **Credible Interval 95%**: [0.37, 0.96] - Rentang lebih lebar menunjukkan ketidakpastian lebih tinggi.
+
+### Perbandingan Efektivitas Jenis _Campaign_
+
+Berdasarkan koefisien:
+
+1. **Digital**: 2.59 (paling efektif)
+2. **TV**: 1.26 (efektivitas sedang)
+3. **Offline**: 0.66 (paling rendah)
+
+**_Digital campaign_ 2x lebih efektif** daripada TV _campaign_, dan **4x lebih efektif** daripada _offline campaign_ dalam menghasilkan _sales_ per _spending_ yang diinvestasikan.
+
+### Error Term pada Model (sigma = 41.74)
+
+- **Interpretasi**: Standar deviasi residual adalah **41.74 unit**.
+- **Credible Interval 95%**: [33.94, 52.04].
+- **Implikasi**: Model memiliki ketidakpastian sekitar ±41.74 unit dalam memprediksi _sales_.
+
+
+### _Predictive Performance_
+
+#### **Rata-rata Penjualan vs Prediksi**
+
+- Rata-rata _actual sales_ dari data 1865.94 unit.
+- Rata-rata _predicted sales_ bisa dihitung dari formula regresi yang dihasilkan, yakni dengan menghitung **Intercept + efek rata-rata spending**:
+  - TV: 303.79 × 1.26 = 382.77
+  - Digital: 173.75 × 2.59 = 450.01
+  - Offline: 84.69 × 0.66 = 55.89
+  - **Total prediksi**: 972.90 + 382.77 + 450.01 + 55.89 = **1861.57**
+- Sehinga menghasilkan **_error_ prediksi sebesar**: 1865.94 - 1861.57 = **4.37 unit** (hanya __0.23% *error*__).
+
+#### **Standard Error vs Variabilitas Data**
+
+- **SD actual sales**: 212.44
+- **SD residual (sigma)**: 41.74
+- **Proporsi variabilitas yang dijelaskan**: 
+  - Variabilitas total: 212.44² = 45130
+  - Variabilitas residual: 41.74² = 1742
+  - **R² implisit**: 1 - (1742/45130) = **0.961** atau **96.1%**
+  - **Interpretasi**: Model menjelaskan **96.1% variabilitas** dalam data penjualan.
+
+
+Sekarang saya akan membuat simulasi untuk menghitung berapa peluang _digital spend_ __lebih efektif dalam menghasilkan *sales*__ dibandingkan TV _spend_.
+
+```{r}
+#| echo: true
+
+posterior_samples <- as_draws_df(model_mmm)
+
+prob_digital_vs_tv <- mean(posterior_samples$b_digital_spend > posterior_samples$b_tv_spend)
+
+print(paste0("Probabilitas Digital lebih efektif dari TV: ", prob_digital_vs_tv * 100, "%"))
+```
+
+Perhitungan tersebut mengkonfirmasi bukti yang sangat kuat untuk mengalokasikan _budget_ ke digital.
+
+Beberapa strategi yang bisa dilakukan antara lain:
+
+- **Prioritaskan Digital**: Alokasi terbesar karena ROI tertinggi.
+    - **Digital** memiliki resiko rendah yang terlihat dari _credible interval_ yang sempit (2.42-2.77).
+- **Pertahankan TV**: Efektif tapi kurang dari digital.
+- **Evaluasi Offline**: Pertimbangkan mengurangi atau mengoptimalkan.
+    - **Offline** memiliki resiko tinggi yang terlihat dari _credible interval_ yang lebar (0.37-0.96).
+
+
+
+
+
+
+
+
+

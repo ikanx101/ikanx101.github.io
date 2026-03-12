@@ -19,6 +19,10 @@ data_mmm <- data.frame(
     sales = 1000 + (1.2 * tv_spend) + (2.5 * digital_spend) + (0.8 * social_spend) + rnorm(n, 0, 50)
   )
 
+data_mmm = data_mmm %>% rename(offline_spend = social_spend)
+
+save(data_mmm,file = "raw.rda")
+
 # 2. Define Priors (Kunci dari Bayesian MMM)
 # Kita paksa koefisien (b) bernilai positif dengan distribusi Lognormal
 my_priors <- c(
@@ -28,7 +32,7 @@ my_priors <- c(
 
 # 3. Running Bayesian Model
 model_mmm <- brm(
-  formula = sales ~ tv_spend + digital_spend + social_spend,
+  formula = sales ~ tv_spend + digital_spend + offline_spend,
   data = data_mmm,
   prior = my_priors,
   family = gaussian(),
@@ -38,6 +42,8 @@ model_mmm <- brm(
   cores = 4,
   seed = 123
 )
+
+save(model_mmm,file = "model.rda")
 
 # 4. Visualisasi Hasil
 plot(model_mmm)
