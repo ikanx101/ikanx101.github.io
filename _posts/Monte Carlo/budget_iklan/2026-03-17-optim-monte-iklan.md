@@ -1,5 +1,5 @@
 ---
-date: 2026-17-03T11:33:00-04:00
+date: 2026-03-17T11:33:00-04:00
 title: "Optimization Story: Berapa Budget Iklan yang Optimal Berdasarkan Simulasi Monte Carlo?"
 categories:
   - Blog
