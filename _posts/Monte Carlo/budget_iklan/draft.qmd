@@ -1,0 +1,422 @@
+---
+title: "Berapa Budget Iklan yang Optimal Berdasarkan Simulasi Monte Carlo?"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  error: false
+  echo: false
+---
+
+```{r}
+rm(list=ls())
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(ggpubr)
+library(fitdistrplus)
+library(scales)
+library(parallel)
+
+ncore = 16
+
+set.seed(101)
+```
+
+## Pertanyaan yang Sering Muncul Saat *Meeting*
+
+Bayangkan skenario ini:
+
+Saya sedang *meeting* bersama tim *marketing*. *Slides* sudah terbuka, angka-angka kuartal lalu sudah dibahas. Lalu tiba-tiba tim *marketing* melempar pertanyaan:
+
+> ***"Kalau kita mau campaign bulan depan, kira-kira spend berapa yang optimal?"***
+
+Sebagai data *analyst* merangkap *market researcher*, saya mungkin akan langsung menghitung *budget* secara sederhana di kepala. Saya ambil *mean* **ROI** secara historikal, kemudian dibagi dengan *target revenue* dengan angka itu, selesai.
+
+Tapi tunggu dulu. Apakah semudah itu? Masalahnya **ROI** dari suatu *campaign* adalah angka yang dinamis. Pada saat bulan Ramadan bisa menghasilkan ROI 5x tapi saat bulan sepi bisa hanya mencapai 0.8x. Lalu pada saat kompetitor tiba-tiba agresif, ROI bisa terjun bebas. Maka dari itu, kika kita hanya pakai angka *mean* **ROI**, kita sedang berpura-pura bahwa dunia itu deterministik — padahal tidak.
+
+Kali ini saya akan coba membahas bagaimana [Simulasi Monte Carlo](https://ikanx101.com/tags/#monte-carlo) bisa membantu kita membuat keputusan *budget* *campaign* yang lebih cerdas, dengan merangkul ketidakpastian sebagai bagian dari modelnya.
+
+## Mengapa Pendekatan "Rata-rata" Saja Tidak Cukup?
+
+Mari kita mulai dengan contoh sederhana. Misalkan saya memiliki data historikal **ROI** suatu *campaign* selama 12 bulan terakhir adalah sebagai berikut:
+
+```{r}
+roi_historis <- c(1.2, 3.5, 2.8, 0.9, 4.1, 2.2, 5.0, 1.8, 3.3, 0.7, 2.9, 3.8)
+
+data.frame(bulan = 1:12,
+           ROI = roi_historis) %>% 
+  knitr::kable()
+
+source("descriptive_stats.R")
+tampilkan_statistik_roi()
+```
+
+Rata-rata ROI kita adalah 2.68. Jika target revenue bulan depan adalah Rp 500 juta, maka *budget* "optimal" versi perhitungan sederhana adalah:
+
+> **Budget = Target Revenue / Rata-rata ROI = Rp 500 juta / 2.68 = Rp 186 juta**.
+
+Kelihatannya masuk akal. Tapi ada beberapa pertanyaan yang tidak terjawab:
+
+1.  Berapa probabilitas kita benar-benar mencapai Rp 500 juta dengan *budget* tersebut?
+2.  Apa yang terjadi jika **ROI** bulan depan hanya 0.7 (seperti yang pernah terjadi)?
+3.  Apakah ada *level budget* yang lebih aman secara statistik?
+
+Masalah utama saat kita menggunakan *mean* adalah ***mean*** **menyembunyikan variabilitas**. Standar deviasi dari data historikal ROI kita adalah sebesar 1.26 (hampir separuh dari nilai *mean*). Hal ini mengindikasikan **ketidakpastian yang sangat tinggi dan tidak boleh diabaikan**.
+
+Untuk mengatasi hal ini, saya akan melakukan simulasi Monte Carlo. Analogi sederhana dari simulasi Monte Carlo adalah sebagai berikut:
+
+> **Bayangkan kita melempar dua buah dadu lalu kita ingin mengetahui peluang mendapat angka total \> 7. Secara *analitik* peluang ini bisa dihitung secara matematis. Tapi secara Monte Carlo, kita bisa melakukan pelemparan dua buah dadu sebanyak 100.000 kali, lalu menghitung berapa kali kejadian dua buah dadu muncul dengan angka total hasilnya \> 7. Dari berapa kali kejadian, kita bisa hitung proporsi / peluangnya. Hasilnya akan sangat mendekati jawaban analitik.**
+
+### Tiga Komponen Utama Simulasi Monte Carlo
+
+1.  *Input* yang tidak pasti → didefinisikan sebagai distribusi probabilitas, bukan angka tunggal.
+2.  Model deterministik → hubungan matematis antar variabel (misal: Revenue = Budget x ROI).
+3.  Output berupa distribusi → hasil simulasi N iterasi yang menunjukkan *range* kemungkinan.
+
+Untuk kasus *campaign budget* kita, *input*-nya adalah distribusi **ROI** (yang tidak pasti), modelnya adalah **Revenue = Budget x ROI**, dan *output*-nya adalah distribusi *revenue* yang mungkin dihasilkan untuk setiap *level budget*.
+
+### Membuat Simulasi Monte Carlo
+
+Misalkan saya memiliki beberapa informasi dan parameter sebagai berikut:
+
+-   Data historis **ROI**: 12 bulan terakhir (seperti pada tabel di atas).
+-   Target *profit* minimum: Rp 0 (minimal balik modal).
+-   *Range campaign budget* yang akan dievaluasi: **Rp 50 juta hingga Rp 500 juta**.
+-   Jumlah simulasi: 10.000 iterasi per *level budget*.
+-   Biaya produksi (*COGS*) tetap: Rp 300 juta.
+
+Sehingga profit bisa didefinisikan sebagai **profit = revenue - budget - COGS**.
+
+Sebelum simulasi, kita perlu mengetahui distribusi probabilitas yang paling cocok untuk data historikal **ROI** kita. ROI yang kita punya adalah angka positif dengan kecenderungan *skewness* 0 alias simetris. Oleh karena itu distribusi *normal* adalah kandidat yang baik.
+
+Untuk melakukan *fitting* distribusi, kita bisa menggunakan `library(fitdistrplus)`.
+
+```{r}
+#| echo: true
+
+# Fitting distribusi ormal
+fit_norm <- fitdist(roi_historis,"norm")
+
+# 1. Plot diagnostik - 4 plot sekaligus
+plot(fit_norm)
+
+# 2. Goodness-of-fit statistics
+gof_stats <- gofstat(fit_norm)
+print(gof_stats)
+
+# 3. Ringkasan lengkap
+summary(fit_norm)
+
+```
+
+Berikut adalah parameter distribusi *normal* yang saya dapatkan:
+
+-   **mean** = 2.683333 ± 0.3732056 (*Standard Error*).
+-   **sd** = 1.292822 ± 0.2638955 (*Standard Error*).
+
+Sebelum lanjut ke simulasinya, mari kita lihat *goodness of fit* perhitungan *fitting* distribusi yang kita dapatkan. **Catatan penting**: Dengan hanya 12 *data points*, hasil *fitting* mungkin kurang stabil.
+
+Indikator kualitas baik:
+
+1.  Dari parameter distribusi:
+
+-   **Mean**: 2.68 dengan *standard error* 0.37 (presisi cukup baik).
+-   **SD**: 1.29 dengan *standard error* 0.26 (presisi cukup baik).
+
+2.  **Plot Diagnostik**:
+    -   Density plot: Kurva teoritis cukup mengikuti histogram empiris.
+    -   CDF plot: Kurva teoritis mendekati CDF empiris.
+    -   Q-Q plot: Titik-titik mendekati garis diagonal.
+    -   P-P plot: Titik-titik mendekati garis diagonal.
+3.  **Goodness-of-fit Tests**:
+    -   KS test p-value \> 0.05: distribusi normal *acceptable*.
+
+Tahap berikutnya, saya akan membuat *function* untuk melakukan simulasi Monte Carlo:
+
+```{r}
+#| echo: true
+
+# Fungsi utama simulasi Monte Carlo
+simulasi_monte_carlo <- function(budget_juta,
+                                 cogs_juta = 300,
+                                 n_sim = 10000,
+                                 meanlog = 2.683333,
+                                 sdlog   = 1.292822) {
+
+  # Konversi ke juta rupiah
+  budget <- budget_juta * 1e6
+  cogs   <- cogs_juta   * 1e6
+
+  # Simulasi ROI dari distribusi log-normal
+  roi_sim <- rnorm(n_sim, mean = meanlog, sd = sdlog)
+
+  # Hitung revenue dan profit
+  revenue_sim <- budget * roi_sim
+  profit_sim  <- revenue_sim - budget - cogs
+
+  # Kembalikan ringkasan hasil
+  list(
+    budget_juta      = budget_juta,
+    prob_profit       = mean(profit_sim > 0),
+    median_profit     = median(profit_sim) / 1e6,
+    mean_profit       = mean(profit_sim)   / 1e6,
+    p10_profit        = quantile(profit_sim, 0.10) / 1e6,
+    p90_profit        = quantile(profit_sim, 0.90) / 1e6,
+    profit_sim_juta   = profit_sim / 1e6
+  )
+}
+```
+
+Oke, kemudian saya akan jalankan simulasi untuk berbagai level *campaign budget*. Berikut adalah hasil simulasinya:
+
+```{r}
+# Range budget yang akan dievaluasi (dalam juta rupiah)
+budget_range <- seq(50, 500, by = 5)
+
+# Jalankan simulasi untuk setiap level budget
+hasil_simulasi <- lapply(budget_range, simulasi_monte_carlo)
+
+# Konversi ke data frame untuk analisis
+df_hasil <- data.frame(
+  budget_juta   = budget_range,
+  prob_profit   = sapply(hasil_simulasi, function(x) x$prob_profit),
+  median_profit = sapply(hasil_simulasi, function(x) x$median_profit),
+  p10_profit    = sapply(hasil_simulasi, function(x) x$p10_profit),
+  p90_profit    = sapply(hasil_simulasi, function(x) x$p90_profit)
+)
+
+# Lihat hasilnya
+print(df_hasil)
+```
+
+Beberapa titik kritis yang teridentifikasi:
+
+1.  **Break-even Point**: *Budget* Rp 175 juta adalah titik dimana *profit* median menjadi positif (Rp 0.7 juta).
+2.  **Profitability Threshold**: *Budget* Rp 200 juta memberikan probabilitas *profit* \>50% (56.3%).
+3.  **Optimal Efficiency Point**: *Budget* Rp 275 juta memberikan probabilitas *profit* 67.8% dengan *profit* median Rp 173.6 juta.
+4.  **Diminishing Returns Start**: Setelah budget Rp 400 juta, peningkatan probabilitas *profit* melambat signifikan.
+
+## Visualisasi Lengkap Hasil Simulasi
+
+Grafik pertama adalah grafik probabilitas perusahaan mendapatan *profit positif* (*profit* \> Rp 0) di setiap level *campaign budget*.
+
+```{r}
+# ── Plot 1: Kurva Probabilitas Profit vs Budget ──────────────────
+ggplot(df_hasil, aes(x = budget_juta, y = prob_profit)) +
+  geom_line(color = '#2E75B6', linewidth = 1.2) +
+  geom_point(color = '#2E75B6', size = 2) +
+  geom_hline(yintercept = 0.75, linetype = 'dashed',
+             color = 'red', linewidth = 0.8) +
+  geom_hline(yintercept = 0.90, linetype = 'dashed',
+             color = 'orange', linewidth = 0.8) +
+  annotate('text', x = 480, y = 0.70, label = '75% threshold',
+           color = 'red', size = 3.5) +
+  annotate('text', x = 480, y = 0.92, label = '90% threshold',
+           color = 'orange', size = 3.5) +
+  scale_x_continuous(labels = label_comma(suffix = ' Jt')) +
+  scale_y_continuous(labels = percent_format()) +
+  labs(
+    title    = 'Probabilitas Profit vs Level Campaign Budget',
+    subtitle = 'Berdasarkan 10.000 simulasi Monte Carlo',
+    x        = 'Campaign Budget (Juta Rupiah)',
+    y        = 'Probabilitas Profit > 0'
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(plot.title = element_text(face = 'bold', color = '#1F4E79'))
+```
+
+Dari grafik di atas, pada rentang *campaign budget* Rp 50 - Rp 500 juta, masih belum ditemukan *budget* minimal yang bisa **memastikan 90% peluang perusahaan akan mendapatkan *profit* positif**. Namun, jika kita menggunakan angka 75% peluang, kita bisa dapatkan *campaign budget* minimal sebesar Rp 360 juta.
+
+Salah satu kelebihan aplikasi simulasi Monte Carlo adalah kita bisa menghitung nilai omset versi optimis, pesimis, dan median. Berikut adalah visualisasinya:
+
+```{r}
+# ── Plot 2: Fan Chart Profit (Best/Median/Worst Case) ───────────
+ggplot(df_hasil, aes(x = budget_juta)) +
+  geom_ribbon(aes(ymin = p10_profit, ymax = p90_profit),
+              fill = '#2E75B6', alpha = 0.2) +
+  geom_line(aes(y = median_profit), color = '#2E75B6',
+            linewidth = 1.2) +
+  geom_line(aes(y = p10_profit), color = '#E74C3C',
+            linetype = 'dashed', linewidth = 0.8) +
+  geom_line(aes(y = p90_profit), color = '#27AE60',
+            linetype = 'dashed', linewidth = 0.8) +
+  geom_hline(yintercept = 0, color = 'black',
+             linewidth = 0.5, linetype = 'dotted') +
+  scale_x_continuous(labels = label_comma(suffix = ' Jt')) +
+  scale_y_continuous(labels = label_comma(suffix = ' Jt')) +
+  labs(
+    title    = 'Distribusi Profit: Skenario Optimis, Median, Pesimis',
+    subtitle = 'Garis biru = median | Merah = P10 (pesimis) | Hijau = P90 (optimis)',
+    x        = 'Campaign Budget (Juta Rupiah)',
+    y        = 'Estimasi Profit (Juta Rupiah)'
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(plot.title = element_text(face = 'bold', color = '#1F4E79'))
+```
+
+Berikut adalah distribusi profit untuk beberapa level *campaign budget* tertentu:
+
+```{r}
+# ── Plot 3: Distribusi Profit untuk Budget Tertentu ─────────────
+# Ambil tiga skenario budget: konservatif, moderat, agresif
+budget_pilihan <- c(100, 200, 300, 350, 400)  # dalam juta rupiah
+
+df_dist <- lapply(budget_pilihan, function(b) {
+  sim <- simulasi_monte_carlo(b)
+  data.frame(
+    budget = paste0('Campaign budget: Rp ', b, ' Jt'),
+    profit = sim$profit_sim_juta
+  )
+}) %>% bind_rows()
+
+ggplot(df_dist, aes(x = profit, fill = budget)) +
+  geom_histogram(bins = 60, alpha = 0.7, position = 'identity') +
+  geom_vline(xintercept = 0, color = 'red',
+             linewidth = 1, linetype = 'dashed') +
+  facet_wrap(~budget, ncol = 1, scales = 'free_y') +
+  scale_x_continuous(labels = label_comma(suffix = ' Jt')) +
+  labs(
+    title = 'Distribusi Profit per Skenario Budget',
+    subtitle = 'Garis merah = titik impas (profit = 0)',
+    x = 'Profit (Juta Rupiah)',
+    y = 'Frekuensi Simulasi'
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title  = element_text(face = 'bold', color = '#1F4E79'),
+    legend.position = 'none'
+  )
+```
+
+## Rekomendasi Strategis
+
+Dari tabel hasil simulasi, saya bisa membuat [*AI agent marketing expert*](https://ikanx101.com/tags/#agentic-ai) untuk menghasilkan beberapa strategi yang bisa dilakukan oleh perusahaan:
+
+### Strategi Pesimis (Konservatif)
+
+Target Utama:
+
+-   **Capital Preservation**: Melindungi modal dari kerugian besar.
+-   **Sustainable Growth**: Pertumbuhan bertahap dengan risiko minimal.
+-   **Market Testing**: Validasi model bisnis dengan investasi terbatas.
+
+*Budget* Rekomendasi: Rp 100-150 juta.
+
+-   **Rp 100 juta**: Probabilitas *profit* 15.1%, *profit* median -Rp 130.5 juta, P90 *profit* Rp 33.2 juta.
+-   **Rp 125 juta**: Probabilitas *profit* 28.2%, *profit* median -Rp 92.3 juta, P90 *profit* Rp 113.5 juta.
+-   **Rp 150 juta**: Probabilitas *profit* 40.4%, *profit* median -Rp 48.3 juta, P90 *profit* Rp 204.7 juta.
+
+Taktik Implementasi:
+
+1.  **Phase 1 (Rp 100 juta)**:
+    -   Fokus pada *channel marketing* dengan ROI tercepat (social media, SEM).
+    -   A/B testing intensif untuk optimasi *creative.*
+    -   Target: *Break-even* atau *minimal loss.*
+2.  **Phase 2 (Scale to Rp 150 juta)**:
+    -   Scale channel yang terbukti efektif.
+    -   Diversifikasi ke 2-3 channel tambahan.
+    -   Implementasi *marketing automation*.
+3.  **Risk Management**:
+    -   *Stop-loss mechanism*: Evaluasi setiap Rp 25 juta.
+    -   *Maximum acceptable loss*: Rp 100 juta.
+    -   *Exit strategy* jika tidak mencapai target dalam 3 bulan.
+
+### Strategi Menengah (*Balance*)
+
+Target Utama:
+
+-   **Profit Maximization**: Mencapai *profit* optimal dengan risiko terkendali.
+-   **Market Penetration**: Mendapatkan *market share* yang signifikan.
+-   **Brand Building**: Membangun *brand awareness* yang *sustainable*.
+
+*Budget* Rekomendasi: Rp 200-300 juta.
+
+-   **Rp 200 juta**: Probabilitas *profit* 56.3%, *profit* median Rp 39.3 juta, P90 *profit* Rp 362.7 juta.
+-   **Rp 250 juta**: Probabilitas *profit* 64.2%, *profit* median Rp 123.1 juta, P90 *profit* Rp 536.9 juta.
+-   **Rp 275 juta (Sweet Spot)**: Probabilitas *profit* 67.8%, *profit* median Rp 173.6 juta, P90 *profit* Rp 624.2 juta.
+-   **Rp 300 juta**: Probabilitas *profit* 70.1%, *profit* median Rp 205.3 juta, P90 *profit* Rp 693.1 juta.
+
+Taktik Implementasi:
+
+1.  Lakukan *channel allocation strategy* yang terukur. Misalkan:
+    -   **40%**: *High-performance digital channels* (SEM, *Social Media Ads*).
+    -   **30%**: *Content marketing & SEO* (*long-term growth*).
+    -   **20%**: *Partnership & influencer marketing*.
+    -   **10%**: *Experimentation & innovation*.
+2.  **Performance Optimization**:
+    -   *Real-time dashboard* dengan KPI *tracking*.
+    -   *Weekly performance review* dengan *budget reallocation*.
+    -   *Customer journey optimization*.
+3.  **Scalability Framework**:
+    -   *Marketing technology stack implementation*.
+    -   *Team expansion* dengan *specialist per channel*.
+    -   *Data-driven decision making process*.
+
+### Strategi Optimis (agresif)
+
+Target Utama:
+
+-   **Market Leadership**: Menjadi *market leader* dalam kategori.
+-   **Exponential Growth**: Mencapai *scale* yang signifikan.
+-   **Competitive Advantage**: Membangun *moat* yang *sustainable*.
+
+*Budget* Rekomendasi: Rp 400-500 juta.
+
+-   **Rp 400 juta**: Probabilitas *profit* 76.0%, *profit* median Rp 375.5 juta, P90 *profit* Rp 1,052 juta.
+-   **Rp 450 juta**: Probabilitas *profit* 78.6%, *profit* median Rp 443.9 juta, P90 *profit* Rp 1,209 juta.
+-   **Rp 500 juta**: Probabilitas *profit* 79.8%, *profit* median Rp 536.5 juta, P90 *profit* Rp 1,367 juta.
+
+Taktik Implementasi:
+
+1.  **Omni-channel Dominance**:
+    -   *Full-funnel marketing strategy*.
+    -   *Integrated campaign across all channels*.
+    -   *Brand building* dengan *premium positioning*.
+2.  **Innovation & Technology**:
+    -   *AI-powered marketing optimization*.
+    -   *Advanced customer segmentation & personalization*.
+    -   *Marketing technology ecosystem*.
+3.  **Competitive Strategy**:
+    -   *Aggressive customer acquisition*.
+    -   *Market share expansion*.
+    -   *Barrier to entry creation*.
+4.  **Risk Considerations**:
+    -   *Cash flow management* yang ketat.
+    -   *Scenario planning* untuk berbagai kondisi ekonomi.
+    -   *Contingency fund* 20% dari *total budget*.
+
+**Kesimpulan Final**: Berdasarkan analisis komprehensif seluruh data hasil simulasi, **Strategi Menengah dengan budget Rp 275 juta** memberikan _optimal balance_ untuk sebagian besar perusahaan. Namun, keputusan akhir harus mempertimbangkan faktor-faktor spesifik perusahaan seperti _cash flow position_, _risk appetite_, _competitive landscape_, dan _strategic objectives_ jangka panjang.
+
+## Limitasi Simulasi Ini
+
+Seperti semua model kuantitatif, Monte Carlo bukan *magic bullet*. Ada beberapa hal yang perlu dicatat:
+
+1.  *Garbage in, garbage out*. Kualitas simulasi sangat bergantung pada asumsi distribusi *input*. Jika distribusi **ROI** yang kita *fitting* tidak merepresentasikan kondisi nyata, hasil simulasi pun tidak bisa dipercaya.
+2.  Membutuhkan data historis yang cukup. *Fitting* distribusi dari 12 titik data memberikan estimasi yang kasar. Semakin banyak data historis, semakin akurat distribusi yang dihasilkan.
+3.  Tidak menangkap perubahan struktural. Jika ada perubahan besar di pasar (resesi, pandemi, kompetitor baru), distribusi historis mungkin tidak relevan untuk masa depan.
+4.  Model sederhana. Dalam contoh ini kita hanya memodelkan **ROI sebagai satu-satunya sumber ketidakpastian**. Di dunia nyata, **COGS**, harga jual, dan *conversion rate* juga bisa bervariasi dan semuanya bisa dimasukkan ke dalam model.
+
+Agar simulasi bisa lebih baik dan realistis, kita bisa melakukan *sensitivity analysis* dengan cara mencoba-coba mengubah asumsi distribusi dan lihat seberapa sensitif hasilnya. Jika hasil berubah drastis, itu pertanda model Anda sangat tergantung pada asumsi tersebut.
+
+## *Epilog*
+
+Kita sering tergoda untuk menyederhanakan masalah yang kompleks menjadi satu angka tunggal.
+
+> Rata-rata **ROI** 2.68x, *campaign budget* optimal Rp 186 juta — selesai, _meeting kelar_.
+
+Tapi ketidakpastian itu nyata dan menyembunyikannya di balik angka rata-rata hanya membuat kita merasa lebih pasti dari yang seharusnya.
+
+Simulasi Monte Carlo mengajarkan kita cara berpikir yang berbeda: alih-alih mencari jawaban tunggal, kita pelajari distribusi dari semua kemungkinan jawaban. Hasilnya bukan hanya lebih jujur secara statistik, tapi juga lebih berguna untuk pengambilan keputusan. Hal yang menarik, implementasinya di **R** tidak serumit yang dibayangkan. Dengan beberapa puluh baris kode, kita sudah bisa menghasilkan analisis yang jauh lebih kaya dari sekadar rata-rata.
+
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
+
