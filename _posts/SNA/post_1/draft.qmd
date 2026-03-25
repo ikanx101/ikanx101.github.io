@@ -1,0 +1,608 @@
+---
+title: "Mencari Super Spreader di Suatu Kelompok Konsumen"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  error: false
+  echo: false
+---
+
+Pada 2020 lalu, saya pernah menuliskan bagaimana aplikasi penggunaan [*social network analysis* dalam konteks *human resources*](https://ikanx101.com/blog/sna-feedback/) di perusahaan tempat saya bekerja. Kali ini saya akan coba menuliskan aplikasi penggunaan *social network analysis* pada suatu komunitas konsumen.
+
+------------------------------------------------------------------------
+
+Tahun 2003, [Malcolm Gladwell](https://en.wikipedia.org/wiki/Malcolm_Gladwell) mempopulerkan konsep **'The Tipping Point'**, yakni suatu gagasan dimana epidemi, tren sosial, dan produk viral tidak menyebar secara merata. Melainkan, penyebarannya sangat bergantung pada segelintir orang yang ia sebut *Connectors*, *Mavens*, dan *Salesmen*.
+
+Dua dekade kemudian, saya masih sering mendengar versi modernnya saat *meeting* bersama tim *marketing*:
+
+> Kita perlu mencari *influencer* yang tepat!
+
+Maka masalahnya sekarang adalah bagaimana caranya mengidentifikasi *influencer* organik di dalam komunitas konsumen kita sendiri. Bukan seorang artis berbayar tapi orang-orang nyata yang paling banyak mempengaruhi keputusan pembelian bagi orang lain.
+
+Untuk menjawabnya, kita perlu melakukan *social network analysis* yang memandang komunitas konsumen bukan sebagai kumpulan individu, melainkan sebagai jaringan hubungan.
+
+## Apa itu *Social Network Analysis*?
+
+*Social Network Analysis* (SNA) adalah metode untuk mempelajari struktur sosial melalui **teori graf**. Dalam konteks *market research*, kita memodelkan:
+
+-   *Node* (simpul) = konsumen atau individu.
+-   *Edge* (sisi/panah) = hubungan antar konsumen, misalnya 'A merekomendasikan produk kepada B'.
+-   *Weight* (bobot) = kekuatan hubungan, misalnya frekuensi rekomendasi.
+
+Jaringan ini bisa *directed* (berarah, maksudnya A → B tidak sama dengan B → A) atau *undirected* (tidak berarah). Untuk analisa ***word-of-mouth***, kita biasanya menggunakan *directed graph* karena rekomendasi memiliki arah.
+
+## Metrik *Centrality*: Mengukur "Kepentingan" Sebuah *Node*
+
+Inti dari identifikasi *super spreader* adalah mencari dan menghitung semua metrik *centrality*. Ada empat metrik utama yang akan kita gunakan:
+
+| Metrik | Definisi | Analogi |
+|------------------------|------------------------|------------------------|
+| *Degree centrality* | Jumlah koneksi langsung yang dimiliki *node* | Orang yang paling banyak temannya |
+| *Betweenness centrality* | Seberapa sering *node* menjadi **jembatan** jalur terpendek antar *node* lain | *Broker* atau perantara informasi |
+| *Closeness centrality* | Seberapa dekat (rata-rata) *node* ke semua *node* lain | Orang yang paling cepat menerima informasi baru |
+| *Page rank* | Pengaruh berbasis kualitas koneksi, bukan hanya kuantitas | Populer di kalangan orang-orang yang juga populer |
+
+
+Mengapa diperlukan empat metrik yang berbeda? 
+
+> Setiap metrik menangkap dimensi pengaruh yang berbeda. Seseorang bisa punya _degree_ tinggi (banyak teman) tapi _betweenness_ rendah (temannya saling kenal satu sama lain, jadi dia bukan jembatan kritis). _Super spreader_ sejati biasanya tinggi di beberapa metrik sekaligus.
+
+Oke, saya akan coba membuat data sintetis untuk sebagai contoh studi kasus.
+
+## Data Survey Minuman Kesehatan
+
+Saya akan mensimulasikan sebuah _brand_ minuman kesehatan yang baru diluncurkan. Tim _marketing_ melakukan survei kepada 50 konsumen awal dengan pertanyaan:
+
+> _"Apakah Anda pernah merekomendasikan produk ini kepada seseorang? Jika ya, siapa saja (nama atau inisial)?" dan "Dari siapa Anda pertama kali mendengar tentang produk ini?"_
+
+Dari survei ini, misalkan kita punya 50 orang konsumen. Kemudian kita mendapatkan _edge list_, yakni daftar pasangan konsumen (A merekomendasikan kepada B).
+
+
+```{r}
+rm(list=ls())
+
+library(igraph)
+library(ggraph)
+library(tidygraph)
+library(dplyr)
+library(ggplot2)
+library(scales)
+library(RColorBrewer)
+
+set.seed(101)  # Reproduktibilitas
+
+# Buat daftar 50 konsumen dengan nama fiktif
+konsumen <- c(
+  'Andi', 'Budi', 'Citra', 'Dewi', 'Eko',
+  'Fani', 'Gilang', 'Hana', 'Irwan', 'Joko',
+  'Kartika', 'Luki', 'Mira', 'Nanda', 'Oki',
+  'Prita', 'Qori', 'Rafi', 'Sinta', 'Tono',
+  'Umar', 'Vina', 'Wawan', 'Xena', 'Yudi',
+  'Zara', 'Agus', 'Bagas', 'Cici', 'Dian',
+  'Evan', 'Fitri', 'Galih', 'Hesti', 'Imam',
+  'Juli', 'Kevin', 'Laras', 'Mario', 'Nina',
+  'Oscar', 'Putri', 'Reza', 'Sarah', 'Tegar',
+  'Ulfa', 'Vino', 'Wulan', 'Xander', 'Yanti'
+)
+
+# Simulasi struktur jaringan word-of-mouth yang realistis:
+# Ada beberapa 'hub' (super spreader) dan banyak node biasa
+#
+# Super spreader: Andi, Citra, Joko, Sinta, Kartika
+# Mereka masing-masing merekomendasikan ke banyak orang
+
+edges_from <- c(
+  # Andi adalah super spreader pertama (degree tinggi)
+  rep('Andi', 8),
+  # Citra adalah super spreader kedua
+  rep('Citra', 7),
+  # Joko adalah broker/jembatan antar komunitas
+  rep('Joko', 6),
+  # Sinta adalah super spreader dalam komunitas berbeda
+  rep('Sinta', 6),
+  # Kartika memiliki koneksi ke banyak komunitas
+  rep('Kartika', 5),
+  # Konsumen biasa (1-2 rekomendasi)
+  'Budi', 'Budi',
+  'Dewi', 'Dewi',
+  'Fani',
+  'Gilang', 'Gilang',
+  'Hana',
+  'Irwan', 'Irwan',
+  'Luki',
+  'Mira', 'Mira',
+  'Nanda',
+  'Oki', 'Oki',
+  'Prita',
+  'Rafi', 'Rafi',
+  'Tono',
+  'Umar',
+  'Vina', 'Vina',
+  'Wawan',
+  'Evan', 'Evan',
+  'Galih',
+  'Laras'
+)
+
+edges_to <- c(
+  # Penerima rekomendasi dari Andi
+  'Budi', 'Citra', 'Dewi', 'Eko', 'Fani', 'Gilang', 'Hana', 'Irwan',
+  # Penerima dari Citra
+  'Joko', 'Kartika', 'Luki', 'Mira', 'Nanda', 'Oki', 'Prita',
+  # Penerima dari Joko
+  'Sinta', 'Tono', 'Umar', 'Vina', 'Wawan', 'Xena',
+  # Penerima dari Sinta
+  'Yudi', 'Zara', 'Agus', 'Bagas', 'Cici', 'Dian',
+  # Penerima dari Kartika
+  'Evan', 'Fitri', 'Galih', 'Hesti', 'Imam',
+  # Penerima dari konsumen biasa
+  'Qori', 'Rafi',
+  'Sinta', 'Kevin',
+  'Juli',
+  'Laras', 'Mario',
+  'Nina',
+  'Oscar', 'Putri',
+  'Reza',
+  'Sarah', 'Tegar',
+  'Ulfa',
+  'Vino',
+  'Wulan', 'Xander',
+  'Yanti',
+  'Andi',
+  'Citra', 'Joko',
+  'Kartika',
+  'Sinta',
+  'Bagas', 'Cici',
+  'Dian',
+  'Zara', 'Agus'
+)
+
+# Buat data frame edge list
+df_edges <- data.frame(
+  from   = edges_from,
+  to     = edges_to,
+  weight = 1
+) %>%
+  # Hapus self-loop jika ada
+  filter(from != to) %>%
+  # Agregasi jika ada duplikat (weight = frekuensi rekomendasi)
+  group_by(from, to) %>%
+  summarise(weight = sum(weight), .groups = 'drop')
+
+df_edges %>% knitr::kable()
+```
+
+
+Untuk bisa melakukan _social network analysis_ di __R__, kita perlu mengubah bentuk data di atas menjadi _object_ _graph_.
+
+```{r}
+#| echo: true
+
+# Buat directed graph dari edge list
+g <- graph_from_data_frame(
+  d        = df_edges,
+  directed = TRUE,
+  vertices = konsumen
+)
+```
+
+_Summary_ dari _graph_-nya adalah:
+
+```{r}
+# Info dasar tentang graf
+cat('Jumlah node (konsumen):', vcount(g), '\n')
+cat('Jumlah edge (rekomendasi):', ecount(g), '\n')
+cat('Apakah graf connected?', is_connected(g), '\n')
+cat('Diameter jaringan:', diameter(g), '\n')
+cat('Rata-rata path length:', mean_distance(g), '\n')
+
+# Densitas jaringan (0 = tidak ada koneksi, 1 = semua terhubung)
+cat('Densitas jaringan:', round(edge_density(g), 4), '\n')
+```
+
+Sekarang akan saya hitung semua metrik _centrality_. Tidak lupa saya menambahkan satu skor lagi bernama __skor komposit__ yang merupakan rata-rata dari _rank_ empat metrik yang ada. Artinya orang dengan **_ranking_ 1** memiliki _centrality_ tertinggi. Maka __skor komposit terendah__ menandakan konsumen tersebut merupakan _super spreader_.
+
+```{r}
+#| echo: true
+
+# Hitung semua metrik centrality sekaligus
+df_centrality <- data.frame(
+  nama = V(g)$name,
+
+  # Degree: jumlah koneksi langsung
+  # out-degree = berapa orang yang dia rekomendasikan
+  # in-degree  = berapa orang yang merekomendasikan dia
+  degree_out = degree(g, mode = 'out'),
+  degree_in  = degree(g, mode = 'in'),
+  degree_all = degree(g, mode = 'all'),
+
+  # Betweenness: seberapa sering jadi 'jembatan'
+  betweenness = betweenness(g, normalized = TRUE),
+
+  # Closeness: seberapa dekat ke semua node lain
+  closeness = closeness(g, mode = 'all', normalized = TRUE),
+
+  # PageRank: popularitas berbasis kualitas koneksi
+  pagerank = page_rank(g)$vector
+) %>%
+  # Buat skor komposit: rata-rata rank dari semua metrik
+  mutate(
+    rank_degree      = rank(-degree_all),
+    rank_betweenness = rank(-betweenness),
+    rank_closeness   = rank(-closeness),
+    rank_pagerank    = rank(-pagerank),
+    skor_komposit = (rank_degree + rank_betweenness +
+                     rank_closeness + rank_pagerank) / 4
+  ) %>%
+  arrange(skor_komposit)
+```
+
+
+Berikut ini adalah 10 orang konsumen yang termasuk ke dalam _super spreader_:
+
+```{r}
+# Top 10 super spreader
+cat('\n=== TOP 10 SUPER SPREADER ===\n')
+hasil = 
+  df_centrality %>%
+  head(10) %>%
+  mutate(across(where(is.numeric), ~round(., 4)))
+
+row.names(hasil) = NULL
+
+print(hasil)
+```
+
+Perhatikan bahwa ada lima orang _super spreader_ yang memiliki skor komposit terendah.
+
+1. **Citra** - Skor komposit: 2.5
+2. **Joko** - Skor komposit: 3.5  
+3. **Sinta** - Skor komposit: 4.25
+4. **Andi** - Skor komposit: 5.375
+5. **Kartika** - Skor komposit: 7.25
+
+Berikut adalah karakteristik masing-masing _super spreader_:
+
+1. Citra (_Super Spreader_ #1)
+
+- **Degree centrality tertinggi**: *degree_all* = 9 (maksimum)
+- **Betweenness centrality tertinggi**: 0.0536 (ranking 1)
+- **Closeness centrality tertinggi**: 0.4712 (ranking 1)
+- **PageRank**: 0.029 (ranking 6)
+- **Karakteristik**: Citra adalah **hub utama** dalam jaringan, memiliki koneksi keluar (*degree_out* = 7) yang sangat tinggi, berperan sebagai **broker informasi** (_betweenness_ tinggi), dan dapat menjangkau semua _node_ dengan cepat (_closeness_ tinggi).
+
+2. Joko (_Super Spreader_ #2)
+
+- **Degree_all**: 8 (sangat tinggi)
+- **Betweenness**: 0.0276 (ranking 3)
+- **Closeness**: 0.3889 (ranking 3)
+- **PageRank**: 0.0304 (ranking 4) - **tertinggi di antara semua**
+- **Karakteristik**: Joko memiliki **pengaruh yang kuat** (_PageRank_ tertinggi) meskipun degree centrality sedikit lebih rendah dari Citra.
+
+3. Sinta (_Super Spreader_ #3)
+
+- **Degree_all**: 9 (maksimum, sama dengan Citra)
+- **Betweenness**: 0.0202 (ranking 5)
+- **Closeness**: 0.3712 (ranking 5)
+- **PageRank**: 0.0302 (ranking 5)
+- **Karakteristik**: Sinta memiliki **koneksi inbound yang lebih baik** (*degree_in* = 3, tertinggi di antara _super spreader_), menunjukkan popularitas yang tinggi.
+
+4. Andi (_Super Spreader_ #4)
+
+- **Degree_out**: 8 (tertinggi)
+- **Betweenness**: 0.0391 (ranking 2)
+- **Closeness**: 0.4414 (ranking 2)
+- **PageRank**: 0.0205 (ranking 15.5) - relatif rendah
+- **Karakteristik**: Andi adalah **eksporter informasi aktif** (*degree_out* tertinggi) dan *broker* yang kuat, tetapi kurang berpengaruh dalam *PageRank*.
+
+5. Kartika (_Super Spreader_ #5)
+
+- **Degree_all**: 7 (tinggi)
+- **Betweenness**: 0.0183 (ranking 6)
+- **Closeness**: 0.3769 (ranking 4)
+- **PageRank**: 0.0232 (ranking 14)
+- **Karakteristik**: Kartika memiliki profil yang seimbang dengan semua metrik di atas rata-rata.
+
+Saya bisa rangkum menjadi beberapa poin penting berikut ini:
+
+**1. Tipe Super Spreader:**
+
+- **Citra**: **Complete Hub** - Unggul di semua aspek.
+- **Joko**: **Influencer** - PageRank tertinggi, pengaruh kuat.
+- **Sinta**: **Popular Connector** - Koneksi inbound terbaik.
+- **Andi**: **Active Exporter** - Outbound connections terkuat.
+- **Kartika**: **Balanced Connector** - Profil seimbang.
+
+**2. Pola Koneksi:**
+
+- **Citra & Sinta**: Degree_all = 9 (full connectivity).
+- **Joko & Andi**: Degree_out sangat tinggi (6 dan 8).
+- **Sinta**: Degree_in tertinggi (3) - paling populer.
+
+**3. Peran dalam Jaringan:**
+
+- **Broker (Betweenness tinggi)**: Citra, Andi, Joko.
+- **Influencer (PageRank tinggi)**: Joko, Sinta.
+- **Accessible (Closeness tinggi)**: Citra, Andi.
+
+**Untuk Marketing Campaign:**
+
+1. **Fokus pada Citra** sebagai *primary influencer* - dampak terbesar.
+2. **Gunakan Joko** untuk *viral campaigns* karena *PageRank* tertinggi.
+3. **Libatkan Sinta** untuk *endorsement* karena popularitas inbound tinggi.
+4. **Manfaatkan Andi** untuk *outreach* aktif karena *outbound connections* kuat.
+
+**Segmentasi Super Spreader:**
+
+1. **Elite Influencers** (Citra, Joko): Untuk *brand awareness* maksimal.
+2. **Active Promoters** (Andi): Untuk *product launches*.
+3. **Community Connectors** (Sinta, Kartika): Untuk *engagement programs*.
+
+## Deteksi _Cluster_ dalam Komunitas
+
+Selain menemukan _super spreader_, kita juga bisa mencari tahu apakah ada kelompok-kelompok (_clusters_) konsumen yang lebih sering berinteraksi satu sama lain. Hal ini penting untuk strategi segmentasi pesan _marketing_.
+
+Untuk _community detection_, saya menggunakan _undirect graph_ dengan metode Louvain.
+
+> Metode Louvain adalah algoritma populer untuk menemukan kelompok (komunitas) dalam jaringan besar dengan cara memaksimalkan nilai modularity, yaitu ukuran yang menilai seberapa kuat hubungan antar node di dalam kelompok dibandingkan hubungan acak. Prosesnya terdiri dari dua fase yang berulang: pertama, algoritma memindahkan setiap node ke komunitas tetangganya secara rakus (greedy) untuk melihat apakah kepadatan koneksi meningkat; kedua, node-node yang sudah berkelompok tersebut disatukan menjadi satu "node raksasa" untuk membentuk jaringan baru yang lebih ringkas. Langkah-langkah ini terus diulangi hingga tidak ada lagi perpindahan yang bisa meningkatkan kualitas pengelompokan, sehingga menghasilkan struktur komunitas yang hierarkis dan efisien secara komputasi.
+
+Berikut adalah kelompok-kelompok konsumen yang dihasilkan:
+
+```{r}
+# Untuk community detection, gunakan graf undirected
+g_undirected <- as_undirected(g, mode = 'collapse',
+                              edge.attr.comb = 'sum')
+
+# Metode Louvain: salah satu yang paling populer dan efisien
+set.seed(101)
+komunitas_louvain <- cluster_louvain(g_undirected)
+
+# Metode Walktrap: berbasis random walk
+# komunitas_walktrap <- cluster_walktrap(g_undirected)
+
+# Bandingkan modularity (semakin tinggi semakin baik, max ~1)
+cat('Modularity Louvain:', round(modularity(komunitas_louvain), 4), '\n')
+# cat('Modularity Walktrap:', round(modularity(komunitas_walktrap), 4), '\n')
+
+# Ambil hasil community detection terbaik
+V(g)$komunitas <- membership(komunitas_louvain)
+
+# Ringkasan per komunitas
+data.frame(
+  komunitas  = membership(komunitas_louvain),
+  nama       = V(g)$name
+) %>%
+  group_by(komunitas) %>%
+  summarise(
+    n_anggota = n(),
+    anggota   = paste(nama, collapse = ', ')
+  ) %>%
+  rename(kelompok = komunitas) %>% 
+  arrange(desc(n_anggota)) %>%
+  knitr::kable()
+```
+
+
+Terlihat ada 6 kelompok dengan banyaknya anggota bervariasi. Kelompok pertama merupakan kelompok terbesar berisikan 15 orang konsumen. Selanjutnya adalah kelompok 5 dan 2 yang berisi 12 orang dan 11 orang konsumen.
+
+## Visualisasi _Graph_
+
+Berikut adalah beberapa visualisasi dari _graph_ yang dibentuk:
+
+```{r}
+# Gabungkan info centrality ke dalam graf
+V(g)$degree_out   <- degree(g, mode = 'out')
+V(g)$betweenness  <- betweenness(g, normalized = TRUE)
+V(g)$pagerank     <- page_rank(g)$vector
+
+# Konversi ke format tidygraph untuk ggraph
+tg <- as_tbl_graph(g) %>%
+  activate(nodes) %>%
+  left_join(
+    df_centrality %>% select(nama, skor_komposit),
+    by = c('name' = 'nama')
+  ) %>%
+  mutate(
+    is_super_spreader = skor_komposit <= 5,  # Top 5
+    label_node = ifelse(is_super_spreader, name, '')
+  )
+
+```
+
+
+```{r}
+# ── Visualisasi utama: network graph ─────────────────────────────
+set.seed(101)
+ggraph(tg, layout = 'fr') +  # Fruchterman-Reingold layout
+  # Edge: transparansi berdasarkan weight
+  geom_edge_arc(
+    aes(alpha = weight),
+    color     = '#1F618D',
+    width     = 0.4,
+    strength  = 0.1,
+    arrow     = arrow(length = unit(2, 'mm'), type = 'closed'),
+    end_cap   = circle(3, 'mm')
+  ) +
+  # Node: ukuran berdasarkan PageRank, warna berdasarkan komunitas
+  geom_node_point(
+    aes(
+      size  = pagerank * 200,
+      color = factor(komunitas),
+      shape = is_super_spreader
+    ),
+    alpha = 0.9
+  ) +
+  # Label hanya untuk super spreader
+  geom_node_label(
+    aes(label = label_node),
+    repel      = TRUE,
+    size       = 3,
+    fontface   = 'bold',
+    fill       = 'white',
+    label.size = 0.2
+  ) +
+  scale_shape_manual(
+    values = c('FALSE' = 16, 'TRUE' = 18),
+    labels = c('Konsumen Biasa', 'Super Spreader')
+  ) +
+  scale_edge_alpha(range = c(0.2, 0.8), guide = 'none') +
+  scale_size(range = c(2, 10), guide = 'none') +
+  scale_color_brewer(palette = 'Set1', name = 'Komunitas') +
+  labs(
+    title    = 'Jaringan Word-of-Mouth Konsumen',
+    subtitle = 'Ukuran node = PageRank | Warna = Komunitas | Berlian = Super Spreader',
+    caption  = 'Panah menunjukkan arah rekomendasi'
+  ) +
+  theme_graph(base_family = 'sans') +
+  theme(
+    plot.title    = element_text(face = 'bold', size = 14, color = '#1A5276'),
+    plot.subtitle = element_text(size = 10, color = '#555555'),
+    legend.position = 'right'
+  )
+```
+
+
+
+
+```{r}
+#| fig-width: 13
+#| fig-height: 9
+
+# ── Visualisasi terpisah per komunitas ───────────────────────────
+set.seed(101)
+ggraph(tg, layout = 'stress') +
+  geom_edge_link(
+    color = 'grey70',
+    width = 0.4,
+    arrow = arrow(length = unit(1.5, 'mm'), type = 'closed'),
+    end_cap = circle(2.5, 'mm'),
+    alpha   = 0.5
+  ) +
+  geom_node_point(
+    aes(color = factor(komunitas), size = pagerank * 150),
+    alpha = 0.9
+  ) +
+  geom_node_text(
+    aes(label = name, size = pagerank * 100),
+    repel    = TRUE,
+    max.overlaps = 20,
+    color    = 'black'
+  ) +
+  facet_nodes(~factor(komunitas,
+    labels = paste('Komunitas', sort(unique(V(g)$komunitas))))) +
+  scale_color_brewer(palette = 'Set1', guide = 'none') +
+  scale_size(range = c(2, 9), guide = 'none') +
+  labs(
+    title    = 'Struktur Komunitas dalam Jaringan WOM',
+    subtitle = 'Setiap panel = satu komunitas yang terdeteksi oleh algoritma Louvain'
+  ) +
+  theme_graph(base_family = 'sans') +
+  theme(
+    plot.title  = element_text(face = 'bold', color = '#1A5276'),
+    strip.text  = element_text(face = 'bold', size = 10)
+  )
+```
+
+
+
+## Implikasi dari _Social Network Analysis_ yang Dihasilkan
+
+Dari uraian yang saya paparkan di atas, salah satu kegunaan dari _SNA_ adalah kita bisa melakukan simulasi bagaimana penyebaran informasi terjadi. Perbedaan __orang yang memulai kabar__ akan membedakan seberapa cepat kabar tersebut beredar. Sebagai contoh, saya akan coba buat simulasi penyebaran kabar dengan menggunakan prinsip [model SIR](https://ikanx101.com/blog/hoax-model/) (saya pernah menggunakan model ini untuk memodelkan penyebaran _hoax_).
+
+Saya akan mencoba dua skenario, yakni:
+
+1. Saat kabar dimulai dari _super spreader_, misalkan: __Citra__.
+1. Saat kabar dimulai dari orang biasa, misalkan: __Oki__.
+
+```{r}
+# ── Simulasi SIR: Penyebaran WOM dari satu titik awal ───────────
+simulasi_penyebaran <- function(g, starter, prob_spread = 0.3,
+                                n_steps = 10) {
+  n_nodes    <- vcount(g)
+  node_names <- V(g)$name
+
+  # Status: 0 = belum tau produk, 1 = tau & aktif spread,
+  #         2 = tau tapi sudah berhenti spread
+  status <- rep(0, n_nodes)
+  names(status) <- node_names
+  status[starter] <- 1
+
+  hasil <- list()
+  hasil[[1]] <- data.frame(
+    step   = 0,
+    aware  = sum(status > 0),
+    active = sum(status == 1)
+  )
+
+  for (step in 1:n_steps) {
+    active_nodes <- names(status[status == 1])
+    if (length(active_nodes) == 0) break
+
+    for (node in active_nodes) {
+      # Cari tetangga (orang yang belum tau)
+      neighbors_out <- names(neighbors(g, node, mode = 'out'))
+      susceptible   <- neighbors_out[status[neighbors_out] == 0]
+
+      # Sebarkan dengan probabilitas prob_spread
+      if (length(susceptible) > 0) {
+        spread_to <- susceptible[runif(length(susceptible)) < prob_spread]
+        status[spread_to] <- 1
+      }
+      # Node aktif menjadi 'recovered' (berhenti aktif spread)
+      status[node] <- 2
+    }
+
+    hasil[[step + 1]] <- data.frame(
+      step   = step,
+      aware  = sum(status > 0),
+      active = sum(status == 1)
+    )
+  }
+  bind_rows(hasil)
+}
+
+# Bandingkan: mulai dari super spreader vs konsumen biasa
+set.seed(101)
+sim_andi  <- simulasi_penyebaran(g, 'Citra',  prob_spread = 0.4,n_steps = 20)
+sim_biasa <- simulasi_penyebaran(g, 'Oki',  prob_spread = 0.4,n_steps = 20)
+
+df_sim <- bind_rows(
+  sim_andi  %>% mutate(starter = 'Mulai dari Citra (Super Spreader)'),
+  sim_biasa %>% mutate(starter = 'Mulai dari Oki (Konsumen Biasa)')
+)
+
+# Visualisasi kurva adopsi
+ggplot(df_sim, aes(x = step, y = aware,
+                   color = starter, group = starter)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2.5) +
+  scale_color_manual(
+    values = c('#1A5276', '#E74C3C'),
+    name   = 'Titik Mulai'
+  ) +
+  scale_y_continuous(limits = c(0, 15)) +
+  labs(
+    title    = 'Simulasi Penyebaran WOM: Super Spreader vs Konsumen Biasa',
+    subtitle = 'Berapa banyak konsumen yang aware produk setelah N langkah?',
+    x        = 'Langkah Waktu',
+    y        = 'Jumlah Konsumen yang Aware thd "Kabar berita"'
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(
+    plot.title      = element_text(face = 'bold', color = '#1A5276'),
+    legend.position = 'top'
+  )
+```
+
+Hanya butuh 3 langkah waktu bagi Citra agar 10 orang dalam _circle_-nya menjadi _aware_ dengan kabar berita. Sedangkan kabar yang disebar dari Oki hanya diketahui oleh dua orang saja. 
+
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
