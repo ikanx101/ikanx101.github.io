@@ -1,5 +1,5 @@
 ---
-title: "xxx"
+title: "Conjoint Analysis untuk Develop Produk Minuman Baru"
 format:
   gfm:
     html-math-method: webtex
@@ -21,21 +21,10 @@ Misalkan suatu waktu perusahaan saya hendak meluncurkan suatu produk minuman teh
 
 **"Seberapa penting bagi Anda bahwa minuman teh ini:**
 
--   
-
-    (a) menggunakan bahan alami 100%?
-
--   
-
-    (b) dikemas dalam botol ramah lingkungan?
-
--   
-
-    (c) harganya terjangkau?
-
--   
-
-    (d) rasanya enak?
+- menggunakan bahan alami 100%?
+- dikemas dalam botol ramah lingkungan?
+- harganya terjangkau?
+- rasanya enak?
 
 Pertanyaan tersebut dijawab menggunakan skala *likert* 1 - 6 dimana 1 adalah sangat tidak penting dan 6 adalah sangat penting.
 
@@ -213,13 +202,15 @@ responses_print = data.frame(factdesign,responses)
 
 responses_print %>% knitr::kable()
 
-Conjoint(y=responses, x=prof, z=case_level)
+# Conjoint(y=responses, x=prof, z=case_level)
 
 ```
 
 Berikut adalah hasil analisanya.
 
 ## Visualisasi Hasil _Conjoint Analysis_
+
+### Utilitas per Atribut
 
 ```{r}
 atribut= c("Rasa","Ukuran","Klaim","Kemasan","Harga")
@@ -242,7 +233,7 @@ barchart_plot <- ggplot(output, aes(x = reorder(atribut, util), y = util)) +
   # Menambahkan nilai di atas bar
   geom_text(aes(label = sprintf("%.2f", util)), 
             hjust = -0.2, 
-            size = 4, 
+            size = 3, 
             color = "black", 
             fontface = "bold") +
   
@@ -308,30 +299,236 @@ barchart_plot <- ggplot(output, aes(x = reorder(atribut, util), y = util)) +
     panel.background = element_rect(fill = "white", color = NA),
     
     # Legend
-    legend.position = "none",  # Menghilangkan legend karena sudah ada nilai di bar
-    
-    # Margin plot
-    plot.margin = margin(30, 30, 30, 30)
-  )
+    legend.position = "none"
+  ) +
+  ylim(0,35)
 
 # Tampilkan plot
 barchart_plot
 
 ```
 
+Atribut **Harga** merupakan faktor paling penting bagi konsumen dengan nilai utilisasi 
+**27.53%**. Ini menunjukkan bahwa konsumen sangat sensitif terhadap harga produk teh.
+
+Urutan kepentingan atribut dari yang paling penting:
+
+1. **Harga** (27.53%) - **Paling Penting**
+    - **Harga** mendominasi dengan selisih cukup signifikan (8.17% lebih tinggi dari Rasa).
+2. **Rasa** (19.36%)
+3. **Ukuran** (19.27%)
+4. **Kemasan** (18.10%)
+    - **Rasa, Ukuran, dan Kemasan** memiliki tingkat kepentingan yang relatif seimbang (berkisar 18-19%).
+5. **Klaim** (15.75%) - **Paling Tidak Penting**
+    - **Klaim** memiliki kepentingan terendah, menunjukkan konsumen mungkin kurang memperhatikan klaim kesehatan atau _marketing claims_ yang lain.
+    - Perusahaan bisa mengoptimalkan klaim sebagai diferensiasi sekunder.
+
+
+### Utilitas per Level untuk Masing-masing Atribut
+
+Berikut adalah visualisasi utilitas per level untuk masing-masing atribut:
+
+```{r}
+conjoint_data <- data.frame(
+  atribut= c(rep("Rasa",3),
+             rep("Ukuran",3),
+             rep("Klaim",3),
+             rep("Kemasan",3),
+             rep("Harga",4)),
+  level = c(
+    "Manis", "Sedikit_Manis", "Tidak_Manis",
+    "250ml", "500ml", "1000ml",
+    "Alami_100pct", "Tanpa_Pengawet", "Reguler",
+    "Botol_Plastik", "Botol_Kaca", "Kotak_Karton",
+    "Rp4000", "Rp7000", "Rp12000", "Rp18.000"
+  ),
+  skor_utilitas = c(
+    0.0639, -0.0519, -0.012,
+    -0.0035, -0.0796, 0.0832,
+    0.0357, -0.053, 0.0173,
+    0.0025, -0.0017, -0.0008,
+    -0.0882, 0.0389, 0.1055, -0.0562
+  )
+)
+
+# Function alternatif: Visualisasi dengan dot plot (lebih minimalis)
+visualisasi_conjoint_dot <- function(data, 
+                                     col_level = "level", 
+                                     col_utility = "skor_utilitas",
+                                     col_atribut = "atribut",
+                                     title = "Dot Plot Skor Utilitas Conjoint Analysis") {
+  
+  if (!require(ggplot2)) {
+    install.packages("ggplot2", quiet = TRUE)
+    library(ggplot2)
+  }
+  
+  if (!require(dplyr)) {
+    install.packages("dplyr", quiet = TRUE)
+    library(dplyr)
+  }
+  
+  # Persiapan data
+  plot_data <- data.frame(
+    level = data[[col_level]],
+    utility = data[[col_utility]],
+    atribut = data[[col_atribut]]
+  )
+  
+  # Urutkan berdasarkan utilitas dalam setiap atribut
+  plot_data <- plot_data %>%
+    group_by(atribut) %>%
+    mutate(level = factor(level, levels = level[order(utility)])) %>%
+    ungroup()
+  
+  # Buat plot
+  p <- ggplot(plot_data, aes(x = utility, y = level, color = atribut)) +
+    geom_vline(xintercept = 0, linetype = "dashed", color = "gray60", size = 0.5) +
+    geom_point(size = 3) +
+    geom_segment(aes(x = 0, xend = utility, y = level, yend = level), 
+                 size = 0.8, alpha = 0.6) +
+    
+    # Facet
+    facet_grid(atribut ~ ., scales = "free_y", space = "free_y") +
+    
+    # Skala dan warna
+    scale_color_brewer(palette = "Set2") +
+    scale_x_continuous(expand = expansion(mult = c(0.05, 0.05))) +
+    
+    # Label
+    labs(
+      title = title,
+      x = "Skor Utilitas",
+      y = "Level Atribut",
+      caption = "Posisi relatif terhadap garis nol menunjukkan preferensi konsumen"
+    ) +
+    
+    # Tema
+    theme_minimal(base_size = 12) +
+    theme(
+      plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
+      axis.title = element_text(face = "bold"),
+      axis.text = element_text(size = 10),
+      strip.text = element_text(face = "bold", size = 11),
+      strip.background = element_rect(fill = "gray95", color = NA),
+      panel.spacing = unit(0.5, "lines"),
+      legend.position = "none",
+      panel.grid.major.y = element_blank(),
+      panel.grid.minor.y = element_blank()
+    )
+  
+  return(p)
+}
+# 2. Visualisasi dot plot (alternatif)
+p2 <- visualisasi_conjoint_dot(conjoint_data)
+print(p2)
+
+```
+
+Dari skor utilitas masing-masing level, berikut adalah beberapa temuannya:
+
+**HARGA (Faktor Terpenting):**
+
+- Konsumen **sangat menghindari** harga termurah (Rp4,000) dengan skor negatif terbesar (-0.0882).
+- Harga **Rp12,000** menjadi **pilihan terbaik** dengan skor utilitas tertinggi (+0.1055).
+- Harga Rp7,000 juga diterima dengan baik (+0.0389).
+- Harga premium Rp18,000 kurang disukai (-0.0562).
+
+**UKURAN:**
+
+- Ukuran **1000ml** paling disukai (+0.0832).
+- Ukuran 250ml netral (-0.0035).
+- Ukuran 500ml kurang disukai (-0.0796).
+
+**RASA:**
+
+- Rasa **Manis** paling disukai (+0.0639).
+- Rasa Sedikit Manis kurang disukai (-0.0519).
+- Rasa Tidak Manis netral (-0.0120).
+
+**KLAIM:**
+
+- Klaim **"Alami 100%"** paling menarik (+0.0357).
+- Klaim "Reguler" netral (+0.0173).
+- Klaim "Tanpa Pengawet" kurang menarik (-0.0530).
+
+**KEMASAN:**
+
+- Semua jenis kemasan memiliki pengaruh minimal.
+- Botol Plastik sedikit lebih disukai (+0.0025).
+
+Berikut ini adalah rekomendasi strategis untuk brand minuman teh dalam kemasan yang bisa dilakukan dari hasil _conjoint analysis_ di atas:
+
+**A. STRATEGI HARGA sebagai priorita utama:**
+
+1. **Target harga optimal: Rp12,000** - Posisikanproduk di segmen menengah-atas.
+2. **Hindari harga terlalu murah (Rp4,000)** - Konsumen mengasosiasikan dengan kualitas rendah.
+3. **Pertimbangkan Rp7,000** sebagai alternatif _entry-level_.
+4. **Tunda harga premium (Rp18,000)** kecuali dengan _value proposition_ yang kuat
+
+**B. STRATEGI PRODUK:**
+
+1. **Fokus pada ukuran 1000ml** sebagai produk utama.
+2. **Pertahankan rasa manis** sebagai varian _flagship_.
+3. **Gunakan klaim "Alami 100%"** sebagai _positioning_ utama.
+4. **Kurangi penekanan pada "Tanpa Pengawet"** - kurang menarik bagi konsumen.
+
+**C. STRATEGI PORTOFOLIO PRODUK:**
+
+1. **Produk Utama**: Teh manis 1000ml dengan klaim alami 100%, harga Rp12,000.
+2. **Produk Sekunder**: Teh manis 250ml, harga Rp7,000 (untuk _trial/single serve_).
+3. **Hindari**: Ukuran 500ml dan harga Rp4,000.
+
+**D. STRATEGI PEMASARAN & KOMUNIKASI:**
+
+1. **Highlight naturalness**: "100% Alami" sebagai _value proposition_ utama.
+2. **Value for money**: Tekankan rasio harga-volume untuk ukuran 1000ml.
+3. **Taste leadership**: Posisikan sebagai teh dengan rasa manis yang pas.
+4. **Segmentasi**: Targetkan konsumen yang mencari kualitas dengan harga wajar.
+
+**E. STRATEGI DISTRIBUSI & PENEMPATAN:**
+
+1. **Fokus pada modern trade** untuk harga Rp12,000.
+2. **Traditional trade** untuk varian Rp7,000.
+3. **On-premise** (restoran/kafe) untuk varian premium jika dikembangkan.
+
+**F. ROADMAP PENGEMBANGAN PRODUK:**
+
+**Fase 1 (0-6 bulan):**
+
+- _Launch_ produk utama: Teh Manis 1000ml, Alami 100%, Rp12,000.
+- _Packaging_: Botol plastik (paling ekonomis).
+
+**Fase 2 (6-12 bulan):**
+
+- Introduksi varian 250ml untuk _single serve_.
+- Eksplorasi kemasan alternatif jika ada permintaan.
+
+**Fase 3 (12+ bulan):**
+
+- Evaluasi penerimaan varian premium.
+- Pengembangan line extension jika diperlukan.
+
+**Kesimpulan Utama:** Konsumen minuman teh dalam kemasan mencari **keseimbangan antara kualitas dan harga**. Mereka bersedia membayar lebih untuk produk yang dirasakan berkualitas (natural, ukuran besar) tetapi menghindari harga terlalu murah (dianggap rendah kualitas) maupun terlalu mahal (dianggap tidak worth it). **Posisi optimal adalah di segmen menengah-atas dengan _value proposition_ "alami dan bernilai".**
 
 
 # Keterbatasan yang Perlu Diperhatikan
 
-1. Hypothetical bias. Responden mungkin berperilaku berbeda dalam survei vs di toko nyata. CBC lebih baik dari rating-based dalam hal ini, tapi gap tetap ada.
-2. Atribut yang tidak dimasukkan. Conjoint hanya mengukur atribut yang sudah kita tentukan. Faktor seperti brand awareness, rekomendasi teman, atau tampilan toko tidak tertangkap.
-3. Interaksi antar atribut. Model dasar conjoint mengasumsikan efek atribut independen (additive). Padahal, 'Botol Kaca + Alami 100%' mungkin memberikan efek sinergistis lebih besar dari keduanya dijumlah. Perlu model interaction term.
-4. Heterogenitas preferensi. Rata-rata part-worth menyembunyikan variasi antar segmen. Sebaiknya lakukan analisis per segmen (misal: usia, kota, frekuensi konsumsi) atau gunakan Latent Class Conjoint.
-5. Sample size. Untuk traditional conjoint: minimal 50 responden. Untuk CBC: minimal 150-200 per segmen yang ingin dianalisis secara terpisah.
+Walaupun memiliki temuan yang lebih banyak dibandingkan pertanyaan langsung pada survey, tapi kita tetap perlu melihat beberapa limitasi dari _conjoint analysis_ sebagai berikut:
 
-Penutup: Paksa Konsumen untuk Jujur
-Pertanyaan survei yang langsung — 'Seberapa penting harga bagi Anda?' — hampir selalu menghasilkan jawaban yang tidak berguna. Semua penting, semua dapat skor 5.
-Conjoint Analysis memecahkan masalah ini dengan cara yang elegan: paksa konsumen untuk membuat trade-off, lalu hitung sendiri berapa nilai implisit setiap atribut dari pola pilihan mereka.
-Hasilnya jauh lebih actionable: bukan 'konsumen menyukai rasa enak dan harga murah', tapi 'konsumen bersedia membayar Rp3.500 lebih mahal jika kemasannya botol kaca, dan klaim Alami 100% berkontribusi 35% dari keputusan beli mereka'.
-Dengan R dan beberapa package yang sudah tersedia, analisis yang dulu hanya bisa dilakukan oleh firma riset besar dengan software mahal kini bisa dilakukan sendiri — dengan kontrol penuh atas desain, data, dan interpretasi.
+1. _Hypothetical bias_, responden mungkin berperilaku berbeda dalam survei vs di toko nyata. 
+2. Atribut yang tidak dimasukkan. _Conjoint_ hanya mengukur atribut yang sudah kita tentukan. Faktor seperti _brand awareness_, rekomendasi teman, atau tampilan toko tidak tertangkap.
+3. Interaksi antar atribut. Model dasar _conjoint_ mengasumsikan efek atribut independen. Padahal, kombinasi antara 'Botol Kaca + Alami 100%' mungkin memberikan efek sinergistis lebih besar dari keduanya. 
+4. Heterogenitas preferensi. Rata-rata _part-worth_ menyembunyikan variasi antar segmen. Sebaiknya lakukan analisis per segmen (misal: usia, kota, frekuensi konsumsi). Lihat tulisan saya sebelumnya tentang [_Simpson Paradox_](https://ikanx101.com/blog/simpson-paradox/).
+5. _Sample size_. Untuk traditional _conjoint_ dibutuhkan minimal 50 orang responden. 
+
+# Epilog
+
+Pertanyaan survei yang langsung _'Seberapa penting harga bagi Anda?'_ hampir selalu menghasilkan jawaban yang tidak berguna. Semua penting, semua dapat skor 5. Sementara itu _conjoint analysis_ memecahkan masalah ini dengan cara yang elegan yakni dengan memaksa konsumen untuk membuat _trade-off_, lalu hitung sendiri berapa nilai implisit setiap atribut dari pola pilihan mereka. Hasilnya jauh lebih _actionable_: bukan 'konsumen menyukai rasa enak dan harga murah', tapi 'konsumen bersedia membayar Rp3.500 lebih mahal jika kemasannya botol kaca, dan klaim Alami 100% berkontribusi 35% dari keputusan beli mereka'. 
+
+
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
 
