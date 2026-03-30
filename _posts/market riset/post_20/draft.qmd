@@ -1,0 +1,337 @@
+---
+title: "xxx"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  error: false
+  echo: false
+---
+
+Pada tahun 2021 lalu, saya sempat menuliskan suatu teknik analisa bernama [*Conjoint Analysis* yang sangat berguna di bidang *market research*](https://ikanx101.com/blog/conjoint/). Kali ini, saya hendak menulis ulang tentang analisa ini dengan suatu studi kasus terbaru.
+
+------------------------------------------------------------------------
+
+Misalkan suatu waktu perusahaan saya hendak meluncurkan suatu produk minuman teh kemasan. Sebelum *launching*, saya ingin tahu preferensi konsumen dengan cara membuat survey market riset. Cara yang paling mudah adalah dengan membuat satu pertanyaan klasik sebagai berikut:
+
+**"Seberapa penting bagi Anda bahwa minuman teh ini:**
+
+-   
+
+    (a) menggunakan bahan alami 100%?
+
+-   
+
+    (b) dikemas dalam botol ramah lingkungan?
+
+-   
+
+    (c) harganya terjangkau?
+
+-   
+
+    (d) rasanya enak?
+
+Pertanyaan tersebut dijawab menggunakan skala *likert* 1 - 6 dimana 1 adalah sangat tidak penting dan 6 adalah sangat penting.
+
+Untuk orang Indonesia, hasil survey ini sudah bisa ditebak: bisa dipastikan hampir semua responden menjawab 5 atau 6 untuk semua atribut.
+
+> Tentu saja — siapa yang mau bilang harga tidak penting, atau rasa boleh biasa-biasa saja?
+
+Inilah yang disebut *social desirability bias* dan *acquiescence bias* dalam survei. Responden cenderung memberikan jawaban yang 'benar' secara norma sosial, bukan jawaban yang mencerminkan perilaku nyata mereka.
+
+*Conjoint Analysis* hadir untuk memecahkan masalah ini. Alih-alih bertanya langsung 'apa yang penting?', *conjoint* memaksa responden untuk membuat pilihan nyata di antara produk-produk hipotetis — persis seperti yang mereka lakukan di toko. Dari pola pilihan itu, kita bisa menghitung secara matematika: atribut mana yang paling menentukan keputusan beli, dan seberapa besar bobotnya.
+
+# Konsep Dasar *Conjoint Analysis*
+
+## Apa itu *Conjoint Analysis*?
+
+*Conjoint Analysis* adalah teknik statistik dalam market riset yang digunakan untuk mengukur preferensi konsumen terhadap atribut-atribut produk. Nama '*conjoint*' berasal dari frasa '*considered jointly*', yakni konsumen menilai kombinasi atribut secara bersamaan, bukan satu per satu.
+
+Teknik ini pertama kali dikembangkan oleh psikolog matematika Paul Green dan Vithala Rao pada tahun 1971 dan sejak itu menjadi salah satu metode paling banyak digunakan dalam market riset profesional, mulai dari riset produk FMCG, otomotif, hingga *financial services*.
+
+## Konsep Kunci: *Part-Worth Utility*
+
+Inti dari *conjoint analysis* adalah konsep *utility* (kegunaan). Setiap level dari setiap atribut produk memiliki '*part-worth utility*', yakni nilai numerik yang merepresentasikan seberapa besar level tersebut berkontribusi pada preferensi konsumen secara keseluruhan.
+
+**Analogi sederhananya sebagai berikut:**
+
+Bayangkan sebuah gelas minuman teh. Total **nilai** di mata konsumen = (*utility* rasa manis) + (*utility* ukuran sedang) + (*utility* harga Rp5.000) + (*utility* kemasan botol).
+
+*Conjoint analysis* menghitung masing-masing angka tersebut dari data pilihan konsumen.
+
+## Tiga Jenis *Conjoint Analysis*
+
+| Jenis | Cara Kerja | Kapan Digunakan? |
+|------------------------|------------------------|------------------------|
+| Traditional / Rating-Based | Responden menilai setiap profil produk dengan skor (misal 1–10) | Ketika atribut sedikit (≤6) dan level sedikit (≤3) |
+| Choice-Based (CBC) | Responden memilih satu dari beberapa alternatif produk (termasuk opsi 'tidak membeli') | Paling umum di market research modern, paling mendekati perilaku nyata |
+| Adaptive (ACBC) | Pertanyaan beradaptasi berdasarkan jawaban sebelumnya | Ketika atribut sangat banyak (\>8) atau banyak variasi level |
+
+Untuk tulisan ini, saya akan membahas *Traditional Conjoint* terlebih dahulu karena paling mudah dipahami secara matematis.
+
+## Merancang Studi Conjoint: Produk Minuman Teh Kemasan
+
+Kita akan mensimulasikan riset untuk *brand* minuman teh kemasan yang ingin memahami preferensi konsumen usia remaja - aktif (18–35 tahun) di kota besar Indonesia. Ada empat pertanyaan utama, yakni:
+
+1.  Atribut mana yang paling menentukan keputusan beli?
+2.  Berapa harga optimal yang masih bisa diterima konsumen?
+3.  Apakah konsumen benar-benar peduli dengan klaim 'bahan alami'?
+4.  Profil produk mana yang paling kompetitif di pasar?
+
+### Langkah 1: Mendefinisikan Atribut dan Level
+
+Langkah pertama dan terpenting dalam *conjoint* adalah memilih atribut yang relevan dan levelnya. **Terlalu banyak atribut akan membuat responden kelelahan** karena pertanyaan yang perlu dijawab sangat banyak. Namun **terlalu sedikit atribut tidak menangkap realita pasar**.
+
+Berikut adalah atribut dan level yang saya definisikan:
+
+|  |  |  |
+|----|----|----|
+| **Atribut** | **Level-Level** | **Alasan** |
+| Rasa | Manis, Sedikit Manis, Tidak Manis | Tren kesehatan membuat 'tidak manis' makin populer |
+| Ukuran | 250ml, 500ml, 1000ml | Mewakili segmen minum langsung, sekali makan, dan keluarga |
+| Klaim Bahan | Alami 100%, Tanpa Pengawet, Reguler | Mengukur seberapa besar premium untuk klaim health |
+| Kemasan | Botol Plastik, Botol Kaca, Kotak Karton | Aspek sustainability & portabilitas |
+| Harga | Rp4.000, Rp7.000, Rp12.000, Rp18.000 | 4 level harga untuk menangkap price sensitivity |
+
+
+### Langkah 2: Membuat _Fractional Factorial Design_ di R
+
+Langkah krusial pada _Conjoint Analysis_ adalah membuat _factorial design_ yang bersifat _orthogonal_. _Orthogonal design_ dalam _conjoint analysis_ adalah metode untuk membuat kombinasi produk yang efisien dengan memilih _subset_ atribut dan level yang saling independen secara statistik, sehingga setiap atribut berkontribusi secara unik terhadap preferensi konsumen tanpa adanya korelasi atau bias yang tumpang tindih. Pendekatan ini memungkinkan peneliti untuk mengestimasi utilitas setiap level atribut secara akurat dengan jumlah kombinasi produk yang jauh lebih sedikit dibandingkan dengan semua kemungkinan kombinasi, karena menggunakan prinsip desain eksperimental yang memastikan setiap level atribut muncul dengan frekuensi yang seimbang dan berpasangan secara proporsional dengan level atribut lainnya, sehingga menghasilkan data yang optimal untuk analisis regresi dan pengukuran preferensi yang valid.
+
+
+Jika kita menggunakan semua kombinasi, ada $3 \times 3 \times 3 \times 3 \times 4 = 324$ buah pilihan produk yang ada. Namun dengan _orthogonal design_, kita hanya mendapatkan __22 pilihan produk saja__.
+
+```{r}
+rm(list=ls())
+
+library(conjoint)
+library(AlgDesign)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(scales)
+
+set.seed(101)
+
+
+# ── Definisikan atribut dan level ────────────────────────────────
+atribut <- list(
+  Rasa    = c('Manis', 'Sedikit_Manis', 'Tidak_Manis'),
+  Ukuran  = c('250ml', '500ml', '1000ml'),
+  Klaim   = c('Alami_100pct', 'Tanpa_Pengawet', 'Reguler'),
+  Kemasan = c('Botol_Plastik', 'Botol_Kaca', 'Kotak_Karton'),
+  Harga   = c('Rp4000', 'Rp7000', 'Rp12000', 'Rp18.000')
+)
+
+
+experiment = expand.grid(atribut$Rasa,atribut$Ukuran,atribut$Klaim,
+                         atribut$Kemasan,atribut$Harga)
+
+factdesign = caFactorialDesign(data=experiment,type="orthogonal")
+colnames(factdesign) = c("Rasa","Ukuran","Klaim","Kemasan","Harga")
+
+factdesign %>% knitr::kable()
+
+prof = caEncodedDesign(design=factdesign)
+colnames(prof) = c("Rasa","Ukuran","Klaim","Kemasan","Harga")
+
+
+case_level = c(atribut$Rasa,atribut$Ukuran,atribut$Klaim,
+                         atribut$Kemasan,atribut$Harga)
+```
+
+### Langkah 3: Tampilan Kartu Survei
+
+Setiap pilihan produk akan saya sebut sebagai __profil__ dan akan disajikan kepada responden sebagai sebuah 'kartu produk'. Contoh satu kartu:
+
+```{r}
+factdesign %>% slice(1) %>% t() %>% knitr::kable()
+```
+
+Kemudian responden akan disuruh untuk memberikan _rating_ (misalkan 1-10) di masing-masing kartu _survey_.
+
+### Langkah 4: Membuat Data Responden Simulasi
+
+Selanjutnya saya akan mensimulasikan 150 responden.
+
+```{r}
+# Utility rasa (baseline = Manis)
+u_rasa    <- c(Manis=-1.6, Sedikit_Manis=2, Tidak_Manis=0.5)
+
+# Utility ukuran (baseline = 250ml)
+u_ukuran  <- c('250ml'=1.5, '500ml'=2.5, '1000ml'=-3)
+
+# Utility klaim (baseline = Reguler)
+u_klaim   <- c(Alami_100pct=2.5, Tanpa_Pengawet=1.2, Reguler=-1)
+
+# Utility kemasan (baseline = Botol Plastik)
+u_kemasan <- c(Botol_Plastik=-1, Botol_Kaca=.1, Kotak_Karton=0.6)
+
+# Utility harga (negatif: makin mahal makin tidak disukai)
+u_harga   <- c(Rp4000=2.0, Rp7000=1.5, Rp12000=-2.1, Rp18000=-1.5)
+
+# ── Fungsi untuk menghitung utility sebuah profil ─────────────
+hitung_utility <- function(profil) {
+  4 +
+    u_rasa[profil$Rasa] +
+    u_ukuran[profil$Ukuran] +
+    u_klaim[profil$Klaim] +
+    u_kemasan[profil$Kemasan] +
+    u_harga[profil$Harga]
+}
+
+# ── Buat rating dari 150 responden ────────────────────────────
+n_resp    <- 150
+n_profil  <- nrow(factdesign)
+
+# Matriks rating: baris = responden, kolom = profil
+set.seed(101)
+rating_matrix <- matrix(NA, nrow = n_resp, ncol = n_profil)
+
+for (r in 1:n_resp) {
+  for (p in 1:n_profil) {
+    # Utility 'benar' + heterogenitas responden + noise
+    u_true   <- hitung_utility(factdesign[p, ])
+    # Setiap responden punya sedikit preferensi yang berbeda
+    u_indiv  <- u_true + rnorm(1, 1, 2)
+    # Tambah noise pengisian survei
+    u_obs    <- u_indiv + rnorm(1, 0, 3)
+    # Konversi ke skala 1–10
+    rating_matrix[r, p] <- pmax(1, pmin(10, round(u_obs)))
+  }
+}
+
+responses = data.frame(t(rating_matrix))
+
+responses_print = data.frame(factdesign,responses)
+
+responses_print %>% knitr::kable()
+
+Conjoint(y=responses, x=prof, z=case_level)
+
+```
+
+Berikut adalah hasil analisanya.
+
+## Visualisasi Hasil _Conjoint Analysis_
+
+```{r}
+atribut= c("Rasa","Ukuran","Klaim","Kemasan","Harga")
+util = c(19.36,19.27,15.75,18.10,27.53)
+
+output = data.frame(atribut,util)
+
+# Membuat barchart estetik
+barchart_plot <- ggplot(output, aes(x = reorder(atribut, util), y = util)) +
+  # Bar chart dengan warna gradien
+  geom_bar(stat = "identity", 
+           aes(fill = util), 
+           width = 0.7) +
+  
+  # Skala warna gradien
+  scale_fill_gradient(low = "#4e79a7", 
+                      high = "#f28e2b", 
+                      name = "Skor Utilisasi") +
+  
+  # Menambahkan nilai di atas bar
+  geom_text(aes(label = sprintf("%.2f", util)), 
+            hjust = -0.2, 
+            size = 4, 
+            color = "black", 
+            fontface = "bold") +
+  
+  # Koordinat flip untuk horizontal bar chart
+  coord_flip() +
+  
+  # Judul dan caption
+  labs(
+    title = "Skor Utilisasi per Atribut",
+    subtitle = "Analisis tingkat utilisasi berdasarkan atribut produk",
+    x = "Atribut Produk",
+    y = "Skor Utilisasi (%)",
+    caption = "Visualisasi dan dibuat oleh ikanx101.com"
+  ) +
+  
+  # Tema estetik
+  theme_minimal(base_size = 14) +
+  theme(
+    # Judul
+    plot.title = element_text(
+      size = 20,
+      face = "bold",
+      hjust = 0.5,
+      margin = margin(b = 15)
+    ),
+    
+    # Subtitle
+    plot.subtitle = element_text(
+      size = 14,
+      hjust = 0.5,
+      color = "gray40",
+      margin = margin(b = 20)
+    ),
+    
+    # Caption
+    plot.caption = element_text(
+      size = 10,
+      color = "gray50",
+      hjust = 1,
+      margin = margin(t = 15)
+    ),
+    
+    # Axis titles
+    axis.title = element_text(
+      size = 12,
+      face = "bold"
+    ),
+    
+    # Axis text
+    axis.text = element_text(
+      size = 11,
+      color = "black"
+    ),
+    
+    # Panel background
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    panel.grid.major.x = element_line(color = "gray90"),
+    panel.grid.minor.x = element_blank(),
+    
+    # Plot background
+    plot.background = element_rect(fill = "white", color = NA),
+    panel.background = element_rect(fill = "white", color = NA),
+    
+    # Legend
+    legend.position = "none",  # Menghilangkan legend karena sudah ada nilai di bar
+    
+    # Margin plot
+    plot.margin = margin(30, 30, 30, 30)
+  )
+
+# Tampilkan plot
+barchart_plot
+
+```
+
+
+
+# Keterbatasan yang Perlu Diperhatikan
+
+1. Hypothetical bias. Responden mungkin berperilaku berbeda dalam survei vs di toko nyata. CBC lebih baik dari rating-based dalam hal ini, tapi gap tetap ada.
+2. Atribut yang tidak dimasukkan. Conjoint hanya mengukur atribut yang sudah kita tentukan. Faktor seperti brand awareness, rekomendasi teman, atau tampilan toko tidak tertangkap.
+3. Interaksi antar atribut. Model dasar conjoint mengasumsikan efek atribut independen (additive). Padahal, 'Botol Kaca + Alami 100%' mungkin memberikan efek sinergistis lebih besar dari keduanya dijumlah. Perlu model interaction term.
+4. Heterogenitas preferensi. Rata-rata part-worth menyembunyikan variasi antar segmen. Sebaiknya lakukan analisis per segmen (misal: usia, kota, frekuensi konsumsi) atau gunakan Latent Class Conjoint.
+5. Sample size. Untuk traditional conjoint: minimal 50 responden. Untuk CBC: minimal 150-200 per segmen yang ingin dianalisis secara terpisah.
+
+Penutup: Paksa Konsumen untuk Jujur
+Pertanyaan survei yang langsung — 'Seberapa penting harga bagi Anda?' — hampir selalu menghasilkan jawaban yang tidak berguna. Semua penting, semua dapat skor 5.
+Conjoint Analysis memecahkan masalah ini dengan cara yang elegan: paksa konsumen untuk membuat trade-off, lalu hitung sendiri berapa nilai implisit setiap atribut dari pola pilihan mereka.
+Hasilnya jauh lebih actionable: bukan 'konsumen menyukai rasa enak dan harga murah', tapi 'konsumen bersedia membayar Rp3.500 lebih mahal jika kemasannya botol kaca, dan klaim Alami 100% berkontribusi 35% dari keputusan beli mereka'.
+Dengan R dan beberapa package yang sudah tersedia, analisis yang dulu hanya bisa dilakukan oleh firma riset besar dengan software mahal kini bisa dilakukan sendiri — dengan kontrol penuh atas desain, data, dan interpretasi.
+
