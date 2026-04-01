@@ -1,0 +1,114 @@
+---
+title: "Mencoba library(senseR) untuk Menyelesaikan Masalah Sales"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  error: false
+  echo: false
+---
+
+Bulan lalu, saya bergabung dengan komunitas __BelajaR__. Suatu komunitas yang berisi orang-orang yang punya satu tujuan yang sama, yakni belajar __R programming__. Ternyata di grup tersebut ada beberapa rekan-rekan _statisticians_ di BPS, salah satunya adalah Mas [Joko Ade Nursiyono](https://www.linkedin.com/in/jokoade/?originalSubdomain=id) sang _founder_ komunitas ini.
+
+Singkat cerita, setelah _googling_ sana-sini, saya mendapati bahwa [__beliau aktif membuat__](https://github.com/jokoadenur) beberapa _libraries_ di __R__, seperti:
+
+1. `library(jatimuseR)`; _library_ __R__ untuk mengakses dataset publik Provinsi Jawa Timur yang bersumber dari Badan Pusat Statistik Provinsi Jawa Timur.
+1. `library(sarimasnap)`; _library_ __R__ yang membantu Anda membuat model __SARIMA__ secara otomatis. SARIMA adalah metode statistik untuk meramalkan data deret waktu yang memiliki pola 
+musiman (seperti data penjualan bulanan atau data cuaca tahunan).
+1. `library(numspellR)`; _library_ __R__ ini membantu menganalisis data angka yang berubah seiring waktu dengan mencari pola-pola di mana angka tersebut "bertahan" atau "menempel" pada nilai tertentu dalam waktu lama, seperti harga yang tidak berubah selama beberapa bulan atau tingkat pengangguran yang stabil dalam periode tertentu, yang penting untuk memahami stabilitas ekonomi dan efektivitas kebijakan.
+1. `library(segmonR)`; _library_ __R__ ini adalah alat untuk membuat diagram lingkaran yang tidak statis, tetapi memiliki segmen-segmen yang bisa bergerak atau beranimasi sesuai dengan pengaturan yang Anda buat. Anda bisa mengatur bagaimana setiap bagian diagram (yang mewakili kategori atau variabel dalam data) tampil dan bergerak, sehingga menghasilkan visualisasi data yang lebih hidup dan interaktif dibanding diagram lingkaran biasa.
+
+__dan masih banyak lagi__.
+
+Nah, pada tulisan ini saya akan membahas salah satu _library_ buatan beliau bernama `library(senseR)` yang menurut saya bisa berguna pada _business case_ di bidang _sales_.
+
+
+# Penjelasan Tentang `library(senseR)`
+
+`senseR` adalah sebuah _library_ __R__ sebagai alat diagnostik statistik untuk mengevaluasi apakah __indikator proksi__ dapat __secara andal mewakili konstruk dasar__ yang tidak dapat diamati atau diukur secara langsung. Metode yang digunakan adalah dengan memeriksa tujuh karakteristik penting: 
+
+1. Apakah indikator bergerak searah dengan fenomena (_monotonicity_)?
+    - _Monotonicity_ dihitung menggunakan korelasi _rank Spearman_ antara _proxy_ dan target.
+    - Tidak seperti korelasi _Pearson_, korelasi _Spearman_ tidak mengasumsikan linearitas.
+2. Seberapa banyak informasi yang dibawa (konten informasi)?
+    - _Information content_ bisa dihitung dengan proporsi varians yang dijelaskan (_R-squared_).
+3. Seberapa tersebar nilainya (dispersi)?
+4. Apakah cenderung stagnan (stagnasi)?
+5. Apakah ada batasan atas yang menghambat (efek plafon)? 
+6. Seberapa konsisten performanya dari waktu ke waktu (stabilitas)? 
+    - Mengukur konsistensi hubungan antara proksi dan target di berbagai _subset_ data atau periode waktu.
+7. Seberapa cepat merespon perubahan (responsivitas)?
+
+## Konsep _Proxy Indicators_
+
+_Proxy indicators_ adalah variabel yang digunakan sebagai pengganti (_proxy_) untuk variabel target yang sulit atau tidak mungkin diukur secara langsung.
+
+## Kemudahan `library(senseR)`
+
+Keunggulan _library_ ini adalah _output_-nya yang mudah dimengerti. _Output_ `senseR` menyediakan: 
+
+1. Tabel metrik untuk setiap komponen.
+2. Skor akhir dan klasiﬁkasi.
+3. Interpretasi naratif dalam bahasa pilihan. 
+4. Rekomendasi untuk penggunaan _proxy_.
+
+Namun bukan berarti _library_ ini tidak memiliki limitasi. Berikut beberapa limitasi yang perlu diperhatikan agar kita tidak salah dalam mengambil kesimpulan dari hasil yang diberikan:
+
+1. Asumsi Linearitas: Meskipun menggunakan Spearman untuk _monotonicity_, beberapa komponen masih mengasumsikan hubungan linear.
+    - Menurut saya, asumsi linearitas adalah asumsi yang paling dasar dan __tetap bisa digunakan__ dalam konteks bisnis. Benar jika dunia ini bekerja secara non linear __tapi banyak masalah bisa dijelaskan dengan mudah menggunakan asumsi linear__.
+2. Independensi Komponen: Rata-rata sederhana dari karakteristik indikator mengasumsikan mereka sama pentingnya.
+3. _Threshold Arbitrer_: Batas 0.4 dan 0.7 untuk klasiﬁkasi bersifat _arbitrer_ dan mungkin tidak optimal untuk semua konteks.
+
+# _Study Case: Selling in vs Selling out_
+
+Beberapa tahun lalu, salah seorang rekan saya di salah satu perusahaan FMCG berdiskusi tentang masalah yang dia hadapi. Ada satu _business case_ yang membuat keriuhan di kantornya.
+
+> Di perusahaan rekan saya, mereka tidak memiliki data _selling out_ secara _real time_ dan hanya memiliki data _real time selling in_. Biasanya, data _selling out_ baru bisa diketahui 4 sampai 6 bulan setelah semua transaksi _closed_. _Board of directors_ ingin mengetahui apakah data _selling in_ bisa digunakan sebagai _proxy_ pengambilan keputusan _strategic_ dalam rangka meningkatkan _selling out_. 
+
+Data _selling out_ adalah data jualan perusahaan tersebut secara _real_ ke _end customers_. Sedangkan data _selling in_ merupakan data jualan perusahaan tersebut ke _distributor_ atau _outlet retail_. 
+
+Sekilas keduanya terlihat sama tapi __pada kenyataannya, *selling in* tidak sepenuhnya terkonversi menjadi *selling out*__. Misalkan:
+
+1. Ada kasus di mana beberapa distributor melakukan _stock_ produk sehingga membeli dalam jumlah banyak di suatu waktu terlepas dari permintaan pasar.
+1. Ada kasus di mana produk-produk dari distributor di-_retur_ karena tidak laku.
+1. Ada kasus di mana distributor membeli produk dalam jumlah banyak sebelum kenaikan harga barang di periode berikutnya.
+
+__dan lain sebagainya__.
+
+Berikut adalah data bulanan selama lima tahun dari _selling in_ dan _selling out_:
+
+```{r}
+rm(list=ls())
+
+library(dplyr)
+library(ggplot2)
+
+df = read.csv("dummy_si_so.csv")
+
+source("plot.R")
+
+plots <- plot_selling_data()
+print(plots$timeline_plot)
+print(plots$scatter_plot)
+
+```
+
+Sekarang saya akan menguji apakah data _selling in_ bisa dijadikan _proxy_ _selling out_ menggunakan `library(senseR)`.
+
+Skripnya sangat mudah, yakni:
+
+```{r}
+#| echo: true
+library(senseR)
+senser(df, proxy = "selling_in", target = "selling_out",lang = "indonesia") 
+```
+
+Dari hasil di atas, bisa disimpulkan bahwa _selling in_ layak dijadikan _proxy_ untuk _selling out_. Alasan dan nilai dari setiap perhitungan juga disertakan di _output_ yang diberikan `senseR`.
+
+Dari temuan ini, saya mungkin akan menginformasikan rekan saya tersebut untuk menggunakan _library_ ini.
+
