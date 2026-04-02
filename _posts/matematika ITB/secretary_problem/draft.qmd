@@ -1,0 +1,531 @@
+---
+title: "Mencari Strategi Terbaik untuk Mengambil Keputusan dengan The Secretary Problem"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  error: false
+  echo: false
+---
+
+Pada lebaran kemarin, saya pergi ke *mall* di sore harinya untuk mencari tempat makan untuk saya dan keluarga. Saat masuk ke *basement* parkiran, saya melihat satu *slot* kosong di dekat pintu masuk. Saya berpikir:
+
+> *"Mungkin masih ada yang lebih dekat ke pintu masuk."*
+
+Saya terus melaju dan ternyata tidak ada *slot* kosong. Akhirnya saya kembali ke *slot* yang pertama kali saya lihat dan *alhamdulillah* masih ada.
+
+Di bulan lalu, perusahaan saya membuka *vacancy* untuk posisi *management trainee*. Kebetulan saya dan beberapa rekan mendapatkan kesempatan untuk mewawancarai beberapa kandidat yang diproyeksikan bisa di-*assign* ke tim market riset. Kandidat pertama bagus, kandidat kedua juga oke, kandidat berikutnya juga bagus, berikutnya juga bagus *banget*. Saya dan rekan-rekan belum yakin apakah harus langsung pilih yang sudah ada atau terus mencari.
+
+> **Bisa jadi terlalu cepat memilih mengakibatkan kami menyesal karena mungkin ada kandidat setelahnya yang lebih baik. TAPI terlalu lama mencari bisa mengakibatkan kami membuang waktu dan bisa kehilangan kandidat bagus yang sudah lewat.**
+
+Kedua contoh dilema ini sebenarnya adalah satu problem matematika yang sudah punya jawaban optimal. Dan jawabannya mengandung angka yang mengejutkan:
+
+> **37% atau lebih tepatnya 1/e ≈ 0.3679.**
+
+Ini adalah proporsi optimal untuk fase 'hanya observasi' sebelum Anda mulai membuat keputusan. Aturan ini berlaku di banyak situasi kehidupan nyata yang punya struktur serupa. Bagaimana penjelasannya? Simak paparan berikut ini ya.
+
+# Apa itu Aturan 37%
+
+## Asal usul *the Secretary Problem*
+
+**Aturan 37%** berasal dari sebuah problem klasik matematika yang dikenal dengan beberapa nama: *Secretary Problem*, *Marriage Problem*, atau *Optimal Stopping Problem*. Problem ini pertama kali dipublikasikan secara luas pada tahun 1960 oleh Martin Gardner di kolom *Mathematical Games*-nya di *Scientific American*.
+
+Ini adalah formulasi awalnya: **kita ingin merekrut satu sekretaris terbaik dari *N* kandidat. Kandidat datang satu per satu dalam urutan acak. Setelah mewawancarai setiap kandidat, Anda harus langsung memutuskan: terima atau tolak. Kandidat yang ditolak tidak bisa dipanggil kembali.**
+
+> **Bagaimana strategi optimal untuk memaksimalkan probabilitas mendapat kandidat terbaik?**
+
+Ternyata, jawaban matematisnya adalah strategi dua fase yang sangat elegan:
+
+1.  Fase Eksplorasi: Amati (dan tolak) **37%** kandidat pertama. Catat siapa yang terbaik sejauh ini. *List* kandidat ini jadi patokan kita.
+2.  Fase Eksploitasi: Mulai dari kandidat ke-**38%**, terima kandidat PERTAMA yang lebih baik dari patokan tadi.
+
+Dengan strategi ini, probabilitas Anda mendapat kandidat terbaik secara keseluruhan adalah tepat **1/e ≈ 37%**. Menariknya, ini adalah probabilitas tertinggi yang bisa dicapai — tidak ada strategi lain yang bisa mengalahkannya.
+
+## Mengapa **1/e** ?
+
+Angka **1/e** muncul dari kalkulus optimasi. Ketika *N* cukup besar, batas optimal *r/N* (di mana *r* adalah jumlah kandidat yang diobservasi dulu) konvergen ke **1/e**.
+
+## Asumsi yang Perlu Dipahami
+
+Sebelum lanjut ke simulasi di **R**, penting untuk memahami asumsi di balik aturan ini agar kita tidak salah aplikasikan:
+
+| Asumsi | Artinya | Contoh *Real* |
+|------------------------|------------------------|------------------------|
+| Urutan acak | Kandidat datang dalam urutan yang tidak bisa diprediksi | *CV* yang masuk tidak diurutkan dari yang terbaik duluan |
+| Keputusan seketika | Setelah menolak, tidak bisa memanggil kembali | Kandidat yang ditolak langsung ambil tawaran lain |
+| N diketahui | Jumlah total kandidat sudah diketahui sebelumnya | Anda tahu ada tepat 20 pelamar |
+| Bisa membandingkan | Anda bisa meranking kandidat secara relatif | Anda bisa bilang 'kandidat ini lebih baik dari kandidat yang sebelumnya' |
+| Satu pilihan | Hanya memilih satu dari *N* | Satu posisi yang tersedia, satu apartemen yang disewa |
+
+Di dunia nyata, asumsi-asumsi ini jarang terpenuhi sempurna. Tapi __aturan 37%__ tetap berguna sebagai panduan _heuristik_ mengambil keputusan yang masuk akal meski tidak optimal secara persis.
+
+# Pembuktian dengan Simulasi di __R__
+
+Agar lebih jelas lagi, maka saya akan buatkan satu simulasi untuk memperlihatkan bahwa __aturan 37%__ adalah strategi pengambilan keputusan terbaik.
+
+
+```{r}
+#| include: false
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(scales)
+rm(list=ls())
+set.seed(101)
+```
+
+
+Saya akan menggunakan beberapa _study cases_ sebagai bahan simulasi. 
+
+## KASUS I: Simulasi Wawancara Kandidat
+
+Bayangkan kita harus memilih 1 orang terbaik dari 100 pelamar. Pelamar datang satu per satu. Kita simulasikan 10.000 kali (prinsip Monte Carlo) dengan berbagai nilai _r_ (berapa yang diobservasi dulu) dan lihat berapa probabilitas mendapat kandidat terbaik.
+
+Pertama-tama, saya akan membuat beberapa _function_ berikut ini:
+
+```{r}
+# ── Fungsi inti: optimal stopping dengan threshold r ─────────────
+#
+# Argumen:
+#   kandidat  = vektor nilai/kualitas kandidat (urutan acak)
+#   r         = jumlah kandidat yang hanya diobservasi (fase eksplorasi)
+#
+# Mengembalikan:
+#   indeks kandidat yang dipilih, atau NA kalau tidak ada yang
+#   melampaui threshold (terpaksa pilih kandidat terakhir)
+
+optimal_stopping <- function(kandidat, r) {
+  n <- length(kandidat)
+
+  # Fase 1: Amati r kandidat pertama, cari nilai terbaik sebagai patokan
+  patokan <- max(kandidat[1:r])
+
+  # Fase 2: Pilih kandidat pertama yang lebih baik dari patokan
+  pilihan <- NA
+  for (i in (r + 1):n) {
+    if (kandidat[i] > patokan) {
+      pilihan <- i
+      break
+    }
+  }
+
+  # Kalau tidak ada yang melampaui patokan, terpaksa pilih yang terakhir
+  if (is.na(pilihan)) pilihan <- n
+
+  return(pilihan)
+}
+
+# ── Cek apakah pilihan kita adalah kandidat terbaik? ─────────────
+dapat_terbaik <- function(kandidat, pilihan) {
+  kandidat[pilihan] == max(kandidat)
+}
+```
+
+Sekarang saya akan mulai simulasinya dengan _flow_ sebagai berikut:
+
+1. Saya akan buat 100 orang kandidat.
+1. Saya akan definisikan _r_ tertentu, mulai dari 1 hingga 99.
+    1. Misalkan _r = 10_, artinya saya akan mewawancarai 10 orang kandidat pertama. Lalu kandidat terbaik dari 10 orang tersebut akan saya jadikan _basis_. 
+    1. Kemudian saya akan mewawancarai kandidat ke __11__, jika kandidat tersebut lebih baik dari _basis_, maka saya akan _hire_ kandidat tersebut.
+    1. Jika kandidat ke __11__ tidak lebih baik dari _basis_, saya akan wawancarai kandidat selanjutnya. Kandidat dengan kualitas lebih baik dari _basis_ akan langsung saya _hire_.
+    
+Proses ini akan diulang-ulang dengan berbagai nilai _r_ sebanyak 10 ribu kali.
+
+```{r}
+#| echo: true
+
+# ── Simulasi untuk berbagai nilai r ──────────────────────────────
+N         <- 100     # Jumlah kandidat
+n_sim     <- 10000   # Jumlah simulasi per nilai r
+r_values  <- 1:(N-1) # Coba semua kemungkinan r
+
+# Untuk setiap nilai r, hitung probabilitas dapat kandidat terbaik
+hasil_sim <- sapply(r_values, function(r) {
+  sukses <- replicate(n_sim, {
+    # Buat urutan acak: nilai kandidat dari distribusi uniform
+    kandidat <- runif(N)
+    # Jalankan strategi
+    pilihan  <- optimal_stopping(kandidat, r)
+    # Apakah yang dipilih adalah yang terbaik?
+    dapat_terbaik(kandidat, pilihan)
+  })
+  mean(sukses)  # Proporsi sukses = probabilitas estimasi
+})
+
+df_hasil <- data.frame(
+  r           = r_values,
+  pct_r       = r_values / N * 100,
+  prob_sukses = hasil_sim
+)
+
+# Temukan r optimal dari simulasi
+r_optimal_sim <- df_hasil$r[which.max(df_hasil$prob_sukses)]
+prob_optimal  <- max(df_hasil$prob_sukses)
+```
+
+Berikut hasilnya:
+
+```{r}
+cat('r optimal (simulasi)  :', r_optimal_sim, 'dari', N, 'kandidat\n')
+cat('Persentase            :', r_optimal_sim / N * 100, '%\n')
+cat('Probabilitas sukses   :', round(prob_optimal, 4), '\n')
+cat('Nilai teoritis 1/e    :', round(1/exp(1), 4), '\n')
+```
+
+Hasil simulasi memberikan informasi bahwa pada _r = _ `r r_optimal_sim`, kita mendapatkan peluang tertinggi (sebesar 37%) bahwa kandidat selanjutnya adalah kandidat terbaik _compared to_ kandidat terbaik dari `r r_optimal_sim` yang dijadikan basis.
+
+
+```{r}
+# ── Visualisasi: kurva probabilitas vs r ─────────────────────────
+r_37pct <- round(N / exp(1))
+
+ggplot(df_hasil, aes(x = pct_r, y = prob_sukses)) +
+  geom_line(color = '#1E6B3C', linewidth = 1.2) +
+  # Titik optimal dari simulasi
+  geom_vline(xintercept = r_optimal_sim,
+             color = '#C0392B', linetype = 'dashed', linewidth = 1) +
+  # Garis 1/e sebagai referensi teori
+  geom_hline(yintercept = 1/exp(1),
+             color = 'navy', linetype = 'dotted', linewidth = 0.8) +
+  # Titik optimal
+  geom_point(
+    data = df_hasil[which.max(df_hasil$prob_sukses), ],
+    aes(x = pct_r, y = prob_sukses),
+    color = '#C0392B', size = 4
+  ) +
+  annotate('text',
+    x = r_optimal_sim + 3, y = prob_optimal + 0.01,
+    label = paste0('r = ', r_optimal_sim, ' (', r_optimal_sim, '%)\nP = ', round(prob_optimal, 3)),
+    color = '#C0392B', size = 3.5, fontface = 'bold', hjust = 0
+  ) +
+  annotate('text',
+    x = 85, y = 1/exp(1) + 0.012,
+    label = paste0('1/e = ', round(1/exp(1), 3)),
+    color = 'navy', size = 3.5
+  ) +
+  scale_x_continuous(labels = function(x) paste0(x, '%')) +
+  scale_y_continuous(labels = percent_format()) +
+  labs(
+    title    = 'Probabilitas Mendapat Kandidat Terbaik vs Ukuran Fase Observasi',
+    subtitle = paste0('N = ', N, ' kandidat | ', n_sim, ' simulasi per titik'),
+    x        = 'Persentase Kandidat yang Hanya Diobservasi (r/N)',
+    y        = 'Probabilitas Mendapat Kandidat Terbaik',
+    caption  = 'Garis merah = r optimal | Garis navy = nilai teoritis 1/e'
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(plot.title = element_text(face = 'bold', color = '#1E6B3C'))
+```
+
+## KASUS II: Simulasi Pencarian Apartemen
+
+Misalkan Anda pindah kerja ke Dubai dan harus menyewa apartemen. Ada 20 unit yang sudah masuk _shortlist_ dan bisa dilihat satu per satu. Begitu Anda menolak satu unit, Anda tidak bisa kembali (unit tersebut sudah diambil orang lain). Kapan Anda harus mulai memutuskan? Berdasarkan __aturan 37%__, maka:
+
+> Banyaknya apartemen yang harus dilihat dulu tanpa dipilih sama sekali adalah: (20 × 0.37) ~ 8 unit. Maka setelah melihat 8 unit pertama, catat unit apartemen terbaik sejauh ini. Mulai dari unit ke-9, pilih unit PERTAMA yang lebih baik dari 8 unit tadi.
+
+Saya juga akan bandingkan saat:
+
+1. Anda terburu-buru mengambil keputusan dengan _r = 2_. Lihat 2 unit apartemen, lalu langsung memilih.
+1. Anda terlalu lama mengambil keputusan dengan _r = 15_. Lihat 15 unit apartemen, lalu langsung memilih.
+
+Oke, sekarang saya buat skrip simulasinya:
+
+```{r}
+#| echo: true
+
+# ── Kasus 2: Mencari Apartemen ────────────────────────────────────
+# Simulasi: 20 apartemen, nilai kualitas dari 1-100
+
+simulasi_apartemen <- function(n_apartemen = 20, n_sim = 50000) {
+  r_optimal <- ceiling(n_apartemen / exp(1))
+
+  # Bandingkan tiga strategi:
+  # 1. Aturan 37% (r = ceiling(N/e))
+  # 2. Terlalu cepat (r = 2, hanya lihat 2 dulu)
+  # 3. Terlalu lama  (r = 15, lihat 15 dulu baru pilih)
+
+  hasil <- replicate(n_sim, {
+    apt <- sample(1:n_apartemen, n_apartemen)  # Urutan acak
+
+    pilih_37  <- optimal_stopping(apt, r_optimal)
+    pilih_awal <- optimal_stopping(apt, 2)
+    pilih_lama <- optimal_stopping(apt, 15)
+
+    c(
+      terbaik_37   = apt[pilih_37]  == max(apt),
+      terbaik_awal = apt[pilih_awal] == max(apt),
+      terbaik_lama = apt[pilih_lama] == max(apt),
+      rank_37      = rank(-apt)[pilih_37],   # Rank 1 = terbaik
+      rank_awal    = rank(-apt)[pilih_awal],
+      rank_lama    = rank(-apt)[pilih_lama]
+    )
+  })
+
+  data.frame(
+    strategi = c('Aturan 37% (r=7)',
+                 'Terlalu Cepat (r=2)',
+                 'Terlalu Lama (r=15)'),
+    prob_terbaik = c(mean(hasil['terbaik_37',]),
+                     mean(hasil['terbaik_awal',]),
+                     mean(hasil['terbaik_lama',])),
+    rata_rank    = c(mean(hasil['rank_37',]),
+                     mean(hasil['rank_awal',]),
+                     mean(hasil['rank_lama',]))
+  )
+}
+
+set.seed(101)
+hasil_apt <- simulasi_apartemen()
+```
+
+```{r}
+cat('=== SIMULASI CARI APARTEMEN (N=20) ===\n')
+hasil_apt %>%
+  mutate(
+    prob_terbaik = percent(prob_terbaik, accuracy = 0.1),
+    rata_rank    = round(rata_rank, 2)
+  ) %>%
+  print()
+
+```
+
+__Aturan 37%__ memberikan peluang terbaik kita akan mendapatkan unit terbaik dari 20 unit yang ada di _shortlist_.
+
+```{r}
+# ── Visualisasi perbandingan strategi ────────────────────────────
+ggplot(hasil_apt,
+       aes(x = reorder(strategi, prob_terbaik),
+           y = prob_terbaik, fill = strategi)) +
+  geom_col(width = 0.55, alpha = 0.85) +
+  geom_text(
+    aes(label = percent(prob_terbaik, accuracy = 0.1)),
+    hjust = -0.1, fontface = 'bold', size = 4
+  ) +
+  coord_flip(clip = 'off') +
+  scale_fill_manual(
+    values = c('Aturan 37% (r=7)'    = '#1E6B3C',
+               'Terlalu Cepat (r=2)' = '#E74C3C',
+               'Terlalu Lama (r=15)' = '#F39C12'),
+    guide = 'none'
+  ) +
+  scale_y_continuous(limits = c(0, 0.55), labels = percent_format()) +
+  labs(
+    title    = 'Perbandingan Strategi: Cari Apartemen (N = 20 unit)',
+    subtitle = 'Probabilitas mendapat apartemen TERBAIK dari 20 pilihan',
+    x = '', y = 'Probabilitas Mendapat Terbaik'
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(plot.title = element_text(face = 'bold', color = '#1E6B3C'))
+```
+
+## KASUS III: Simulasi Pencarian _Vendor_
+
+Tim _procurement_ sedang memilih vendor untuk proyek IT senilai Rp 2 miliar. Ada 15 vendor yang sudah diundang untuk mengajukan penawaran. Penawaran datang satu per satu. Mereka ingin memilih _vendor_ dengan harga dan kualitas terbaik, tapi _vendor_ yang sudah ditolak tidak bisa diajak kembali ke meja negosiasi. Bagaimana cara terbaik memilihnya? Dengan __aturan 37%__:
+
+> _r_ sebesar (15 × 0.37) = 6 vendor. Evaluasi 6 penawaran pertama, tolak semua (tapi catat yang terbaik sebagai _benchmark_ / _basis_). Mulai dari penawaran ke-7, pilih penawaran pertama yang lebih baik dari _basis_ tersebut.
+
+
+Pada simulasi ini, saya berikan juga nilai _random_ masing-masing _vendor_ untuk kemudian saya bandingkan juga strategi pemilihan jika terburu-buru atau terlalu lama:
+
+```{r}
+#| echo: true
+# ── Kasus 3: Seleksi Vendor ───────────────────────────────────────
+
+# Dalam seleksi vendor, 'nilai' adalah kombinasi harga dan kualitas
+# Kita simulasikan nilai gabungan (semakin tinggi semakin baik)
+
+simulasi_vendor <- function(n_vendor = 15, n_sim = 50000) {
+  r_37 <- ceiling(n_vendor / exp(1))
+
+  hasil <- replicate(n_sim, {
+    # Setiap vendor punya nilai gabungan harga-kualitas
+    nilai_vendor <- runif(n_vendor, 50, 100)
+
+    pilihan_37   <- optimal_stopping(nilai_vendor, r_37)
+    pilihan_awal <- optimal_stopping(nilai_vendor, 1)
+    pilihan_lama <- optimal_stopping(nilai_vendor, 12)
+
+    # Hitung nilai (skor) vendor yang dipilih
+    c(
+      nilai_37   = nilai_vendor[pilihan_37],
+      nilai_awal = nilai_vendor[pilihan_awal],
+      nilai_lama = nilai_vendor[pilihan_lama],
+      terbaik_37 = nilai_vendor[pilihan_37] == max(nilai_vendor)
+    )
+  })
+
+  data.frame(
+    strategi     = c('Aturan 37% (r=6)', 'Terlalu Cepat (r=1)', 'Terlalu Lama (r=12)'),
+    rata_nilai   = c(mean(hasil['nilai_37',]),
+                     mean(hasil['nilai_awal',]),
+                     mean(hasil['nilai_lama',])),
+    prob_terbaik = c(mean(hasil['terbaik_37',]), NA, NA)
+  )
+}
+
+set.seed(101)
+hasil_vendor <- simulasi_vendor()
+```
+
+```{r}
+cat('=== SIMULASI SELEKSI VENDOR (N=15) ===\n')
+hasil_vendor %>%
+  mutate(rata_nilai = round(rata_nilai, 2)) %>%
+  print()
+```
+
+
+Ternyata didapatkan bahwa __aturan 37%__ memberikan peluang terbaik bagi tim _procurement_ untuk menemukan _vendor_ dengan _expected_ nilai kualitas dan harga tertinggi.
+
+# Berapa Nilai _r_ untuk __N__ yang Berbeda-beda?
+
+Salah satu pertanyaan yang selalu muncul adalah jika __N__ saya bukan 100 tapi hanya 10 atau 20, apakah masih pakai 37%?
+
+> Jawaban singkatnya: ya karena prinsipnya sama.
+
+TAPI untuk __N__ kecil, tentu ada penyesuaian karena bilangan bulat tidak bisa mewakili 37% secara persis. Berikut tabel referensi yang bisa digunakan:
+
+```{r}
+N_values <- c(5, 10, 15, 20, 30, 50, 100, 200, 500)
+
+tabel_r <- data.frame(
+  N          = N_values,
+  r_teoritis = N_values / exp(1),
+  r_praktis  = ceiling(N_values / exp(1))
+) %>%
+  mutate(
+    pct_r      = round(r_praktis / N * 100, 1),
+    sisa_pilih = N - r_praktis
+  )
+
+print(tabel_r)
+
+# ── Visualisasi: N vs r optimal ───────────────────────────────────
+ggplot(tabel_r, aes(x = N, y = r_praktis)) +
+  geom_line(color = '#1E6B3C', linewidth = 1.2) +
+  geom_point(color = '#1E6B3C', size = 3) +
+  geom_text(
+    aes(label = paste0('r=', r_praktis, '\n(', pct_r, '%)')),
+    vjust = -0.6, size = 2.8, color = '#1E6B3C'
+  ) +
+  scale_x_log10(breaks = N_values, labels = N_values) +
+  labs(
+    title    = 'Jumlah Kandidat yang Harus Diobservasi Dulu (r)',
+    subtitle = 'Untuk berbagai ukuran N | Skala x: logaritmik',
+    x        = 'Total Kandidat (N)',
+    y        = 'Kandidat yang Hanya Diobservasi (r)'
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(plot.title = element_text(face = 'bold', color = '#1E6B3C'))
+```
+
+# Bagaimana Jika Nilai __N__ Tidak Diketahui?
+
+Asumsi terberat dari __aturan 37%__ adalah __kita harus tahu N di awal__. Tapi di kehidupan nyata, seringkali kita tidak tahu berapa banyak total pilihan yang tersedia. Misalnya: berapa lama Anda harus mencari pasangan hidup sebelum memutuskan untuk berkomitmen? Anda tidak tahu akan bertemu berapa orang sepanjang hidup Anda.
+
+Untuk kasus ini, ada __ekstensi aturan 37%__ yang menggunakan waktu sebagai pengganti jumlah __N__. Bagaimana caranya? Prinsipnya seperti ini:
+
+> Kalau Anda berencana mencari selama _T_ tahun (atau bulan, atau hari), habiskan 37% waktu pertama hanya untuk mengobservasi dan membandingkan. Setelah itu, pilih opsi pertama yang lebih baik dari semua yang sudah Anda lihat. 
+
+Misalkan jika kita berencana mencari karyawan selama 3 bulan, gunakan 5-6 minggu pertama hanya untuk wawancara tanpa menerima siapapun.
+
+Berikut adalah skrip untuk men-simulasikan hal tersebut:
+
+Misalkan kita memiliki waktu pencarian kandidat karyawan selama 12 bulan.
+
+```{r}
+#| echo: true
+# ── Simulasi: ketika N tidak diketahui (pakai batas waktu) ───────
+
+# Asumsi: kandidat datang dengan laju Poisson,
+# kita punya waktu T satuan, dan kandidat datang rata-rata lambda per satuan
+
+simulasi_waktu <- function(T_total = 12,   # 12 bulan
+                            lambda  = 4,    # rata-rata 4 kandidat/bulan
+                            n_sim   = 30000) {
+  t_37 <- T_total / exp(1)  # 37% dari total waktu
+
+  hasil <- replicate(n_sim, {
+    # Simulasi waktu kedatangan kandidat (Poisson process)
+    n_total    <- rpois(1, lambda * T_total)
+    if (n_total < 2) return(c(sukses_37=FALSE, sukses_50=FALSE))
+
+    waktu_datang <- sort(runif(n_total, 0, T_total))
+    nilai        <- runif(n_total)  # Kualitas kandidat
+
+    # Strategi 37% waktu
+    observasi_37 <- waktu_datang <= t_37
+    if (sum(observasi_37) == 0) return(c(sukses_37=FALSE, sukses_50=FALSE))
+
+    patokan_37 <- max(nilai[observasi_37])
+    kandidat_eksploitasi <- which(!observasi_37)
+
+    pilih_37 <- n_total  # default: kandidat terakhir
+    for (i in kandidat_eksploitasi) {
+      if (nilai[i] > patokan_37) { pilih_37 <- i; break }
+    }
+
+    # Strategi 50% waktu (untuk perbandingan)
+    observasi_50 <- waktu_datang <= T_total * 0.5
+    if (sum(observasi_50) == 0) return(c(sukses_37=FALSE, sukses_50=FALSE))
+
+    patokan_50 <- max(nilai[observasi_50])
+    kandidat_eks50 <- which(!observasi_50)
+
+    pilih_50 <- n_total
+    for (i in kandidat_eks50) {
+      if (nilai[i] > patokan_50) { pilih_50 <- i; break }
+    }
+
+    c(
+      sukses_37 = nilai[pilih_37] == max(nilai),
+      sukses_50 = nilai[pilih_50] == max(nilai)
+    )
+  })
+
+  data.frame(
+    strategi     = c('37% waktu (t = 4.4 bln)', '50% waktu (t = 6 bln)'),
+    prob_sukses  = c(mean(hasil['sukses_37',]),
+                     mean(hasil['sukses_50',]))
+  )
+}
+
+set.seed(101)
+hasil_waktu <- simulasi_waktu()
+```
+
+```{r}
+cat('=== SIMULASI BERBASIS WAKTU (T=12 bln, lambda=4/bln) ===\n')
+hasil_waktu %>%
+  mutate(prob_sukses = percent(prob_sukses, accuracy = 0.1)) %>%
+  print()
+```
+
+Dengan memanfaatkan __aturan 37%__, kita cukup menunggu selama 4.4 bulan untuk mendapatkan kandidat terbaik dengan _expected_ probabilitas tertinggi dibandingkan dengan strategi lainnya.
+
+# Epilog: Kapan Aturan Ini Tidak Cocok Dipakai?
+
+Dari banyak penjelasan di atas, __aturan 37%__ bukan resep ajaib. Tapi ia mengajarkan sesuatu yang sangat berharga, yakni ada _trade-off_ mendasar antara mengumpulkan informasi dan mengambil tindakan. 
+
+- Terlalu sedikit informasi — keputusan jadi serampangan. 
+- Terlalu banyak menunggu — kesempatan berlalu.
+
+Hal yang menarik adalah matematika menunjukkan bahwa _trade-off_ ini punya titik optimal yang secara mengejutkan konsisten di berbagai ukuran __N__. Yakni selalu sekitar 37% pertama hanya untuk mengamati, lalu bertindak.
+
+__Namun__, perlu diingat kembali bahwa __aturan 37%__ ini punya asumsi dan limitasi sehingga tidak cocok digunakan saat kondisinya:
+
+1. Ketika Anda bisa kembali ke pilihan sebelumnya. Kalau Anda masih bisa menelepon kembali kandidat yang sudah 'ditolak', aturan ini tidak diperlukan. Masalah _optimal stopping_ hanya relevan ketika keputusan benar-benar _irreversible_.
+2. Ketika __N__ sangat kecil (N < 5). Dengan 3-4 pilihan saja, 37% dari N hanya 1 kandidat. Fase observasi dari 1 orang terlalu sedikit untuk jadi patokan yang berarti. Lebih baik evaluasi semua, lalu pilih.
+3. Ketika kualitas kandidat tidak independen. Kalau kandidat yang datang belakangan cenderung lebih baik (misalnya CV yang masuk setelah _deadline_ perpanjangan), asumsi urutan acak dilanggar dan aturan 37% bisa menyesatkan.
+4. Ketika ada informasi _prior_ yang kuat. Kalau Anda sudah tahu distribusi kualitas kandidat (misalnya: 'dari 50 pelamar, biasanya ada 3-5 yang sangat bagus'), pendekatan __Bayesian__ bisa menghasilkan strategi yang lebih baik dari __aturan 37%__ murni.
+5. Ketika biaya observasi tinggi. Kalau setiap wawancara butuh 3 jam persiapan, 'buang' 37% kandidat hanya untuk observasi bisa sangat mahal. Dalam kasus ini, _r_ optimal mungkin lebih kecil dari 37%.
+
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
+
