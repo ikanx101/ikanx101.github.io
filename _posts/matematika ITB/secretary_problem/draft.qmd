@@ -363,7 +363,7 @@ simulasi_vendor <- function(n_vendor = 15, n_sim = 50000) {
     rata_nilai   = c(mean(hasil['nilai_37',]),
                      mean(hasil['nilai_awal',]),
                      mean(hasil['nilai_lama',])),
-    prob_terbaik = c(mean(hasil['terbaik_37',]), NA, NA)
+    prob_terbaik = c(mean(hasil['terbaik_37',]), "", "")
   )
 }
 
