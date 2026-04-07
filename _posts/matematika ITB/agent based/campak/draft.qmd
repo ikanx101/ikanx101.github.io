@@ -1,0 +1,798 @@
+---
+title: "Melihat Penyebaran Wabah Campak Melalui Kacamata Data Science dan Agent-Based Modelling"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  error: false
+  echo: false
+---
+
+## Campak Kembali dan Ini Bukan Hal Sepele
+
+Awal 2026, berita tentang wabah campak kembali muncul di berbagai media Indonesia. Beberapa provinsi melaporkan lonjakan kasus. Banyak di antaranya menyerang anak-anak yang belum mendapat vaksinasi lengkap. Padahal, campak adalah penyakit yang sebenarnya sudah sangat bisa dicegah dengan vaksin yang sudah ada sejak 1960-an.
+
+Sebagai seseorang yang berkecimpung di dunia data, saya jadi bertanya-tanya:
+
+> *Bagaimana sebenarnya penyakit ini menyebar? Mengapa ia bisa menjadi wabah dengan begitu cepat? Dan apa yang angka-angka di balik campak ini ceritakan kepada kita?*
+
+Untuk itu, saya akan coba melakukan simulasi untuk memahami dinamika penyebaran campak secara matematis. Akan ada dua pendekatan yang mau saya coba, yakni:
+
+1.  Memodelkan dengan [*SIR*](https://ikanx101.com/blog/sir-covid/),
+2.  Menggunakan [*Agent Based Modelling*](https://ikanx101.com/blog/simple-economy/).
+
+Dari kedua pendekatan tersebut, saya akan melihat seberapa berbahaya penyebaran campak ini dibandingkan dengan penyakit virus lainnya.
+
+Oh iya, perlu saya tekankan bahwa saya bukan dokter dan tulisan ini bersifat edukatif. Saya menggunakan data serta parameter yang bersumber dari literatur epidemiologi. Simulasi yang disajikan adalah penyederhanaan untuk tujuan pemahaman, bukan model prediksi resmi. Untuk informasi kesehatan, selalu rujuk ke Kementerian Kesehatan RI dan tenaga medis profesional.
+
+------------------------------------------------------------------------
+
+## Apa itu campak?
+
+Campak (*Measles*) disebabkan oleh **Measles Morbillivirus**. Virus tersebut menyebar lewat udara, yakni melalui tetesan pernapasan dan partikel aerosol yang bisa bertahan di udara sampai dua jam setelah penderita meninggalkan ruangan. Inilah yang membuatnya sangat berbeda dari banyak penyakit menular lain. Gejala khasnya:
+
+-   Demam tinggi,
+-   Batuk,
+-   Pilek,
+-   Mata merah, dan
+-   Ruam merah yang menyebar dari wajah ke seluruh tubuh.
+
+Komplikasi yang menyertai campak bisa serius: *pneumonia*, *ensefalitis* (radang otak), bahkan kematian — terutama pada anak-anak di bawah 5 tahun dengan gizi buruk.
+
+Dalam epidemiologi, kita mengenal angka **R0**. Saya sudah pernah menjelaskannya pada tulisan [model Covid saya yang pertama kali](https://ikanx101.com/blog/covid/). **R0** adalah satu angka yang paling menentukan seberapa 'berbahaya' sebuah penyakit. **R0** (dibaca *R-naught*) bisa kita sebut dengan *basic reproduction number*.
+
+> **R0** adalah rata-rata jumlah orang yang akan tertular dari SATU penderita, dalam populasi yang sepenuhnya rentan (belum kebal). R0 \> 1 berarti wabah bisa terjadi. Semakin besar R0, semakin agresif penyebarannya.
+
+Tabel berikut inilah yang membuat campak luar biasa:
+
+| Penyakit | R0 (estimasi) | Masa infeksius | Berapa persen cakupan vaksin agar tercapai *Herd Immunity* |
+|----|----|----|----|
+| Campak | 12-18 | \~ 8 hari | \~ 95% |
+| Cacar air | 8-10 | \~ 7 hari | \~ 90% |
+| Gondongan | 4-7 | \~ 7 hari | \~ 85% |
+| Influenza musiman | 2-3 | \~ 5 hari | \~ 50% |
+| Covid-19 | 2-3 | \~ 10 hari | \~ 60-70% |
+| Ebola | 1.5-2.5 | \~ 10 hari | \~ 50-60% |
+| SARS | 2-5 | \~ 10 hari | \~ 50-80% |
+
+Dengan __R0__ antara __12 hingga 18__, campak adalah salah satu penyakit menular paling infeksius yang dikenal manusia. Artinya: satu orang yang terinfeksi, dalam populasi tanpa imunitas, rata-rata bisa menginfeksi 12 sampai 18 orang lain. Bandingkan dengan influenza yang hanya 2-3. Implikasi langsungnya sangat mengejutkan: untuk mencapai _herd immunity_ dari campak, setidaknya 95% populasi harus kebal. Kalau cakupan vaksinasi turun di bawah angka itu karena hoaks, keengganan, atau kesulitan akses terhadap vaksin maka wabah bisa meledak dengan cepat.
+
+## Mengapa Wabah Bisa Terjadi Meski Vaksin Ada?
+
+Fenomena ini dikenal sebagai _immunity gap_. Selama beberapa tahun terakhir, cakupan vaksinasi MMR (_Measles_, _Mumps_, dan _Rubella_) di Indonesia mengalami penurunan, salah satu penyebabnya adalah disrupsi layanan kesehatan saat pandemi COVID-19 dan meningkatnya gerakan anti-vaksin di berbagai daerah. Ketika cakupan vaksinasi turun dari 95% ke, katakanlah menjadi 85% maka ada _gap_ 10% populasi yang tiba-tiba menjadi rentan. Dalam populasi besar seperti Indonesia dengan 280 juta jiwa, 10% itu berarti 28 juta orang yang tidak terlindungi. Dengan __R0__ campak yang setinggi 12-18, celah sekecil itu sudah cukup untuk memicu wabah.
+
+# Model SIR: Fondasi Matematika dalam Epidemi
+
+## Memahami Model SIR
+
+Sebelum masuk ke simulasi _Agent Based Modelling_, kita perlu memahami model SIR. Yakni suatu model yang merupakan fondasi matematis dalam epidemiologi. Ini adalah model kompartemen klasik yang dikembangkan oleh Kermack dan McKendrick pada 1927 dan masih menjadi tulang punggung epidemiologi modern. Dalam Model SIR, setiap individu berada di salah satu dari tiga kompartemen:
+
+- __S__ (_Susceptible_): Rentan yakni kumpulan orang-orang yang belum terinfeksi dan belum kebal.
+- __I__ (_Infectious_): Infeksius yakni kumpulan orang-orang yang sedang terinfeksi dan bisa menularkan.
+- __R__ (_Recovered_): Pulih yakni kumpulan orang-orang yang sudah sembuh dan kini kebal, atau meninggal.
+
+Pergerakan antar kompartemen diatur oleh dua parameter utama:
+
+- _Beta_ (β): Laju transmisi, yakni seberapa cepat penyakit menyebar dari __I__ ke __S__.
+- _Gamma_ (γ): Laju _recovery_, yakni seberapa cepat individu pindah dari __I__ ke __R__.
+
+Dari kedua parameter ini, kita bisa menghitung __R0 = β / γ__.
+
+## Simulasi Model SIR dengan __R__
+
+```{r}
+#| include: false
+
+# ── Install dan load package ─────────────────────────────────────
+# install.packages(c('dplyr', 'ggplot2', 'tidyr', 'scales',
+#                    'patchwork', 'RColorBrewer'))
+
+rm(list=ls())
+
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(scales)
+library(patchwork)
+library(RColorBrewer)
+
+set.seed(101)
+```
+
+Untuk bisa melihat penyebaran penyakit, saya akan membuat _function_ dari model SIR sebagai berikut: 
+
+```{r}
+#| echo: true
+
+# ── Fungsi Model SIR deterministik ───────────────────────────────
+# Menggunakan persamaan diferensial biasa (ODE) diskret
+
+simulasi_SIR <- function(N,          # Ukuran populasi
+                          I0,         # Kasus awal
+                          beta,       # Laju transmisi
+                          gamma,      # Laju recovery
+                          vaksinasi,  # Proporsi yang sudah divaksin (0-1)
+                          n_hari = 365) {
+  # Populasi awal: yang sudah divaksin langsung masuk R
+  S <- N * (1 - vaksinasi) - I0
+  I <- I0
+  R <- N * vaksinasi
+
+  hasil <- data.frame(
+    hari = 0, S = S, I = I, R = R,
+    kasus_baru = I0
+  )
+
+  for (t in 1:n_hari) {
+    # Persamaan SIR diskret
+    dS <- -beta * S * I / N
+    dI <-  beta * S * I / N - gamma * I
+    dR <-  gamma * I
+
+    S <- max(0, S + dS)
+    I <- max(0, I + dI)
+    R <- R + dR
+
+    hasil <- rbind(hasil, data.frame(
+      hari = t, S = S, I = I, R = R,
+      kasus_baru = beta * (hasil$S[nrow(hasil)]) * I / N
+    ))
+
+    if (I < 0.5) break  # Wabah padam
+  }
+  hasil
+}
+
+```
+
+Berikutnya saya akan membandingkan penyakit campak dengan influenza dan cacar air. Berikut adalah beberapa parameter dari ketiga penyakit ini yang kelak akan saya masukkan ke dalam model:
+
+```{r}
+#| echo: true
+
+# ── Parameter penyakit dari literatur ────────────────────────────
+#
+# Campak: R0 = 15, masa infeksius = 8 hari -> gamma = 1/8
+#         beta = R0 * gamma = 15 * (1/8) = 1.875
+#
+# Cacar Air: R0 = 9, masa infeksius = 7 hari
+#
+# Influenza: R0 = 2.5, masa infeksius = 5 hari
+
+penyakit <- list(
+  Campak = list(
+    beta  = 15 * (1/8),   # R0=15, gamma=1/8
+    gamma = 1/8,
+    R0    = 15,
+    warna = '#C0392B'
+  ),
+  `Cacar Air` = list(
+    beta  = 9 * (1/7),    # R0=9, gamma=1/7
+    gamma = 1/7,
+    R0    = 9,
+    warna = '#E67E22'
+  ),
+  Influenza = list(
+    beta  = 2.5 * (1/5),  # R0=2.5, gamma=1/5
+    gamma = 1/5,
+    R0    = 2.5,
+    warna = '#2980B9'
+  )
+)
+```
+
+Saya juga akan membuat kondisi awal sebagai berikut:
+
+1. Populasi awal: 10.000 orang.
+1. Kasus awal: 5 orang.
+1. Cakupan vaksin: 80% (di bawah angka persentasi _herd immunity_ campak yang disarankan literatur).
+
+```{r}
+# Populasi simulasi: 10.000 orang (kota kecil / kelurahan)
+N_pop      <- 10000
+kasus_awal <- 5       # 5 kasus pertama
+cakupan_vaksin <- 0.80  # 80% — di bawah threshold herd immunity campak
+```
+
+Oke, sekarang saya akan jalankan simulasinya:
+
+```{r}
+#| echo: true
+
+# ── Jalankan SIR untuk ketiga penyakit ───────────────────────────
+df_SIR_all <- lapply(names(penyakit), function(nm) {
+  p <- penyakit[[nm]]
+  sim <- simulasi_SIR(
+    N          = N_pop,
+    I0         = kasus_awal,
+    beta       = p$beta,
+    gamma      = p$gamma,
+    vaksinasi  = cakupan_vaksin,
+    n_hari     = 365
+  )
+  sim$penyakit <- nm
+  sim
+}) %>% bind_rows()
+
+# Ringkasan puncak wabah
+df_puncak <- df_SIR_all %>%
+  group_by(penyakit) %>%
+  summarise(
+    hari_puncak    = hari[which.max(I)],
+    puncak_kasus   = round(max(I)),
+    total_terinfeksi = round(max(R) - N_pop * cakupan_vaksin),
+    .groups = 'drop'
+  )
+
+```
+
+Berikut adalah visualisasi dari simulasi yang telah dijalankan.
+
+```{r}
+# ── Visualisasi kurva epidemi SIR ────────────────────────────────
+warna_penyakit <- c(
+  'Campak'    = '#C0392B',
+  'Cacar Air' = '#E67E22',
+  'Influenza' = '#2980B9'
+)
+
+# Plot kurva I (Infeksius) untuk ketiga penyakit
+df_I <- df_SIR_all %>% select(hari, penyakit, I)
+
+ggplot(df_I, aes(x = hari, y = I, color = penyakit)) +
+  geom_line(linewidth = 1.3) +
+  geom_vline(
+    data = df_puncak,
+    aes(xintercept = hari_puncak, color = penyakit),
+    linetype = 'dashed', linewidth = 0.6, alpha = 0.7
+  ) +
+  scale_color_manual(values = warna_penyakit, name = 'Penyakit') +
+  scale_y_continuous(labels = label_comma()) +
+  labs(
+    title    = 'Kurva Epidemi: Jumlah Kasus Aktif per Hari',
+    subtitle = paste0('N = ', label_comma()(N_pop),
+                      ' | Kasus awal = ', kasus_awal,
+                      ' | Cakupan vaksin = ', percent(cakupan_vaksin)),
+    x = 'Hari ke-', y = 'Jumlah Kasus Aktif (I)',
+    caption = 'Garis putus = hari puncak wabah'
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(
+    plot.title      = element_text(face = 'bold', color = '#7B241C'),
+    legend.position = 'top'
+  )
+
+cat('=== RINGKASAN PUNCAK WABAH ===\n')
+print(df_puncak)
+```
+
+
+Analisis data dari ketiga penyakit:
+
+1. Cacar Air
+    - Interpretasi: Penyebaran relatif lambat, mencapai puncak setelah 50 hari, tetapi memiliki dampak yang cukup signifikan dengan total 1.481 kasus.
+2. Campak
+    - Interpretasi: Penyebaran sangat cepat dan agresif! Mencapai puncak hanya dalam 29 hari dengan jumlah kasus puncak tertinggi (633 orang). Total kasus juga paling tinggi di antara ketiga penyakit.
+3. Influenza
+    - Interpretasi: Penyebaran sangat terbatas. Kemungkinan ini menunjukkan penyakit dengan tingkat penularan rendah atau populasi yang sudah sebagian besar kebal.
+
+
+
+# _Agent Based Modelling_: Simulasi yang Lebih Realistis
+
+## Mengapa ABM Lebih Menarik dari SIR Biasa?
+
+Model SIR di atas mengasumsikan populasi yang _perfectly mixed_ dimana setiap orang punya peluang yang sama untuk bertemu orang lain. Di dunia nyata, ini tidak terjadi. Kita berinteraksi dalam jaringan sosial: keluarga, tetangga, teman sekolah, rekan kerja. _Agent Based Modelling_ (ABM) mensimulasikan setiap individu sebagai 'agen' yang bergerak, berinteraksi, dan berubah statusnya secara mandiri. Hasilnya jauh lebih kaya, yakni:
+
+1. Kita bisa melihat cluster wabah, 
+1. Efek jaringan sosial, dan 
+1. Bagaimana kebijakan seperti karantina atau vaksinasi massal berpengaruh.
+
+> Berbeda dengan model SIR, Dalam ABM "penyakit" tidak dimodelkan secara langsung. Yang dimodelkan adalah PERILAKU setiap individu: bergerak, berinteraksi, menulari, sembuh. Pola wabah yang muncul adalah hasil _emergent_ dari interaksi ribuan agen sehingga persis seperti yang terjadi di dunia nyata.
+
+## Membangun ABM Campak di __R__
+
+Kita akan membangun ABM sederhana dengan 500 agen yang bergerak di ruang dua dimensi. Setiap agen mewakili satu individu dengan status __S__, __I__, atau __R.__ Agen bergerak secara acak dan bisa menulari agen lain yang berada dalam jarak tertentu.
+
+Pertama-tama, saya akan membuat data awal sebagai berikut:
+
+```{r}
+#| echo: true
+
+# ══════════════════════════════════════════════════════════════════
+# AGENT-BASED MODEL — Penyebaran Campak
+# ══════════════════════════════════════════════════════════════════
+
+# ── Inisialisasi populasi agen ────────────────────────────────────
+buat_populasi <- function(n_agen     = 500,
+                           pct_vaksin = 0.80,
+                           n_infeksi_awal = 5) {
+  data.frame(
+    id      = 1:n_agen,
+    x       = runif(n_agen, 0, 100),   # Posisi x (0-100)
+    y       = runif(n_agen, 0, 100),   # Posisi y (0-100)
+    # Status: S=Susceptible, I=Infectious, R=Recovered, V=Vaccinated
+    status  = c(
+      rep('V', round(n_agen * pct_vaksin)),
+      rep('I', n_infeksi_awal),
+      rep('S', n_agen - round(n_agen * pct_vaksin) - n_infeksi_awal)
+    ) %>% sample(),  # Acak posisi status
+    hari_infeksi = ifelse(
+      sample(c(TRUE, FALSE), n_agen, replace = TRUE,
+             prob = c(n_infeksi_awal/n_agen, 1 - n_infeksi_awal/n_agen)),
+      0, NA
+    ),
+    # Kecepatan gerak acak per agen
+    vx = rnorm(n_agen, 0, 0.8),
+    vy = rnorm(n_agen, 0, 0.8)
+  )
+}
+
+```
+
+Untuk __sekali langkah__ (atau sekali iterasi waktu), saya akan buat _function_ berikut ini:
+
+```{r}
+#| echo: true
+
+# ── Satu langkah simulasi ABM ─────────────────────────────────────
+langkah_ABM <- function(pop, hari,
+                         radius_infeksi = 3,    # Jarak menular (unit)
+                         prob_infeksi   = 0.35, # Prob menular per kontak
+                         masa_infeksius = 8) {  # Hari infeksius
+
+  # 1. Gerakkan semua agen (dengan boundary reflection)
+  pop$x <- pop$x + pop$vx + rnorm(nrow(pop), 0, 0.3)
+  pop$y <- pop$y + pop$vy + rnorm(nrow(pop), 0, 0.3)
+
+  # Pantulkan di batas
+  pop$x <- pmax(0, pmin(100, pop$x))
+  pop$y <- pmax(0, pmin(100, pop$y))
+  pop$vx <- ifelse(pop$x <= 0 | pop$x >= 100, -pop$vx, pop$vx)
+  pop$vy <- ifelse(pop$y <= 0 | pop$y >= 100, -pop$vy, pop$vy)
+
+  # 2. Proses penularan: cek agen I ke agen S di sekitarnya
+  agen_I <- which(pop$status == 'I')
+  agen_S <- which(pop$status == 'S')
+
+  if (length(agen_I) > 0 && length(agen_S) > 0) {
+    for (i in agen_I) {
+      # Hitung jarak ke semua agen S
+      dx <- pop$x[agen_S] - pop$x[i]
+      dy <- pop$y[agen_S] - pop$y[i]
+      jarak <- sqrt(dx^2 + dy^2)
+
+      # Agen S dalam radius infeksi
+      dalam_radius <- agen_S[jarak <= radius_infeksi]
+
+      # Tularkan dengan probabilitas prob_infeksi
+      if (length(dalam_radius) > 0) {
+        tertular <- dalam_radius[runif(length(dalam_radius)) < prob_infeksi]
+        if (length(tertular) > 0) {
+          pop$status[tertular]       <- 'I'
+          pop$hari_infeksi[tertular] <- hari
+        }
+      }
+    }
+  }
+
+  # 3. Recovery: agen I yang sudah melewati masa infeksius
+  sudah_waktunya <- !is.na(pop$hari_infeksi) &
+                    (hari - pop$hari_infeksi) >= masa_infeksius
+  pop$status[pop$status == 'I' & sudah_waktunya] <- 'R'
+
+  pop
+}
+```
+
+Sekarang saya akan jalankan modelnya untuk 120 hari dan berikut adalah hasilnya:
+
+```{r}
+#| include: false
+
+# ── Jalankan simulasi ABM lengkap ────────────────────────────────
+jalankan_ABM <- function(nama_penyakit = 'Campak',
+                          n_agen     = 500,
+                          pct_vaksin = 0.80,
+                          radius     = 3,
+                          prob_inf   = 0.35,
+                          masa_inf   = 8,
+                          n_hari     = 120) {
+
+  set.seed(101)
+  pop <- buat_populasi(n_agen, pct_vaksin)
+  # Pastikan ada tepat 5 kasus awal
+  idx_S <- which(pop$status == 'S')
+  infeksi_awal <- sample(idx_S, min(5, length(idx_S)))
+  pop$status[infeksi_awal] <- 'I'
+  pop$hari_infeksi[infeksi_awal] <- 0
+
+  # Simpan snapshot populasi di hari tertentu untuk visualisasi
+  snapshot_hari <- c(0, 7, 14, 21, 30, 45, 60)
+  snapshots <- list()
+
+  # Simpan ringkasan harian
+  df_ringkasan <- data.frame()
+
+  for (h in 0:n_hari) {
+    if (h > 0) pop <- langkah_ABM(pop, h, radius, prob_inf, masa_inf)
+
+    # Hitung jumlah per status
+    tbl <- table(factor(pop$status, levels = c('S','I','R','V')))
+    df_ringkasan <- rbind(df_ringkasan, data.frame(
+      hari      = h,
+      S         = as.integer(tbl['S']),
+      I         = as.integer(tbl['I']),
+      R         = as.integer(tbl['R']),
+      V         = as.integer(tbl['V']),
+      penyakit  = nama_penyakit
+    ))
+
+    if (h %in% snapshot_hari) {
+      snapshots[[as.character(h)]] <- pop %>%
+        mutate(hari_snapshot = h, penyakit = nama_penyakit)
+    }
+
+    # Hentikan jika tidak ada kasus aktif
+    if (sum(pop$status == 'I') == 0) break
+  }
+
+  list(ringkasan = df_ringkasan, snapshots = bind_rows(snapshots))
+}
+
+# Jalankan untuk ketiga penyakit
+cat('Menjalankan ABM Campak...\n')
+abm_campak <- jalankan_ABM('Campak',
+  prob_inf = 0.35, masa_inf = 8,  radius = 3.5)
+
+cat('Menjalankan ABM Cacar Air...\n')
+abm_cacar  <- jalankan_ABM('Cacar Air',
+  prob_inf = 0.22, masa_inf = 7,  radius = 3.0)
+
+cat('Menjalankan ABM Influenza...\n')
+abm_flu    <- jalankan_ABM('Influenza',
+  prob_inf = 0.12, masa_inf = 5,  radius = 2.5)
+
+# Gabungkan semua hasil
+df_ABM_all <- bind_rows(
+  abm_campak$ringkasan,
+  abm_cacar$ringkasan,
+  abm_flu$ringkasan
+)
+```
+
+## Visualisasi Hasil Simulasi ABM
+
+Plot pertama akan memperlihatkan kurva epidemi antara ketiga penyakit:
+
+```{r}
+# ── Kurva I (kasus aktif) dari ABM ───────────────────────────────
+warna_penyakit <- c(
+  'Campak'    = '#C0392B',
+  'Cacar Air' = '#E67E22',
+  'Influenza' = '#2980B9'
+)
+
+ggplot(df_ABM_all, aes(x = hari, y = I,
+                        color = penyakit, group = penyakit)) +
+  geom_line(linewidth = 1.3, alpha = 0.9) +
+  geom_area(aes(fill = penyakit), alpha = 0.08) +
+  scale_color_manual(values = warna_penyakit, name = '') +
+  scale_fill_manual(values  = warna_penyakit, guide = 'none') +
+  scale_y_continuous(labels = label_comma()) +
+  labs(
+    title    = 'ABM: Perbandingan Kurva Epidemi Tiga Penyakit',
+    subtitle = '500 agen | 80% cakupan vaksinasi | 5 kasus awal',
+    x        = 'Hari ke-',
+    y        = 'Jumlah Kasus Aktif',
+    caption  = 'Campak: prob=0.35, r=3.5 | Cacar: prob=0.22, r=3.0 | Flu: prob=0.12, r=2.5'
+  ) +
+  facet_wrap(~ penyakit, scales = 'free_y', ncol = 1) +
+  theme_minimal(base_size = 11) +
+  theme(
+    plot.title      = element_text(face = 'bold', color = '#7B241C'),
+    legend.position = 'none',
+    strip.text      = element_text(face = 'bold', size = 11)
+  )
+```
+
+
+Berikut adalah perbandingan lainnya:
+
+```{r}
+#| fig-height: 8
+
+
+# ── Tabel perbandingan final dari hasil ABM ───────────────────────
+ringkasan_ABM <- bind_rows(
+  abm_campak$ringkasan %>% filter(penyakit == 'Campak'),
+  abm_cacar$ringkasan  %>% filter(penyakit == 'Cacar Air'),
+  abm_flu$ringkasan    %>% filter(penyakit == 'Influenza')
+) %>%
+  group_by(penyakit) %>%
+  summarise(
+    puncak_kasus     = max(I),
+    hari_puncak      = hari[which.max(I)],
+    durasi_wabah     = max(hari[I > 0]),
+    total_terinfeksi = max(R),
+    attack_rate      = round(max(R) / (500 * 0.20) * 100, 1),
+    # Attack rate = dari populasi rentan (20%), berapa % yang kena
+    .groups = 'drop'
+  )
+
+cat('\n=== PERBANDINGAN HASIL ABM ===\n')
+print(ringkasan_ABM)
+
+# ── Visualisasi: radar/lollipop chart perbandingan ────────────────
+df_comp <- ringkasan_ABM %>%
+  select(penyakit, puncak_kasus, hari_puncak, durasi_wabah,
+         total_terinfeksi) %>%
+  pivot_longer(-penyakit, names_to = 'metrik', values_to = 'nilai') %>%
+  mutate(metrik = recode(metrik,
+    puncak_kasus     = 'Puncak Kasus Aktif',
+    hari_puncak      = 'Hari Mencapai Puncak',
+    durasi_wabah     = 'Durasi Wabah (Hari)',
+    total_terinfeksi = 'Total Terinfeksi'
+  ))
+
+ggplot(df_comp,
+       aes(x = penyakit, y = nilai, fill = penyakit)) +
+  geom_col(width = 0.6, alpha = 0.85) +
+  geom_text(
+    aes(label = round(nilai, 0)),
+    vjust = -0.3, size = 3.5, fontface = 'bold'
+  ) +
+  facet_wrap(~ metrik, scales = 'free_y', ncol = 2) +
+  scale_fill_manual(
+    values = c('Campak'='#C0392B','Cacar Air'='#E67E22','Influenza'='#2980B9'),
+    guide  = 'none'
+  ) +
+  labs(
+    title    = 'Perbandingan Karakteristik Wabah: ABM dengan 500 Agen',
+    subtitle = '80% vaksinasi | 5 kasus awal | Parameter dari literatur epidemiologi',
+    x = '', y = ''
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(
+    plot.title = element_text(face = 'bold', color = '#7B241C'),
+    strip.text = element_text(face = 'bold', size = 10)
+  )
+```
+
+
+### Analisa Mendalam tentang Campak
+
+Plot berikutnya akan menampilkan di mana wabah campak terjadi dalam ruang dua dimensi:
+
+```{r}
+#| fig-width: 8
+#| fig-height: 8
+
+# ── Peta spasial penyebaran campak dari waktu ke waktu ───────────
+df_snap_campak <- abm_campak$snapshots %>%
+  filter(hari_snapshot %in% c(0, 7, 14, 21, 30, 45)) %>%
+  mutate(
+    status_label = factor(status,
+      levels = c('S', 'I', 'R', 'V'),
+      labels = c('Rentan', 'Terinfeksi', 'Sembuh', 'Divaksin')
+    ),
+    judul_panel  = paste0('Hari ke-', hari_snapshot)
+  ) 
+
+df_snap_campak$judul_panel = factor(df_snap_campak$judul_panel,levels = unique(df_snap_campak$judul_panel))
+
+warna_status <- c(
+  'Rentan'    = '#F0B27A',
+  'Terinfeksi'= '#C0392B',
+  'Sembuh'    = '#27AE60',
+  'Divaksin'  = '#AED6F1'
+)
+
+ggplot(df_snap_campak, aes(x = x, y = y, color = status_label)) +
+  geom_point(size = 1.2, alpha = 0.85) +
+  facet_wrap(~ judul_panel, ncol = 3) +
+  scale_color_manual(values = warna_status, name = 'Status') +
+  coord_fixed() +
+  labs(
+    title    = 'Peta Spasial Penyebaran Campak dari Waktu ke Waktu',
+    subtitle = 'Setiap titik = 1 agen | Panel = snapshot per periode',
+    x = 'Posisi X', y = 'Posisi Y'
+  ) +
+  theme_minimal(base_size = 10) +
+  theme(
+    plot.title      = element_text(face = 'bold', color = '#7B241C'),
+    legend.position = 'bottom',
+    strip.text      = element_text(face = 'bold')
+  )
+```
+
+
+Plot berikutnya akan menampilkan komposisi populasi sepanjang waktu:
+
+```{r}
+# ── Stacked area chart: proporsi S/I/R/V per hari ────────────────
+df_long_campak <- abm_campak$ringkasan %>%
+  select(hari, S, I, R, V) %>%
+  pivot_longer(cols = c(S, I, R, V),
+               names_to = 'status', values_to = 'jumlah') %>%
+  mutate(
+    status = factor(status,
+      levels = c('V', 'R', 'S', 'I'),
+      labels = c('Divaksin', 'Sembuh', 'Rentan', 'Terinfeksi')
+    )
+  )
+
+warna_stack <- c(
+  'Divaksin'   = '#AED6F1',
+  'Sembuh'     = '#27AE60',
+  'Rentan'     = '#F0B27A',
+  'Terinfeksi' = '#C0392B'
+)
+
+ggplot(df_long_campak,
+       aes(x = hari, y = jumlah, fill = status)) +
+  geom_area(alpha = 0.85, position = 'stack') +
+  scale_fill_manual(values = warna_stack, name = 'Status') +
+  scale_y_continuous(labels = label_comma()) +
+  labs(
+    title    = 'Dinamika Populasi Sepanjang Wabah Campak (ABM)',
+    subtitle = 'Komposisi status seluruh agen dari hari ke hari',
+    x        = 'Hari ke-',
+    y        = 'Jumlah Agen'
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(
+    plot.title      = element_text(face = 'bold', color = '#7B241C'),
+    legend.position = 'right'
+  )
+
+```
+
+
+### Simulasi Intervensi: Apa yang Terjadi Kalau Kita Bertindak?
+
+Model yang kita bentuk di atas bukan hanya bisa digunakan untuk melihat penyebaran tapi juga untuk menguji pertanyaan: 
+
+> _Bagaimana kalau kita melakukan sesuatu?_ 
+
+Kita akan simulasikan empat skenario vaksinasi berbeda untuk campak.
+
+
+```{r}
+#|echo: true
+
+# ── Skenario intervensi: variasi cakupan vaksinasi ────────────────
+skenario <- list(
+  list(label = '70% Vaksinasi (Di bawah threshold)', pct_v = 0.70),
+  list(label = '80% Vaksinasi (Kondisi saat ini)',   pct_v = 0.80),
+  list(label = '90% Vaksinasi (Mendekati target)',   pct_v = 0.90),
+  list(label = '95% Vaksinasi (Herd immunity)',      pct_v = 0.95)
+)
+
+df_skenario <- lapply(skenario, function(s) {
+  set.seed(101)
+  pop <- buat_populasi(500, s$pct_v)
+  idx_S <- which(pop$status == 'S')
+  if (length(idx_S) >= 5) {
+    inf <- sample(idx_S, 5)
+    pop$status[inf] <- 'I'
+    pop$hari_infeksi[inf] <- 0
+  }
+
+  df_ring <- data.frame()
+  for (h in 0:150) {
+    if (h > 0) pop <- langkah_ABM(pop, h, 3.5, 0.35, 8)
+    tbl <- table(factor(pop$status, levels = c('S','I','R','V')))
+    df_ring <- rbind(df_ring, data.frame(
+      hari     = h,
+      I        = as.integer(tbl['I']),
+      total_R  = as.integer(tbl['R']),
+      skenario = s$label
+    ))
+    if (sum(pop$status == 'I') == 0) break
+  }
+  df_ring
+}) %>% bind_rows()
+
+# Ringkasan per skenario
+df_ring_sum <- df_skenario %>%
+  group_by(skenario) %>%
+  summarise(
+    puncak_kasus   = max(I),
+    hari_puncak    = hari[which.max(I)],
+    total_terinfeksi = max(total_R),
+    .groups = 'drop'
+  )
+```
+
+Berikut adalah perbandingannya:
+
+```{r}
+# ── Visualisasi perbandingan skenario ────────────────────────────
+warna_skenario <- c(
+  '70% Vaksinasi (Di bawah threshold)' = '#C0392B',
+  '80% Vaksinasi (Kondisi saat ini)'   = '#E67E22',
+  '90% Vaksinasi (Mendekati target)'   = '#F1C40F',
+  '95% Vaksinasi (Herd immunity)'      = '#27AE60'
+)
+
+ggplot(df_skenario, aes(x = hari, y = I,
+                         color = skenario, group = skenario)) +
+  geom_line(linewidth = 1.2) +
+  scale_color_manual(values = warna_skenario, name = '') +
+  scale_y_continuous(labels = label_comma()) +
+  labs(
+    title    = 'Dampak Cakupan Vaksinasi terhadap Penyebaran Campak',
+    subtitle = 'ABM: 500 agen | Skenario cakupan vaksin berbeda',
+    x        = 'Hari ke-',
+    y        = 'Jumlah Kasus Aktif',
+    caption  = 'Hijau = herd immunity tercapai, wabah padam cepat'
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(
+    plot.title      = element_text(face = 'bold', color = '#7B241C'),
+    legend.position = 'top',
+    legend.text     = element_text(size = 9)
+  ) +
+  guides(color = guide_legend(ncol = 2))
+
+# ── Bar chart: total korban per skenario ─────────────────────────
+ggplot(df_ring_sum,
+       aes(x = reorder(skenario, -total_terinfeksi),
+           y = total_terinfeksi, fill = skenario)) +
+  geom_col(width = 0.6, alpha = 0.85) +
+  geom_text(
+    aes(label = paste0(total_terinfeksi, ' orang\n(dari 500)')),
+    vjust = -0.3, size = 3.5, fontface = 'bold'
+  ) +
+  scale_fill_manual(values = warna_skenario, guide = 'none') +
+  scale_y_continuous(limits = c(0, 100)) +
+  labs(
+    title    = 'Total Korban Terinfeksi per Skenario Vaksinasi',
+    subtitle = 'Perbedaan 5-10% cakupan vaksin bisa menyelamatkan puluhan jiwa',
+    x = '', y = 'Total Terinfeksi (dari 500 agen)'
+  ) +
+  coord_flip() +
+  theme_minimal(base_size = 11) +
+  theme(
+    plot.title = element_text(face = 'bold', color = '#7B241C'),
+    axis.text.y = element_text(size = 9)
+  )
+```
+
+Terlihat bahwa perbedaan imunitas komunal membentuk penyebaran yang berbeda-beda.
+
+## Apa yang Bisa Kita Pelajari dari Simulasi Ini?
+
+- Pelajaran 1: __Campak Bergerak Lebih Cepat dari yang Kita Bayangkan__
+    - Dari simulasi ABM, campak mencapai puncak wabah jauh lebih cepat dari cacar air atau influenza. Dalam kondisi cakupan vaksin 80%, puncak kasus aktif campak muncul dalam hitungan beberapa minggu (lebih cepat) dibandingkan influenza yang butuh lebih lama karena __R0__-nya lebih rendah.
+    - Ini berarti _window of opportunity_ untuk intervensi dini sangat sempit. Ketika otoritas kesehatan baru menyadari ada klaster wabah, boleh jadi sudah ada puluhan atau ratusan kasus baru yang sedang dalam masa inkubasi.
+- Pelajaran 2: __5% Perbedaan Vaksinasi = Ratusan Nyawa__
+    - Dari simulasi skenario intervensi, perbedaan cakupan vaksin 80% vs 95% menghasilkan perbedaan korban yang sangat signifikan dalam populasi kecil 500 orang. Bayangkan skala ini diperbesar ke kota dengan 500 ribu atau 5 juta penduduk.
+    - Pada 95% vaksinasi (_herd immunity threshold_ campak), wabah padam sendiri dengan sangat cepat walaupun ada kasus awal. Ini karena setiap penderita tidak berhasil menemukan cukup orang rentan untuk ditulari. Inilah esensi dari _herd immunity_, yakni melindungi yang tidak bisa divaksin (bayi, _immunocompromised_) melalui perlindungan kolektif.
+- Pelajaran 3: __Pola Spasial Penting__
+    - Dari _snapshot_ spasial ABM, kita bisa melihat sesuatu yang tidak tertangkap oleh model SIR biasa: wabah tidak menyebar merata. Ia bermula dari klaster, yakni sekelompok agen rentan yang berdekatan kemudian __meledak__ dari sana.
+    - Di dunia nyata, klaster ini adalah sekolah, pesantren, pasar tradisional, atau kampung dengan cakupan vaksin rendah. Inilah mengapa surveilans berbasis geografis dan respon cepat di tingkat klaster sangat krusial.
+
+## Keterbatasan Model yang Perlu Diingat
+
+1. Populasi kecil dan homogen. Model ini menggunakan 500 agen di ruang dua dimensi yang __homogen__. Populasi nyata ratusan ribu jiwa, dengan struktur usia, jaringan sosial, dan kepadatan yang sangat beragam.
+2. Tidak ada struktur umur. Campak paling mematikan pada bayi dan balita. Model ini tidak membedakan agen berdasarkan umur, sehingga tidak menangkap vulnerability yang berbeda per kelompok usia.
+3. Gerak acak vs gerak terstruktur. Manusia tidak bergerak acak. Kita pergi ke tempat yang sama berulang kali (rumah, kantor, sekolah). Model dengan _network structure_ akan lebih realistis tapi jauh lebih kompleks.
+4. Parameter dari literatur. Nilai _beta_, _gamma_, dan __R0__ yang digunakan adalah estimasi dari berbagai studi (__bukan data spesifik Indonesia 2026__). Konteks lokal (kepadatan, nutrisi, akses kesehatan) bisa mengubah parameter ini secara signifikan.
+5. Tidak ada re-introduksi. Model ini tidak memodelkan kasus impor dari daerah lain. Di Indonesia dengan mobilitas antardaerah yang tinggi, re-introduksi kasus bisa terus memicu wabah baru.
+
+# _Epilog_
+
+Campak bukan penyakit masa lalu. Penyakit ini masih ada, masih berbahaya, dan dengan __R0__ antara 12-18, penyakit tersebut adalah salah satu patogen paling agresif yang pernah kita hadapi. Hal yang membuat frustrasi adalah: kita punya alat untuk mengalahkannya (vaksin MMR yang sudah terbukti aman dan sudah sangat efektif selama lebih dari enam dekade) namun cakupan vaksinasinya masih belum maksimal.
+
+Simulasi di atas, walau sederhana tapi bisa menunjukkan dengan jelas bahwa __perbedaan antara wabah yang meledak dan wabah yang padam sendiri hanyalah beberapa persen cakupan vaksin__.
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
