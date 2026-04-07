@@ -1,0 +1,698 @@
+---
+title: "Nowcasting: Menebak Angka Sales Bulan Ini Sebelum Bulan Berakhir"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  error: false
+  echo: false
+---
+
+Suatu waktu, pada tanggal 20 saya sedang lewat area kerja tim *sales* dan melihat salah seorang *sales manager* sedang menatap serius laptopnya. Padahal waktu itu jam kerja belumlah dimulai. Karena iseng, saya coba tanyakan ia sedang apa. Beliau berkata masih ada 10 hari lagi sampai akhir bulan:
+
+> *"Kira-kira kita bakal **hit** target bulan ini nggak? Angka akhir bulan kita bakal di mana?"*
+
+Bagi sebagian orang, pertanyaan ini bisa dijawab dengan insting: *"Kayaknya sih bisa"* atau *"Agak berat nih"*. Tapi apakah ada cara saintifik untuk menjawabnya? Menggunakan data yang sudah tersedia, kemudian melakukan estimasi angka *sales* di akhir bulan.
+
+**Inilah yang disebut *Nowcasting*.**
+
+# Apa Itu *Nowcasting* ?
+
+Kata *nowcasting* adalah gabungan dari *"now"* (sekarang) dan *"forecasting"* (meramalkan). Kalau *forecasting* memprediksi masa depan yang jauh (bulan depan, tahun depan), *nowcasting* menjawab pertanyaan yang **lebih dekat**. Sehingga definisi sederhananya adalah **mengestimasi nilai suatu indikator pada periode SEKARANG (yang belum selesai), menggunakan data parsial yang sudah tersedia hari ini**.
+
+Teknik ini awalnya populer di dunia makroekonomi. Bank sentral menggunakannya untuk mengestimasi GDP kuartal ini sebelum data resmi dirilis yang biasanya butuh berbulan-bulan setelah kuartal berakhir. Mereka tidak mau menunggu; mereka butuh estimasi sekarang untuk membuat kebijakan.
+
+Konsep ini yang sangat relevan di dunia *sales* dan *marketing*, contohnya:
+
+• Melakukan estimasi total *sales* bulan ini berdasarkan data 20 hari pertama. • Melakukan estimasi *revenue* Q3 di pertengahan Juli. • Membuat prediksi apakah *campaign* iklan akan *hit target* sebelum *campaign* berakhir. • Melakukan estimasi stok yang dibutuhkan berdasarkan tren order masuk hari ini.
+
+## Perbedaan *Nowcasting* vs *Forecasting*
+
+| Aspek | *Nowcasting* | *Forecasting* |
+|----|----|----|
+| Pertanyaan | *"Bulan ini kita akan jual berapa?"* | *"Bulan depan kita akan jual berapa?* |
+| *Time range* | Saat ini (periode berjalan) | Masa depan (minggu/bulan/tahun depan) |
+| Data yang digunakan | Data historikal + data parsial | Data historikal lengkap |
+| Output | Estimasi nilai akhirperiode berjalan | Prediksi nilai masa depan |
+| Metode yang digunakan | ARIMA, *prophet, dll* | Regresi, dll |
+
+Sekarang saya akan coba buat satu _study case_ tentang estimasi _sales_ produk minuman di Jabodetabek.
+
+# Studi Kasus: Estimasi _Sales_ Minuman di Jabodetabek
+
+Misalkan kita adalah _data analyst_ di sebuah perusahaan FMCG yang menjual minuman buah kemasan. Setiap bulan ada target penjualan (dalam satuan kuantitas yakni karton). Data penjualan harian tersedia di sistem IT kantor dan bersifat _update_ _real time_ harian. Hari ini tanggal 20 dan tim _managerial sales_ bertanya: _berapa estimasi total sales sampai akhir bulan?_
+
+```
+- Produk: Minuman buah kemasan 500ml 
+- Area: Jabodetabek
+- Target bulan ini: 50.000 karton 
+- Data tersedia: Penjualan harian hari ke-1 sampai hari ke-20
+- Yang ingin diestimasi: Total penjualan hari ke-1 sampai hari ke-31
+```
+
+```{r}
+#| include: false
+
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+library(tidyr)
+library(scales)
+library(forecast)
+library(zoo)
+library(broom)
+
+set.seed(101)
+rm(list=ls())
+
+# ── Simulasi data penjualan harian selama 18 bulan ───────────────
+# (12 bulan historis + 6 bulan terakhir untuk validasi)
+
+# Fungsi untuk membuat penjualan harian satu bulan
+buat_penjualan_bulanan <- function(tahun, bulan,
+                                    rata_harian = 1600,
+                                    sd_noise    = 150) {
+  n_hari <- days_in_month(make_date(tahun, bulan, 1))
+  tanggal <- seq(make_date(tahun, bulan, 1),
+                 make_date(tahun, bulan, n_hari),
+                 by = 'day')
+
+  # Pola mingguan: Sabtu-Minggu lebih tinggi (pola FMCG)
+  hari_minggu <- wday(tanggal, week_start = 1)  # 1=Senin
+  faktor_hari <- ifelse(hari_minggu >= 6, 1.35, 1.0)
+
+  # Pola bulanan: awal dan akhir bulan lebih tinggi (gajian)
+  hari_ke <- day(tanggal)
+  faktor_tgl <- ifelse(hari_ke <= 5, 1.20,
+                ifelse(hari_ke >= 25, 1.15, 1.0))
+
+  # Tren naik perlahan dari bulan ke bulan
+  bulan_ke <- (tahun - 2024) * 12 + bulan
+  tren <- 1 + (bulan_ke - 1) * 0.012
+
+  # Variasi acak (noise)
+  noise <- rnorm(n_hari, 0, sd_noise)
+
+  penjualan <- round(
+    rata_harian * faktor_hari * faktor_tgl * tren + noise
+  )
+  penjualan <- pmax(penjualan, 500)  # floor: minimal 500 karton/hari
+
+  data.frame(tanggal = tanggal, penjualan = penjualan)
+}
+
+# Buat data untuk Jan 2024 - Jun 2025 (18 bulan)
+df_harian <- bind_rows(
+  lapply(1:12, function(m) buat_penjualan_bulanan(2024, m)),
+  lapply(1:6,  function(m) buat_penjualan_bulanan(2025, m))
+) %>%
+  mutate(
+    tahun  = year(tanggal),
+    bulan  = month(tanggal),
+    hari   = day(tanggal),
+    hari_minggu = wday(tanggal, label = TRUE, week_start = 1),
+    bulan_label = format(tanggal, '%b %Y')
+  )
+
+```
+
+
+Kita memiliki 547 baris data harian (mulai 1 Januari 2024 hingga 30 Juni 2025) dan ini adalah sampel data yang dimiliki:
+
+```{r}
+sampel = c(1:5,543:547)
+df_harian %>% slice(sampel) %>% knitr::kable()
+```
+
+Sedangkan berikut ini adalah rekapan _sales_ bulanan dari data _sales_ harian:
+
+```{r}
+# ── Ringkasan bulanan ────────────────────────────────────────────
+df_bulanan <- df_harian %>%
+  group_by(tahun, bulan) %>%
+  summarise(
+    total_penjualan = sum(penjualan),
+    n_hari          = n(),
+    rata_harian     = mean(penjualan),
+    .groups = 'drop'
+  ) %>%
+  mutate(
+    periode = make_date(tahun, bulan, 1),
+    label   = format(periode, '%b %Y')
+  )
+
+# Lihat total penjualan per bulan
+df_bulanan %>%
+  select(label, total_penjualan, rata_harian) %>%
+  mutate(across(where(is.numeric), ~round(., 0))) %>%
+  print(n = Inf)
+```
+
+
+```{r}
+# ── Visualisasi tren penjualan bulanan ───────────────────────────
+ggplot(df_bulanan, aes(x = periode, y = total_penjualan)) +
+  geom_col(fill = '#C0392B', alpha = 0.8, width = 20) +
+  geom_line(aes(y = total_penjualan), color = '#922B21',
+            linewidth = 1, linetype = 'dashed') +
+  geom_point(color = '#922B21', size = 2.5) +
+  geom_hline(yintercept = 50000, color = 'navy',
+             linetype = 'dashed', linewidth = 0.8) +
+  annotate('text', x = make_date(2024, 2, 1), y = 51200,
+           label = 'Target: 50.000 karton', color = 'navy',
+           size = 3.5, fontface = 'bold') +
+  scale_y_continuous(labels = label_comma()) +
+  scale_x_date(date_labels = '%b %Y', date_breaks = '1 months') +
+  labs(
+    title    = 'Total Penjualan Bulanan — Minuman Teh 500ml Jabodetabek',
+    subtitle = 'Jan 2024 – Jun 2025 | Data simulasi',
+    x = '', y = 'Total Penjualan (Karton)'
+  ) +
+  theme_minimal(base_size = 10) +
+  theme(
+    plot.title = element_text(face = 'bold', color = '#C0392B'),
+    axis.text.x = element_text(angle = 90, hjust = 1)
+  )
+```
+
+Sedangkan berikut ini adalah data _sales_ 20 hari pertama di bulan Juli 2025:
+
+```{r}
+# ── Buat data bulan berjalan (Juli 2025) ─────────────────────────
+# Tambah Juli 2025 sebagai bulan yang sedang berjalan
+df_juli <- buat_penjualan_bulanan(2025, 7)
+
+# Nilai aktual Juli 2025 (kita simpan sebagai 'ground truth')
+aktual_juli_penuh <- sum(df_juli$penjualan)
+
+# Kondisi nowcasting: data yang tersedia hanya sampai hari ke-20
+hari_tersedia <- 20
+df_juli_parsial <- df_juli %>% filter(day(tanggal) <= hari_tersedia)
+
+df_juli %>% knitr::kable()
+
+penjualan_parsial <- sum(df_juli_parsial$penjualan)
+cat('Penjualan Juli (hari 1-20):', penjualan_parsial, 'karton\n')
+cat('Sisa hari yang belum ada datanya:', 31 - hari_tersedia, 'hari\n')
+cat('Persentase bulan yang sudah terlewati:',
+    round(hari_tersedia/31*100, 1), '%\n')
+```
+
+__Catatan__: Saya sebenarnya sudah membuat data lengkap 1 - 31 Juli 2025 yang kemudian nanti akan digunakan sebagai _benchmark_ seberapa bagus model _nowcasting_ yang dibuat.
+
+```{r}
+cat('Aktual penjualan Juli 2025 (full bulan):', aktual_juli_penuh, 'karton\n')
+
+# ── Visualisasi: data parsial vs full bulan ──────────────────────
+df_juli_plot <- df_juli %>%
+  mutate(
+    status = ifelse(day(tanggal) <= hari_tersedia,
+                    'Data Tersedia (H1-H20)',
+                    'Belum Diketahui (H21-H31)')
+  )
+
+ggplot(df_juli_plot, aes(x = tanggal, y = penjualan, fill = status)) +
+  geom_col(width = 0.8, alpha = 0.85) +
+  geom_vline(xintercept = as.numeric(make_date(2025, 7, 20)),
+             color = '#C0392B', linewidth = 1.2, linetype = 'dashed') +
+  annotate('text', x = make_date(2025, 7, 21), y = 2800,
+           label = 'Batas data\ntersedia',
+           color = '#C0392B', size = 3.2, hjust = 0, fontface = 'bold') +
+  scale_fill_manual(
+    values = c('Data Tersedia (H1-H20)'    = '#C0392B',
+               'Belum Diketahui (H21-H31)' = '#CCCCCC'),
+    name = ''
+  ) +
+  scale_y_continuous(labels = label_comma()) +
+  labs(
+    title    = 'Penjualan Harian Juli 2025: Kondisi Nowcasting',
+    subtitle = paste0('Tanggal 20 Juli — baru ',
+                      round(hari_tersedia/31*100,1),
+                      '% bulan terlewati'),
+    x = 'Tanggal', y = 'Penjualan (Karton)'
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(
+    plot.title      = element_text(face = 'bold', color = '#C0392B'),
+    legend.position = 'top'
+  )
+```
+
+## Pendekatan _Nowcasting_ yang Akan Dicoba
+
+Kita akan membangun tiga model _nowcasting_ dari yang paling sederhana sampai yang lebih canggih, lalu membandingkan hasilnya:
+
+1. __Model 1__ — __*Simple Scaling*__: Extrapolasi linier dari data parsial.
+2. __Model 2__ — __*Regression-based*__: Pakai pola historis untuk koreksi.
+3. __Model 3__ — __*MIDAS-lite*__: Manfaatkan _leading indicator_ harian.
+
+
+### Model 1 — _Simple Scaling_ (Paling Sederhana)
+
+Model paling sederhana. Konsepnya sama seperti melakukan ekstrapolasi harian: asumsikan sisa hari akan berjalan seperti rata-rata hari yang sudah ada. Kalau 20 hari pertama rata-ratanya X karton/hari, maka 11 hari sisanya juga X karton/hari.
+
+__Estimasi Total = Penjualan Parsial + (Rata-rata Harian Parsial × Sisa Hari)__
+
+```{r}
+# ── Model 1: Simple Scaling ───────────────────────────────────────
+rata_harian_parsial <- mean(df_juli_parsial$penjualan)
+sisa_hari           <- 31 - hari_tersedia
+
+estimasi_m1 <- penjualan_parsial + (rata_harian_parsial * sisa_hari)
+
+cat('=== MODEL 1: SIMPLE SCALING ===\n')
+cat('Rata-rata harian (H1-H20)  :', round(rata_harian_parsial), 'karton/hari\n')
+cat('Estimasi total Juli 2025   :', round(estimasi_m1), 'karton\n')
+cat('Aktual total Juli 2025     :', aktual_juli_penuh, 'karton\n')
+cat('Error                      :',
+    round((estimasi_m1 - aktual_juli_penuh) / aktual_juli_penuh * 100, 2), '%\n')
+```
+
+Model ini cepat, mudah, dan sangat sederhana tapi ada kelemahan. Model ini tidak mempertimbangkan bahwa hari-hari tertentu (misalnya akhir bulan atau akhir pekan) ada pola berbeda dari rata-rata.
+
+### Model 2 — _Regression-Based Nowcasting_
+
+Model ini lebih "cerdas" dibanding sebelumnya. Idenya adalah kita punya data historis 18 bulan. Dari setiap bulan itu, kita tahu berapa penjualan di hari ke-1 sampai ke-20 (parsial), dan berapa total penjualan akhir bulan (penuh). Kemudia kita akan membuat model regresi: 
+
+__total_penuh ~ parsial_20_hari__
+
+Lalu gunakan model itu untuk memprediksi Juli 2025 dari data parsialnya.
+
+Kalau kita tahu bulan-bulan sebelumnya bahwa 'penjualan 20 hari pertama biasanya 64% dari total bulan', maka kita bisa balik hitung: 
+
+__total estimasi = parsial / 0.64__
+
+Regresi adalah cara ilmiah untuk menemukan angka 0.64 itu — plus memperhitungkan faktor lain seperti momen gajian.
+
+Oke, pertama-tama saya akan hitung berapa rasio parsial dari semua data yang ada:
+
+```{r}
+# ── Siapkan data historis untuk regresi ──────────────────────────
+# Untuk setiap bulan historis, hitung penjualan parsial (H1-H20)
+# dan total penuh
+
+df_historis_regresi <- df_harian %>%
+  group_by(tahun, bulan) %>%
+  reframe(
+    parsial_20  = sum(penjualan[hari <= 20]),
+    total_penuh = sum(penjualan),
+    n_hari      = n(),
+    # Tambah fitur: apakah bulan ini ada hari raya besar?
+    # (kita simulasikan: bulan 4 & 5 = Lebaran, bulan 12 = Natal)
+    hariraya = as.integer(bulan %in% c(4, 5, 12))
+  ) %>%
+  mutate(
+    # Rasio parsial terhadap total (insight penting!)
+    rasio = parsial_20 / total_penuh,
+    bulan_f = factor(bulan, levels = 1:12,
+                     labels = month.abb)
+  )
+
+cat('Rata-rata rasio parsial/total:', round(mean(df_historis_regresi$rasio), 4), '\n')
+cat('Range rasio:', round(min(df_historis_regresi$rasio), 4),
+    '-', round(max(df_historis_regresi$rasio), 4), '\n')
+```
+
+Berikut adalah visualisasi dari rasio 20 hari vs total hari dari semua data bulanan:
+
+```{r}
+# Visualisasi rasio per bulan
+ggplot(df_historis_regresi,
+       aes(x = factor(bulan, labels = month.abb), y = rasio)) +
+  geom_boxplot(fill = '#FADBD8', color = '#C0392B', width = 0.5) +
+  geom_jitter(color = '#C0392B', size = 2, width = 0.1, alpha = 0.7) +
+  geom_hline(yintercept = mean(df_historis_regresi$rasio),
+             linetype = 'dashed', color = 'navy', linewidth = 0.8) +
+  scale_y_continuous(labels = percent_format()) +
+  labs(
+    title    = 'Rasio Penjualan H1-H20 terhadap Total Bulanan',
+    subtitle = 'Garis navy = rata-rata keseluruhan | Setiap titik = satu bulan historis',
+    x = 'Bulan', y = 'Rasio (Parsial H1-H20 / Total Bulan)'
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(plot.title = element_text(face = 'bold', color = '#C0392B'))
+```
+
+Perlu saya ingatkan kembali bahwa kita punya data dua tahun pada bulan Januari - Juni, maka dari itu bentuk grafik pada bulan-bulan tersebut berbeda dengan bulan lainnya.
+
+Oke, sekarang saatnya kita membuat model regresinya. Akan ada dua model regresi sebagai berikut:
+
+1. Model sederhana berisi __total_penuh ~ parsial_20__.
+1. Model lengkap berisi __total_penuh ~ parsial_20 + factor(bulan) + hariraya__.
+    - Kita tambahkan variabel bulan biasa dan bulan hari raya (lebaran dan natal).
+
+```{r}
+# ── Bangun model regresi ─────────────────────────────────────────
+# Model sederhana: total_penuh ~ parsial_20
+model_simple <- lm(total_penuh ~ parsial_20,
+                   data = df_historis_regresi)
+
+# Model dengan fitur tambahan: + bulan (seasonality) + hariraya
+model_lengkap <- lm(total_penuh ~ parsial_20 + factor(bulan) + hariraya,
+                    data = df_historis_regresi)
+
+# Bandingkan R-squared kedua model
+cat('R-squared model simple  :', round(summary(model_simple)$r.squared, 4), '\n')
+cat('R-squared model lengkap :', round(summary(model_lengkap)$r.squared, 4), '\n')
+
+# Tampilkan ringkasan model lengkap
+summary(model_lengkap)
+```
+
+Dari nilai $R^2$, kita dapatkan kedua model baik dan sangat baik. Berdasarkan itu, saya akan buat prediksi _nowcasting_ dari model lengkap.
+
+```{r}
+# ── Prediksi nowcasting untuk Juli 2025 ──────────────────────────
+# Siapkan data input untuk prediksi
+input_prediksi <- data.frame(
+  parsial_20 = penjualan_parsial,
+  bulan      = 7,
+  hariraya   = 0  # Juli bukan bulan Lebaran/Natal
+)
+
+# Prediksi dengan confidence interval 95%
+pred_m2 <- predict(model_lengkap,
+                   newdata = input_prediksi,
+                   interval = 'prediction',
+                   level    = 0.95)
+
+estimasi_m2    <- pred_m2[1, 'fit']
+estimasi_m2_lo <- pred_m2[1, 'lwr']
+estimasi_m2_hi <- pred_m2[1, 'upr']
+
+cat('\n=== MODEL 2: REGRESSION-BASED ===\n')
+cat('Estimasi total Juli 2025   :', round(estimasi_m2), 'karton\n')
+cat('Interval bawah (95%)       :', round(estimasi_m2_lo), 'karton\n')
+cat('Interval atas (95%)        :', round(estimasi_m2_hi), 'karton\n')
+cat('Aktual total Juli 2025     :', aktual_juli_penuh, 'karton\n')
+cat('Error                      :',
+    round((estimasi_m2 - aktual_juli_penuh) / aktual_juli_penuh * 100, 2), '%\n')
+```
+
+### Model 3 — _MIDAS-lite_: Menggunakan _Leading Indicator_
+
+Model ketiga ini sedikit lebih canggih. Kita manfaatkan _leading indicator_, yakni sinyal-sinyal yang muncul lebih awal dan berkorelasi dengan penjualan untuk meningkatkan akurasi estimasi.
+
+_MIDAS_ (_Mixed Data Sampling_) adalah teknik formal untuk menggabungkan data dengan frekuensi berbeda (misalnya: data harian dan data bulanan). Di sini kita buat versi sederhananya. _Leading indicator_ yang kita gunakan dalam simulasi ini:
+
+1. _Search index_: _Proxy_ dari Google Trends untuk kata kunci terkait produk kita.
+1. Cuaca: Suhu rata-rata harian (minuman lebih laku saat panas).
+1. Momentum awal bulan: Apakah 5 hari pertama lebih tinggi dari rata-rata historis?
+
+Indikator pertama dan kedua akan saya simulasikan datanya, sedangkan indikator ketiga akan dihitung dari data yang ada.
+
+```{r}
+# ── Simulasi leading indicators ──────────────────────────────────
+set.seed(101)
+
+# Tambahkan leading indicator ke data historis
+df_indikator <- df_harian %>%
+  group_by(tahun, bulan) %>%
+  reframe(
+    parsial_20      = sum(penjualan[hari <= 20]),
+    total_penuh     = sum(penjualan),
+    # Indikator 1: rata-rata suhu di 20 hari pertama
+    # (simulasi: korelasi positif dengan penjualan)
+    suhu_rata       = round(runif(1, 28, 35) +
+                           rnorm(1, 0, 1.5), 1),
+    # Indikator 2: search index mingguan pertama bulan ini
+    # (simulasi: nilai 0-100)
+    search_index    = round(50 + sum(penjualan[hari <= 7]) / 500 +
+                           rnorm(1, 0, 5)),
+    # Indikator 3: momentum — apakah 5 hari pertama di atas rata2?
+    momentum_awal   = mean(penjualan[hari <= 5]),
+    hariraya        = as.integer(bulan %in% c(4, 5, 12))
+  )
+
+# Korelasi antara indikator dan total penjualan
+cat('Korelasi indikator vs total penjualan:\n')
+cor_matrix <- df_indikator %>%
+  select(total_penuh, parsial_20, suhu_rata,
+         search_index, momentum_awal) %>%
+  cor()
+round(cor_matrix['total_penuh', ], 3)
+```
+
+
+Sekarang kita buat model MIDAS-nya menjadi: __total_penuh ~ parsial_20 + suhu_rata + search_index + momentum_awal + factor(bulan) + hariraya__.
+
+Berikut ini hasilnya:
+
+
+```{r}
+# ── Model MIDAS-lite ─────────────────────────────────────────────
+model_midas <- lm(
+  total_penuh ~ parsial_20 + suhu_rata + search_index +
+                momentum_awal + factor(bulan) + hariraya,
+  data = df_indikator
+)
+
+cat('R-squared model MIDAS-lite:', round(summary(model_midas)$r.squared, 4), '\n')
+
+# Prediksi untuk Juli 2025
+# (dalam praktik, nilai indikator ini datang dari sumber eksternal
+#  seperti Google Trends API atau data cuaca BMKG)
+input_midas <- data.frame(
+  parsial_20    = penjualan_parsial,
+  bulan         = 7,
+  hariraya      = 0,
+  suhu_rata     = 33.2,    # suhu Juli memang panas
+  search_index  = 68,      # search naik, pertanda bagus
+  momentum_awal = mean(df_juli_parsial$penjualan[1:5])
+)
+
+pred_m3 <- predict(model_midas,
+                   newdata = input_midas,
+                   interval = 'prediction',
+                   level    = 0.95)
+
+estimasi_m3    <- pred_m3[1, 'fit']
+estimasi_m3_lo <- pred_m3[1, 'lwr']
+estimasi_m3_hi <- pred_m3[1, 'upr']
+
+cat('\n=== MODEL 3: MIDAS-LITE ===\n')
+cat('Estimasi total Juli 2025   :', round(estimasi_m3), 'karton\n')
+cat('Interval bawah (95%)       :', round(estimasi_m3_lo), 'karton\n')
+cat('Interval atas (95%)        :', round(estimasi_m3_hi), 'karton\n')
+cat('Aktual total Juli 2025     :', aktual_juli_penuh, 'karton\n')
+cat('Error                      :',
+    round((estimasi_m3 - aktual_juli_penuh) / aktual_juli_penuh * 100, 2), '%\n')
+```
+
+$R^2$ yang dihasilkan sangat bagus.
+
+## Perbandingan Tiga Model _Nowcasting_
+
+```{r}
+# ── Ringkasan perbandingan semua model ───────────────────────────
+df_perbandingan <- data.frame(
+  Model    = c('Model 1: Simple Scaling',
+               'Model 2: Regression',
+               'Model 3: MIDAS-lite',
+               'Aktual (Ground Truth)'),
+  Estimasi = c(round(estimasi_m1),
+               round(estimasi_m2),
+               round(estimasi_m3),
+               aktual_juli_penuh),
+  CI_Bawah = c(NA, round(estimasi_m2_lo), round(estimasi_m3_lo), NA),
+  CI_Atas  = c(NA, round(estimasi_m2_hi), round(estimasi_m3_hi), NA)
+) %>%
+  mutate(
+    Error_pct = round((Estimasi - aktual_juli_penuh) /
+                       aktual_juli_penuh * 100, 2),
+    Hit_target = ifelse(Estimasi >= 50000, 'YA ✓', 'TIDAK ✗')
+  )
+
+df_perbandingan$Hit_target[4] = " "
+df_perbandingan$Error_pct[4] = " "
+
+df_perbandingan %>% knitr::kable()
+```
+
+Dari ketiga model yang sudah dibuat, kita bisa dapatkan:
+
+1. Ketiga model memberikan estimasi yang berada di bawah nilai aktual (_under estimate_).
+    - __Menurut keyakinan saya__, _under_ estimasi justru memberikan rasa aman pada tim _sales_ pada laporannya dibandingkan nilai yang _over estimate_.
+1. Ternyata __model kedua (regresi)__ memberikan estimasi dengan persentase _error_ terkecil.
+
+```{r}
+# ── Visualisasi perbandingan model ───────────────────────────────
+df_plot_model <- df_perbandingan %>%
+  filter(Model != 'Aktual (Ground Truth)')
+
+ggplot(df_plot_model,
+       aes(x = Model, y = Estimasi, color = Model)) +
+  # Confidence interval sebagai error bar
+  geom_errorbar(
+    aes(ymin = CI_Bawah, ymax = CI_Atas),
+    width = 0.3, linewidth = 1.2, na.rm = TRUE
+  ) +
+  geom_point(size = 5) +
+  # Garis aktual
+  geom_hline(yintercept = aktual_juli_penuh,
+             color = 'black', linewidth = 1.2,
+             linetype = 'solid') +
+  # Garis target
+  geom_hline(yintercept = 50000,
+             color = 'navy', linewidth = 1,
+             linetype = 'dashed') +
+  annotate('text', x = 0.6, y = aktual_juli_penuh + 400,
+           label = 'Aktual', hjust = 0, fontface = 'bold') +
+  annotate('text', x = 0.6, y = 50400,
+           label = 'Target', hjust = 0,
+           color = 'navy', fontface = 'bold') +
+  scale_color_manual(
+    values = c('#E74C3C', '#8E44AD', '#1A5276'),
+    guide  = 'none'
+  ) +
+  scale_y_continuous(labels = label_comma()) +
+  coord_flip() +
+  labs(
+    title    = 'Perbandingan Estimasi Nowcasting vs Aktual',
+    subtitle = 'Error bar = interval kepercayaan 95% | Garis hitam = aktual | Garis navy = target',
+    x = '', y = 'Total Penjualan Estimasi (Karton)'
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(plot.title = element_text(face = 'bold', color = '#C0392B')) +
+  ylim(45000,75000)
+```
+
+# Model Keempat: _Nowcasting Rolling_ 
+
+Ada model _nowcasting_ keempat yang bisa kita buat, yakni model yang bisa melakukan _update_ estimasi setiap hari sejak awal bulan. Hasilnya adalah kurva yang semakin lama semakin akurat seiring lebih banyak data tersedia.
+
+Ada dua model yang akan kita coba, yakni:
+
+1. _Simple scaling_, sama seperti model pertama tapi di-_update_ rasio parsial secara harian.
+1. _Regresi_, sama seperti model kedua tapi di-_update_ rasio parsial secara harian.
+
+```{r}
+#| include: false
+
+# ── Nowcasting rolling: estimasi dari H5 sampai H28 ─────────────
+hasil_rolling <- lapply(5:28, function(cut_day) {
+  # Data parsial sampai hari ke-cut_day
+  parsial <- df_juli %>%
+    filter(day(tanggal) <= cut_day) %>%
+    summarise(total = sum(penjualan)) %>%
+    pull(total)
+
+  # Model 1: Simple scaling
+  rata  <- parsial / cut_day
+  est_m1 <- parsial + rata * (31 - cut_day)
+
+  # Model 2: Regression
+  # Re-estimasi rasio dari historis untuk cut_day tersebut
+  df_hist_cut <- df_harian %>%
+    group_by(tahun, bulan) %>%
+    summarise(
+      parsial_n   = sum(penjualan[hari <= cut_day]),
+      total_penuh = sum(penjualan),
+      .groups     = 'drop'
+    )
+
+  model_cut <- lm(total_penuh ~ parsial_n, data = df_hist_cut)
+  est_m2 <- predict(model_cut,
+                    newdata = data.frame(parsial_n = parsial))[1]
+
+  data.frame(
+    hari_ke    = cut_day,
+    pct_bulan  = round(cut_day / 31 * 100, 1),
+    est_m1     = round(est_m1),
+    est_m2     = round(est_m2),
+    aktual     = aktual_juli_penuh
+  )
+}) %>% bind_rows()
+
+# Tambah error percentage
+hasil_rolling <- hasil_rolling %>%
+  mutate(
+    error_m1 = round((est_m1 - aktual) / aktual * 100, 2),
+    error_m2 = round((est_m2 - aktual) / aktual * 100, 2)
+  )
+
+# Tampilkan hasil rolling
+# hasil_rolling %>%
+#   select(hari_ke, pct_bulan, est_m1, est_m2, aktual,
+#          error_m1, error_m2) %>%
+#   print(n = Inf)
+```
+
+Berikut ini hasilnya:
+
+```{r}
+# ── Visualisasi nowcasting rolling ───────────────────────────────
+df_rolling_long <- hasil_rolling %>%
+  select(hari_ke, pct_bulan, est_m1, est_m2, aktual) %>%
+  pivot_longer(
+    cols      = c(est_m1, est_m2),
+    names_to  = 'model',
+    values_to = 'estimasi'
+  ) %>%
+  mutate(model = recode(model,
+    est_m1 = 'Model 1: Simple Scaling',
+    est_m2 = 'Model 2: Regression'
+  ))
+
+ggplot(df_rolling_long, aes(x = hari_ke)) +
+  # Zona target
+  geom_hline(yintercept = 50000, color = 'navy',
+             linetype = 'dashed', linewidth = 0.8) +
+  # Aktual
+  geom_hline(aes(yintercept = aktual), color = 'black',
+             linewidth = 1.2) +
+  # Estimasi model
+  geom_line(aes(y = estimasi, color = model), linewidth = 1.1) +
+  geom_point(aes(y = estimasi, color = model), size = 2) +
+  scale_color_manual(
+    values = c('Model 1: Simple Scaling' = '#E74C3C',
+               'Model 2: Regression'     = '#8E44AD'),
+    name = 'Model'
+  ) +
+  scale_y_continuous(labels = label_comma()) +
+  scale_x_continuous(breaks = seq(5, 28, by = 3)) +
+  annotate('text', x = 6, y = 50800,
+           label = 'Target 50.000', color = 'navy',
+           size = 3.2, fontface = 'bold') +
+  annotate('text', x = 6,
+           y = aktual_juli_penuh - 800,
+           label = 'Aktual akhir bulan', color = 'black',
+           size = 3.2, fontface = 'bold') +
+  labs(
+    title    = 'Nowcasting Rolling: Estimasi Update Setiap Hari',
+    subtitle = 'Seberapa cepat estimasi kita konvergen ke angka aktual?',
+    x        = 'Hari ke- (dalam bulan berjalan)',
+    y        = 'Estimasi Total Penjualan (Karton)',
+    caption  = 'Garis hitam = aktual akhir bulan | Garis navy putus = target'
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(
+    plot.title      = element_text(face = 'bold', color = '#C0392B'),
+    legend.position = 'top'
+  )
+```
+
+Model regresi memberikan _nowcasting_ total penjualan akhir bulan yang selalu _under estimate_ dibandingkan dengan model _simple scaling_ yang pada awal-awal _nowcasting_ selalu _over estimate_. __Namun__ kedua model tersebut memberikan konvergensi yang ke satu nilai yang mirip-mirip dan mendekati nilai aktual bulanannya.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
