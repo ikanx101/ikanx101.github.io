@@ -34,20 +34,20 @@ Konsep ini yang sangat relevan di dunia *sales* dan *marketing*, contohnya:
 ## Perbedaan *Nowcasting* vs *Forecasting*
 
 | Aspek | *Nowcasting* | *Forecasting* |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | Pertanyaan | *"Bulan ini kita akan jual berapa?"* | *"Bulan depan kita akan jual berapa?* |
 | *Time range* | Saat ini (periode berjalan) | Masa depan (minggu/bulan/tahun depan) |
 | Data yang digunakan | Data historikal + data parsial | Data historikal lengkap |
 | Output | Estimasi nilai akhirperiode berjalan | Prediksi nilai masa depan |
 | Metode yang digunakan | ARIMA, *prophet, dll* | Regresi, dll |
 
-Sekarang saya akan coba buat satu _study case_ tentang estimasi _sales_ produk minuman di Jabodetabek.
+Sekarang saya akan coba buat satu *study case* tentang estimasi *sales* produk minuman di Jabodetabek.
 
-# Studi Kasus: Estimasi _Sales_ Minuman di Jabodetabek
+# Studi Kasus: Estimasi *Sales* Minuman di Jabodetabek
 
-Misalkan kita adalah _data analyst_ di sebuah perusahaan FMCG yang menjual minuman buah kemasan. Setiap bulan ada target penjualan (dalam satuan kuantitas yakni karton). Data penjualan harian tersedia di sistem IT kantor dan bersifat _update_ _real time_ harian. Hari ini tanggal 20 dan tim _managerial sales_ bertanya: _berapa estimasi total sales sampai akhir bulan?_
+Misalkan kita adalah *data analyst* di sebuah perusahaan FMCG yang menjual minuman buah kemasan. Setiap bulan ada target penjualan (dalam satuan kuantitas yakni karton). Data penjualan harian tersedia di sistem IT kantor dan bersifat *update* *real time* harian. Hari ini tanggal 20 dan tim *managerial sales* bertanya: *berapa estimasi total sales sampai akhir bulan?*
 
-```
+```         
 - Produk: Minuman buah kemasan 500ml 
 - Area: Jabodetabek
 - Target bulan ini: 50.000 karton 
@@ -121,7 +121,6 @@ df_harian <- bind_rows(
 
 ```
 
-
 Kita memiliki 547 baris data harian (mulai 1 Januari 2024 hingga 30 Juni 2025) dan ini adalah sampel data yang dimiliki:
 
 ```{r}
@@ -129,7 +128,7 @@ sampel = c(1:5,543:547)
 df_harian %>% slice(sampel) %>% knitr::kable()
 ```
 
-Sedangkan berikut ini adalah rekapan _sales_ bulanan dari data _sales_ harian:
+Sedangkan berikut ini adalah rekapan *sales* bulanan dari data *sales* harian:
 
 ```{r}
 # ── Ringkasan bulanan ────────────────────────────────────────────
@@ -152,7 +151,6 @@ df_bulanan %>%
   mutate(across(where(is.numeric), ~round(., 0))) %>%
   print(n = Inf)
 ```
-
 
 ```{r}
 # ── Visualisasi tren penjualan bulanan ───────────────────────────
@@ -180,7 +178,7 @@ ggplot(df_bulanan, aes(x = periode, y = total_penjualan)) +
   )
 ```
 
-Sedangkan berikut ini adalah data _sales_ 20 hari pertama di bulan Juli 2025:
+Sedangkan berikut ini adalah data *sales* 20 hari pertama di bulan Juli 2025:
 
 ```{r}
 # ── Buat data bulan berjalan (Juli 2025) ─────────────────────────
@@ -203,7 +201,7 @@ cat('Persentase bulan yang sudah terlewati:',
     round(hari_tersedia/31*100, 1), '%\n')
 ```
 
-__Catatan__: Saya sebenarnya sudah membuat data lengkap 1 - 31 Juli 2025 yang kemudian nanti akan digunakan sebagai _benchmark_ seberapa bagus model _nowcasting_ yang dibuat.
+**Catatan**: Saya sebenarnya sudah membuat data lengkap 1 - 31 Juli 2025 yang kemudian nanti akan digunakan sebagai *benchmark* seberapa bagus model *nowcasting* yang dibuat.
 
 ```{r}
 cat('Aktual penjualan Juli 2025 (full bulan):', aktual_juli_penuh, 'karton\n')
@@ -243,20 +241,19 @@ ggplot(df_juli_plot, aes(x = tanggal, y = penjualan, fill = status)) +
   )
 ```
 
-## Pendekatan _Nowcasting_ yang Akan Dicoba
+## Pendekatan *Nowcasting* yang Akan Dicoba
 
-Kita akan membangun tiga model _nowcasting_ dari yang paling sederhana sampai yang lebih canggih, lalu membandingkan hasilnya:
+Kita akan membangun tiga model *nowcasting* dari yang paling sederhana sampai yang lebih canggih, lalu membandingkan hasilnya:
 
-1. __Model 1__ — __*Simple Scaling*__: Extrapolasi linier dari data parsial.
-2. __Model 2__ — __*Regression-based*__: Pakai pola historis untuk koreksi.
-3. __Model 3__ — __*MIDAS-lite*__: Manfaatkan _leading indicator_ harian.
+1.  **Model 1** — ***Simple Scaling***: Extrapolasi linier dari data parsial.
+2.  **Model 2** — ***Regression-based***: Pakai pola historis untuk koreksi.
+3.  **Model 3** — ***MIDAS-lite***: Manfaatkan *leading indicator* harian.
 
-
-### Model 1 — _Simple Scaling_ (Paling Sederhana)
+### Model 1 — *Simple Scaling* (Paling Sederhana)
 
 Model paling sederhana. Konsepnya sama seperti melakukan ekstrapolasi harian: asumsikan sisa hari akan berjalan seperti rata-rata hari yang sudah ada. Kalau 20 hari pertama rata-ratanya X karton/hari, maka 11 hari sisanya juga X karton/hari.
 
-__Estimasi Total = Penjualan Parsial + (Rata-rata Harian Parsial × Sisa Hari)__
+**Estimasi Total = Penjualan Parsial + (Rata-rata Harian Parsial × Sisa Hari)**
 
 ```{r}
 # ── Model 1: Simple Scaling ───────────────────────────────────────
@@ -275,17 +272,17 @@ cat('Error                      :',
 
 Model ini cepat, mudah, dan sangat sederhana tapi ada kelemahan. Model ini tidak mempertimbangkan bahwa hari-hari tertentu (misalnya akhir bulan atau akhir pekan) ada pola berbeda dari rata-rata.
 
-### Model 2 — _Regression-Based Nowcasting_
+### Model 2 — *Regression-Based Nowcasting*
 
-Model ini lebih "cerdas" dibanding sebelumnya. Idenya adalah kita punya data historis 18 bulan. Dari setiap bulan itu, kita tahu berapa penjualan di hari ke-1 sampai ke-20 (parsial), dan berapa total penjualan akhir bulan (penuh). Kemudia kita akan membuat model regresi: 
+Model ini lebih "cerdas" dibanding sebelumnya. Idenya adalah kita punya data historis 18 bulan. Dari setiap bulan itu, kita tahu berapa penjualan di hari ke-1 sampai ke-20 (parsial), dan berapa total penjualan akhir bulan (penuh). Kemudia kita akan membuat model regresi:
 
-__total_penuh ~ parsial_20_hari__
+**total_penuh \~ parsial_20_hari**
 
 Lalu gunakan model itu untuk memprediksi Juli 2025 dari data parsialnya.
 
-Kalau kita tahu bulan-bulan sebelumnya bahwa 'penjualan 20 hari pertama biasanya 64% dari total bulan', maka kita bisa balik hitung: 
+Kalau kita tahu bulan-bulan sebelumnya bahwa 'penjualan 20 hari pertama biasanya 64% dari total bulan', maka kita bisa balik hitung:
 
-__total estimasi = parsial / 0.64__
+**total estimasi = parsial / 0.64**
 
 Regresi adalah cara ilmiah untuk menemukan angka 0.64 itu — plus memperhitungkan faktor lain seperti momen gajian.
 
@@ -342,9 +339,9 @@ Perlu saya ingatkan kembali bahwa kita punya data dua tahun pada bulan Januari -
 
 Oke, sekarang saatnya kita membuat model regresinya. Akan ada dua model regresi sebagai berikut:
 
-1. Model sederhana berisi __total_penuh ~ parsial_20__.
-1. Model lengkap berisi __total_penuh ~ parsial_20 + factor(bulan) + hariraya__.
-    - Kita tambahkan variabel bulan biasa dan bulan hari raya (lebaran dan natal).
+1.  Model sederhana berisi **total_penuh \~ parsial_20**.
+2.  Model lengkap berisi **total_penuh \~ parsial_20 + factor(bulan) + hariraya**.
+    -   Kita tambahkan variabel bulan biasa dan bulan hari raya (lebaran dan natal).
 
 ```{r}
 # ── Bangun model regresi ─────────────────────────────────────────
@@ -364,7 +361,7 @@ cat('R-squared model lengkap :', round(summary(model_lengkap)$r.squared, 4), '\n
 summary(model_lengkap)
 ```
 
-Dari nilai $R^2$, kita dapatkan kedua model baik dan sangat baik. Berdasarkan itu, saya akan buat prediksi _nowcasting_ dari model lengkap.
+Dari nilai $R^2$, kita dapatkan kedua model baik dan sangat baik. Berdasarkan itu, saya akan buat prediksi *nowcasting* dari model lengkap.
 
 ```{r}
 # ── Prediksi nowcasting untuk Juli 2025 ──────────────────────────
@@ -394,15 +391,15 @@ cat('Error                      :',
     round((estimasi_m2 - aktual_juli_penuh) / aktual_juli_penuh * 100, 2), '%\n')
 ```
 
-### Model 3 — _MIDAS-lite_: Menggunakan _Leading Indicator_
+### Model 3 — *MIDAS-lite*: Menggunakan *Leading Indicator*
 
-Model ketiga ini sedikit lebih canggih. Kita manfaatkan _leading indicator_, yakni sinyal-sinyal yang muncul lebih awal dan berkorelasi dengan penjualan untuk meningkatkan akurasi estimasi.
+Model ketiga ini sedikit lebih canggih. Kita manfaatkan *leading indicator*, yakni sinyal-sinyal yang muncul lebih awal dan berkorelasi dengan penjualan untuk meningkatkan akurasi estimasi.
 
-_MIDAS_ (_Mixed Data Sampling_) adalah teknik formal untuk menggabungkan data dengan frekuensi berbeda (misalnya: data harian dan data bulanan). Di sini kita buat versi sederhananya. _Leading indicator_ yang kita gunakan dalam simulasi ini:
+*MIDAS* (*Mixed Data Sampling*) adalah teknik formal untuk menggabungkan data dengan frekuensi berbeda (misalnya: data harian dan data bulanan). Di sini kita buat versi sederhananya. *Leading indicator* yang kita gunakan dalam simulasi ini:
 
-1. _Search index_: _Proxy_ dari Google Trends untuk kata kunci terkait produk kita.
-1. Cuaca: Suhu rata-rata harian (minuman lebih laku saat panas).
-1. Momentum awal bulan: Apakah 5 hari pertama lebih tinggi dari rata-rata historis?
+1.  *Search index*: *Proxy* dari Google Trends untuk kata kunci terkait produk kita.
+2.  Cuaca: Suhu rata-rata harian (minuman lebih laku saat panas).
+3.  Momentum awal bulan: Apakah 5 hari pertama lebih tinggi dari rata-rata historis?
 
 Indikator pertama dan kedua akan saya simulasikan datanya, sedangkan indikator ketiga akan dihitung dari data yang ada.
 
@@ -438,11 +435,9 @@ cor_matrix <- df_indikator %>%
 round(cor_matrix['total_penuh', ], 3)
 ```
 
-
-Sekarang kita buat model MIDAS-nya menjadi: __total_penuh ~ parsial_20 + suhu_rata + search_index + momentum_awal + factor(bulan) + hariraya__.
+Sekarang kita buat model MIDAS-nya menjadi: **total_penuh \~ parsial_20 + suhu_rata + search_index + momentum_awal + factor(bulan) + hariraya**.
 
 Berikut ini hasilnya:
-
 
 ```{r}
 # ── Model MIDAS-lite ─────────────────────────────────────────────
@@ -486,7 +481,7 @@ cat('Error                      :',
 
 $R^2$ yang dihasilkan sangat bagus.
 
-## Perbandingan Tiga Model _Nowcasting_
+## Perbandingan Tiga Model *Nowcasting*
 
 ```{r}
 # ── Ringkasan perbandingan semua model ───────────────────────────
@@ -516,9 +511,9 @@ df_perbandingan %>% knitr::kable()
 
 Dari ketiga model yang sudah dibuat, kita bisa dapatkan:
 
-1. Ketiga model memberikan estimasi yang berada di bawah nilai aktual (_under estimate_).
-    - __Menurut keyakinan saya__, _under_ estimasi justru memberikan rasa aman pada tim _sales_ pada laporannya dibandingkan nilai yang _over estimate_.
-1. Ternyata __model kedua (regresi)__ memberikan estimasi dengan persentase _error_ terkecil.
+1.  Ketiga model memberikan estimasi yang berada di bawah nilai aktual (*under estimate*).
+    -   **Menurut keyakinan saya**, *under* estimasi justru memberikan rasa aman pada tim *sales* pada laporannya dibandingkan nilai yang *over estimate*.
+2.  Ternyata **model kedua (regresi)** memberikan estimasi dengan persentase *error* terkecil.
 
 ```{r}
 # ── Visualisasi perbandingan model ───────────────────────────────
@@ -562,14 +557,14 @@ ggplot(df_plot_model,
   ylim(45000,75000)
 ```
 
-# Model Keempat: _Nowcasting Rolling_ 
+# Model Keempat: *Nowcasting Rolling*
 
-Ada model _nowcasting_ keempat yang bisa kita buat, yakni model yang bisa melakukan _update_ estimasi setiap hari sejak awal bulan. Hasilnya adalah kurva yang semakin lama semakin akurat seiring lebih banyak data tersedia.
+Ada model *nowcasting* keempat yang bisa kita buat, yakni model yang bisa melakukan *update* estimasi setiap hari sejak awal bulan. Hasilnya adalah kurva yang semakin lama semakin akurat seiring lebih banyak data tersedia.
 
 Ada dua model yang akan kita coba, yakni:
 
-1. _Simple scaling_, sama seperti model pertama tapi di-_update_ rasio parsial secara harian.
-1. _Regresi_, sama seperti model kedua tapi di-_update_ rasio parsial secara harian.
+1.  *Simple scaling*, sama seperti model pertama tapi di-*update* rasio parsial secara harian.
+2.  *Regresi*, sama seperti model kedua tapi di-*update* rasio parsial secara harian.
 
 ```{r}
 #| include: false
@@ -677,22 +672,42 @@ ggplot(df_rolling_long, aes(x = hari_ke)) +
   )
 ```
 
-Model regresi memberikan _nowcasting_ total penjualan akhir bulan yang selalu _under estimate_ dibandingkan dengan model _simple scaling_ yang pada awal-awal _nowcasting_ selalu _over estimate_. __Namun__ kedua model tersebut memberikan konvergensi yang ke satu nilai yang mirip-mirip dan mendekati nilai aktual bulanannya.
+Model regresi memberikan *nowcasting* total penjualan akhir bulan yang selalu *under estimate* dibandingkan dengan model *simple scaling* yang pada awal-awal *nowcasting* selalu *over estimate*. **Namun** kedua model tersebut memberikan konvergensi yang ke satu nilai yang mirip-mirip dan mendekati nilai aktual bulanannya.
+
+# Langkah *Strategic* dari Hasil *Nowcasting*
+
+Bagi tim *managerial sales*, angka estimasi hasil *nowcasting* bisa dijadikan langkah *strategic* bagi mereka untuk memastikan *sales* berjalan sesuai dengan target yang sudah ditetapkan. Bagaimana caranya? Perhatikan tabel berikut ini:
+
+| Kondisi estimasi | SInyal | Hal yang perlu dilakukan |
+|----|----|----|
+| Estimasi \>\> target | Over-track | Pastikan stok cukup, jangan sampai _out-of-stock_ di akhir bulan. Siapkan _reorder_. |
+| Estimasi sedikit di atas target | On-track | _Maintain_ momentum. Monitor harian, tidak perlu intervensi besar. |
+| Estimasi sedikit di bawah target | At risk | Aktivasi _trade promo_ di channel yang _under-perform_. _Push_ ke distributor. |
+| Estimasi \<\< target | Off track | Eskalasi ke manajemen. Pertimbangkan _flash sale_, subsidi harga sementara, atau revisi target. |
 
 
+Pertanyaan berikutnya adalah:
+
+> __Kapan kita harus mempercayai hasil estimasi dari *nowcasting*?__
+
+Dari grafik _rolling nowcasting_, kita bisa lihat bahwa estimasi biasanya cukup stabil setelah hari ke-10 (sekitar 30% bulan terlewati). Sebelum itu, masih terlalu banyak _noise_. Idealnya, mulai jadikan _nowcasting_ sebagai acuan keputusan mulai hari ke-10, dan jadikan dasar eskalasi mulai hari ke-15.
 
 
+## Limitasi
+
+Tentu sebagaimana yang sering saya katakan, setiap model perhitungan (termasuk prediksi dan _nowcasting_) pasti memiliki limitasi yang perlu kita perhatikan saat menyimpulkan hasil dan mengambil keputusan. Berikut ini adalah beberapa limitasi dari _nowcasting_:
+
+1. _Nowcasting_ bukan sulap. 
+    - Jika ada kejadian tak terduga di sisa bulan, seperti: bencana alam, kompetitor tiba-tiba diskon besar, atau produk kita viral di __TikTok__ maka model tidak akan bisa memprediksinya dari data parsial.
+2. Kualitas model bergantung data historis. 
+    - Model regresi kita butuh setidaknya 12 bulan historis agar pola musiman tertangkap dengan baik. 
+    - Untuk produk baru yang belum punya riwayat panjang, Model menggunakan _Simple Scaling_ mungkin lebih aman.
+3. Perhatikan perubahan pola. Kalau ada perubahan besar dalam bisnis (ekspansi ke kota baru, ganti distributor, _launching_ SKU baru), pola historis mungkin tidak lagi relevan. Model perlu di-_update_.
+4. Bukan pengganti _judgment_. 
+    - _Nowcasting_ adalah alat bantu, bukan pengganti pengetahuan lapangan. 
+    - _Sales manager_ yang tahu ada _event_ besar di akhir bulan tetap harus memasukkan informasi itu secara manual ke dalam estimasi.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
