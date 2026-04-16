@@ -1,0 +1,1026 @@
+---
+title: "Membuat Algoritma Rekomendasi dari Nol"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  error: false
+  echo: false
+---
+
+Semalam, saya dan istri bercerita bahwa di salah satu *boarding school* yang kami incar untuk si Sulung memberikan Macbook kepada para siswanya sebagai *daily driver* di sekolah. Karena penasaran dengan harganya, saya coba *Googling* terkait Macbook.
+
+> Tiba-tiba pagi ini, iklan-iklan yang muncul di *gadget* saya dipenuhi bukan hanya iklan Macbook, tapi juga aksesoris iPad (kebetulan saya juga pengguna iPad).
+
+Saya rasa rekan-rekan semua pasti pernah mengalami saat membeli *charger* HP, lalu tiba-tiba kalian malah membeli juga *casing*, kabel data, dan *powerbank*? Atau saat kalian membuka Netflix untuk nonton satu *film*, tapi berakhir *marathon* tiga *film* atau *series* karena rekomendasi berikutnya selalu tepat sasaran?
+
+Di dunia digital dimana data bisa ditambang dari *user* secara tak disadari, rekomendasi-rekomendasi itu bukan kebetulan belaka. Di balik setiap rekomendasi itu ada algoritma yang bekerja dan algoritma itu jauh lebih sederhana dari yang kita bayangkan.
+
+Tidak ada sihir, tidak ada AI yang "membaca pikiran". Fondasinya hanyalah satu premis sederhana, yakni:
+
+> *Orang yang berperilaku serupa di masa lalu cenderung menyukai hal yang serupa di masa depan. Lalu produk yang sering dibeli bersama-sama kemungkinan besar saling melengkapi.*
+
+Di tulisan ini, saya akan membangun sistem rekomendasi dari nol menggunakan **R** tanpa *library* khusus yang menyembunyikan mekanismenya. Kita akan mencoba memahami cara kerja sistem rekomendasi melalui dua pendekatan utama:
+
+-   *User-Based Collaborative Filtering* dan
+-   *Item-Based Collaborative Filtering*.
+
+Kemudian saya akan coba bandingkan keduanya.
+
+Studi kasusnya: data transaksi toko *online* FMCG **fiktif** untuk produk-produk seperti minuman, *snack*, dan produk perawatan diri. Tentunya pendekatan ini bisa langsung diaplikasikan ke konteks *e-commerce* atau *modern trade*. Oke, saya mulai ya.
+
+------------------------------------------------------------------------
+
+# Beberapa Pendekatan Sistem Rekomendasi
+
+Sebelum masuk ke algoritma, saya akan coba paparkan terlebih dahulu 2 + 1 pendekatan yang bisa digunakan untuk membangun sistem rekomendasi:
+
+| Pendekatan | Ide Dasar | Contoh Penggunaan |
+|----|----|----|
+| Content-Based Filtering | Rekomendasikan produk yang mirip dengan yang sudah dibeli/disukai user, berdasarkan **atribut** produk | **Spotify** merekomendasikan lagu dengan *genre* dan tempo serupa |
+| Collaborative Filtering | Rekomendasikan berdasarkan kesamaan **perilaku** antar user atau antar item | **Netflix**: *"User seperti kamu juga menonton film ini"* |
+| Hybrid | Gabungan antara **konten** dan **perilaku** | Amazon |
+
+
+Di tulisan ini saya hanya fokus ke _Collaborative Filtering_ karena lebih bergantung pada data transaksi yang biasanya sudah tersedia dan tidak butuh deskripsi atribut produk yang lengkap. _Collaborative Filtering_ sendiri punya dua variasi:
+
+- _User-Based CF_: Cari _user_ yang mirip dengan target _user_, lalu rekomendasikan apa yang mereka beli tapi _target user_ belum beli.
+- _Item-Based CF_: Cari _item_ yang sering dibeli bersama dengan _item_ yang sudah dibeli _target user_, lalu rekomendasikan _item_ tersebut.
+
+## Mana yang Lebih Baik?
+
+_Item-Based CF_ umumnya lebih stabil dan lebih mudah di-_upscale_ di dunia nyata karena hubungan antar produk lebih konsisten dibanding preferensi antar _user_. __Netflix__ sendiri beralih dari _User-Based_ ke _Item-Based_ di awal 2000-an karena alasan ini. Tapi keduanya tetap relevan dan kita akan buat algoritma keduanya.
+
+
+## Matematika di Balik Sistem Rekomendasi
+
+Di beberapa kesempatan, saat saya kembali ke kampus untuk _sharing_ kepada mahasiswa, saya sering bilang bahwa:
+
+> __Dunia ini dijalankan melalui aljabar__.
+
+Salah satu aplikasi aljabar yang nyata adalah sistem rekomendasi yang menggunakan prinsip matriks dalam aljabar.
+
+Semua _Collaborative Filtering_ bekerja di atas satu struktur data yang disebut _User-Item Matrix_. Baris menandakan _user_, Kolom menandakan _item_ atau produk, dan Nilai menandakan _rating_ dari produk tersebut atau jumlah pembelian.
+
+Coba lihat contoh ilustrasi matriks berikut ini:
+
+```
+           Teh Botol   Indomie   Oreo   Pocari   Pringles 
+  Andi          3          1        0       2         0 
+  Budi          0          2        3       0         2 
+  Citra         2          0        1       3         0 
+  Dewi          0          3        2       0         3
+```
+
+Angka 0 berarti belum pernah beli (atau _rating_ tidak diketahui). Ini disebut _sparse matrix_ karena mayoritas nilainya 0. Pada kondisi _real_ di _e-commerce_, seorang _user_ mungkin hanya pernah beli 0.1% dari __semua produk yang tersedia__.
+
+Beberapa tahun yang lalu, saya sempat menuliskan tentang [kemiripan sepasang data](https://ikanx101.com/blog/jarak-simmilarity/). Salah satu metode untuk mengukur kemiripan adalah menggunakan [_cosine simmilarity_](https://ikanx101.com/blog/phone-book/). Kunci dari _Collaborative Filtering_ adalah mengukur __seberapa mirip dua *user* atau dua *item*__ menggunakan _cosine simmilarity_.
+
+Secara teknis, saya memperlakukan histori pembelian setiap _user_ sebagai sebuah _vektor_ di ruang N-dimensi (N = jumlah produk). Dua _users_ disebut __mirip__ kalau vektor mereka menunjuk ke arah yang sama (maksudnya adalah mereka beli produk yang sama dalam proporsi yang serupa).
+
+## _Lift_ dan _Support_: Cara Alternatif untuk _Item-Based CF_
+
+Untuk _Item-Based CF_, ada metode yang lebih populer yang bisa digunakan, yakni: ___association rules___ (_Market Basket Analysis_). Dua _metrics_ penting yang bisa didapatkan dari analisa ini adalah:
+
+- `Support(A → B)`, artinya P(A dan B dibeli bersama). Jumlah transaksi yang berisi A dan B per total transaksi. __Seberapa sering keduanya (A dan B) muncul bersamaan__.
+- `Lift(A → B) = P(A dan B) / (P(A) × P(B))`. Nilai `lift > 1` berarti produk A dan B lebih sering ditemui bersama dari yang diharapkan secara acak (ada asosiasi positif yang nyata). Begitu pula sebaliknya, `lift < 1` berarti produk A dan B jarang ditemui bersama.
+
+
+---
+
+# Memulai Simulasi
+
+## Membuat Katalog Produk
+
+Pertama-tama, saya akan membuat katalog produk berisi:
+
+```{r}
+# ── Package ──────────────────────────────────────────────────────
+# install.packages(c('dplyr','tidyr','ggplot2','scales',
+#                    'reshape2','stringr','patchwork',
+#                    'RColorBrewer'))
+
+rm(list=ls())
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(scales)
+library(reshape2)
+library(stringr)
+library(patchwork)
+library(RColorBrewer)
+
+set.seed(101)
+```
+
+```{r}
+# ── Katalog produk: 30 item FMCG ────────────────────────────────
+katalog <- data.frame(
+  item_id   = 1:30,
+  nama_item = c(
+    # Minuman (10)
+    'Teh Botol 500ml', 'Aqua 600ml', 'Pocari Sweat',
+    'Sprite 390ml', 'Kopi Kapal Api', 'Energen Coklat',
+    'Ultra Milk Coklat', 'Yakult 5pcs', 'Good Day RTD',
+    'Milo RTD',
+    # Snack (10)
+    'Indomie Goreng', 'Oreo Original', 'Pringles Original',
+    'Chitato Sapi Panggang', 'Roma Marie', 'Khong Guan Assorted',
+    'Choki-Choki', 'Beng-Beng', 'Richoco', 'Tango Wafer',
+    # Perawatan Diri (10)
+    'Lifebuoy Sabun', 'Pepsodent 190gr', 'Sunsilk Shampoo',
+    'Rexona Deodorant', 'Vaseline Lotion', 'Softex 10pcs',
+    'Tisu Paseo 200lbr', 'Baygon Semprot', 'Deterjen Attack',
+    'Pembalut Charm'
+  ),
+  kategori = c(
+    rep('Minuman', 10),
+    rep('Snack', 10),
+    rep('Perawatan Diri', 10)
+  ),
+  harga = c(
+    # Harga minuman
+    5500,3000,8500,5000,2500,6500,5000,12000,7000,7000,
+    # Harga snack
+    3500,8500,25000,15000,8000,35000,1000,3000,2000,9000,
+    # Harga perawatan diri
+    5000,12000,18000,15000,20000,18000,12000,35000,18000,22000
+  )
+)
+
+cat('Jumlah produk dalam katalog:', nrow(katalog), '\n')
+print(katalog %>% count(kategori))
+```
+
+Ini sampel katalog produknya:
+
+```{r}
+id_sample = sample(30,4) %>% sort()
+katalog[id_sample,]
+```
+
+## Membuat Simulasi Transaksi
+
+Selanjutnya saya akan membuat 500 orang _users_ dengan masing-masing 5-20 transaksi. Agar realistis, saya akan tanamkan polas asosiasi secara eksplisit pada algoritma simulasinya. Misalkan: _"Indomie sering dibeli bersamaan degan Teh Botol atau sabun sering dibeli bersamaan dengan shampoo"_.
+
+
+```{r}
+# ── Definisikan pasangan produk yang sering dibeli bersama ───────
+# Ini adalah 'ground truth' yang ingin kita temukan kembali
+asosiasi_true <- list(
+  c(1, 2),   # Teh Botol + Aqua (minuman sering combo)
+  c(1, 11),  # Teh Botol + Indomie (warung classics)
+  c(11, 1),  # Indomie + Teh Botol
+  c(11, 12), # Indomie + Oreo
+  c(12, 13), # Oreo + Pringles (snack combo)
+  c(21, 22), # Sabun + Odol
+  c(21, 23), # Sabun + Shampoo
+  c(22, 23), # Odol + Shampoo (trio mandi)
+  c(26, 27), # Softex + Tisu
+  c(7, 6),   # Ultra Milk + Energen (sarapan combo)
+  c(4, 14),  # Sprite + Chitato (snacking combo)
+  c(8, 9)    # Yakult + Good Day (convenience store duo)
+)
+
+# ── Fungsi buat satu transaksi user ──────────────────────────────
+buat_transaksi <- function(user_id, n_transaksi) {
+  lapply(1:n_transaksi, function(t_id) {
+    # Setiap transaksi punya 1-6 item
+    n_item <- sample(1:6, 1, prob = c(0.25,0.30,0.20,0.12,0.08,0.05))
+
+    # Item pertama dipilih acak (berbobot — item populer lebih sering)
+    popularitas <- c(rep(3,10), rep(2,10), rep(1,10)) # Minuman > Snack > Lain
+    item_pertama <- sample(1:30, 1, prob = popularitas / sum(popularitas))
+    items <- item_pertama
+
+    # Item berikutnya: ikut pola asosiasi atau acak
+    for (i in 2:n_item) {
+      # Cari apakah ada asosiasi dari item yang sudah ada
+      kandidat_asosiasi <- unlist(lapply(asosiasi_true, function(a) {
+        if (a[1] %in% items && !(a[2] %in% items)) return(a[2])
+        NULL
+      }))
+
+      if (length(kandidat_asosiasi) > 0 && runif(1) < 0.65) {
+        # 65%: pilih item dari asosiasi
+        item_baru <- sample(kandidat_asosiasi, 1)
+      } else {
+        # 35%: pilih acak (untuk noise)
+        sisa <- setdiff(1:30, items)
+        item_baru <- sample(sisa, 1)
+      }
+      items <- c(items, item_baru)
+    }
+
+    data.frame(
+      user_id      = user_id,
+      transaksi_id = paste0('T', str_pad(user_id, 4,'left','0'),
+                            '_', str_pad(t_id, 2,'left','0')),
+      item_id      = items
+    )
+  }) %>% bind_rows()
+}
+
+# Buat data untuk 500 user
+n_user <- 500
+df_transaksi <- lapply(1:n_user, function(u) {
+  n_tx <- sample(5:20, 1)  # Tiap user punya 5-20 transaksi
+  buat_transaksi(u, n_tx)
+}) %>% bind_rows() %>%
+  left_join(katalog, by = 'item_id')
+
+cat('Total baris transaksi:', nrow(df_transaksi), '\n')
+cat('Jumlah transaksi unik:', n_distinct(df_transaksi$transaksi_id), '\n')
+cat('Jumlah user:', n_distinct(df_transaksi$user_id), '\n')
+cat('Rata-rata item per transaksi:',
+    round(nrow(df_transaksi) / n_distinct(df_transaksi$transaksi_id), 2), '\n')
+```
+
+
+Berikut adalah beberapa sampel transaksinya:
+
+```{r}
+df_transaksi %>% filter(transaksi_id == "T0001_10")
+```
+
+```{r}
+df_transaksi %>% filter(transaksi_id == "T0081_04")
+```
+
+```{r}
+df_transaksi %>% filter(transaksi_id == "T0078_01")
+```
+
+Berikut ini adalah visualisasi dari top 15 produk yang paling sering dibeli:
+
+```{r}
+# ── Visualisasi: top 15 produk paling sering dibeli ─────────────
+df_top_item <- df_transaksi %>%
+  count(nama_item, kategori, sort = TRUE) %>%
+  head(15)
+
+ggplot(df_top_item,
+       aes(x = reorder(nama_item, n), y = n, fill = kategori)) +
+  geom_col(width = 0.7, alpha = 0.85) +
+  geom_text(aes(label = label_comma()(n)),
+            hjust = -0.1, size = 3.2, fontface = 'bold') +
+  coord_flip(clip = 'off') +
+  scale_fill_manual(
+    values = c('Minuman'       = '#4A235A',
+               'Snack'         = '#7D3C98',
+               'Perawatan Diri'= '#C39BD3'),
+    name = 'Kategori'
+  ) +
+  scale_y_continuous(limits = c(0, max(df_top_item$n) * 1.2),
+                     labels = label_comma()) +
+  labs(
+    title    = 'Top 15 Produk Paling Sering Dibeli',
+    subtitle = paste0(n_distinct(df_transaksi$user_id), ' user | ',
+                     n_distinct(df_transaksi$transaksi_id), ' transaksi'),
+    x = '', y = 'Jumlah Pembelian'
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(
+    plot.title      = element_text(face = 'bold', color = '#4A235A'),
+    legend.position = 'top'
+  )
+```
+
+## Membangun _User-Item Matrix_
+
+```{r}
+# ── Buat user-item matrix ────────────────────────────────────────
+# Nilai = jumlah kali user membeli item tersebut (frequency)
+# Bisa juga pakai binary (pernah/belum) atau rating jika ada
+
+user_item_matrix <- df_transaksi %>%
+  count(user_id, item_id) %>%
+  pivot_wider(
+    id_cols     = user_id,
+    names_from  = item_id,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  arrange(user_id)
+
+# Simpan user_id sebagai rownames, sisanya jadi matriks numerik
+user_ids  <- user_item_matrix$user_id
+mat_ui    <- as.matrix(user_item_matrix[, -1])
+rownames(mat_ui) <- user_ids
+
+cat('Dimensi User-Item Matrix:', dim(mat_ui), '\n')
+cat('(', nrow(mat_ui), 'user x', ncol(mat_ui), 'item)\n')
+
+# Sparsity: berapa persen nilai yang nol?
+sparsity <- mean(mat_ui == 0) * 100
+cat('Sparsity matrix:', round(sparsity, 1), '%\n')
+# Makin tinggi sparsity = makin sedikit data yang tersedia per user
+```
+
+
+Ini adalah sampelnya:
+
+```{r}
+user_item_matrix[id_sample,]
+```
+
+Jika saya buat _heatmap_ dari matrix tersebut, begini bentuknya:
+
+```{r}
+# ── Heatmap subset matrix (tampilkan 30 user x 30 item) ──────────
+df_heatmap <- mat_ui[1:30, 1:30] %>%
+  as.data.frame() %>%
+  mutate(user_id = 1:30) %>%
+  pivot_longer(-user_id, names_to = 'item_id', values_to = 'frekuensi') %>%
+  mutate(
+    item_id = as.integer(item_id),
+    frekuensi_log = log1p(frekuensi)  # log(1+x) untuk visualisasi
+  ) %>%
+  left_join(katalog %>% select(item_id, nama_item, kategori),
+            by = 'item_id')
+
+ggplot(df_heatmap,
+       aes(x = factor(item_id), y = factor(user_id),
+           fill = frekuensi_log)) +
+  geom_tile(color = 'white', linewidth = 0.2) +
+  scale_fill_gradient(low = '#F9F2FF', high = '#4A235A',
+                      name = 'Log(1+freq)') +
+  labs(
+    title    = 'Heatmap User-Item Matrix (30 User x 30 Item)',
+    subtitle = 'Warna lebih gelap = lebih sering dibeli | Putih = belum pernah beli',
+    x = 'ID Produk', y = 'ID User'
+  ) +
+  theme_minimal(base_size = 10) +
+  theme(
+    plot.title  = element_text(face = 'bold', color = '#4A235A'),
+    axis.text   = element_text(size = 7),
+    legend.position = 'right'
+  )
+```
+
+## _User-Based Collaborative Filtering_
+
+### Hitung _Cosine Similarity_ Antar _User_
+
+Pertama-tama, saya akan menghitung kesamaan antar _user_ dan membuat _simmilarity matrix_.
+
+Dari _matrix_ itu, saya bisa mengecek _user_ mana yang paling mirip dengan __*user 1*__.
+
+```{r}
+# ── Fungsi cosine similarity ─────────────────────────────────────
+cosine_sim <- function(a, b) {
+  dot_product <- sum(a * b)
+  norm_a      <- sqrt(sum(a^2))
+  norm_b      <- sqrt(sum(b^2))
+  if (norm_a == 0 || norm_b == 0) return(0)
+  dot_product / (norm_a * norm_b)
+}
+
+# ── Hitung similarity matrix antar semua user ─────────────────
+# Untuk 500 user, ini 500x500 = 250.000 kombinasi
+# Kita gunakan matrix operation yang lebih efisien
+cat('Menghitung user similarity matrix...\n')
+
+# Normalisasi setiap baris (user vector)
+norma_user <- sqrt(rowSums(mat_ui^2))
+norma_user[norma_user == 0] <- 1  # Hindari pembagian dengan nol
+mat_norm   <- mat_ui / norma_user
+
+# Matrix multiplication: norma_norm %*% t(mat_norm) = cosine similarity
+user_sim_matrix <- mat_norm %*% t(mat_norm)
+
+cat('Dimensi user similarity matrix:', dim(user_sim_matrix), '\n')
+
+# Set diagonal ke 0 (similarity user dengan dirinya sendiri)
+diag(user_sim_matrix) <- 0
+
+# Cek: siapa user paling mirip dengan User 1?
+sim_user1 <- sort(user_sim_matrix['1', ], decreasing = TRUE)
+cat('\nTop 5 user paling mirip dengan User 1:\n')
+print(head(sim_user1, 5))
+```
+
+### Fungsi Rekomendasi _User-Based_
+
+Dari data-data di atas, saya akan membuat _function_ untuk memberikan rekomendasi produk apa saja yang bisa ditawarkan kepada ___user 1___
+
+```{r}
+#| echo: true
+
+# ── Fungsi rekomendasi User-Based CF ─────────────────────────────
+rekomendasi_user_based <- function(target_user,
+                                    n_neighbor = 20,
+                                    n_rekomendasi = 5) {
+  # 1. Temukan N user paling mirip (neighbor)
+  sim_scores  <- user_sim_matrix[as.character(target_user), ]
+  top_neighbor <- names(sort(sim_scores, decreasing = TRUE))[1:n_neighbor]
+
+  # 2. Item yang sudah dibeli target user
+  sudah_dibeli <- which(mat_ui[as.character(target_user), ] > 0)
+
+  # 3. Hitung skor rekomendasi: weighted sum of neighbor ratings
+  #    Bobot = similarity score neighbor tersebut
+  skor_item <- rep(0, ncol(mat_ui))
+  names(skor_item) <- colnames(mat_ui)
+
+  for (neighbor in top_neighbor) {
+    sim_w <- sim_scores[neighbor]
+    # Tambahkan weighted rating dari neighbor
+    skor_item <- skor_item + sim_w * mat_ui[neighbor, ]
+  }
+
+  # 4. Nolkan item yang sudah pernah dibeli target user
+  skor_item[sudah_dibeli] <- 0
+
+  # 5. Ambil top N rekomendasi
+  top_items <- sort(skor_item, decreasing = TRUE)[1:n_rekomendasi]
+
+  data.frame(
+    item_id    = as.integer(names(top_items)),
+    skor_ub    = as.numeric(top_items)
+  ) %>%
+    left_join(katalog, by = 'item_id') %>%
+    select(item_id, nama_item, kategori, harga, skor_ub)
+}
+```
+
+Berikut adalah histori pembelian untuk ___user 1___:
+
+```{r}
+# ── Test: Rekomendasi untuk User 1 ───────────────────────────────
+cat('=== HISTORI PEMBELIAN USER 1 ===\n')
+df_transaksi %>%
+  filter(user_id == 1) %>%
+  count(nama_item, kategori, sort = TRUE) %>%
+  print()
+```
+
+Dan berikut ini adalah produk yang bisa direkomendasikan kepada ___user 1___:
+
+```{r}
+cat('\n=== REKOMENDASI USER-BASED CF UNTUK USER 1 ===\n')
+rek_ub_user1 <- rekomendasi_user_based(1)
+print(rek_ub_user1)
+```
+
+## _Item-Based Collaborative Filtering_
+
+### Hitung _Cosine Similarity_ Antar _Item_
+
+Berbeda dengan bagian sebelumnya, sekarang saya akan menghitung kebalikan POV. Yakni dengan menghitung antar _item_. Selanjutnya akan disimpan sebagai _simmilarity matrix per item_.
+
+```{r}
+# ── Item-based: hitung similarity antar item ─────────────────────
+# Transpose matrix: sekarang baris = item, kolom = user
+mat_it <- t(mat_ui)
+
+# Normalisasi baris (item vector)
+norma_item <- sqrt(rowSums(mat_it^2))
+norma_item[norma_item == 0] <- 1
+mat_it_norm <- mat_it / norma_item
+
+# Cosine similarity antar semua item (30x30 matrix)
+item_sim_matrix <- mat_it_norm %*% t(mat_it_norm)
+diag(item_sim_matrix) <- 0
+
+cat('Dimensi item similarity matrix:', dim(item_sim_matrix), '\n')
+
+# Tampilkan heatmap similarity antar item
+df_item_sim <- item_sim_matrix %>%
+  as.data.frame() %>%
+  tibble::rownames_to_column('item_from') %>%
+  pivot_longer(-item_from,
+               names_to  = 'item_to',
+               values_to = 'similarity') %>%
+  mutate(across(c(item_from, item_to), as.integer)) %>%
+  left_join(katalog %>% rename(item_from=item_id, nama_from=nama_item),
+            by = 'item_from') %>%
+  left_join(katalog %>% rename(item_to=item_id, nama_to=nama_item),
+            by = 'item_to')
+
+# Heatmap item similarity
+ggplot(df_item_sim,
+       aes(x = factor(item_from), y = factor(item_to),
+           fill = similarity)) +
+  geom_tile(color = 'white', linewidth = 0.15) +
+  scale_fill_gradient(low = 'white', high = '#4A235A',
+                      name = 'Cosine\nSimilarity') +
+  labs(
+    title    = 'Heatmap Item-Item Similarity Matrix',
+    subtitle = 'Warna gelap = dua item sering dibeli oleh user yang sama',
+    x = 'ID Produk', y = 'ID Produk'
+  ) +
+  theme_minimal(base_size = 10) +
+  theme(
+    plot.title = element_text(face = 'bold', color = '#4A235A'),
+    axis.text  = element_text(size = 8)
+  )
+
+```
+
+### Fungsi Rekomendasi _Item-Based_
+
+Berdasarkan _matrix_ tersebut, saya bisa membuat _function_ untuk mengeluarkan _item_ rekomendasi dengan sudut pandang _item-based_.
+
+```{r}
+#| echo: true
+
+# ── Fungsi rekomendasi Item-Based CF ─────────────────────────────
+rekomendasi_item_based <- function(target_user,
+                                    n_rekomendasi = 5) {
+  # 1. Item yang sudah dibeli target user
+  profil_user   <- mat_ui[as.character(target_user), ]
+  sudah_dibeli  <- which(profil_user > 0)
+  belum_dibeli  <- which(profil_user == 0)
+
+  if (length(sudah_dibeli) == 0) {
+    cat('User belum punya histori pembelian.\n')
+    return(NULL)
+  }
+
+  # 2. Untuk setiap item yang belum dibeli, hitung skor:
+  #    skor(item_baru) = sum(sim(item_baru, item_lama) * frekuensi_beli)
+  skor_item <- sapply(belum_dibeli, function(target_item) {
+    sim_ke_sudah_dibeli <- item_sim_matrix[
+      as.character(target_item),
+      as.character(sudah_dibeli)
+    ]
+    sum(sim_ke_sudah_dibeli * profil_user[sudah_dibeli])
+  })
+  names(skor_item) <- belum_dibeli
+
+  # 3. Ambil top N
+  top_items <- sort(skor_item, decreasing = TRUE)[1:n_rekomendasi]
+
+  data.frame(
+    item_id    = as.integer(names(top_items)),
+    skor_ib    = as.numeric(top_items)
+  ) %>%
+    left_join(katalog, by = 'item_id') %>%
+    select(item_id, nama_item, kategori, harga, skor_ib)
+}
+```
+
+Berikut adalah rekomendasi untuk ___user 1___:
+
+```{r}
+cat('=== REKOMENDASI ITEM-BASED CF UNTUK USER 1 ===\n')
+rek_ib_user1 <- rekomendasi_item_based(1)
+print(rek_ib_user1)
+```
+
+## _Market Basket Analysis:_ "Juga Sering Dibeli Bersama"
+
+Di luar _Collaborative Filtering_ berbasis _user_, ada pendekatan lain yang sangat intuitif dan langsung _actionable_, yakni _Market Basket Analysis_. Saya pernah mengulas metode ini di _blog_ saya yang lama. Ini yang menghasilkan fitur _"Frequently Bought Together"_ di Amazon atau _"Orang juga membeli"_ di beberapa _e-commerce_ lokal.
+
+### Menghitung _Support_ dan _Lift_
+
+Metodenya adalah dengan menghitung nilai _support_ dan _lift_.
+
+```{r}
+# ── Hitung co-occurrence matrix antar item ───────────────────────
+# Untuk setiap pasangan item, hitung berapa transaksi yang memuat keduanya
+
+# Buat binary transaction matrix (per transaksi, bukan per user)
+tx_item_matrix <- df_transaksi %>%
+  distinct(transaksi_id, item_id) %>%
+  mutate(ada = 1) %>%
+  pivot_wider(
+    id_cols     = transaksi_id,
+    names_from  = item_id,
+    values_from = ada,
+    values_fill = 0
+  )
+
+tx_ids   <- tx_item_matrix$transaksi_id
+mat_tx   <- as.matrix(tx_item_matrix[, -1])
+rownames(mat_tx) <- tx_ids
+N_tx <- nrow(mat_tx)  # Total jumlah transaksi
+
+cat('Total transaksi unik:', N_tx, '\n')
+
+# Co-occurrence matrix: t(mat_tx) %*% mat_tx
+# Nilai [i,j] = jumlah transaksi yang memuat KEDUANYA item i dan j
+co_occur <- t(mat_tx) %*% mat_tx
+
+# Support individual setiap item
+support_item <- diag(co_occur) / N_tx
+
+# Hitung support dan lift untuk semua pasangan item
+item_ids <- as.integer(colnames(mat_tx))
+n_items  <- length(item_ids)
+
+cat('Menghitung support dan lift untuk semua pasangan item...\n')
+
+df_asosiasi <- lapply(1:(n_items-1), function(i) {
+  lapply((i+1):n_items, function(j) {
+    id_i <- as.character(item_ids[i])
+    id_j <- as.character(item_ids[j])
+
+    n_bersama  <- co_occur[id_i, id_j]
+    sup_ij     <- n_bersama / N_tx
+    sup_i      <- support_item[id_i]
+    sup_j      <- support_item[id_j]
+
+    # Lift > 1: dibeli lebih sering dari ekspektasi acak
+    lift_ij <- ifelse(sup_i * sup_j > 0,
+                      sup_ij / (sup_i * sup_j), 0)
+
+    data.frame(
+      item_A     = item_ids[i],
+      item_B     = item_ids[j],
+      n_bersama  = n_bersama,
+      support    = round(sup_ij, 4),
+      lift       = round(lift_ij, 3)
+    )
+  }) %>% bind_rows()
+}) %>% bind_rows() %>%
+  filter(n_bersama > 0) %>%
+  arrange(desc(lift)) %>%
+  left_join(katalog %>% rename(item_A=item_id, nama_A=nama_item),
+            by='item_A') %>%
+  left_join(katalog %>% rename(item_B=item_id, nama_B=nama_item),
+            by='item_B')
+
+cat('\n=== TOP 15 PASANGAN PRODUK DENGAN LIFT TERTINGGI ===\n')
+df_asosiasi %>%
+  select(nama_A, nama_B, n_bersama, support, lift) %>%
+  head(15) %>%
+  print()
+```
+
+Berikut adalah visualisasi untuk pasangan produk yang memiliki nilai `lift > 1`.
+
+```{r}
+# ── Visualisasi: bubble chart support vs lift ─────────────────────
+df_asosiasi_plot <- df_asosiasi %>%
+  filter(lift > 1.2, n_bersama >= 10) %>%
+  mutate(
+    label_pair = paste0(str_wrap(nama_A, 12), '\n+\n',
+                        str_wrap(nama_B, 12))
+  ) %>%
+  head(20)
+
+ggplot(df_asosiasi_plot,
+       aes(x = support, y = lift, size = n_bersama,
+           color = lift)) +
+  geom_point(alpha = 0.75) +
+  geom_hline(yintercept = 1, linetype = 'dashed',
+             color = 'gray50') +
+  ggrepel::geom_text_repel(
+    aes(label = paste0(str_trunc(nama_A, 15), '\n+\n',
+                       str_trunc(nama_B, 15))),
+    size = 2.5, max.overlaps = 8,
+    segment.size = 0.3
+  ) +
+  scale_color_gradient(low = '#C39BD3', high = '#4A235A',
+                       name = 'Lift') +
+  scale_size(range = c(3, 12), name = 'Frekuensi\nBersama') +
+  scale_x_continuous(labels = percent_format()) +
+  labs(
+    title    = 'Market Basket Analysis: Asosiasi Antar Produk',
+    subtitle = 'Lift > 1 = dibeli bersama lebih sering dari kebetulan | Ukuran = frekuensi',
+    x = 'Support (% transaksi yang memuat keduanya)',
+    y = 'Lift'
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(
+    plot.title      = element_text(face = 'bold', color = '#4A235A'),
+    legend.position = 'right'
+  )
+```
+
+### Rekomendasi "Juga Sering Dibeli Bersama" per Produk
+
+Dari perhitungan _lift_ tersebut, saya bisa membuat _function_ rekomendasi produk apa yang bisa ditawarkan saat _user_ membeli produk tertentu.
+
+```{r}
+#| echo: true
+
+# ── Fungsi: rekomendasi 'frequently bought together' ─────────────
+rekomendasi_fbt <- function(nama_produk, n_rek = 5, lift_min = 1.0) {
+  # Temukan item_id dari nama produk
+  id_target <- katalog %>%
+    filter(grepl(nama_produk, nama_item, ignore.case = TRUE)) %>%
+    pull(item_id)
+
+  if (length(id_target) == 0) {
+    cat('Produk tidak ditemukan.\n'); return(NULL)
+  }
+
+  # Cari semua pasangan yang melibatkan produk ini
+  df_rek <- df_asosiasi %>%
+    filter((item_A %in% id_target | item_B %in% id_target),
+           lift >= lift_min) %>%
+    mutate(
+      item_partner = ifelse(item_A %in% id_target, item_B, item_A),
+      nama_partner = ifelse(item_A %in% id_target, nama_B, nama_A)
+    ) %>%
+    filter(!item_partner %in% id_target) %>%
+    arrange(desc(lift)) %>%
+    select(nama_partner, n_bersama, support, lift) %>%
+    head(n_rek)
+
+  cat('=== Sering Dibeli Bersama:', toupper(nama_produk), '===\n')
+  print(df_rek)
+  invisible(df_rek)
+}
+```
+
+Berikut ini adalah contoh produk yang rekomendasikan jika _user_ membeli produk:
+
+```{r}
+#| echo: true
+rekomendasi_fbt('Indomie')
+```
+
+```{r}
+#| echo: true
+rekomendasi_fbt('Lifebuoy')
+```
+
+```{r}
+#| echo: true
+rekomendasi_fbt('Teh Botol')
+```
+
+---
+
+# Evaluasi Model: Seberapa Bagus Rekomendasi Kita?
+
+_Business question_ yang kemudian muncul dan perlu dijawab adalah: _"Seberapa bagus sistem rekomendasi yang kita buat?"_
+
+Sistem rekomendasi yang sudah jadi tetap perlu dievaluasi secara kuantitatif. Metode standar yang bisa digunakan adalah dengan membagi data menjadi _train_ dan _test_, sembunyikan sebagian histori pembelian _user_ di _test set_, lalu ukur apakah rekomendasi berhasil memprediksi _item_ yang disembunyikan itu
+
+_Metrics_ yang bisa digunakan adalah _precision@K_ dan _recall@K_.
+
+_Precision@K_ berarti: _"Dari K item yang direkomendasikan, berapa banyak yang relevan?"_
+
+Contoh: Sistem merekomendasikan 10 film (`K=10`) kepada _user_:
+
+- _User_ sebenarnya menyukai 4 film dari 10 itu.
+- _Precision@10_ = 4/10 = 0.4 (40%).
+- __40% dari rekomendasi top-10 adalah relevan.__
+
+
+_Recall@K_. berarti: _"Dari semua item yang relevan untuk user, berapa banyak yang muncul di K rekomendasi teratas?"_
+
+Contoh: _User_ memiliki 20 film favorit di _database_:
+
+- Sistem merekomendasikan 10 film (`K=10`).
+- Sebanyak 4 Dari 10 film itu adalah film favorit _user_.
+- _Recall@10_ = 4/20 = 0.2 (20%).
+- __Sistem berhasil menemukan 20% dari film favorit *user* dalam 10 rekomendasi teratas.__
+
+> _Precision@K adalah tentang membuat user happy dengan apa yang mereka lihat, Recall@K adalah tentang menemukan semua yang bisa membuat user happy."_
+
+```{r}
+# ── Evaluasi dengan train/test split ────────────────────────────
+# Untuk setiap user: simpan 20% item terakhir sebagai 'ground truth'
+# Latih model dari 80% sisanya, lalu ukur seberapa banyak item test
+# yang berhasil direkomendasikan
+
+set.seed(101)
+
+# Hitung frekuensi beli per user-item
+df_frekuensi <- df_transaksi %>%
+  count(user_id, item_id, name = 'frekuensi')
+
+# Split: untuk setiap user, 80% untuk train, 20% untuk test
+df_split <- df_frekuensi %>%
+  group_by(user_id) %>%
+  mutate(
+    n_item_total = n(),
+    split = ifelse(
+      row_number() <= round(n() * 0.8),
+      'train', 'test'
+    )
+  ) %>%
+  ungroup()
+
+# Buat matrix dari data TRAIN saja
+mat_train <- df_split %>%
+  filter(split == 'train') %>%
+  pivot_wider(
+    id_cols = user_id, names_from = item_id,
+    values_from = frekuensi, values_fill = 0
+  ) %>%
+  arrange(user_id)
+
+user_ids_tr  <- mat_train$user_id
+mat_tr       <- as.matrix(mat_train[, -1])
+rownames(mat_tr) <- user_ids_tr
+
+# Recalculate item similarity dari train data
+norma_tr   <- sqrt(rowSums(t(mat_tr)^2))
+norma_tr[norma_tr == 0] <- 1
+mat_tr_n   <- t(mat_tr) / norma_tr
+item_sim_tr <- t(mat_tr_n) %*% mat_tr_n
+diag(item_sim_tr) <- 0
+```
+
+Saya akan hitung _precision@5_ dan _recall@5_ dari rekomendasi _item-based CF_.
+
+```{r}
+# ── Fungsi evaluasi per user ──────────────────────────────────────
+evaluasi_user <- function(uid, K = 5) {
+  uid_c <- as.character(uid)
+  if (!uid_c %in% rownames(mat_tr)) return(NULL)
+
+  # Item yang ada di test set user ini
+  test_items <- df_split %>%
+    filter(user_id == uid, split == 'test') %>%
+    pull(item_id)
+
+  if (length(test_items) == 0) return(NULL)
+
+  # Item di train set
+  train_items  <- which(mat_tr[uid_c, ] > 0)
+  semua_items  <- as.integer(colnames(mat_tr))
+  belum_dibeli <- setdiff(semua_items, train_items)
+
+  # Hitung skor item-based dari train matrix
+  profil_train <- mat_tr[uid_c, ]
+  skor <- sapply(as.character(belum_dibeli), function(ti) {
+    sim_v <- item_sim_tr[ti, as.character(train_items)]
+    sum(sim_v * profil_train[as.character(train_items)])
+  })
+  names(skor) <- belum_dibeli
+
+  top_k <- as.integer(names(sort(skor, decreasing = TRUE)[1:K]))
+
+  # Precision@K: berapa dari top-K rekomendasi yang ada di test set?
+  hit     <- length(intersect(top_k, test_items))
+  prec_k  <- hit / K
+  rec_k   <- hit / length(test_items)
+
+  data.frame(user_id = uid, K = K,
+             precision_k = prec_k, recall_k = rec_k)
+}
+
+# Evaluasi untuk 200 user pertama
+cat('Mengevaluasi model...\n')
+df_eval <- lapply(user_ids_tr[1:500], evaluasi_user, K = 5) %>%
+  bind_rows()
+
+cat('\n=== HASIL EVALUASI (Item-Based CF, K=5) ===\n')
+cat('Precision@5:', round(mean(df_eval$precision_k, na.rm=TRUE), 4), '\n')
+cat('Recall@5   :', round(mean(df_eval$recall_k,    na.rm=TRUE), 4), '\n')
+cat('\nInterpretasi Precision@5 = 0.XX:',
+    '\nRata-rata ada X dari 5 rekomendasi yang benar-benar dibeli user')
+```
+
+Artinya: Dari 5 rekomendasi teratas yang diberikan sistem:
+
+- Hanya 1.56 item (rata-rata) yang relevan untuk _user_.
+- 3.44 _item_ lainnya tidak relevan.
+ 
+Dalam bahasa sederhana: "Hanya 31% dari 5 rekomendasi utama yang benar-benar disukai _user_."
+
+2. Recall@5 = 35.65%
+
+Artinya: Dari semua item yang sebenarnya relevan untuk user:
+
+- Sistem hanya berhasil menemukan 35.65% dalam 5 rekomendasi teratas.
+- 64.35% item relevan lainnya terlewatkan.
+
+Dalam bahasa sederhana: "Sistem hanya menemukan 36% dari semua item yang _user_ sukai."
+
+
+Oke, jadi sekarang kita sudah memiliki _metrics_ yang cukup untuk memutuskan apakah sistem rekomendasi yang kita buat sudah baik atau belum.
+
+## Membandingkan Rekomendasi _User-Based_ vs _Item-Based_
+
+Sekarang saya akan bandingkan hasil rekomendasi antara _user-based_ dengan _item-based_:
+
+```{r}
+# ── Bandingkan output untuk beberapa user sekaligus ─────────────
+bandingkan_rekomendasi <- function(target_user) {
+  cat('\n', paste(rep('=', 55), collapse=''), '\n')
+  cat('USER:', target_user, '\n')
+  cat(paste(rep('=', 55), collapse=''), '\n')
+
+  # Histori pembelian
+  cat('HISTORI PEMBELIAN:\n')
+  df_transaksi %>%
+    filter(user_id == target_user) %>%
+    count(nama_item, sort = TRUE) %>%
+    head(5) %>%
+    print()
+
+  # User-Based CF
+  cat('\nREKOMENDASI USER-BASED CF:\n')
+  rek_ub <- rekomendasi_user_based(target_user)
+  if (!is.null(rek_ub)) print(rek_ub %>% select(nama_item, kategori, skor_ub))
+
+  # Item-Based CF
+  cat('\nREKOMENDASI ITEM-BASED CF:\n')
+  rek_ib <- rekomendasi_item_based(target_user)
+  if (!is.null(rek_ib)) print(rek_ib %>% select(nama_item, kategori, skor_ib))
+
+  # Overlap: berapa item yang direkomendasikan oleh KEDUA metode?
+  if (!is.null(rek_ub) && !is.null(rek_ib)) {
+    overlap <- intersect(rek_ub$item_id, rek_ib$item_id)
+    cat('\nOverlap (rekomendasi dari keduanya):',
+        length(overlap), 'item\n')
+    if (length(overlap) > 0) {
+      cat(katalog$nama_item[katalog$item_id %in% overlap], '\n')
+    }
+  }
+}
+```
+
+Kita bandingkan hasil untuk ___user 1___:
+
+```{r}
+# Test untuk 3 user yang berbeda
+bandingkan_rekomendasi(1)
+```
+
+Kita bandingkan hasil untuk ___user 42___:
+
+```{r}
+bandingkan_rekomendasi(42)
+```
+
+Kita bandingkan hasil untuk ___user 137___:
+
+```{r}
+bandingkan_rekomendasi(137)
+```
+
+
+Seberapa besar perbedaannya? Secara rata-rata:
+
+```{r}
+# ── Visualisasi: heatmap overlap rekomendasi ─────────────────────
+# Untuk setiap user, mana item yang direkomendasikan keduanya?
+n_sample <- 30
+sample_users <- sample(user_ids, n_sample)
+
+df_overlap <- lapply(sample_users, function(uid) {
+  tryCatch({
+    ub <- rekomendasi_user_based(uid, n_rekomendasi = 10)$item_id
+    ib <- rekomendasi_item_based(uid, n_rekomendasi = 10)$item_id
+    if (is.null(ub) || is.null(ib)) return(NULL)
+    data.frame(
+      user_id       = uid,
+      pct_overlap   = length(intersect(ub, ib)) / 10
+    )
+  }, error = function(e) NULL)
+}) %>% bind_rows()
+
+cat('\n=== RATA-RATA OVERLAP UB vs IB REKOMENDASI ===\n')
+cat('Rata-rata:', round(mean(df_overlap$pct_overlap)*100, 1), '%\n')
+cat('(dari top-10 rekomendasi, rata-rata',
+    round(mean(df_overlap$pct_overlap)*10, 1),
+    'item sama antara UB dan IB)\n')
+```
+
+---
+
+# Bagaimana Jika _Cold Start_?
+
+__Salah satu kelemahan terbesar__ _Collaborative Filtering_ adalah _cold start problem_: apa yang terjadi kalau _user_ baru yang belum punya histori pembelian sama sekali datang? Atau produk baru yang belum pernah dibeli siapapun?
+
+Beberapa alternatif strategi yang bisa langsung diimplementasikan:
+
+1. Strategi 1: popularitas global, kita rekomendasikan saja semua produk yang paling populer.
+1. Strategi 2: popularitas per segmen. Misalkan _user_ baru dari Bekasi dan umur 25-35 maka rekomendasikan produk terpopuler di segmen itu. Artinya kita membutuhkan data demografis.
+1. Strategi 3: sabar menunggu hingga _user_ baru membeli satu produk. Rekomendasi berbasis satu produk pertama yang dibeli kemudian bisa dilanjutkan menggunakan _Market Basket Analysis_.
+
+---
+
+# _Business Action_ dari Algoritma
+
+Ada tiga cara mengimplementasikan algoritma sistem rekomendasi, yakni:
+
+1. _Cross-selling_ di halaman produk. Pasang _widget_ 'Sering Dibeli Bersama' di halaman detail produk. Gunakan hasil _Market Basket Analysis_ (_lift_ tertinggi) sebagai datanya. Ini bisa langsung diimplementasikan tanpa sistem _real-time_.
+2. _Email/push notification personal_. Setiap minggu, jalankan _Item-Based CF_ untuk semua _user_ aktif. Kirim notifikasi _'Produk yang mungkin kamu suka'_ berdasarkan histori pembelian mereka. Sederhana tapi efektif.
+3. _Planogram_ dan _bundling_. Pasang produk dengan _lift_ tinggi berdekatan di rak toko fisik atau halaman kategori. Buat _bundle package_ dari pasangan dengan _support_ dan _lift_ tertinggi.
+
+
+## Keterbatasan yang Perlu Diperhatikan
+
+1. _Scalability_. Algoritma di atas menggunakan _full matrix multiplication_. Kondisi ini bagus untuk ratusan _user_ dan puluhan item. Untuk jutaan _user_, dibutuhkan _approximate nearest neighbor_ (ANN) atau _matrix factorization_ (SVD, ALS) yang jauh lebih efisien secara komputasi.
+2. _Popularity bias_. Algoritma berbasis frekuensi cenderung merekomendasikan _item populer_ terus-menerus. Produk _niche_ yang sebenarnya sangat relevan untuk segmen tertentu bisa terus tersembunyi. Solusi: normalisasi skor atau tambahkan _exploration factor_.
+3. _Data sparsity_. Semakin jarang _user_ berinteraksi dengan produk, semakin sulit menemukan _user_ yang benar-benar 'mirip'. Di tahap awal, _Market Basket Analysis_ (tidak membutuhkan histori panjang) lebih _robust_.
+4. _Temporal dynamics_. Preferensi berubah seiring waktu. Pembelian 2 tahun lalu tidak selalu relevan hari ini. Solusi: beri bobot lebih tinggi ke transaksi yang lebih baru (_time-decay weighting_).
+5. Tidak menangkap konteks. Membeli minuman dingin di musim panas berbeda konteksnya dengan di musim hujan. _Collaborative Filtering_ murni tidak menangkap konteks ini. Oleh karena itu, dibutuhkan _Contextual Bandits_ atau _session-based recommendation_.
+
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
+
+
+
+
