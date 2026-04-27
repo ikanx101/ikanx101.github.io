@@ -1,0 +1,741 @@
+---
+title: "Mengukur Seberapa Sensitif Konsumen terhadap Perubahan Harga dari Data Transaksi"
+format:
+  gfm:
+    html-math-method: webtex
+fig-dpi: 500
+fig-width: 8
+fig-height: 4.5
+editor: source
+execute:
+  warning: false
+  error: false
+  echo: false
+---
+
+Di suatu waktu saat sedang *meeting* untuk menentukan strategi *pricing* produk, ada informasi yang menunjukkan bahwa harga bahan baku akan naik 15% sehingga *margin* mulai tergerus. Lalu seseorang dari tim *sales* mengusulkan: *"Kita naikkan harga jual saja"*. Seketika ruangan menjadi sunyi sejenak, kemudian *finance director* bertanya:
+
+> *"Kalau harga kita naikkan 10%, kira-kira penjualan kita akan turun berapa persen?"*
+
+Sering kali, jawaban yang muncul pada saat *meeting* tersebut hanyalah tebakan berbasis intuisi: *"Mungkin turun sedikit"* atau *"Kompetitor juga naik kok, harusnya aman"*.
+
+Padahal, data untuk menjawab pertanyaan ini dengan presisi sebenarnya sudah ada di sistem. Kita memiliki data transaksi harian yang tersimpan rapi tapi jarang diolah untuk keperluan ini. Itulah yang akan kita bahas hari ini: [*Price Elasticity of Demand*](https://ikanx101.com/blog/blog-posting-regresi/), cara menghitungnya dari data transaksi, dan bagaimana hasilnya bisa langsung dipakai untuk keputusan *pricing*.
+
+------------------------------------------------------------------------
+
+# Apa Itu *Price Elasticity of Demand*?
+
+Sebagaimana apa yang pernah saya ulas di tulisan saya [sebelumnya](https://ikanx101.com/blog/price-elasticity/), *Price Elasticity of Demand* (PED) adalah ukuran seberapa besar persentase perubahan *sales quantity* yang diminta ketika harga berubah sebesar satu persen.
+
+Rumus dasarnya sederhana:
+
+```         
+PED = (% Perubahan Kuantitas) / (% Perubahan Harga)  Atau dalam bentuk yang lebih operasional: PED = (dQ/Q) / (dP/P) = (dQ/dP) x (P/Q)
+```
+
+Karena kenaikan harga hampir selalu diikuti penurunan permintaan, nilai PED biasanya negatif. Tapi dalam praktiknya, kita sering bekerja dengan nilai absolutnya. Berikut cara membaca nilai PED:
+
+| Nilai PED | Kategori | Artinya | Contoh kategori produk |
+|----|----|----|----|
+| `> 1` | Elastis | Konsumen sangat sensitif terhadap harga | Minuman ringan, *snack premium*, pakaian |
+| `= 1` | Unit elastis | \% perubahan *sales quantity* sama dengan % perubahan harga | Kondisi khusus, jarang terjadi di dunia nyata |
+| `0 < abs(PED) < 1` | Inelastis | Konsumen kurang sensitif terhadap harga | Beras, garam, BBM, obat-obatan |
+| `= 0` | Perfectly inelastis | Harga naik berapapun, *sales quantity* tidak berubah | Sangat jarang terjadi. Biasanya obat-obatan khusus. |
+
+
+# Implikasi Langsung untuk _Revenue_
+
+Inilah bagian yang paling _actionable_. Jika kita tahu nilai PED, maka kita bisa tahu apa yang akan terjadi pada _revenue_ kalau harga kita ubah.
+
+| Kondisi | Jika harga naik | Jika harga turun|
+|----|----|----|
+| Elastis | Revenue TURUN karena _sales qty_ turun lebih besar dari kenaikan harga | Revenue NAIK karena _sales qty_ naik lebih besar dari penurunan harga |
+| Inelastis | Revenue NAIK karena _sales qty_ turun tapi tidak cukup mengimbangi kenaikan harga | Revenue TURUN karena penurunan harga lebih besar dari kenaikan _sales qty_ |
+
+> _Kalau produk kamu inelastis (konsumen tidak terlalu sensitif harga), kenaikan harga justru meningkatkan __revenue__. Kalau elastis, kenaikan harga akan memangkas __revenue__ karena konsumen langsung kabur ke kompetitor atau berhenti beli._
+
+# Metode Perhitungan
+
+Salah satu metode perhitungan yang bisa digunakan adalah _log-log regression_. Metode ini paling populer dan paling mudah diinterpretasikan. Model ini dikenal sebagai _constant elasticity model_. Ide dasarnya adalah alih-alih meregresikan _sales qty_ langsung terhadap _price_, kita meregresikan _log(sales qty)_ terhadap _log(price)_. Model _log-log_:
+
+```
+log(Qty) = α + β × log(Harga) + ε  
+```
+
+Di mana __β__ adalah koefisien yang langsung bisa dibaca sebagai _price elasticity_. Jika `β = -1.5` berarti setiap kenaikan harga __1%__ maka akan ada penurunan volume __1.5%__.
+
+Mengapa _log-log_ lebih disukai dari regresi linier biasa? Ada tiga alasan utama:
+
+1. Koefisien bisa langsung direpresentasikan sebagai indeks elastisitas. Tidak perlu melakukan konversi apapun.
+2. Hubungan _price_ dan _sales qty_ di dunia nyata lebih sering bersifat multiplikatif (persentase) daripada aditif (unit absolut). _Log-log_ menangkap ini lebih natural.
+3. Transformasi logaritmik `log( )` sering menstabilkan variansi (membuat data lebih _compact_) dan membuat distribusi residual lebih mendekati normal.
+
+
+# _Case Study_ Menggunakan Data Simulasi
+
+Untuk membantu menjelaskan tentang model ini, saya akan menggunakan data simulasi berdasarkan suatu skenario yang saya buat. Berikut adalah skenarionya:
+
+> Kita adalah _data analyst_ di sebuah perusahaan FMCG minuman teh kemasan. Produk kita dijual di jaringan minimarket seluruh Jabodetabek. Selama 2 tahun terakhir, ada beberapa kali perubahan harga. Bisa naik maupun turun karena berbagai alasan seperti: kenaikan biaya produksi, promo periodik, dan penyesuaian kompetitif.
+
+Data yang saat ini tersedia adalah _sales qty_ harian per gerai beserta harga jual yang berlaku hari itu. Kita punya sekitar 730 hari data untuk 50 gerai. Berdasarkan banyaknya baris data yang kita miliki, seharunya data ini sudah cukup untuk estimasi yang _robust_.
+
+
+```{r}
+# ── Package yang dibutuhkan ──────────────────────────────────────
+# install.packages(c('dplyr','ggplot2','tidyr','scales',
+#                    'lubridate','broom','lmtest',
+#                    'sandwich','patchwork'))
+
+#| include: false
+
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(scales)
+library(lubridate)
+library(broom)
+library(lmtest)     # Uji heteroskedastisitas
+library(sandwich)   # Robust standard errors
+library(patchwork)  # Susun multiple plots
+
+set.seed(101)
+
+# ── Simulasi data 730 hari x 50 gerai ───────────────────────────
+
+# Riwayat harga: ada 4 periode harga berbeda
+# Harga naik dua kali, turun satu kali (promo)
+riwayat_harga <- data.frame(
+  mulai    = as.Date(c('2024-01-01','2024-07-01',
+                       '2025-01-01','2025-07-01')),
+  selesai  = as.Date(c('2024-06-30','2024-12-31',
+                       '2025-06-30','2025-12-31')),
+  harga    = c(5500, 6000, 5500, 6500),  # Rupiah
+  keterangan = c('Harga awal','Naik pertama',
+                 'Promo turun','Naik kedua')
+)
+
+# Fungsi mendapatkan harga pada tanggal tertentu
+get_harga <- function(tgl) {
+  idx <- which(riwayat_harga$mulai <= tgl &
+               riwayat_harga$selesai >= tgl)
+  if (length(idx) == 0) return(NA)
+  riwayat_harga$harga[idx]
+}
+
+# Buat grid tanggal x gerai
+tanggal_range <- seq(as.Date('2024-01-01'),
+                     as.Date('2025-12-31'), by='day')
+n_gerai <- 50
+
+# Karakteristik tiap gerai (ukuran, lokasi, tipe)
+profil_gerai <- data.frame(
+  gerai_id   = 1:n_gerai,
+  skala_base = round(rnorm(n_gerai, 80, 20)),  # Vol base harian
+  tipe       = sample(c('Residensial','Perkantoran',
+                        'Sekolah'), n_gerai,
+                      replace = TRUE,
+                      prob = c(0.5, 0.3, 0.2))
+) %>%
+  mutate(skala_base = pmax(30, skala_base))
+
+# True elasticity yang ingin kita 'temukan kembali'
+# Bervariasi antar tipe gerai
+true_elasticity <- c(
+  Residensial  = -1.35,
+  Perkantoran  = -0.85,
+  Sekolah      = -1.70
+)
+
+# Buat data transaksi harian
+df_raw <- expand.grid(
+  tanggal  = tanggal_range,
+  gerai_id = 1:n_gerai
+) %>%
+  left_join(profil_gerai, by = 'gerai_id') %>%
+  mutate(
+    harga = sapply(tanggal, get_harga),
+
+    # Efek hari dalam minggu
+    hari_ke = wday(tanggal, week_start = 1),
+    efek_hari = case_when(
+      hari_ke == 6 ~ 1.30,  # Sabtu
+      hari_ke == 7 ~ 1.20,  # Minggu
+      hari_ke == 5 ~ 1.10,  # Jumat
+      TRUE         ~ 1.00
+    ),
+
+    # Efek musiman bulanan
+    bln = month(tanggal),
+    efek_bulan = case_when(
+      bln %in% c(3,4)  ~ 1.25,  # Ramadan/Lebaran
+      bln %in% c(12,1) ~ 1.15,  # Akhir tahun
+      bln %in% c(6,7)  ~ 1.10,  # Liburan sekolah
+      TRUE             ~ 1.00
+    ),
+
+    # Harga referensi (harga rata-rata keseluruhan)
+    harga_ref = mean(riwayat_harga$harga),
+
+    # Elastisitas per tipe gerai
+    elas = true_elasticity[tipe],
+
+    # Volume berdasarkan model elastisitas + noise
+    qty_true = skala_base *
+               (harga / harga_ref) ^ elas *
+               efek_hari * efek_bulan,
+
+    # Tambahkan noise (overdispersed Poisson)
+    qty = round(qty_true * exp(rnorm(n(), 0, 0.12))),
+    qty = pmax(1, qty)
+  )
+```
+
+
+Kita buat data transaksi yang realistis (lengkap dengan efek musiman, promosi, noise, dan beberapa kali kenaikan harga yang jelas).
+
+```{r}
+cat('Dimensi data:', nrow(df_raw), 'baris x', ncol(df_raw), 'kolom\n')
+cat('Periode:', min(df_raw$tanggal), '-', max(df_raw$tanggal), '\n\n')
+glimpse(df_raw)
+```
+
+
+Berikut adalah sampel datanya:
+
+```{r}
+df_raw %>% 
+  select(tanggal,gerai_id,tipe,harga,hari_ke,bln,qty) %>% 
+  head()
+```
+
+
+Jika digambarkan ke dalam _line chart_, berikut adalah total _sales qty_ dari seluruh gerai di berbagai tipe harga:
+
+```{r}
+# ── Visualisasi awal: penjualan harian agregat ───────────────────
+df_harian_agg <- df_raw %>%
+  group_by(tanggal, harga) %>%
+  summarise(qty_total = sum(qty), .groups = 'drop')
+
+# Warnai berdasarkan periode harga
+df_harian_agg <- df_harian_agg %>%
+  mutate(periode_harga = case_when(
+    tanggal < as.Date('2024-07-01') ~ 'Rp5.500 (Awal)',
+    tanggal < as.Date('2025-01-01') ~ 'Rp6.000 (Naik 1)',
+    tanggal < as.Date('2025-07-01') ~ 'Rp5.500 (Promo)',
+    TRUE                            ~ 'Rp6.500 (Naik 2)'
+  ))
+
+ggplot(df_harian_agg,
+       aes(x = tanggal, y = qty_total, color = periode_harga)) +
+  geom_line(alpha = 0.6, linewidth = 0.5) +
+  geom_smooth(aes(group = periode_harga), method = 'loess',
+              se = FALSE, linewidth = 1.3) +
+  scale_color_manual(
+    values = c('Rp5.500 (Awal)'   = '#2471A3',
+               'Rp6.000 (Naik 1)' = '#E67E22',
+               'Rp5.500 (Promo)'  = '#27AE60',
+               'Rp6.500 (Naik 2)' = '#C0392B'),
+    name = 'Periode Harga'
+  ) +
+  scale_y_continuous(labels = label_comma()) +
+  labs(
+    title    = 'Penjualan Harian Agregat: 50 Gerai Minimarket Jabodetabek',
+    subtitle = 'Warna menunjukkan periode harga yang berlaku | Garis tebal = tren (LOESS)',
+    x = '', y = 'Total Unit Terjual per Hari'
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(
+    plot.title      = element_text(face = 'bold', color = '#1A3A5C'),
+    legend.position = 'top'
+  )
+```
+
+
+Sebelum membangun model regresi, kita perlu mengeksplorasi data secara visual. Ini penting untuk memastikan apakah ada _signal_ yang bisa ditangkap dan tidak ada anomali yang merusak analisis. Pertama-tama saya akan membuat analisa sederhana dan visualisasi distribusi _sales qty_ per _price level_:
+
+```{r}
+# ── Ringkasan volume per level harga ────────────────────────────
+df_summary_harga <- df_raw %>%
+  group_by(harga) %>%
+  summarise(
+    n_observasi  = n(),
+    rata_qty     = mean(qty),
+    median_qty   = median(qty),
+    sd_qty       = sd(qty),
+    .groups      = 'drop'
+  )
+
+cat('=== RINGKASAN VOLUME PER HARGA ===\n')
+print(df_summary_harga)
+
+# Boxplot distribusi volume per harga
+ggplot(df_raw, aes(x = factor(harga,
+                              labels = paste0('Rp', format(c(5500,6000,6500),
+                                              big.mark='.'))),
+                   y = qty, fill = factor(harga))) +
+  geom_violin(alpha = 0.4, trim = TRUE) +
+  geom_boxplot(width = 0.15, outlier.size = 0.5,
+               outlier.alpha = 0.3) +
+  stat_summary(fun = mean, geom = 'point',
+               color = 'white', size = 3, shape = 18) +
+  scale_fill_manual(
+    values = c('5500' = '#2471A3',
+               '6000' = '#E67E22',
+               '6500' = '#C0392B'),
+    guide  = 'none'
+  ) +
+  scale_y_continuous(labels = label_comma()) +
+  labs(
+    title    = 'Distribusi Volume Penjualan per Level Harga',
+    subtitle = 'Berlian putih = rata-rata | Garis tengah kotak = median',
+    x = 'Harga Jual', y = 'Unit Terjual per Hari per Gerai'
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(plot.title = element_text(face = 'bold', color = '#1A3A5C'))
+```
+
+
+Berikut adalah visualisasi _scatterplot_ antara _log(price)_ dan _log(sales qty)_:
+
+```{r}
+# ── Agregasi ke level gerai-minggu untuk kurangi noise ──────────
+df_weekly <- df_raw %>%
+  mutate(minggu = floor_date(tanggal, 'week')) %>%
+  group_by(gerai_id, tipe, minggu) %>%
+  summarise(
+    harga    = mean(harga),
+    qty      = sum(qty),
+    n_hari   = n(),
+    .groups  = 'drop'
+  ) %>%
+  mutate(
+    qty_per_hari = qty / n_hari,
+    log_harga    = log(harga),
+    log_qty      = log(qty_per_hari)
+  )
+
+# Scatter plot log(qty) vs log(harga)
+ggplot(df_weekly,
+       aes(x = log_harga, y = log_qty, color = tipe)) +
+  geom_point(alpha = 0.25, size = 1.2) +
+  geom_smooth(method = 'lm', se = TRUE,
+              linewidth = 1.2, aes(group = tipe)) +
+  geom_smooth(aes(group = 1), method = 'lm',
+              color = 'black', linetype = 'dashed',
+              se = FALSE, linewidth = 1) +
+  scale_color_manual(
+    values = c('Residensial' = '#2471A3',
+               'Perkantoran' = '#E67E22',
+               'Sekolah'     = '#8E44AD'),
+    name = 'Tipe Gerai'
+  ) +
+  labs(
+    title    = 'Hubungan Log(Price) vs Log(Sales qty): Sinyal Elastisitas',
+    subtitle = 'Kemiringan garis regresi = estimasi price elasticity',
+    x = 'Log(Price)', y = 'Log(Sales qty per Gerai)',
+    caption  = 'Garis hitam putus = regresi agregat semua tipe gerai'
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(
+    plot.title      = element_text(face = 'bold', color = '#1A3A5C'),
+    legend.position = 'top'
+  )
+```
+
+Sekarang kita akan membuat beberapa model _price elasticity_ dengan _log-log regression_. Pada tulisan ini, saya tidak akan membahas tentang [_goodness of fit_ dan uji asumsi](https://ikanx101.com/blog/belajar-regresi/) dari model regresi yang dihasilkan.
+
+## Model 1: Regresi Agregat (_Baseline_)
+
+Kita mulai dari model paling sederhana dulu: regresikan _log(sales qty)_ terhadap _log(price)_ menggunakan seluruh data tanpa memisahkan per tipe gerai.
+
+```{r}
+#| echo: true
+# ── Model 1: Log-log regresi sederhana ──────────────────────────
+model1 <- lm(log_qty ~ log_harga, data = df_weekly)
+```
+
+```{r}
+cat('=== MODEL 1: AGREGAT (tanpa kontrol) ===\n')
+summary(model1)
+
+# Koefisien log_harga = estimasi price elasticity
+elas_m1 <- coef(model1)['log_harga']
+cat('\nEstimasi Elastisitas (Model 1):', round(elas_m1, 3), '\n')
+cat('Interpretasi: kenaikan harga 1% ->',
+    round(elas_m1, 3), '% perubahan volume\n')
+```
+
+## Model 2: Regresi dengan Kontrol Musiman dan Tipe Gerai
+
+Model pertama mengabaikan faktor-faktor yang juga mempengaruhi _sales qty_ seperti _seasonal_, hari dalam minggu, dan tipe gerai. Ini bisa membuat estimasi elastisitas bias (_confounding_). Kita tambahkan variabel kontrol seperti:
+
+1. Apakah sedang bulan Ramadhan.
+1. Apakah musim lbiuran?
+1. Faktor tipe gerai dijadikan faktor.
+
+```{r}
+#| echo: true
+# ── Persiapan variabel kontrol ───────────────────────────────────
+df_weekly <- df_weekly %>%
+  mutate(
+    bulan       = month(minggu),
+    # Dummy musiman
+    is_ramadan  = as.integer(bulan %in% c(3, 4)),
+    is_liburan  = as.integer(bulan %in% c(6, 7, 12, 1)),
+    # Log gerai size: kontrol skala tiap gerai
+    # Proxy: rata-rata volume saat harga paling rendah
+    tipe        = factor(tipe, levels = c('Residensial',
+                                           'Perkantoran', 'Sekolah'))
+  )
+
+# ── Model 2: Dengan kontrol lengkap ──────────────────────────────
+model2 <- lm(
+  log_qty ~ log_harga +
+            tipe +                # Kontrol tipe gerai
+            is_ramadan +          # Kontrol efek Ramadan
+            is_liburan +          # Kontrol efek liburan
+            factor(month(minggu)) # Kontrol musiman bulanan
+  ,
+  data = df_weekly
+)
+```
+
+
+```{r}
+cat('=== MODEL 2: DENGAN KONTROL LENGKAP ===\n')
+summary(model2)
+
+elas_m2 <- coef(model2)['log_harga']
+cat('\nEstimasi Elastisitas (Model 2):', round(elas_m2, 3), '\n')
+cat('Interpretasi: kenaikan harga 1% ->',
+    round(elas_m2, 3), '% perubahan volume\n')
+```
+
+
+## Model 3: Elastisitas per Tipe Gerai (_Interaction Model_)
+
+Pertanyaan yang lebih dalam: apakah konsumen di gerai tipe yang berbeda punya sensitivitas harga yang berbeda juga? Gerai di dekat sekolah mungkin lebih sensitif karena konsumennya anak-anak dengan uang jajan terbatas sedangkan gerai di kawasan perkantoran mungkin lebih inelastis.
+
+Oleh karena itu, kita tambahkan _interaction term_ antara _log(price)_ dan tipe gerai. Caranya adalah dengan mengalikan kedua variabel tersebut.
+
+```{r}
+#| echo: true
+
+# ── Model 3: Interaksi harga x tipe gerai ────────────────────────
+model3 <- lm(
+  log_qty ~ log_harga * tipe +    # Interaksi: elastisitas berbeda per tipe
+            is_ramadan +
+            is_liburan +
+            factor(month(minggu))
+  ,
+  data = df_weekly
+)
+```
+
+
+```{r}
+cat('=== MODEL 3: INTERAKSI HARGA x TIPE GERAI ===\n')
+summary(model3)
+
+# ── Ekstrak elastisitas per tipe gerai ───────────────────────────
+koef <- coef(model3)
+
+elas_residensial <- koef['log_harga']
+elas_perkantoran <- koef['log_harga'] +
+                    koef['log_harga:tipePerkantoran']
+elas_sekolah     <- koef['log_harga'] +
+                    koef['log_harga:tipeSekolah']
+
+df_elastisitas <- data.frame(
+  tipe_gerai   = c('Residensial', 'Perkantoran', 'Sekolah'),
+  elastisitas  = c(elas_residensial,
+                   elas_perkantoran,
+                   elas_sekolah),
+  true_elas    = c(-1.35, -0.85, -1.70)  # Ground truth simulasi
+) %>%
+  mutate(
+    abs_elas = abs(elastisitas),
+    kategori = ifelse(abs_elas > 1, 'Elastis', 'Inelastis')
+  )
+
+cat('\n=== ELASTISITAS PER TIPE GERAI ===\n')
+df_elastisitas %>%
+  select(-true_elas) %>% 
+  mutate(across(where(is.numeric), ~round(., 3))) %>%
+  print()
+```
+
+
+Bagi gerai residensial, harga naik 10% mengakibatkan _sales qty_ turun sekitar 13% sehingga _revenue_ ikut turun. Kita harus hati-hati naikkan harga di gerai ini. 
+
+Bagi gerai perkantoran, harga naik 10% mengakibatkan _sales qty_ turun sekitar 8% saja sehingga _revenue_ bisa tetap naik. Gerai bertipe ini lebih aman untuk dinaikkan harganya sampai level harga tertentu.
+
+Bagi gerai sekolah, paling sensitif. Harga naik 10% mengakibatkan _sales qty_ turun sekitar 16%. Kita harus mempertimbangkan harga yang lebih kompetitif di sini.
+
+# Visualisasi Hasil Elastisitas
+
+Berikutnya kita bisa melakukan simulasi jika harga naik X%, apa yang akan terjadi dengan _sales qty_? Inilah bagian yang paling langsung berguna pada saat _meeting_ membahas _pricing strategy_. Kita buat kalkulator sederhana: berikan beberapa skenario kenaikan/penurunan harga, dan lihat dampaknya terhadap _sales qty_ dan _revenue_. Perlu saya ingatkan kembali bahwa harga produk saat ini adalah __Rp6.500__.
+
+Hasilnya, pertama-tama adalah visualisasi _demand curve_: __Berapa Sales Qty pada Tiap Level Harga?__
+
+```{r}
+df_weekly =
+  df_weekly %>% 
+  mutate(new_var = factor(month(minggu)))
+
+# ── Model 3: Interaksi harga x tipe gerai ────────────────────────
+model3 <- lm(
+  log_qty ~ log_harga * tipe +    # Interaksi: elastisitas berbeda per tipe
+            is_ramadan +
+            is_liburan +
+            new_var
+  ,
+  data = df_weekly
+)
+
+# ── Demand curve dari model ──────────────────────────────────────
+harga_simulasi <- seq(4500, 8000, by = 100)
+harga_ref_sim  <- mean(riwayat_harga$harga)
+
+# Prediksi volume untuk tiap tipe gerai di berbagai harga
+df_demand_curve <- expand.grid(
+  harga = harga_simulasi,
+  tipe  = c('Residensial', 'Perkantoran', 'Sekolah')) %>%
+  mutate(
+    tipe         = factor(tipe, levels = c('Residensial',
+                                            'Perkantoran','Sekolah')),
+    log_harga    = log(harga),
+    is_ramadan   = 0,
+    is_liburan   = 0,
+    new_var = factor(6, levels = 1:12),
+    log_qty_pred = predict(model3,
+                           newdata = data.frame(
+                             log_harga = log(harga),
+                             tipe      = tipe,
+                             is_ramadan = 0,
+                             is_liburan = 0,
+                             new_var = factor(6, levels = 1:12))),
+    qty_pred     = exp(log_qty_pred)
+  )
+
+# Plot demand curve
+ggplot(df_demand_curve,
+       aes(x = harga, y = qty_pred, color = tipe)) +
+  geom_line(linewidth = 1.3) +
+  # Tandai harga-harga yang sudah pernah berlaku
+  geom_vline(xintercept = c(5500, 6000, 6500),
+             linetype = 'dashed', color = 'gray50',
+             linewidth = 0.6) +
+  annotate('text', x = c(5500,6000,6500), y = 120,
+           label = c('Rp5.500\n(Awal)',
+                     'Rp6.000\n(Naik 1)',
+                     'Rp6.500\n(Naik 2)'),
+           size = 3, color = 'gray40', hjust = 0.5) +
+  scale_color_manual(
+    values = c('Residensial' = '#2471A3',
+               'Perkantoran' = '#E67E22',
+               'Sekolah'     = '#8E44AD'),
+    name = 'Tipe Gerai'
+  ) +
+  scale_x_continuous(labels = label_comma(prefix = 'Rp')) +
+  scale_y_continuous(labels = label_comma()) +
+  labs(
+    title    = 'Demand Curve: Sales Qty Prediksi pada Berbagai Level Harga',
+    subtitle = 'Kurva lebih curam = lebih elastis (sensitif terhadap perubahan harga)',
+    x = 'Harga Jual (Rp)', y = 'Prediksi Sales Qty Harian per Gerai (Unit)'
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(
+    plot.title      = element_text(face = 'bold', color = '#1A3A5C'),
+    legend.position = 'top'
+  )
+```
+
+
+Kemudian dari grafik di atas, kita bisa menghitung harga optimal sehingga _revenue_ yang dihasilkan tinggi. _Revenue curve_: __Harga Berapa yang Memaksimalkan Pendapatan?__
+
+```{r}
+# ── Revenue = Harga x Volume ──────────────────────────────────────
+# Revenue curve akan membentuk 'gunung' — ada titik optimal
+
+df_revenue_curve <- df_demand_curve %>%
+  mutate(
+    revenue_per_gerai = harga * qty_pred
+  )
+
+# Temukan harga optimal per tipe gerai
+df_harga_optimal <- df_revenue_curve %>%
+  group_by(tipe) %>%
+  slice_max(revenue_per_gerai, n = 1)
+
+cat('=== HARGA OPTIMAL PER TIPE GERAI ===\n')
+df_harga_optimal %>%
+  select(tipe, harga, qty_pred, revenue_per_gerai) %>%
+  mutate(across(where(is.numeric), ~round(., 0))) %>%
+  print()
+
+# Plot revenue curve
+ggplot(df_revenue_curve,
+       aes(x = harga, y = revenue_per_gerai / 1000,
+           color = tipe)) +
+  geom_line(linewidth = 1.3) +
+  # Titik revenue maksimum
+  geom_point(data = df_harga_optimal,
+             aes(y = revenue_per_gerai / 1000),
+             size = 4, shape = 18) +
+  geom_text(
+    data = df_harga_optimal,
+    aes(y = revenue_per_gerai / 1000 + 5,
+        label = paste0('Rp', format(harga, big.mark='.'),
+                       '\n(Rp', round(revenue_per_gerai/1000),
+                       'k/hari)')),
+    size = 3, fontface = 'bold', hjust = 0.5
+  ) +
+  # Harga saat ini
+  geom_vline(xintercept = 6500, linetype = 'dashed',
+             color = '#C0392B', linewidth = 0.8) +
+  annotate('text', x = 6600, y = 380,
+           label = 'Harga saat ini\nRp6.500',
+           color = '#C0392B', size = 3, hjust = 0) +
+  scale_color_manual(
+    values = c('Residensial' = '#2471A3',
+               'Perkantoran' = '#E67E22',
+               'Sekolah'     = '#8E44AD'),
+    name = 'Tipe Gerai'
+  ) +
+  scale_x_continuous(labels = label_comma(prefix = 'Rp')) +
+  scale_y_continuous(labels = label_comma(suffix = 'k')) +
+  labs(
+    title    = 'Revenue Curve: Harga Berapa yang Memaksimalkan Pendapatan?',
+    subtitle = 'Titik berlian = harga optimal | Garis merah = harga yang sedang berlaku',
+    x = 'Harga Jual (Rp)', y = 'Estimasi Revenue per Gerai per Hari (Ribu Rp)'
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(
+    plot.title      = element_text(face = 'bold', color = '#1A3A5C'),
+    legend.position = 'top'
+  )
+```
+
+Bentuk lain dari grafik di atas, saya bisa membuat _revenue index_ vs persentase perubahan harga.
+
+```{r}
+# ── Kalkulator dampak perubahan harga ────────────────────────────
+harga_sekarang <- 6500
+
+# Skenario perubahan harga: dari -20% sampai +20%
+skenario_pct <- seq(-0.20, 0.20, by = 0.05)
+
+simulasi_skenario <- function(tipe_gerai, elas) {
+  lapply(skenario_pct, function(pct) {
+    harga_baru <- harga_sekarang * (1 + pct)
+
+    # Perubahan volume berdasarkan elastisitas
+    pct_perub_vol   <- elas * pct
+    # Indeks volume saat harga sekarang = 100
+    vol_index_baru  <- 100 * (1 + pct_perub_vol)
+
+    # Indeks revenue
+    rev_index_baru  <- (1 + pct) * (1 + pct_perub_vol) * 100
+
+    data.frame(
+      tipe         = tipe_gerai,
+      pct_harga    = pct,
+      harga_baru   = harga_baru,
+      pct_vol      = pct_perub_vol,
+      vol_index    = vol_index_baru,
+      rev_index    = rev_index_baru
+    )
+  }) %>% bind_rows()
+}
+
+df_skenario <- bind_rows(
+  simulasi_skenario('Residensial', elas_residensial),
+  simulasi_skenario('Perkantoran', elas_perkantoran),
+  simulasi_skenario('Sekolah',     elas_sekolah)
+) %>%
+  mutate(
+    tipe       = factor(tipe,
+                        levels = c('Residensial',
+                                   'Perkantoran', 'Sekolah')),
+    label_harga = paste0('Rp',
+                         format(round(harga_baru),
+                                big.mark = '.'))
+  )
+
+# Tampilkan tabel skenario untuk tipe Residensial
+# cat('=== SIMULASI SKENARIO: GERAI RESIDENSIAL ===\n')
+# df_skenario %>%
+#   filter(tipe == 'Residensial') %>%
+#   mutate(
+#     `% Harga`   = percent(pct_harga, accuracy = 1),
+#     `Harga Baru` = paste0('Rp', format(round(harga_baru),
+#                                         big.mark = '.')),
+#     `% Volume`  = percent(pct_vol, accuracy = 0.1),
+#     `Index Vol` = round(vol_index, 1),
+#     `Index Rev` = round(rev_index, 1)
+#   ) %>%
+#   select(`% Harga`, `Harga Baru`, `% Volume`,
+#          `Index Vol`, `Index Rev`) %>%
+#   print()
+
+
+# ── Visualisasi skenario: Revenue Index per tipe gerai ───────────
+ggplot(df_skenario,
+       aes(x = pct_harga * 100, y = rev_index,
+           color = tipe, group = tipe)) +
+  geom_line(linewidth = 1.3) +
+  geom_point(size = 2.5) +
+  # Garis baseline (tidak ada perubahan)
+  geom_hline(yintercept = 100, linetype = 'dashed',
+             color = 'gray50', linewidth = 0.8) +
+  geom_vline(xintercept = 0, linetype = 'dashed',
+             color = 'gray50', linewidth = 0.8) +
+  # Label angka di titik kunci
+  geom_text(
+    data = df_skenario %>%
+      filter(pct_harga %in% c(-0.10, 0.10)),
+    aes(label = round(rev_index, 1)),
+    vjust = -0.8, size = 3, fontface = 'bold'
+  ) +
+  scale_color_manual(
+    values = c('Residensial' = '#2471A3',
+               'Perkantoran' = '#E67E22',
+               'Sekolah'     = '#8E44AD'),
+    name = 'Tipe Gerai'
+  ) +
+  scale_x_continuous(
+    breaks = seq(-20, 20, 5),
+    labels = function(x) paste0(x, '%')
+  ) +
+  scale_y_continuous(labels = function(x) paste0(x)) +
+  labs(
+    title    = 'Dampak Perubahan Harga terhadap Revenue (Index = 100)',
+    subtitle = 'Di atas 100 = revenue meningkat | Di bawah 100 = revenue menurun',
+    x        = '% Perubahan Harga dari Harga Saat Ini (Rp6.500)',
+    y        = 'Revenue Index (Saat Ini = 100)'
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(
+    plot.title      = element_text(face = 'bold', color = '#1A3A5C'),
+    legend.position = 'top'
+  )
+```
+
+
+# Keterbatasan yang Harus Diakui
+
+1. _Ceteris paribus_. Model elastisitas mengasumsikan faktor lain konstan. Di dunia nyata, kompetitor ikut bereaksi, kondisi ekonomi berubah, dan konsumen bisa menemukan substitusi. Estimasi elastisitas adalah _baseline_, bukan prediksi deterministik.
+2. _Endogeneity_. Kalau harga ditentukan berdasarkan kondisi permintaan (misalnya dinaikkan saat _demand_ sedang tinggi), ada masalah _endogeneity_ yang membuat estimasi OLS bias. Solusinya adalah _Instrumental Variables_ (IV) _regression_. Tentunya hal ini merupakan topik yang lebih _advanced_.
+3. Elastisitas tidak konstan sepanjang waktu. Sensitifitas harga konsumen bisa berubah seiring meningkatnya pendapatan, munculnya kompetitor baru, atau perubahan preferensi. Model _log-log_ mengasumsikan elastisitas konstan (_constant elasticity_). Untuk mengecek stabilitas, bisa dilakukan _rolling regression_.
+4. Tidak memperhitungkan _cross-price elasticity_. Perubahan harga produk kita mempengaruhi penjualan kompetitor, dan sebaliknya. Model ini hanya mengukur _own-price elasticity_, bukan reaksi kompetitif.
+5. Granularitas data. Analisis ini bekerja pada level gerai per minggu. Untuk keputusan _pricing_ yang lebih presisi, idealnya ada data SKU-level dan kompetitor _price_ yang dikumpulkan secara sistematis.
+
+
+
+---
+  
+`if you find this article helpful, support this blog by clicking the ads.`
+
+
