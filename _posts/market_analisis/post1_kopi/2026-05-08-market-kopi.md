@@ -44,7 +44,7 @@ Data dari **MARS Indonesia** (via paper marketing Kapal Api) menunjukkan peta pe
 
 | Merek | 2006 | 2007 | Induk |
 |-------|:----:|:----:|:------|
-| **Kapal Api** 🏆 | **44.0%** | **44.3%** | Santos Jaya Abadi |
+| **Kapal Api** | **44.0%** | **44.3%** | Santos Jaya Abadi |
 | ABC | 17.5% | 17.9% | Santos Jaya Abadi |
 | Nescafe | 9.9% | — | Nestle |
 | Torabika | 7.5% | — | Mayora Group |
@@ -57,7 +57,7 @@ Pada saat itu, Santos Jaya Abadi (induk Kapal Api) sudah menguasai lebih dari 60
 
 | Perusahaan | Merek | 2009 | 2010 | 2011 |
 |------------|-------|:----:|:----:|:----:|
-| Santos Jaya Abadi | **Kapal Api** 🏆 | **43.6%** | **39.4%** | **35.7%** |
+| Santos Jaya Abadi | **Kapal Api** | **43.6%** | **39.4%** | **35.7%** |
 | Santos Jaya Abadi | ABC | 18.9% | 22.1% | 24.4% |
 | Nestle | Nescafe | 9.9% | 8.3% | 5.2% |
 | **Mayora** | **Torabika** | **7.5%** | **6.2%** | **8.5%** |
@@ -208,7 +208,7 @@ Data dari **Mix.co.id** (mengutip _Nielsen Ad Index_) menunjukkan:
 
 | Periode | Belanja Iklan Top Coffee | Peringkat Nasional |
 |---------|:------------------------:|:------------------:|
-| **2012 (Full Year)** | **Rp 421,7 miliar** 🏆 | **#4** dari semua merek di Indonesia |
+| **2012 (Full Year)** | **Rp 421,7 miliar** | **#4** dari semua merek di Indonesia |
 | H1 2012 | ~Rp 70 miliar | — |
 | H1 2013 | Rp 205,84 miliar | #1 kategori Kopi & Teh |
 | Pertumbuhan H1 2012 → H1 2013 | **+190%** | — |
