@@ -72,7 +72,7 @@ Perhatikan data Thailand:
 
 Kok bisa?
 
-![Paradoks Protein ASEAN](fig1_paradoks_protein.png)
+![Paradoks Protein ASEAN](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/market_analisis/post2_sarkopenia/fig1_paradoks_protein.png)
 
 Jawabannya ada di **ikan** dan **nabati**.
 
@@ -97,7 +97,7 @@ Indonesia punya konsumsi ikan yang sangat tinggi. Pada 2021:
 
 Ini yang membedakan Indonesia dari negara Asia Tenggara lainnya. Tahu dan tempe, terutama tempe hasil fermentasi, adalah makanan sehari-hari yang dikonsumsi lintas kelas sosial. Tempe memiliki **19-20 gram protein per 100 gram**. Angka ini setara dengan daging! Selain itu tahu, meskipun kandungan airnya lebih tinggi, tetap menjadi sumber protein yang murah dan mudah diakses.
 
-![Komposisi Sumber Protein Indonesia](fig3_sumber_protein_indonesia.png)
+![Komposisi Sumber Protein Indonesia](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/market_analisis/post2_sarkopenia/fig3_sumber_protein_indonesia.png)
 
 Dari total 77,8 gram protein per hari:
 
@@ -126,7 +126,7 @@ Selain itu, saya kok merasa konsumsi protein pada data tersebut tidak mewakili k
 
 **Sarcopenia** adalah kondisi dimana seseorang mengalami penurunan massa, kekuatan, dan fungsi otot akibat penuaan. _Sarcopenia_ adalah ancaman yang tidak banyak dibicarakan di Indonesia. Tahun lalu saya pernah [menuliskan tentang hal ini di _blog_](https://ikanx101.com/blog/sarcopenia-hilo/).
 
-![Prevalensi Sarcopenia Indonesia vs Global](fig5_prevalensi_sarcopenia.png)
+![Prevalensi Sarcopenia Indonesia vs Global](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/market_analisis/post2_sarkopenia/fig5_prevalensi_sarcopenia.png)
 
 | Studi | Sampel | Prevalensi |
 |---|---|---|
@@ -147,7 +147,7 @@ Ketika saya membahas temuan ini dengan AI asisten saya, ia menantang premis saya
 
 Mari kita lihat biaya per gram protein dari berbagai sumber makanan:
 
-![Biaya per Gram Protein](fig4_biaya_protein.png)
+![Biaya per Gram Protein](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/market_analisis/post2_sarkopenia/fig4_biaya_protein.png)
 
 | Sumber Protein | Perkiraan Harga (Rp/kg) | Protein/100g | **Rp/gram protein** |
 |---|---|---|---|
