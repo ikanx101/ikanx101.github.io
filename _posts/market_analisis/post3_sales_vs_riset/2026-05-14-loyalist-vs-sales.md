@@ -16,7 +16,7 @@ Beberapa hari yang lalu, tim _marketing research_ menyampaikan hasil survey kuar
 
 Spontan, rapat jadi agak panas. Tim _marketing_ langsung bereaksi:
 
-> *"Kok bisa? _Sales value_ kita cuma turun 15%, _loh_. Masa loyalisnya turun 27%? Pasti metode survey-nya yang kurang tepat."*
+> *"Kok bisa? Sales value kita cuma turun 15%, loh. Masa loyalisnya turun 27%? Pasti metode survey-nya yang kurang tepat."*
 
 Saya hanya bisa tersenyum kecil di dalam hati. Fenomena ini sebenarnya **sangat wajar**. Bahkan fenomena ini bisa dijelaskan dengan matematika sederhana yang kita ketahui bersama. Sayangnya, di lapangan, banyak yang masih menganggap hubungan antara jumlah loyalist dan sales value itu **linear**.
 
@@ -36,7 +36,7 @@ Sales Value = Jumlah Orang × Frekuensi Beli × Kuantitas per Beli × Harga per 
 
 Atau kalau ditulis dalam notasi yang lebih rapi:
 
-$$S = L \times F \times Q \times H$$
+**S = L x F x Q x H**
 
 Di mana:
 - **L** = jumlah _loyalist_ (atau pembeli secara umum)
@@ -152,14 +152,14 @@ Sementara itu, _sales value_ mengukur **L × F × Q × H** — itu adalah *behav
 
 **Keduanya penting, tapi menjawab pertanyaan yang berbeda.**
 
-- Survey _loyalist_ menjawab: *"Apakah hubungan emosional dan perilaku konsumen terhadap _brand_ kita mulai rapuh?"*
+- Survey _loyalist_ menjawab: *"Apakah hubungan emosional dan perilaku konsumen terhadap brand kita mulai rapuh?"*
 - _Sales value_ menjawab: *"Berapa banyak uang yang masuk ke kas perusahaan?"*
 
 Dan yang lebih penting: **loyalist adalah leading indicator**, sedangkan _sales_ adalah **lagging indicator**. Penurunan _loyalist_ sebesar 27% adalah alarm yang berbunyi *sekarang*. Dampaknya ke _sales_ mungkin baru akan terasa penuh satu atau dua kuartal ke depan, yakni ketika _loyalist_ yang sudah pergi benar-benar tidak lagi membeli, dan tidak ada _loyalist_ baru yang menggantikan.
 
 Kalau saya jadi tim _marketing_, saya justru akan berterima kasih pada tim riset karena sudah memberikan peringatan dini. Karena menunggu sampai _sales_ benar-benar turun 27% untuk bereaksi, __itu sudah terlambat__.
 
-> Selain itu, perlu __dipahami bahwa omset di-*generate* tidak hanya dari *loyalist*!__. Masih ada _occasional user_ dan _new trialist_ yang sedikit banyak pembelian mereka pasti berdampak pada _sales value_.
+> Selain itu, perlu __dipahami bahwa omset di-*generate* tidak hanya dari *loyalist*!__ Masih ada _occasional user_ dan _new trialist_ yang sedikit banyak pembelian mereka pasti berdampak pada _sales value_.
 
 ---
 
