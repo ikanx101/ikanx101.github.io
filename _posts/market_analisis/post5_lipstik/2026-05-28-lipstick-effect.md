@@ -35,6 +35,8 @@ Klaim "urutan kedua" yang saya lihat itu ternyata sudah kedaluwarsa. Data terbar
 
 Tapi ada catatan penting: angka ini mencakup *semua* jenis kedai kopi, mulai dari warkop pinggir jalan yang bisa buka 24 jam, warung kopi di pelosok gang, hingga _coffee shop_ kekinian yang estetik di sentra perbelanjaan. Metodologinya pun mengandalkan data *crowdsourced* OpenStreetMap, di mana komunitas OSM Indonesia sangat aktif sehingga data lokal kita mungkin lebih lengkap dibanding negara lain yang komunitas OSM-nya lebih kecil.
 
+> Data OSMStats menunjukkan Indonesia berada di peringkat ke-3 dunia dalam jumlah kontributor aktif OSM (per 2026), melampaui Jepang, India, dan Inggris. Ini wajar mengingat sejarah panjang pemetaan kemanusiaan pasca-tsunami Aceh 2004. Sayangnya, tidak ada data _edits per capita_ yang tersedia publik untuk mengontrol pengaruh populasi — jadi kita belum tahu pasti apakah Indonesia benar-benar terpetakan lebih lengkap, atau hanya memiliki komunitas _mapper_ yang paling rajin.
+
 Jadi, "nomor satu dunia" ini perlu dibaca dengan hati-hati walaupun __tetap saja jumlahnya luar biasa banyak__.
 
 ---
@@ -89,7 +91,7 @@ Satu-satunya data yang bisa saya hitung adalah estimasi dari brand besar:
 | Kopi Kenangan | 2024* (proyeksi) | $140 jt | ~900 | ~Rp 2,49 M |
 
 
-Pertumbuhan ~13% per gerai per tahun untuk Kopi Kenangan. Tapi ini hanya satu brand _premium_. Tentunya tidak cukup baik untuk mewakili ~461.000 kedai kopi Indonesia yang mayoritas UMKM kecil.
+Pertumbuhan ~13% per gerai per tahun untuk Kopi Kenangan. Tapi ini hanya salah satu dari _brand_ kopi. Untuk mayoritas UMKM seperti warkop, data omzetnya tidak tersedia — jadi kita tidak tahu apakah mereka tumbuh atau malah tergerus.
 
 ### Tiga Lubang Besar dalam Narasi Ini
 
@@ -108,6 +110,8 @@ Jadi, untuk _coffee shop_: **narasinya menarik, tapi buktinya tak cukup kuat.** 
 Nah, ini yang lebih menarik. Karena sebenarnya, _lipstick effect_ secara harfiah lahir dari dunia kecantikan dan perawatan diri — bukan dari industri kopi. Bisa jadi datanya jauh lebih _solid_ dan konklusif.
 
 ### Angka yang Berbicara
+
+__Catatan:__ data berikut berasal dari periode Lebaran (_peak season_) dan _platform e-commerce_, yang mungkin _overestimate_ dibandingkan kondisi rata-rata tahunan.
 
 Riset NielsenIQ dan Compas mencatat pertumbuhan yang cukup mengejutkan di tengah lesunya daya beli:
 
