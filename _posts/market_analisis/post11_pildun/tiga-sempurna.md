@@ -1,0 +1,140 @@
+---
+date: 2026-06-22T08:00:00-01:00
+title: "Tiga Sempurna: Kenapa Argentina, France, dan Mexico Lolos Fase Grup dengan 3 Kemenangan?"
+categories:
+  - Blog
+tags:
+  - R
+  - Machine Learning
+  - Piala Dunia
+  - Sepakbola
+  - Expected Goals
+  - FIFA
+  - Sport
+  - Sport science
+---
+
+Barusan, sambil nungguin pesenan gojek sampai di lobi kantor, saya iseng buka _dataset_ yang sudah saya *scrape* dari situs FIFA. Sebagaimana yang saya informasikan sebelumnya, saya mengambil _dataset_ pertandingan Piala Dunia 2026 dan membuat _platform_ prediksi di situs [pildun.ikanx101.com](https://www.pildun.ikanx101.com/). Total sudah lebih dari 39 pertandingan fase grup — data *passing*, *shots*, *possession*, *threat index*, semua sudah terkumpul rapi.
+
+> Dari 48 tim yang bertanding, beberapa sudah pasti melaju ke babak berikutnya. Tapi yang menarik perhatian saya bukan sekadar tim yang lolos — tapi **tiga tim yang lolos dengan sempurna**: Argentina, Perancis, dan Meksiko.
+
+Tiga tim. Tiga kemenangan beruntun. Nol kekalahan, nol imbang. Tapi semakin saya dalami angkanya, semakin jelas: **jalan mereka menuju kesempurnaan itu benar-benar berbeda**. _Nggak_ ada yang sama.
+
+*Lho*, kok bisa?
+
+---
+
+### _France_, Sang *Juggernaut*
+
+Pertandingan pertama _France_ vs Senegal. Dalam 5 menit pertama, mereka sudah melepaskan 3 tembakan. Seperti orang yang lagi *shopping* di *supermarket*: _ambil aja semua, nanti dipilih di rumah_.
+
+Sepanjang fase grup, skuad *Les Bleus* melepaskan **48 tembakan**. Rata-rata 16 per pertandingan. *Threat index* mereka mencapai angka 178, artinya setiap serangan yang mereka bangun benar-benar berbahaya. Produktivitas ini yang membuat mereka menjadi tim paling subur dengan **10 gol** (3.3 per laga).
+
+Tapi ada satu hal yang membuat saya cukup kaget: **akurasi _crossing_ mereka cuma 13.6%**. Dari 44 umpan silang, hanya sekitar 6 yang akurat. Artinya, mereka *spam crossing*, ya mirip-mirip *spam filter* di era awal Gmail, banyak yang masuk, sedikit yang tepat sasaran.
+
+Di sisi lain, mereka paling disiplin. Hanya **20 pelanggaran** selama 3 pertandingan. Angka ini paling sedikit dibanding Argentina (31) dan Meksiko (28). Mereka juga yang paling banyak *sprint* (1.327). Kerja keras, _nggak_ banyak ngomong, tapi kadang boros.
+
+Bayangin _France_ seperti petinju *heavyweight* yang terus maju, terus memukul. Kadang pukulannya meleset, kadang kena badan, tapi terus maju. Kalau lawannya tahan, mereka bingung.
+
+> **Gaya main:** *Volume.* Tembak, *crossing*, dribel. Satu meleset, coba lagi.
+
+---
+
+### Argentina, Sang Maestro Efisiensi
+
+Sekarang lihat Argentina. Mereka adalah kebalikan dari _France_.
+
+Sepanjang fase grup, mereka cuma melepaskan **35 tembakan**, jauh di bawah _France_. Tapi lihat ini: **konversi gol mereka 22.9%**. Tertinggi di antara ketiganya. Artinya, setiap 4 kali menembak, 1 masuk. Efisien _banget kan_?.
+
+*Passing* mereka luar biasa bagus. **1.966 operan dengan akurasi 90.9%**. Angka ini tertinggi di turnamen. Penguasaan bola rata-rata 53.5%, dan saat melawan Jordan, mereka menguasai bola hingga 68%. Bola seperti lengket di kaki mereka.
+
+Tapi yang paling bikin saya terkesima: Argentina **hanya kebobolan 3 tembakan tepat sasaran sepanjang 3 pertandingan**. Tiga. Bayangin, dalam 270 menit sepakbola, lawan hanya punya 3 kesempatan emas. Sisanya mentok di lini pertahanan atau meleset.
+
+Hal lain yang perlu dicatat: Argentina **mencatatkan 8 offside**, paling banyak di antara ketiga tim ini. Ini sedikit jadi catatan, karena menunjukkan _striker_ mereka kadang *terlalu cepat* bergerak, mendahului operan.
+
+Mereka juga fleksibel. Bisa main *low-block* kalau perlu (27.5% fase bertahan) dan efisien di *final third* (10.1%). Mereka bisa _ngatur_ tempo permainan: cepat kalau perlu, pelan kalau lagi unggul.
+
+Bayangkan Argentina seperti pemain catur: dia nunggu pemain lawan salah langkah, baru dia *hajar*. Efisien dan bisa ngatur ritme. Meski catatan 8 _offsides_ jadi pengingat bahwa _striker_ mereka kadang terlalu bersemangat.
+
+> **Gaya main:** *Efisiensi & Kontrol.* Bola, tempo, dan peluang — semuanya diatur.
+
+---
+
+### Meksiko, Tembok Rumah Sendiri
+
+_Nah_, Meksiko ini beda cerita.
+
+Sebagai tuan rumah, tekanan pasti besar. Tapi mereka memilih pendekatan paling aman: **jangan kebobolan dulu** dan mereka berhasil: **0 conceded**. *Clean sheet* penuh. Ini pencapaian yang tidak bisa diremehkan.
+
+Tapi ofensifnya? _Hmmm_. Paling sedikit operan (1.373), akurasi _passing_ paling rendah (87%), dan jumlah tembakan (35) sama dengan Argentina tapi dengan konversi gol lebih rendah (17.1%). Mereka lebih sering main _direct_ — *long ball* 4.4%, tertinggi di antara ketiganya. Mereka juga tercatat 4 kali *offside* (sama dengan _France_), yang menunjukkan serangan langsung mereka tidak selalu terkoordinasi rapi.
+
+*Set piece* jadi senjata utama mereka (6.1%) dan mereka **lari paling jauh**: 339 km. Lebih dari Argentina atau _France_. Artinya, mereka kerja keras nutup ruang dan bertahan.
+
+Yang menarik: *press* mereka rendah. Hanya 0.2% untuk *LowPress*. Mereka lebih nyaman jaga *shape* dan menunggu lawan salah.
+
+Bayangin Meksiko seperti *bunker* di *game* perang: nggak ada yang bisa tembus, tapi *firepower*-nya juga terbatas.
+
+> **Gaya main:** *Pertahanan.* Set-piece, direct ball, nol kebobolan. Tapi kreativitas ofensif terbatas.
+
+---
+
+### Jadi, Siapa yang Paling Siap ke Fase Berikutnya?
+
+Pertanyaan ini yang bikin saya penasaran. Fase grup dibandingkan fase gugur itu **dua dunia yang berbeda**. Di grup, setiap negara bisa main aman tapi di fase gugur, satu gol bisa jadi akhir perjalanan.
+
+![](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/market_analisis/post11_pildun/01_radar_comparison.png)
+
+
+**France** — dominan banget lawan tim yang terbuka. Tapi crossing cuma akurat 13.6%. Kalau ketemu tim yang rapat dan disiplin di kotak penalti, mereka bisa frustrasi. Ingat, di babak gugur, lawan nggak akan kasih ruang sebanyak Senegal atau Irak.
+
+**Argentina** — menurut saya, tim paling siap. Fleksibel. Bisa ngatur tempo, bisa main bertahan, nggak gampang panik. Hanya kebobolan 1 gol — lebih sedikit dari France (2), meski Meksiko masih lebih ketat dengan 0 kebobolan. Mereka kayak *veteran* yang udah liat segalanya. Tapi harus hati-hati: kalau lawan baca pola penguasaan mereka, bisa kena *counter*.
+
+**Meksiko** — *clean sheet* itu impresif. Tapi bayangin kalau mereka tertinggal lebih dulu. Apakah mereka punya senjata cukup buat balik? Datanya bilang: mungkin tidak. Mereka terlalu bergantung pada *set piece* dan transisi. Begitu bola harus dipegang dan membangun serangan, mereka kesulitan.
+
+![](./02_goals_conversion_xg.png)
+*France paling subur, Argentina paling efisien, Argentina dan Meksiko sama-sama paling sedikit tembakan (35).*
+
+---
+
+### Tapi.. Mereka Juga Punya Kesamaan
+
+Meskipun beda, ada hal-hal yang menyatukan ketiganya:
+
+**Pertama**, *passing* akurat minimal 87%. Mereka nggak buang-buang bola. Mungkin ini fondasi paling dasar: kalau lo nggak bisa pegang bola, lo nggak bisa apa-apa.
+
+**Kedua**, *build-up* tenang. Fase *BuildUpUnopposed* semuanya di kisaran 38-45%. Lawan cenderung kasih mereka ruang membangun serangan.
+
+**Ketiga**, *counter press* aktif. Saat kehilangan bola, mereka langsung bereaksi. Nggak ada yang diem aja. Rata-rata *counter press* 8-10% untuk Argentina dan France, sedikit di bawahnya untuk Meksiko (7.8%).
+
+**Keempat**, intensitas fisik tinggi. Semua >1.000 *sprints*. Nggak ada yang males.
+
+**Kelima**, mereka sama-sama solid bertahan. Argentina kebobolan 1 gol, France 2, Meksiko 0. Bukan kebetulan.
+
+![](./03_phase_distribution.png)
+*France paling sering berada di final third, Argentina paling banyak waktu di fase bertahan. Dua kutub yang berbeda.*
+
+---
+
+### Akhirnya..
+
+Tiga tim. Tiga cara berbeda. Tapi satu hasil yang sama: sempurna di fase grup. Data bilang, **nggak ada satu resep tunggal buat menang**. Yang penting: *know yourself*.
+
+France tau mereka kuat volume. Argentina tau mereka kuat kontrol. Meksiko tau mereka kuat bertahan. Masing-masing main sesuai kekuatan sendiri.
+
+**Tapi ini baru fase grup.** Begitu memasuki babak gugur, semuanya berubah. Pertandingan lebih taktis. Satu momen bisa mengakhiri perjalanan.
+
+Kalau saya harus taruh taruhan: **Argentina** yang paling *balanced*. Tapi namanya juga sepakbola — banyak hal yang tidak bisa dijelaskan oleh data. Mungkin ada tim *underdog* yang tiba-tiba bersinar. Mungkin ada *penalty* kontroversial. Mungkin ada pemain yang *heroic* di menit akhir.
+
+*Wallahu a'lam.*
+
+*InsyaAllah*, saya akan terus *update* analisa setelah setiap babak bergulir. Ikuti terus.
+
+**Siapa menurut kamu yang bakal melaju paling jauh?**
+
+---
+
+#### Share on
+
+[X](https://x.com/intent/tweet?text=Tiga+Sempurna:+Kenapa+Argentina,+France,+dan+Mexico+Lolos+Fase+Grup+dengan+3+Kemenangan?%20https://ikanx101.com/blog/pildun-26-3/)
+
+[Bluesky](https://bsky.app/intent/compose?text=Tiga+Sempurna:+Kenapa+Argentina,+France,+dan+Mexico+Lolos+Fase+Grup+dengan+3+Kemenangan?%20https://ikanx101.com/blog/pildun-26-3/)
