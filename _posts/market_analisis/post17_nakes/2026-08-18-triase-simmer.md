@@ -16,8 +16,6 @@ tags:
 ---
 
 
-# Kalau FIFO Saja Sudah Bikin Runyam di Puskesmas, Bagaimana Kalau Taruhannya Nyawa? 
-
 Beberapa waktu lalu saya menulis tentang bagaimana [antrean di klinik bisa menjelaskan kenapa nakes jutek dan pasien marah](https://ikanx101.com/blog/nakes-simmer/), semuanya cuma gara-gara sistem antrean yang dipaksa jalan di atas kapasitasnya. 
 
 Ada satu komentar dari pembaca yang terus mengganjal di kepala saya: 
