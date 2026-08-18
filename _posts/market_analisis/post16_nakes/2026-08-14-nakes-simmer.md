@@ -1,6 +1,6 @@
 ---
 date: 2026-08-14T07:39:00-01:00
-title: "Nakes yang Jutek dan Pasien yang Marah: Membedah Sistem Antrean Faskes dengan Discrete-Event Simulation di R"
+title: "Nakes yang Jutek dan Pasien yang Marah: Membedah Sistem Antrean Klinik dengan Discrete-Event Simulation di R"
 categories:
   - Blog
 tags:
@@ -36,16 +36,18 @@ Kenapa DES?
 
 > Karena dengan metode ini, kita bisa melihat pergerakan antrean layaknya kejadian nyata dari menit ke menit, bukan sekadar melihat angka rata-rata yang statis.
 
-Sebagai catatan, simulasi yang saya lakukan ini tidak _apple to apple_ dengan kasus yang sedang viral tersebut. Tapi simulasi ini sedikit banyak akan memberikan gambaran bagaimana sistem pelayanan dan antrian yang tidak mumpuni akan berdampak ke mana-mana.
+__Sebagai catatan, simulasi yang saya lakukan ini tidak _apple to apple_ dengan kasus yang sedang viral tersebut.__ 
 
-## Skenario Simulasi: Klinik Fiktif yang Menuju Kehancuran
+Tapi simulasi ini sedikit banyak akan __memberikan gambaran bagaimana sistem pelayanan dan antrian yang tidak mumpuni__ akan berdampak ke mana-mana. Baik ke pelayanan nakes dan psikologi pasien.
 
-Misalkan ada sebuah klinik fiktif bernama __Klinik Sehat Selalu__. Berikut adalah beberapa parameter yang akan saya gunakan saat melakukan simulasi. Saya coba membuat beberapa parameter berdasarkan asumsi tertentu dan akan saya _set_ nilainya serealistis mungkin seolah-olah pada saat itu adalah hari yang sibuk di klinik:
+## Skenario Simulasi: Klinik Fiktif yang _Riweuh_
+
+Misalkan ada sebuah klinik fiktif bernama __Klinik Pagi__. Berikut adalah beberapa parameter yang akan saya gunakan saat melakukan simulasi. Saya coba membuat beberapa parameter berdasarkan asumsi tertentu dan akan saya _set_ nilainya serealistis mungkin seolah-olah pada saat itu adalah hari yang sangat sibuk di klinik:
 
 1. **Durasi Operasional:** 1 *shift* kerja, anggaplah 4 jam nonstop (240 menit).
-2. **Kapasitas Nakes ($c$):** Hanya ada 2 dokter yang bertugas melayani klinik tersebut.
-3. **Tingkat Kedatangan Pasien ($\lambda$):** Rata-rata ada 1 pasien datang setiap 4 menit.
-4. **Waktu Pelayanan ($\mu$):** Dokter butuh waktu rata-rata 10 menit per pasien untuk melakukan anamnesis, diagnosa, hingga meresepkan obat dengan layak. Perlu saya ingatkan kembali bahwa ini adalah waktu rata-rata. Waktu nyatanya bisa memiliki simpangan tertentu.
+2. **Kapasitas Nakes (_c_):** Hanya ada 2 dokter yang bertugas melayani klinik tersebut.
+3. **Tingkat Kedatangan Pasien (λ):** Rata-rata ada 1 pasien datang setiap 4 menit.
+4. **Waktu Pelayanan (μ):** Dokter butuh waktu rata-rata 10 menit per pasien untuk melakukan anamnesis, diagnosa, hingga meresepkan obat dengan layak. Perlu saya ingatkan kembali bahwa ini adalah waktu rata-rata. Waktu nyatanya bisa memiliki simpangan tertentu.
 
 Secara matematis sederhana, 2 dokter x (60 menit / 10 menit) = __kapasitas maksimal hanya 12 pasien per jam__. Sedangkan pasien datang 15 orang per jam. 
 
@@ -62,7 +64,7 @@ library(dplyr)
 library(ggplot2)
 
 # 1. Inisialisasi Environment Simulasi
-env <- simmer("Klinik_Pagi")
+env <- simmer("Klinik_Riweuh")
 
 # 2. Membuat Trajectory (Perjalanan Pasien)
 # Pasien datang -> antre nakes -> diperiksa (rata-rata 10 menit) -> selesai
@@ -102,7 +104,7 @@ Ibaratnya, ini seperti survei kepuasan pelanggan yang cuma menanyai orang yang s
 
 Makanya saya akali simulasinya menjadi: pendaftaran pasien baru saya tutup persis di menit ke-240 (persis seperti klinik yang menutup pintu), tapi dokternya tetap saya suruh "lembur" menuntaskan pasien yang sudah kadung antre. Dengan begitu, waktu tunggu semua pasien yang datang dalam satu _shift_ terhitung utuh, tidak ada yang terpotong.
 
-### Mengapa Nakes Bisa Kehilangan Empati? (Analisis Utilisasi)
+### Mengapa Nakes Bisa Kehilangan Empati? (__Analisis Utilisasi__)
 
 Pertama, mari kita lihat beban kerja dokter dari menit ke-0 hingga menit ke-240.
 
@@ -136,7 +138,7 @@ Grafik di atas menunjukkan utilisasi kedua dokter naik ke 100% sejak menit ke-20
 
 Dalam ilmu saraf dan ergonomi kognitif, empati membutuhkan cadangan energi mental yang besar. Otak manusia yang dipaksa mengambil keputusan klinis (yang menyangkut nyawa orang) secara beruntun dengan utilisasi mendekati 100% akan mengalami *cognitive fatigue*. Saat otak kelelahan, fungsi regulasi emosi di *prefrontal cortex* menurun. Nakes tidak menjadi "jutek" karena mereka jahat; mereka jutek karena secara biologis, baterai sosial dan empati mereka sudah habis.
 
-### Mengapa Pasien Marah? (Analisis Waktu Tunggu)
+### Mengapa Pasien Marah? (__Analisis Waktu Tunggu__)
 
 Sekarang, mari kita lihat dari kacamata pasien.
 
@@ -166,21 +168,21 @@ ggplot(data_pasien, aes(x = start_time, y = waiting_time)) +
 
 ![Grafik waktu tunggu pasien](https://raw.githubusercontent.com/ikanx101/ikanx101.github.io/master/_posts/market_analisis/post16_nakes/plot-waktu-tunggu-pasien.png)
 
-Grafik kedua ini sangat menyedihkan. Pasien yang datang di 30 menit pertama menunggu rata-rata sekitar **10 menit** saja. Sistem sempat "bernapas" di pertengahan _shift_ (sekitar menit ke-100 hingga ke-150) ketika beberapa pasien kebetulan selesai diperiksa lebih cepat. Tapi begitu menit ke-150 terlewati, antrean menumpuk permanen: pasien yang datang di atas menit ke-200 harus menunggu rata-rata **35 menit**, dengan titik terparah mencapai hampir **47 menit** -- lebih dari 4 kali lipat waktu pemeriksaan itu sendiri.
+Grafik kedua ini sangat menyedihkan. Pasien yang datang di 30 menit pertama menunggu rata-rata sekitar **10 menit** saja. Sistem sempat "bernapas" di pertengahan _shift_ (sekitar menit ke-100 hingga ke-150) ketika beberapa pasien kebetulan selesai diperiksa lebih cepat. Tapi begitu menit ke-150 terlewati, antrean menumpuk permanen: pasien yang datang di atas menit ke-200 harus menunggu rata-rata **35 menit**, dengan titik terparah mencapai hampir **47 menit**. Lebih dari 4 kali lipat waktu pemeriksaan itu sendiri.
 
 > Ketika orang sedang sakit, duduk menunggu puluhan menit hingga hampir satu jam adalah sebuah siksaan. Wajar jika emosi mereka tersulut. Dan sayangnya, kepada siapa mereka akan melampiaskan amarah tersebut? Ya, kepada nakes yang kebetulan berhadapan langsung dengan mereka, nakes yang utilisasinya sudah mendekati 100% tadi.
 
-Ada satu hal menarik dari grafik ini yang jujur perlu saya akui: keadaannya tidak melorot mulus dari awal sampai akhir. Di pertengahan _shift_, sempat ada jeda di mana antrean terlihat "membaik". Namanya juga kejadian acak, kadang keberuntungan berpihak sebentar. Tapi jangan salah sangka: selama pasien yang datang tetap lebih banyak daripada yang sanggup ditangani dokter, jeda itu cuma sementara. Cepat atau lambat antrean bakal menumpuk lagi. Ini juga jadi pengingat buat kita semua: jangan buru-buru menyimpulkan _"klinik ini kelihatannya nggak terlalu penuh kok"_ hanya dari mengamati sesaat. Kita perlu melihatnya dalam rentang waktu yang cukup panjang untuk menangkap pola aslinya.
+Ada satu hal menarik dari grafik ini: keadaannya tidak melorot mulus dari awal sampai akhir. Di pertengahan _shift_, sempat ada jeda di mana antrean terlihat "membaik". Namanya juga kejadian acak, kadang keberuntungan berpihak sebentar. Tapi selama pasien yang datang tetap lebih banyak daripada pasien yang sanggup ditangani dokter, jeda itu cuma sementara. Cepat atau lambat antrean bakal menumpuk lagi. Ini juga jadi pengingat buat kita semua: jangan buru-buru menyimpulkan _"klinik ini kelihatannya nggak terlalu penuh kok"_ hanya dari mengamati sesaat. Kita perlu melihatnya dalam rentang waktu yang cukup panjang untuk menangkap pola aslinya.
 
 ### Epilog
 
 Dari simulasi sederhana ini, kita bisa belajar bahwa perdebatan antara nakes vs pasien seringkali salah sasaran. Menyuruh nakes mengikuti _"Pelatihan Senyum dan Empati"_ tidak akan mengubah keadaan jika desain operasional rumah sakit / puskesmas / kliniknya memang sudah keliru dari awal.
 
-Solusi berbasis *operations research* selalu berkutat pada perbaikan rasio antara $\lambda$ (kedatangan) dan $\mu$ (pelayanan):
+Solusi berbasis *operations research* selalu berkutat pada perbaikan rasio antara λ (kedatangan) dan μ (pelayanan):
 
-1. **Mengontrol Kedatangan ($\lambda$):** Untuk beberapa kondisi yang memungkinkan (misal bukan di UGD), faskes bisa menerapkan sistem antrean *online* dengan kuota yang ketat per jam, bukan membiarkan semua pasien menumpuk di jam 7 pagi.
-2. **Menambah Kapasitas ($c$):** Jelas, butuh lebih banyak tenaga medis pada jam-jam sibuk (*peak hours*).
-3. **Mengefisienkan Layanan ($\mu$):** Jika waktu dokter banyak habis untuk mengetik rekam medis ke komputer, perbaiki sistemnya sehingga dokter bisa fokus 100% berinteraksi dengan pasien.
+1. **Mengontrol Kedatangan (λ):** Untuk beberapa kondisi yang memungkinkan (misal bukan di UGD), faskes bisa menerapkan sistem antrean *online* dengan kuota yang ketat per jam, bukan membiarkan semua pasien menumpuk di jam 7 pagi.
+2. **Menambah Kapasitas (_c_):** Jelas, butuh lebih banyak tenaga medis pada jam-jam sibuk (*peak hours*).
+3. **Mengefisienkan Layanan (μ):** Jika waktu dokter banyak habis untuk mengetik rekam medis ke komputer, perbaiki sistemnya sehingga dokter bisa fokus 100% berinteraksi dengan pasien.
 
 Matematika dan simulasi ini tidak pernah berbohong. Selama sistem dipaksa berjalan melampaui kapasitasnya, pergesekan antar manusia di dalamnya hanyalah sebuah keniscayaan yang tinggal menunggu waktu.
 
