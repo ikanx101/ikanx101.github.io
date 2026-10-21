@@ -1,0 +1,8 @@
+"metode","keluarga","mape"
+"Tahun lalu + pertumbuhan","Cara lama",6.72543072949106
+"Seasonal naive","Time series",10.6371464108414
+"ETS (Holt-Winters)","Time series",5.29537597277305
+"Auto ARIMA","Time series",4.94549108675714
+"Regresi langkah 1: trend","Regresi",5.35419037216838
+"Regresi langkah 2: + bulan","Regresi",3.4788902123636
+"Regresi langkah 3: + Lebaran","Regresi",3.15743029117492
